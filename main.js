@@ -20,4 +20,9 @@ images.gear.onload = function draw() {
 
     // Draw images
     ctx.drawImage(images.gear, 736, 436);
+
+    // Write text
+    ctx.fillStyle = "black";
+    ctx.fillText("Character 1", 608, 308);
+    ctx.fillText("Character 2", 608, 340);
 };
