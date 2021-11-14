@@ -12,12 +12,12 @@ images.gear.onload = function draw() {
 
     // Bottom right rect (Menu)
     ctx.fillStyle = colors.top;
-    ctx.fillRect(600, 400, 200, 50);
+    ctx.fillRect(608, 436, 192, 32);
     ctx.fillStyle = colors.bottom;
-    ctx.fillRect(600, 450, 200, 50);
+    ctx.fillRect(608, 468, 192, 32);
 
-    ctx.fillRect(600, 200, 200, 200);
+    ctx.fillRect(608, 308, 192, 128);
 
     // Draw images
-    ctx.drawImage(images.gear, 736, 400);
+    ctx.drawImage(images.gear, 736, 436);
 };
