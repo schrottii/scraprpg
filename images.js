@@ -9,7 +9,9 @@ function loadImage(path, onload) {
 
 var images =
 {
-    gear: loadImage("Images/gear.png")
+    gear: loadImage("Images/gear.png"),
+    paper: loadImage("Images/paper.png"),
+    inventory: loadImage("Images/inventory.png")
 };
 
 var colors =

@@ -19,7 +19,9 @@ images.gear.onload = function draw() {
     ctx.fillRect(608, 308, 192, 128);
 
     // Draw images
-    ctx.drawImage(images.gear, 736, 436);
+    ctx.drawImage(images.paper, 608, 436, 64, 64);
+    ctx.drawImage(images.inventory, 672, 436, 64, 64);
+    ctx.drawImage(images.gear, 736, 436, 64, 64);
 
     // Write text
     ctx.fillStyle = "black";
