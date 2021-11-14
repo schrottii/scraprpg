@@ -23,6 +23,6 @@ images.gear.onload = function draw() {
 
     // Write text
     ctx.fillStyle = "black";
-    ctx.fillText("Character 1", 608, 308);
-    ctx.fillText("Character 2", 608, 340);
+    ctx.fillText("Character 1", 608, 328);
+    ctx.fillText("Character 2", 608, 360);
 };
