@@ -8,10 +8,12 @@ function draw() {
         ctx.fillRect(0, 0, 800, 500);
 
         // Bottom right rect
-        ctx.fillStyle = "rgb(212, 159, 82)";
-        ctx.fillRect(650, 400, 150, 50);
-        ctx.fillStyle = "rgb(181, 133, 66)";
-        ctx.fillRect(650, 450, 150, 50);
+        ctx.fillStyle = colors.top;
+        ctx.fillRect(600, 400, 200, 50);
+        ctx.fillStyle = colors.bottom;
+        ctx.fillRect(600, 450, 200, 50);
+
+        ctx.fillRect(600, 200, 200, 200);
 
         ctx.drawImage(images.gear, 500, 500);
     }
