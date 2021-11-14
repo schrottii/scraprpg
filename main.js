@@ -3,7 +3,30 @@ if (canvas.getContext) {
     var ctx = canvas.getContext("2d");
 }
 
+function UI_UpdateCharacters() {
+    ctx.fillStyle = "black";
+    ctx.font = "20px sans-serif";
+    ctx.fillStyle = "lightblue";
 
+    ctx.fillText("Bleu", 612, 328);
+    ctx.fillText("Corelle", 612, 392);
+
+    ctx.font = "16px sans-serif";
+    ctx.fillStyle = "green";
+
+    ctx.fillText("HP: 2000", 612, 348);
+    ctx.fillText("HP: 1700", 612, 412);
+
+    ctx.fillStyle = "yellow";
+
+    ctx.fillText("Level 99", 612, 364);
+    ctx.fillText("Level 99", 612, 428);
+
+    ctx.fillStyle = "black";
+
+    ctx.fillText("EP: 0", 708, 348);
+    ctx.fillText("EP: 0", 708, 412);
+}
 
 images.gear.onload = function draw() {
     // Black rectangle that fills the entire background
@@ -18,20 +41,11 @@ images.gear.onload = function draw() {
 
     ctx.fillRect(608, 308, 192, 128);
 
-    // Draw images
+    // images
     ctx.drawImage(images.paper, 608, 436, 64, 64);
     ctx.drawImage(images.inventory, 672, 436, 64, 64);
     ctx.drawImage(images.gear, 736, 436, 64, 64);
 
     // Write text
-    ctx.fillStyle = "black";
-    ctx.font = "20px sans-serif";
-
-    ctx.fillText("Character 1", 608, 328);
-    ctx.fillText("Character 2", 608, 392);
-
-    ctx.font = "16px sans-serif";
-
-    ctx.fillText("HP: 2000", 608, 348);
-    ctx.fillText("HP: 1700", 608, 412);
+    UI_UpdateCharacters();
 };
