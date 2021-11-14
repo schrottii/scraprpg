@@ -19,4 +19,4 @@ function draw() {
     }
 }
 
-draw();
+images.gear.onload = draw();
