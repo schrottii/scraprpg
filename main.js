@@ -10,7 +10,7 @@ images.gear.onload = function draw() {
     ctx.fillStyle = "rgb(0,0,0)";
     ctx.fillRect(0, 0, 800, 500);
 
-    // Bottom right rect
+    // Bottom right rect (Menu)
     ctx.fillStyle = colors.top;
     ctx.fillRect(600, 400, 200, 50);
     ctx.fillStyle = colors.bottom;
@@ -18,6 +18,6 @@ images.gear.onload = function draw() {
 
     ctx.fillRect(600, 200, 200, 200);
 
-    // Draw image
-    ctx.drawImage(images.gear, 300, 300);
+    // Draw images
+    ctx.drawImage(images.gear, 736, 400);
 };
