@@ -8,24 +8,24 @@ function UI_UpdateCharacters() {
     ctx.font = "20px sans-serif";
     ctx.fillStyle = "lightblue";
 
-    ctx.fillText("Bleu", 612, 328);
-    ctx.fillText("Corelle", 612, 392);
+    ctx.fillText(characters[char1].name, 612, 328);
+    ctx.fillText(characters[char2].name, 612, 392);
 
     ctx.font = "16px sans-serif";
     ctx.fillStyle = "green";
 
-    ctx.fillText("HP: 2000", 612, 348);
-    ctx.fillText("HP: 1700", 612, 412);
+    ctx.fillText("HP: " + characters[char1].HP, 612, 348);
+    ctx.fillText("HP: " + characters[char2].HP, 612, 412);
 
     ctx.fillStyle = "yellow";
 
-    ctx.fillText("Level 99", 612, 364);
-    ctx.fillText("Level 99", 612, 428);
+    ctx.fillText("Level " + characters[char1].level, 612, 364);
+    ctx.fillText("Level " + characters[char2].level, 612, 428);
 
     ctx.fillStyle = "black";
 
-    ctx.fillText("EP: 0", 708, 348);
-    ctx.fillText("EP: 0", 708, 412);
+    ctx.fillText("EP: " + characters[char1].EP, 708, 348);
+    ctx.fillText("EP: " + characters[char2].EP, 708, 412);
 }
 
 images.gear.onload = function draw() {
