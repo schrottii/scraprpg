@@ -1,8 +1,9 @@
-function draw() {
-    var canvas = document.getElementById("canvas");
-    if (canvas.getContext) {
-        var ctx = canvas.getContext("2d");
+var canvas = document.getElementById("canvas");
+if (canvas.getContext) {
+    var ctx = canvas.getContext("2d");
+}
 
+function draw() {
         // Black rectangle that fills the entire background
         ctx.fillStyle = "rgb(0,0,0)";
         ctx.fillRect(0, 0, 800, 500);
@@ -17,7 +18,6 @@ function draw() {
 
         // Draw image
         ctx.drawImage(images.gear, 300, 300);
-    }
 }
 
 images.gear.onload = draw();
