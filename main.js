@@ -3,21 +3,21 @@ if (canvas.getContext) {
     var ctx = canvas.getContext("2d");
 }
 
-function draw() {
-        // Black rectangle that fills the entire background
-        ctx.fillStyle = "rgb(0,0,0)";
-        ctx.fillRect(0, 0, 800, 500);
 
-        // Bottom right rect
-        ctx.fillStyle = colors.top;
-        ctx.fillRect(600, 400, 200, 50);
-        ctx.fillStyle = colors.bottom;
-        ctx.fillRect(600, 450, 200, 50);
 
-        ctx.fillRect(600, 200, 200, 200);
+images.gear.onload = function draw() {
+    // Black rectangle that fills the entire background
+    ctx.fillStyle = "rgb(0,0,0)";
+    ctx.fillRect(0, 0, 800, 500);
 
-        // Draw image
-        ctx.drawImage(images.gear, 300, 300);
-}
+    // Bottom right rect
+    ctx.fillStyle = colors.top;
+    ctx.fillRect(600, 400, 200, 50);
+    ctx.fillStyle = colors.bottom;
+    ctx.fillRect(600, 450, 200, 50);
 
-images.gear.onload = draw();
+    ctx.fillRect(600, 200, 200, 200);
+
+    // Draw image
+    ctx.drawImage(images.gear, 300, 300);
+};
