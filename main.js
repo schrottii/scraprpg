@@ -23,6 +23,7 @@ images.gear.onload = function draw() {
 
     // Write text
     ctx.fillStyle = "black";
+    ctx.font = "20px sans - serif";
     ctx.fillText("Character 1", 608, 328);
     ctx.fillText("Character 2", 608, 360);
 };
