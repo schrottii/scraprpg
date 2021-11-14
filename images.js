@@ -9,5 +9,5 @@ function loadImage(path, onload) {
 
 var images =
 {
-    gear: loadImage("Images/gear.png"),
+    gear: loadImage("Images/gear.png")
 };
