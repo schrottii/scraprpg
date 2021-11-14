@@ -7,9 +7,11 @@ function draw() {
         ctx.fillStyle = "rgb(0,0,0)";
         ctx.fillRect(0, 0, 800, 500);
 
-        // Bottom right blue rect
-        ctx.fillStyle = "rgb(0,25,255)";
-        ctx.fillRect(600, 400, 55, 50);
+        // Bottom right rect
+        ctx.fillStyle = "rgb(212, 159, 82)";
+        ctx.fillRect(650, 400, 150, 50);
+        ctx.fillStyle = "rgb(181, 133, 66)";
+        ctx.fillRect(650, 450, 150, 50);
 
         ctx.drawImage(images.gear, 500, 500);
     }
