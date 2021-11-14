@@ -25,7 +25,13 @@ images.gear.onload = function draw() {
 
     // Write text
     ctx.fillStyle = "black";
-    ctx.font = "20px sans - serif";
+    ctx.font = "20px sans-serif";
+
     ctx.fillText("Character 1", 608, 328);
-    ctx.fillText("Character 2", 608, 360);
+    ctx.fillText("Character 2", 608, 392);
+
+    ctx.font = "16px sans-serif";
+
+    ctx.fillText("HP: 2000", 608, 348);
+    ctx.fillText("HP: 1700", 608, 412);
 };
