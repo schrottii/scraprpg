@@ -15,7 +15,8 @@ function draw() {
 
         ctx.fillRect(600, 200, 200, 200);
 
-        ctx.drawImage(images.gear, 500, 500);
+        // Draw image
+        ctx.drawImage(images.gear, 500, 500, 800, 500);
     }
 }
 
