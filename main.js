@@ -14,8 +14,8 @@ function UI_UpdateCharacters() {
     ctx.font = "16px sans-serif";
     ctx.fillStyle = "green";
 
-    ctx.fillText("HP: " + characters[char1].HP, 612, 348);
-    ctx.fillText("HP: " + characters[char2].HP, 612, 412);
+    ctx.fillText("HP: " + characters[char1].HP + "/" + characters[char1].maxHP, 612, 348);
+    ctx.fillText("HP: " + characters[char2].HP + "/" + characters[char2].maxHP, 612, 412);
 
     ctx.fillStyle = "yellow";
 
@@ -24,8 +24,8 @@ function UI_UpdateCharacters() {
 
     ctx.fillStyle = "black";
 
-    ctx.fillText("EP: " + characters[char1].EP, 708, 348);
-    ctx.fillText("EP: " + characters[char2].EP, 708, 412);
+    ctx.fillText("EP: " + characters[char1].EP + "/" + calculateEPNeeded(characters[char1].level), 708, 348);
+    ctx.fillText("EP: " + characters[char2].EP + "/" + calculateEPNeeded(characters[char2].level), 708, 412);
 }
 
 images.gear.onload = function draw() {

@@ -3,7 +3,7 @@ characters = {
         name: "Bleu",
         unlocked: true,
         level: 1,
-        EP: 10,
+        EP: 5,
         maxHP: 50,
         HP: 50,
     },
@@ -11,10 +11,14 @@ characters = {
         name: "Corelle",
         unlocked: true,
         level: 1,
-        EP: 10,
+        EP: 5,
         maxHP: 40,
         HP: 40,
     }
+}
+
+function calculateEPNeeded(l) {
+    return 20 + (l * 5) + Math.max(0, (l - 20) * 5) + Math.max(0, (l - 40) * 5) + Math.max(0, (l - 60) * 5) + Math.max(0, (l - 80) * 5);
 }
 
 /*
