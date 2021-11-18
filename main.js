@@ -1,3 +1,4 @@
+// Get canvas
 var canvas = document.getElementById("canvas");
 if (canvas.getContext) {
     var ctx = canvas.getContext("2d");
@@ -5,14 +6,15 @@ if (canvas.getContext) {
 
 let buttons = [];
 
+// Buttons
 function canvasClicked(e) {
-    
-        mouseX = e.clientX;
-        mouseY = e.clientY;
+    // I think this function / button clicking system is not optimal, but it should do it's job
 
-    //console.log(buttons);
-    //console.log(mouseX, mouseY);
+    // Get the position of mouse
+    mouseX = e.clientX;
+    mouseY = e.clientY;
 
+    // Check íf any buttons are pressed and exec
     for (i = 0; i < buttons.length; i++) {
         if (buttons[i] != undefined) {
             if (mouseX > buttons[i][0] && mouseX < buttons[i][1] && mouseY > buttons[i][2] && mouseY < buttons[i][3]) {
@@ -22,6 +24,8 @@ function canvasClicked(e) {
     }
 }
 
+// Button class. Use this to create buttons
+// Example for ya nebs: new Button(608, 436, 64, 64, images.paper, () => { console.log("click1") });
 class Button {
     constructor(x, y, w, h, img, onclick) {
         this.x = x;
@@ -49,6 +53,7 @@ class Button {
     }
 }
 
+// Update text related to the characters
 function UI_UpdateCharacters() {
     ctx.fillStyle = "black";
     ctx.font = "20px sans-serif";
@@ -77,32 +82,22 @@ function UI_UpdateCharacters() {
 
 canvas.addEventListener("click", canvasClicked, false);
 
+// Startup & some drawing
 images.gear.onload = function draw() {
     // Black rectangle that fills the entire background
     ctx.fillStyle = "rgb(0,0,0)";
     ctx.fillRect(0, 0, 800, 500);
 
     // Bottom right rect (Menu)
-    //ctx.fillStyle = colors.top;
-    //ctx.fillRect(608, 436, 192, 32);
     let worldButton1 = new Button(608, 436, 64, 64, images.paper, () => { console.log("click1") });
     worldButton1.render();
     let worldButton2 = new Button(672, 436, 64, 64, images.inventory, () => { console.log("click2") });
     worldButton2.render();
     let worldButton3 = new Button(736, 436, 64, 64, images.gear, () => { console.log("click3") });
     worldButton3.render();
-    /*let worldButton2 = new Button(672, 436, 64, 64);
-    worldButton2.render();
-    let worldButton3 = new Button(736, 436, 64, 64);
-    worldButton3.render();*/
-    //ctx.fillStyle = colors.bottom;
-    //ctx.fillRect(608, 468, 192, 32);
 
-    //ctx.fillRect(608, 308, 192, 128);
-
-    // images
-    //ctx.drawImage(images.inventory, 672, 436, 64, 64);
-    //ctx.drawImage(images.gear, 736, 436, 64, 64);
+    ctx.fillStyle = colors.bottom;
+    ctx.fillRect(608, 308, 192, 128);
 
     // Write text
     UI_UpdateCharacters();
