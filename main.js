@@ -1,4 +1,4 @@
-// Get canvas
+﻿// Get canvas
 var canvas = document.getElementById("canvas");
 if (canvas.getContext) {
     var ctx = canvas.getContext("2d");
@@ -21,7 +21,7 @@ function canvasClicked(e) {
     mouseX = e.clientX;
     mouseY = e.clientY;
 
-    // Check �f any buttons are pressed and exec
+    // Check íf any buttons are pressed and exec
     for (i = 0; i < buttons.length; i++) {
         if (buttons[i] != undefined) {
             if (mouseX > buttons[i][0] && mouseX < buttons[i][1] && mouseY > buttons[i][2] && mouseY < buttons[i][3]) {
@@ -63,13 +63,13 @@ class Button {
 // Update text related to the characters
 function UI_UpdateCharacters() {
     ctx.fillStyle = "black";
-    ctx.font = "20px sans-serif";
+    ctx.font = "20px NotoSans";
     ctx.fillStyle = "lightblue";
 
     ctx.fillText(characters[char1].name, 612, 328);
     ctx.fillText(characters[char2].name, 612, 392);
 
-    ctx.font = "16px sans-serif";
+    ctx.font = "16px NotoSans";
     ctx.fillStyle = "green";
 
     ctx.fillText("HP: " + characters[char1].HP + "/" + characters[char1].maxHP, 612, 348);
@@ -113,10 +113,10 @@ function scene_menu() {
     ctx.drawImage(images.gameicon, 215, 50, 370, 200);
 
     ctx.fillStyle = "white";
-    ctx.font = "32px sans-serif";
+    ctx.font = "32px NotoSans";
     ctx.fillText("Click anywhere to continue...", 200, 300);
 
-    ctx.font = "12px sans-serif";
+    ctx.font = "12px NotoSans";
     ctx.fillText("Credits:", 50, 388);
     ctx.fillText("Developed by Schrottii and ziem", 50, 400);
     ctx.fillText("Concept by Decastar and Barduzzi", 50, 412);
@@ -124,7 +124,7 @@ function scene_menu() {
     ctx.fillText("Music by Decastar, zedoreku and Lexi", 50, 436);
     ctx.fillText("Special Thanks: Endte", 50, 448);
 
-    ctx.font = "20px sans-serif";
+    ctx.font = "20px NotoSans";
     ctx.fillText("v0.1", 700, 475);
 
     buttons.push([0, 800, 0, 500, () => { changeScene(1) }]);
