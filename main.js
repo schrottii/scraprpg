@@ -86,9 +86,6 @@ function UI_UpdateCharacters() {
     ctx.fillText("EP: " + characters[char2].EP + "/" + calculateEPNeeded(characters[char2].level), 708, 412);
 }
 
-
-canvas.addEventListener("click", canvasClicked, false);
-
 // Startup & some drawing
     function draw() {
     // Black rectangle that fills the entire background
@@ -130,13 +127,22 @@ function scene_menu() {
     buttons.push([0, 800, 0, 500, () => { changeScene(1) }]);
 }
 
-function scene_map() {
-    // Tiles
+function generate_tiles() {
     for (i = 0; i < 25; i++) {
         for (j = 0; j < 16; j++) {
-            ctx.drawImage(tiles.grass1, i * 32, j * 32);
+            if (Math.random() > 0.1) { // For now, tiles are random. They will not be later on
+                ctx.drawImage(tiles.grass1, i * 32, j * 32);
+            }
+            else {
+                ctx.drawImage(tiles.sand1, i * 32, j * 32);
+            }
         }
     }
+}
+
+function scene_map() {
+    // Tiles
+    generate_tiles();
     
 
     // Bottom right rect (Menu)
@@ -160,6 +166,15 @@ function scene_map() {
     // Write text
     UI_UpdateCharacters();
 };
+
+canvas.addEventListener("click", canvasClicked, false);
+
+document.body.onkeydown = function (e) {
+    if (e.keyCode > 36 && e.keyCode < 41) {
+        generate_tiles();
+        scene_map();
+    }
+}
 
 images.gear.onload = function start() {
     draw();
