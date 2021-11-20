@@ -92,8 +92,8 @@ function UI_UpdateCharacters() {
     ctx.fillStyle = "rgb(0,0,0)";
     ctx.fillRect(0, 0, 800, 500);
 
-    buttons = [];
-    switch (currentScene) {
+    buttons = []; // Delete buttons every new scene (important)
+    switch (currentScene) { // Load scene
         case 0:
             scene_menu();
             break;
@@ -104,11 +104,11 @@ function UI_UpdateCharacters() {
 }
 
 function scene_menu() {
-    ctx.fillStyle = "purple";
-    ctx.fillRect(0, 0, 800, 500);
-
+    // Draw background and icon
+    ctx.drawImage(images.mainmenu_bg, 0, 0, 800, 500);
     ctx.drawImage(images.gameicon, 215, 50, 370, 200);
 
+    // Text
     ctx.fillStyle = "white";
     ctx.font = "32px NotoSans, sans-serif";
     ctx.fillText("Click anywhere to continue...", 200, 300);
@@ -124,6 +124,7 @@ function scene_menu() {
     ctx.font = "20px NotoSans, sans-serif";
     ctx.fillText("v0.1", 700, 475);
 
+    // Invisible button that covers the whole screen
     buttons.push([0, 800, 0, 500, () => { changeScene(1) }]);
 }
 

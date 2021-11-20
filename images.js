@@ -12,6 +12,7 @@ var images =
     gear: loadImage("Images/gear.png"),
     paper: loadImage("Images/paper.png"),
     inventory: loadImage("Images/inventory.png"),
+    mainmenu_bg: loadImage("Images/mainmenu_bg.png"),
     gameicon: loadImage("Images/gameicon.png")
 };
 
