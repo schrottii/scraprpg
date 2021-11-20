@@ -6,6 +6,13 @@ if (canvas.getContext) {
 
 let buttons = [];
 
+let currentScene = 0;
+
+function changeScene(to) {
+    currentScene = to;
+    draw();
+}
+
 // Buttons
 function canvasClicked(e) {
     // I think this function / button clicking system is not optimal, but it should do it's job
@@ -83,11 +90,30 @@ function UI_UpdateCharacters() {
 canvas.addEventListener("click", canvasClicked, false);
 
 // Startup & some drawing
-images.gear.onload = function draw() {
+    function draw() {
     // Black rectangle that fills the entire background
     ctx.fillStyle = "rgb(0,0,0)";
     ctx.fillRect(0, 0, 800, 500);
 
+    switch (currentScene) {
+        case 0:
+            scene_menu();
+            break;
+        case 1:
+            scene_map();
+            break;
+    }
+}
+
+function scene_menu() {
+    ctx.fillStyle = "white";
+    ctx.fillText("menu", 612, 428);
+
+    let menuButton1 = new Button(608, 436, 64, 64, images.paper, () => { changeScene(1) });
+    menuButton1.render();
+}
+
+function scene_map() {
     // Tiles
     for (i = 0; i < 25; i++) {
         for (j = 0; j < 16; j++) {
@@ -97,6 +123,7 @@ images.gear.onload = function draw() {
     
 
     // Bottom right rect (Menu)
+
     let worldButton1 = new Button(608, 436, 64, 64, images.paper, () => { console.log("click1") });
     worldButton1.render();
     let worldButton2 = new Button(672, 436, 64, 64, images.inventory, () => { console.log("click2") });
@@ -107,6 +134,16 @@ images.gear.onload = function draw() {
     ctx.fillStyle = colors.bottom;
     ctx.fillRect(608, 308, 192, 128);
 
+    // Some nice black borders
+    ctx.fillStyle = "black";
+    ctx.fillRect(606, 306, 192, 2);
+    ctx.fillRect(606, 306, 2, 194);
+    ctx.fillRect(606, 434, 192, 2);
+
     // Write text
     UI_UpdateCharacters();
 };
+
+images.gear.onload = function start() {
+    draw();
+}
