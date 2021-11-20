@@ -11,7 +11,8 @@ var images =
 {
     gear: loadImage("Images/gear.png"),
     paper: loadImage("Images/paper.png"),
-    inventory: loadImage("Images/inventory.png")
+    inventory: loadImage("Images/inventory.png"),
+    gameicon: loadImage("Images/gameicon.png")
 };
 
 var tiles =

@@ -95,6 +95,7 @@ canvas.addEventListener("click", canvasClicked, false);
     ctx.fillStyle = "rgb(0,0,0)";
     ctx.fillRect(0, 0, 800, 500);
 
+    buttons = [];
     switch (currentScene) {
         case 0:
             scene_menu();
@@ -106,11 +107,13 @@ canvas.addEventListener("click", canvasClicked, false);
 }
 
 function scene_menu() {
-    ctx.fillStyle = "white";
-    ctx.fillText("menu", 612, 428);
+    ctx.drawImage(images.gameicon, 215, 50, 370, 200);
 
-    let menuButton1 = new Button(608, 436, 64, 64, images.paper, () => { changeScene(1) });
-    menuButton1.render();
+    ctx.fillStyle = "white";
+    ctx.font = "32px sans-serif";
+    ctx.fillText("Click anywhere to continue...", 200, 300);
+
+    buttons.push([0, 800, 0, 500, () => { changeScene(1) }]);
 }
 
 function scene_map() {
