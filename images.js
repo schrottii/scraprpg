@@ -14,6 +14,14 @@ var images =
     inventory: loadImage("Images/inventory.png")
 };
 
+var tiles =
+{
+    grass1: loadImage("Images/tile_grass1.png"),
+    grass2: loadImage("Images/tile_grass2.png"),
+    sand1: loadImage("Images/tile_sand1.png"),
+    sand2: loadImage("Images/tile_sand2.png")
+};
+
 var colors =
 {
     top: "rgb(212, 159, 82)",

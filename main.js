@@ -88,6 +88,14 @@ images.gear.onload = function draw() {
     ctx.fillStyle = "rgb(0,0,0)";
     ctx.fillRect(0, 0, 800, 500);
 
+    // Tiles
+    for (i = 0; i < 25; i++) {
+        for (j = 0; j < 16; j++) {
+            ctx.drawImage(tiles.grass1, i * 32, j * 32);
+        }
+    }
+    
+
     // Bottom right rect (Menu)
     let worldButton1 = new Button(608, 436, 64, 64, images.paper, () => { console.log("click1") });
     worldButton1.render();
