@@ -107,11 +107,25 @@ canvas.addEventListener("click", canvasClicked, false);
 }
 
 function scene_menu() {
+    ctx.fillStyle = "purple";
+    ctx.fillRect(0, 0, 800, 500);
+
     ctx.drawImage(images.gameicon, 215, 50, 370, 200);
 
     ctx.fillStyle = "white";
     ctx.font = "32px sans-serif";
     ctx.fillText("Click anywhere to continue...", 200, 300);
+
+    ctx.font = "12px sans-serif";
+    ctx.fillText("Credits:", 50, 388);
+    ctx.fillText("Developed by Schrottii and ziem", 50, 400);
+    ctx.fillText("Concept by Decastar and Barduzzi", 50, 412);
+    ctx.fillText("Graphics by Decastar, Barduzzi and Schrottii", 50, 424);
+    ctx.fillText("Music by Decastar, zedoreku and Lexi", 50, 436);
+    ctx.fillText("Special Thanks: Endte", 50, 448);
+
+    ctx.font = "20px sans-serif";
+    ctx.fillText("v0.1", 700, 475);
 
     buttons.push([0, 800, 0, 500, () => { changeScene(1) }]);
 }
