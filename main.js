@@ -144,7 +144,8 @@ function generate_tiles() {
 function scene_map() {
     // Tiles
     generate_tiles();
-    
+
+    ctx.drawImage(images.gear, 384, 256, 32, 32);
 
     // Bottom right rect (Menu)
 
@@ -171,7 +172,7 @@ function scene_map() {
 canvas.addEventListener("click", canvasClicked, false);
 
 document.body.onkeydown = function (e) {
-    if (e.keyCode > 36 && e.keyCode < 41) {
+    if (e.keyCode > 36 && e.keyCode < 41 && currentScene == 1) {
         generate_tiles();
         scene_map();
     }
