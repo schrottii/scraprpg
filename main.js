@@ -63,13 +63,13 @@ class Button {
 // Update text related to the characters
 function UI_UpdateCharacters() {
     ctx.fillStyle = "black";
-    ctx.font = "20px NotoSans";
+    ctx.font = "20px NotoSans, sans-serif";
     ctx.fillStyle = "lightblue";
 
     ctx.fillText(characters[char1].name, 612, 328);
     ctx.fillText(characters[char2].name, 612, 392);
 
-    ctx.font = "16px NotoSans";
+    ctx.font = "16px NotoSans, sans-serif";
     ctx.fillStyle = "green";
 
     ctx.fillText("HP: " + characters[char1].HP + "/" + characters[char1].maxHP, 612, 348);
@@ -113,10 +113,10 @@ function scene_menu() {
     ctx.drawImage(images.gameicon, 215, 50, 370, 200);
 
     ctx.fillStyle = "white";
-    ctx.font = "32px NotoSans";
+    ctx.font = "32px NotoSans, sans-serif";
     ctx.fillText("Click anywhere to continue...", 200, 300);
 
-    ctx.font = "12px NotoSans";
+    ctx.font = "12px NotoSans, sans-serif";
     ctx.fillText("Credits:", 50, 388);
     ctx.fillText("Developed by Schrottii and ziem", 50, 400);
     ctx.fillText("Concept by Decastar and Barduzzi", 50, 412);
@@ -124,7 +124,7 @@ function scene_menu() {
     ctx.fillText("Music by Decastar, zedoreku and Lexi", 50, 436);
     ctx.fillText("Special Thanks: Endte", 50, 448);
 
-    ctx.font = "20px NotoSans";
+    ctx.font = "20px NotoSans, sans-serif";
     ctx.fillText("v0.1", 700, 475);
 
     buttons.push([0, 800, 0, 500, () => { changeScene(1) }]);
