@@ -21,7 +21,9 @@ var tiles =
     grass1: loadImage("Images/tile_grass1.png"),
     grass2: loadImage("Images/tile_grass2.png"),
     sand1: loadImage("Images/tile_sand1.png"),
-    sand2: loadImage("Images/tile_sand2.png")
+    sand2: loadImage("Images/tile_sand2.png"),
+    water1: loadImage("Images/tile_water1.png"),
+    water2: loadImage("Images/tile_water2.png")
 };
 
 var colors =

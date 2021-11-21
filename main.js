@@ -101,6 +101,27 @@ function UI_UpdateCharacters() {
             scene_menu();
             break;
         case 1:
+            buttons.push([384, 416, 224, 256, () => { // Up
+                ypos -= 1;
+                generate_tiles();
+                scene_map();
+            }]);
+            buttons.push([384, 416, 288, 320, () => { // Down
+                ypos += 1;
+                generate_tiles();
+                scene_map();
+            }]);
+            buttons.push([352, 384, 256, 288, () => { // Left
+                xpos -= 1;
+                generate_tiles();
+                scene_map();
+            }]);
+            buttons.push([416, 448, 256, 288, () => { // Left
+                xpos += 1;
+                generate_tiles();
+                scene_map();
+            }]);
+
             scene_map();
             break;
     }
@@ -143,7 +164,7 @@ function generate_tiles() {
                 }
             }
             else {
-                ctx.drawImage(tiles.sand2, i * 32, j * 32);
+                ctx.drawImage(tiles.water1, i * 32, j * 32);
             }
         }
     }
