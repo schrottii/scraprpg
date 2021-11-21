@@ -13,7 +13,12 @@ var images =
     paper: loadImage("Images/paper.png"),
     inventory: loadImage("Images/inventory.png"),
     mainmenu_bg: loadImage("Images/mainmenu_bg.png"),
-    gameicon: loadImage("Images/gameicon.png")
+    gameicon: loadImage("Images/gameicon.png"),
+    arrowmiddle: loadImage("Images/arrowdot.png"),
+    arrowdown: loadImage("Images/arrowdown.png"),
+    arrowup: loadImage("Images/arrowup.png"),
+    arrowleft: loadImage("Images/arrowleft.png"),
+    arrowright: loadImage("Images/arrowright.png")
 };
 
 var tiles =

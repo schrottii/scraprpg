@@ -89,6 +89,33 @@ function UI_UpdateCharacters() {
     ctx.fillText("EP: " + characters[char2].EP + "/" + calculateEPNeeded(characters[char2].level), 708, 412);
 }
 
+function pad() {
+    var padup = new Button(64, 352, 32, 32, images.arrowup, () => {
+        ypos -= 1;
+        generate_tiles();
+        scene_map();
+    });
+    var paddown = new Button(64, 416, 32, 32, images.arrowdown, () => {
+        ypos += 1;
+        generate_tiles();
+        scene_map();
+    });
+    var padleft = new Button(32, 384, 32, 32, images.arrowleft, () => {
+        xpos -= 1;
+        generate_tiles();
+        scene_map();
+    });
+    var padright = new Button(96, 384, 32, 32, images.arrowright, () => {
+        xpos += 1;
+        generate_tiles();
+        scene_map();
+    });
+    padup.render();
+    paddown.render();
+    padleft.render();
+    padright.render();
+}
+
 // Startup & some drawing
     function draw() {
     // Black rectangle that fills the entire background
@@ -122,6 +149,7 @@ function UI_UpdateCharacters() {
                 scene_map();
             }]);
 
+            pad();
             scene_map();
             break;
     }
@@ -175,6 +203,13 @@ function scene_map() {
     generate_tiles();
 
     ctx.drawImage(images.gear, 384, 256, 32, 32);
+
+
+    ctx.drawImage(images.arrowmiddle, 64, 384, 32, 32);
+    ctx.drawImage(images.arrowup, 64, 352, 32, 32);
+    ctx.drawImage(images.arrowdown, 64, 416, 32, 32);
+    ctx.drawImage(images.arrowleft, 32, 384, 32, 32);
+    ctx.drawImage(images.arrowright, 96, 384, 32, 32);
 
     // Bottom right rect (Menu)
 
