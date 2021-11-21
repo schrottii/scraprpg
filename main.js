@@ -8,6 +8,9 @@ let buttons = [];
 
 let currentScene = 0;
 
+var xpos = 0;
+var ypos = 0;
+
 function changeScene(to) {
     currentScene = to;
     draw();
@@ -131,11 +134,16 @@ function scene_menu() {
 function generate_tiles() {
     for (i = 0; i < 25; i++) {
         for (j = 0; j < 16; j++) {
-            if (Math.random() > 0.1) { // For now, tiles are random. They will not be later on
-                ctx.drawImage(tiles.grass1, i * 32, j * 32);
+            if (map[j+ypos] != undefined && map[i+xpos] != undefined) {
+                if (map[j+ypos][i+xpos] == 0) { // Use dict or smth later
+                    ctx.drawImage(tiles.grass1, i * 32, j * 32);
+                }
+                else {
+                    ctx.drawImage(tiles.sand1, i * 32, j * 32);
+                }
             }
             else {
-                ctx.drawImage(tiles.sand1, i * 32, j * 32);
+                ctx.drawImage(tiles.sand2, i * 32, j * 32);
             }
         }
     }
@@ -172,7 +180,19 @@ function scene_map() {
 canvas.addEventListener("click", canvasClicked, false);
 
 document.body.onkeydown = function (e) {
-    if (e.keyCode > 36 && e.keyCode < 41 && currentScene == 1) {
+    if (currentScene == 1) {
+        if (e.keyCode == 37) {
+            xpos -= 1;
+        }
+        if (e.keyCode == 38) {
+            ypos -= 1;
+        }
+        if (e.keyCode == 39) {
+            xpos += 1;
+        }
+        if (e.keyCode == 40) {
+            ypos += 1;
+        }
         generate_tiles();
         scene_map();
     }
