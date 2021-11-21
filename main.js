@@ -155,12 +155,12 @@ function scene_menu() {
 function generate_tiles() {
     for (i = 0; i < 25; i++) {
         for (j = 0; j < 16; j++) {
-            if (map[j+ypos] != undefined && map[i+xpos] != undefined) {
-                if (map[j+ypos][i+xpos] == 0) { // Use dict or smth later
-                    ctx.drawImage(tiles.grass1, i * 32, j * 32);
+            if (map[j + ypos] != undefined) {
+                if (map[j + ypos][i + xpos] != undefined) {
+                    ctx.drawImage(tileids[map[j + ypos][i + xpos]], i * 32, j * 32);
                 }
                 else {
-                    ctx.drawImage(tiles.sand1, i * 32, j * 32);
+                    ctx.drawImage(tiles.water1, i * 32, j * 32);
                 }
             }
             else {
