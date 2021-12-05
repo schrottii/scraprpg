@@ -18,7 +18,9 @@ var images =
     arrowdown: loadImage("Images/arrowdown.png"),
     arrowup: loadImage("Images/arrowup.png"),
     arrowleft: loadImage("Images/arrowleft.png"),
-    arrowright: loadImage("Images/arrowright.png")
+    arrowright: loadImage("Images/arrowright.png"),
+    cutscene_fade: loadImage("Images/cutscene_fade.png"),
+    placeholder: loadImage("Images/cutscene_map.png")
 };
 
 var sprites =
