@@ -11,6 +11,9 @@ let currentScene = 0;
 var xpos = 0;
 var ypos = 0;
 
+var facing = "down";
+var sprite_pr = 0;
+
 function changeScene(to) {
     currentScene = to;
     draw();
@@ -92,21 +95,25 @@ function UI_UpdateCharacters() {
 function pad() {
     var padup = new Button(64, 352, 32, 32, images.arrowup, () => {
         ypos -= 1;
+        facing = "up";
         generate_tiles();
         scene_map();
     });
     var paddown = new Button(64, 416, 32, 32, images.arrowdown, () => {
         ypos += 1;
+        facing = "down";
         generate_tiles();
         scene_map();
     });
     var padleft = new Button(32, 384, 32, 32, images.arrowleft, () => {
         xpos -= 1;
+        facing = "right";
         generate_tiles();
         scene_map();
     });
     var padright = new Button(96, 384, 32, 32, images.arrowright, () => {
         xpos += 1;
+        facing = "left";
         generate_tiles();
         scene_map();
     });
@@ -130,21 +137,25 @@ function pad() {
         case 1:
             buttons.push([384, 416, 224, 256, () => { // Up
                 ypos -= 1;
+                facing = "up";
                 generate_tiles();
                 scene_map();
             }]);
             buttons.push([384, 416, 288, 320, () => { // Down
                 ypos += 1;
+                facing = "down";
                 generate_tiles();
                 scene_map();
             }]);
-            buttons.push([352, 384, 256, 288, () => { // Left
+            buttons.push([352, 384, 256, 288, () => { // Right
                 xpos -= 1;
+                facing = "right";
                 generate_tiles();
                 scene_map();
             }]);
             buttons.push([416, 448, 256, 288, () => { // Left
                 xpos += 1;
+                facing = "left";
                 generate_tiles();
                 scene_map();
             }]);
@@ -202,7 +213,23 @@ function scene_map() {
     // Tiles
     generate_tiles();
 
-    ctx.drawImage(images.gear, 384, 256, 32, 32);
+    sprite_pr += 64;
+    if (sprite_pr == 128) { sprite_pr = 0; }
+    
+    switch (facing) {
+        case "up":
+            ctx.drawImage(sprites.bleu, sprite_pr, 0, 64, 64, 384, 256, 32, 32);
+            break;
+        case "left":
+            ctx.drawImage(sprites.bleu, sprite_pr, 64, 64, 64, 384, 256, 32, 32);
+            break;
+        case "down":
+            ctx.drawImage(sprites.bleu, sprite_pr, 128, 64, 64, 384, 256, 32, 32);
+            break;
+        case "right":
+            ctx.drawImage(sprites.bleu, sprite_pr, 192, 64, 64, 384, 256, 32, 32);
+            break;
+    }
 
 
     ctx.drawImage(images.arrowmiddle, 64, 384, 32, 32);
@@ -239,15 +266,19 @@ document.body.onkeydown = function (e) {
     if (currentScene == 1) {
         if (e.keyCode == 37) {
             xpos -= 1;
+            facing = "right";
         }
         if (e.keyCode == 38) {
             ypos -= 1;
+            facing = "up";
         }
         if (e.keyCode == 39) {
             xpos += 1;
+            facing = "left";
         }
         if (e.keyCode == 40) {
             ypos += 1;
+            facing = "down";
         }
         generate_tiles();
         scene_map();

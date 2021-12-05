@@ -21,6 +21,11 @@ var images =
     arrowright: loadImage("Images/arrowright.png")
 };
 
+var sprites =
+{
+    bleu: loadImage("Images/map_bleu.png")
+};
+
 var tiles =
 {
     grass1: loadImage("Images/tile_grass1.png"),
