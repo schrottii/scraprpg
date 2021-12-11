@@ -240,11 +240,11 @@ function scene_menu() {
 
     ctx.font = "12px NotoSans, sans-serif";
     ctx.fillText("Credits:", 50, 388);
-    ctx.fillText("Developed by Schrottii and ziem", 50, 400);
+    ctx.fillText("Developed by Schrottii", 50, 400);
     ctx.fillText("Concept by Decastar and Barduzzi", 50, 412);
     ctx.fillText("Graphics by Decastar, Barduzzi and Schrottii", 50, 424);
-    ctx.fillText("Music by Decastar, zedoreku and Lexi", 50, 436);
-    ctx.fillText("Special Thanks: Endte", 50, 448);
+    ctx.fillText("Music by Decastar, zedoreku, Lexi and Schrottii", 50, 436);
+    ctx.fillText("Special Thanks: Endte and Rasputin", 50, 448);
 
     ctx.font = "20px NotoSans, sans-serif";
     ctx.fillText("v0.1", 700, 475);
