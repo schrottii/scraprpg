@@ -4,6 +4,7 @@ if (canvas.getContext) {
     var ctx = canvas.getContext("2d");
 }
 
+// Create several variables
 let buttons = [];
 
 let currentScene = 0;
@@ -14,9 +15,47 @@ var ypos = 0;
 var facing = "down";
 var sprite_pr = 0;
 
+/////////////// Some general functions
 function changeScene(to) {
     currentScene = to;
     draw();
+}
+
+function move(move) {
+    switch (move) { // Player is 08 / 12
+        case 0:
+            if (map[ypos + 7] != undefined) {
+                if (map[ypos + 7][xpos + 12] != 2) {
+                    ypos -= 1;
+                    facing = "up";
+                }
+            }
+            break;
+        case 1:
+            if (map[ypos + 8][xpos + 11] != undefined) {
+                if (map[ypos + 8][xpos + 11] != 2) {
+                    xpos -= 1;
+                    facing = "right";
+                }
+            }
+            break;
+        case 2:
+            if (map[ypos + 9] != undefined) {
+                if (map[ypos + 9][xpos + 12] != 2) {
+                    ypos += 1;
+                    facing = "down";
+                }
+            }
+            break;
+        case 3:
+            if (map[ypos + 8][xpos + 13] != undefined) {
+                if (map[ypos + 8][xpos + 13] != 2) {
+                    xpos += 1;
+                    facing = "left";
+                }
+            }
+            break;
+    }
 }
 
 // Buttons
@@ -66,6 +105,60 @@ class Button {
     }
 }
 
+function cutscene(x, y) {
+    ctx.drawImage(x, 0, 0, 800, 500);
+    ctx.drawImage(images.cutscene_fade, 0, 0, 80, 50, 0, 0, 800, 500);
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 81, 0, 80, 50, 0, 0, 800, 500) }, 150);
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 162, 0, 80, 50, 0, 0, 800, 500) }, 300);
+
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 0, 51, 80, 50, 0, 0, 800, 500) }, 450);
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 81, 51, 80, 50, 0, 0, 800, 500) }, 600);
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 162, 51, 80, 50, 0, 0, 800, 500) }, 750);
+
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 0, 102, 80, 50, 0, 0, 800, 500) }, 900);
+    setTimeout(() => {
+        ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 81, 102, 80, 50, 0, 0, 800, 500);
+        ctx.fillStyle = "white";
+        ctx.font = "32px NotoSans, sans-serif";
+        ctx.fillText(y, 325, 490);
+    }, 1050);
+
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 162, 102, 80, 50, 0, 0, 800, 500) }, 3150);
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 0, 153, 80, 50, 0, 0, 800, 500) }, 3300);
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 81, 153, 80, 50, 0, 0, 800, 500) }, 3450);
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 162, 153, 80, 50, 0, 0, 800, 500) }, 3600);
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 0, 0, 80, 50, 0, 0, 800, 500) }, 3750);
+}
+
+function pad() {
+    var padup = new Button(64, 352, 32, 32, images.arrowup, () => {
+        move(0);
+        generate_tiles();
+        scene_map();
+    });
+    var paddown = new Button(64, 416, 32, 32, images.arrowdown, () => {
+        move(2);
+        generate_tiles();
+        scene_map();
+    });
+    var padleft = new Button(32, 384, 32, 32, images.arrowleft, () => {
+        move(1);
+        generate_tiles();
+        scene_map();
+    });
+    var padright = new Button(96, 384, 32, 32, images.arrowright, () => {
+        move(3);
+        generate_tiles();
+        scene_map();
+    });
+    padup.render();
+    paddown.render();
+    padleft.render();
+    padright.render();
+}
+
+/////////////// UI update functions
+
 // Update text related to the characters
 function UI_UpdateCharacters() {
     ctx.fillStyle = "black";
@@ -92,62 +185,6 @@ function UI_UpdateCharacters() {
     ctx.fillText("EP: " + characters[char2].EP + "/" + calculateEPNeeded(characters[char2].level), 708, 412);
 }
 
-function pad() {
-    var padup = new Button(64, 352, 32, 32, images.arrowup, () => {
-        ypos -= 1;
-        facing = "up";
-        generate_tiles();
-        scene_map();
-    });
-    var paddown = new Button(64, 416, 32, 32, images.arrowdown, () => {
-        ypos += 1;
-        facing = "down";
-        generate_tiles();
-        scene_map();
-    });
-    var padleft = new Button(32, 384, 32, 32, images.arrowleft, () => {
-        xpos -= 1;
-        facing = "right";
-        generate_tiles();
-        scene_map();
-    });
-    var padright = new Button(96, 384, 32, 32, images.arrowright, () => {
-        xpos += 1;
-        facing = "left";
-        generate_tiles();
-        scene_map();
-    });
-    padup.render();
-    paddown.render();
-    padleft.render();
-    padright.render();
-}
-
-function cutscene(x, y) {
-    ctx.drawImage(x, 0, 0, 800, 500);
-    ctx.drawImage(images.cutscene_fade, 0, 0, 80, 50, 0, 0, 800, 500);
-    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 81, 0, 80, 50, 0, 0, 800, 500) }, 150);
-    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 162, 0, 80, 50, 0, 0, 800, 500) }, 300);
-
-    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 0, 51, 80, 50, 0, 0, 800, 500) }, 450);
-    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 81, 51, 80, 50, 0, 0, 800, 500) }, 600);
-    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 162, 51, 80, 50, 0, 0, 800, 500) }, 750);
-
-    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 0, 102, 80, 50, 0, 0, 800, 500) }, 900);
-    setTimeout(() => {
-        ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 81, 102, 80, 50, 0, 0, 800, 500);
-        ctx.fillStyle = "white";
-        ctx.font = "32px NotoSans, sans-serif";
-        ctx.fillText(y, 325, 490);
-    }, 1050);
-
-    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 162, 102, 80, 50, 0, 0, 800, 500) }, 3150);
-    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 0, 153, 80, 50, 0, 0, 800, 500) }, 3300);
-    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 81, 153, 80, 50, 0, 0, 800, 500) }, 3450);
-    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 162, 153, 80, 50, 0, 0, 800, 500) }, 3600);
-    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 0, 0, 80, 50, 0, 0, 800, 500) }, 3750);
-}
-
 // Startup & some drawing
     function draw() {
     // Black rectangle that fills the entire background
@@ -161,26 +198,22 @@ function cutscene(x, y) {
             break;
         case 1: // Map
             buttons.push([384, 416, 224, 256, () => { // Up
-                ypos -= 1;
-                facing = "up";
+                move(0);
                 generate_tiles();
                 scene_map();
             }]);
             buttons.push([384, 416, 288, 320, () => { // Down
-                ypos += 1;
-                facing = "down";
+                move(2);
                 generate_tiles();
                 scene_map();
             }]);
             buttons.push([352, 384, 256, 288, () => { // Right
-                xpos -= 1;
-                facing = "right";
+                move(1);
                 generate_tiles();
                 scene_map();
             }]);
             buttons.push([416, 448, 256, 288, () => { // Left
-                xpos += 1;
-                facing = "left";
+                move(3);
                 generate_tiles();
                 scene_map();
             }]);
@@ -291,29 +324,27 @@ function scene_map() {
 
 canvas.addEventListener("click", canvasClicked, false);
 
+// Register arrow key movement
 document.body.onkeydown = function (e) {
     if (currentScene == 1) {
         if (e.keyCode == 37) {
-            xpos -= 1;
-            facing = "right";
+            move(1);
         }
         if (e.keyCode == 38) {
-            ypos -= 1;
-            facing = "up";
+            move(0);
         }
         if (e.keyCode == 39) {
-            xpos += 1;
-            facing = "left";
+            move(3);
         }
         if (e.keyCode == 40) {
-            ypos += 1;
-            facing = "down";
+            move(2);
         }
         generate_tiles();
         scene_map();
     }
 }
 
+// Start the game
 images.gear.onload = function start() {
     draw();
 }
