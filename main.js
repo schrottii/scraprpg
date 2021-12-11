@@ -308,6 +308,8 @@ function scene_map() {
             evilfacing = "down";
             break;
     }
+    if (evilxpos > 25 || evilxpos < 0) { evilxpos = 12 };
+    if (evilypos > 16 || evilypos < 0) { evilypos = 4 };
 
     switch (facing) {
         case "up":
@@ -339,6 +341,10 @@ function scene_map() {
             break;
     }
 
+    if (12 == evilxpos && 8 == evilypos) { //Placeholder
+        ctx.font = "20px NotoSans, sans-serif";
+        ctx.fillText("ALABAMA!!!!", 300, 200);
+    }
 
     ctx.drawImage(images.arrowmiddle, 64, 384, 32, 32);
     ctx.drawImage(images.arrowup, 64, 352, 32, 32);
