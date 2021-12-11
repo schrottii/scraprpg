@@ -123,6 +123,31 @@ function pad() {
     padright.render();
 }
 
+function cutscene(x, y) {
+    ctx.drawImage(x, 0, 0, 800, 500);
+    ctx.drawImage(images.cutscene_fade, 0, 0, 80, 50, 0, 0, 800, 500);
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 81, 0, 80, 50, 0, 0, 800, 500) }, 150);
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 162, 0, 80, 50, 0, 0, 800, 500) }, 300);
+
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 0, 51, 80, 50, 0, 0, 800, 500) }, 450);
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 81, 51, 80, 50, 0, 0, 800, 500) }, 600);
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 162, 51, 80, 50, 0, 0, 800, 500) }, 750);
+
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 0, 102, 80, 50, 0, 0, 800, 500) }, 900);
+    setTimeout(() => {
+        ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 81, 102, 80, 50, 0, 0, 800, 500);
+        ctx.fillStyle = "white";
+        ctx.font = "32px NotoSans, sans-serif";
+        ctx.fillText(y, 325, 490);
+    }, 1050);
+
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 162, 102, 80, 50, 0, 0, 800, 500) }, 3150);
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 0, 153, 80, 50, 0, 0, 800, 500) }, 3300);
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 81, 153, 80, 50, 0, 0, 800, 500) }, 3450);
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 162, 153, 80, 50, 0, 0, 800, 500) }, 3600);
+    setTimeout(() => { ctx.drawImage(x, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 0, 0, 80, 50, 0, 0, 800, 500) }, 3750);
+}
+
 // Startup & some drawing
     function draw() {
     // Black rectangle that fills the entire background
@@ -131,10 +156,10 @@ function pad() {
 
     buttons = []; // Delete buttons every new scene (important)
     switch (currentScene) { // Load scene
-        case 0:
+        case 0: // Main menu
             scene_menu();
             break;
-        case 1:
+        case 1: // Map
             buttons.push([384, 416, 224, 256, () => { // Up
                 ypos -= 1;
                 facing = "up";
@@ -163,29 +188,8 @@ function pad() {
             pad();
             scene_map();
             break;
-        case 2:
-            ctx.drawImage(images.placeholder, 0, 0, 800, 500);
-            ctx.drawImage(images.cutscene_fade, 0, 0, 80, 50, 0, 0, 800, 500);
-            setTimeout(() => { ctx.drawImage(images.placeholder, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 81, 0, 80, 50, 0, 0, 800, 500) }, 150);
-            setTimeout(() => { ctx.drawImage(images.placeholder, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 162, 0, 80, 50, 0, 0, 800, 500) }, 300);
-
-            setTimeout(() => { ctx.drawImage(images.placeholder, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 0, 51, 80, 50, 0, 0, 800, 500) }, 450);
-            setTimeout(() => { ctx.drawImage(images.placeholder, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 81, 51, 80, 50, 0, 0, 800, 500) }, 600);
-            setTimeout(() => { ctx.drawImage(images.placeholder, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 162, 51, 80, 50, 0, 0, 800, 500) }, 750);
-
-            setTimeout(() => { ctx.drawImage(images.placeholder, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 0, 102, 80, 50, 0, 0, 800, 500) }, 900);
-            setTimeout(() => {
-                ctx.drawImage(images.placeholder, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 81, 102, 80, 50, 0, 0, 800, 500);
-                ctx.fillStyle = "white";
-                ctx.font = "32px NotoSans, sans-serif";
-                ctx.fillText("Alabama", 325, 490);
-            }, 1050);
-
-            setTimeout(() => { ctx.drawImage(images.placeholder, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 162, 102, 80, 50, 0, 0, 800, 500) }, 3150);
-            setTimeout(() => { ctx.drawImage(images.placeholder, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 0, 153, 80, 50, 0, 0, 800, 500) }, 3300);
-            setTimeout(() => { ctx.drawImage(images.placeholder, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 81, 153, 80, 50, 0, 0, 800, 500) }, 3450);
-            setTimeout(() => { ctx.drawImage(images.placeholder, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 162, 153, 80, 50, 0, 0, 800, 500) }, 3600);
-            setTimeout(() => { ctx.drawImage(images.placeholder, 0, 0, 800, 500); ctx.drawImage(images.cutscene_fade, 0, 0, 80, 50, 0, 0, 800, 500) }, 3750);
+        case 2: // Alabama cutscene
+            cutscene(images.placeholder, "Alabama");
             setTimeout(() => { changeScene(1) }, 4000);
             break;
     }
