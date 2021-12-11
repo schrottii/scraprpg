@@ -15,6 +15,14 @@ var ypos = 0;
 var facing = "down";
 var sprite_pr = 0;
 
+var evilxpos = 12;
+var evilypos = 4;
+
+var evilfacing = "down";
+var evilsprite_pr = 0;
+
+var ai = 0;
+
 /////////////// Some general functions
 function changeScene(to) {
     currentScene = to;
@@ -277,7 +285,30 @@ function scene_map() {
 
     sprite_pr += 64;
     if (sprite_pr == 128) { sprite_pr = 0; }
-    
+    evilsprite_pr += 20;
+    if (evilsprite_pr == 40) { evilsprite_pr = 0; }
+
+    ai = Math.ceil(Math.random() * 4);
+    console.log(ai);
+    switch (ai) {
+        case 1:
+            evilxpos += 1;
+            evilfacing = "right";
+            break;
+        case 2:
+            evilxpos -= 1;
+            evilfacing = "left";
+            break;
+        case 3:
+            evilypos += 1;
+            evilfacing = "up";
+            break;
+        case 4:
+            evilypos -= 1;
+            evilfacing = "down";
+            break;
+    }
+
     switch (facing) {
         case "up":
             ctx.drawImage(sprites.bleu, sprite_pr, 0, 64, 64, 384, 256, 32, 32);
@@ -290,6 +321,21 @@ function scene_map() {
             break;
         case "right":
             ctx.drawImage(sprites.bleu, sprite_pr, 192, 64, 64, 384, 256, 32, 32);
+            break;
+    }
+
+    switch (evilfacing) {
+        case "up":
+            ctx.drawImage(sprites.evil, evilsprite_pr, 0, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
+            break;
+        case "left":
+            ctx.drawImage(sprites.evil, evilsprite_pr, 34, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
+            break;
+        case "down":
+            ctx.drawImage(sprites.evil, evilsprite_pr, 68, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
+            break;
+        case "right":
+            ctx.drawImage(sprites.evil, evilsprite_pr, 102, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
             break;
     }
 
