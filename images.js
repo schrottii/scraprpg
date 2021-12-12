@@ -21,7 +21,11 @@ var images =
     arrowright: loadImage("Images/arrowright.png"),
     cutscene_fade: loadImage("Images/cutscene_fade.png"),
     placeholder: loadImage("Images/cutscene_map.png"),
-    tokenattack: loadImage("Images/tokenattack.png")
+    tokenattack: loadImage("Images/tokenattack.png"),
+    actions: loadImage("Images/actions.png"),
+    techniques: loadImage("Images/techniques.png"),
+    switch: loadImage("Images/switch.png"),
+    flee: loadImage("Images/flee.png")
 };
 
 var sprites =

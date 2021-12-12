@@ -128,11 +128,13 @@ class Button {
 
     render() {
         buttons.push([this.x, this.x + this.w, this.y, this.y + this.h, this.onclick]);
-        ctx.fillStyle = colors.top;
-        ctx.fillRect(this.x, this.y, this.w, (this.h/2));
-        ctx.fillStyle = colors.bottom;
-        ctx.fillRect(this.x, this.y + (this.h / 2), this.w, (this.h / 2));
-        ctx.drawImage(this.img, this.x, this.y, 64, 64);
+        if (this.img != false) {
+            ctx.fillStyle = colors.top;
+            ctx.fillRect(this.x, this.y, this.w, (this.h / 2));
+            ctx.fillStyle = colors.bottom;
+            ctx.fillRect(this.x, this.y + (this.h / 2), this.w, (this.h / 2));
+            ctx.drawImage(this.img, this.x, this.y, 64, 64);
+        }
     }
 }
 
@@ -238,8 +240,73 @@ function UI_UpdateCharacters() {
             break;
         case 2: // Alabama cutscene
             cutscene(images.placeholder, "Alabama");
-            setTimeout(() => { changeScene(1) }, 4000);
+            setTimeout(() => { changeScene(3) }, 4000); // CHANGE SCENE TO 1 NOT TO 3 THAT'S FOR TESTING
             break;
+        case 3: // Fight
+            ctx.fillStyle = "rgb(114, 95, 57)";
+            ctx.fillRect(0, 0, 800, 100);
+            ctx.fillStyle = "rgb(186, 154, 89)";
+            ctx.fillRect(0, 10, 800, 70);
+
+            ctx.fillStyle = "rgb(47, 95, 191)";
+            ctx.fillRect(35, 12, 96, 58);
+            ctx.fillStyle = "rgb(191, 212, 255)";
+            ctx.fillRect(40, 17, 86, 48);
+            let buttonActions = new Button(35, 12, 96, 58, false, () => { console.log("click1") });
+            buttonActions.render();
+            ctx.drawImage(images.actions, 40, 17, 48, 48);
+            ctx.font = "12px NotoSans, sans-serif";
+            ctx.fillStyle = "rgb(0, 32, 102)";
+            ctx.fillText("Battle", 70, 35);
+            ctx.fillText("Actions", 70, 48);
+
+            ctx.fillStyle = "rgb(47, 191, 71)";
+            ctx.fillRect(145, 12, 96, 58);
+            ctx.fillStyle = "rgb(191, 255, 202)";
+            ctx.fillRect(150, 17, 86, 48);
+            let buttonInventory = new Button(145, 12, 96, 58, false, () => { console.log("click1") });
+            buttonInventory.render();
+            ctx.drawImage(images.inventory, 150, 17, 48, 48);
+            ctx.font = "12px NotoSans, sans-serif";
+            ctx.fillStyle = "rgb(0, 102, 13)";
+            ctx.fillText("Battle", 180, 35);
+            ctx.fillText("Inventory", 180, 48);
+
+            ctx.fillStyle = "rgb(191, 47, 167)";
+            ctx.fillRect(255, 12, 96, 58);
+            ctx.fillStyle = "rgb(255, 191, 244)";
+            ctx.fillRect(260, 17, 86, 48);
+            let buttonTechniques = new Button(255, 12, 96, 58, false, () => { console.log("click1") });
+            buttonTechniques.render();
+            ctx.drawImage(images.techniques, 260, 17, 48, 48);
+            ctx.font = "12px NotoSans, sans-serif";
+            ctx.fillStyle = "rgb(102, 0, 83)";
+            ctx.fillText("Mastery", 290, 35);
+            ctx.fillText("Techniques", 290, 48);
+
+            ctx.fillStyle = "rgb(191, 143, 47)";
+            ctx.fillRect(365, 12, 96, 58);
+            ctx.fillStyle = "rgb(255, 234, 191)";
+            ctx.fillRect(370, 17, 86, 48);
+            let buttonSwitch = new Button(365, 12, 96, 58, false, () => { alert("No!"); });
+            buttonSwitch.render();
+            ctx.drawImage(images.switch, 370, 17, 48, 48);
+            ctx.font = "12px NotoSans, sans-serif";
+            ctx.fillStyle = "rgb(102, 68, 0)";
+            ctx.fillText("Switch", 400, 35);
+            ctx.fillText("crapper", 400, 48);
+
+            ctx.fillStyle = "rgb(119, 119, 119)";
+            ctx.fillRect(475, 12, 96, 58);
+            ctx.fillStyle = "rgb(223, 223, 223)";
+            ctx.fillRect(480, 17, 86, 48);
+            let buttonFlee = new Button(475, 12, 96, 58, false, () => { changeScene(1); control = true; });
+            buttonFlee.render();
+            ctx.drawImage(images.flee, 480, 17, 48, 48);
+            ctx.font = "12px NotoSans, sans-serif";
+            ctx.fillStyle = "rgb(102, 102, 102)";
+            ctx.fillText("Flee", 510, 35);
+            ctx.fillText("Fight", 510, 48);
     }
 }
 
@@ -382,7 +449,7 @@ function scene_map() {
         setTimeout(() => { ctx.drawImage(images.tokenattack, 698, 747, 371, 240, 0, 0, 800, 500); }, 2550);
         setTimeout(() => { ctx.drawImage(images.tokenattack, 7, 1015, 89, 64, 0, 0, 800, 500); }, 2700);
         setTimeout(() => { ctx.drawImage(images.tokenattack, 377, 1077, 350, 163, 0, 0, 800, 500); }, 2850);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 759, 1138, 281, 110, 0, 0, 800, 500); control = true; }, 3000);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 759, 1138, 281, 110, 0, 0, 800, 500); changeScene(3); }, 3000);
     }
 
     ctx.drawImage(images.arrowmiddle, 64, 384, 32, 32);
