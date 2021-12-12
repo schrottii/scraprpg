@@ -243,6 +243,8 @@ function UI_UpdateCharacters() {
             setTimeout(() => { changeScene(3) }, 4000); // CHANGE SCENE TO 1 NOT TO 3 THAT'S FOR TESTING
             break;
         case 3: // Fight
+            ctx.drawImage(images.fight_bg, 0, 100, 800, 400);
+
             ctx.fillStyle = "rgb(114, 95, 57)";
             ctx.fillRect(0, 0, 800, 100);
             ctx.fillStyle = "rgb(186, 154, 89)";
