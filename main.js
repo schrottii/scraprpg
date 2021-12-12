@@ -257,8 +257,8 @@ function UI_UpdateCharacters() {
             ctx.drawImage(images.actions, 40, 17, 48, 48);
             ctx.font = "12px NotoSans, sans-serif";
             ctx.fillStyle = "rgb(0, 32, 102)";
-            ctx.fillText("Battle", 70, 35);
-            ctx.fillText("Actions", 70, 48);
+            ctx.fillText("Battle", 75, 35);
+            ctx.fillText("Actions", 75, 48);
 
             ctx.fillStyle = "rgb(47, 191, 71)";
             ctx.fillRect(145, 12, 96, 58);
@@ -269,8 +269,8 @@ function UI_UpdateCharacters() {
             ctx.drawImage(images.inventory, 150, 17, 48, 48);
             ctx.font = "12px NotoSans, sans-serif";
             ctx.fillStyle = "rgb(0, 102, 13)";
-            ctx.fillText("Battle", 180, 35);
-            ctx.fillText("Inventory", 180, 48);
+            ctx.fillText("Battle", 185, 35);
+            ctx.fillText("Inventory", 185, 48);
 
             ctx.fillStyle = "rgb(191, 47, 167)";
             ctx.fillRect(255, 12, 96, 58);
@@ -281,8 +281,8 @@ function UI_UpdateCharacters() {
             ctx.drawImage(images.techniques, 260, 17, 48, 48);
             ctx.font = "12px NotoSans, sans-serif";
             ctx.fillStyle = "rgb(102, 0, 83)";
-            ctx.fillText("Mastery", 290, 35);
-            ctx.fillText("Techniques", 290, 48);
+            ctx.fillText("Mastery", 280, 35);
+            ctx.fillText("Techniques", 280, 48);
 
             ctx.fillStyle = "rgb(191, 143, 47)";
             ctx.fillRect(365, 12, 96, 58);
@@ -293,8 +293,8 @@ function UI_UpdateCharacters() {
             ctx.drawImage(images.switch, 370, 17, 48, 48);
             ctx.font = "12px NotoSans, sans-serif";
             ctx.fillStyle = "rgb(102, 68, 0)";
-            ctx.fillText("Switch", 400, 35);
-            ctx.fillText("crapper", 400, 48);
+            ctx.fillText("Switch", 410, 35);
+            ctx.fillText("crapper", 410, 48);
 
             ctx.fillStyle = "rgb(119, 119, 119)";
             ctx.fillRect(475, 12, 96, 58);
@@ -305,8 +305,41 @@ function UI_UpdateCharacters() {
             ctx.drawImage(images.flee, 480, 17, 48, 48);
             ctx.font = "12px NotoSans, sans-serif";
             ctx.fillStyle = "rgb(102, 102, 102)";
-            ctx.fillText("Flee", 510, 35);
-            ctx.fillText("Fight", 510, 48);
+            ctx.fillText("Flee", 530, 35);
+            ctx.fillText("Fight", 530, 48);
+
+            ctx.fillStyle = "black";
+            ctx.font = "16px NotoSans, sans-serif";
+            ctx.fillStyle = "lightblue";
+
+            ctx.fillText(characters[char1].name, 612, 30);
+            ctx.fillText(characters[char2].name, 612, 58);
+
+            ctx.font = "12px NotoSans, sans-serif";
+            ctx.fillStyle = "green";
+
+            ctx.fillText("HP: " + characters[char1].HP + "/" + characters[char1].maxHP, 612, 44);
+            ctx.fillText("HP: " + characters[char2].HP + "/" + characters[char2].maxHP, 612, 72);
+
+
+            ctx.fillStyle = "rgb(50, 78, 131)";
+            ctx.fillRect(0, 375, 200, 125);
+            ctx.fillStyle = "rgb(145, 178, 245)";
+            ctx.fillRect(10, 385, 180, 105);
+
+            ctx.fillStyle = "rgb(131, 50, 78)";
+            ctx.fillRect(600, 375, 200, 125);
+            ctx.fillStyle = "rgb(245, 145, 178)";
+            ctx.fillRect(610, 385, 180, 105);
+
+            ctx.font = "10px NotoSans, sans-serif";
+            ctx.fillStyle = "black";
+            ctx.fillText("Battle has started!", 20, 395);
+            ctx.fillText("All actions will be logged here!", 20, 405);
+
+            ctx.font = "12px NotoSans, sans-serif";
+            ctx.fillText("4 Marmalade Communists!", 620, 405);
+            ctx.fillText("Evil Helter Skelter", 620, 425);
     }
 }
 
@@ -429,27 +462,27 @@ function scene_map() {
         // could be optimized using a for loop?
         control = false;
         ctx.drawImage(images.tokenattack, 71, 78, 51, 52, 0, 0, 800, 500);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 166, 76, 62, 65, 0, 0, 800, 500); }, 150);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 266, 65, 89, 64, 0, 0, 800, 500); }, 300);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 396, 66, 118, 116, 0, 0, 800, 500); }, 450);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 38, 197, 103, 95, 0, 0, 800, 500); }, 600);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 178, 190, 136, 129, 0, 0, 800, 500); }, 750);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 346, 196, 172, 157, 0, 0, 800, 500); }, 900);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 546, 189, 191, 152, 0, 0, 800, 500); }, 1050);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 768, 217, 240, 95, 0, 0, 800, 500); }, 1200);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 51, 394, 261, 47, 0, 0, 800, 500); }, 1350);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 378, 374, 257, 107, 0, 0, 800, 500); }, 1500);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 700, 338, 263, 169, 0, 0, 800, 500); }, 1650);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 64, 500, 275, 196, 0, 0, 800, 500); }, 1800);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 366, 496, 315, 204, 0, 0, 800, 500); }, 1950);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 717, 527, 305, 202, 0, 0, 800, 500); }, 2100);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 166, 76, 62, 65, 0, 0, 800, 500); }, 100);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 266, 65, 89, 64, 0, 0, 800, 500); }, 200);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 396, 66, 118, 116, 0, 0, 800, 500); }, 300);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 38, 197, 103, 95, 0, 0, 800, 500); }, 400);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 178, 190, 136, 129, 0, 0, 800, 500); }, 500);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 346, 196, 172, 157, 0, 0, 800, 500); }, 600);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 546, 189, 191, 152, 0, 0, 800, 500); }, 700);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 768, 217, 240, 95, 0, 0, 800, 500); }, 800);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 51, 394, 261, 47, 0, 0, 800, 500); }, 900);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 378, 374, 257, 107, 0, 0, 800, 500); }, 1000);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 700, 338, 263, 169, 0, 0, 800, 500); }, 1100);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 64, 500, 275, 196, 0, 0, 800, 500); }, 1200);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 366, 496, 315, 204, 0, 0, 800, 500); }, 1300);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 717, 527, 305, 202, 0, 0, 800, 500); }, 1400);
 
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 48, 750, 322, 219, 0, 0, 800, 500); }, 2250);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 370, 750, 335, 226, 0, 0, 800, 500); }, 2400);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 698, 747, 371, 240, 0, 0, 800, 500); }, 2550);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 7, 1015, 89, 64, 0, 0, 800, 500); }, 2700);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 377, 1077, 350, 163, 0, 0, 800, 500); }, 2850);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 759, 1138, 281, 110, 0, 0, 800, 500); changeScene(3); }, 3000);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 48, 750, 322, 219, 0, 0, 800, 500); }, 1500);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 370, 750, 335, 226, 0, 0, 800, 500); }, 1600);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 698, 747, 371, 240, 0, 0, 800, 500); }, 1700);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 7, 1015, 89, 64, 0, 0, 800, 500); }, 1800);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 377, 1077, 350, 163, 0, 0, 800, 500); }, 1900);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 759, 1138, 281, 110, 0, 0, 800, 500); changeScene(3); }, 2000);
     }
 
     ctx.drawImage(images.arrowmiddle, 64, 384, 32, 32);
