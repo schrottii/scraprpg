@@ -9,6 +9,7 @@ let buttons = [];
 
 let currentScene = 0;
 
+var control = true;
 var xpos = 0;
 var ypos = 0;
 
@@ -30,43 +31,45 @@ function changeScene(to) {
 }
 
 function move(move) {
-    switch (move) { // Player is 08 / 12
-        case 0:
-            if (map[ypos + 7] != undefined) {
-                if (map[ypos + 7][xpos + 12] != 2) {
-                    ypos -= 1;
-                    evilypos += 1;
-                    facing = "up";
+    if (control) {
+        switch (move) { // Player is 08 / 12
+            case 0:
+                if (map[ypos + 7] != undefined) {
+                    if (map[ypos + 7][xpos + 12] != 2) {
+                        ypos -= 1;
+                        evilypos += 1;
+                        facing = "up";
+                    }
                 }
-            }
-            break;
-        case 1:
-            if (map[ypos + 8][xpos + 11] != undefined) {
-                if (map[ypos + 8][xpos + 11] != 2) {
-                    xpos -= 1;
-                    evilxpos += 1;
-                    facing = "right";
+                break;
+            case 1:
+                if (map[ypos + 8][xpos + 11] != undefined) {
+                    if (map[ypos + 8][xpos + 11] != 2) {
+                        xpos -= 1;
+                        evilxpos += 1;
+                        facing = "right";
+                    }
                 }
-            }
-            break;
-        case 2:
-            if (map[ypos + 9] != undefined) {
-                if (map[ypos + 9][xpos + 12] != 2) {
-                    ypos += 1;
-                    evilypos -= 1;
-                    facing = "down";
+                break;
+            case 2:
+                if (map[ypos + 9] != undefined) {
+                    if (map[ypos + 9][xpos + 12] != 2) {
+                        ypos += 1;
+                        evilypos -= 1;
+                        facing = "down";
+                    }
                 }
-            }
-            break;
-        case 3:
-            if (map[ypos + 8][xpos + 13] != undefined) {
-                if (map[ypos + 8][xpos + 13] != 2) {
-                    xpos += 1;
-                    evilxpos -= 1;
-                    facing = "left";
+                break;
+            case 3:
+                if (map[ypos + 8][xpos + 13] != undefined) {
+                    if (map[ypos + 8][xpos + 13] != 2) {
+                        xpos += 1;
+                        evilxpos -= 1;
+                        facing = "left";
+                    }
                 }
-            }
-            break;
+                break;
+        }
     }
 }
 
@@ -145,23 +148,31 @@ function cutscene(x, y) {
 function pad() {
     var padup = new Button(64, 352, 32, 32, images.arrowup, () => {
         move(0);
-        generate_tiles();
-        scene_map();
+        if (control) {
+            generate_tiles();
+            scene_map();
+        }
     });
     var paddown = new Button(64, 416, 32, 32, images.arrowdown, () => {
         move(2);
-        generate_tiles();
-        scene_map();
+        if (control) {
+            generate_tiles();
+            scene_map();
+        }
     });
     var padleft = new Button(32, 384, 32, 32, images.arrowleft, () => {
         move(1);
-        generate_tiles();
-        scene_map();
+        if (control) {
+            generate_tiles();
+            scene_map();
+        }
     });
     var padright = new Button(96, 384, 32, 32, images.arrowright, () => {
         move(3);
-        generate_tiles();
-        scene_map();
+        if (control) {
+            generate_tiles();
+            scene_map();
+        }
     });
     padup.render();
     paddown.render();
@@ -211,23 +222,31 @@ function UI_UpdateCharacters() {
         case 1: // Map
             buttons.push([384, 416, 224, 256, () => { // Up
                 move(0);
-                generate_tiles();
-                scene_map();
+                if (control) {
+                    generate_tiles();
+                    scene_map();
+                }
             }]);
             buttons.push([384, 416, 288, 320, () => { // Down
                 move(2);
-                generate_tiles();
-                scene_map();
+                if (control) {
+                    generate_tiles();
+                    scene_map();
+                }
             }]);
             buttons.push([352, 384, 256, 288, () => { // Right
                 move(1);
-                generate_tiles();
-                scene_map();
+                if (control) {
+                    generate_tiles();
+                    scene_map();
+                }
             }]);
             buttons.push([416, 448, 256, 288, () => { // Left
                 move(3);
-                generate_tiles();
-                scene_map();
+                if (control) {
+                    generate_tiles();
+                    scene_map();
+                }
             }]);
 
             pad();
@@ -293,7 +312,6 @@ function scene_map() {
     if (evilsprite_pr == 40) { evilsprite_pr = 0; }
 
     ai = Math.ceil(Math.random() * 4);
-    console.log(ai);
     switch (ai) {
         case 1:
             evilxpos += 1;
@@ -312,6 +330,14 @@ function scene_map() {
             evilfacing = "down";
             break;
     }
+
+    if (evilxpos == 11) {
+        evilxpos += 1;
+    }
+    else if (evilypos == 7) {
+        evilypos += 1;
+    }
+
     if (evilxpos > 25 || evilxpos < 0) { evilxpos = 12 };
     if (evilypos > 16 || evilypos < 0) { evilypos = 4 };
 
@@ -346,8 +372,12 @@ function scene_map() {
     }
 
     if (12 == evilxpos && 8 == evilypos) {
-        ctx.drawImage(images.tokenattack, 71, 78, 51, 52, 0, 0, 800, 500);
+        evilxpos = 12;
+        evilypos = 4;
+
         // could be optimized using a for loop?
+        control = false;
+        ctx.drawImage(images.tokenattack, 71, 78, 51, 52, 0, 0, 800, 500);
         setTimeout(() => { ctx.drawImage(images.tokenattack, 166, 76, 62, 65, 0, 0, 800, 500); }, 150);
         setTimeout(() => { ctx.drawImage(images.tokenattack, 266, 65, 89, 64, 0, 0, 800, 500); }, 300);
         setTimeout(() => { ctx.drawImage(images.tokenattack, 396, 66, 118, 116, 0, 0, 800, 500); }, 450);
@@ -368,7 +398,7 @@ function scene_map() {
         setTimeout(() => { ctx.drawImage(images.tokenattack, 698, 747, 371, 240, 0, 0, 800, 500); }, 2550);
         setTimeout(() => { ctx.drawImage(images.tokenattack, 7, 1015, 89, 64, 0, 0, 800, 500); }, 2700);
         setTimeout(() => { ctx.drawImage(images.tokenattack, 377, 1077, 350, 163, 0, 0, 800, 500); }, 2850);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 759, 1138, 281, 110, 0, 0, 800, 500); }, 3000);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 759, 1138, 281, 110, 0, 0, 800, 500); control = true; }, 3000);
     }
 
     ctx.drawImage(images.arrowmiddle, 64, 384, 32, 32);
@@ -416,8 +446,10 @@ document.body.onkeydown = function (e) {
         if (e.keyCode == 40) {
             move(2);
         }
-        generate_tiles();
-        scene_map();
+        if (control) {
+            generate_tiles();
+            scene_map();
+        }
     }
 }
 
