@@ -17,10 +17,6 @@ characters = {
     }
 }
 
-function calculateEPNeeded(l) {
-    return 20 + (l * 5) + Math.max(0, (l - 20) * 5) + Math.max(0, (l - 40) * 5) + Math.max(0, (l - 60) * 5) + Math.max(0, (l - 80) * 5);
-}
-
 /*
 3rd: Grun (He's a Helter Skelter barrel from Germany)
 4th: Kagerusu (He's an I See You barrel from Japan)

@@ -36,6 +36,12 @@ var sprites =
     evil: loadImage("Images/map_evil.png")
 };
 
+var portraits =
+{
+    bleu: loadImage("Images/p_bleu.png"),
+    corelle: loadImage("Images/p_corelle.png")
+};
+
 var tiles =
 {
     grass1: loadImage("Images/tile_grass1.png"),

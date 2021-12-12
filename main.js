@@ -206,8 +206,8 @@ function UI_UpdateCharacters() {
 
     ctx.fillStyle = "black";
 
-    ctx.fillText("EP: " + characters[char1].EP + "/" + calculateEPNeeded(characters[char1].level), 708, 348);
-    ctx.fillText("EP: " + characters[char2].EP + "/" + calculateEPNeeded(characters[char2].level), 708, 412);
+    ctx.fillText("EP: " + characters[char1].EP + "/" + characters[char1].EP, 708, 348);
+    ctx.fillText("EP: " + characters[char2].EP + "/" + characters[char2].EP, 708, 412);
 }
 
 // Startup & some drawing
@@ -247,8 +247,10 @@ function UI_UpdateCharacters() {
 
             ctx.fillStyle = "rgb(114, 95, 57)";
             ctx.fillRect(0, 0, 800, 100);
+            ctx.fillRect(0, 480, 800, 20);
             ctx.fillStyle = "rgb(186, 154, 89)";
             ctx.fillRect(0, 10, 800, 70);
+            ctx.fillRect(0, 400, 800, 80);
 
             ctx.fillStyle = "rgb(47, 95, 191)";
             ctx.fillRect(35, 12, 96, 58);
@@ -259,8 +261,8 @@ function UI_UpdateCharacters() {
             ctx.drawImage(images.actions, 40, 17, 48, 48);
             ctx.font = "12px NotoSans, sans-serif";
             ctx.fillStyle = "rgb(0, 32, 102)";
-            ctx.fillText("Battle", 75, 35);
-            ctx.fillText("Actions", 75, 48);
+            ctx.fillText("Battle", 80, 35);
+            ctx.fillText("Actions", 80, 48);
 
             ctx.fillStyle = "rgb(47, 191, 71)";
             ctx.fillRect(145, 12, 96, 58);
@@ -271,8 +273,8 @@ function UI_UpdateCharacters() {
             ctx.drawImage(images.inventory, 150, 17, 48, 48);
             ctx.font = "12px NotoSans, sans-serif";
             ctx.fillStyle = "rgb(0, 102, 13)";
-            ctx.fillText("Battle", 185, 35);
-            ctx.fillText("Inventory", 185, 48);
+            ctx.fillText("Battle", 180, 35);
+            ctx.fillText("Inventory", 180, 48);
 
             ctx.fillStyle = "rgb(191, 47, 167)";
             ctx.fillRect(255, 12, 96, 58);
@@ -295,8 +297,8 @@ function UI_UpdateCharacters() {
             ctx.drawImage(images.switch, 370, 17, 48, 48);
             ctx.font = "12px NotoSans, sans-serif";
             ctx.fillStyle = "rgb(102, 68, 0)";
-            ctx.fillText("Switch", 410, 35);
-            ctx.fillText("crapper", 410, 48);
+            ctx.fillText("Switch", 400, 35);
+            ctx.fillText("Scrapper", 400, 48);
 
             ctx.fillStyle = "rgb(119, 119, 119)";
             ctx.fillRect(475, 12, 96, 58);
@@ -342,6 +344,42 @@ function UI_UpdateCharacters() {
             ctx.font = "12px NotoSans, sans-serif";
             ctx.fillText("4 Marmalade Communists!", 620, 405);
             ctx.fillText("Evil Helter Skelter", 620, 425);
+
+
+            ctx.fillStyle = "yellow";
+            ctx.fillRect(225, 375, 75, 75);
+            ctx.drawImage(portraits.bleu, 230, 380, 65, 65);
+            ctx.font = "20px NotoSans, sans-serif";
+            ctx.fillText("Level " + characters[char1].level, 230, 480);
+            ctx.fillStyle = "blue";
+            ctx.fillText(characters[char1].name, 240, 465);
+
+            ctx.fillStyle = "rgb(0, 145, 40)";
+            ctx.fillRect(310, 410, 60, 20);
+            ctx.fillStyle = "rgb(145, 0, 105)";
+            ctx.fillRect(310, 430, 60, 20);
+
+            ctx.fillStyle = "black";
+            ctx.fillText(characters[char1].HP + "/" + characters[char1].maxHP, 310, 425);
+            ctx.fillText(characters[char1].EP + "/" + characters[char1].EP, 310, 445);
+
+            ctx.fillStyle = "yellow";
+            ctx.fillRect(395, 375, 75, 75);
+            ctx.drawImage(portraits.corelle, 400, 380, 65, 65);
+            ctx.font = "20px NotoSans, sans-serif";
+            ctx.fillText("Level " + characters[char1].level, 400, 480);
+            ctx.fillStyle = "blue";
+            ctx.fillText(characters[char2].name, 400, 465);
+
+            ctx.fillStyle = "rgb(0, 145, 40)";
+            ctx.fillRect(480, 410, 60, 20);
+            ctx.fillStyle = "rgb(145, 0, 105)";
+            ctx.fillRect(480, 430, 60, 20);
+
+            ctx.fillStyle = "black";
+            ctx.fillText(characters[char2].HP + "/" + characters[char2].maxHP, 480, 425);
+            ctx.fillText(characters[char2].EP + "/" + characters[char2].EP, 480, 445);
+
             break;
         case 4: //Game Over
             control = false;
