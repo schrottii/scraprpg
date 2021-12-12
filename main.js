@@ -35,6 +35,7 @@ function move(move) {
             if (map[ypos + 7] != undefined) {
                 if (map[ypos + 7][xpos + 12] != 2) {
                     ypos -= 1;
+                    evilypos += 1;
                     facing = "up";
                 }
             }
@@ -43,6 +44,7 @@ function move(move) {
             if (map[ypos + 8][xpos + 11] != undefined) {
                 if (map[ypos + 8][xpos + 11] != 2) {
                     xpos -= 1;
+                    evilxpos += 1;
                     facing = "right";
                 }
             }
@@ -51,6 +53,7 @@ function move(move) {
             if (map[ypos + 9] != undefined) {
                 if (map[ypos + 9][xpos + 12] != 2) {
                     ypos += 1;
+                    evilypos -= 1;
                     facing = "down";
                 }
             }
@@ -59,6 +62,7 @@ function move(move) {
             if (map[ypos + 8][xpos + 13] != undefined) {
                 if (map[ypos + 8][xpos + 13] != 2) {
                     xpos += 1;
+                    evilxpos -= 1;
                     facing = "left";
                 }
             }
