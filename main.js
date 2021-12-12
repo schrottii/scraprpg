@@ -39,6 +39,10 @@ function move(move) {
                         ypos -= 1;
                         evilypos += 1;
                         facing = "up";
+                        if (control) {
+                            generate_tiles();
+                            scene_map();
+                        }
                     }
                 }
                 break;
@@ -48,6 +52,10 @@ function move(move) {
                         xpos -= 1;
                         evilxpos += 1;
                         facing = "right";
+                        if (control) {
+                            generate_tiles();
+                            scene_map();
+                        }
                     }
                 }
                 break;
@@ -57,6 +65,10 @@ function move(move) {
                         ypos += 1;
                         evilypos -= 1;
                         facing = "down";
+                        if (control) {
+                            generate_tiles();
+                            scene_map();
+                        }
                     }
                 }
                 break;
@@ -66,6 +78,10 @@ function move(move) {
                         xpos += 1;
                         evilxpos -= 1;
                         facing = "left";
+                        if (control) {
+                            generate_tiles();
+                            scene_map();
+                        }
                     }
                 }
                 break;
@@ -148,31 +164,15 @@ function cutscene(x, y) {
 function pad() {
     var padup = new Button(64, 352, 32, 32, images.arrowup, () => {
         move(0);
-        if (control) {
-            generate_tiles();
-            scene_map();
-        }
     });
     var paddown = new Button(64, 416, 32, 32, images.arrowdown, () => {
         move(2);
-        if (control) {
-            generate_tiles();
-            scene_map();
-        }
     });
     var padleft = new Button(32, 384, 32, 32, images.arrowleft, () => {
         move(1);
-        if (control) {
-            generate_tiles();
-            scene_map();
-        }
     });
     var padright = new Button(96, 384, 32, 32, images.arrowright, () => {
         move(3);
-        if (control) {
-            generate_tiles();
-            scene_map();
-        }
     });
     padup.render();
     paddown.render();
@@ -222,31 +222,15 @@ function UI_UpdateCharacters() {
         case 1: // Map
             buttons.push([384, 416, 224, 256, () => { // Up
                 move(0);
-                if (control) {
-                    generate_tiles();
-                    scene_map();
-                }
             }]);
             buttons.push([384, 416, 288, 320, () => { // Down
                 move(2);
-                if (control) {
-                    generate_tiles();
-                    scene_map();
-                }
             }]);
             buttons.push([352, 384, 256, 288, () => { // Right
                 move(1);
-                if (control) {
-                    generate_tiles();
-                    scene_map();
-                }
             }]);
             buttons.push([416, 448, 256, 288, () => { // Left
                 move(3);
-                if (control) {
-                    generate_tiles();
-                    scene_map();
-                }
             }]);
 
             pad();
@@ -445,10 +429,6 @@ document.body.onkeydown = function (e) {
         }
         if (e.keyCode == 40) {
             move(2);
-        }
-        if (control) {
-            generate_tiles();
-            scene_map();
         }
     }
 }
