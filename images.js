@@ -20,7 +20,8 @@ var images =
     arrowleft: loadImage("Images/arrowleft.png"),
     arrowright: loadImage("Images/arrowright.png"),
     cutscene_fade: loadImage("Images/cutscene_fade.png"),
-    placeholder: loadImage("Images/cutscene_map.png")
+    placeholder: loadImage("Images/cutscene_map.png"),
+    tokenattack: loadImage("Images/tokenattack.png")
 };
 
 var sprites =

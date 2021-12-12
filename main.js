@@ -332,22 +332,43 @@ function scene_map() {
 
     switch (evilfacing) {
         case "up":
-            ctx.drawImage(sprites.evil, evilsprite_pr, 0, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
-            break;
-        case "left":
-            ctx.drawImage(sprites.evil, evilsprite_pr, 34, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
-            break;
-        case "down":
             ctx.drawImage(sprites.evil, evilsprite_pr, 68, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
             break;
-        case "right":
+        case "left":
             ctx.drawImage(sprites.evil, evilsprite_pr, 102, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
+            break;
+        case "down":
+            ctx.drawImage(sprites.evil, evilsprite_pr, 0, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
+            break;
+        case "right":
+            ctx.drawImage(sprites.evil, evilsprite_pr, 34, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
             break;
     }
 
-    if (12 == evilxpos && 8 == evilypos) { //Placeholder
-        ctx.font = "20px NotoSans, sans-serif";
-        ctx.fillText("ALABAMA!!!!", 300, 200);
+    if (12 == evilxpos && 8 == evilypos) {
+        ctx.drawImage(images.tokenattack, 71, 78, 51, 52, 0, 0, 800, 500);
+        // could be optimized using a for loop?
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 166, 76, 62, 65, 0, 0, 800, 500); }, 150);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 266, 65, 89, 64, 0, 0, 800, 500); }, 300);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 396, 66, 118, 116, 0, 0, 800, 500); }, 450);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 38, 197, 103, 95, 0, 0, 800, 500); }, 600);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 178, 190, 136, 129, 0, 0, 800, 500); }, 750);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 346, 196, 172, 157, 0, 0, 800, 500); }, 900);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 546, 189, 191, 152, 0, 0, 800, 500); }, 1050);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 768, 217, 240, 95, 0, 0, 800, 500); }, 1200);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 51, 394, 261, 47, 0, 0, 800, 500); }, 1350);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 378, 374, 257, 107, 0, 0, 800, 500); }, 1500);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 700, 338, 263, 169, 0, 0, 800, 500); }, 1650);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 64, 500, 275, 196, 0, 0, 800, 500); }, 1800);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 366, 496, 315, 204, 0, 0, 800, 500); }, 1950);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 717, 527, 305, 202, 0, 0, 800, 500); }, 2100);
+
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 48, 750, 322, 219, 0, 0, 800, 500); }, 2250);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 370, 750, 335, 226, 0, 0, 800, 500); }, 2400);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 698, 747, 371, 240, 0, 0, 800, 500); }, 2550);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 7, 1015, 89, 64, 0, 0, 800, 500); }, 2700);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 377, 1077, 350, 163, 0, 0, 800, 500); }, 2850);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 759, 1138, 281, 110, 0, 0, 800, 500); }, 3000);
     }
 
     ctx.drawImage(images.arrowmiddle, 64, 384, 32, 32);
