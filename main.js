@@ -300,7 +300,7 @@ function UI_UpdateCharacters() {
             ctx.fillRect(475, 12, 96, 58);
             ctx.fillStyle = "rgb(223, 223, 223)";
             ctx.fillRect(480, 17, 86, 48);
-            let buttonFlee = new Button(475, 12, 96, 58, false, () => { changeScene(1); control = true; });
+            let buttonFlee = new Button(475, 12, 96, 58, false, () => { characters[char1].HP -= 10; characters[char2].HP -= 10; changeScene(1); control = true; });
             buttonFlee.render();
             ctx.drawImage(images.flee, 480, 17, 48, 48);
             ctx.font = "12px NotoSans, sans-serif";
@@ -340,6 +340,14 @@ function UI_UpdateCharacters() {
             ctx.font = "12px NotoSans, sans-serif";
             ctx.fillText("4 Marmalade Communists!", 620, 405);
             ctx.fillText("Evil Helter Skelter", 620, 425);
+            break;
+        case 4: //Game Over
+            control = false;
+            ctx.drawImage(images.gameover, 0, 0, 800, 500);
+            setTimeout(() => { changeScene(0) }, 5000);
+            characters[char1].HP = characters[char1].maxHP;
+            characters[char2].HP = characters[char2].maxHP;
+            break;
     }
 }
 
@@ -387,6 +395,11 @@ function generate_tiles() {
 }
 
 function scene_map() {
+    if (characters[char1].HP < 1 || characters[char2].HP < 1) {
+        changeScene(4);
+        return;
+    }
+
     // Tiles
     generate_tiles();
 
