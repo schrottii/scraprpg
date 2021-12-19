@@ -237,6 +237,24 @@ function UI_UpdateCharacters() {
     ctx.fillText("EP: " + characters[char2].EP + "/" + characters[char2].EP, 708, 412);
 }
 
+function UI_FightE(x = 0) {
+    ctx.fillStyle = "rgb(131, 50, 78)";
+    ctx.fillRect(600, 375, 200, 125);
+    ctx.fillStyle = "rgb(245, 145, 178)";
+    ctx.fillRect(610, 385, 180, 105);
+
+    ctx.font = "12px NotoSans, sans-serif";
+    ctx.fillStyle = "black";
+    if (x == 0) {
+        ctx.fillText("4 Marmalade Communists!", 620, 405);
+        ctx.fillText("Evil Helter Skelter", 620, 425);
+    }
+    else {
+        ctx.fillText("Marmalade Communist " + x, 620, 405);
+        ctx.fillText("HP...", 620, 425);
+    }
+}
+
 // Startup & some drawing
     function draw() {
     // Black rectangle that fills the entire background
@@ -268,7 +286,7 @@ function UI_UpdateCharacters() {
             break;
         case 2: // Alabama cutscene
             cutscene(images.placeholder, "Alabama");
-            setTimeout(() => { changeScene(1) }, 4000); // CHANGE SCENE TO 1 NOT TO 3 THAT'S FOR TESTING
+            setTimeout(() => { changeScene(3) }, 4000); // CHANGE SCENE TO 1 NOT TO 3 THAT'S FOR TESTING
             break;
         case 3: // Fight
             ctx.drawImage(images.fight_bg, 0, 100, 800, 400);
@@ -359,20 +377,12 @@ function UI_UpdateCharacters() {
             ctx.fillStyle = "rgb(145, 178, 245)";
             ctx.fillRect(10, 385, 180, 105);
 
-            ctx.fillStyle = "rgb(131, 50, 78)";
-            ctx.fillRect(600, 375, 200, 125);
-            ctx.fillStyle = "rgb(245, 145, 178)";
-            ctx.fillRect(610, 385, 180, 105);
-
             ctx.font = "10px NotoSans, sans-serif";
             ctx.fillStyle = "black";
             ctx.fillText("Battle has started!", 20, 395);
             ctx.fillText("All actions will be logged here!", 20, 405);
 
-            ctx.font = "12px NotoSans, sans-serif";
-            ctx.fillText("4 Marmalade Communists!", 620, 405);
-            ctx.fillText("Evil Helter Skelter", 620, 425);
-
+            UI_FightE();
 
             ctx.fillStyle = "yellow";
             ctx.fillRect(225, 375, 75, 75);
@@ -407,6 +417,25 @@ function UI_UpdateCharacters() {
             ctx.fillStyle = "black";
             ctx.fillText(characters[char2].HP + "/" + characters[char2].maxHP, 480, 425);
             ctx.fillText(characters[char2].EP + "/" + characters[char2].EP, 480, 445);
+
+            ctx.drawImage(sprites.bleu, 0, 64, 64, 64, 100, 200, 32, 32);
+            ctx.drawImage(sprites.bleu, 0, 64, 64, 64, 140, 240, 32, 32);
+
+            let fightE1 = new Button(600, 200, 32, 32, false, () => { UI_FightE(1) });
+            fightE1.render();
+            ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 600, 200, 32, 32);
+
+            let fightE2 = new Button(550, 250, 32, 32, false, () => { UI_FightE(2) });
+            fightE2.render();
+            ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 550, 250, 32, 32);
+
+            let fightE3 = new Button(650, 200, 32, 32, false, () => { UI_FightE(3) });
+            fightE3.render();
+            ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 650, 200, 32, 32);
+
+            let fightE4 = new Button(600, 250, 32, 32, false, () => { UI_FightE(4) });
+            fightE4.render();
+            ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 600, 250, 32, 32);
 
             break;
         case 4: //Game Over
@@ -615,7 +644,7 @@ document.body.onkeydown = function (e) {
 }
 
 // Start the game
-images.gear.onload = function start() {
+images.gameicon.onload = function start() {
     loadGame();
     draw();
 }
