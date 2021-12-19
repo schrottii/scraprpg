@@ -182,6 +182,33 @@ function pad() {
     padright.render();
 }
 
+function load(x, altx) {
+    return x !== undefined ? x : altx;
+}
+
+function saveGame() {
+    let saveCopy = JSON.parse(JSON.stringify(characters));
+    localStorage.setItem("SOTR", JSON.stringify(saveCopy));
+}
+
+function loadGame() {
+    let saveCopy;
+    saveCopy = localStorage.getItem("SOTR");
+
+    if (saveCopy !== null) {
+        try {
+            saveCopy = JSON.parse(saveCopy);
+        }
+
+        catch (e) {
+            alert("Error");
+            return;
+        }
+
+        characters = load(saveCopy, 0);
+    }
+}
+
 /////////////// UI update functions
 
 // Update text related to the characters
@@ -217,6 +244,7 @@ function UI_UpdateCharacters() {
     ctx.fillRect(0, 0, 800, 500);
 
     buttons = []; // Delete buttons every new scene (important)
+    saveGame();
     switch (currentScene) { // Load scene
         case 0: // Main menu
             scene_menu();
@@ -240,7 +268,7 @@ function UI_UpdateCharacters() {
             break;
         case 2: // Alabama cutscene
             cutscene(images.placeholder, "Alabama");
-            setTimeout(() => { changeScene(3) }, 4000); // CHANGE SCENE TO 1 NOT TO 3 THAT'S FOR TESTING
+            setTimeout(() => { changeScene(1) }, 4000); // CHANGE SCENE TO 1 NOT TO 3 THAT'S FOR TESTING
             break;
         case 3: // Fight
             ctx.drawImage(images.fight_bg, 0, 100, 800, 400);
@@ -588,5 +616,6 @@ document.body.onkeydown = function (e) {
 
 // Start the game
 images.gear.onload = function start() {
+    loadGame();
     draw();
 }
