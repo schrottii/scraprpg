@@ -321,11 +321,12 @@ function draw() {
             }]);
 
             pad();
+            autoMove();
             scene_map();
             break;
         case 2: // Alabama cutscene
             cutscene(images.placeholder, "Alabama");
-            setTimeout(() => { changeScene(3) }, 4000); // CHANGE SCENE TO 1 NOT TO 3 THAT'S FOR TESTING
+            setTimeout(() => { changeScene(1) }, 4000); // CHANGE SCENE TO 1 NOT TO 3 THAT'S FOR TESTING
             break;
         case 3: // Fight
             scene_fight();
@@ -549,6 +550,64 @@ function scene_map() {
 
     sprite_pr += 64;
     if (sprite_pr == 128) { sprite_pr = 0; }
+
+    evilMove();
+
+    switch (facing) {
+        case "up":
+            ctx.drawImage(sprites.bleu, sprite_pr, 0, 64, 64, 384, 256, 32, 32);
+            break;
+        case "left":
+            ctx.drawImage(sprites.bleu, sprite_pr, 64, 64, 64, 384, 256, 32, 32);
+            break;
+        case "down":
+            ctx.drawImage(sprites.bleu, sprite_pr, 128, 64, 64, 384, 256, 32, 32);
+            break;
+        case "right":
+            ctx.drawImage(sprites.bleu, sprite_pr, 192, 64, 64, 384, 256, 32, 32);
+            break;
+    }
+
+    triggerFight();
+
+    ctx.drawImage(images.arrowmiddle, 64, 384, 32, 32);
+    ctx.drawImage(images.arrowup, 64, 352, 32, 32);
+    ctx.drawImage(images.arrowdown, 64, 416, 32, 32);
+    ctx.drawImage(images.arrowleft, 32, 384, 32, 32);
+    ctx.drawImage(images.arrowright, 96, 384, 32, 32);
+
+    // Bottom right rect (Menu)
+
+    let worldButton1 = new Button(608, 436, 64, 64, images.paper, () => { console.log("click1") });
+    worldButton1.render();
+    let worldButton2 = new Button(672, 436, 64, 64, images.inventory, () => { console.log("click2") });
+    worldButton2.render();
+    let worldButton3 = new Button(736, 436, 64, 64, images.gear, () => { console.log("click3") });
+    worldButton3.render();
+
+    ctx.fillStyle = colors.bottom;
+    ctx.fillRect(608, 308, 192, 128);
+
+    // Some nice black borders
+    ctx.fillStyle = "black";
+    ctx.fillRect(606, 306, 192, 2);
+    ctx.fillRect(606, 306, 2, 194);
+    ctx.fillRect(606, 434, 192, 2);
+
+    // Write text
+    UI_UpdateCharacters();
+};
+
+function autoMove() {
+    if (currentScene == 1 && control == true) {
+        evilMove();
+        triggerFight();
+        scene_map();
+    }
+    setTimeout("autoMove()", 250);
+}
+
+function evilMove() {
     evilsprite_pr += 20;
     if (evilsprite_pr == 40) { evilsprite_pr = 0; }
 
@@ -582,21 +641,6 @@ function scene_map() {
     if (evilxpos > 25 || evilxpos < 0) { evilxpos = 12 };
     if (evilypos > 16 || evilypos < 0) { evilypos = 4 };
 
-    switch (facing) {
-        case "up":
-            ctx.drawImage(sprites.bleu, sprite_pr, 0, 64, 64, 384, 256, 32, 32);
-            break;
-        case "left":
-            ctx.drawImage(sprites.bleu, sprite_pr, 64, 64, 64, 384, 256, 32, 32);
-            break;
-        case "down":
-            ctx.drawImage(sprites.bleu, sprite_pr, 128, 64, 64, 384, 256, 32, 32);
-            break;
-        case "right":
-            ctx.drawImage(sprites.bleu, sprite_pr, 192, 64, 64, 384, 256, 32, 32);
-            break;
-    }
-
     switch (evilfacing) {
         case "up":
             ctx.drawImage(sprites.evil, evilsprite_pr, 68, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
@@ -611,7 +655,9 @@ function scene_map() {
             ctx.drawImage(sprites.evil, evilsprite_pr, 34, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
             break;
     }
+}
 
+function triggerFight() {
     if (12 == evilxpos && 8 == evilypos) {
         evilxpos = 12;
         evilypos = 4;
@@ -641,34 +687,7 @@ function scene_map() {
         setTimeout(() => { ctx.drawImage(images.tokenattack, 377, 1077, 350, 163, 0, 0, 800, 500); }, 1900);
         setTimeout(() => { ctx.drawImage(images.tokenattack, 759, 1138, 281, 110, 0, 0, 800, 500); changeScene(3); }, 2000);
     }
-
-    ctx.drawImage(images.arrowmiddle, 64, 384, 32, 32);
-    ctx.drawImage(images.arrowup, 64, 352, 32, 32);
-    ctx.drawImage(images.arrowdown, 64, 416, 32, 32);
-    ctx.drawImage(images.arrowleft, 32, 384, 32, 32);
-    ctx.drawImage(images.arrowright, 96, 384, 32, 32);
-
-    // Bottom right rect (Menu)
-
-    let worldButton1 = new Button(608, 436, 64, 64, images.paper, () => { console.log("click1") });
-    worldButton1.render();
-    let worldButton2 = new Button(672, 436, 64, 64, images.inventory, () => { console.log("click2") });
-    worldButton2.render();
-    let worldButton3 = new Button(736, 436, 64, 64, images.gear, () => { console.log("click3") });
-    worldButton3.render();
-
-    ctx.fillStyle = colors.bottom;
-    ctx.fillRect(608, 308, 192, 128);
-
-    // Some nice black borders
-    ctx.fillStyle = "black";
-    ctx.fillRect(606, 306, 192, 2);
-    ctx.fillRect(606, 306, 2, 194);
-    ctx.fillRect(606, 434, 192, 2);
-
-    // Write text
-    UI_UpdateCharacters();
-};
+}
 
 canvas.addEventListener("click", canvasClicked, false);
 
