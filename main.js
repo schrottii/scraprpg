@@ -408,7 +408,7 @@ function scene_fight() {
     ctx.fillRect(475, 12, 96, 58);
     ctx.fillStyle = "rgb(223, 223, 223)";
     ctx.fillRect(480, 17, 86, 48);
-    let buttonFlee = new Button(475, 12, 96, 58, false, () => { characters[char1].HP -= 10; characters[char2].HP -= 10; changeScene(1); control = true; });
+    let buttonFlee = new Button(475, 12, 96, 58, false, () => { characters[char1].HP -= 10; characters[char2].HP -= 10; control = true; changeScene(1); });
     buttonFlee.render();
     ctx.drawImage(images.flee, 480, 17, 48, 48);
     ctx.font = "12px NotoSans, sans-serif";
@@ -551,8 +551,6 @@ function scene_map() {
     sprite_pr += 64;
     if (sprite_pr == 128) { sprite_pr = 0; }
 
-    evilMove();
-
     switch (facing) {
         case "up":
             ctx.drawImage(sprites.bleu, sprite_pr, 0, 64, 64, 384, 256, 32, 32);
@@ -565,6 +563,20 @@ function scene_map() {
             break;
         case "right":
             ctx.drawImage(sprites.bleu, sprite_pr, 192, 64, 64, 384, 256, 32, 32);
+            break;
+    }
+    switch (evilfacing) {
+        case "up":
+            ctx.drawImage(sprites.evil, evilsprite_pr, 68, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
+            break;
+        case "left":
+            ctx.drawImage(sprites.evil, evilsprite_pr, 102, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
+            break;
+        case "down":
+            ctx.drawImage(sprites.evil, evilsprite_pr, 0, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
+            break;
+        case "right":
+            ctx.drawImage(sprites.evil, evilsprite_pr, 34, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
             break;
     }
 
@@ -603,8 +615,8 @@ function autoMove() {
         evilMove();
         triggerFight();
         scene_map();
+        setTimeout("autoMove()", 250);
     }
-    setTimeout("autoMove()", 250);
 }
 
 function evilMove() {
@@ -640,21 +652,6 @@ function evilMove() {
 
     if (evilxpos > 25 || evilxpos < 0) { evilxpos = 12 };
     if (evilypos > 16 || evilypos < 0) { evilypos = 4 };
-
-    switch (evilfacing) {
-        case "up":
-            ctx.drawImage(sprites.evil, evilsprite_pr, 68, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
-            break;
-        case "left":
-            ctx.drawImage(sprites.evil, evilsprite_pr, 102, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
-            break;
-        case "down":
-            ctx.drawImage(sprites.evil, evilsprite_pr, 0, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
-            break;
-        case "right":
-            ctx.drawImage(sprites.evil, evilsprite_pr, 34, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
-            break;
-    }
 }
 
 function triggerFight() {
