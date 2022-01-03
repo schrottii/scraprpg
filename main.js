@@ -325,7 +325,7 @@ function draw() {
             scene_map();
             break;
         case 2: // Alabama cutscene
-            cutscene(images.placeholder, "Alabama");
+            cutscene(images.placeholder, "Test Island");
             setTimeout(() => { changeScene(1) }, 4000); // CHANGE SCENE TO 1 NOT TO 3 THAT'S FOR TESTING
             break;
         case 3: // Fight
@@ -333,7 +333,7 @@ function draw() {
             break;
         case 4: //Game Over
             control = false;
-            ctx.drawImage(images.gameover, 0, 0, 800, 500);
+            setTimeout(() => { ctx.drawImage(images.gameover, 0, 0, 800, 500) }, 10);
             setTimeout(() => { changeScene(0) }, 5000);
             characters[char1].HP = characters[char1].maxHP;
             characters[char2].HP = characters[char2].maxHP;
