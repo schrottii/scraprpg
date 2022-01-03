@@ -661,28 +661,30 @@ function triggerFight() {
 
         // could be optimized using a for loop?
         control = false;
-        ctx.drawImage(images.tokenattack, 71, 78, 51, 52, 0, 0, 800, 500);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 166, 76, 62, 65, 0, 0, 800, 500); }, 100);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 266, 65, 89, 64, 0, 0, 800, 500); }, 200);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 396, 66, 118, 116, 0, 0, 800, 500); }, 300);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 38, 197, 103, 95, 0, 0, 800, 500); }, 400);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 178, 190, 136, 129, 0, 0, 800, 500); }, 500);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 346, 196, 172, 157, 0, 0, 800, 500); }, 600);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 546, 189, 191, 152, 0, 0, 800, 500); }, 700);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 768, 217, 240, 95, 0, 0, 800, 500); }, 800);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 51, 394, 261, 47, 0, 0, 800, 500); }, 900);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 378, 374, 257, 107, 0, 0, 800, 500); }, 1000);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 700, 338, 263, 169, 0, 0, 800, 500); }, 1100);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 64, 500, 275, 196, 0, 0, 800, 500); }, 1200);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 366, 496, 315, 204, 0, 0, 800, 500); }, 1300);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 717, 527, 305, 202, 0, 0, 800, 500); }, 1400);
+        var offsetx = 200;
+        var offsety = 125;
+        ctx.drawImage(images.tokenattack, 71, 78, 51, 52, offsetx, offsety, 50, 50);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 166, 76, 62, 65, offsetx, offsety, 62, 62); }, 100);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 266, 65, 89, 64, offsetx, offsety, 86, 92); }, 200);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 396, 66, 118, 116, offsetx, offsety, 116, 114); }, 300);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 38, 197, 103, 95, offsetx, offsety, 100, 92); }, 400);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 178, 190, 136, 129, offsetx, offsety, 133, 126); }, 500);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 346, 196, 172, 157, offsetx, offsety, 168, 154); }, 600);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 546, 189, 191, 152, offsetx, offsety, 187, 149); }, 700);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 768, 217, 240, 95, offsetx, offsety, 237, 91); }, 800);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 51, 394, 261, 47, offsetx, offsety, 258, 44); }, 900);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 378, 374, 257, 107, offsetx, offsety, 253, 103); }, 1000);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 700, 338, 263, 169, offsetx, offsety, 260, 107); }, 1100);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 64, 500, 275, 196, offsetx, offsety, 272, 194); }, 1200);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 366, 496, 315, 204, offsetx, offsety, 311, 201); }, 1300);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 717, 527, 305, 202, offsetx, offsety, 302, 199); }, 1400);
 
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 48, 750, 322, 219, 0, 0, 800, 500); }, 1500);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 370, 750, 335, 226, 0, 0, 800, 500); }, 1600);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 698, 747, 371, 240, 0, 0, 800, 500); }, 1700);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 7, 1015, 89, 64, 0, 0, 800, 500); }, 1800);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 377, 1077, 350, 163, 0, 0, 800, 500); }, 1900);
-        setTimeout(() => { ctx.drawImage(images.tokenattack, 759, 1138, 281, 110, 0, 0, 800, 500); changeScene(3); }, 2000);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 48, 750, 322, 219, offsetx, offsety, 320, 217); }, 1500);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 370, 750, 335, 226, offsetx, offsety, 333, 223); }, 1600);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 698, 747, 371, 240, offsetx, offsety, 368, 238); }, 1700);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 7, 1015, 89, 64, offsetx, offsety, 372, 204); }, 1800);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 377, 1077, 350, 163, offsetx, offsety, 347, 160); }, 1900);
+        setTimeout(() => { ctx.drawImage(images.tokenattack, 759, 1138, 281, 110, offsetx, offsety, 279, 107); changeScene(3); }, 2000);
     }
 }
 
