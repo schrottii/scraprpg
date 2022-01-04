@@ -27,7 +27,8 @@ var images =
     techniques: loadImage("Images/techniques.png"),
     switch: loadImage("Images/switch.png"),
     flee: loadImage("Images/flee.png"),
-    gameover: loadImage("Images/gameover.png")
+    gameover: loadImage("Images/gameover.png"),
+    selected32: loadImage("Images/selected.png")
 };
 
 var sprites =

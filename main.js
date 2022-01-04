@@ -341,13 +341,13 @@ function draw() {
             createEnemy(4, "placeholder");
 
             //All the buttons
-            let fightE1 = new Button(600, 200, 32, 32, false, () => { if (gete(1).HP > 0) { fightselect = 1; if (fightaction == 2) { fight_enemy(fightselect) } UI_FightE(fightselect); }});
+            let fightE1 = new Button(600, 200, 32, 32, false, () => { if (gete(1).HP > 0) { fightselect = 1; if (fightaction == 2) { fight_enemy(fightselect) } UI_FightE(fightselect); scene_fight();}});
             fightE1.render();
-            let fightE2 = new Button(550, 250, 32, 32, false, () => { if (gete(2).HP > 0) { fightselect = 2; if (fightaction == 2) { fight_enemy(fightselect) } UI_FightE(fightselect); }});
+            let fightE2 = new Button(550, 250, 32, 32, false, () => { if (gete(2).HP > 0) { fightselect = 2; if (fightaction == 2) { fight_enemy(fightselect) } UI_FightE(fightselect); scene_fight();}});
             fightE2.render();
-            let fightE3 = new Button(650, 200, 32, 32, false, () => { if (gete(3).HP > 0) { fightselect = 3; if (fightaction == 2) { fight_enemy(fightselect) } UI_FightE(fightselect); }});
+            let fightE3 = new Button(650, 200, 32, 32, false, () => { if (gete(3).HP > 0) { fightselect = 3; if (fightaction == 2) { fight_enemy(fightselect) } UI_FightE(fightselect); scene_fight();}});
             fightE3.render();
-            let fightE4 = new Button(600, 250, 32, 32, false, () => { if (gete(4).HP > 0) { fightselect = 4; if (fightaction == 2) { fight_enemy(fightselect) } UI_FightE(fightselect); }});
+            let fightE4 = new Button(600, 250, 32, 32, false, () => { if (gete(4).HP > 0) { fightselect = 4; if (fightaction == 2) { fight_enemy(fightselect) } UI_FightE(fightselect); scene_fight();}});
             fightE4.render();
 
             let buttonActions = new Button(35, 12, 96, 58, false, () => { if (fightaction == 0) { fightaction = 1; scene_fight(); } });
@@ -522,14 +522,7 @@ function scene_fight() {
     ctx.fillText(characters[char2].HP + "/" + characters[char2].maxHP, 480, 425);
     ctx.fillText(characters[char2].EP + "/" + characters[char2].EP, 480, 445);
 
-    ctx.drawImage(sprites.bleu, 0, 64, 64, 64, 100, 200, 32, 32);
-    ctx.drawImage(sprites.bleu, 0, 64, 64, 64, 140, 240, 32, 32);
-
-    
-    if (gete(1).HP > 0) { ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 600, 200, 32, 32) };
-    if (gete(2).HP > 0) { ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 550, 250, 32, 32) };
-    if (gete(3).HP > 0) { ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 650, 200, 32, 32) };
-    if (gete(4).HP > 0) { ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 600, 250, 32, 32) };
+    draw_fighters();
 }
 
 function fight_enemy(x) {
@@ -548,6 +541,24 @@ function fight_enemy(x) {
         scene_fight();
         UI_FightE(x);
     }
+}
+
+function draw_fighters() {
+    ctx.drawImage(sprites.bleu, 0, 64, 64, 64, 100, 200, 32, 32);
+    ctx.drawImage(sprites.bleu, 0, 64, 64, 64, 140, 240, 32, 32);
+
+
+    if (gete(1).HP > 0) { ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 600, 200, 32, 32) };
+    if (fightselect == 1) { ctx.drawImage(images.selected32, 600, 200, 32, 32) };
+
+    if (gete(2).HP > 0) { ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 550, 250, 32, 32) };
+    if (fightselect == 2) { ctx.drawImage(images.selected32, 550, 250, 32, 32) };
+
+    if (gete(3).HP > 0) { ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 650, 200, 32, 32) };
+    if (fightselect == 3) { ctx.drawImage(images.selected32, 650, 200, 32, 32) };
+
+    if (gete(4).HP > 0) { ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 600, 250, 32, 32) };
+    if (fightselect == 4) { ctx.drawImage(images.selected32, 600, 250, 32, 32) };
 }
 
 function scene_menu() {
