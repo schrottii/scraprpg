@@ -6,6 +6,7 @@ characters = {
         EP: 3,
         maxHP: 20,
         HP: 20,
+        strength: 10,
     },
     corelle : {
         name: "Corelle",
@@ -14,6 +15,7 @@ characters = {
         EP: 5,
         maxHP: 18,
         HP: 18,
+        strength: 4,
     }
 }
 

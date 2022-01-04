@@ -24,15 +24,18 @@ var evilsprite_pr = 0;
 
 var ai = 0;
 
+var fightaction = 0;
+var fightselect = 1;
+
 const enemies = {
     placeholder: {
-        name: "Marmalade Communist",
+        name: "Example Enemy",
         maxHP: 15,
         damage: 2,
         range: 2
     },
     placeholder2: {
-        name: "ur mom",
+        name: "PLACEHOLDER2",
         maxHP: 999,
         damage: 99,
         range: 1
@@ -245,6 +248,8 @@ function loadGame() {
         }
 
         characters = load(saveCopy, 0);
+        characters.bleu.strength = load(saveCopy.bleu.strength, 10);
+        characters.corelle.strength = load(saveCopy.corelle.strength, 4);
     }
 }
 
@@ -285,7 +290,7 @@ function UI_FightE(x = 0) {
     ctx.font = "12px NotoSans, sans-serif";
     ctx.fillStyle = "black";
     if (x == 0) {
-        ctx.fillText("4 Marmalade Communists!", 620, 405);
+        ctx.fillText("4 " + gete(1).name + "s!", 620, 405);
         ctx.fillText("Evil Helter Skelter", 620, 425);
     }
     else {
@@ -329,6 +334,41 @@ function draw() {
             setTimeout(() => { changeScene(1) }, 4000); // CHANGE SCENE TO 1 NOT TO 3 THAT'S FOR TESTING
             break;
         case 3: // Fight
+            // Create enemies
+            createEnemy(1, "placeholder");
+            createEnemy(2, "placeholder");
+            createEnemy(3, "placeholder");
+            createEnemy(4, "placeholder");
+
+            //All the buttons
+            let fightE1 = new Button(600, 200, 32, 32, false, () => { if (gete(1).HP > 0) { fightselect = 1; if (fightaction == 2) { fight_enemy(fightselect) } UI_FightE(fightselect); }});
+            fightE1.render();
+            let fightE2 = new Button(550, 250, 32, 32, false, () => { if (gete(2).HP > 0) { fightselect = 2; if (fightaction == 2) { fight_enemy(fightselect) } UI_FightE(fightselect); }});
+            fightE2.render();
+            let fightE3 = new Button(650, 200, 32, 32, false, () => { if (gete(3).HP > 0) { fightselect = 3; if (fightaction == 2) { fight_enemy(fightselect) } UI_FightE(fightselect); }});
+            fightE3.render();
+            let fightE4 = new Button(600, 250, 32, 32, false, () => { if (gete(4).HP > 0) { fightselect = 4; if (fightaction == 2) { fight_enemy(fightselect) } UI_FightE(fightselect); }});
+            fightE4.render();
+
+            let buttonActions = new Button(35, 12, 96, 58, false, () => { if (fightaction == 0) { fightaction = 1; scene_fight(); } });
+            buttonActions.render();
+
+            let buttonAttack = new Button(145, 12, 96, 58, false, () => { if (fightaction == 1) { fightaction = 2; scene_fight(); } });
+            buttonAttack.render();
+
+            let buttonInventory = new Button(145, 12, 96, 58, false, () => { if (fightaction == 0) { console.log("click1") } });
+            buttonInventory.render();
+
+            let buttonTechniques = new Button(255, 12, 96, 58, false, () => { if (fightaction == 0) { console.log("click1") } });
+            buttonTechniques.render();
+
+            let buttonSwitch = new Button(365, 12, 96, 58, false, () => { if (fightaction == 0) { alert("No!"); } });
+            buttonSwitch.render();
+
+            let buttonFlee = new Button(475, 12, 96, 58, false, () => { if (fightaction == 0) { characters[char1].HP -= 10; characters[char2].HP -= 10; control = true; changeScene(1); }});
+            buttonFlee.render();
+
+            //That's only for graphics and some basic ifs and stuff
             scene_fight();
             break;
         case 4: //Game Over
@@ -342,11 +382,6 @@ function draw() {
 }
 
 function scene_fight() {
-    createEnemy(1, "placeholder");
-    createEnemy(2, "placeholder");
-    createEnemy(3, "placeholder");
-    createEnemy(4, "placeholder");
-
     ctx.drawImage(images.fight_bg, 0, 100, 800, 400);
 
     ctx.fillStyle = "rgb(114, 95, 57)";
@@ -356,66 +391,77 @@ function scene_fight() {
     ctx.fillRect(0, 10, 800, 70);
     ctx.fillRect(0, 400, 800, 80);
 
-    ctx.fillStyle = "rgb(47, 95, 191)";
-    ctx.fillRect(35, 12, 96, 58);
-    ctx.fillStyle = "rgb(191, 212, 255)";
-    ctx.fillRect(40, 17, 86, 48);
-    let buttonActions = new Button(35, 12, 96, 58, false, () => { console.log("click1") });
-    buttonActions.render();
-    ctx.drawImage(images.actions, 40, 17, 48, 48);
-    ctx.font = "12px NotoSans, sans-serif";
-    ctx.fillStyle = "rgb(0, 32, 102)";
-    ctx.fillText("Battle", 80, 35);
-    ctx.fillText("Actions", 80, 48);
+    // Buttons
 
-    ctx.fillStyle = "rgb(47, 191, 71)";
-    ctx.fillRect(145, 12, 96, 58);
-    ctx.fillStyle = "rgb(191, 255, 202)";
-    ctx.fillRect(150, 17, 86, 48);
-    let buttonInventory = new Button(145, 12, 96, 58, false, () => { console.log("click1") });
-    buttonInventory.render();
-    ctx.drawImage(images.inventory, 150, 17, 48, 48);
-    ctx.font = "12px NotoSans, sans-serif";
-    ctx.fillStyle = "rgb(0, 102, 13)";
-    ctx.fillText("Battle", 180, 35);
-    ctx.fillText("Inventory", 180, 48);
+    if (fightaction == 0) {
+        ctx.fillStyle = "rgb(47, 95, 191)";
+        ctx.fillRect(35, 12, 96, 58);
+        ctx.fillStyle = "rgb(191, 212, 255)";
+        ctx.fillRect(40, 17, 86, 48);
 
-    ctx.fillStyle = "rgb(191, 47, 167)";
-    ctx.fillRect(255, 12, 96, 58);
-    ctx.fillStyle = "rgb(255, 191, 244)";
-    ctx.fillRect(260, 17, 86, 48);
-    let buttonTechniques = new Button(255, 12, 96, 58, false, () => { console.log("click1") });
-    buttonTechniques.render();
-    ctx.drawImage(images.techniques, 260, 17, 48, 48);
-    ctx.font = "12px NotoSans, sans-serif";
-    ctx.fillStyle = "rgb(102, 0, 83)";
-    ctx.fillText("Mastery", 280, 35);
-    ctx.fillText("Techniques", 280, 48);
+        ctx.drawImage(images.actions, 40, 17, 48, 48);
+        ctx.font = "12px NotoSans, sans-serif";
+        ctx.fillStyle = "rgb(0, 32, 102)";
+        ctx.fillText("Battle", 80, 35);
+        ctx.fillText("Actions", 80, 48);
 
-    ctx.fillStyle = "rgb(191, 143, 47)";
-    ctx.fillRect(365, 12, 96, 58);
-    ctx.fillStyle = "rgb(255, 234, 191)";
-    ctx.fillRect(370, 17, 86, 48);
-    let buttonSwitch = new Button(365, 12, 96, 58, false, () => { alert("No!"); });
-    buttonSwitch.render();
-    ctx.drawImage(images.switch, 370, 17, 48, 48);
-    ctx.font = "12px NotoSans, sans-serif";
-    ctx.fillStyle = "rgb(102, 68, 0)";
-    ctx.fillText("Switch", 400, 35);
-    ctx.fillText("Scrapper", 400, 48);
+        ctx.fillStyle = "rgb(47, 191, 71)";
+        ctx.fillRect(145, 12, 96, 58);
+        ctx.fillStyle = "rgb(191, 255, 202)";
+        ctx.fillRect(150, 17, 86, 48);
 
-    ctx.fillStyle = "rgb(119, 119, 119)";
-    ctx.fillRect(475, 12, 96, 58);
-    ctx.fillStyle = "rgb(223, 223, 223)";
-    ctx.fillRect(480, 17, 86, 48);
-    let buttonFlee = new Button(475, 12, 96, 58, false, () => { characters[char1].HP -= 10; characters[char2].HP -= 10; control = true; changeScene(1); });
-    buttonFlee.render();
-    ctx.drawImage(images.flee, 480, 17, 48, 48);
-    ctx.font = "12px NotoSans, sans-serif";
-    ctx.fillStyle = "rgb(102, 102, 102)";
-    ctx.fillText("Flee", 530, 35);
-    ctx.fillText("Fight", 530, 48);
+        ctx.drawImage(images.inventory, 150, 17, 48, 48);
+        ctx.font = "12px NotoSans, sans-serif";
+        ctx.fillStyle = "rgb(0, 102, 13)";
+        ctx.fillText("Battle", 180, 35);
+        ctx.fillText("Inventory", 180, 48);
 
+        ctx.fillStyle = "rgb(191, 47, 167)";
+        ctx.fillRect(255, 12, 96, 58);
+        ctx.fillStyle = "rgb(255, 191, 244)";
+        ctx.fillRect(260, 17, 86, 48);
+
+        ctx.drawImage(images.techniques, 260, 17, 48, 48);
+        ctx.font = "12px NotoSans, sans-serif";
+        ctx.fillStyle = "rgb(102, 0, 83)";
+        ctx.fillText("Mastery", 280, 35);
+        ctx.fillText("Techniques", 280, 48);
+
+        ctx.fillStyle = "rgb(191, 143, 47)";
+        ctx.fillRect(365, 12, 96, 58);
+        ctx.fillStyle = "rgb(255, 234, 191)";
+        ctx.fillRect(370, 17, 86, 48);
+
+        ctx.drawImage(images.switch, 370, 17, 48, 48);
+        ctx.font = "12px NotoSans, sans-serif";
+        ctx.fillStyle = "rgb(102, 68, 0)";
+        ctx.fillText("Switch", 400, 35);
+        ctx.fillText("Scrapper", 400, 48);
+
+        ctx.fillStyle = "rgb(119, 119, 119)";
+        ctx.fillRect(475, 12, 96, 58);
+        ctx.fillStyle = "rgb(223, 223, 223)";
+        ctx.fillRect(480, 17, 86, 48);
+
+        ctx.drawImage(images.flee, 480, 17, 48, 48);
+        ctx.font = "12px NotoSans, sans-serif";
+        ctx.fillStyle = "rgb(102, 102, 102)";
+        ctx.fillText("Flee", 530, 35);
+        ctx.fillText("Fight", 530, 48);
+    }
+    else if (fightaction == 1) {
+        ctx.fillStyle = "rgb(47, 95, 191)";
+        ctx.fillRect(145, 12, 96, 58);
+        ctx.fillStyle = "rgb(191, 212, 255)";
+        ctx.fillRect(150, 17, 86, 48);
+        
+        ctx.drawImage(images.actions, 150, 17, 48, 48);
+        ctx.font = "12px NotoSans, sans-serif";
+        ctx.fillStyle = "rgb(0, 32, 102)";
+        ctx.fillText("Attack", 180, 35);
+    }
+
+    /*
     ctx.fillStyle = "black";
     ctx.font = "16px NotoSans, sans-serif";
     ctx.fillStyle = "lightblue";
@@ -428,7 +474,7 @@ function scene_fight() {
 
     ctx.fillText("HP: " + characters[char1].HP + "/" + characters[char1].maxHP, 612, 44);
     ctx.fillText("HP: " + characters[char2].HP + "/" + characters[char2].maxHP, 612, 72);
-
+    */
 
     ctx.fillStyle = "rgb(50, 78, 131)";
     ctx.fillRect(0, 375, 200, 125);
@@ -479,21 +525,29 @@ function scene_fight() {
     ctx.drawImage(sprites.bleu, 0, 64, 64, 64, 100, 200, 32, 32);
     ctx.drawImage(sprites.bleu, 0, 64, 64, 64, 140, 240, 32, 32);
 
-    let fightE1 = new Button(600, 200, 32, 32, false, () => { UI_FightE(1) });
-    fightE1.render();
-    ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 600, 200, 32, 32);
+    
+    if (gete(1).HP > 0) { ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 600, 200, 32, 32) };
+    if (gete(2).HP > 0) { ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 550, 250, 32, 32) };
+    if (gete(3).HP > 0) { ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 650, 200, 32, 32) };
+    if (gete(4).HP > 0) { ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 600, 250, 32, 32) };
+}
 
-    let fightE2 = new Button(550, 250, 32, 32, false, () => { UI_FightE(2) });
-    fightE2.render();
-    ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 550, 250, 32, 32);
+function fight_enemy(x) {
+    gete(x).HP -= characters[char1].strength;
+    fightaction = 0;
 
-    let fightE3 = new Button(650, 200, 32, 32, false, () => { UI_FightE(3) });
-    fightE3.render();
-    ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 650, 200, 32, 32);
+    if (gete(x).HP < 1) {
+        x = 0;
+    }
 
-    let fightE4 = new Button(600, 250, 32, 32, false, () => { UI_FightE(4) });
-    fightE4.render();
-    ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 600, 250, 32, 32);
+    if (gete(1).HP < 1 && gete(2).HP < 1 && gete(3).HP < 1 && gete(4).HP < 1) {
+        control = true;
+        changeScene(1);
+    }
+    else {
+        scene_fight();
+        UI_FightE(x);
+    }
 }
 
 function scene_menu() {
