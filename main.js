@@ -247,9 +247,10 @@ function loadGame() {
             return;
         }
 
-        characters = load(saveCopy, 0);
-        characters.bleu.strength = load(saveCopy.bleu.strength, 10);
-        characters.corelle.strength = load(saveCopy.corelle.strength, 4);
+        if (saveCopy["bleu"].inventory == undefined) { characters = characters; }
+        else {
+            characters = load(saveCopy, 0);
+        }
     }
 }
 
@@ -341,13 +342,13 @@ function draw() {
             createEnemy(4, "placeholder");
 
             //All the buttons
-            let fightE1 = new Button(600, 200, 32, 32, false, () => { if (gete(1).HP > 0) { fightselect = 1; if (fightaction == 2) { fight_enemy(fightselect) } UI_FightE(fightselect); scene_fight();}});
+            let fightE1 = new Button(600, 200, 32, 32, false, () => { if (gete(1).HP > 0) { fightselect = 1; if (fightaction == 2) { fight_enemy(fightselect) } scene_fight(); UI_FightE(fightselect);}});
             fightE1.render();
-            let fightE2 = new Button(550, 250, 32, 32, false, () => { if (gete(2).HP > 0) { fightselect = 2; if (fightaction == 2) { fight_enemy(fightselect) } UI_FightE(fightselect); scene_fight();}});
+            let fightE2 = new Button(550, 250, 32, 32, false, () => { if (gete(2).HP > 0) { fightselect = 2; if (fightaction == 2) { fight_enemy(fightselect) } scene_fight(); UI_FightE(fightselect);}});
             fightE2.render();
-            let fightE3 = new Button(650, 200, 32, 32, false, () => { if (gete(3).HP > 0) { fightselect = 3; if (fightaction == 2) { fight_enemy(fightselect) } UI_FightE(fightselect); scene_fight();}});
+            let fightE3 = new Button(650, 200, 32, 32, false, () => { if (gete(3).HP > 0) { fightselect = 3; if (fightaction == 2) { fight_enemy(fightselect) } scene_fight(); UI_FightE(fightselect);}});
             fightE3.render();
-            let fightE4 = new Button(600, 250, 32, 32, false, () => { if (gete(4).HP > 0) { fightselect = 4; if (fightaction == 2) { fight_enemy(fightselect) } UI_FightE(fightselect); scene_fight();}});
+            let fightE4 = new Button(600, 250, 32, 32, false, () => { if (gete(4).HP > 0) { fightselect = 4; if (fightaction == 2) { fight_enemy(fightselect) } scene_fight(); UI_FightE(fightselect);}});
             fightE4.render();
 
             let buttonActions = new Button(35, 12, 96, 58, false, () => { if (fightaction == 0) { fightaction = 1; scene_fight(); } });
@@ -533,7 +534,24 @@ function fight_enemy(x) {
         x = 0;
     }
 
-    if (gete(1).HP < 1 && gete(2).HP < 1 && gete(3).HP < 1 && gete(4).HP < 1) {
+    if (gete(1).HP < 1 && gete(2).HP < 1 && gete(3).HP < 1 && gete(4).HP < 1) { //WON!!!
+        characters[char1].EXP += 10;
+        characters[char2].EXP += 10;
+
+        if (characters[char1].EXP > 24) {
+            characters[char1].level += 1;
+            characters[char1].EXP -= 25;
+            characters[char1].maxHP += Math.round(characters[char1].maxHP / 8);
+            characters[char1].HP = characters[char1].maxHP;
+            characters[char1].strength += Math.round(characters[char1].strength / 8);
+        }
+        if (characters[char2].EXP > 24) {
+            characters[char2].level += 1;
+            characters[char2].EXP -= 25;
+            characters[char2].maxHP += Math.round(characters[char2].maxHP / 8);
+            characters[char2].HP = characters[char2].maxHP;
+            characters[char2].strength += Math.round(characters[char2].strength / 8);
+        }
         control = true;
         changeScene(1);
     }
