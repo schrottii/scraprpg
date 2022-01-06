@@ -230,7 +230,7 @@ function load(x, altx) {
 }
 
 function saveGame() {
-    let saveCopy = JSON.parse(JSON.stringify(characters));
+    let saveCopy = JSON.parse(JSON.stringify({ characters: characters, pos: [xpos, ypos]}));
     localStorage.setItem("SOTR" + saveNR, JSON.stringify(saveCopy));
 }
 
@@ -248,10 +248,9 @@ function loadGame() {
             return;
         }
 
-        if (saveCopy["bleu"].inventory == undefined){ characters = characters; }
-        else {
-            characters = load(saveCopy, 0);
-        }
+        characters = load(saveCopy.characters, characters);
+        xpos = load(saveCopy.pos[0], 0);
+        ypos = load(saveCopy.pos[1], 0);
     }
 }
 
