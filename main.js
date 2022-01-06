@@ -6,6 +6,7 @@ if (canvas.getContext) {
 
 // Create several variables
 let buttons = [];
+var saveNR = 0;
 
 let currentScene = 0;
 
@@ -230,14 +231,14 @@ function load(x, altx) {
 
 function saveGame() {
     let saveCopy = JSON.parse(JSON.stringify(characters));
-    localStorage.setItem("SOTR", JSON.stringify(saveCopy));
+    localStorage.setItem("SOTR" + saveNR, JSON.stringify(saveCopy));
 }
 
 function loadGame() {
     let saveCopy;
-    saveCopy = localStorage.getItem("SOTR");
+    saveCopy = localStorage.getItem("SOTR" + saveNR);
 
-    if (saveCopy !== null) {
+    if (saveCopy !== null && saveCopy !== "null") {
         try {
             saveCopy = JSON.parse(saveCopy);
         }
@@ -247,7 +248,7 @@ function loadGame() {
             return;
         }
 
-        if (saveCopy["bleu"].inventory == undefined) { characters = characters; }
+        if (saveCopy["bleu"].inventory == undefined){ characters = characters; }
         else {
             characters = load(saveCopy, 0);
         }
@@ -601,7 +602,89 @@ function scene_menu() {
     ctx.fillText("v0.1", 700, 475);
 
     // Invisible button that covers the whole screen
-    buttons.push([0, 800, 0, 500, () => { changeScene(2) }]);
+    buttons.push([0, 800, 0, 500, () => {
+        buttons = [];
+        localStorage["SOTR0"] = null;
+
+        ctx.fillStyle = "rgb(47, 95, 191)";
+        ctx.fillRect(35, 12, 96, 58);
+        ctx.fillStyle = "rgb(191, 212, 255)";
+        ctx.fillRect(40, 17, 86, 48);
+
+        ctx.drawImage(images.selected32, 40, 17, 32, 32);
+        ctx.font = "12px NotoSans, sans-serif";
+        ctx.fillStyle = "rgb(0, 32, 102)";
+        ctx.fillText("Save 1", 80, 35);
+
+        let loadSave1 = new Button(35, 12, 96, 58, false, () => { saveNR = 1; loadGame(); changeScene(2); });
+        loadSave1.render();
+
+        ctx.fillStyle = "rgb(47, 95, 191)";
+        ctx.fillRect(135, 12, 96, 58);
+        ctx.fillStyle = "rgb(191, 212, 255)";
+        ctx.fillRect(140, 17, 86, 48);
+
+        ctx.drawImage(images.selected32, 140, 17, 32, 32);
+        ctx.font = "12px NotoSans, sans-serif";
+        ctx.fillStyle = "rgb(0, 32, 102)";
+        ctx.fillText("Save 2", 180, 35);
+
+        let loadSave2 = new Button(135, 12, 96, 58, false, () => { saveNR = 2; loadGame(); changeScene(2); });
+        loadSave2.render();
+
+        ctx.fillStyle = "rgb(47, 95, 191)";
+        ctx.fillRect(235, 12, 96, 58);
+        ctx.fillStyle = "rgb(191, 212, 255)";
+        ctx.fillRect(240, 17, 86, 48);
+
+        ctx.drawImage(images.selected32, 240, 17, 32, 32);
+        ctx.font = "12px NotoSans, sans-serif";
+        ctx.fillStyle = "rgb(0, 32, 102)";
+        ctx.fillText("Save 3", 280, 35);
+
+        let loadSave3 = new Button(235, 12, 96, 58, false, () => { saveNR = 3; loadGame(); changeScene(2); });
+        loadSave3.render();
+
+
+        ctx.fillStyle = "rgb(47, 95, 191)";
+        ctx.fillRect(35, 112, 96, 58);
+        ctx.fillStyle = "rgb(191, 212, 255)";
+        ctx.fillRect(40, 117, 86, 48);
+
+        ctx.drawImage(images.gear, 40, 117, 32, 32);
+        ctx.font = "12px NotoSans, sans-serif";
+        ctx.fillStyle = "rgb(0, 32, 102)";
+        ctx.fillText("DELETE 1", 70, 135);
+
+        let delSave1 = new Button(35, 112, 96, 58, false, () => { localStorage["SOTR1"] = null; });
+        delSave1.render();
+
+        ctx.fillStyle = "rgb(47, 95, 191)";
+        ctx.fillRect(135, 112, 96, 58);
+        ctx.fillStyle = "rgb(191, 212, 255)";
+        ctx.fillRect(140, 117, 86, 48);
+
+        ctx.drawImage(images.gear, 140, 117, 32, 32);
+        ctx.font = "12px NotoSans, sans-serif";
+        ctx.fillStyle = "rgb(0, 32, 102)";
+        ctx.fillText("DELETE 2", 170, 135);
+
+        let delSave2 = new Button(135, 112, 96, 58, false, () => { localStorage["SOTR2"] = null; });
+        delSave2.render();
+
+        ctx.fillStyle = "rgb(47, 95, 191)";
+        ctx.fillRect(235, 112, 96, 58);
+        ctx.fillStyle = "rgb(191, 212, 255)";
+        ctx.fillRect(240, 117, 86, 48);
+
+        ctx.drawImage(images.gear, 240, 117, 32, 32);
+        ctx.font = "12px NotoSans, sans-serif";
+        ctx.fillStyle = "rgb(0, 32, 102)";
+        ctx.fillText("DELETE 3", 270, 135);
+
+        let delSave3 = new Button(235, 112, 96, 58, false, () => { localStorage["SOTR3"] = null; });
+        delSave3.render();
+    }]);
 }
 
 function generate_tiles() {
@@ -793,6 +876,6 @@ document.body.onkeydown = function (e) {
 
 // Start the game
 images.gameicon.onload = function start() {
-    loadGame();
+    //loadGame();
     draw();
 }
