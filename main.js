@@ -740,16 +740,16 @@ function scene_map() {
     }
     switch (evilfacing) {
         case "up":
-            ctx.drawImage(sprites.evil, evilsprite_pr, 68, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
+            ctx.drawImage(sprites.evil, evilsprite_pr, 128, 64, 64, evilxpos * 32, evilypos * 32, 32, 32);
             break;
         case "left":
-            ctx.drawImage(sprites.evil, evilsprite_pr, 102, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
+            ctx.drawImage(sprites.evil, evilsprite_pr, 192, 64, 64, evilxpos * 32, evilypos * 32, 32, 32);
             break;
         case "down":
-            ctx.drawImage(sprites.evil, evilsprite_pr, 0, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
+            ctx.drawImage(sprites.evil, evilsprite_pr, 0, 64, 64, evilxpos * 32, evilypos * 32, 32, 32);
             break;
         case "right":
-            ctx.drawImage(sprites.evil, evilsprite_pr, 34, 20, 34, evilxpos * 32, evilypos * 32, 32, 32);
+            ctx.drawImage(sprites.evil, evilsprite_pr, 64, 64, 64, evilxpos * 32, evilypos * 32, 32, 32);
             break;
     }
 
@@ -793,8 +793,8 @@ function autoMove() {
 }
 
 function evilMove() {
-    evilsprite_pr += 20;
-    if (evilsprite_pr == 40) { evilsprite_pr = 0; }
+    evilsprite_pr += 64;
+    if (evilsprite_pr == 128) { evilsprite_pr = 0; }
 
     ai = Math.ceil(Math.random() * 4);
     switch (ai) {
