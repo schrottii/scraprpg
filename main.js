@@ -884,5 +884,5 @@ document.body.onkeydown = function (e) {
 // Start the game
 images.gameicon.onload = function start() {
     //loadGame();
-    draw();
+    setTimeout(draw(), 0);
 }
