@@ -33,8 +33,8 @@ var images =
 
 var sprites =
 {
-    bleu: loadImage("Images/map_bleu.png"),
-    evil: loadImage("Images/map_evil.png")
+    bleu: loadImage("Images/Map_Bleu.png"),
+    evil: loadImage("Images/Map_Evil.png")
 };
 
 var portraits =

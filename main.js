@@ -382,7 +382,7 @@ function draw() {
         case 4: //Game Over
             control = false;
             setTimeout(() => { ctx.drawImage(images.gameover, 0, 0, 800, 500) }, 10);
-            setTimeout(() => { changeScene(0) }, 5000);
+            setTimeout(() => { changeScene(0); control = true; }, 5000);
             characters[char1].HP = characters[char1].maxHP;
             characters[char2].HP = characters[char2].maxHP;
             break;
