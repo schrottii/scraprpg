@@ -601,6 +601,37 @@ function draw_fighters() {
     if (fightselect == 4) { ctx.drawImage(images.selected32, 600, 250, 32, 32) };
 }
 
+function loadsavebutton(x) {
+    ctx.fillStyle = "rgb(47, 95, 191)";
+    ctx.fillRect(35 + (100*x), 12, 96, 58);
+    ctx.fillStyle = "rgb(191, 212, 255)";
+    ctx.fillRect(40 + (100*x), 17, 86, 48);
+
+    ctx.drawImage(images.paper, 40 + (100*x), 27, 32, 32);
+    ctx.font = "12px NotoSans, sans-serif";
+    ctx.fillStyle = "rgb(0, 32, 102)";
+
+    if (localStorage["SOTR"+(x+1)] != null && localStorage["SOTR"+(x+1)] != "null") { ctx.fillText("Save " + (x+1), 80 + (x*100), 45); }
+    else { ctx.fillText("EMPTY", 80 + (x*100), 45); }
+}
+
+function deletesavebutton(x) {
+    ctx.fillStyle = "rgb(47, 95, 191)";
+    ctx.fillRect(35 + (x * 100), 112, 96, 58);
+    ctx.fillStyle = "rgb(191, 212, 255)";
+    ctx.fillRect(40 + (x * 100), 117, 86, 48);
+
+    ctx.drawImage(images.gear, 40 + (x * 100), 127, 32, 32);
+    ctx.font = "12px NotoSans, sans-serif";
+    ctx.fillStyle = "rgb(0, 32, 102)";
+    if (localStorage["SOTR1"] != null && localStorage["SOTR1"] != "null") {
+        ctx.fillText("DELETE " + (x + 1), 70 + (x * 100), 145);
+    }
+    else {
+        ctx.fillText("Deleted!", 70 + (x * 100), 145);
+    }
+}
+
 function scene_menu() {
     // Draw background and icon
     ctx.drawImage(images.mainmenu_bg, 0, 0, 800, 500);
@@ -627,90 +658,33 @@ function scene_menu() {
         buttons = [];
         localStorage["SOTR0"] = null;
 
-        ctx.fillStyle = "rgb(47, 95, 191)";
-        ctx.fillRect(35, 12, 96, 58);
-        ctx.fillStyle = "rgb(191, 212, 255)";
-        ctx.fillRect(40, 17, 86, 48);
-
-        ctx.drawImage(images.paper, 40, 27, 32, 32);
-        ctx.font = "12px NotoSans, sans-serif";
-        ctx.fillStyle = "rgb(0, 32, 102)";
-        if (localStorage["SOTR1"] != null && localStorage["SOTR1"] != "null") { ctx.fillText("Save 1", 80, 45); }
-        else { ctx.fillText("EMPTY", 80, 45); }
-
+        loadsavebutton(0);
         let loadSave1 = new Button(35, 12, 96, 58, false, () => { saveNR = 1; loadGame(); changeScene(2); });
         loadSave1.render();
 
-        ctx.fillStyle = "rgb(47, 95, 191)";
-        ctx.fillRect(135, 12, 96, 58);
-        ctx.fillStyle = "rgb(191, 212, 255)";
-        ctx.fillRect(140, 17, 86, 48);
-
-        ctx.drawImage(images.paper, 140, 27, 32, 32);
-        ctx.font = "12px NotoSans, sans-serif";
-        ctx.fillStyle = "rgb(0, 32, 102)";
-        if (localStorage["SOTR2"] != null && localStorage["SOTR2"] != "null") { ctx.fillText("Save 2", 180, 45); }
-        else { ctx.fillText("EMPTY", 180, 45); }
-
+        loadsavebutton(1);
         let loadSave2 = new Button(135, 12, 96, 58, false, () => { saveNR = 2; loadGame(); changeScene(2); });
         loadSave2.render();
 
-        ctx.fillStyle = "rgb(47, 95, 191)";
-        ctx.fillRect(235, 12, 96, 58);
-        ctx.fillStyle = "rgb(191, 212, 255)";
-        ctx.fillRect(240, 17, 86, 48);
-
-        ctx.drawImage(images.paper, 240, 27, 32, 32);
-        ctx.font = "12px NotoSans, sans-serif";
-        ctx.fillStyle = "rgb(0, 32, 102)";
-        if (localStorage["SOTR3"] != null && localStorage["SOTR3"] != "null") { ctx.fillText("Save 3", 280, 45); }
-        else { ctx.fillText("EMPTY", 280, 45); }
-
+        loadsavebutton(2);
         let loadSave3 = new Button(235, 12, 96, 58, false, () => { saveNR = 3; loadGame(); changeScene(2); });
         loadSave3.render();
 
         if (localStorage["SOTR1"] != null && localStorage["SOTR1"] != "null") {
-            ctx.fillStyle = "rgb(47, 95, 191)";
-            ctx.fillRect(35, 112, 96, 58);
-            ctx.fillStyle = "rgb(191, 212, 255)";
-            ctx.fillRect(40, 117, 86, 48);
-
-            ctx.drawImage(images.gear, 40, 127, 32, 32);
-            ctx.font = "12px NotoSans, sans-serif";
-            ctx.fillStyle = "rgb(0, 32, 102)";
-            ctx.fillText("DELETE 1", 70, 145);
-
-            let delSave1 = new Button(35, 112, 96, 58, false, () => { localStorage["SOTR1"] = null; });
+            deletesavebutton(0);
+            let delSave1 = new Button(35, 112, 96, 58, false, () => { localStorage["SOTR1"] = null; loadsavebutton(0); deletesavebutton(0); });
             delSave1.render();
         }
 
         if (localStorage["SOTR2"] != null && localStorage["SOTR2"] != "null") {
-            ctx.fillStyle = "rgb(47, 95, 191)";
-            ctx.fillRect(135, 112, 96, 58);
-            ctx.fillStyle = "rgb(191, 212, 255)";
-            ctx.fillRect(140, 117, 86, 48);
-
-            ctx.drawImage(images.gear, 140, 127, 32, 32);
-            ctx.font = "12px NotoSans, sans-serif";
-            ctx.fillStyle = "rgb(0, 32, 102)";
-            ctx.fillText("DELETE 2", 170, 145);
-
-            let delSave2 = new Button(135, 112, 96, 58, false, () => { localStorage["SOTR2"] = null; });
+            deletesavebutton(1);
+            let delSave2 = new Button(135, 112, 96, 58, false, () => { localStorage["SOTR2"] = null; loadsavebutton(1); deletesavebutton(1); });
             delSave2.render();
         }
 
         if (localStorage["SOTR3"] != null && localStorage["SOTR3"] != "null") {
-            ctx.fillStyle = "rgb(47, 95, 191)";
-            ctx.fillRect(235, 112, 96, 58);
-            ctx.fillStyle = "rgb(191, 212, 255)";
-            ctx.fillRect(240, 117, 86, 48);
-
-            ctx.drawImage(images.gear, 240, 127, 32, 32);
-            ctx.font = "12px NotoSans, sans-serif";
-            ctx.fillStyle = "rgb(0, 32, 102)";
-            ctx.fillText("DELETE 3", 270, 145);
-
-            let delSave3 = new Button(235, 112, 96, 58, false, () => { localStorage["SOTR3"] = null; });
+            deletesavebutton(2);
+            let delSave3 = new Button(235, 112, 96, 58, false, () => { localStorage["SOTR3"] = null; loadsavebutton(2); deletesavebutton(2); });
             delSave3.render();
         }
     }]);
