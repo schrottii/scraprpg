@@ -31,9 +31,9 @@ var fightselect = 1;
 const enemies = {
     placeholder: {
         name: "Example Enemy",
-        maxHP: 15,
+        maxHP: 8,
         damage: 2,
-        range: 2
+        range: 3
     },
     placeholder2: {
         name: "PLACEHOLDER2",
@@ -130,6 +130,13 @@ function createEnemy(x, type) {
     creatingEnemy.HP = creatingEnemy.maxHP;
 
     currentEnemies["enemy" + x] = creatingEnemy;
+}
+
+function check_gameover() {
+    if (characters[char1].HP < 1 || characters[char2].HP < 1) {
+        changeScene(4);
+        return;
+    }
 }
 
 // Buttons
@@ -556,6 +563,21 @@ function fight_enemy(x) {
         changeScene(1);
     }
     else {
+        // U get addacked
+        for (i = 0; i < Object.keys(currentEnemies).length; i++) {
+            if (Math.random() > 0.5) {
+                var curattack = char1;
+            }
+            else{
+                var curattack = char2;
+            }
+            if (Math.random() > 0.7) {
+                characters[curattack].HP -= gete(i + 1).damage;
+            }
+        }
+
+        check_gameover();
+
         scene_fight();
         UI_FightE(x);
     }
@@ -713,10 +735,7 @@ function generate_tiles() {
 }
 
 function scene_map() {
-    if (characters[char1].HP < 1 || characters[char2].HP < 1) {
-        changeScene(4);
-        return;
-    }
+    check_gameover();
 
     // Tiles
     generate_tiles();
@@ -882,7 +901,7 @@ document.body.onkeydown = function (e) {
 }
 
 // Start the game
-images.gameicon.onload = function start() {
+tiles.water2.onload = function start() {
     //loadGame();
-    setTimeout(draw(), 0);
+    draw();
 }
