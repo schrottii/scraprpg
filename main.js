@@ -9,6 +9,7 @@ let buttons = [];
 var saveNR = 0;
 
 let currentScene = 0;
+var inventoryPage = 0;
 
 var control = true;
 var xpos = 0;
@@ -364,8 +365,10 @@ function draw() {
             let buttonAttack = new Button(145, 12, 96, 58, false, () => { if (fightaction == 1) { fightaction = 2; scene_fight(); } });
             buttonAttack.render();
 
-            let buttonInventory = new Button(145, 12, 96, 58, false, () => { if (fightaction == 0) { console.log("click1") } });
+            let buttonInventory = new Button(145, 12, 96, 58, false, () => { if (fightaction == 0) { inventoryPage = 1; seeInventory(); } });
             buttonInventory.render();
+            let buttonInventoryClose = new Button(685, 140, 20, 20, false, () => { if (inventoryPage > 0) { inventoryPage = 0; scene_fight(); } });
+            buttonInventoryClose.render();
 
             let buttonTechniques = new Button(255, 12, 96, 58, false, () => { if (fightaction == 0) { console.log("click1") } });
             buttonTechniques.render();
@@ -386,6 +389,29 @@ function draw() {
             characters[char1].HP = characters[char1].maxHP;
             characters[char2].HP = characters[char2].maxHP;
             break;
+    }
+}
+
+function seeInventory() {
+    ctx.fillStyle = "rgb(114, 95, 57)";
+    ctx.fillRect(100, 120, 600, 250);
+    ctx.fillStyle = "rgb(186, 154, 89)";
+    ctx.fillRect(120, 140, 560, 210);
+
+    ctx.font = "20px NotoSans, sans-serif";
+    ctx.fillStyle = "red";
+    ctx.fillText("X", 685, 140);
+    ctx.fillStyle = "black";
+    ctx.fillText("Inventory", 120, 140);
+
+    ctx.font = "10px NotoSans, sans-serif";
+    for (p = 0; p < 5; p++) {
+        if (characters[char1].inventory[i] != undefined) {
+            ctx.fillText(characters[char1].inventory[i], 130, 150 + (12 * p));
+        }
+        else {
+            ctx.fillText("---", 130, 150 + (12 * p));
+        }
     }
 }
 
@@ -797,7 +823,7 @@ function evilMove() {
     switch (ai) {
         case 1:
             if (map[evilypos + ypos] != undefined) {
-                if (map[evilypos + ypos][evilxpos + xpos +1] != 2) {
+                if (map[evilypos + ypos][evilxpos + xpos + 1] != 2) {
                     evilxpos += 1;
                     evilfacing = "right";
                 }
@@ -805,23 +831,23 @@ function evilMove() {
             break;
         case 2:
             if (map[evilypos + ypos] != undefined) {
-                if (map[evilypos + ypos][evilxpos + xpos -1] != 2) {
+                if (map[evilypos + ypos][evilxpos + xpos - 1] != 2) {
                     evilxpos -= 1;
                     evilfacing = "left";
                 }
             }
             break;
         case 3:
-            if (map[evilypos + ypos +1] != undefined) {
-                if (map[evilypos + ypos +1][evilxpos + xpos] != 2) {
+            if (map[evilypos + ypos + 1] != undefined) {
+                if (map[evilypos + ypos + 1][evilxpos + xpos] != 2) {
                     evilypos += 1;
                     evilfacing = "up";
                 }
             }
             break;
         case 4:
-            if (map[evilypos + ypos -1] != undefined) {
-                if (map[evilypos + ypos -1][evilxpos + xpos] != 2) {
+            if (map[evilypos + ypos - 1] != undefined) {
+                if (map[evilypos + ypos - 1][evilxpos + xpos] != 2) {
                     evilypos -= 1;
                     evilfacing = "down";
                 }
@@ -839,9 +865,11 @@ function evilMove() {
     if (evilxpos > 25 || evilxpos < 0) { evilxpos = 12 };
     if (evilypos > 16 || evilypos < 0) { evilypos = 4 };
 
-    if (map[evilypos + ypos][evilxpos + xpos] == 2) {
-        evilxpos = 12;
-        evilypos = 4;
+    if (map[evilypos + ypos] != undefined) {
+        if (map[evilypos + ypos][evilxpos + xpos] == 2) {
+            evilxpos = 12;
+            evilypos = 4;
+        }
     }
 }
 
