@@ -392,7 +392,19 @@ function draw() {
             let buttonTechniques = new Button(255, 12, 96, 58, false, () => { if (fightaction == 0) { console.log("click1") } });
             buttonTechniques.render();
 
-            let buttonSwitch = new Button(365, 12, 96, 58, false, () => { if (fightaction == 0) { alert("No!"); } });
+            let buttonSwitch = new Button(365, 12, 96, 58, false, () => {
+                if (fightaction == 0) {
+                    if (char1 == "bleu") {
+                        char1 = "corelle";
+                        char2 = "bleu";
+                    }
+                    else {
+                        char1 = "bleu";
+                        char2 = "corelle";
+                    }
+                    scene_fight();
+                }
+            });
             buttonSwitch.render();
 
             let buttonFlee = new Button(475, 12, 96, 58, false, () => { if (fightaction == 0) { characters[char1].HP -= 10; characters[char2].HP -= 10; control = true; changeScene(1); }});
@@ -591,7 +603,7 @@ function scene_fight() {
 
     ctx.fillStyle = "yellow";
     ctx.fillRect(225, 375, 75, 75);
-    ctx.drawImage(portraits.bleu, 230, 380, 65, 65);
+    ctx.drawImage(portraits[char1], 230, 380, 65, 65);
     ctx.font = "20px NotoSans, sans-serif";
     ctx.fillText("Level " + characters[char1].level, 230, 480);
     ctx.fillStyle = "blue";
@@ -608,7 +620,7 @@ function scene_fight() {
 
     ctx.fillStyle = "yellow";
     ctx.fillRect(395, 375, 75, 75);
-    ctx.drawImage(portraits.corelle, 400, 380, 65, 65);
+    ctx.drawImage(portraits[char2], 400, 380, 65, 65);
     ctx.font = "20px NotoSans, sans-serif";
     ctx.fillText("Level " + characters[char1].level, 400, 480);
     ctx.fillStyle = "blue";
