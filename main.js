@@ -140,6 +140,15 @@ function check_gameover() {
     }
 }
 
+function addItem(who, what, amount=1) {
+    if (characters[who].inventory[what] == undefined) {
+        characters[who].inventory[what] = amount;
+    }
+    else {
+        characters[who].inventory[what] += amount;
+    }
+}
+
 // Buttons
 function canvasClicked(e) {
     // I think this function / button clicking system is not optimal, but it should do it's job
@@ -405,12 +414,23 @@ function seeInventory() {
     ctx.fillText("Inventory", 120, 140);
 
     ctx.font = "10px NotoSans, sans-serif";
-    for (p = 0; p < 5; p++) {
-        if (characters[char1].inventory[i] != undefined) {
-            ctx.fillText(characters[char1].inventory[i], 130, 150 + (12 * p));
+
+    ctx.fillText(characters[char1].name, 210, 150);
+    for (p = 0; p < 10; p++) {
+        if (Object.keys(characters[char1].inventory)[p] != undefined) {
+            ctx.fillText(characters[char1].inventory[Object.keys(characters[char1].inventory)[p]] + "  " + Object.keys(characters[char1].inventory)[p], 200, 170 + (15 * p));
         }
         else {
-            ctx.fillText("---", 130, 150 + (12 * p));
+            ctx.fillText("---", 200, 170 + (15 * p));
+        }
+    }
+    ctx.fillText(characters[char2].name, 510, 150);
+    for (p = 0; p < 10; p++) {
+        if (Object.keys(characters[char2].inventory)[p] != undefined) {
+            ctx.fillText(characters[char2].inventory[Object.keys(characters[char2].inventory)[p]] + "  " + Object.keys(characters[char2].inventory)[p], 500, 170 + (15 * p));
+        }
+        else {
+            ctx.fillText("---", 500, 170 + (15 * p));
         }
     }
 }
@@ -571,6 +591,13 @@ function fight_enemy(x) {
         characters[char1].EXP += 10;
         characters[char2].EXP += 10;
 
+        if (Math.random() > 0.6) {
+            addItem(char1, "potion", 1);
+        }
+        if (Math.random() > 0.6) {
+            addItem(char2, "potion", 1);
+        }
+
         if (characters[char1].EXP > 24) {
             characters[char1].level += 1;
             characters[char1].EXP -= 25;
@@ -589,7 +616,7 @@ function fight_enemy(x) {
         changeScene(1);
     }
     else {
-        // U get addacked
+        // U god addacked hmmmm
         for (i = 0; i < Object.keys(currentEnemies).length; i++) {
             if (Math.random() > 0.5) {
                 var curattack = char1;
@@ -650,7 +677,7 @@ function deletesavebutton(x) {
     ctx.drawImage(images.gear, 40 + (x * 100), 127, 32, 32);
     ctx.font = "12px NotoSans, sans-serif";
     ctx.fillStyle = "rgb(0, 32, 102)";
-    if (localStorage["SOTR1"] != null && localStorage["SOTR1"] != "null") {
+    if (localStorage["SOTR" + (x + 1)] != null && localStorage["SOTR" + (x + 1)] != "null") {
         ctx.fillText("DELETE " + (x + 1), 70 + (x * 100), 145);
     }
     else {
@@ -867,8 +894,20 @@ function evilMove() {
 
     if (map[evilypos + ypos] != undefined) {
         if (map[evilypos + ypos][evilxpos + xpos] == 2) {
-            evilxpos = 12;
-            evilypos = 4;
+            var attempts = 0;
+            while (map[evilypos + ypos] != undefined && map[evilypos + ypos][evilxpos + xpos] == 2 && attempts < 1000) {
+                evilxpos = Math.round(Math.random() * 25);
+                evilypos = Math.round(Math.random() * 16);
+                attempts += 1;
+            }
+        }
+    }
+    if (map[evilypos + ypos] == undefined) {
+        var attempts = 0;
+        while (map[evilypos + ypos] == undefined && attempts < 1000) {
+            evilxpos = Math.round(Math.random() * 25);
+            evilypos = Math.round(Math.random() * 16);
+            attempts += 1;
         }
     }
 }
