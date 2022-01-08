@@ -29,6 +29,9 @@ var ai = 0;
 var fightaction = 0;
 var fightselect = 1;
 
+var mouseX;
+var mouseY;
+
 const enemies = {
     placeholder: {
         name: "Example Enemy",
@@ -376,6 +379,9 @@ function draw() {
 
             let buttonInventory = new Button(145, 12, 96, 58, false, () => { if (fightaction == 0) { inventoryPage = 1; seeInventory(); } });
             buttonInventory.render();
+            let buttonInventoryItem = new Button(120, 140, 560, 210, false, () => { if (inventoryPage > 0) { inventoryClicked(); } });
+            buttonInventoryItem.render();
+
             let buttonInventoryClose = new Button(665, 120, 40, 40, false, () => { if (inventoryPage > 0) { inventoryPage = 0; scene_fight(); } });
             buttonInventoryClose.render();
 
@@ -434,6 +440,38 @@ function seeInventory() {
         else {
             ctx.fillText("---", 500, 170 + (32 * p));
         }
+    }
+}
+
+function inventoryClicked() {
+    // Char1 Items
+    for (x = 0; x < 5; x++) {
+        if (mouseX > 170 && mouseX < 300 && mouseY > 145 + (32 * x) && mouseY < 177 + (32 * x)) {
+            useItem(Object.keys(characters[char1].inventory)[x], char1);
+        }
+    }
+
+    // Char2 Items
+    for (x = 0; x < 5; x++) {
+        if (mouseX > 470 && mouseX < 700 && mouseY > 145 + (32 * x) && mouseY < 177 + (32 * x)) {
+            useItem(Object.keys(characters[char2].inventory)[x], char2);
+        }
+    }
+}
+
+function useItem(item, who) {
+    if (item == undefined) { return };
+    characters[who].inventory[item] -= 1;
+
+    switch (item) {
+        case "potion":
+            characters[who].HP += 20;
+            if (characters[who].HP > characters[who].maxHP) { characters[who].HP = characters[who].maxHP };
+            break;
+        case "bigpotion":
+            characters[who].HP += 50;
+            if (characters[who].HP > characters[who].maxHP) { characters[who].HP = characters[who].maxHP };
+            break;
     }
 }
 
@@ -593,11 +631,18 @@ function fight_enemy(x) {
         characters[char1].EXP += 10;
         characters[char2].EXP += 10;
 
+        // Placeholder. This will be reworked later.
         if (Math.random() > 0.6) {
             addItem(char1, "potion", 1);
         }
         if (Math.random() > 0.6) {
             addItem(char2, "potion", 1);
+        }
+        if (Math.random() > 0.95) {
+            addItem(char1, "bigpotion", 1);
+        }
+        if (Math.random() > 0.95) {
+            addItem(char2, "bigpotion", 1);
         }
 
         if (characters[char1].EXP > 24) {
