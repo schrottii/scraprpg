@@ -31,6 +31,11 @@ var images =
     selected32: loadImage("Images/selected.png")
 };
 
+var items =
+{
+    potion: loadImage("Images/Items/potion.png")
+}
+
 var sprites =
 {
     bleu: loadImage("Images/Map_Bleu.png"),

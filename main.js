@@ -376,7 +376,7 @@ function draw() {
 
             let buttonInventory = new Button(145, 12, 96, 58, false, () => { if (fightaction == 0) { inventoryPage = 1; seeInventory(); } });
             buttonInventory.render();
-            let buttonInventoryClose = new Button(685, 140, 20, 20, false, () => { if (inventoryPage > 0) { inventoryPage = 0; scene_fight(); } });
+            let buttonInventoryClose = new Button(665, 120, 40, 40, false, () => { if (inventoryPage > 0) { inventoryPage = 0; scene_fight(); } });
             buttonInventoryClose.render();
 
             let buttonTechniques = new Button(255, 12, 96, 58, false, () => { if (fightaction == 0) { console.log("click1") } });
@@ -413,24 +413,26 @@ function seeInventory() {
     ctx.fillStyle = "black";
     ctx.fillText("Inventory", 120, 140);
 
-    ctx.font = "10px NotoSans, sans-serif";
+    ctx.font = "16px NotoSans, sans-serif";
 
     ctx.fillText(characters[char1].name, 210, 150);
-    for (p = 0; p < 10; p++) {
+    for (p = 0; p < 5; p++) {
         if (Object.keys(characters[char1].inventory)[p] != undefined) {
-            ctx.fillText(characters[char1].inventory[Object.keys(characters[char1].inventory)[p]] + "  " + Object.keys(characters[char1].inventory)[p], 200, 170 + (15 * p));
+            ctx.fillText(characters[char1].inventory[Object.keys(characters[char1].inventory)[p]] + "  " + Object.keys(characters[char1].inventory)[p], 200, 170 + (32 * p));
+            ctx.drawImage(items[Object.keys(characters[char1].inventory)[p]], 170, 144 + (32 * p), 32, 32);
         }
         else {
-            ctx.fillText("---", 200, 170 + (15 * p));
+            ctx.fillText("---", 200, 170 + (32 * p));
         }
     }
     ctx.fillText(characters[char2].name, 510, 150);
-    for (p = 0; p < 10; p++) {
+    for (p = 0; p < 5; p++) {
         if (Object.keys(characters[char2].inventory)[p] != undefined) {
-            ctx.fillText(characters[char2].inventory[Object.keys(characters[char2].inventory)[p]] + "  " + Object.keys(characters[char2].inventory)[p], 500, 170 + (15 * p));
+            ctx.fillText(characters[char2].inventory[Object.keys(characters[char2].inventory)[p]] + "  " + Object.keys(characters[char2].inventory)[p], 500, 170 + (32 * p));
+            ctx.drawImage(items[Object.keys(characters[char2].inventory)[p]], 470, 144 + (32 * p), 32, 32);
         }
         else {
-            ctx.fillText("---", 500, 170 + (15 * p));
+            ctx.fillText("---", 500, 170 + (32 * p));
         }
     }
 }
