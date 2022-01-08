@@ -774,6 +774,10 @@ function scene_map() {
 
     // Write text
     UI_UpdateCharacters();
+
+    //ctx.font = "12px NotoSans, sans-serif";
+    //ctx.fillStyle = "white";
+    //ctx.fillText("x" + evilxpos + " y " + evilypos, 11, 145);
 };
 
 function autoMove() {
@@ -792,20 +796,36 @@ function evilMove() {
     ai = Math.ceil(Math.random() * 4);
     switch (ai) {
         case 1:
-            evilxpos += 1;
-            evilfacing = "right";
+            if (map[evilypos + ypos] != undefined) {
+                if (map[evilypos + ypos][evilxpos + xpos +1] != 2) {
+                    evilxpos += 1;
+                    evilfacing = "right";
+                }
+            }
             break;
         case 2:
-            evilxpos -= 1;
-            evilfacing = "left";
+            if (map[evilypos + ypos] != undefined) {
+                if (map[evilypos + ypos][evilxpos + xpos -1] != 2) {
+                    evilxpos -= 1;
+                    evilfacing = "left";
+                }
+            }
             break;
         case 3:
-            evilypos += 1;
-            evilfacing = "up";
+            if (map[evilypos + ypos +1] != undefined) {
+                if (map[evilypos + ypos +1][evilxpos + xpos] != 2) {
+                    evilypos += 1;
+                    evilfacing = "up";
+                }
+            }
             break;
         case 4:
-            evilypos -= 1;
-            evilfacing = "down";
+            if (map[evilypos + ypos -1] != undefined) {
+                if (map[evilypos + ypos -1][evilxpos + xpos] != 2) {
+                    evilypos -= 1;
+                    evilfacing = "down";
+                }
+            }
             break;
     }
 
@@ -818,6 +838,11 @@ function evilMove() {
 
     if (evilxpos > 25 || evilxpos < 0) { evilxpos = 12 };
     if (evilypos > 16 || evilypos < 0) { evilypos = 4 };
+
+    if (map[evilypos + ypos][evilxpos + xpos] == 2) {
+        evilxpos = 12;
+        evilypos = 4;
+    }
 }
 
 function triggerFight() {
