@@ -274,6 +274,10 @@ function loadGame() {
     }
 }
 
+function calculate_EXP(level) {
+    return 10 + (level * 5); //Placeholder formula... maybe different for each char?
+}
+
 /////////////// UI update functions
 
 // Update text related to the characters
@@ -473,6 +477,9 @@ function useItem(item, who) {
             if (characters[who].HP > characters[who].maxHP) { characters[who].HP = characters[who].maxHP };
             break;
     }
+
+    scene_fight();
+    seeInventory();
 }
 
 function scene_fight() {
@@ -645,16 +652,16 @@ function fight_enemy(x) {
             addItem(char2, "bigpotion", 1);
         }
 
-        if (characters[char1].EXP > 24) {
+        if (characters[char1].EXP >= calculate_EXP(characters[char1].level)) {
             characters[char1].level += 1;
-            characters[char1].EXP -= 25;
+            characters[char1].EXP -= calculate_EXP(characters[char1].level);
             characters[char1].maxHP += Math.round(characters[char1].maxHP / 8);
             characters[char1].HP = characters[char1].maxHP;
             characters[char1].strength += Math.round(characters[char1].strength / 8);
         }
-        if (characters[char2].EXP > 24) {
+        if (characters[char2].EXP >= calculate_EXP(characters[char1].level)) {
             characters[char2].level += 1;
-            characters[char2].EXP -= 25;
+            characters[char2].EXP -= calculate_EXP(characters[char1].level);
             characters[char2].maxHP += Math.round(characters[char2].maxHP / 8);
             characters[char2].HP = characters[char2].maxHP;
             characters[char2].strength += Math.round(characters[char2].strength / 8);
@@ -711,8 +718,12 @@ function loadsavebutton(x) {
     ctx.font = "12px NotoSans, sans-serif";
     ctx.fillStyle = "rgb(0, 32, 102)";
 
-    if (localStorage["SOTR"+(x+1)] != null && localStorage["SOTR"+(x+1)] != "null") { ctx.fillText("Save " + (x+1), 80 + (x*100), 45); }
-    else { ctx.fillText("EMPTY", 80 + (x*100), 45); }
+    if (localStorage["SOTR" + (x + 1)] != null && localStorage["SOTR" + (x + 1)] != "null") {
+        ctx.fillText("Save " + (x + 1), 80 + (x * 100), 40);
+        ctx.fillStyle = "rgb(162, 162, 0)";
+        ctx.fillText("LVL " + (JSON.parse(localStorage["SOTR" + (x+1)]).characters.bleu.level), 80 + (x * 100), 55);
+    }
+    else { ctx.fillText("EMPTY", 80 + (x * 100), 40); }
 }
 
 function deletesavebutton(x) {
@@ -725,10 +736,10 @@ function deletesavebutton(x) {
     ctx.font = "12px NotoSans, sans-serif";
     ctx.fillStyle = "rgb(0, 32, 102)";
     if (localStorage["SOTR" + (x + 1)] != null && localStorage["SOTR" + (x + 1)] != "null") {
-        ctx.fillText("DELETE " + (x + 1), 70 + (x * 100), 145);
+        ctx.fillText("DELETE " + (x + 1), 70 + (x * 100), 140);
     }
     else {
-        ctx.fillText("Deleted!", 70 + (x * 100), 145);
+        ctx.fillText("Deleted!", 70 + (x * 100), 140);
     }
 }
 
@@ -1015,6 +1026,5 @@ document.body.onkeydown = function (e) {
 
 // Start the game
 tiles.water2.onload = function start() {
-    //loadGame();
     draw();
 }
