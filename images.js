@@ -28,7 +28,8 @@ var images =
     switch: loadImage("Images/switch.png"),
     flee: loadImage("Images/flee.png"),
     gameover: loadImage("Images/gameover.png"),
-    selected32: loadImage("Images/selected.png")
+    selected32: loadImage("Images/selected.png"),
+    attack_bleu: loadImage("Images/bleu_attack.png")
 };
 
 var items =

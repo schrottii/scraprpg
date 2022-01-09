@@ -29,6 +29,8 @@ var ai = 0;
 var fightaction = 0;
 var fightselect = 1;
 
+var attack_animation_progress = 0;
+
 var mouseX;
 var mouseY;
 
@@ -297,8 +299,8 @@ function UI_UpdateCharacters() {
 
     ctx.fillStyle = "yellow";
 
-    ctx.fillText("Level " + characters[char1].level, 612, 364);
-    ctx.fillText("Level " + characters[char2].level, 612, 428);
+    ctx.fillText("Level " + characters[char1].level + "    " + characters[char1].EXP + "/" + calculate_EXP(characters[char1].level), 612, 364);
+    ctx.fillText("Level " + characters[char2].level + "    " + characters[char2].EXP + "/" + calculate_EXP(characters[char2].level), 612, 428);
 
     ctx.fillStyle = "black";
 
@@ -639,6 +641,8 @@ function scene_fight() {
 }
 
 function fight_enemy(x) {
+    attack_animation_progress = 1;
+
     gete(x).HP -= characters[char1].strength;
     fightaction = 0;
 
@@ -703,9 +707,14 @@ function fight_enemy(x) {
 }
 
 function draw_fighters() {
-    ctx.drawImage(sprites.bleu, 0, 64, 64, 64, 100, 200, 32, 32);
+    if (attack_animation_progress == 0) {
+        ctx.drawImage(sprites.bleu, 0, 64, 64, 64, 100, 200, 32, 32);
+    }
+    else {
+        ctx.drawImage(images.attack_bleu, ((attack_animation_progress - 1) * 64), 0, 64, 64, 100, 200, 32, 32);
+    }
+    
     ctx.drawImage(sprites.bleu, 0, 64, 64, 64, 140, 240, 32, 32);
-
 
     if (gete(1).HP > 0) { ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 600, 200, 32, 32) };
     if (fightselect == 1) { ctx.drawImage(images.selected32, 600, 200, 32, 32) };
@@ -718,6 +727,16 @@ function draw_fighters() {
 
     if (gete(4).HP > 0) { ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 600, 250, 32, 32) };
     if (fightselect == 4) { ctx.drawImage(images.selected32, 600, 250, 32, 32) };
+
+    if (attack_animation_progress > 0) {
+        attack_animation_progress += 1;
+        if (attack_animation_progress == 5) {
+            attack_animation_progress = 0;
+        }
+        else {
+            setTimeout(draw_fighters(), 500);
+        }
+    }
 }
 
 function loadsavebutton(x) {
