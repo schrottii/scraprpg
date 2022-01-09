@@ -49,12 +49,12 @@ function loadAllResources() {
         img.src = images[image];
         img.onload = () => {
             resLoad++;
-            scene.controls[0].text = "Loading...";
+            scene.controls[0].text = "Loading resources...";
             scene.controls[1].text = "images/" + image + " " + resLoad + "/" + resCount;
             if (resLoad == resCount) {
-                scene.controls[0].text = "Loaded!";
-                scene.controls[1].text = "Click anywhere to continue...";
-                scene.controls[2].clickthrough = false;
+                scene.controls[0].text = "Everything good to go!";
+                scene.controls[2].clickthrough = scene.controls[3].clickthrough = false;
+                scene.controls[2].alpha = scene.controls[3].alpha = 1;
             }
         }
         images[image] = img;
@@ -65,12 +65,12 @@ function loadAllResources() {
         scr.src = scenes[scn];
         scr.onload = () => {
             resLoad++;
-            scene.controls[0].text = "Loading...";
+            scene.controls[0].text = "Loading resources...";
             scene.controls[1].text = "scenes/" + scn + " " + resLoad + "/" + resCount;
             if (resLoad == resCount) {
-                scene.controls[0].text = "Loaded!";
-                scene.controls[1].text = "Click anywhere to continue...";
-                scene.controls[2].clickthrough = false;
+                scene.controls[0].text = "Everything good to go!";
+                scene.controls[2].clickthrough = scene.controls[3].clickthrough = false;
+                scene.controls[2].alpha = scene.controls[3].alpha = 1;
             }
         }
         scenes[scn] = scr;
@@ -81,12 +81,12 @@ function loadAllResources() {
         let aud = new Audio(audio[snd]);
         aud.onloadeddata = () => {
             resLoad++;
-            scene.controls[0].text = "Loading...";
+            scene.controls[0].text = "Loading resources...";
             scene.controls[1].text = "audio/" + snd + " " + resLoad + "/" + resCount;
             if (resLoad == resCount) {
-                scene.controls[0].text = "Loaded!";
-                scene.controls[1].text = "Click anywhere to continue...";
-                scene.controls[2].clickthrough = false;
+                scene.controls[0].text = "Everything good to go!";
+                scene.controls[2].clickthrough = scene.controls[3].clickthrough = false;
+                scene.controls[2].alpha = scene.controls[3].alpha = 1;
             }
         }
         audio[snd] = aud;

@@ -7,6 +7,8 @@ let controls = {
             sizeAnchor: [0, 0],
             clickthrough: false,
 
+            alpha: 1,
+
             render(ctx) {},
 
             onClick(args) {},
@@ -90,7 +92,7 @@ let controls = {
                 let h = this.sizeOffset[1] + this.sizeAnchor[1] * ctx.canvas.height;
 
                 ctx.fillStyle = this.fillTop;
-                ctx.fillRect(x, y, w, h / 2 + 1);
+                ctx.fillRect(x, y, w, h / 2 + 0.25);
                 ctx.fillStyle = this.fillBottom;
                 ctx.fillRect(x, y + h / 2, w, h / 2);
                 

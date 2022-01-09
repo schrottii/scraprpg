@@ -14,13 +14,23 @@ function init() {
                 align: "right", baseline: "alphabetic", fontSize: 16, fill: "#7f7f7f",
                 text: "",
             }),
-            controls.base({
-                anchor: [0, 0], sizeAnchor: [1, 1],
-                clickthrough: true,
+            controls.button({
+                anchor: [.5, .5], offset: [-100, -55], sizeOffset: [200, 50],
+                clickthrough: true, fontSize: 16, alpha: 0,
+                text: "Start with Sound",
                 onClick() { 
                     setScene(scenes.title());
                 }
-            })
+            }),
+            controls.button({
+                anchor: [.5, .5], offset: [-100, 5], sizeOffset: [200, 50],
+                clickthrough: true, fontSize: 16, alpha: 0,
+                text: "Start Muted",
+                onClick() { 
+                    musicPlayer.muted = true;
+                    setScene(scenes.title());
+                }
+            }),
         ],
     });
     loadAllResources();
@@ -54,10 +64,15 @@ function loop() {
     mainCanvas.style.height = (mainCanvas.height = window.innerHeight) + "px";
 
     let ctx = mainCanvas.getContext("2d");
+    ctx.globalAlpha = 1;
     scene.preRender(ctx, delta);
     for (let control of scene.controls) {
-        control.render(ctx);
+        if (control.alpha > 0) {
+            ctx.globalAlpha = control.alpha;
+            control.render(ctx);
+        }
     }
+    ctx.globalAlpha = 1;
     ctx.font = "12px NotoSans, sans-serif";
     ctx.fillStyle = "white";
     ctx.textAlign = "left";
