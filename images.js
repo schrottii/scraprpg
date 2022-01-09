@@ -35,7 +35,7 @@ var images =
 var items =
 {
     potion: loadImage("Images/Items/potion.png"),
-    bigpotion: loadImage("Images/Items/potion.png")
+    bigpotion: loadImage("Images/Items/bigpotion.png")
 }
 
 var sprites =

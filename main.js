@@ -612,9 +612,9 @@ function scene_fight() {
     ctx.fillText(characters[char1].name, 240, 465);
 
     ctx.fillStyle = "rgb(0, 145, 40)";
-    ctx.fillRect(310, 410, 60, 20);
+    ctx.fillRect(310, 410, 80, 20);
     ctx.fillStyle = "rgb(145, 0, 105)";
-    ctx.fillRect(310, 430, 60, 20);
+    ctx.fillRect(310, 430, 80, 20);
 
     ctx.fillStyle = "black";
     ctx.fillText(characters[char1].HP + "/" + characters[char1].maxHP, 310, 425);
