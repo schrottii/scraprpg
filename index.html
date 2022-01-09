@@ -1,42 +1,20 @@
-﻿<!DOCTYPE html>
-<meta charset="utf-8" />
+<!DOCTYPE html>
 <html>
-<head>
-    <!-- Placeholders, I am very proffeseonal-->
-    <title>Scrap of the Round</title>
+    <head>
+        <meta charset="utf-8">
+        <title>Scrap of the Round</title>
+        
+        <script src="scripts/resources.js"></script>
+        <script src="scripts/animator.js"></script>
+        <script src="scripts/control.js"></script>
+        <script src="scripts/scene.js"></script>
+        <script src="scripts/main.js"></script>
+       
+        <link href="styles/main.css" rel="stylesheet">
 
-    <style>
-        @font-face {
-            font-family: NotoSans;
-            src: url("Fonts/NotoSans.ttf");
-        }
-
-
-        body {
-            background-color: dimgray;
-            font-family: NotoSans;
-        }
-
-        canvas#gameCanvas {
-            width: auto;
-            height: 100%;
-        }
-
-        canvas.cache {
-            width: 0;
-            height: 0;
-        }
-    </style>
-
-</head>
-<body>
-    <!-- Load Canvas and Scripts -->
-    <canvas id="canvas" width="800" height="500"></canvas>
-
-    <script src="images.js"></script>
-    <script src="characters.js"></script>
-    <script src="map.js"></script>
-    <script src="main.js"></script>
-
-</body>
+    </head>
+    <body onload="init()">
+        <audio id="musicPlayer"></audio>
+        <canvas id="mainCanvas"></canvas>
+    </body>
 </html>
