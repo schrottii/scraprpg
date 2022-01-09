@@ -478,7 +478,7 @@ function inventoryClicked() {
 }
 
 function useItem(item, who) {
-    if (item == undefined) { return };
+    if (item == undefined || characters[who].inventory[item] < 1) { return };
     characters[who].inventory[item] -= 1;
 
     switch (item) {
