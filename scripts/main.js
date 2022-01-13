@@ -1,5 +1,7 @@
 function init() {
     mainCanvas.addEventListener("mouseup", onCanvasClick);
+    window.addEventListener("keydown", (e) => currentKeys[e.key.toLowerCase()] = true);
+    window.addEventListener("keyup", (e) => currentKeys[e.key.toLowerCase()] = false);
 
 
     setScene({
@@ -36,6 +38,8 @@ function init() {
     loadAllResources();
     loop();
 }
+
+var currentKeys = {};
 
 function onCanvasClick(e) {
     for (let a = scene.controls.length - 1; a >= 0; a--) {

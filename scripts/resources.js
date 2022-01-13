@@ -22,12 +22,13 @@ let images = {
     potion: "data/images/Items/potion.png",
     bleu: "data/images/Map_Bleu.png",
     evil: "data/images/Map_Evil.png",
-    grass1: "data/images/tile_grass1.png",
-    grass2: "data/images/tile_grass2.png",
-    sand1: "data/images/tile_sand1.png",
-    sand2: "data/images/tile_sand2.png",
-    water1: "data/images/tile_water1.png",
-    water2: "data/images/tile_water2.png",
+
+    "tiles/grass1": "data/images/tiles/grass1.png",
+    "tiles/grass2": "data/images/tiles/grass2.png",
+    "tiles/sand1": "data/images/tiles/sand1.png",
+    "tiles/sand2": "data/images/tiles/sand2.png",
+    "tiles/water1": "data/images/tiles/water1.png",
+    "tiles/water2": "data/images/tiles/water2.png",
 }
 
 var scenes = {
@@ -37,6 +38,10 @@ var scenes = {
 
 var audio = {
     "bgm/vaporlim": "data/bgm/Vaporlim_OST.mp3",
+};
+
+var maps = {
+    "test": "scripts/maps/test.js",
 };
 
 
@@ -90,6 +95,23 @@ function loadAllResources() {
             }
         }
         audio[snd] = aud;
+        resCount++;
+    }
+    for (let map in maps) {
+        let mp = document.createElement("script");
+        mp.src = maps[map];
+        mp.onload = () => {
+            resLoad++;
+            scene.controls[0].text = "Loading resources...";
+            scene.controls[1].text = "maps/" + map + " " + resLoad + "/" + resCount;
+            if (resLoad == resCount) {
+                scene.controls[0].text = "Everything good to go!";
+                scene.controls[2].clickthrough = scene.controls[3].clickthrough = false;
+                scene.controls[2].alpha = scene.controls[3].alpha = 1;
+            }
+        }
+        maps[map] = mp;
+        document.head.appendChild(mp);
         resCount++;
     }
 }
