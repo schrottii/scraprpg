@@ -1,4 +1,5 @@
 function init() {
+    // Button detection
     mainCanvas.addEventListener("mouseup", onCanvasClick);
     window.addEventListener("keydown", (e) => currentKeys[e.key.toLowerCase()] = true);
     window.addEventListener("keyup", (e) => currentKeys[e.key.toLowerCase()] = false);
@@ -61,9 +62,11 @@ let delta = 0;
 let time = Date.now();
 
 function loop() {
+    // Tick time
     delta = Date.now() - time;
     time = Date.now();
 
+    // Resize the canvas
     mainCanvas.style.width = (mainCanvas.width = window.innerWidth) + "px";
     mainCanvas.style.height = (mainCanvas.height = window.innerHeight) + "px";
 
@@ -77,6 +80,8 @@ function loop() {
         }
     }
     ctx.globalAlpha = 1;
+
+    // Draw FPS
     ctx.font = "12px NotoSans, sans-serif";
     ctx.fillStyle = "white";
     ctx.textAlign = "left";

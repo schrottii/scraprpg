@@ -3,6 +3,8 @@ scenes.game = () => {
     let head = 0;
     let walkTime = 0;
 
+    // Function to check if a tile is, well, walkable
+    // Define if a tile (e. g. water) is walkable in the sprites dict
     function isWalkable(map, x, y) {
         if (map.map[y] && map.map[y][x]) {
             return !map.tiles[map.map[y][x]].occupied;
@@ -16,19 +18,19 @@ scenes.game = () => {
             let map = maps["test"];
             
             if (!kofs[2]) {
-                if (currentKeys["w"] && isWalkable(map, game.position[0], game.position[1] - 1)) {
+                if ((currentKeys["w"] || currentKeys["arrowup"]) && isWalkable(map, game.position[0], game.position[1] - 1)) {
                     kofs = [0, -1, 1];
                     game.position[1]--;
                     head = 3;
-                } else if (currentKeys["s"] && isWalkable(map, game.position[0], game.position[1] + 1)) {
+                } else if ((currentKeys["s"] || currentKeys["arrowdown"]) && isWalkable(map, game.position[0], game.position[1] + 1)) {
                     kofs = [0, 1, 1];
                     game.position[1]++;
                     head = 0;
-                } else if (currentKeys["a"] && isWalkable(map, game.position[0] - 1, game.position[1])) {
+                } else if ((currentKeys["a"] || currentKeys["arrowleft"]) && isWalkable(map, game.position[0] - 1, game.position[1])) {
                     kofs = [-1, 0, 1];
                     game.position[0]--;
                     head = 1;
-                } else if (currentKeys["d"] && isWalkable(map, game.position[0] + 1, game.position[1])) {
+                } else if((currentKeys["d"] || currentKeys["arrowright"]) && isWalkable(map, game.position[0] + 1, game.position[1])) {
                     kofs = [1, 0, 1];
                     game.position[0]++;
                     head = 2;
@@ -45,10 +47,10 @@ scenes.game = () => {
             for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
                 if (map.map[y] && map.map[y][x]) {
                     ctx.drawImage(images["tiles/" + map.tiles[map.map[y][x]].sprite],
-                        scale * (x - ofsX), scale * (y - ofsY), scale, scale);
+                        scale * (x - ofsX), scale * (y - ofsY), scale+1, scale+1);
                 } else if (map.tiles.empty) {
                     ctx.drawImage(images["tiles/" + map.tiles.empty.sprite],
-                        scale * (x - ofsX), scale * (y - ofsY), scale, scale);
+                        scale * (x - ofsX), scale * (y - ofsY), scale+1, scale+1);
                 }
             }
 
