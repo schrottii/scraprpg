@@ -2,6 +2,41 @@ scenes.game = () => {
     let kofs = [0, 0, 0];
     let head = 0;
     let walkTime = 0;
+    let pad = "";
+
+    let walkPad = [];
+    walkPad.push(controls.image({ // Up
+        anchor: [.25, .75], offset: [0, 0], sizeOffset: [25, 25],
+        fontSize: 16, source: "arrowup",
+        onClick(args) {
+            pad = "up";
+        }
+    }));
+    walkPad.push(controls.image({ // Middle
+        anchor: [.25, .75], offset: [0, 25], sizeOffset: [25, 25],
+        fontSize: 16, source: "arrowmiddle",
+    }));
+    walkPad.push(controls.image({ // Down
+        anchor: [.25, .75], offset: [0, 50], sizeOffset: [25, 25],
+        fontSize: 16, source: "arrowdown",
+        onClick(args) {
+            pad = "down";
+        }
+    }));
+    walkPad.push(controls.image({ // Left
+        anchor: [.25, .75], offset: [-25, 25], sizeOffset: [25, 25],
+        fontSize: 16, source: "arrowleft",
+        onClick(args) {
+            pad = "left";
+        }
+    }));
+    walkPad.push(controls.image({ // Right
+        anchor: [.25, .75], offset: [25, 25], sizeOffset: [25, 25],
+        fontSize: 16, source: "arrowright",
+        onClick(args) {
+            pad = "right";
+        }
+    }));
 
     // Function to check if a tile is, well, walkable
     // Define if a tile (e. g. water) is walkable in the sprites dict
@@ -18,23 +53,24 @@ scenes.game = () => {
             let map = maps["test"];
             
             if (!kofs[2]) {
-                if ((currentKeys["w"] || currentKeys["arrowup"]) && isWalkable(map, game.position[0], game.position[1] - 1)) {
+                if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up") && isWalkable(map, game.position[0], game.position[1] - 1)) {
                     kofs = [0, -1, 1];
                     game.position[1]--;
                     head = 3;
-                } else if ((currentKeys["s"] || currentKeys["arrowdown"]) && isWalkable(map, game.position[0], game.position[1] + 1)) {
+                } else if ((currentKeys["s"] || currentKeys["arrowdown"] || pad == "down") && isWalkable(map, game.position[0], game.position[1] + 1)) {
                     kofs = [0, 1, 1];
                     game.position[1]++;
                     head = 0;
-                } else if ((currentKeys["a"] || currentKeys["arrowleft"]) && isWalkable(map, game.position[0] - 1, game.position[1])) {
+                } else if ((currentKeys["a"] || currentKeys["arrowleft"] || pad == "left") && isWalkable(map, game.position[0] - 1, game.position[1])) {
                     kofs = [-1, 0, 1];
                     game.position[0]--;
                     head = 1;
-                } else if((currentKeys["d"] || currentKeys["arrowright"]) && isWalkable(map, game.position[0] + 1, game.position[1])) {
+                } else if ((currentKeys["d"] || currentKeys["arrowright"] || pad == "right") && isWalkable(map, game.position[0] + 1, game.position[1])) {
                     kofs = [1, 0, 1];
                     game.position[0]++;
                     head = 2;
                 }
+                pad = "";
             }
             kofs[2] = Math.max(kofs[2] - delta / 166, 0);
             walkTime = (walkTime + delta * (kofs[2] ? 5 : 1) / 1000) % 2;
@@ -60,7 +96,7 @@ scenes.game = () => {
             ctx.imageSmoothingEnabled = true;
         },
         controls: [
-
+            ...walkPad
         ],
     }
 }
