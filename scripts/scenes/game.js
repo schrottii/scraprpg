@@ -4,34 +4,36 @@ scenes.game = () => {
     let walkTime = 0;
     let pad = "";
 
+    var scale;
+
     let walkPad = [];
     walkPad.push(controls.image({ // Up
-        anchor: [.25, .75], offset: [0, 0], sizeOffset: [25, 25],
+        anchor: [.1, .75], offset: [0, 0], sizeOffset: [40, 40],
         fontSize: 16, source: "arrowup",
         onClick(args) {
             pad = "up";
         }
     }));
     walkPad.push(controls.image({ // Middle
-        anchor: [.25, .75], offset: [0, 25], sizeOffset: [25, 25],
+        anchor: [.1, .75], offset: [0, 40], sizeOffset: [40, 40],
         fontSize: 16, source: "arrowmiddle",
     }));
     walkPad.push(controls.image({ // Down
-        anchor: [.25, .75], offset: [0, 50], sizeOffset: [25, 25],
+        anchor: [.1, .75], offset: [0, 80], sizeOffset: [40, 40],
         fontSize: 16, source: "arrowdown",
         onClick(args) {
             pad = "down";
         }
     }));
     walkPad.push(controls.image({ // Left
-        anchor: [.25, .75], offset: [-25, 25], sizeOffset: [25, 25],
+        anchor: [.1, .75], offset: [-40, 40], sizeOffset: [40, 40],
         fontSize: 16, source: "arrowleft",
         onClick(args) {
             pad = "left";
         }
     }));
     walkPad.push(controls.image({ // Right
-        anchor: [.25, .75], offset: [25, 25], sizeOffset: [25, 25],
+        anchor: [.1, .75], offset: [40, 40], sizeOffset: [40, 40],
         fontSize: 16, source: "arrowright",
         onClick(args) {
             pad = "right";
@@ -94,6 +96,7 @@ scenes.game = () => {
                 scale * (game.position[0] - kofs[0] * kofs[2] - ofsX), 
                 scale * (game.position[1] - kofs[1] * kofs[2] - ofsY), scale, scale)
             ctx.imageSmoothingEnabled = true;
+
         },
         controls: [
             ...walkPad
