@@ -27,7 +27,7 @@ let controls = {
                 
                 if (w > 0 && h > 0) ctx.drawImage(images[this.source],
                     (this.offset[0] + (this.anchor[0] * width)) * scale, 
-                    (this.offset[1] + this.anchor[1]) * scale, w * height, h * scale);
+                    (this.offset[1] + this.anchor[1]) * scale, w * (width/16) * scale, h * scale);
                 else ctx.drawImage(images[this.source], 
                     this.offset[0] + this.anchor[0] * ctx.canvas.width, 
                     this.offset[1] + this.anchor[1] * ctx.canvas.height);
