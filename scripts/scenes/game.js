@@ -8,32 +8,32 @@ scenes.game = () => {
 
     let walkPad = [];
     walkPad.push(controls.image({ // Up
-        anchor: [.1, .75], offset: [0, 0], sizeOffset: [40, 40],
+        anchor: [.1, .75], offset: [0, 0], sizeOffset: [1, 1],
         fontSize: 16, source: "arrowup",
         onClick(args) {
             pad = "up";
         }
     }));
     walkPad.push(controls.image({ // Middle
-        anchor: [.1, .75], offset: [0, 40], sizeOffset: [40, 40],
+        anchor: [.1, .6], offset: [0, 0], sizeOffset: [1, 1],
         fontSize: 16, source: "arrowmiddle",
     }));
     walkPad.push(controls.image({ // Down
-        anchor: [.1, .75], offset: [0, 80], sizeOffset: [40, 40],
+        anchor: [.1, .8], offset: [0, 0], sizeOffset: [1, 1],
         fontSize: 16, source: "arrowdown",
         onClick(args) {
             pad = "down";
         }
     }));
     walkPad.push(controls.image({ // Left
-        anchor: [.1, .75], offset: [-40, 40], sizeOffset: [40, 40],
+        anchor: [.08, .6], offset: [0, 0], sizeOffset: [1, 1],
         fontSize: 16, source: "arrowleft",
         onClick(args) {
             pad = "left";
         }
     }));
     walkPad.push(controls.image({ // Right
-        anchor: [.1, .75], offset: [40, 40], sizeOffset: [40, 40],
+        anchor: [.12, .6], offset: [0, 0], sizeOffset: [1, 1],
         fontSize: 16, source: "arrowright",
         onClick(args) {
             pad = "right";

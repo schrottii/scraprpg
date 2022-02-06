@@ -61,6 +61,9 @@ function onCanvasClick(e) {
 let delta = 0;
 let time = Date.now();
 
+let scale = window.innerHeight / 16;
+let width = window.innerWidth / scale;
+
 function loop() {
     // Tick time
     delta = Date.now() - time;
@@ -69,6 +72,10 @@ function loop() {
     // Resize the canvas
     mainCanvas.style.width = (mainCanvas.width = window.innerWidth) + "px";
     mainCanvas.style.height = (mainCanvas.height = window.innerHeight) + "px";
+
+    height = window.innerHeight;
+    scale = height / 16;
+    width = window.innerWidth / scale;
 
     let ctx = mainCanvas.getContext("2d");
     ctx.globalAlpha = 1;
@@ -86,7 +93,7 @@ function loop() {
     ctx.fillStyle = "white";
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
-    ctx.fillText((1000 / delta).toFixed(0) + "fps " + delta + "ms", 2, 12);
+    ctx.fillText((1000 / delta).toFixed(0) + "fps " + delta + "ms  | w: " + width + "  scale: " + scale, 2, 12);
 
     updateAnimators(delta);
 
