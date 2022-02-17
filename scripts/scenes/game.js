@@ -8,36 +8,36 @@ scenes.game = () => {
 
     let walkPad = [];
     walkPad.push(controls.image({ // Up
-        anchor: [.1, .75], offset: [0, 0], sizeOffset: [1, 1],
+        anchor: [0.08, 0.6], offset: [0, 0], sizeOffset: [0.075, 0.075],
         fontSize: 16, source: "arrowup",
-        onClick(args) {
+        onClick() {
             pad = "up";
         }
     }));
-    walkPad.push(controls.image({ // Middle
-        anchor: [.1, .6], offset: [0, 0], sizeOffset: [1, 1],
-        fontSize: 16, source: "arrowmiddle",
-    }));
     walkPad.push(controls.image({ // Down
-        anchor: [.1, .8], offset: [0, 0], sizeOffset: [1, 1],
+        anchor: [0.08, 0.75], offset: [0, 0], sizeOffset: [0.075, 0.075],
         fontSize: 16, source: "arrowdown",
-        onClick(args) {
+        onClick() {
             pad = "down";
         }
     }));
     walkPad.push(controls.image({ // Left
-        anchor: [.08, .6], offset: [0, 0], sizeOffset: [1, 1],
+        anchor: [0.015, 0.675], offset: [0, 0], sizeOffset: [0.075, 0.075],
         fontSize: 16, source: "arrowleft",
-        onClick(args) {
+        onClick() {
             pad = "left";
         }
     }));
     walkPad.push(controls.image({ // Right
-        anchor: [.12, .6], offset: [0, 0], sizeOffset: [1, 1],
+        anchor: [0.15, 0.675], offset: [0, 0], sizeOffset: [0.075, 0.075],
         fontSize: 16, source: "arrowright",
-        onClick(args) {
+        onClick() {
             pad = "right";
         }
+    }));
+    walkPad.push(controls.image({ // Middle
+        anchor: [0.08, 0.675], offset: [0, 0], sizeOffset: [0.075, 0.075],
+        fontSize: 16, source: "arrowmiddle",
     }));
 
     // Function to check if a tile is, well, walkable
