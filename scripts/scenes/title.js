@@ -9,7 +9,7 @@ scenes.title = () => {
     
         
     let gameIcon = controls.image({
-        anchor: [0.0, 0], offset: [0, 0], sizeOffset: [0.5, 0.5],
+        anchor: [0.25, 0.15], offset: [0, 0], sizeOffset: [0.5, 0.5],
         alpha: 0,
         source: "gameicon",
     });
