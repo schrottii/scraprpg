@@ -29,10 +29,8 @@ let images = {
     "tiles/sand2": "data/images/tiles/sand2.png",
     "tiles/water1": "data/images/tiles/water1.png",
     "tiles/water2": "data/images/tiles/water2.png",
-    "tiles/relief1": "data/images/tiles/water1.png",
-    "tiles/relief2": "data/images/tiles/water2.png",
-    //"tiles/relief1": "data/images/tiles/relief1.png",
-    //"tiles/relief2": "data/images/tiles/relief2.png",
+    "tiles/relief1": "data/images/tiles/relief1.png",
+    "tiles/relief2": "data/images/tiles/relief2.png",
 }
 
 var scenes = {
