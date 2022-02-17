@@ -20,9 +20,8 @@ maps["test"] = {
 
         },
         4: {
-            sprite: "relief2"
+            sprite: "relief2",
             occupied: true,
-
         }
     },
     map: [

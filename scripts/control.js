@@ -21,13 +21,12 @@ let controls = {
             ...controls.base(),
             source: null,
             render(ctx) {
-
                 let w = this.sizeOffset[0] + this.sizeAnchor[0] * ctx.canvas.width;
                 let h = this.sizeOffset[1] + this.sizeAnchor[1] * ctx.canvas.height;
                 
                 if (w > 0 && h > 0) ctx.drawImage(images[this.source],
-                    (this.offset[0] + (this.anchor[0] * width)) * scale, 
-                    (this.offset[1] + this.anchor[1]) * scale, w * (width/16) * scale, h * scale);
+                    (this.offset[0] + (this.anchor[0] * width)) * scale, //h * 1.25 * scale
+                    (this.offset[1] + this.anchor[1]) * scale, w * width * scale, h * height);
                 else ctx.drawImage(images[this.source], 
                     this.offset[0] + this.anchor[0] * ctx.canvas.width, 
                     this.offset[1] + this.anchor[1] * ctx.canvas.height);
