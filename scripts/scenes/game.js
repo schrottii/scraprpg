@@ -43,8 +43,29 @@ scenes.game = () => {
     // Function to check if a tile is, well, walkable
     // Define if a tile (e. g. water) is walkable in the sprites dict
     function isWalkable(map, x, y) {
-        if (map.map[y] && map.map[y][x]) {
-            return !map.tiles[map.map[y][x]].occupied;
+        if (map.map[y] && map.map[y][x]) { //Check if tile exists
+            if (map.tiles[map.map[y][x]].occupied != undefined) { //Check if occupied exists
+                if (typeof (map.tiles[map.map[y][x]].occupied) == "object") { // Config exists?
+                    if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up") && map.tiles[map.map[y][x]].occupied.includes("up")) {
+                        return true
+                    }
+                    else if ((currentKeys["a"] || currentKeys["arrowleft"] || pad == "left") && map.tiles[map.map[y][x]].occupied.includes("left")) {
+                        return true
+                    }
+                    else if ((currentKeys["s"] || currentKeys["arrowdown"] || pad == "down") && map.tiles[map.map[y][x]].occupied.includes("down")) {
+                        return true
+                    }
+                    else if ((currentKeys["d"] || currentKeys["arrowright"] || pad == "right") && map.tiles[map.map[y][x]].occupied.includes("right")) {
+                        return true
+                    }
+                    else { // Config denies passing
+                        return false;
+                    }
+                }
+                return !map.tiles[map.map[y][x]].occupied // No config, is it occupied?
+            }
+        // Unoccupied, U can Pass
+            return true;
         } else return false;
     }
 
