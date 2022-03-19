@@ -50,10 +50,10 @@ function onCanvasClick(e) {
         //console.log("   X: " + mouseX + " Y: " + mouseY);
 
         // offset - Get the position where the element starts. size - How big. Combine them to define the clickable area!
-        var offsetX = con.offset[0] + con.anchor[0] * mainCanvas.width;
-        var offsetY = con.offset[1] + con.anchor[1] * mainCanvas.height;
-        var sizeX = (con.sizeOffset[0] + con.sizeAnchor[0]) * mainCanvas.width;
-        var sizeY = (con.sizeOffset[1] + con.sizeAnchor[1]) * mainCanvas.height;
+        let offsetX = con.offset[0] + con.anchor[0] * mainCanvas.width;
+        let offsetY = con.offset[1] + con.anchor[1] * mainCanvas.height;
+        let sizeX = con.sizeOffset[0] + con.sizeAnchor[0] * mainCanvas.width;
+        let sizeY = con.sizeOffset[1] + con.sizeAnchor[1] * mainCanvas.height;
 
         if (!scene.controls[a].clickthrough && scene.controls[a].onClick && 
             mouseX >= offsetX && mouseX < offsetX + sizeX && 
@@ -97,7 +97,7 @@ function loop() {
     ctx.fillStyle = "white";
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
-    ctx.fillText((1000 / delta).toFixed(0) + "fps " + delta + "ms  | w: " + width + "  scale: " + scale, 2, 12);
+    ctx.fillText((1000 / delta).toFixed(0) + "fps " + delta + "ms  | w: " + width + "  scale: " + scale + "   h: " + height, 2, 12);
 
     updateAnimators(delta);
 
