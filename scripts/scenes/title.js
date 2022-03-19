@@ -60,7 +60,7 @@ scenes.title = () => {
 
     for (let a = 0; a < 3; a++) {
         saveButtons.push(controls.button({
-            anchor: [1.2, .5], offset: [0, -220 + 130 * a], sizeAnchor: [.6, 0], sizeOffset: [0, 120],
+            anchor: [1.2, .5], offset: [0, -220 + 130 * a], sizeAnchor: [.6, 0], sizeOffset: [0, 120], clickthrough: true,
             text: "Undefined",
             onClick(args) {
                 if (mode == 0) {
@@ -78,7 +78,18 @@ scenes.title = () => {
 
         saveImages.push(controls.image({
             anchor: [1.2, .5], offset: [0, -220 + 130 * a], sizeAnchor: [.1, 0], sizeOffset: [0, 120],
-            source: "saveimage" + Math.ceil(Math.random()*5),
+            source: "saveimage" + Math.ceil(Math.random() * 5),
+            onClick(args) {
+                saveNR = a;
+                loadGame(saveNR);
+                if (game.pfp == 5) {
+                    game.pfp = 1;
+                }
+                else {
+                    game.pfp += 1;
+                }
+                saveGame();
+            }
         }))    
     }
 
@@ -163,6 +174,12 @@ scenes.title = () => {
                         var thisSave = JSON.parse(localStorage.getItem("SRPG" + tempsaveNR));
                     }
                     saveButtons[a].text = "Savegame " + tempsaveNR + "\n Pos: " + thisSave.position;
+
+                    if (thisSave.pfp != undefined) {
+                        saveImages[a].source = thisSave.pfp;
+                    }
+                    
+                    saveImages[a].source = "saveimage" + thisSave.pfp;
                 }
                 else { // Save does not exist :(
                     saveButtons[a].text = "New Game";
