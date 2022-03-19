@@ -61,6 +61,7 @@ scenes.title = () => {
             anchor: [1.2, .5], offset: [0, -220 + 130 * a], sizeAnchor: [.6, 0], sizeOffset: [0, 120],
             text: "Undefined",
             onClick(args) {
+                saveNR = a;
                 loadSave(a);
             }
         }))
