@@ -40,6 +40,12 @@ scenes.game = () => {
         }
     }));
 
+
+    let autoSaveText = controls.label({
+        anchor: [.025, .98], offset: [12, -12],
+        fontSize: 16, text: "Game saved!", alpha: 0,
+    });
+
     // Function to check if a tile is, well, walkable
     // Define if a tile (e. g. water) is walkable in the sprites dict
     function isWalkable(map, x, y) {
@@ -74,6 +80,23 @@ scenes.game = () => {
             let scale = window.innerHeight / 16;
             let width = window.innerWidth / scale;
             let map = maps["test"];
+
+            // Auto Save & Auto Save Text (ft. Last Christmas)
+            if (autoSaveTime > 4999 && autoSaveTime < 49999) {
+                // Animation
+                addAnimator(function (t) {
+                    autoSaveText.alpha = t/10;
+                    if (t > 2500) {
+                        autoSaveTime = 0;
+                        autoSaveText.alpha = 0;
+                        return true;
+                    }
+                    return false;
+                })
+                // Saving
+                saveGame();
+                autoSaveTime = 50000; // To prevent saving multiple times!
+            }
             
             if (!kofs[2]) {
                 if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up") && isWalkable(map, game.position[0], game.position[1] - 1)) {
@@ -120,7 +143,7 @@ scenes.game = () => {
 
         },
         controls: [
-            ...walkPad
+            ...walkPad, autoSaveText
         ],
     }
 }

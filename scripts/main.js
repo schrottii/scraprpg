@@ -41,6 +41,8 @@ function init() {
 }
 
 var currentKeys = {};
+var autoSaveTime = 0;
+
 
 function onCanvasClick(e) {
     for (let a = scene.controls.length - 1; a >= 0; a--) {
@@ -99,7 +101,38 @@ function loop() {
     ctx.textBaseline = "alphabetic";
     ctx.fillText((1000 / delta).toFixed(0) + "fps " + delta + "ms  | w: " + width + "  scale: " + scale + "   h: " + height, 2, 12);
 
+    // Auto Save
+    autoSaveTime += delta;
+
     updateAnimators(delta);
 
     requestAnimationFrame(loop);
+}
+
+// I copied these almost 1:1 from legacy.
+// Got a problem with that? Huh?
+
+var saveNR = 0;
+
+function saveGame() {
+    let saveCopy = JSON.parse(JSON.stringify(game));
+    localStorage.setItem("SRPG" + saveNR, JSON.stringify(saveCopy));
+}
+
+function loadGame() {
+    let saveCopy;
+    saveCopy = localStorage.getItem("SRPG" + saveNR);
+
+    if (saveCopy !== null && saveCopy !== "null") {
+        try {
+            saveCopy = JSON.parse(saveCopy);
+        }
+
+        catch (e) {
+            alert("Error");
+            return;
+        }
+
+        game = load(saveCopy);
+    }
 }

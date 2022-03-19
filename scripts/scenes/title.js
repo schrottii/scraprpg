@@ -59,11 +59,19 @@ scenes.title = () => {
     for (let a = 0; a < 3; a++) {
         saveButtons.push(controls.button({
             anchor: [1.2, .5], offset: [0, -220 + 130 * a], sizeAnchor: [.6, 0], sizeOffset: [0, 120],
-            text: "New Game",
+            text: "Undefined",
             onClick(args) {
                 loadSave(a);
             }
-        }));
+        }))
+            saveNR = a;
+            if (localStorage.getItem("SRPG" + saveNR) != undefined) { // It exists
+                let thisSave = JSON.parse(localStorage.getItem("SRPG" + saveNR));
+                saveButtons[a].text = "Savegame " + saveNR + "\n Pos: " + thisSave.position;
+            }
+            else { // Save does not exist :(
+                saveButtons[a].text = "New Game";
+        };
     }
 
 
