@@ -46,29 +46,33 @@ scenes.game = () => {
         fontSize: 16, text: "Game saved!", alpha: 0,
     });
 
+    function getTile(map, x, y) {
+        return map.tiles[map.map[y][x * 3] + map.map[y][(x * 3) + 1] + map.map[y][(x * 3) + 2]];
+    }
+
     // Function to check if a tile is, well, walkable
     // Define if a tile (e. g. water) is walkable in the sprites dict
     function isWalkable(map, x, y) {
-        if (map.map[y] && map.map[y][x]) { //Check if tile exists
-            if (map.tiles[map.map[y][x]].occupied != undefined) { //Check if occupied exists
-                if (typeof (map.tiles[map.map[y][x]].occupied) == "object") { // Config exists?
-                    if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up") && map.tiles[map.map[y][x]].occupied.includes("up")) {
+        if (map.map[y] && map.map[y][(x*3)+2]) { //Check if tile exists
+            if (getTile(map, x, y).occupied != undefined) { //Check if occupied exists
+                if (typeof (getTile(map, x, y).occupied) == "object") { // Config exists?
+                    if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up") && getTile(map, x, y).occupied.includes("up")) {
                         return true
                     }
-                    else if ((currentKeys["a"] || currentKeys["arrowleft"] || pad == "left") && map.tiles[map.map[y][x]].occupied.includes("left")) {
+                    else if ((currentKeys["a"] || currentKeys["arrowleft"] || pad == "left") && getTile(map, x, y).occupied.includes("left")) {
                         return true
                     }
-                    else if ((currentKeys["s"] || currentKeys["arrowdown"] || pad == "down") && map.tiles[map.map[y][x]].occupied.includes("down")) {
+                    else if ((currentKeys["s"] || currentKeys["arrowdown"] || pad == "down") && getTile(map, x, y).occupied.includes("down")) {
                         return true
                     }
-                    else if ((currentKeys["d"] || currentKeys["arrowright"] || pad == "right") && map.tiles[map.map[y][x]].occupied.includes("right")) {
+                    else if ((currentKeys["d"] || currentKeys["arrowright"] || pad == "right") && getTile(map, x, y).occupied.includes("right")) {
                         return true
                     }
                     else { // Config denies passing
                         return false;
                     }
                 }
-                return !map.tiles[map.map[y][x]].occupied // No config, is it occupied?
+                return !getTile(map, x, y).occupied // No config, is it occupied?
             }
         // Unoccupied, you can pass!
             return true;
@@ -127,8 +131,8 @@ scenes.game = () => {
             let ofsY = game.position[1] - kofs[1] * kofs[2] - 7.5;
 
             for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
-                if (map.map[y] && map.map[y][x]) {
-                    ctx.drawImage(images["tiles/" + map.tiles[map.map[y][x]].sprite],
+                if (map.map[y] && map.map[y][(x * 3)+2]) {
+                    ctx.drawImage(images["tiles/" + getTile(map, x,y).sprite],
                         scale * (x - ofsX), scale * (y - ofsY), scale+1, scale+1);
                 } else if (map.tiles.empty) {
                     ctx.drawImage(images["tiles/" + map.tiles.empty.sprite],
