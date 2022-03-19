@@ -70,7 +70,7 @@ scenes.game = () => {
                 }
                 return !map.tiles[map.map[y][x]].occupied // No config, is it occupied?
             }
-        // Unoccupied, U can Pass
+        // Unoccupied, you can pass!
             return true;
         } else return false;
     }
