@@ -23,6 +23,12 @@ let images = {
     bleu: "data/images/Map_Bleu.png",
     evil: "data/images/Map_Evil.png",
 
+    saveimage1: "data/images/PFP-1.png",
+    saveimage2: "data/images/PFP-2.png",
+    saveimage3: "data/images/PFP-3.png",
+    saveimage4: "data/images/PFP-4.png",
+    saveimage5: "data/images/PFP-5.png",
+
     "tiles/grass1": "data/images/tiles/grass1.png",
     "tiles/grass2": "data/images/tiles/grass2.png",
     "tiles/sand1": "data/images/tiles/sand1.png",

@@ -55,6 +55,7 @@ scenes.title = () => {
     }
 
     let saveButtons = [];
+    let saveImages = [];
     let mode = 0;
 
     for (let a = 0; a < 3; a++) {
@@ -74,7 +75,11 @@ scenes.title = () => {
                 }
             }
         }))
-            
+
+        saveImages.push(controls.image({
+            anchor: [1.2, .5], offset: [0, -220 + 130 * a], sizeAnchor: [.1, 0], sizeOffset: [0, 120],
+            source: "saveimage" + Math.ceil(Math.random()*5),
+        }))    
     }
 
 
@@ -193,6 +198,10 @@ scenes.title = () => {
                         saveButtons[1].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 850) / 800, 1), 0)) ** 4);
                         saveButtons[2].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
 
+                        saveImages[0].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4);
+                        saveImages[1].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 850) / 800, 1), 0)) ** 4);
+                        saveImages[2].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
+
                         deleteButton.anchor[0] = -.8 + (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
                         optionButton.anchor[0] = -.2 + (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4);
 
@@ -203,7 +212,7 @@ scenes.title = () => {
                     })
                 }
             }),
-            ...saveButtons,
+            ...saveButtons, ...saveImages,
             deleteButton, optionButton, 
             fadeOverlay
         ],
