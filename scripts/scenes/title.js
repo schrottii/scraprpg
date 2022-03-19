@@ -55,30 +55,35 @@ scenes.title = () => {
     }
 
     let saveButtons = [];
+    let mode = 0;
 
     for (let a = 0; a < 3; a++) {
         saveButtons.push(controls.button({
             anchor: [1.2, .5], offset: [0, -220 + 130 * a], sizeAnchor: [.6, 0], sizeOffset: [0, 120],
             text: "Undefined",
             onClick(args) {
-                saveNR = a;
-                loadSave(a);
+                if (mode == 0) {
+                    saveNR = a;
+                    loadGame(a);
+                    loadSave(a);
+                }
+                else {
+                    saveNR = a;
+                    localStorage["SRPG" + saveNR] = "null";
+                    mode = 0;
+                }
             }
         }))
-            saveNR = a;
-            if (localStorage.getItem("SRPG" + saveNR) != undefined) { // It exists
-                let thisSave = JSON.parse(localStorage.getItem("SRPG" + saveNR));
-                saveButtons[a].text = "Savegame " + saveNR + "\n Pos: " + thisSave.position;
-            }
-            else { // Save does not exist :(
-                saveButtons[a].text = "New Game";
-        };
+            
     }
 
 
     let deleteButton = controls.button({
         anchor: [-.8, .5], offset: [0, 170], sizeOffset: [150, 50],
         fontSize: 16, text: "Delete",
+        onClick(args) {
+            mode = 1;
+        }
     });
     let optionButton = controls.button({
         anchor: [-.2, .5], offset: [-150, 170], sizeOffset: [150, 50],
@@ -135,6 +140,32 @@ scenes.title = () => {
             if (state == "title") {
                 contLabel.alpha = (Math.cos(time / 1000) + 3) / 4;
             }
+
+
+            for (let a = 0; a < 3; a++) {
+                var tempsaveNR = a;
+                if (localStorage.getItem("SRPG" + tempsaveNR) != undefined && localStorage.getItem("SRPG" + tempsaveNR) != "null") { // It exists
+                    try {
+                        var thisSave = JSON.parse(localStorage.getItem("SRPG" + tempsaveNR));
+                    }
+                    catch (e) {
+                        saveGame();
+                        var thisSave = JSON.parse(localStorage.getItem("SRPG" + tempsaveNR));
+                    }
+                    saveButtons[a].text = "Savegame " + tempsaveNR + "\n Pos: " + thisSave.position;
+                }
+                else { // Save does not exist :(
+                    saveButtons[a].text = "New Game";
+                }
+            }
+
+            if (mode == 0) {
+                deleteButton.text = "Delete";
+            }
+            else {
+                deleteButton.text = "SELECT . . ."
+            }
+
         },
 
         // Controls

@@ -114,6 +114,10 @@ function loop() {
 
 var saveNR = 0;
 
+function load(x, altx) {
+    return x !== undefined ? x : altx;
+}
+
 function saveGame() {
     let saveCopy = JSON.parse(JSON.stringify(game));
     localStorage.setItem("SRPG" + saveNR, JSON.stringify(saveCopy));
@@ -122,7 +126,6 @@ function saveGame() {
 function loadGame() {
     let saveCopy;
     saveCopy = localStorage.getItem("SRPG" + saveNR);
-
     if (saveCopy !== null && saveCopy !== "null") {
         try {
             saveCopy = JSON.parse(saveCopy);
@@ -133,6 +136,9 @@ function loadGame() {
             return;
         }
 
-        game = load(saveCopy);
+        game = saveCopy;
+    }
+    else {
+        saveGame();
     }
 }
