@@ -82,7 +82,7 @@ scenes.game = () => {
             let map = maps["test"];
 
             // Auto Save & Auto Save Text (ft. Last Christmas)
-            if (autoSaveTime > 4999 && autoSaveTime < 49999) {
+            if (autoSaveTime > 9999) {
                 // Animation
                 addAnimator(function (t) {
                     autoSaveText.alpha = t/10;
@@ -95,7 +95,7 @@ scenes.game = () => {
                 })
                 // Saving
                 saveGame();
-                autoSaveTime = 50000; // To prevent saving multiple times!
+                autoSaveTime = -3; // To prevent saving multiple times!
             }
             
             if (!kofs[2]) {

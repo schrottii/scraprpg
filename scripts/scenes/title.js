@@ -82,7 +82,12 @@ scenes.title = () => {
         anchor: [-.8, .5], offset: [0, 170], sizeOffset: [150, 50],
         fontSize: 16, text: "Delete",
         onClick(args) {
-            mode = 1;
+            if (mode == 1) {
+                mode = 0;
+            }
+            else {
+                mode = 1;
+            }
         }
     });
     let optionButton = controls.button({
