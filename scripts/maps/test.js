@@ -13,7 +13,6 @@ maps["test"] = {
         "002": {
             sprite: "water1",
             occupied: true,
-
         },
         "003": {
             sprite: "relief1",
