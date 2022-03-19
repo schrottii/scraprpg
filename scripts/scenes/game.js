@@ -141,6 +141,11 @@ scenes.game = () => {
                 scale * (game.position[1] - kofs[1] * kofs[2] - ofsY), scale, scale)
             ctx.imageSmoothingEnabled = true;
 
+
+            // ...leave?
+            if (currentKeys["q"]) {
+                setScene(scenes.title());
+            }
         },
         controls: [
             ...walkPad, autoSaveText
