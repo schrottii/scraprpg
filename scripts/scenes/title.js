@@ -60,7 +60,7 @@ scenes.title = () => {
 
     for (let a = 0; a < 3; a++) {
         saveButtons.push(controls.button({
-            anchor: [1.2, .5], offset: [0, -220 + 130 * a], sizeAnchor: [.6, 0], sizeOffset: [0, 120], clickthrough: true,
+            anchor: [1.2, .5], offset: [0, -220 + 130 * a], sizeAnchor: [.6, 0], sizeOffset: [0, 120], clickthrough: false,
             text: "Undefined",
             onClick(args) {
                 if (mode == 0) {
@@ -79,15 +79,17 @@ scenes.title = () => {
         saveImages.push(controls.image({
             anchor: [1.2, .5], offset: [0, -220 + 130 * a], sizeAnchor: [.1, 0], sizeOffset: [0, 120],
             source: "saveimage" + Math.ceil(Math.random() * 5),
-            onClick(args) {
+            onClick(args) { //Change the image when clicked
                 saveNR = a;
+                saveButtons[a].clickthrough = true; //To avoid savegame loading when changing image (God tier code)
                 loadGame(saveNR);
-                if (game.pfp == 5) {
+                if (game.pfp == 5) { //To avoid changing to a pic that does not exist
                     game.pfp = 1;
                 }
                 else {
                     game.pfp += 1;
                 }
+                setTimeout(() => { saveButtons[a].clickthrough = false }, 500);
                 saveGame();
             }
         }))    
