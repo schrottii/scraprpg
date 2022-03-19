@@ -37,6 +37,10 @@ let images = {
     "tiles/water2": "data/images/tiles/water2.png",
     "tiles/relief1": "data/images/tiles/relief1.png",
     "tiles/relief2": "data/images/tiles/relief2.png",
+    "tiles/bridge-left": "data/images/tiles/tile_bridge_left_V1.png",
+    "tiles/bridge-center": "data/images/tiles/tile_bridge_central_V1.png",
+    "tiles/bridge-right": "data/images/tiles/tile_bridge_right_V1.png",
+    "tiles/placeholder": "data/images/tiles/placeholder.png",
 }
 
 var scenes = {
