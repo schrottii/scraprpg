@@ -100,7 +100,7 @@ maps["test"] = {
         },
         "028": {
              sprite: "uv_house_1",
-        }
+        },
         "029": {
              sprite: "uv_house_left",
 
