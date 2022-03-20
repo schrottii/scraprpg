@@ -59,6 +59,9 @@ let images = {
     "tiles/sand_hole_with_barrels": "data/images/tiles/tile_sand_hole_with_barrels.png",
     "tiles/uv_roof_right": "data/images/tiles/tile_uv_roof_right.png",
     "tiles/uv_roof_left": "data/images/tiles/tile_uv_roof_left.png",
+    "tiles/uv_house_door": "data/images/tiles/tile_uv_house_door.png",
+    "tiles/uv_house_1": "data/images/tiles/tile_uv_house_1.png",
+    "tiles/uv_house_left": "data/images/tiles/tile_uv_house_left.png",
 };
 var scenes = {
     title: "scripts/scenes/title.js",
