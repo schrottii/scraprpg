@@ -57,7 +57,8 @@ let images = {
     "tiles/sand_hole": "data/images/tiles/tile_sand_hole.png",
     "tiles/sand_hole_scrapy": "data/images/tiles/tile_sand_hole_scrapy.png",
     "tiles/sand_hole_with_barrels": "data/images/tiles/tile_sand_hole_with_barrels.png",
-}
+    "tiles/uv_roof_right": "data/images/tiles/tile_uv_roof_right.png",
+    "tiles/uv_roof_left": "data/images/tiles/tile_uv_roof_left.png",
 
 var scenes = {
     title: "scripts/scenes/title.js",
