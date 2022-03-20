@@ -94,6 +94,15 @@ maps["test"] = {
         },
         "026": {
              sprite: "uv_roof_left",
+        },
+        "027": {
+             sprite: "uv_house_door",
+        },
+        "028": {
+             sprite: "uv_house_1",
+        }
+        "028": {
+             sprite: "uv_house_left",
 
         },
     },
