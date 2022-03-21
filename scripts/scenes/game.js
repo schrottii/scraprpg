@@ -79,6 +79,27 @@ scenes.game = () => {
         } else return false;
     }
 
+    function isTeleport(map, x, y) {
+        if (map.map[y] && map.map[y][(x * 3) + 2]) { //Check if tile exists
+            if (getTile(map, x, y).teleport != undefined) { //Check if occupied exists
+                //It exists! A miracle
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    function tryTeleport(map, x, y) {
+        if (isTeleport(map, game.position[0], game.position[1])) {
+            map = maps[getTile(map, x, y).teleport[0]];
+            game.position[0] = getTile(map, x, y).teleport[1];
+            game.position[1] = getTile(map, x, y).teleport[2];
+        }
+    }
+
     return {
         preRender(ctx, delta) {
             let scale = window.innerHeight / 16;
@@ -107,18 +128,22 @@ scenes.game = () => {
                     kofs = [0, -1, 1];
                     game.position[1]--;
                     head = 3;
+                    tryTeleport(map, game.position[0], game.position[1]);
                 } else if ((currentKeys["s"] || currentKeys["arrowdown"] || pad == "down") && isWalkable(map, game.position[0], game.position[1] + 1)) {
                     kofs = [0, 1, 1];
                     game.position[1]++;
                     head = 0;
+                    tryTeleport(map, game.position[0], game.position[1]);
                 } else if ((currentKeys["a"] || currentKeys["arrowleft"] || pad == "left") && isWalkable(map, game.position[0] - 1, game.position[1])) {
                     kofs = [-1, 0, 1];
                     game.position[0]--;
                     head = 1;
+                    tryTeleport(map, game.position[0], game.position[1]);
                 } else if ((currentKeys["d"] || currentKeys["arrowright"] || pad == "right") && isWalkable(map, game.position[0] + 1, game.position[1])) {
                     kofs = [1, 0, 1];
                     game.position[0]++;
                     head = 2;
+                    tryTeleport(map, game.position[0], game.position[1]);
                 }
                 pad = "";
             }
