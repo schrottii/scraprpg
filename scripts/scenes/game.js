@@ -47,7 +47,7 @@ scenes.game = () => {
     });
 
     function getTile(map, x, y) {
-        return map.tiles[map.map[y][x * 3] + map.map[y][(x * 3) + 1] + map.map[y][(x * 3) + 2]];
+        return map.tiles[map.map[y][x * 4] + map.map[y][(x * 4) + 1] + map.map[y][(x * 4) + 2]];
     }
 
     // Function to check if a tile is, well, walkable
@@ -131,7 +131,7 @@ scenes.game = () => {
             let ofsY = game.position[1] - kofs[1] * kofs[2] - 7.5;
 
             for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
-                if (map.map[y] && map.map[y][(x * 3)+2]) {
+                if (map.map[y] && map.map[y][(x * 4)+2]) {
                     ctx.drawImage(images["tiles/" + getTile(map, x,y).sprite],
                         scale * (x - ofsX), scale * (y - ofsY), scale+1, scale+1);
                 } else if (map.tiles.empty) {
