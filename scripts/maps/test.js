@@ -112,6 +112,18 @@ maps["test"] = {
             sprite: "uv_house_door",
             teleport: ["test", 4, 4],
         },
+       "030": {
+           sprite: "fence_no_pole",
+           occupied: true,
+        },
+       "031": {
+           sprite: "fence_right",
+           occupied: true,
+        },
+       "032": {
+            sprite: "fence_left",
+            occupied: true,
+        },
 
     // Do not remove this } here. Make sure there's a } right above this too
     },
