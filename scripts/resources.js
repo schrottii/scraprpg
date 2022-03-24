@@ -62,6 +62,9 @@ let images = {
     "tiles/uv_house_door": "data/images/tiles/tile_uv_house_door.png",
     "tiles/uv_house_1": "data/images/tiles/tile_uv_house_1.png",
     "tiles/uv_house_left": "data/images/tiles/tile_uv_house_left.png",
+    "tiles/fence_no_pole": "data/images/tiles/tile_fence_no_pole.png",
+    "tiles/fence_right": "data/images/tiles/tile_fence_right.png",
+    "tiles/fence_left": "data/images/tiles/tile_fence_left.png",
 };
 var scenes = {
     title: "scripts/scenes/title.js",
