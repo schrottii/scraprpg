@@ -125,11 +125,11 @@ maps["test"] = {
             occupied: true,
        },
       "033": {
-           sprite: "table_right"
+           sprite: "table_right",
            occupied:true,
       },
       "034": {
-           sprite: "table_left"
+           sprite: "table_left",
            occupied:true,
         },
 
