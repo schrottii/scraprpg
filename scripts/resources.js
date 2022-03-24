@@ -65,6 +65,8 @@ let images = {
     "tiles/fence_no_pole": "data/images/tiles/tile_fence_no_pole.png",
     "tiles/fence_right": "data/images/tiles/tile_fence_right.png",
     "tiles/fence_left": "data/images/tiles/tile_fence_left.png",
+    "tiles/table_right": "data/images/tiles/tile_table_right.png",
+    "tiles/table_left": "data/images/tiles/tile_table_left.png",
 };
 var scenes = {
     title: "scripts/scenes/title.js",
