@@ -46,8 +46,13 @@ scenes.game = () => {
         fontSize: 16, text: "Game saved!", alpha: 0,
     });
 
-    function getTile(map, x, y) {
-        return map.tiles[map.map[y][x * 4] + map.map[y][(x * 4) + 1] + map.map[y][(x * 4) + 2]];
+    function getTile(map, x, y, l = 1) {
+        if (l == 1) {
+            return map.tiles[map.map[y][x * 4] + map.map[y][(x * 4) + 1] + map.map[y][(x * 4) + 2]];
+        }
+        if (l == 2) {
+            return map.tiles[map.mapfg[y][x * 4] + map.mapfg[y][(x * 4) + 1] + map.mapfg[y][(x * 4) + 2]];
+        }
     }
 
     // Function to check if a tile is, well, walkable
@@ -95,7 +100,7 @@ scenes.game = () => {
     function tryTeleport(map, x, y) {
         if (isTeleport(map, x, y)) {
             let themap = getTile(map, x, y);
-            console.log(themap.teleport[0]);
+            // Set map and pos
             game.map = themap.teleport[0];
             game.position[0] = themap.teleport[1];
             game.position[1] = themap.teleport[2];
@@ -158,13 +163,21 @@ scenes.game = () => {
             let ofsY = game.position[1] - kofs[1] * kofs[2] - 7.5;
 
             for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
-                if (map.map[y] && map.map[y][(x * 4)+2]) {
-                    ctx.drawImage(images["tiles/" + getTile(map, x,y).sprite],
-                        scale * (x - ofsX), scale * (y - ofsY), scale+1, scale+1);
+                if (map.map[y] && map.map[y][(x * 4) + 2]) {
+                    ctx.drawImage(images["tiles/" + getTile(map, x, y).sprite],
+                        scale * (x - ofsX), scale * (y - ofsY), scale + 1, scale + 1);
                 } else if (map.tiles.empty) {
                     ctx.drawImage(images["tiles/" + map.tiles.empty.sprite],
-                        scale * (x - ofsX), scale * (y - ofsY), scale+1, scale+1);
+                        scale * (x - ofsX), scale * (y - ofsY), scale + 1, scale + 1);
                 }
+            }
+            for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
+                if (map.mapfg[y] && map.mapfg[y][(x * 4) + 2]) {
+                    if (map.mapfg[y][(x * 4) + 2] != "-") {
+                        ctx.drawImage(images["tiles/" + getTile(map, x, y, 2).sprite],
+                            scale * (x - ofsX), scale * (y - ofsY), scale + 1, scale + 1);
+                    }
+                } 
             }
 
             ctx.drawImage(images["bleu"], 32 * Math.floor(walkTime), 32 * head, 32, 32, 
