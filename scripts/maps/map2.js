@@ -123,6 +123,7 @@ maps["map2"] = {
        "032": {
             sprite: "fence_left",
             occupied: true,
+        },
        "033": {
             sprite: "house_floor",
         },
