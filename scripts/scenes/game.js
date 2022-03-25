@@ -93,10 +93,12 @@ scenes.game = () => {
     }
 
     function tryTeleport(map, x, y) {
-        if (isTeleport(map, game.position[0], game.position[1])) {
-            map = maps[getTile(map, x, y).teleport[0]];
-            game.position[0] = getTile(map, x, y).teleport[1];
-            game.position[1] = getTile(map, x, y).teleport[2];
+        if (isTeleport(map, x, y)) {
+            let themap = getTile(map, x, y);
+            console.log(themap.teleport[0]);
+            game.map = themap.teleport[0];
+            game.position[0] = themap.teleport[1];
+            game.position[1] = themap.teleport[2];
         }
     }
 
@@ -104,7 +106,7 @@ scenes.game = () => {
         preRender(ctx, delta) {
             let scale = window.innerHeight / 16;
             let width = window.innerWidth / scale;
-            let map = maps["test"];
+            let map = maps[game.map];
 
             // Auto Save & Auto Save Text (ft. Last Christmas)
             if (autoSaveTime > 9999) {
