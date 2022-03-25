@@ -1,7 +1,7 @@
 maps["map2"] = {
     tiles: {
         empty: {
-            sprite: "water1",
+            sprite: "grass1",
         },
 
         "000": {
