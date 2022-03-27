@@ -58,7 +58,7 @@ scenes.game = () => {
     // Function to check if a tile is, well, walkable
     // Define if a tile (e. g. water) is walkable in the sprites dict
     function isWalkable(map, x, y) {
-        if (map.map[y] && map.map[y][(x*3)+2]) { //Check if tile exists
+        if (map.map[y] && getTile(map, x, y)) { //Check if tile exists
             if (getTile(map, x, y).occupied != undefined) { //Check if occupied exists
                 if (typeof (getTile(map, x, y).occupied) == "object") { // Config exists?
                     if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up") && getTile(map, x, y).occupied.includes("up")) {
