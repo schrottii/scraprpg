@@ -46,6 +46,24 @@ scenes.game = () => {
         fontSize: 16, text: "Game saved!", alpha: 0,
     });
 
+    let mapDisplay = [];
+    for (i = 0; i < 3; i++) {
+        mapDisplay.push(controls.button({
+            anchor: [.9925, .875], offset: [-220 + (i * 75), 0], sizeOffset: [75, 75],
+            text: "",
+            onClick(args) {
+                console.log("bro!");
+            }
+        }));
+    }
+    for (i = 0; i < 3; i++) {
+        mapDisplay.push(controls.image({
+            anchor: [.9925, .875], offset: [-220 + (i * 75), 0], sizeOffset: [75, 75],
+            source: ["paper", "inventory", "gear"][i],
+        }));
+    }
+    
+
     function getTile(map, x, y, l = 1) {
         if (l == 1) {
             return map.tiles[map.map[y][x * 4] + map.map[y][(x * 4) + 1] + map.map[y][(x * 4) + 2]];
@@ -192,7 +210,7 @@ scenes.game = () => {
             }
         },
         controls: [
-            ...walkPad, autoSaveText
+            ...walkPad, autoSaveText, ...mapDisplay
         ],
     }
 }

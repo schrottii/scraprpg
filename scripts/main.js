@@ -4,7 +4,6 @@ function init() {
     window.addEventListener("keydown", (e) => currentKeys[e.key.toLowerCase()] = true);
     window.addEventListener("keyup", (e) => currentKeys[e.key.toLowerCase()] = false);
 
-
     setScene({
         controls: [
             controls.label({
