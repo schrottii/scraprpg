@@ -137,6 +137,8 @@ function loadGame() {
             return;
         }
 
+        if (saveCopy.characters == undefined) saveCopy.characters = game.characters;
+
         game = saveCopy;
     }
     else {

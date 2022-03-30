@@ -46,51 +46,57 @@ scenes.game = () => {
         fontSize: 16, text: "Game saved!", alpha: 0,
     });
 
+
+    // Alright, alright, we need comments, so let me comment this
+    // This is for the map's display. In the BOTTOM RIGHT. No idea what else to call it.
     let mapDisplay = [];
 
+    // The top bg rect
     mapDisplay.push(controls.rect({
         anchor: [.9925, .68], offset: [-220, 0], sizeOffset: [250, 250],
         fill: "#B58542",
     }));
 
+    // Names, stats, etc.
     mapDisplay.push(controls.label({
         anchor: [.99, .68], offset: [-200, 20],
         align: "left", fontSize: 18, fill: "#000000",
-        text: "Bleu",
+        text: game.characters.bleu.name,
     }));
     mapDisplay.push(controls.label({
         anchor: [.99, .705], offset: [-200, 20],
         align: "left", fontSize: 14, fill: "green",
-        text: "HP: 999   EP: 10",
+        text: "HP: " + game.characters.bleu.HP + "/" + game.characters.bleu.maxHP + "   EP: " + game.characters.bleu.EP,
     }));
     mapDisplay.push(controls.label({
         anchor: [.99, .73], offset: [-200, 20],
         align: "left", fontSize: 14, fill: "yellow",
-        text: "Level: 999",
+        text: "Level: " + game.characters.bleu.level,
     }));
 
     mapDisplay.push(controls.label({
         anchor: [.99, .76], offset: [-200, 20],
         align: "left", fontSize: 18, fill: "#000000",
-        text: "Corelle",
+        text: game.characters.corelle.name,
     }));
     mapDisplay.push(controls.label({
         anchor: [.99, .785], offset: [-200, 20],
         align: "left", fontSize: 14, fill: "green",
-        text: "HP: 999   EP: 10",
+        text: "HP: " + game.characters.corelle.HP + "/" + game.characters.corelle.maxHP + "   EP: " + game.characters.corelle.EP,
     }));
     mapDisplay.push(controls.label({
         anchor: [.99, .81], offset: [-200, 20],
         align: "left", fontSize: 14, fill: "yellow",
-        text: "Level: 999",
+        text: "Level: " + game.characters.corelle.level,
     }));
 
+    // Buttons, then images over them
     for (i = 0; i < 3; i++) {
         mapDisplay.push(controls.button({
             anchor: [.9925, .875], offset: [-220 + (i * 75), 0], sizeOffset: [75, 75],
             text: "",
             onClick(args) {
-                console.log("bro!");
+                game.characters.bleu.level += 1; //Hmm. It doesn't update.
             }
         }));
     }
@@ -102,6 +108,7 @@ scenes.game = () => {
     }
     
 
+    // Function used to grab tiles
     function getTile(map, x, y, l = 1) {
         if (l == 1) {
             return map.tiles[map.map[y][x * 4] + map.map[y][(x * 4) + 1] + map.map[y][(x * 4) + 2]];
