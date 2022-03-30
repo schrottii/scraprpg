@@ -47,6 +47,44 @@ scenes.game = () => {
     });
 
     let mapDisplay = [];
+
+    mapDisplay.push(controls.rect({
+        anchor: [.9925, .68], offset: [-220, 0], sizeOffset: [250, 250],
+        fill: "#B58542",
+    }));
+
+    mapDisplay.push(controls.label({
+        anchor: [.99, .68], offset: [-200, 20],
+        align: "left", fontSize: 18, fill: "#000000",
+        text: "Bleu",
+    }));
+    mapDisplay.push(controls.label({
+        anchor: [.99, .705], offset: [-200, 20],
+        align: "left", fontSize: 14, fill: "green",
+        text: "HP: 999   EP: 10",
+    }));
+    mapDisplay.push(controls.label({
+        anchor: [.99, .73], offset: [-200, 20],
+        align: "left", fontSize: 14, fill: "yellow",
+        text: "Level: 999",
+    }));
+
+    mapDisplay.push(controls.label({
+        anchor: [.99, .76], offset: [-200, 20],
+        align: "left", fontSize: 18, fill: "#000000",
+        text: "Corelle",
+    }));
+    mapDisplay.push(controls.label({
+        anchor: [.99, .785], offset: [-200, 20],
+        align: "left", fontSize: 14, fill: "green",
+        text: "HP: 999   EP: 10",
+    }));
+    mapDisplay.push(controls.label({
+        anchor: [.99, .81], offset: [-200, 20],
+        align: "left", fontSize: 14, fill: "yellow",
+        text: "Level: 999",
+    }));
+
     for (i = 0; i < 3; i++) {
         mapDisplay.push(controls.button({
             anchor: [.9925, .875], offset: [-220 + (i * 75), 0], sizeOffset: [75, 75],
