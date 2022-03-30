@@ -60,32 +60,38 @@ scenes.game = () => {
     // Names, stats, etc.
     mapDisplay.push(controls.label({
         anchor: [.99, .68], offset: [-200, 20],
+        alpha: 255,
         align: "left", fontSize: 18, fill: "#000000",
         text: game.characters.bleu.name,
     }));
     mapDisplay.push(controls.label({
         anchor: [.99, .705], offset: [-200, 20],
+        alpha: 255,
         align: "left", fontSize: 14, fill: "green",
         text: "HP: " + game.characters.bleu.HP + "/" + game.characters.bleu.maxHP + "   EP: " + game.characters.bleu.EP,
     }));
     mapDisplay.push(controls.label({
         anchor: [.99, .73], offset: [-200, 20],
+        alpha: 255,
         align: "left", fontSize: 14, fill: "yellow",
         text: "Level: " + game.characters.bleu.level,
     }));
 
     mapDisplay.push(controls.label({
         anchor: [.99, .76], offset: [-200, 20],
+        alpha: 255,
         align: "left", fontSize: 18, fill: "#000000",
         text: game.characters.corelle.name,
     }));
     mapDisplay.push(controls.label({
         anchor: [.99, .785], offset: [-200, 20],
+        alpha: 255,
         align: "left", fontSize: 14, fill: "green",
         text: "HP: " + game.characters.corelle.HP + "/" + game.characters.corelle.maxHP + "   EP: " + game.characters.corelle.EP,
     }));
     mapDisplay.push(controls.label({
         anchor: [.99, .81], offset: [-200, 20],
+        alpha: 255,
         align: "left", fontSize: 14, fill: "yellow",
         text: "Level: " + game.characters.corelle.level,
     }));
@@ -94,15 +100,36 @@ scenes.game = () => {
     for (i = 0; i < 3; i++) {
         mapDisplay.push(controls.button({
             anchor: [.9925, .875], offset: [-220 + (i * 75), 0], sizeOffset: [75, 75],
+            alpha: 255,
             text: "",
             onClick(args) {
-                game.characters.bleu.level += 1; //Hmm. It doesn't update.
+                if (this.offset[0] == -220) {
+                    game.characters.bleu.level += 1; //Hmm. It doesn't update.
+                }
+                if (this.offset[0] == -145) {
+
+                }
+                if (this.offset[0] == -70) {
+                    if (this.alpha == 255) {
+                        for (i = 0; i < mapDisplay.length; i++) {
+                            mapDisplay[i].alpha = 0;
+                        }
+                    }
+                    else {
+                        for (i = 0; i < mapDisplay.length; i++) {
+                            mapDisplay[i].alpha = 255;
+                        }
+                    }
+                }
             }
         }));
     }
+
+
     for (i = 0; i < 3; i++) {
         mapDisplay.push(controls.image({
             anchor: [.9925, .875], offset: [-220 + (i * 75), 0], sizeOffset: [75, 75],
+            alpha: 255,
             source: ["paper", "inventory", "gear"][i],
         }));
     }
@@ -180,7 +207,7 @@ scenes.game = () => {
             if (autoSaveTime > 9999) {
                 // Animation
                 addAnimator(function (t) {
-                    autoSaveText.alpha = t/10;
+                    autoSaveText.alpha = t / 10;
                     if (t > 2500) {
                         autoSaveTime = 0;
                         autoSaveText.alpha = 0;
@@ -192,7 +219,7 @@ scenes.game = () => {
                 saveGame();
                 autoSaveTime = -3; // To prevent saving multiple times!
             }
-            
+
             if (!kofs[2]) {
                 if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up") && isWalkable(map, game.position[0], game.position[1] - 1)) {
                     kofs = [0, -1, 1];
@@ -240,11 +267,11 @@ scenes.game = () => {
                         ctx.drawImage(images["tiles/" + getTile(map, x, y, 2).sprite],
                             scale * (x - ofsX), scale * (y - ofsY), scale + 1, scale + 1);
                     }
-                } 
+                }
             }
 
-            ctx.drawImage(images["bleu"], 32 * Math.floor(walkTime), 32 * head, 32, 32, 
-                scale * (game.position[0] - kofs[0] * kofs[2] - ofsX), 
+            ctx.drawImage(images["bleu"], 32 * Math.floor(walkTime), 32 * head, 32, 32,
+                scale * (game.position[0] - kofs[0] * kofs[2] - ofsX),
                 scale * (game.position[1] - kofs[1] * kofs[2] - ofsY), scale, scale)
             ctx.imageSmoothingEnabled = true;
 
@@ -255,6 +282,24 @@ scenes.game = () => {
             }
         },
         controls: [
+           /* controls.base({
+                anchor: [.9925, .875], offset: [-70, 0], sizeOffset: [75, 75],
+                onClick() {
+                    state = "menu";
+                    this.clickthrough = true;
+                    addAnimator(function (t) {
+
+                        //for (i = 0; i < mapDisplay.length; i++) {
+                            mapDisplay[8].alpha = Math.max(0, 255 - t);
+                        //}
+
+                        if (t > 260) {
+                            return true;
+                        }
+                        return false;
+                    })
+                }
+            }),*/
             ...walkPad, autoSaveText, ...mapDisplay
         ],
     }
