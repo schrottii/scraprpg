@@ -47,9 +47,10 @@ scenes.game = () => {
     });
 
 
+
     // Alright, alright, we need comments, so let me comment this
     // This is for the map's display. In the BOTTOM RIGHT. No idea what else to call it.
-    let mapDisplay = [];
+    let mapDisplay = []
 
     // The top bg rect
     mapDisplay.push(controls.rect({
@@ -64,18 +65,18 @@ scenes.game = () => {
         align: "left", fontSize: 18, fill: "#000000",
         text: game.characters.bleu.name,
     }));
-    mapDisplay.push(controls.label({
+    let mapDisplayStats1 = controls.label({
         anchor: [.99, .705], offset: [-200, 20],
         alpha: 255,
         align: "left", fontSize: 14, fill: "green",
         text: "HP: " + game.characters.bleu.HP + "/" + game.characters.bleu.maxHP + "   EP: " + game.characters.bleu.EP,
-    }));
-    mapDisplay.push(controls.label({
+    });
+    let mapDisplayLevel1 = controls.label({
         anchor: [.99, .73], offset: [-200, 20],
         alpha: 255,
         align: "left", fontSize: 14, fill: "yellow",
         text: "Level: " + game.characters.bleu.level,
-    }));
+    }); 
 
     mapDisplay.push(controls.label({
         anchor: [.99, .76], offset: [-200, 20],
@@ -83,18 +84,18 @@ scenes.game = () => {
         align: "left", fontSize: 18, fill: "#000000",
         text: game.characters.corelle.name,
     }));
-    mapDisplay.push(controls.label({
+    let mapDisplayStats2 = controls.label({
         anchor: [.99, .785], offset: [-200, 20],
         alpha: 255,
         align: "left", fontSize: 14, fill: "green",
         text: "HP: " + game.characters.corelle.HP + "/" + game.characters.corelle.maxHP + "   EP: " + game.characters.corelle.EP,
-    }));
-    mapDisplay.push(controls.label({
+    });
+    let mapDisplayLevel2 = controls.label({
         anchor: [.99, .81], offset: [-200, 20],
         alpha: 255,
         align: "left", fontSize: 14, fill: "yellow",
         text: "Level: " + game.characters.corelle.level,
-    }));
+    });
 
     // Buttons, then images over them
     for (i = 0; i < 3; i++) {
@@ -105,6 +106,7 @@ scenes.game = () => {
             onClick(args) {
                 if (this.offset[0] == -220) {
                     game.characters.bleu.level += 1; //Hmm. It doesn't update.
+                    //controls
                 }
                 if (this.offset[0] == -145) {
 
@@ -124,7 +126,6 @@ scenes.game = () => {
             }
         }));
     }
-
 
     for (i = 0; i < 3; i++) {
         mapDisplay.push(controls.image({
@@ -280,6 +281,15 @@ scenes.game = () => {
             if (currentKeys["q"]) {
                 setScene(scenes.title());
             }
+
+
+            // Update bottom right texts
+            // I think this method is inefficient, but I was not able to find a better one.
+            // I searched and tried several things for hours.
+            mapDisplayLevel1.text = "Level: " + game.characters.bleu.level;
+            mapDisplayStats1.text = "HP: " + game.characters.bleu.HP + "/" + game.characters.bleu.maxHP + "   EP: " + game.characters.bleu.EP;
+            mapDisplayLevel2.text = "Level: " + game.characters.corelle.level;
+            mapDisplayStats2.text = "HP: " + game.characters.corelle.HP + "/" + game.characters.corelle.maxHP + "   EP: " + game.characters.corelle.EP;
         },
         controls: [
            /* controls.base({
@@ -300,7 +310,9 @@ scenes.game = () => {
                     })
                 }
             }),*/
-            ...walkPad, autoSaveText, ...mapDisplay
+            ...walkPad, autoSaveText, ...mapDisplay,
+            mapDisplayStats1, mapDisplayStats2,
+            mapDisplayLevel1, mapDisplayLevel2,
         ],
     }
 }
