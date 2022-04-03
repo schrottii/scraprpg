@@ -125,11 +125,19 @@ scenes.game = () => {
                         for (i = 0; i < mapDisplay.length; i++) {
                             mapDisplay[i].alpha = 0;
                         }
+                        mapDisplayStats1.alpha = 0;
+                        mapDisplayStats2.alpha = 0;
+                        mapDisplayLevel1.alpha = 0;
+                        mapDisplayLevel2.alpha = 0;
                     }
                     else {
                         for (i = 0; i < mapDisplay.length; i++) {
                             mapDisplay[i].alpha = 255;
                         }
+                        mapDisplayStats1.alpha = 255;
+                        mapDisplayStats2.alpha = 255;
+                        mapDisplayLevel1.alpha = 255;
+                        mapDisplayLevel2.alpha = 255;
                     }
                 }
             }
