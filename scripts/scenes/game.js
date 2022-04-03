@@ -5,6 +5,7 @@ scenes.game = () => {
     let pad = "";
 
     var scale;
+    var zoom = 2;
 
     let walkPad = [];
     walkPad.push(controls.image({ // Up
@@ -109,7 +110,15 @@ scenes.game = () => {
                     //controls
                 }
                 if (this.offset[0] == -145) {
-
+                    if (zoom == 2) {
+                        zoom = 3;
+                    }
+                    else if (zoom == 3) {
+                        zoom = 1;
+                    }
+                    else if (zoom == 1) {
+                        zoom = 2;
+                    }
                 }
                 if (this.offset[0] == -70) {
                     if (this.alpha == 255) {
@@ -250,30 +259,32 @@ scenes.game = () => {
 
             ctx.imageSmoothingEnabled = false;
             ctx.globalAlpha = 1;
+
             let ofsX = game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5;
             let ofsY = game.position[1] - kofs[1] * kofs[2] - 7.5;
+
 
             for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
                 if (map.map[y] && map.map[y][(x * 4) + 2]) {
                     ctx.drawImage(images["tiles/" + getTile(map, x, y).sprite],
-                        scale * (x - ofsX), scale * (y - ofsY), scale + 1, scale + 1);
+                        ((zoom * scale) * (x - ofsX)) - ((zoom - 1) * scale * 15), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom*scale + 1);
                 } else if (map.tiles.empty) {
                     ctx.drawImage(images["tiles/" + map.tiles.empty.sprite],
-                        scale * (x - ofsX), scale * (y - ofsY), scale + 1, scale + 1);
+                        (zoom * scale) * (x - ofsX) - ((zoom - 1) * scale * 15), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom*scale + 1);
                 }
             }
             for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
                 if (map.mapfg[y] && map.mapfg[y][(x * 4) + 2]) {
                     if (map.mapfg[y][(x * 4) + 2] != "-") {
                         ctx.drawImage(images["tiles/" + getTile(map, x, y, 2).sprite],
-                            scale * (x - ofsX), scale * (y - ofsY), scale + 1, scale + 1);
+                            zoom * scale * (x - ofsX), zoom * scale * (y - ofsY), zoom * scale + 1, zoom*scale + 1);
                     }
                 }
             }
 
             ctx.drawImage(images["bleu"], 32 * Math.floor(walkTime), 32 * head, 32, 32,
                 scale * (game.position[0] - kofs[0] * kofs[2] - ofsX),
-                scale * (game.position[1] - kofs[1] * kofs[2] - ofsY), scale, scale)
+                scale * (game.position[1] - kofs[1] * kofs[2] - ofsY), zoom * scale, zoom * scale)
             ctx.imageSmoothingEnabled = true;
 
 
