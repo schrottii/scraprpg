@@ -277,14 +277,14 @@ scenes.game = () => {
                 if (map.mapfg[y] && map.mapfg[y][(x * 4) + 2]) {
                     if (map.mapfg[y][(x * 4) + 2] != "-") {
                         ctx.drawImage(images["tiles/" + getTile(map, x, y, 2).sprite],
-                            zoom * scale * (x - ofsX), zoom * scale * (y - ofsY), zoom * scale + 1, zoom*scale + 1);
+                            zoom * scale * (x - ofsX) - ((zoom - 1) * scale * 15), zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom*scale + 1);
                     }
                 }
             }
 
             ctx.drawImage(images["bleu"], 32 * Math.floor(walkTime), 32 * head, 32, 32,
-                scale * (game.position[0] - kofs[0] * kofs[2] - ofsX),
-                scale * (game.position[1] - kofs[1] * kofs[2] - ofsY), zoom * scale, zoom * scale)
+                scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) / 3)),
+                scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zoom * scale, zoom * scale)
             ctx.imageSmoothingEnabled = true;
 
 
