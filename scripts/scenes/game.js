@@ -1,3 +1,5 @@
+var zoom = 1;
+
 scenes.game = () => {
     let kofs = [0, 0, 0];
     let head = 0;
@@ -5,7 +7,8 @@ scenes.game = () => {
     let pad = "";
 
     var scale;
-    var zoom = 2;
+
+    var enemies = [];
 
     let walkPad = [];
     walkPad.push(controls.image({ // Up
@@ -215,6 +218,17 @@ scenes.game = () => {
         }
     }
 
+    function ActionsOnMove(){
+        // Everything performed when the player moves successfully
+
+        if (Math.random() > 0.95) { // For the stupid: Somewhat unlikely
+            enemies.push(mapenemies.default({
+                position: [5, 5], map: game.map,
+            }));
+            console.log("Spawned!");
+        }
+    }
+
     return {
         preRender(ctx, delta) {
             let scale = window.innerHeight / 16;
@@ -238,26 +252,48 @@ scenes.game = () => {
                 autoSaveTime = -3; // To prevent saving multiple times!
             }
 
+            if (moveEnemiesTime > 499) {
+                moveEnemiesTime = 0;
+                for (i = 0; i < enemies.length; i++) {
+                    if (Math.random() > 0.25) {
+                        enemies[i].position[0] += 1;
+                    }
+                    if (Math.random() > 0.75) {
+                        enemies[i].position[0] -= 1;
+                    }
+                    if (Math.random() > 0.50) {
+                        enemies[i].position[1] += 1;
+                    }
+                    if (Math.random() > 0.75) {
+                        enemies[i].position[1] -= 1;
+                    }
+                }
+            }
+
             if (!kofs[2]) {
                 if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up") && isWalkable(map, game.position[0], game.position[1] - 1)) {
                     kofs = [0, -1, 1];
                     game.position[1]--;
                     head = 3;
+                    ActionsOnMove();
                     tryTeleport(map, game.position[0], game.position[1]);
                 } else if ((currentKeys["s"] || currentKeys["arrowdown"] || pad == "down") && isWalkable(map, game.position[0], game.position[1] + 1)) {
                     kofs = [0, 1, 1];
                     game.position[1]++;
                     head = 0;
+                    ActionsOnMove();
                     tryTeleport(map, game.position[0], game.position[1]);
                 } else if ((currentKeys["a"] || currentKeys["arrowleft"] || pad == "left") && isWalkable(map, game.position[0] - 1, game.position[1])) {
                     kofs = [-1, 0, 1];
                     game.position[0]--;
                     head = 1;
+                    ActionsOnMove();
                     tryTeleport(map, game.position[0], game.position[1]);
                 } else if ((currentKeys["d"] || currentKeys["arrowright"] || pad == "right") && isWalkable(map, game.position[0] + 1, game.position[1])) {
                     kofs = [1, 0, 1];
                     game.position[0]++;
                     head = 2;
+                    ActionsOnMove();
                     tryTeleport(map, game.position[0], game.position[1]);
                 }
                 pad = "";
@@ -287,6 +323,13 @@ scenes.game = () => {
                         ctx.drawImage(images["tiles/" + getTile(map, x, y, 2).sprite],
                             zoom * scale * (x - ofsX) - ((zoom - 1) * width * 15), zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom*scale + 1);
                     }
+                }
+            }
+
+            for (let enemy of enemies) {
+                if (enemy.alpha > 0) {
+                    ctx.globalAlpha = enemy.alpha;
+                    enemy.render(ctx);
                 }
             }
 

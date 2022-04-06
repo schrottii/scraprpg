@@ -41,7 +41,7 @@ function init() {
 
 var currentKeys = {};
 var autoSaveTime = 0;
-
+var moveEnemiesTime = 0;
 
 function onCanvasClick(e) {
     for (let a = scene.controls.length - 1; a >= 0; a--) {
@@ -104,6 +104,8 @@ function loop() {
     if (autoSaveTime > -1) {
         autoSaveTime += delta;
     }
+
+    moveEnemiesTime += delta;
 
     updateAnimators(delta);
 
