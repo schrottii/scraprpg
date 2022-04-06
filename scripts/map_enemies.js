@@ -13,8 +13,11 @@ let mapenemies = {
                 let tileX = this.position[0] - game.position[0];
                 let tileY = this.position[1] - game.position[1];
 
+                let xAdjust = game.position[0] - width / 2 + 0.5;
+
                 ctx.drawImage(images["gear"],
-                    scale * tileX + (3 * (zoom - 1)) + 24,
+                    ((zoom * scale) * (tileX - xAdjust)) - ((zoom - 1) * scale * (width / 2)),
+                    //scale * (tileX + (3 * (zoom - 1)) + 4) - xAdjust,
                     scale * (tileY + ((zoom - 1) / 2)) + 16, zoom * scale, zoom * scale)
             },
 
