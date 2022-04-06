@@ -311,17 +311,17 @@ scenes.game = () => {
             for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
                 if (map.map[y] && map.map[y][(x * 4) + 2]) {
                     ctx.drawImage(images["tiles/" + getTile(map, x, y).sprite],
-                        ((zoom * scale) * (x - ofsX)) - ((zoom - 1) * width * 15), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom*scale + 1);
+                        ((zoom * scale) * (x - ofsX)) - ((zoom - 1) * scale * (width/2)), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
                 } else if (map.tiles.empty) {
                     ctx.drawImage(images["tiles/" + map.tiles.empty.sprite],
-                        (zoom * scale) * (x - ofsX) - ((zoom - 1) * width * 15), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom*scale + 1);
+                        (zoom * scale) * (x - ofsX) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
                 }
             }
             for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
                 if (map.mapfg[y] && map.mapfg[y][(x * 4) + 2]) {
                     if (map.mapfg[y][(x * 4) + 2] != "-") {
                         ctx.drawImage(images["tiles/" + getTile(map, x, y, 2).sprite],
-                            zoom * scale * (x - ofsX) - ((zoom - 1) * width * 15), zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom*scale + 1);
+                            zoom * scale * (x - ofsX) - ((zoom - 1) * scale * (width / 2)), zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
                     }
                 }
             }
@@ -334,7 +334,7 @@ scenes.game = () => {
             }
 
             ctx.drawImage(images["bleu"], 32 * Math.floor(walkTime), 32 * head, 32, 32,
-                scale * (game.position[0] - kofs[0] * kofs[2] - ofsX) + (3*width*(zoom-1)),
+                scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5) ),
                 scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zoom * scale, zoom * scale)
             ctx.imageSmoothingEnabled = true;
 
