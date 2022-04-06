@@ -17,8 +17,8 @@ let mapenemies = {
 
                 ctx.drawImage(images["gear"],
                     ((zoom * scale) * (tileX - xAdjust)) - ((zoom - 1) * scale * (width / 2)),
-                    //scale * (tileX + (3 * (zoom - 1)) + 4) - xAdjust,
-                    scale * (tileY + ((zoom - 1) / 2)) + 16, zoom * scale, zoom * scale)
+                    (zoom * scale) * (tileY - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7),
+                    zoom * scale, zoom * scale)
             },
 
             ...args || {},
