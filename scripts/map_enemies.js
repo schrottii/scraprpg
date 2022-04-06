@@ -10,8 +10,8 @@ let mapenemies = {
 
             render(ctx) {
 
-                let tileX = this.position[0] - game.position[0];
-                let tileY = this.position[1] - game.position[1];
+                let tileX = this.position[0];//- game.position[0];
+                let tileY = this.position[1];//- game.position[1];
 
                 let xAdjust = game.position[0] - width / 2 + 0.5;
 

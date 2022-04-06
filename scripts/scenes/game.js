@@ -258,7 +258,7 @@ scenes.game = () => {
             // Check if it's time for enemies to move
             if (moveEnemiesTime > 499) {
                 moveEnemiesTime = 0;
-                /*for (i = 0; i < enemies.length; i++) {
+                for (i = 0; i < enemies.length; i++) {
                     // Random moving
                     if (Math.random() > 0.50) {
                         enemies[i].position[0] += 1;
@@ -272,7 +272,7 @@ scenes.game = () => {
                     if (Math.random() > 0.50) {
                         enemies[i].position[1] -= 1;
                     }
-                }*/
+                }
             }
 
             if (!kofs[2]) {
