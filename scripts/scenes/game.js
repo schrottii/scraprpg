@@ -221,11 +221,14 @@ scenes.game = () => {
     function ActionsOnMove(){
         // Everything performed when the player moves successfully
 
-        if (Math.random() > 0.95) { // For the stupid: Somewhat unlikely
-            enemies.push(mapenemies.default({
-                position: [5, 5], map: game.map,
-            }));
-            console.log("Spawned!");
+        // Spawn enemies (sometimes)
+        if (enemies.length < 8) {
+            if (Math.random() > 0.95) { // For the stupid: Somewhat unlikely
+                enemies.push(mapenemies.default({
+                    position: [20, 15], map: game.map,
+                }));
+                //console.log("Spawned!");
+            }
         }
     }
 
@@ -252,19 +255,21 @@ scenes.game = () => {
                 autoSaveTime = -3; // To prevent saving multiple times!
             }
 
+            // Check if it's time for enemies to move
             if (moveEnemiesTime > 499) {
                 moveEnemiesTime = 0;
                 for (i = 0; i < enemies.length; i++) {
-                    if (Math.random() > 0.25) {
+                    // Random moving
+                    if (Math.random() > 0.50) {
                         enemies[i].position[0] += 1;
                     }
-                    if (Math.random() > 0.75) {
+                    if (Math.random() > 0.50) {
                         enemies[i].position[0] -= 1;
                     }
                     if (Math.random() > 0.50) {
                         enemies[i].position[1] += 1;
                     }
-                    if (Math.random() > 0.75) {
+                    if (Math.random() > 0.50) {
                         enemies[i].position[1] -= 1;
                     }
                 }
