@@ -1,7 +1,8 @@
 var zoom = 1;
+var kofs = [0, 0, 0];
 
 scenes.game = () => {
-    let kofs = [0, 0, 0];
+    
     let head = 0;
     let walkTime = 0;
     let pad = "";
