@@ -405,24 +405,6 @@ scenes.game = () => {
             mapDisplayStats2.text = "HP: " + game.characters.corelle.HP + "/" + game.characters.corelle.maxHP + "   EP: " + game.characters.corelle.EP;
         },
         controls: [
-           /* controls.base({
-                anchor: [.9925, .875], offset: [-70, 0], sizeOffset: [75, 75],
-                onClick() {
-                    state = "menu";
-                    this.clickthrough = true;
-                    addAnimator(function (t) {
-
-                        //for (i = 0; i < mapDisplay.length; i++) {
-                            mapDisplay[8].alpha = Math.max(0, 255 - t);
-                        //}
-
-                        if (t > 260) {
-                            return true;
-                        }
-                        return false;
-                    })
-                }
-            }),*/
             ...walkPad, autoSaveText, ...mapDisplay,
             mapDisplayStats1, mapDisplayStats2,
             mapDisplayLevel1, mapDisplayLevel2,

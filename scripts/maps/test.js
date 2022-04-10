@@ -144,9 +144,9 @@ maps["test"] = {
            sprite: "table_left",
            occupied:true,
         },
-        "035": {
-            sprite: "fence_single",
-            occupied: true,
+      "035": {
+          sprite: "fence_single",
+          occupied: true,
         },
 
     // Do not remove this } here. Make sure there's a } right above this too
