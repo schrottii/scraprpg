@@ -231,7 +231,6 @@ scenes.game = () => {
                 enemies.push(mapenemies.default({
                     position: [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)], map: game.map,
                 }));
-                //console.log("Spawned!");
             }
         }
     }
@@ -264,7 +263,7 @@ scenes.game = () => {
                 moveEnemiesTime = 0;
                 for (i = 0; i < enemies.length; i++) {
                     // Random moving
-                    if (Math.random() > 0.50) { // Left
+                    if (Math.random() > 0.40) { // Left
                         if (map.map[enemies[i].position[1]] != undefined) {
                             if (map.map[enemies[i].position[1]][enemies[i].position[0]] != undefined) {
                                 if (getTile(map, enemies[i].position[0] - 1, enemies[i].position[1]) != undefined) {
@@ -277,7 +276,7 @@ scenes.game = () => {
                     }
 
 
-                    if (Math.random() > 0.50) { // Right
+                    if (Math.random() > 0.40) { // Right
                         if (map.map[enemies[i].position[1]] != undefined) {
                             if (map.map[enemies[i].position[1]][enemies[i].position[0]] != undefined) {
                                 if (getTile(map, enemies[i].position[0] + 1, enemies[i].position[1]) != undefined) {
@@ -290,7 +289,7 @@ scenes.game = () => {
                     }
 
 
-                    if (Math.random() > 0.50) { // Up
+                    if (Math.random() > 0.40) { // Up
                         if (map.map[enemies[i].position[1]] != undefined) {
                             if (map.map[enemies[i].position[1]][enemies[i].position[0] - 1] != undefined) {
                                 if (getTile(map, enemies[i].position[0], enemies[i].position[1] - 1) != undefined) {
@@ -303,7 +302,7 @@ scenes.game = () => {
                     }
 
 
-                    if (Math.random() > 0.50) { // Down
+                    if (Math.random() > 0.40) { // Down
                         if (map.map[enemies[i].position[1]] != undefined) {
                             if (map.map[enemies[i].position[1]][enemies[i].position[0] + 1] != undefined) {
                                 if (getTile(map, enemies[i].position[0], enemies[i].position[1] + 1) != undefined) {
@@ -313,6 +312,11 @@ scenes.game = () => {
                                 }
                             }
                         }
+                    }
+
+                    if (map.map[enemies[i].position[1]] == undefined
+                        || getTile(map, enemies[i].position[0], enemies[i].position[1]).occupied == true) { // Respawn if on ocean or occupied
+                        enemies[i].position = [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)];
                     }
                 }
             }
