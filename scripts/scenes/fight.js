@@ -3,31 +3,60 @@ scenes.fight = () => {
     var fightaction = 0;
     var attack_animation_progress = 0;
 
+    var fightButtons = [];
+
+    fightButtons.push(controls.rect({
+        anchor: [0.05, 0.03], offset: [0, 0], sizeOffset: [96, 58],
+        fill: "rgb(47, 95, 191)",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.rect({
+        anchor: [0.05, 0.03], offset: [5, 5], sizeOffset: [86, 48],
+        fill: "rgb(191, 212, 255)",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.image({
+        anchor: [0.05, 0.03], offset: [5, 5], sizeOffset: [48, 48],
+        source: "actions",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.label({
+        anchor: [0.05, 0.03], offset: [65, 15], sizeOffset: [48, 48],
+        fontSize: 14, fill: "white",
+        text: "Battle",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.label({
+        anchor: [0.05, 0.03], offset: [65, 30], sizeOffset: [48, 48],
+        fontSize: 14, fill: "rgb(0, 32, 102)",
+        text: "Actions",
+        alpha: 255,
+    }));
+
+
+
+
     return {
         // Pre-render function
         preRender(ctx, delta) {
-            ctx.drawImage(images.fight_bg, 0, 100, 800, 400);
+            ctx.drawImage(images.fight_bg, 0, 100, width * scale, height);
 
             ctx.fillStyle = "rgb(114, 95, 57)";
-            ctx.fillRect(0, 0, 800, 100);
-            ctx.fillRect(0, 480, 800, 20);
+            ctx.fillRect(0, 0, width * scale, 0.2 * height);
+            ctx.fillRect(0, 480, width * scale, 0.3 * height);
+
             ctx.fillStyle = "rgb(186, 154, 89)";
-            ctx.fillRect(0, 10, 800, 70);
-            ctx.fillRect(0, 400, 800, 80);
+            ctx.fillRect(0, 10, width * scale, 0.15 * height);
+            ctx.fillRect(0, 400, width * scale, 0.25 * height);
 
             // Buttons
 
             if (fightaction == 0) {
-                ctx.fillStyle = "rgb(47, 95, 191)";
-                ctx.fillRect(35, 12, 96, 58);
-                ctx.fillStyle = "rgb(191, 212, 255)";
-                ctx.fillRect(40, 17, 86, 48);
+                for (i = 0; i > fightButtons.length; i++) {
+                    fightButtons[i].alpha = 255;
+                }
+            // <- <- <- <- <- CONVERTED UP TO HERE [][][][]
 
-                ctx.drawImage(images.actions, 40, 17, 48, 48);
-                ctx.font = "12px NotoSans, sans-serif";
-                ctx.fillStyle = "rgb(0, 32, 102)";
-                ctx.fillText("Battle", 80, 35);
-                ctx.fillText("Actions", 80, 48);
 
                 ctx.fillStyle = "rgb(47, 191, 71)";
                 ctx.fillRect(145, 12, 96, 58);
@@ -117,22 +146,22 @@ scenes.fight = () => {
 
             ctx.font = "12px NotoSans, sans-serif";
             ctx.fillStyle = "black";
-            if (x == 0) {
+            /*if (x == 0) {
                 ctx.fillText("4 " + gete(1).name + "s!", 620, 405);
                 ctx.fillText("Evil Helter Skelter", 620, 425);
             }
             else {
                 ctx.fillText(gete(x).name + " #" + x, 620, 405);
                 ctx.fillText("HP " + gete(x).HP + "/" + gete(x).maxHP, 620, 425);
-            }
+            }*/
 
             ctx.fillStyle = "yellow";
             ctx.fillRect(225, 375, 75, 75);
-            ctx.drawImage(portraits[char1], 230, 380, 65, 65);
+            //ctx.drawImage(portraits[char1], 230, 380, 65, 65);
             ctx.font = "20px NotoSans, sans-serif";
-            ctx.fillText("Level " + characters[char1].level, 230, 480);
+            //ctx.fillText("Level " + characters[char1].level, 230, 480);
             ctx.fillStyle = "blue";
-            ctx.fillText(characters[char1].name, 240, 465);
+            //ctx.fillText(characters[char1].name, 240, 465);
 
             ctx.fillStyle = "rgb(0, 145, 40)";
             ctx.fillRect(310, 410, 80, 20);
@@ -140,16 +169,16 @@ scenes.fight = () => {
             ctx.fillRect(310, 430, 80, 20);
 
             ctx.fillStyle = "black";
-            ctx.fillText(characters[char1].HP + "/" + characters[char1].maxHP, 310, 425);
-            ctx.fillText(characters[char1].EP + "/" + characters[char1].EP, 310, 445);
+            //ctx.fillText(characters[char1].HP + "/" + characters[char1].maxHP, 310, 425);
+            //ctx.fillText(characters[char1].EP + "/" + characters[char1].EP, 310, 445);
 
             ctx.fillStyle = "yellow";
             ctx.fillRect(395, 375, 75, 75);
-            ctx.drawImage(portraits[char2], 400, 380, 65, 65);
+            //ctx.drawImage(portraits[char2], 400, 380, 65, 65);
             ctx.font = "20px NotoSans, sans-serif";
-            ctx.fillText("Level " + characters[char1].level, 400, 480);
+            //ctx.fillText("Level " + characters[char1].level, 400, 480);
             ctx.fillStyle = "blue";
-            ctx.fillText(characters[char2].name, 400, 465);
+            //ctx.fillText(characters[char2].name, 400, 465);
 
             ctx.fillStyle = "rgb(0, 145, 40)";
             ctx.fillRect(480, 410, 60, 20);
@@ -157,10 +186,10 @@ scenes.fight = () => {
             ctx.fillRect(480, 430, 60, 20);
 
             ctx.fillStyle = "black";
-            ctx.fillText(characters[char2].HP + "/" + characters[char2].maxHP, 480, 425);
-            ctx.fillText(characters[char2].EP + "/" + characters[char2].EP, 480, 445);
+            //ctx.fillText(characters[char2].HP + "/" + characters[char2].maxHP, 480, 425);
+            //ctx.fillText(characters[char2].EP + "/" + characters[char2].EP, 480, 445);
 
-            if (attack_animation_progress == 0) {
+            /*if (attack_animation_progress == 0) {
                 ctx.drawImage(sprites.bleu, 0, 64, 64, 64, 100, 200, 32, 32);
             }
             else {
@@ -187,7 +216,7 @@ scenes.fight = () => {
                     attack_animation_progress = 0;
                 }
                 setTimeout(scene_fight, 30);
-            }
+            }*/
         },
 
         // Controls
@@ -224,7 +253,9 @@ scenes.fight = () => {
                     })
                 }
             }),*/
-            // things
+
+            ...fightButtons
+
         ],
     }
 };
