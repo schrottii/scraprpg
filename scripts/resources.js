@@ -73,6 +73,7 @@ let images = {
 var scenes = {
     title: "scripts/scenes/title.js",
     game: "scripts/scenes/game.js",
+    fight: "scripts/scenes/fight.js",
 };
 
 var audio = {
