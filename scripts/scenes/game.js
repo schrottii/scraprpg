@@ -1,10 +1,10 @@
 var zoom = 1;
 var kofs = [0, 0, 0];
+var walkTime = 0;
 
 scenes.game = () => {
     
     let head = 0;
-    let walkTime = 0;
     let pad = "";
 
     var scale;
@@ -263,18 +263,31 @@ scenes.game = () => {
                 moveEnemiesTime = 0;
                 for (i = 0; i < enemies.length; i++) {
                     // Random moving
-                    if (Math.random() > 0.40) { // Left
+                    if (Math.random() > 0.40) { // Down
                         if (map.map[enemies[i].position[1]] != undefined) {
-                            if (map.map[enemies[i].position[1]][enemies[i].position[0]] != undefined) {
-                                if (getTile(map, enemies[i].position[0] - 1, enemies[i].position[1]) != undefined) {
-                                    if (getTile(map, enemies[i].position[0] - 1, enemies[i].position[1]).occupied != true) {
-                                        enemies[i].position[0] -= 1;
+                            if (map.map[enemies[i].position[1]][enemies[i].position[0] + 1] != undefined) {
+                                if (getTile(map, enemies[i].position[0], enemies[i].position[1] + 1) != undefined) {
+                                    if (getTile(map, enemies[i].position[0], enemies[i].position[1] + 1).occupied != true) {
+                                        enemies[i].position[1] += 1;
+                                        enemies[i].head = 0;
                                     }
                                 }
                             }
                         }
                     }
 
+                    if (Math.random() > 0.40) { // Left
+                        if (map.map[enemies[i].position[1]] != undefined) {
+                            if (map.map[enemies[i].position[1]][enemies[i].position[0]] != undefined) {
+                                if (getTile(map, enemies[i].position[0] - 1, enemies[i].position[1]) != undefined) {
+                                    if (getTile(map, enemies[i].position[0] - 1, enemies[i].position[1]).occupied != true) {
+                                        enemies[i].position[0] -= 1;
+                                        enemies[i].head = 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
 
                     if (Math.random() > 0.40) { // Right
                         if (map.map[enemies[i].position[1]] != undefined) {
@@ -282,12 +295,12 @@ scenes.game = () => {
                                 if (getTile(map, enemies[i].position[0] + 1, enemies[i].position[1]) != undefined) {
                                     if (getTile(map, enemies[i].position[0] + 1, enemies[i].position[1]).occupied != true) {
                                         enemies[i].position[0] += 1;
+                                        enemies[i].head = 2;
                                     }
                                 }
                             }
                         }
                     }
-
 
                     if (Math.random() > 0.40) { // Up
                         if (map.map[enemies[i].position[1]] != undefined) {
@@ -295,19 +308,7 @@ scenes.game = () => {
                                 if (getTile(map, enemies[i].position[0], enemies[i].position[1] - 1) != undefined) {
                                     if (getTile(map, enemies[i].position[0], enemies[i].position[1] - 1).occupied != true) {
                                         enemies[i].position[1] -= 1;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-
-                    if (Math.random() > 0.40) { // Down
-                        if (map.map[enemies[i].position[1]] != undefined) {
-                            if (map.map[enemies[i].position[1]][enemies[i].position[0] + 1] != undefined) {
-                                if (getTile(map, enemies[i].position[0], enemies[i].position[1] + 1) != undefined) {
-                                    if (getTile(map, enemies[i].position[0], enemies[i].position[1] + 1).occupied != true) {
-                                        enemies[i].position[1] += 1;
+                                        enemies[i].head = 3;
                                     }
                                 }
                             }
