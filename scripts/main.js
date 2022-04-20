@@ -43,6 +43,8 @@ var currentKeys = {};
 var autoSaveTime = 0;
 var moveEnemiesTime = 0;
 
+var canMove = true;
+
 function onCanvasClick(e) {
     for (let a = scene.controls.length - 1; a >= 0; a--) {
         let con = scene.controls[a];
@@ -63,11 +65,25 @@ function onCanvasClick(e) {
     }
 }
 
+
 let delta = 0;
 let time = Date.now();
 
+var animationtime = -1;
+var animation;
+
 let scale = window.innerHeight / 16;
 let width = window.innerWidth / scale;
+
+function image_animation(image, pos) {
+    animationtime = 0;
+    animation = [image, pos];
+    canMove = false;
+    let ctx = mainCanvas.getContext("2d");
+    for (i = 0; i < pos.length / 4; i++) {
+        setTimeout(() => { ctx.drawImage(image, pos[i], pos[i+1], pos[i+2], pos[i+3], 0, 0, width, scale); }, i * 100);
+    }
+}
 
 function loop() {
     // Tick time
@@ -103,6 +119,19 @@ function loop() {
     // Auto Save
     if (autoSaveTime > -1) {
         autoSaveTime += delta;
+    }
+
+    if (animationtime > -1) {
+        let i = Math.floor(animationtime / 200)*4;
+        if (animation[1][i + 3] != undefined) {
+            ctx.drawImage(animation[0], animation[1][i], animation[1][i + 1], animation[1][i + 2], animation[1][i + 3], 0, 0, width * scale, height);
+            animationtime += delta;
+        }
+        else {
+            // Finished
+            canMove = true;
+            animationtime = -1;
+        }
     }
 
     moveEnemiesTime += delta;

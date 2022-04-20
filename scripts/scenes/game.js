@@ -222,6 +222,35 @@ scenes.game = () => {
         }
     }
 
+    function check_EnemyCollision() {
+        if (game.position[0] == enemies[i].position[0] &&
+            game.position[1] == enemies[i].position[1]) {
+            // Fight !!!
+            console.log("touch");
+            image_animation(images.tokenattack, [71, 78, 51, 52,
+                166, 76, 62, 65,
+                266, 65, 89, 64,
+                396, 66, 118, 116,
+                38, 197, 103, 95,
+                178, 190, 136, 129,
+                346, 196, 172, 157,
+                546, 189, 191, 152,
+                768, 217, 240, 95,
+                51, 394, 261, 47,
+                378, 374, 257, 107,
+                700, 338, 263, 169,
+                64, 500, 275, 196,
+                366, 496, 315, 204,
+                717, 527, 305, 202,
+                48, 750, 322, 219,
+                370, 750, 335, 226,
+                698, 747, 371, 240,
+                7, 1015, 89, 64,
+                377, 1077, 350, 163,
+                759, 1138, 281, 110]);
+        }
+    }
+
     function ActionsOnMove(){
         // Everything performed when the player moves successfully
 
@@ -232,6 +261,10 @@ scenes.game = () => {
                     position: [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)], map: game.map,
                 }));
             }
+        }
+
+        for (i = 0; i < enemies.length; i++) {
+            check_EnemyCollision();
         }
     }
 
@@ -261,68 +294,75 @@ scenes.game = () => {
             // Check if it's time for enemies to move
             if (moveEnemiesTime > 499) {
                 moveEnemiesTime = 0;
-                for (i = 0; i < enemies.length; i++) {
-                    // Random moving
-                    if (Math.random() > 0.40) { // Down
-                        if (map.map[enemies[i].position[1]] != undefined) {
-                            if (map.map[enemies[i].position[1]][enemies[i].position[0] + 1] != undefined) {
-                                if (getTile(map, enemies[i].position[0], enemies[i].position[1] + 1) != undefined) {
-                                    if (getTile(map, enemies[i].position[0], enemies[i].position[1] + 1).occupied != true) {
-                                        enemies[i].position[1] += 1;
-                                        enemies[i].head = 0;
+                if (canMove == true) {
+                    for (i = 0; i < enemies.length; i++) {
+                        // Random moving
+                        if (Math.random() > 0.40) { // Down
+                            if (map.map[enemies[i].position[1]] != undefined) {
+                                if (map.map[enemies[i].position[1]][enemies[i].position[0] + 1] != undefined) {
+                                    if (getTile(map, enemies[i].position[0], enemies[i].position[1] + 1) != undefined) {
+                                        if (getTile(map, enemies[i].position[0], enemies[i].position[1] + 1).occupied != true) {
+                                            enemies[i].position[1] += 1;
+                                            enemies[i].head = 0;
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
-                    if (Math.random() > 0.40) { // Left
-                        if (map.map[enemies[i].position[1]] != undefined) {
-                            if (map.map[enemies[i].position[1]][enemies[i].position[0]] != undefined) {
-                                if (getTile(map, enemies[i].position[0] - 1, enemies[i].position[1]) != undefined) {
-                                    if (getTile(map, enemies[i].position[0] - 1, enemies[i].position[1]).occupied != true) {
-                                        enemies[i].position[0] -= 1;
-                                        enemies[i].head = 1;
+                        if (Math.random() > 0.40) { // Left
+                            if (map.map[enemies[i].position[1]] != undefined) {
+                                if (map.map[enemies[i].position[1]][enemies[i].position[0]] != undefined) {
+                                    if (getTile(map, enemies[i].position[0] - 1, enemies[i].position[1]) != undefined) {
+                                        if (getTile(map, enemies[i].position[0] - 1, enemies[i].position[1]).occupied != true) {
+                                            enemies[i].position[0] -= 1;
+                                            enemies[i].head = 1;
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
-                    if (Math.random() > 0.40) { // Right
-                        if (map.map[enemies[i].position[1]] != undefined) {
-                            if (map.map[enemies[i].position[1]][enemies[i].position[0]] != undefined) {
-                                if (getTile(map, enemies[i].position[0] + 1, enemies[i].position[1]) != undefined) {
-                                    if (getTile(map, enemies[i].position[0] + 1, enemies[i].position[1]).occupied != true) {
-                                        enemies[i].position[0] += 1;
-                                        enemies[i].head = 2;
+                        if (Math.random() > 0.40) { // Right
+                            if (map.map[enemies[i].position[1]] != undefined) {
+                                if (map.map[enemies[i].position[1]][enemies[i].position[0]] != undefined) {
+                                    if (getTile(map, enemies[i].position[0] + 1, enemies[i].position[1]) != undefined) {
+                                        if (getTile(map, enemies[i].position[0] + 1, enemies[i].position[1]).occupied != true) {
+                                            enemies[i].position[0] += 1;
+                                            enemies[i].head = 2;
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
-                    if (Math.random() > 0.40) { // Up
-                        if (map.map[enemies[i].position[1]] != undefined) {
-                            if (map.map[enemies[i].position[1]][enemies[i].position[0] - 1] != undefined) {
-                                if (getTile(map, enemies[i].position[0], enemies[i].position[1] - 1) != undefined) {
-                                    if (getTile(map, enemies[i].position[0], enemies[i].position[1] - 1).occupied != true) {
-                                        enemies[i].position[1] -= 1;
-                                        enemies[i].head = 3;
+                        if (Math.random() > 0.40) { // Up
+                            if (map.map[enemies[i].position[1]] != undefined) {
+                                if (map.map[enemies[i].position[1]][enemies[i].position[0] - 1] != undefined) {
+                                    if (getTile(map, enemies[i].position[0], enemies[i].position[1] - 1) != undefined) {
+                                        if (getTile(map, enemies[i].position[0], enemies[i].position[1] - 1).occupied != true) {
+                                            enemies[i].position[1] -= 1;
+                                            enemies[i].head = 3;
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
-                    if (map.map[enemies[i].position[1]] == undefined
-                        || getTile(map, enemies[i].position[0], enemies[i].position[1]).occupied == true) { // Respawn if on ocean or occupied
-                        enemies[i].position = [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)];
+                        if (map.map[enemies[i].position[1]] == undefined
+                            || getTile(map, enemies[i].position[0], enemies[i].position[1]).occupied == true) { // Respawn if on ocean or occupied
+                            enemies[i].position = [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)];
+                        }
+
+                        if (game.position[0] == enemies[i].position[0] &&
+                            game.position[1] == enemies[i].position[1]) {
+                            check_EnemyCollision();
+                        }
                     }
                 }
             }
 
-            if (!kofs[2]) {
+            if (!kofs[2] && canMove == true) {
                 if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up") && isWalkable(map, game.position[0], game.position[1] - 1)) {
                     kofs = [0, -1, 1];
                     game.position[1]--;
