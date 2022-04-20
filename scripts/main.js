@@ -71,13 +71,15 @@ let time = Date.now();
 
 var animationtime = -1;
 var animation;
+var animationspeed = 100;
 
 let scale = window.innerHeight / 16;
 let width = window.innerWidth / scale;
 
-function image_animation(image, pos) {
+function image_animation(image, pos, speed=100) {
     animationtime = 0;
     animation = [image, pos];
+    animationspeed = speed;
     canMove = false;
     let ctx = mainCanvas.getContext("2d");
     for (i = 0; i < pos.length / 4; i++) {
@@ -122,7 +124,7 @@ function loop() {
     }
 
     if (animationtime > -1) {
-        let i = Math.floor(animationtime / 200)*4;
+        let i = Math.floor(animationtime / animationspeed)*4;
         if (animation[1][i + 3] != undefined) {
             ctx.drawImage(animation[0], animation[1][i], animation[1][i + 1], animation[1][i + 2], animation[1][i + 3], 0, 0, width * scale, height);
             animationtime += delta;

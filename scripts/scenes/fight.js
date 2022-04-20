@@ -5,10 +5,13 @@ scenes.fight = () => {
 
     var fightButtons = [];
 
-    fightButtons.push(controls.rect({
+    fightButtons.push(controls.button({
         anchor: [0.05, 0.03], offset: [0, 0], sizeOffset: [120, 58],
-        fill: "rgb(47, 95, 191)",
+        fill: "rgb(47, 95, 191)", text: "",
         alpha: 255,
+        onClick(args) {
+
+        }
     }));
     fightButtons.push(controls.rect({
         anchor: [0.05, 0.03], offset: [5, 5], sizeOffset: [110, 48],
@@ -36,8 +39,11 @@ scenes.fight = () => {
 
     fightButtons.push(controls.rect({
         anchor: [0.15, 0.03], offset: [0, 0], sizeOffset: [120, 58],
-        fill: "rgb(47, 191, 71)",
+        fill: "rgb(47, 191, 71)", text: "",
         alpha: 255,
+        onClick(args) {
+
+        }
     }));
     fightButtons.push(controls.rect({
         anchor: [0.15, 0.03], offset: [5, 5], sizeOffset: [110, 48],
@@ -65,8 +71,11 @@ scenes.fight = () => {
 
     fightButtons.push(controls.rect({
         anchor: [0.25, 0.03], offset: [0, 0], sizeOffset: [120, 58],
-        fill: "rgb(191, 47, 167)",
+        fill: "rgb(191, 47, 167)", text: "",
         alpha: 255,
+        onClick(args) {
+
+        }
     }));
     fightButtons.push(controls.rect({
         anchor: [0.25, 0.03], offset: [5, 5], sizeOffset: [110, 48],
@@ -94,8 +103,11 @@ scenes.fight = () => {
 
     fightButtons.push(controls.rect({
         anchor: [0.35, 0.03], offset: [0, 0], sizeOffset: [120, 58],
-        fill: "rgb(191, 143, 47)",
+        fill: "rgb(191, 143, 47)", text: "",
         alpha: 255,
+        onClick(args) {
+
+        }
     }));
     fightButtons.push(controls.rect({
         anchor: [0.35, 0.03], offset: [5, 5], sizeOffset: [110, 48],
@@ -123,8 +135,11 @@ scenes.fight = () => {
 
     fightButtons.push(controls.rect({
         anchor: [0.45, 0.03], offset: [0, 0], sizeOffset: [120, 58],
-        fill: "rgb(119, 119, 119)",
+        fill: "rgb(119, 119, 119)", text: "",
         alpha: 255,
+        onClick(args) {
+            setScene(scenes.game());
+        }
     }));
     fightButtons.push(controls.rect({
         anchor: [0.45, 0.03], offset: [5, 5], sizeOffset: [110, 48],

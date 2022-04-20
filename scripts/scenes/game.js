@@ -248,7 +248,14 @@ scenes.game = () => {
                 7, 1015, 89, 64,
                 377, 1077, 350, 163,
                 759, 1138, 281, 110]);
-            setTimeout(() => { setScene(scenes.fight()); }, 4000);
+            let previouszoom = zoom;
+            setTimeout(() => { zoom = 1.5; }, 250);
+            setTimeout(() => { zoom = 2; }, 500);
+            setTimeout(() => { zoom = 2.5; }, 750);
+            setTimeout(() => { zoom = 3; }, 1000);
+            setTimeout(() => { zoom = 4; }, 1250);
+            setTimeout(() => { setScene(scenes.fight()); }, 2000);
+            setTimeout(() => { zoom = previouszoom; }, 2200);
         }
     }
 
