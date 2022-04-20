@@ -22,7 +22,7 @@ scenes.fight = () => {
     }));
     fightButtons.push(controls.label({
         anchor: [0.05, 0.03], offset: [65, 15], sizeOffset: [48, 48],
-        fontSize: 14, fill: "white",
+        fontSize: 14, fill: "rgb(0, 32, 102)",
         text: "Battle",
         alpha: 255,
     }));
@@ -34,6 +34,120 @@ scenes.fight = () => {
     }));
 
 
+    fightButtons.push(controls.rect({
+        anchor: [0.15, 0.03], offset: [0, 0], sizeOffset: [96, 58],
+        fill: "rgb(47, 191, 71)",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.rect({
+        anchor: [0.15, 0.03], offset: [5, 5], sizeOffset: [86, 48],
+        fill: "rgb(191, 255, 202)",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.image({
+        anchor: [0.15, 0.03], offset: [5, 5], sizeOffset: [48, 48],
+        source: "inventory",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.label({
+        anchor: [0.15, 0.03], offset: [65, 15], sizeOffset: [48, 48],
+        fontSize: 14, fill: "rgb(0, 102, 13)",
+        text: "Battle",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.label({
+        anchor: [0.15, 0.03], offset: [65, 30], sizeOffset: [48, 48],
+        fontSize: 14, fill: "rgb(0, 102, 13)",
+        text: "Inventory",
+        alpha: 255,
+    }));
+
+
+    fightButtons.push(controls.rect({
+        anchor: [0.25, 0.03], offset: [0, 0], sizeOffset: [96, 58],
+        fill: "rgb(191, 47, 167)",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.rect({
+        anchor: [0.25, 0.03], offset: [5, 5], sizeOffset: [86, 48],
+        fill: "rgb(255, 191, 244)",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.image({
+        anchor: [0.25, 0.03], offset: [5, 5], sizeOffset: [48, 48],
+        source: "techniques",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.label({
+        anchor: [0.25, 0.03], offset: [65, 15], sizeOffset: [48, 48],
+        fontSize: 14, fill: "rgb(102, 0, 83)",
+        text: "Mastery",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.label({
+        anchor: [0.25, 0.03], offset: [65, 30], sizeOffset: [48, 48],
+        fontSize: 14, fill: "rgb(102, 0, 83)",
+        text: "Techniques",
+        alpha: 255,
+    }));
+
+
+    fightButtons.push(controls.rect({
+        anchor: [0.35, 0.03], offset: [0, 0], sizeOffset: [96, 58],
+        fill: "rgb(191, 143, 47)",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.rect({
+        anchor: [0.35, 0.03], offset: [5, 5], sizeOffset: [86, 48],
+        fill: "rgb(255, 234, 191)",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.image({
+        anchor: [0.35, 0.03], offset: [5, 5], sizeOffset: [48, 48],
+        source: "switch",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.label({
+        anchor: [0.35, 0.03], offset: [65, 15], sizeOffset: [48, 48],
+        fontSize: 14, fill: "rgb(102, 68, 0)",
+        text: "Switch",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.label({
+        anchor: [0.35, 0.03], offset: [65, 30], sizeOffset: [48, 48],
+        fontSize: 14, fill: "rgb(102, 68, 0)",
+        text: "Scrapper",
+        alpha: 255,
+    }));
+
+
+    fightButtons.push(controls.rect({
+        anchor: [0.45, 0.03], offset: [0, 0], sizeOffset: [96, 58],
+        fill: "rgb(119, 119, 119)",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.rect({
+        anchor: [0.45, 0.03], offset: [5, 5], sizeOffset: [86, 48],
+        fill: "rgb(223, 223, 223)",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.image({
+        anchor: [0.45, 0.03], offset: [5, 5], sizeOffset: [48, 48],
+        source: "switch",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.label({
+        anchor: [0.45, 0.03], offset: [65, 15], sizeOffset: [48, 48],
+        fontSize: 14, fill: "rgb(102, 68, 0)",
+        text: "Flee",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.label({
+        anchor: [0.45, 0.03], offset: [65, 30], sizeOffset: [48, 48],
+        fontSize: 14, fill: "rgb(102, 68, 0)",
+        text: "Fight",
+        alpha: 255,
+    }));
 
 
     return {
@@ -55,53 +169,10 @@ scenes.fight = () => {
                 for (i = 0; i > fightButtons.length; i++) {
                     fightButtons[i].alpha = 255;
                 }
+            }
             // <- <- <- <- <- CONVERTED UP TO HERE [][][][]
 
-
-                ctx.fillStyle = "rgb(47, 191, 71)";
-                ctx.fillRect(145, 12, 96, 58);
-                ctx.fillStyle = "rgb(191, 255, 202)";
-                ctx.fillRect(150, 17, 86, 48);
-
-                ctx.drawImage(images.inventory, 150, 17, 48, 48);
-                ctx.font = "12px NotoSans, sans-serif";
-                ctx.fillStyle = "rgb(0, 102, 13)";
-                ctx.fillText("Battle", 180, 35);
-                ctx.fillText("Inventory", 180, 48);
-
-                ctx.fillStyle = "rgb(191, 47, 167)";
-                ctx.fillRect(255, 12, 96, 58);
-                ctx.fillStyle = "rgb(255, 191, 244)";
-                ctx.fillRect(260, 17, 86, 48);
-
-                ctx.drawImage(images.techniques, 260, 17, 48, 48);
-                ctx.font = "12px NotoSans, sans-serif";
-                ctx.fillStyle = "rgb(102, 0, 83)";
-                ctx.fillText("Mastery", 280, 35);
-                ctx.fillText("Techniques", 280, 48);
-
-                ctx.fillStyle = "rgb(191, 143, 47)";
-                ctx.fillRect(365, 12, 96, 58);
-                ctx.fillStyle = "rgb(255, 234, 191)";
-                ctx.fillRect(370, 17, 86, 48);
-
-                ctx.drawImage(images.switch, 370, 17, 48, 48);
-                ctx.font = "12px NotoSans, sans-serif";
-                ctx.fillStyle = "rgb(102, 68, 0)";
-                ctx.fillText("Switch", 400, 35);
-                ctx.fillText("Scrapper", 400, 48);
-
-                ctx.fillStyle = "rgb(119, 119, 119)";
-                ctx.fillRect(475, 12, 96, 58);
-                ctx.fillStyle = "rgb(223, 223, 223)";
-                ctx.fillRect(480, 17, 86, 48);
-
-                ctx.drawImage(images.flee, 480, 17, 48, 48);
-                ctx.font = "12px NotoSans, sans-serif";
-                ctx.fillStyle = "rgb(102, 102, 102)";
-                ctx.fillText("Flee", 530, 35);
-                ctx.fillText("Fight", 530, 48);
-            }
+            
             else if (fightaction == 1) {
                 ctx.fillStyle = "rgb(47, 95, 191)";
                 ctx.fillRect(145, 12, 96, 58);
