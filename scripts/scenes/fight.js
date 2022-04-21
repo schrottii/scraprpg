@@ -6,7 +6,7 @@ scenes.fight = () => {
     var fightButtons = [];
 
     fightButtons.push(controls.button({
-        anchor: [0.05, 0.03], offset: [0, 0], sizeOffset: [120, 58],
+        anchor: [0.05, 0.03], offset: [0, 0], sizeAnchor: [0.05, 0],  sizeOffset: [40, 58],
         fill: "rgb(47, 95, 191)", text: "",
         alpha: 255,
         onClick(args) {
@@ -14,7 +14,7 @@ scenes.fight = () => {
         }
     }));
     fightButtons.push(controls.rect({
-        anchor: [0.05, 0.03], offset: [5, 5], sizeOffset: [110, 48],
+        anchor: [0.05, 0.03], offset: [5, 5], sizeAnchor: [0.05, 0],  sizeOffset: [30, 48],
         fill: "rgb(191, 212, 255)",
         alpha: 255,
     }));
@@ -24,13 +24,13 @@ scenes.fight = () => {
         alpha: 255,
     }));
     fightButtons.push(controls.label({
-        anchor: [0.05, 0.03], offset: [110, 20], sizeOffset: [48, 48],
+        anchor: [0.1, 0.03], offset: [30, 20], sizeOffset: [48, 48],
         fontSize: 14, fill: "rgb(0, 32, 102)", align: "right",
         text: "Battle",
         alpha: 255,
     }));
     fightButtons.push(controls.label({
-        anchor: [0.05, 0.03], offset: [110, 35], sizeOffset: [48, 48],
+        anchor: [0.1, 0.03], offset: [30, 35], sizeOffset: [48, 48],
         fontSize: 14, fill: "rgb(0, 32, 102)", align: "right",
         text: "Actions",
         alpha: 255,
@@ -38,7 +38,7 @@ scenes.fight = () => {
 
 
     fightButtons.push(controls.rect({
-        anchor: [0.15, 0.03], offset: [0, 0], sizeOffset: [120, 58],
+        anchor: [0.1, 0.03], offset: [50, 0], sizeAnchor: [0.05, 0], sizeOffset: [40, 58],
         fill: "rgb(47, 191, 71)", text: "",
         alpha: 255,
         onClick(args) {
@@ -46,23 +46,23 @@ scenes.fight = () => {
         }
     }));
     fightButtons.push(controls.rect({
-        anchor: [0.15, 0.03], offset: [5, 5], sizeOffset: [110, 48],
+        anchor: [0.1, 0.03], offset: [55, 5], sizeAnchor: [0.05, 0], sizeOffset: [30, 48],
         fill: "rgb(191, 255, 202)",
         alpha: 255,
     }));
     fightButtons.push(controls.image({
-        anchor: [0.15, 0.03], offset: [5, 5], sizeOffset: [48, 48],
+        anchor: [0.1, 0.03], offset: [55, 5], sizeOffset: [48, 48],
         source: "inventory",
         alpha: 255,
     }));
     fightButtons.push(controls.label({
-        anchor: [0.15, 0.03], offset: [110, 20], sizeOffset: [48, 48],
+        anchor: [0.15, 0.03], offset: [80, 20], sizeOffset: [48, 48],
         fontSize: 14, fill: "rgb(0, 102, 13)", align: "right",
         text: "Battle",
         alpha: 255,
     }));
     fightButtons.push(controls.label({
-        anchor: [0.15, 0.03], offset: [110, 35], sizeOffset: [48, 48],
+        anchor: [0.15, 0.03], offset: [80, 35], sizeOffset: [48, 48],
         fontSize: 14, fill: "rgb(0, 102, 13)", align: "right",
         text: "Inventory",
         alpha: 255,
@@ -70,7 +70,7 @@ scenes.fight = () => {
 
 
     fightButtons.push(controls.rect({
-        anchor: [0.25, 0.03], offset: [0, 0], sizeOffset: [120, 58],
+        anchor: [0.15, 0.03], offset: [100, 0], sizeAnchor: [0.05, 0],  sizeOffset: [40, 58],
         fill: "rgb(191, 47, 167)", text: "",
         alpha: 255,
         onClick(args) {
@@ -78,23 +78,23 @@ scenes.fight = () => {
         }
     }));
     fightButtons.push(controls.rect({
-        anchor: [0.25, 0.03], offset: [5, 5], sizeOffset: [110, 48],
+        anchor: [0.15, 0.03], offset: [105, 5], sizeAnchor: [0.05, 0],  sizeOffset: [30, 48],
         fill: "rgb(255, 191, 244)",
         alpha: 255,
     }));
     fightButtons.push(controls.image({
-        anchor: [0.25, 0.03], offset: [5, 5], sizeOffset: [48, 48],
+        anchor: [0.15, 0.03], offset: [105, 5], sizeOffset: [48, 48],
         source: "techniques",
         alpha: 255,
     }));
     fightButtons.push(controls.label({
-        anchor: [0.25, 0.03], offset: [110, 20], sizeOffset: [48, 48],
+        anchor: [0.2, 0.03], offset: [130, 20], sizeOffset: [48, 48],
         fontSize: 14, fill: "rgb(102, 0, 83)", align: "right",
         text: "Mastery",
         alpha: 255,
     }));
     fightButtons.push(controls.label({
-        anchor: [0.25, 0.03], offset: [110, 35], sizeOffset: [48, 48],
+        anchor: [0.2, 0.03], offset: [130, 35], sizeOffset: [48, 48],
         fontSize: 14, fill: "rgb(102, 0, 83)", align: "right",
         text: "Techs",
         alpha: 255,
@@ -102,7 +102,7 @@ scenes.fight = () => {
 
 
     fightButtons.push(controls.rect({
-        anchor: [0.35, 0.03], offset: [0, 0], sizeOffset: [120, 58],
+        anchor: [0.2, 0.03], offset: [150, 0], sizeAnchor: [0.05, 0],  sizeOffset: [40, 58],
         fill: "rgb(191, 143, 47)", text: "",
         alpha: 255,
         onClick(args) {
@@ -110,23 +110,23 @@ scenes.fight = () => {
         }
     }));
     fightButtons.push(controls.rect({
-        anchor: [0.35, 0.03], offset: [5, 5], sizeOffset: [110, 48],
+        anchor: [0.2, 0.03], offset: [155, 5], sizeAnchor: [0.05, 0],  sizeOffset: [30, 48],
         fill: "rgb(255, 234, 191)",
         alpha: 255,
     }));
     fightButtons.push(controls.image({
-        anchor: [0.35, 0.03], offset: [5, 5], sizeOffset: [48, 48],
+        anchor: [0.2, 0.03], offset: [155, 5], sizeOffset: [48, 48],
         source: "switch",
         alpha: 255,
     }));
     fightButtons.push(controls.label({
-        anchor: [0.35, 0.03], offset: [110, 20], sizeOffset: [48, 48],
+        anchor: [0.25, 0.03], offset: [180, 20], sizeOffset: [48, 48],
         fontSize: 14, fill: "rgb(102, 68, 0)", align: "right",
         text: "Switch",
         alpha: 255,
     }));
     fightButtons.push(controls.label({
-        anchor: [0.35, 0.03], offset: [110, 35], sizeOffset: [48, 48],
+        anchor: [0.25, 0.03], offset: [180, 35], sizeOffset: [48, 48],
         fontSize: 14, fill: "rgb(102, 68, 0)", align: "right",
         text: "Scrapper",
         alpha: 255,
@@ -134,7 +134,7 @@ scenes.fight = () => {
 
 
     fightButtons.push(controls.rect({
-        anchor: [0.45, 0.03], offset: [0, 0], sizeOffset: [120, 58],
+        anchor: [0.25, 0.03], offset: [200, 0], sizeAnchor: [0.05, 0],  sizeOffset: [40, 58],
         fill: "rgb(119, 119, 119)", text: "",
         alpha: 255,
         onClick(args) {
@@ -142,23 +142,23 @@ scenes.fight = () => {
         }
     }));
     fightButtons.push(controls.rect({
-        anchor: [0.45, 0.03], offset: [5, 5], sizeOffset: [110, 48],
+        anchor: [0.25, 0.03], offset: [205, 5], sizeAnchor: [0.05, 0],  sizeOffset: [30, 48],
         fill: "rgb(223, 223, 223)",
         alpha: 255,
     }));
     fightButtons.push(controls.image({
-        anchor: [0.45, 0.03], offset: [5, 5], sizeOffset: [48, 48],
+        anchor: [0.25, 0.03], offset: [205, 5], sizeOffset: [48, 48],
         source: "flee",
         alpha: 255,
     }));
     fightButtons.push(controls.label({
-        anchor: [0.45, 0.03], offset: [110, 20], sizeOffset: [48, 48],
+        anchor: [0.3, 0.03], offset: [230, 20], sizeOffset: [48, 48],
         fontSize: 14, fill: "rgb(102, 68, 0)", align: "right",
         text: "Flee",
         alpha: 255,
     }));
     fightButtons.push(controls.label({
-        anchor: [0.45, 0.03], offset: [110, 35], sizeOffset: [48, 48],
+        anchor: [0.3, 0.03], offset: [230, 35], sizeOffset: [48, 48],
         fontSize: 14, fill: "rgb(102, 68, 0)", align: "right",
         text: "Fight",
         alpha: 255,
