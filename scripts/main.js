@@ -28,9 +28,19 @@ function init() {
                 anchor: [.5, .5], offset: [-100, 5], sizeOffset: [200, 50],
                 clickthrough: true, fontSize: 16, alpha: 0,
                 text: "Start Muted",
-                onClick() { 
+                onClick() {
                     musicPlayer.muted = true;
                     setScene(scenes.title());
+                }
+            }),
+            controls.button({
+                anchor: [.5, .5], offset: [-100, 65], sizeOffset: [200, 50],
+                clickthrough: true, fontSize: 16, alpha: 0,
+                text: "Dev Mode",
+                onClick() {
+                    musicPlayer.muted = true;
+                    loadGame(0);
+                    setScene(scenes.fight());
                 }
             }),
         ],
