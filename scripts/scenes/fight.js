@@ -5,7 +5,24 @@ scenes.fight = () => {
 
     var fightButtons = [];
 
-    fightButtons.push(controls.button({
+
+
+    // Bottom rects
+
+    fightButtons.push(controls.rect({
+        anchor: [0.0, 0.0], offset: [0, 0], sizeAnchor: [1, 0.2],
+        fill: "rgb(114, 95, 57)",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.rect({
+        anchor: [0.0, 0.025], offset: [0, 0], sizeAnchor: [1, 0.15],
+        fill: "rgb(186, 154, 89)",
+        alpha: 255,
+    }));
+
+    // Top row buttons
+
+    fightButtons.push(controls.rect({
         anchor: [0.05, 0.03], offset: [0, 0], sizeAnchor: [0.05, 0],  sizeOffset: [40, 58],
         fill: "rgb(47, 95, 191)", text: "",
         alpha: 255,
@@ -164,19 +181,47 @@ scenes.fight = () => {
         alpha: 255,
     }));
 
+    // Bottom rects
+
+    fightButtons.push(controls.rect({
+        anchor: [0.0, 0.7], offset: [0, 0], sizeAnchor: [1, 0.3],
+        fill: "rgb(186, 154, 89)",
+        alpha: 255,
+    }));
+    fightButtons.push(controls.rect({
+        anchor: [0.0, 0.9], offset: [0, 0], sizeAnchor: [1, 0.1],
+        fill: "rgb(114, 95, 57)",
+        alpha: 255,
+    }));
+
+
+    // Battle Log (Bottom Left)
+
+    fightButtons.push(controls.rect({
+        anchor: [0, 0], offset: [0, 400], sizeOffset: [200, 125],
+        fill: "rgb(50, 78, 131)",
+        alpha: 255,
+    }));
+
+
+    /*
+    ctx.fillStyle = "rgb(50, 78, 131)";
+    ctx.fillRect(0, 375, 200, 125);
+    ctx.fillStyle = "rgb(145, 178, 245)";
+    ctx.fillRect(10, 385, 180, 105);
+
+    ctx.font = "10px NotoSans, sans-serif";
+    ctx.fillStyle = "black";
+    ctx.fillText("Battle has started!", 20, 395);
+    ctx.fillText("All actions will be logged here!", 20, 405);
+    */
 
     return {
         // Pre-render function
         preRender(ctx, delta) {
             ctx.drawImage(images.fight_bg, 0, 100, width * scale, height);
 
-            ctx.fillStyle = "rgb(114, 95, 57)";
-            ctx.fillRect(0, 0, width * scale, 0.2 * height);
-            ctx.fillRect(0, 480, width * scale, 0.3 * height);
 
-            ctx.fillStyle = "rgb(186, 154, 89)";
-            ctx.fillRect(0, 10, width * scale, 0.15 * height);
-            ctx.fillRect(0, 400, width * scale, 0.25 * height);
 
             // Buttons
 
@@ -185,10 +230,9 @@ scenes.fight = () => {
                     fightButtons[i].alpha = 255;
                 }
             }
-            // <- <- <- <- <- CONVERTED UP TO HERE [][][][]
 
             
-            else if (fightaction == 1) {
+            /*else if (fightaction == 1) {
                 ctx.fillStyle = "rgb(47, 95, 191)";
                 ctx.fillRect(145, 12, 96, 58);
                 ctx.fillStyle = "rgb(191, 212, 255)";
@@ -198,7 +242,8 @@ scenes.fight = () => {
                 ctx.font = "12px NotoSans, sans-serif";
                 ctx.fillStyle = "rgb(0, 32, 102)";
                 ctx.fillText("Attack", 180, 35);
-            }
+            }*/
+
 
             /*
             ctx.fillStyle = "black";
@@ -215,15 +260,8 @@ scenes.fight = () => {
             ctx.fillText("HP: " + characters[char2].HP + "/" + characters[char2].maxHP, 612, 72);
             */
 
-            ctx.fillStyle = "rgb(50, 78, 131)";
-            ctx.fillRect(0, 375, 200, 125);
-            ctx.fillStyle = "rgb(145, 178, 245)";
-            ctx.fillRect(10, 385, 180, 105);
+            // <- <- <- <- <- CONVERTED UP TO HERE [][][][]
 
-            ctx.font = "10px NotoSans, sans-serif";
-            ctx.fillStyle = "black";
-            ctx.fillText("Battle has started!", 20, 395);
-            ctx.fillText("All actions will be logged here!", 20, 405);
 
             ctx.fillStyle = "rgb(131, 50, 78)";
             ctx.fillRect(600, 375, 200, 125);
