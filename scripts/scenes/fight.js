@@ -3,18 +3,23 @@ scenes.fight = () => {
     var fightaction = 0;
     var attack_animation_progress = 0;
 
+    var fightBgRects = [];
     var fightButtons = [];
+    var fightLogComponents = [];
 
-
+    var fightlog = [
+        "Battle has started!",
+        "All actions will be logged here!",
+    ];
 
     // Bottom rects
 
-    fightButtons.push(controls.rect({
+    fightBgRects.push(controls.rect({
         anchor: [0.0, 0.0], offset: [0, 0], sizeAnchor: [1, 0.2],
         fill: "rgb(114, 95, 57)",
         alpha: 255,
     }));
-    fightButtons.push(controls.rect({
+    fightBgRects.push(controls.rect({
         anchor: [0.0, 0.025], offset: [0, 0], sizeAnchor: [1, 0.15],
         fill: "rgb(186, 154, 89)",
         alpha: 255,
@@ -91,7 +96,7 @@ scenes.fight = () => {
         fill: "rgb(191, 47, 167)", text: "",
         alpha: 255,
         onClick(args) {
-
+            fightlog.push(prompt("Put what?"));
         }
     }));
     fightButtons.push(controls.rect({
@@ -183,13 +188,13 @@ scenes.fight = () => {
 
     // Bottom rects
 
-    fightButtons.push(controls.rect({
+    fightBgRects.push(controls.rect({
         anchor: [0.0, 0.7], offset: [0, 0], sizeAnchor: [1, 0.3],
         fill: "rgb(186, 154, 89)",
         alpha: 255,
     }));
-    fightButtons.push(controls.rect({
-        anchor: [0.0, 0.9], offset: [0, 0], sizeAnchor: [1, 0.1],
+    fightBgRects.push(controls.rect({
+        anchor: [0.0, 0.95], offset: [0, 0], sizeAnchor: [1, 0.05],
         fill: "rgb(114, 95, 57)",
         alpha: 255,
     }));
@@ -197,11 +202,26 @@ scenes.fight = () => {
 
     // Battle Log (Bottom Left)
 
-    fightButtons.push(controls.rect({
-        anchor: [0, 0], offset: [0, 400], sizeOffset: [200, 125],
+    fightLogComponents.push(controls.rect({
+        anchor: [0, 0.65], offset: [0, 0], sizeAnchor: [0.20, 0.35], sizeOffset: [80, 0],
         fill: "rgb(50, 78, 131)",
         alpha: 255,
     }));
+
+    fightLogComponents.push(controls.rect({
+        anchor: [0.02, 0.67], offset: [0, 0], sizeAnchor: [0.16, 0.31], sizeOffset: [80, 0],
+        fill: "rgb(145, 178, 245)",
+        alpha: 255,
+    }));
+
+    for (i = 0; i < 12; i++) {
+        fightLogComponents.push(controls.label({
+            anchor: [0.1, 0.7 + (i*0.02)], offset: [40, 0],
+            fontSize: 12, fill: "rgb(0, 0, 0)", align: "center",
+            text: fightlog[Math.max(0, fightlog.length - 12 + i)],
+            alpha: 255,
+        }));
+    }
 
 
     /*
@@ -259,6 +279,11 @@ scenes.fight = () => {
             ctx.fillText("HP: " + characters[char1].HP + "/" + characters[char1].maxHP, 612, 44);
             ctx.fillText("HP: " + characters[char2].HP + "/" + characters[char2].maxHP, 612, 72);
             */
+
+            // Update fightlog
+            for (i = 0; i < 12; i++) {
+                fightLogComponents[2 + i].text = fightlog[Math.max(0, fightlog.length - 12 + i)];
+            }
 
             // <- <- <- <- <- CONVERTED UP TO HERE [][][][]
 
@@ -378,8 +403,9 @@ scenes.fight = () => {
                 }
             }),*/
 
-            ...fightButtons
-
+            ...fightBgRects,
+            ...fightButtons,
+            ...fightLogComponents
         ],
     }
 };
