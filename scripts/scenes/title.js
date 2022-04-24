@@ -60,7 +60,7 @@ scenes.title = () => {
 
     for (let a = 0; a < 3; a++) {
         saveButtons.push(controls.button({
-            anchor: [1.2, .5], offset: [0, -220 + 130 * a], sizeAnchor: [.6, 0], sizeOffset: [0, 120], clickthrough: false,
+            anchor: [1.2, .5], offset: [-30, -220 + 130 * a], sizeAnchor: [.5, 0], sizeOffset: [120, 120], clickthrough: false,
             text: "Undefined",
             onClick(args) {
                 if (mode == 0) {
@@ -77,7 +77,7 @@ scenes.title = () => {
         }))
 
         saveImages.push(controls.image({
-            anchor: [1.2, .5], offset: [0, -220 + 130 * a], sizeAnchor: [.1, 0], sizeOffset: [0, 120],
+            anchor: [1.2, .5], offset: [-30, -220 + 130 * a], sizeAnchor: [0, 0], sizeOffset: [60, 60],
             source: "saveimage" + Math.ceil(Math.random() * 5),
             onClick(args) { //Change the image when clicked
                 saveNR = a;
@@ -175,7 +175,7 @@ scenes.title = () => {
                         saveGame();
                         var thisSave = JSON.parse(localStorage.getItem("SRPG" + tempsaveNR));
                     }
-                    saveButtons[a].text = "Savegame " + tempsaveNR + "\n Pos: " + thisSave.position;
+                    saveButtons[a].text = "Save " + tempsaveNR + "\n P: " + thisSave.position;
 
                     if (thisSave.pfp != undefined) {
                         saveImages[a].source = thisSave.pfp;
