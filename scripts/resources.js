@@ -29,6 +29,10 @@ let images = {
     saveimage4: "data/images/PFP-4.png",
     saveimage5: "data/images/PFP-5.png",
 
+
+    p_bleu: "data/images/p_bleu.png",
+    p_corelle: "data/images/p_corelle.png",
+
     "tiles/grass1": "data/images/tiles/grass1.png",
     "tiles/grass2": "data/images/tiles/grass2.png",
     "tiles/sand1": "data/images/tiles/sand1.png",
@@ -70,6 +74,7 @@ let images = {
     "tiles/house_floor": "data/images/tiles/tile_house_floor.png",
     "tiles/fence_single": "data/images/tiles/tile_fence_single.png",
 };
+
 var scenes = {
     title: "scripts/scenes/title.js",
     game: "scripts/scenes/game.js",
@@ -84,7 +89,6 @@ var maps = {
     "test": "scripts/maps/test.js",
     "map2": "scripts/maps/map2.js",
 };
-
 
 var resCount = 0;
 var resLoad = 0;

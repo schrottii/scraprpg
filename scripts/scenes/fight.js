@@ -6,10 +6,16 @@ scenes.fight = () => {
     var fightBgRects = [];
     var fightButtons = [];
     var fightLogComponents = [];
+    var fightOverview = [];
+    var fightPortraits = [];
+    var fightStats1 = [];
+    var fightStats2 = [];
 
     var fightlog = [
+        "",
         "Battle has started!",
-        "All actions will be logged here!",
+        "All actions will",
+        "be logged here!",
     ];
 
     // Bottom rects
@@ -203,39 +209,153 @@ scenes.fight = () => {
     // Battle Log (Bottom Left)
 
     fightLogComponents.push(controls.rect({
-        anchor: [0, 0.65], offset: [0, 0], sizeAnchor: [0.20, 0.35], sizeOffset: [80, 0],
+        anchor: [0, 0.65], offset: [0, 0], sizeAnchor: [0.20, 0.35], sizeOffset: [40, 0],
         fill: "rgb(50, 78, 131)",
         alpha: 255,
     }));
 
     fightLogComponents.push(controls.rect({
-        anchor: [0.02, 0.67], offset: [0, 0], sizeAnchor: [0.16, 0.31], sizeOffset: [80, 0],
+        anchor: [0.02, 0.67], offset: [0, 0], sizeAnchor: [0.16, 0.31], sizeOffset: [40, 0],
         fill: "rgb(145, 178, 245)",
         alpha: 255,
     }));
 
     for (i = 0; i < 12; i++) {
         fightLogComponents.push(controls.label({
-            anchor: [0.1, 0.7 + (i*0.02)], offset: [40, 0],
+            anchor: [0.1, 0.7 + (i*0.02)], offset: [20, 0],
             fontSize: 12, fill: "rgb(0, 0, 0)", align: "center",
             text: fightlog[Math.max(0, fightlog.length - 12 + i)],
             alpha: 255,
         }));
     }
 
+    // Fight Overview (bottom right)
 
-    /*
-    ctx.fillStyle = "rgb(50, 78, 131)";
-    ctx.fillRect(0, 375, 200, 125);
-    ctx.fillStyle = "rgb(145, 178, 245)";
-    ctx.fillRect(10, 385, 180, 105);
+    fightOverview.push(controls.rect({
+        anchor: [0.8, 0.65], offset: [-40, 0], sizeAnchor: [0.20, 0.35], sizeOffset: [40, 0],
+        fill: "rgb(131, 50, 78)",
+        alpha: 255,
+    }));
 
-    ctx.font = "10px NotoSans, sans-serif";
-    ctx.fillStyle = "black";
-    ctx.fillText("Battle has started!", 20, 395);
-    ctx.fillText("All actions will be logged here!", 20, 405);
-    */
+    fightOverview.push(controls.rect({
+        anchor: [0.82, 0.67], offset: [-40, 0], sizeAnchor: [0.16, 0.31], sizeOffset: [40, 0],
+        fill: "rgb(245, 145, 178)",
+        alpha: 255,
+    }));
 
+    // Portraits (is that how you spell it?)
+
+    fightPortraits.push(controls.rect({
+        anchor: [0.2, 0.625], offset: [40, 0], sizeOffset: [68, 68],
+        fill: "yellow",
+        alpha: 255,
+    }));
+    
+    fightPortraits.push(controls.image({
+        anchor: [0.2, 0.625], offset: [42, 2], sizeOffset: [64, 64],
+        source: "p_bleu",
+        alpha: 255,
+    }));
+
+    fightPortraits.push(controls.rect({
+        anchor: [0.42, 0.625], offset: [40, 0], sizeOffset: [68, 68],
+        fill: "yellow",
+        alpha: 255,
+    }));
+
+    fightPortraits.push(controls.image({
+        anchor: [0.42, 0.625], offset: [42, 2], sizeOffset: [64, 64],
+        source: "p_corelle",
+        alpha: 255,
+    }));
+
+    // Fight stats 1 - always below portraits
+
+    fightStats1.push(controls.label({
+        anchor: [0.2, 0.7], offset: [74, 38],
+        fontSize: 20, fill: "blue", align: "center",
+        text: game.characters.bleu.name,
+        alpha: 255,
+    }));
+
+    fightStats1.push(controls.label({
+        anchor: [0.2, 0.7], offset: [74, 58],
+        fontSize: 20, fill: "yellow", align: "center",
+        text: "Level: " + game.characters.bleu.level,
+        alpha: 255,
+    }));
+
+    fightStats1.push(controls.label({
+        anchor: [0.42, 0.7], offset: [74, 38],
+        fontSize: 20, fill: "blue", align: "center",
+        text: game.characters.corelle.name,
+        alpha: 255,
+    }));
+
+    fightStats1.push(controls.label({
+        anchor: [0.42, 0.7], offset: [74, 58],
+        fontSize: 20, fill: "yellow", align: "center",
+        text: "Level: " + game.characters.corelle.level,
+        alpha: 255,
+    }));
+
+    // Fight stats 2
+
+    fightStats2.push(controls.rect({
+        anchor: [0.2, 0.7], offset: [42, 78], sizeAnchor: [0.12, 0.04],
+        fill: "rgb(0, 145, 40)",
+        alpha: 255,
+    }));
+
+    fightStats2.push(controls.rect({
+        anchor: [0.2, 0.706], offset: [42, 98], sizeAnchor: [0.12, 0.04],
+        fill: "rgb(145, 0, 105)",
+        alpha: 255,
+    }));
+
+    fightStats2.push(controls.label({
+        anchor: [0.26, 0.72], offset: [42, 78],
+        fontSize: 14, fill: "black", align: "center",
+        text: game.characters["bleu"].HP + "/" + game.characters["bleu"].maxHP,
+        alpha: 255,
+    }));
+
+    fightStats2.push(controls.label({
+        anchor: [0.26, 0.728], offset: [42, 98],
+        fontSize: 14, fill: "black", align: "center",
+        text: game.characters["bleu"].EP + "/" + game.characters["bleu"].EP,
+        alpha: 255,
+    }));
+
+    
+
+    fightStats2.push(controls.rect({
+        anchor: [0.42, 0.7], offset: [42, 78], sizeAnchor: [0.12, 0.04],
+        fill: "rgb(0, 145, 40)",
+        alpha: 255,
+    }));
+
+    fightStats2.push(controls.rect({
+        anchor: [0.42, 0.706], offset: [42, 98], sizeAnchor: [0.12, 0.04],
+        fill: "rgb(145, 0, 105)",
+        alpha: 255,
+    }));
+
+    fightStats2.push(controls.label({
+        anchor: [0.48, 0.72], offset: [42, 78],
+        fontSize: 14, fill: "black", align: "center",
+        text: game.characters["bleu"].HP + "/" + game.characters["bleu"].maxHP,
+        alpha: 255,
+    }));
+
+    fightStats2.push(controls.label({
+        anchor: [0.48, 0.728], offset: [42, 98],
+        fontSize: 14, fill: "black", align: "center",
+        text: game.characters["bleu"].EP + "/" + game.characters["bleu"].EP,
+        alpha: 255,
+    }));
+
+    
     return {
         // Pre-render function
         preRender(ctx, delta) {
@@ -285,17 +405,11 @@ scenes.fight = () => {
                 fightLogComponents[2 + i].text = fightlog[Math.max(0, fightlog.length - 12 + i)];
             }
 
-            // <- <- <- <- <- CONVERTED UP TO HERE [][][][]
 
 
-            ctx.fillStyle = "rgb(131, 50, 78)";
-            ctx.fillRect(600, 375, 200, 125);
-            ctx.fillStyle = "rgb(245, 145, 178)";
-            ctx.fillRect(610, 385, 180, 105);
-
-            ctx.font = "12px NotoSans, sans-serif";
+            /*ctx.font = "12px NotoSans, sans-serif";
             ctx.fillStyle = "black";
-            /*if (x == 0) {
+            if (x == 0) {
                 ctx.fillText("4 " + gete(1).name + "s!", 620, 405);
                 ctx.fillText("Evil Helter Skelter", 620, 425);
             }
@@ -304,39 +418,12 @@ scenes.fight = () => {
                 ctx.fillText("HP " + gete(x).HP + "/" + gete(x).maxHP, 620, 425);
             }*/
 
-            ctx.fillStyle = "yellow";
-            ctx.fillRect(225, 375, 75, 75);
-            //ctx.drawImage(portraits[char1], 230, 380, 65, 65);
-            ctx.font = "20px NotoSans, sans-serif";
-            //ctx.fillText("Level " + characters[char1].level, 230, 480);
-            ctx.fillStyle = "blue";
-            //ctx.fillText(characters[char1].name, 240, 465);
+            // <- <- <- <- <- CONVERTED UP TO HERE [][][][]
 
-            ctx.fillStyle = "rgb(0, 145, 40)";
-            ctx.fillRect(310, 410, 80, 20);
-            ctx.fillStyle = "rgb(145, 0, 105)";
-            ctx.fillRect(310, 430, 80, 20);
+            
 
-            ctx.fillStyle = "black";
-            //ctx.fillText(characters[char1].HP + "/" + characters[char1].maxHP, 310, 425);
-            //ctx.fillText(characters[char1].EP + "/" + characters[char1].EP, 310, 445);
+            
 
-            ctx.fillStyle = "yellow";
-            ctx.fillRect(395, 375, 75, 75);
-            //ctx.drawImage(portraits[char2], 400, 380, 65, 65);
-            ctx.font = "20px NotoSans, sans-serif";
-            //ctx.fillText("Level " + characters[char1].level, 400, 480);
-            ctx.fillStyle = "blue";
-            //ctx.fillText(characters[char2].name, 400, 465);
-
-            ctx.fillStyle = "rgb(0, 145, 40)";
-            ctx.fillRect(480, 410, 60, 20);
-            ctx.fillStyle = "rgb(145, 0, 105)";
-            ctx.fillRect(480, 430, 60, 20);
-
-            ctx.fillStyle = "black";
-            //ctx.fillText(characters[char2].HP + "/" + characters[char2].maxHP, 480, 425);
-            //ctx.fillText(characters[char2].EP + "/" + characters[char2].EP, 480, 445);
 
             /*if (attack_animation_progress == 0) {
                 ctx.drawImage(sprites.bleu, 0, 64, 64, 64, 100, 200, 32, 32);
@@ -405,7 +492,10 @@ scenes.fight = () => {
 
             ...fightBgRects,
             ...fightButtons,
-            ...fightLogComponents
+            ...fightLogComponents,
+            ...fightOverview,
+            ...fightPortraits,
+            ...fightStats1, ...fightStats2,
         ],
     }
 };
