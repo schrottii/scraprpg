@@ -97,6 +97,12 @@ function image_animation(image, pos, speed=100) {
     }
 }
 
+function isMobile() {
+    // Somewhat
+    if (width < 24) return true;
+    return false;
+}
+
 function loop() {
     // Tick time
     delta = Date.now() - time;
@@ -126,7 +132,7 @@ function loop() {
     ctx.fillStyle = "white";
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
-    ctx.fillText((1000 / delta).toFixed(0) + "fps " + delta + "ms  | w: " + width + "  scale: " + scale + "   h: " + height, 2, 12);
+    ctx.fillText((1000 / delta).toFixed(0) + "fps " + delta + "ms  | w: " + width + "  scale: " + scale + "   h: " + height + " mob: " + isMobile(), 2, 12);
 
     // Auto Save
     if (autoSaveTime > -1) {

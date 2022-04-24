@@ -10,6 +10,7 @@ scenes.fight = () => {
     var fightPortraits = [];
     var fightStats1 = [];
     var fightStats2 = [];
+    var fightStats3 = [];
 
     var fightlog = [
         "",
@@ -299,7 +300,7 @@ scenes.fight = () => {
         alpha: 255,
     }));
 
-    // Fight stats 2
+    // Fight stats 2 (MOBILE)
 
     fightStats2.push(controls.rect({
         anchor: [0.2, 0.7], offset: [42, 78], sizeAnchor: [0.12, 0.04],
@@ -327,7 +328,7 @@ scenes.fight = () => {
         alpha: 255,
     }));
 
-    
+
 
     fightStats2.push(controls.rect({
         anchor: [0.42, 0.7], offset: [42, 78], sizeAnchor: [0.12, 0.04],
@@ -355,6 +356,62 @@ scenes.fight = () => {
         alpha: 255,
     }));
 
+    // Fight stats 3 (PC)
+
+    fightStats3.push(controls.rect({
+        anchor: [0.28, 0.6], offset: [42, 78], sizeAnchor: [0.12, 0.04],
+        fill: "rgb(0, 145, 40)",
+        alpha: 0,
+    }));
+
+    fightStats3.push(controls.rect({
+        anchor: [0.28, 0.606], offset: [42, 98], sizeAnchor: [0.12, 0.04],
+        fill: "rgb(145, 0, 105)",
+        alpha: 0,
+    }));
+
+    fightStats3.push(controls.label({
+        anchor: [0.32, 0.62], offset: [42, 78],
+        fontSize: 14, fill: "black", align: "center",
+        text: "HP: " + game.characters["bleu"].HP + "/" + game.characters["bleu"].maxHP,
+        alpha: 0,
+    }));
+
+    fightStats3.push(controls.label({
+        anchor: [0.32, 0.628], offset: [42, 98],
+        fontSize: 14, fill: "black", align: "center",
+        text: "EP: " + game.characters["bleu"].EP + "/" + game.characters["bleu"].EP,
+        alpha: 0,
+    }));
+
+
+
+    fightStats3.push(controls.rect({
+        anchor: [0.5, 0.6], offset: [42, 78], sizeAnchor: [0.12, 0.04],
+        fill: "rgb(0, 145, 40)",
+        alpha: 0,
+    }));
+
+    fightStats3.push(controls.rect({
+        anchor: [0.5, 0.606], offset: [42, 98], sizeAnchor: [0.12, 0.04],
+        fill: "rgb(145, 0, 105)",
+        alpha: 0,
+    }));
+
+    fightStats3.push(controls.label({
+        anchor: [0.54, 0.62], offset: [42, 78],
+        fontSize: 14, fill: "black", align: "center",
+        text: "HP: " + game.characters["bleu"].HP + "/" + game.characters["bleu"].maxHP,
+        alpha: 0,
+    }));
+
+    fightStats3.push(controls.label({
+        anchor: [0.54, 0.628], offset: [42, 98],
+        fontSize: 14, fill: "black", align: "center",
+        text: "EP: " + game.characters["bleu"].EP + "/" + game.characters["bleu"].EP,
+        alpha: 0,
+    }));
+
     
     return {
         // Pre-render function
@@ -366,11 +423,33 @@ scenes.fight = () => {
             // Buttons
 
             if (fightaction == 0) {
-                for (i = 0; i > fightButtons.length; i++) {
+                for (i = 0; i < fightButtons.length; i++) {
                     fightButtons[i].alpha = 255;
                 }
             }
 
+            if (isMobile()) {
+                for (i = 0; i < fightButtons.length; i += 5) {
+                    fightButtons[i + 3].alpha = 0;
+                    fightButtons[i + 4].alpha = 0;
+                }
+
+                for (i = 0; i < fightStats2.length; i++) {
+                    fightStats2[i].alpha = 255;
+                }
+                for (i = 0; i < fightStats3.length; i++) {
+                    fightStats3[i].alpha = 0;
+                }
+            }
+            else {
+
+                for (i = 0; i < fightStats2.length; i++) {
+                    fightStats2[i].alpha = 0;
+                }
+                for (i = 0; i < fightStats3.length; i++) {
+                    fightStats3[i].alpha = 255;
+                }
+            }
             
             /*else if (fightaction == 1) {
                 ctx.fillStyle = "rgb(47, 95, 191)";
@@ -404,7 +483,7 @@ scenes.fight = () => {
             for (i = 0; i < 12; i++) {
                 fightLogComponents[2 + i].text = fightlog[Math.max(0, fightlog.length - 12 + i)];
             }
-
+            
 
 
             /*ctx.font = "12px NotoSans, sans-serif";
@@ -495,7 +574,7 @@ scenes.fight = () => {
             ...fightLogComponents,
             ...fightOverview,
             ...fightPortraits,
-            ...fightStats1, ...fightStats2,
+            ...fightStats1, ...fightStats2, ...fightStats3,
         ],
     }
 };
