@@ -15,6 +15,7 @@ scenes.fight = () => {
 
     var positionControls = [];
     var epositionControls = [];
+    var positionGrid = [];
 
     var switchThose = [[0, 0], [0, 0]];
 
@@ -30,11 +31,12 @@ scenes.fight = () => {
         // [0] is pos of which one to switch, [1] of where to switch to
 
         // Switch them and adjust isOccupied
+        let cache123 = positions[switchThose[1][0]][switchThose[1][1]].occupied;
         positions[switchThose[1][0]][switchThose[1][1]].occupied = positions[switchThose[0][0]][switchThose[0][1]].occupied;
-        positions[switchThose[0][0]][switchThose[0][1]].occupied = false;
+        positions[switchThose[0][0]][switchThose[0][1]].occupied = cache123;
 
+        positions[switchThose[0][0]][switchThose[0][1]].isOccupied = positions[switchThose[1][0]][switchThose[1][1]].isOccupied;
         positions[switchThose[1][0]][switchThose[1][1]].isOccupied = true;
-        positions[switchThose[0][0]][switchThose[0][1]].isOccupied = false;
 
         // Clear this stuff
         switchThose = [[0, 0], [0, 0]];
@@ -447,7 +449,7 @@ scenes.fight = () => {
                 {
                     pos: "top left",
                     isOccupied: true, // bool
-                    occupied: "selected", // who?
+                    occupied: "bleu", // who?
                 },
                 {
                     pos: "top middle",
@@ -480,8 +482,8 @@ scenes.fight = () => {
             [
                 {
                     pos: "bottom left",
-                    isOccupied: false, // bool
-                    occupied: false, // who?
+                    isOccupied: true, // bool
+                    occupied: "corelle", // who?
                 },
                 {
                     pos: "bottom middle",
@@ -559,18 +561,21 @@ scenes.fight = () => {
                 anchor: [0.025, 0.25], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
                 source: "gear",
                 alpha: 255,
+                snip: [0, 64, 32, 32],
                 pos1: i,
                 pos2: j,
                 onClick(args) {
                     if (fightaction == "switch") {
                         if (positions[this.pos1][this.pos2].isOccupied == true) {
                             switchThose[0] = [this.pos1, this.pos2];
+                            positionGrid[switchThose[0][0] + (switchThose[0][1] * 3)].source = "selected";
                             fightaction = "switch2"; //switch two: electric boogaloo
                         }
                     }
                     else if (fightaction == "switch2") {
-                        if (switchThose[0] != [this.pos1, this.pos2]) {
+                        if (switchThose[0][0] != [this.pos1] || switchThose[0][1] != [this.pos2]) {
                             switchThose[1] = [this.pos1, this.pos2];
+                            positionGrid[switchThose[0][0] + (switchThose[0][1] * 3)].source = "grid";
                             switchPositions();
                         }
                     }
@@ -597,15 +602,28 @@ scenes.fight = () => {
         }
     }
 
+    // Pos grid
+    for (j = 0; j < 3; j++) {
+        for (i = 0; i < 3; i++) {
+            positionGrid.push(controls.image({
+                anchor: [0.025, 0.25], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
+                source: "grid",
+                alpha: 255,
+            }));
+        }
+    }
+
     function updatePositions() {
         for (j = 0; j < 3; j++) {
             for (i = 0; i < 3; i++) {
                 if (positions[i]) {
                     if (positions[i][j].isOccupied == true) {
                         positionControls[i + (j * 3)].source = positions[i][j].occupied;
+                        positionControls[i + (j * 3)].alpha = 255;
                     }
                     else {
                         positionControls[i + (j * 3)].source = "gear";
+                        positionControls[i + (j * 3)].alpha = 0;
                     }
                 }
                 else {
@@ -616,6 +634,11 @@ scenes.fight = () => {
                 if (epositions[i]) {
                     if (epositions[i][j].isOccupied == true) {
                         epositionControls[i + (j * 3)].source = epositions[i][j].occupied;
+                        epositionControls[i + (j * 3)].alpha = 255;
+                    }
+                    else {
+                        epositionControls[i + (j * 3)].source = "gear";
+                        epositionControls[i + (j * 3)].alpha = 0;
                     }
                 }
                 else {
@@ -798,7 +821,7 @@ scenes.fight = () => {
             ...fightOverview,
             ...fightPortraits,
             ...fightStats1, ...fightStats2, ...fightStats3,
-            ...positionControls, ...epositionControls
+            ...positionControls, ...epositionControls, ...positionGrid,
         ],
     }
 };

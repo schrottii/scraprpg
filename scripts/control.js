@@ -20,12 +20,17 @@ let controls = {
         return {
             ...controls.base(),
             source: null,
+            snip: false,
             render(ctx) {
 
                 let w = this.sizeOffset[0] + this.sizeAnchor[0] * ctx.canvas.width;
                 let h = this.sizeOffset[1] + this.sizeAnchor[1] * ctx.canvas.height;
 
-                if (w > 0 && h > 0) ctx.drawImage(images[this.source], 
+                if (w > 0 && h > 0 && this.snip != false) ctx.drawImage(images[this.source],
+                    this.snip[0], this.snip[1], this.snip[2], this.snip[3], 
+                    this.offset[0] + this.anchor[0] * ctx.canvas.width,
+                    this.offset[1] + this.anchor[1] * ctx.canvas.height, w, h);
+                else if (w > 0 && h > 0) ctx.drawImage(images[this.source], 
                     this.offset[0] + this.anchor[0] * ctx.canvas.width, 
                     this.offset[1] + this.anchor[1] * ctx.canvas.height, w, h);
                 else ctx.drawImage(images[this.source], 

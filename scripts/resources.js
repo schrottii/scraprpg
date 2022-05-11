@@ -18,9 +18,11 @@ let images = {
     switch: "data/images/switch.png",
     flee: "data/images/flee.png",
     gameover: "data/images/gameover.png",
-    selected32: "data/images/selected.png",
+    selected: "data/images/selected.png",
+    grid: "data/images/gridempty.png",
     potion: "data/images/Items/potion.png",
     bleu: "data/images/Map_Bleu.png",
+    corelle: "data/images/Map_Corelle.png",
     evil: "data/images/Map_Evil.png",
     selected: "data/images/selected.png",
 
