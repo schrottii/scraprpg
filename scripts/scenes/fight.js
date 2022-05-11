@@ -1,6 +1,6 @@
 scenes.fight = () => {
 
-    var fightaction = 0;
+    var fightaction = "none";
     var attack_animation_progress = 0;
     var put = 0; //positions update time
 
@@ -16,12 +16,30 @@ scenes.fight = () => {
     var positionControls = [];
     var epositionControls = [];
 
+    var switchThose = [[0, 0], [0, 0]];
+
     var fightlog = [
         "",
         "Battle has started!",
         "All actions will",
         "be logged here!",
     ];
+
+    function switchPositions() {
+        // important variable here: switchThose
+        // [0] is pos of which one to switch, [1] of where to switch to
+
+        // Switch them and adjust isOccupied
+        positions[switchThose[1][0]][switchThose[1][1]].occupied = positions[switchThose[0][0]][switchThose[0][1]].occupied;
+        positions[switchThose[0][0]][switchThose[0][1]].occupied = false;
+
+        positions[switchThose[1][0]][switchThose[1][1]].isOccupied = true;
+        positions[switchThose[0][0]][switchThose[0][1]].isOccupied = false;
+
+        // Clear this stuff
+        switchThose = [[0, 0], [0, 0]];
+        fightaction = "none";
+    }
 
     // Bottom rects
 
@@ -138,7 +156,8 @@ scenes.fight = () => {
         fill: "rgb(191, 143, 47)", text: "",
         alpha: 255,
         onClick(args) {
-
+            // Switch Scrapper
+            fightaction = "switch";
         }
     }));
     fightButtons.push(controls.rect({
@@ -427,8 +446,8 @@ scenes.fight = () => {
             [
                 {
                     pos: "top left",
-                    isOccupied: false, // bool
-                    occupied: false, // who?
+                    isOccupied: true, // bool
+                    occupied: "selected", // who?
                 },
                 {
                     pos: "top middle",
@@ -543,7 +562,18 @@ scenes.fight = () => {
                 pos1: i,
                 pos2: j,
                 onClick(args) {
-                    positions[this.pos1][this.pos2].occupied = "selected";
+                    if (fightaction == "switch") {
+                        if (positions[this.pos1][this.pos2].isOccupied == true) {
+                            switchThose[0] = [this.pos1, this.pos2];
+                            fightaction = "switch2"; //switch two: electric boogaloo
+                        }
+                    }
+                    else if (fightaction == "switch2") {
+                        if (switchThose[0] != [this.pos1, this.pos2]) {
+                            switchThose[1] = [this.pos1, this.pos2];
+                            switchPositions();
+                        }
+                    }
                 }
             }));
         }
@@ -559,19 +589,23 @@ scenes.fight = () => {
                 pos1: i,
                 pos2: j,
                 onClick(args) {
-                    epositions[this.pos1][this.pos2].occupied = "selected";
+                    //epositions[this.pos1][this.pos2].occupied = "selected";
+                    // uhhh... no?
+                    // but add fighting here at some point
                 }
             }));
         }
     }
 
     function updatePositions() {
-
         for (j = 0; j < 3; j++) {
             for (i = 0; i < 3; i++) {
                 if (positions[i]) {
-                    if (positions[i][j].occupied != false) {
+                    if (positions[i][j].isOccupied == true) {
                         positionControls[i + (j * 3)].source = positions[i][j].occupied;
+                    }
+                    else {
+                        positionControls[i + (j * 3)].source = "gear";
                     }
                 }
                 else {
@@ -580,7 +614,7 @@ scenes.fight = () => {
 
                 // enemies! enemies!
                 if (epositions[i]) {
-                    if (epositions[i][j].occupied != false) {
+                    if (epositions[i][j].isOccupied == true) {
                         epositionControls[i + (j * 3)].source = epositions[i][j].occupied;
                     }
                 }
@@ -600,9 +634,14 @@ scenes.fight = () => {
 
             // Buttons
 
-            if (fightaction == 0) {
+            if (fightaction == "none") {
                 for (i = 0; i < fightButtons.length; i++) {
                     fightButtons[i].alpha = 255;
+                }
+            }
+            else {
+                for (i = 0; i < fightButtons.length; i++) {
+                    fightButtons[i].alpha = 0;
                 }
             }
 
