@@ -6,6 +6,8 @@ scenes.fight = () => {
 
     var fightBgRects = [];
     var fightButtons = [];
+    var attackButtons = [];
+
     var fightLogComponents = [];
     var fightOverview = [];
     var fightPortraits = [];
@@ -18,6 +20,7 @@ scenes.fight = () => {
     var positionGrid = [];
 
     var switchThose = [[0, 0], [0, 0]];
+    var selectedAlly = [0, 0];
 
     var fightlog = [
         "",
@@ -47,6 +50,22 @@ scenes.fight = () => {
         fightaction = "none";
     }
 
+    function attackAnimation(pos1, pos2, onFinish) {
+        addAnimator(function (t) {
+            positionControls[selectedAlly[0] + (selectedAlly[1]*3)].anchor[0] = 0.025 + ( 0.0003 * t);
+
+            if (positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor[0] + (positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].offset[0] / 1000) >
+                epositionControls[pos1 + (pos2 * 3)].anchor[0] + (epositionControls[pos1 + (pos2 * 3)].offset[0] / 1000)) {
+
+                positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor[0] = 0.025;
+
+                onFinish();
+                return true;
+            }
+            return false;
+        })
+    }
+
     // Bottom rects
 
     fightBgRects.push(controls.rect({
@@ -67,7 +86,9 @@ scenes.fight = () => {
         fill: "rgb(47, 95, 191)", text: "",
         alpha: 255,
         onClick(args) {
-
+            if (this.alpha == 255) {
+                fightaction = "attack";
+            }
         }
     }));
     fightButtons.push(controls.rect({
@@ -99,6 +120,9 @@ scenes.fight = () => {
         fill: "rgb(47, 191, 71)", text: "",
         alpha: 255,
         onClick(args) {
+            if (this.alpha == 255) {
+
+            }
         }
     }));
     fightButtons.push(controls.rect({
@@ -130,7 +154,9 @@ scenes.fight = () => {
         fill: "rgb(191, 47, 167)", text: "",
         alpha: 255,
         onClick(args) {
-            fightlog.push(prompt("Put what?"));
+            if (this.alpha == 255) {
+                fightlog.push(prompt("Put what?"));
+            }
         }
     }));
     fightButtons.push(controls.rect({
@@ -163,7 +189,9 @@ scenes.fight = () => {
         alpha: 255,
         onClick(args) {
             // Switch Scrapper
-            fightaction = "switch";
+            if (this.alpha == 255) {
+                fightaction = "switch";
+            }
         }
     }));
     fightButtons.push(controls.rect({
@@ -195,7 +223,9 @@ scenes.fight = () => {
         fill: "rgb(119, 119, 119)", text: "",
         alpha: 255,
         onClick(args) {
-            setScene(scenes.game());
+            if (this.alpha == 255) {
+                setScene(scenes.game());
+            }
         }
     }));
     fightButtons.push(controls.rect({
@@ -441,8 +471,37 @@ scenes.fight = () => {
     }));
 
 
+    // Attack Buttons
+    // Visible after pressing Battle Actions
 
+    attackButtons.push(controls.rect({
+        anchor: [0.05, 0.03], offset: [0, 0], sizeAnchor: [0.05, 0], sizeOffset: [40, 58],
+        fill: "rgb(47, 95, 191)", text: "",
+        alpha: 255,
+        onClick(args) {
+            if (this.alpha == 255) {
+                fightaction = "attack2";
+            }
+        }
+    }));
+    attackButtons.push(controls.rect({
+        anchor: [0.05, 0.03], offset: [5, 5], sizeAnchor: [0.05, 0], sizeOffset: [30, 48],
+        fill: "rgb(191, 212, 255)",
+        alpha: 255,
+    }));
+    attackButtons.push(controls.image({
+        anchor: [0.05, 0.03], offset: [5, 5], sizeOffset: [48, 48],
+        source: "actions",
+        alpha: 255,
+    }));
+    attackButtons.push(controls.label({
+        anchor: [0.1, 0.03], offset: [30, 20], sizeOffset: [48, 48],
+        fontSize: 14, fill: "rgb(0, 32, 102)", align: "right",
+        text: "Attack",
+        alpha: 255,
+    }));
 
+    // POSITIONS
     // Positions
 
     // This huge var stores the 3x3 positions and everything about their current state
@@ -583,6 +642,11 @@ scenes.fight = () => {
                             switchPositions();
                         }
                     }
+                    if (fightaction == "attack2") {
+                        selectedAlly = [this.pos1, this.pos2];
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
+                        fightaction = "attack3";
+                    }
                 }
             }));
         }
@@ -602,6 +666,16 @@ scenes.fight = () => {
                     //epositions[this.pos1][this.pos2].occupied = "selected";
                     // uhhh... no?
                     // but add fighting here at some point
+                    // THAT POINT IS NOW! Idiot
+
+                    if (fightaction == "attack3") {
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "grid";
+                        attackAnimation(this.pos1, this.pos2, () => {
+                            epositions[this.pos1][this.pos2].isOccupied = false;
+                            epositions[this.pos1][this.pos2].occupied = false;
+                            fightaction = "none";
+                        });
+                    }
                 }
             }));
         }
@@ -737,33 +811,16 @@ scenes.fight = () => {
                 }
             }
             
-            /*else if (fightaction == 1) {
-                ctx.fillStyle = "rgb(47, 95, 191)";
-                ctx.fillRect(145, 12, 96, 58);
-                ctx.fillStyle = "rgb(191, 212, 255)";
-                ctx.fillRect(150, 17, 86, 48);
-
-                ctx.drawImage(images.actions, 150, 17, 48, 48);
-                ctx.font = "12px NotoSans, sans-serif";
-                ctx.fillStyle = "rgb(0, 32, 102)";
-                ctx.fillText("Attack", 180, 35);
-            }*/
-
-
-            /*
-            ctx.fillStyle = "black";
-            ctx.font = "16px NotoSans, sans-serif";
-            ctx.fillStyle = "lightblue";
-        
-            ctx.fillText(characters[char1].name, 612, 30);
-            ctx.fillText(characters[char2].name, 612, 58);
-        
-            ctx.font = "12px NotoSans, sans-serif";
-            ctx.fillStyle = "green";
-        
-            ctx.fillText("HP: " + characters[char1].HP + "/" + characters[char1].maxHP, 612, 44);
-            ctx.fillText("HP: " + characters[char2].HP + "/" + characters[char2].maxHP, 612, 72);
-            */
+            if (fightaction == "attack") {
+                for (i = 0; i < attackButtons.length; i++) {
+                    attackButtons[i].alpha = 255;
+                }
+            }
+            else {
+                for (i = 0; i < attackButtons.length; i++) {
+                    attackButtons[i].alpha = 0;
+                }
+            }
 
             // Update fightlog
             for (i = 0; i < 12; i++) {
@@ -783,11 +840,6 @@ scenes.fight = () => {
                 ctx.fillText("HP " + gete(x).HP + "/" + gete(x).maxHP, 620, 425);
             }*/
 
-            // <- <- <- <- <- CONVERTED UP TO HERE [][][][]
-
-            
-
-            
 
 
             /*if (attack_animation_progress == 0) {
@@ -828,41 +880,9 @@ scenes.fight = () => {
 
         // Controls
         controls: [
-            
-            /*controls.base({
-                anchor: [0, 0], sizeAnchor: [1, 1],
-                onClick() {
-                    state = "menu";
-                    this.clickthrough = true;
-                    addAnimator(function (t) {
-
-                        gameIcon.anchor[1] = .4 - .5 * Math.min(t / 800, 1) ** 4;
-                        gameIcon.offset[1] = -200 - 100 * Math.min(t / 800, 1) ** 4;
-                        contLabel.anchor[1] = .6 + .5 * Math.min(t / 800, 1) ** 4;
-                        contLabel.alpha = (Math.cos(t / 20) + 1) / 2;
-                        infoLabel.offset[1] = verLabel.offset[1] = -12 + 120 * (t / 800) ** 4;
-
-                        saveButtons[0].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4);
-                        saveButtons[1].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 850) / 800, 1), 0)) ** 4);
-                        saveButtons[2].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
-
-                        saveImages[0].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4);
-                        saveImages[1].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 850) / 800, 1), 0)) ** 4);
-                        saveImages[2].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
-
-                        deleteButton.anchor[0] = -.8 + (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
-                        optionButton.anchor[0] = -.2 + (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4);
-
-                        if (t > 3000) {
-                            return true;
-                        }
-                        return false;
-                    })
-                }
-            }),*/
-
+            // Load all the nice stuff
             ...fightBgRects,
-            ...fightButtons,
+            ...fightButtons, ...attackButtons,
             ...fightLogComponents,
             ...fightOverview,
             ...fightPortraits,
