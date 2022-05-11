@@ -38,6 +38,10 @@ scenes.fight = () => {
         positions[switchThose[0][0]][switchThose[0][1]].isOccupied = positions[switchThose[1][0]][switchThose[1][1]].isOccupied;
         positions[switchThose[1][0]][switchThose[1][1]].isOccupied = true;
 
+        // Fightlog
+        fightlog.push("Swapped [" + (switchThose[0][0] + 1) + "/" + (switchThose[0][1] + 1) + "]");
+        fightlog.push("with [" + (switchThose[1][0] + 1) + "/" + (switchThose[1][1] + 1) + "]!");
+
         // Clear this stuff
         switchThose = [[0, 0], [0, 0]];
         fightaction = "none";
@@ -504,8 +508,8 @@ scenes.fight = () => {
             [
                 {
                     pos: "top left",
-                    isOccupied: false, // bool
-                    occupied: false, // who?
+                    isOccupied: true, // bool
+                    occupied: "evil", // who?
                 },
                 {
                     pos: "top middle",
@@ -521,8 +525,8 @@ scenes.fight = () => {
             [
                 {
                     pos: "middle left",
-                    isOccupied: false, // bool
-                    occupied: false, // who?
+                    isOccupied: true, // bool
+                    occupied: "evil", // who?
                 },
                 {
                     pos: "middle middle",
@@ -538,8 +542,8 @@ scenes.fight = () => {
             [
                 {
                     pos: "bottom left",
-                    isOccupied: false, // bool
-                    occupied: false, // who?
+                    isOccupied: true, // bool
+                    occupied: "evil", // who?
                 },
                 {
                     pos: "bottom middle",
@@ -591,6 +595,7 @@ scenes.fight = () => {
                 anchor: [0.975, 0.25], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
                 source: "gear",
                 alpha: 255,
+                snip: [0, 96, 32, 32],
                 pos1: i,
                 pos2: j,
                 onClick(args) {
@@ -607,6 +612,15 @@ scenes.fight = () => {
         for (i = 0; i < 3; i++) {
             positionGrid.push(controls.image({
                 anchor: [0.025, 0.25], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
+                source: "grid",
+                alpha: 255,
+            }));
+        }
+    }
+    for (j = 0; j < 3; j++) {
+        for (i = 0; i < 3; i++) {
+            positionGrid.push(controls.image({
+                anchor: [0.975, 0.25], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
                 source: "grid",
                 alpha: 255,
             }));
@@ -643,6 +657,38 @@ scenes.fight = () => {
                 }
                 else {
                     epositionControls[i + (j * 3)].source = "gear";
+                }
+            }
+        }
+
+        // Mobile resizing
+        if (isMobile()) {
+            for (j = 0; j < 3; j++) {
+                for (i = 0; i < 3; i++) {
+                    positionControls[i + (j * 3)].sizeOffset = [48, 48];
+                    positionControls[i + (j * 3)].offset = [56 * i, 72 * j];
+                    epositionControls[i + (j * 3)].sizeOffset = [48, 48];
+                    epositionControls[i + (j * 3)].offset = [-(48 + (56 * i)), 72 * j];
+                    positionGrid[i + (j * 3)].sizeOffset = [48, 48];
+                    positionGrid[i + (j * 3)].offset = [56 * i, 72 * j];
+                    positionGrid[9 + i + (j * 3)].sizeOffset = [48, 48];
+                    positionGrid[9 + i + (j * 3)].offset = [-(48 + (56 * i)), 72 * j];
+
+                    
+                }
+            }
+        }
+        else {
+            for (j = 0; j < 3; j++) {
+                for (i = 0; i < 3; i++) {
+                    positionControls[i + (j * 3)].sizeOffset = [64, 64];
+                    positionControls[i + (j * 3)].offset = [72 * i, 72 * j];
+                    epositionControls[i + (j * 3)].sizeOffset = [64, 64];
+                    epositionControls[i + (j * 3)].offset = [-(72 + (72 * i)), 72 * j]
+                    positionGrid[i + (j * 3)].sizeOffset = [64, 64];
+                    positionGrid[i + (j * 3)].offset = [72 * i, 72 * j];
+                    positionGrid[9 + i + (j * 3)].sizeOffset = [64, 64];
+                    positionGrid[9 + i + (j * 3)].offset = [-(72 + (72 * i)), 72 * j];
                 }
             }
         }
