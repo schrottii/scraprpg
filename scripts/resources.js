@@ -22,6 +22,7 @@ let images = {
     potion: "data/images/Items/potion.png",
     bleu: "data/images/Map_Bleu.png",
     evil: "data/images/Map_Evil.png",
+    selected: "data/images/selected.png",
 
     saveimage1: "data/images/PFP-1.png",
     saveimage2: "data/images/PFP-2.png",

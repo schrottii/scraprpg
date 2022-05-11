@@ -2,6 +2,7 @@ scenes.fight = () => {
 
     var fightaction = 0;
     var attack_animation_progress = 0;
+    var put = 0; //positions update time
 
     var fightBgRects = [];
     var fightButtons = [];
@@ -11,6 +12,9 @@ scenes.fight = () => {
     var fightStats1 = [];
     var fightStats2 = [];
     var fightStats3 = [];
+
+    var positionControls = [];
+    var epositionControls = [];
 
     var fightlog = [
         "",
@@ -71,7 +75,6 @@ scenes.fight = () => {
         fill: "rgb(47, 191, 71)", text: "",
         alpha: 255,
         onClick(args) {
-
         }
     }));
     fightButtons.push(controls.rect({
@@ -412,7 +415,182 @@ scenes.fight = () => {
         alpha: 0,
     }));
 
-    
+
+
+
+    // Positions
+
+    // This huge var stores the 3x3 positions and everything about their current state
+    // usage example: positions[1][1].occupied (that's the middle middle tile)
+    var positions =
+        [
+            [
+                {
+                    pos: "top left",
+                    isOccupied: false, // bool
+                    occupied: false, // who?
+                },
+                {
+                    pos: "top middle",
+                    isOccupied: false, // bool
+                    occupied: false, // who?
+                },
+                {
+                    pos: "top right",
+                    isOccupied: false, // bool
+                    occupied: false, // who?
+                },
+            ],
+            [
+                {
+                    pos: "middle left",
+                    isOccupied: false, // bool
+                    occupied: false, // who?
+                },
+                {
+                    pos: "middle middle",
+                    isOccupied: false, // bool
+                    occupied: false, // who?
+                },
+                {
+                    pos: "middle right",
+                    isOccupied: false, // bool
+                    occupied: false, // who?
+                },
+            ],
+            [
+                {
+                    pos: "bottom left",
+                    isOccupied: false, // bool
+                    occupied: false, // who?
+                },
+                {
+                    pos: "bottom middle",
+                    isOccupied: false, // bool
+                    occupied: false, // who?
+                },
+                {
+                    pos: "bottom right",
+                    isOccupied: false, // bool
+                    occupied: false, // who?
+                },
+            ],
+        ];
+
+    // Positions but for enemies. same usage same stuff
+    var epositions =
+        [
+            [
+                {
+                    pos: "top left",
+                    isOccupied: false, // bool
+                    occupied: false, // who?
+                },
+                {
+                    pos: "top middle",
+                    isOccupied: false, // bool
+                    occupied: false, // who?
+                },
+                {
+                    pos: "top right",
+                    isOccupied: false, // bool
+                    occupied: false, // who?
+                },
+            ],
+            [
+                {
+                    pos: "middle left",
+                    isOccupied: false, // bool
+                    occupied: false, // who?
+                },
+                {
+                    pos: "middle middle",
+                    isOccupied: false, // bool
+                    occupied: false, // who?
+                },
+                {
+                    pos: "middle right",
+                    isOccupied: false, // bool
+                    occupied: false, // who?
+                },
+            ],
+            [
+                {
+                    pos: "bottom left",
+                    isOccupied: false, // bool
+                    occupied: false, // who?
+                },
+                {
+                    pos: "bottom middle",
+                    isOccupied: false, // bool
+                    occupied: false, // who?
+                },
+                {
+                    pos: "bottom right",
+                    isOccupied: false, // bool
+                    occupied: false, // who?
+                },
+            ],
+        ];
+
+    // Friendly pos (left)
+    for (j = 0; j < 3; j++) {
+        for (i = 0; i < 3; i++) {
+            positionControls.push(controls.image({
+                anchor: [0.025, 0.25], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
+                source: "gear",
+                alpha: 255,
+                pos1: i,
+                pos2: j,
+                onClick(args) {
+                    positions[this.pos1][this.pos2].occupied = "selected";
+                }
+            }));
+        }
+    }
+
+    // Enemies pos (right)
+    for (j = 0; j < 3; j++) {
+        for (i = 0; i < 3; i++) {
+            epositionControls.push(controls.image({
+                anchor: [0.975, 0.25], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
+                source: "gear",
+                alpha: 255,
+                pos1: i,
+                pos2: j,
+                onClick(args) {
+                    epositions[this.pos1][this.pos2].occupied = "selected";
+                }
+            }));
+        }
+    }
+
+    function updatePositions() {
+
+        for (j = 0; j < 3; j++) {
+            for (i = 0; i < 3; i++) {
+                if (positions[i]) {
+                    if (positions[i][j].occupied != false) {
+                        positionControls[i + (j * 3)].source = positions[i][j].occupied;
+                    }
+                }
+                else {
+                    positionControls[i + (j * 3)].source = "gear";
+                }
+
+                // enemies! enemies!
+                if (epositions[i]) {
+                    if (epositions[i][j].occupied != false) {
+                        epositionControls[i + (j * 3)].source = epositions[i][j].occupied;
+                    }
+                }
+                else {
+                    epositionControls[i + (j * 3)].source = "gear";
+                }
+            }
+        }
+    }
+
     return {
         // Pre-render function
         preRender(ctx, delta) {
@@ -532,6 +710,12 @@ scenes.fight = () => {
                 }
                 setTimeout(scene_fight, 30);
             }*/
+
+            put += delta;
+            if (put > 99) {
+                put = 0;
+                updatePositions();
+            }
         },
 
         // Controls
@@ -575,6 +759,7 @@ scenes.fight = () => {
             ...fightOverview,
             ...fightPortraits,
             ...fightStats1, ...fightStats2, ...fightStats3,
+            ...positionControls, ...epositionControls
         ],
     }
 };
