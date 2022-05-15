@@ -196,7 +196,9 @@ scenes.game = () => {
     function getTile(map, x, y, l = 1) {
         if (y < 0) return undefined;
         if (l == 1) {
-            return map.tiles[map.map[y][x * 4] + map.map[y][(x * 4) + 1] + map.map[y][(x * 4) + 2]];
+            if (map.map[y] != undefined) {
+                return map.tiles[map.map[y][x * 4] + map.map[y][(x * 4) + 1] + map.map[y][(x * 4) + 2]];
+            }
         }
         if (l == 2) {
             return map.tiles[map.mapfg[y][x * 4] + map.mapfg[y][(x * 4) + 1] + map.mapfg[y][(x * 4) + 2]];
@@ -260,12 +262,14 @@ scenes.game = () => {
             game.position[1] == enemies[i].position[1]) {
             // Fight !!!
             clearCurrentEnemies();
-            for (i = 0; i < 5; i++) {
-                if (Math.random() > 0.6) {
-                    createEnemy("weakhelter");
-                }
-                if (Math.random() > 0.9) {
-                    createEnemy("stronghelter");
+            while (currentEnemies.length < 1) {
+                for (i = 0; i < 5; i++) {
+                    if (Math.random() > 0.6) {
+                        createEnemy("weakhelter");
+                    }
+                    if (Math.random() > 0.9) {
+                        createEnemy("stronghelter");
+                    }
                 }
             }
 

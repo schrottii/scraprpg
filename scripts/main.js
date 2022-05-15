@@ -40,12 +40,15 @@ function init() {
                 onClick() {
                     musicPlayer.muted = true;
                     loadGame(0);
-                    for (i = 0; i < 5; i++) {
-                        if (Math.random() > 0.6) {
-                            createEnemy("weakhelter");
-                        }
-                        if (Math.random() > 0.9) {
-                            createEnemy("stronghelter");
+
+                    while (currentEnemies.length < 1) {
+                        for (i = 0; i < 5; i++) {
+                            if (Math.random() > 0.6) {
+                                createEnemy("weakhelter");
+                            }
+                            if (Math.random() > 0.9) {
+                                createEnemy("stronghelter");
+                            }
                         }
                     }
 

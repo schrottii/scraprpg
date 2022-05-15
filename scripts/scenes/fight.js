@@ -697,6 +697,7 @@ scenes.fight = () => {
 
                     if (fightaction == "attack3") {
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "grid";
+                        fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
                         attackAnimation(this.pos1, this.pos2, () => {
                             epositions[this.pos1][this.pos2].HP -= game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].strength; // Deal damage
                             if (epositions[this.pos1][this.pos2].HP < 1) { // Is dead?
