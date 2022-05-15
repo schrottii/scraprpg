@@ -1,4 +1,4 @@
-let enemies = {
+let enemyTypes = {
     "weakhelter": {
         name: "Helter Skelter",
         HP: 5,

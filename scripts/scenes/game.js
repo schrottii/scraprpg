@@ -2,6 +2,39 @@ var zoom = 1;
 var kofs = [0, 0, 0];
 var walkTime = 0;
 
+
+// Function used to create enemies
+function createEnemy(type) {
+    if (currentEnemies.length < 9) {
+        currentEnemies.push([type, Math.ceil(Math.random() * 2), Math.ceil(Math.random() * 2)]);
+    }
+}
+
+function clearCurrentEnemies() {
+    currentEnemies = [];
+}
+
+function checkLevelUps() {
+    if (game.characters.bleu.EXP > 24) {
+        game.characters.bleu.EXP -= 25;
+        game.characters.bleu.level += 1;
+
+        game.characters.bleu.strength = 3 + game.characters.bleu.level;
+        game.characters.bleu.maxHP = 18 + (game.characters.bleu.level*2);
+
+        game.characters.bleu.HP = game.characters.bleu.maxHP;
+    }
+    if (game.characters.corelle.EXP > 24) {
+        game.characters.corelle.EXP -= 25;
+        game.characters.corelle.level += 1;
+
+        game.characters.corelle.strength = 2 + game.characters.corelle.level;
+        game.characters.corelle.maxHP = 14 + (game.characters.corelle.level * 2);
+
+        game.characters.corelle.HP = game.characters.corelle.maxHP;
+    }
+}
+
 scenes.game = () => {
     
     let head = 0;
@@ -158,16 +191,6 @@ scenes.game = () => {
         }));
     }
     
-    // Function used to create enemies
-    function createEnemy(type) {
-        if (currentEnemies.length < 9) {
-            currentEnemies.push([type, Math.ceil(Math.random() * 2), Math.ceil(Math.random() * 2)]);
-        }
-    }
-
-    function clearCurrentEnemies() {
-        currentEnemies = [];
-    }
 
     // Function used to grab tiles
     function getTile(map, x, y, l = 1) {
@@ -469,9 +492,9 @@ scenes.game = () => {
             // Update bottom right texts
             // I think this method is inefficient, but I was not able to find a better one.
             // I searched and tried several things for hours.
-            mapDisplayLevel1.text = "Level: " + getPlayer().level;
+            mapDisplayLevel1.text = "Level: " + getPlayer().level + "  EXP: " + getPlayer().EXP + "/25";
             mapDisplayStats1.text = "HP: " + getPlayer().HP + "/" + getPlayer().maxHP + "   EP: " + getPlayer().EP + "/" + getPlayer().maxEP;
-            mapDisplayLevel2.text = "Level: " + getPlayer(2).level;
+            mapDisplayLevel2.text = "Level: " + getPlayer(2).level + "  EXP: " + getPlayer(2).EXP + "/25";
             mapDisplayStats2.text = "HP: " + getPlayer(2).HP + "/" + getPlayer(2).maxHP + "   EP: " + getPlayer(2).EP + "/" + getPlayer(2).maxEP;
         },
         controls: [

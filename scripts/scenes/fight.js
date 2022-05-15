@@ -29,6 +29,23 @@ scenes.fight = () => {
         "be logged here!",
     ];
 
+    function checkAllDead() {
+        let alive = 0;
+        for (j = 0; j < 3; j++) {
+            for (i = 0; i < 3; i++) {
+                if (epositions[i][j].isOccupied == true) {
+                    alive += 1;
+                }
+            }
+        }
+            if (alive == 0) { // All dead :)
+                getPlayer(1).EXP += 5;
+                getPlayer(2).EXP += 5;
+                checkLevelUps();
+                setScene(scenes.game());
+            }
+    }
+
     function switchPositions() {
         // important variable here: switchThose
         // [0] is pos of which one to switch, [1] of where to switch to
@@ -52,7 +69,7 @@ scenes.fight = () => {
 
     function attackAnimation(pos1, pos2, onFinish) {
         addAnimator(function (t) {
-            positionControls[selectedAlly[0] + (selectedAlly[1]*3)].anchor[0] = 0.025 + ( 0.0003 * t);
+            positionControls[selectedAlly[0] + (selectedAlly[1]*3)].anchor[0] = 0.025 + ( 0.0005 * t);
 
             if (positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor[0] + (positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].offset[0] / 1000) >
                 epositionControls[pos1 + (pos2 * 3)].anchor[0] + (epositionControls[pos1 + (pos2 * 3)].offset[0] / 1000)) {
@@ -618,10 +635,12 @@ scenes.fight = () => {
         ];
 
     if (currentEnemies.length > 0) {
-        console.log(currentEnemies);
         for (i = 0; i < currentEnemies.length; i++) {
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].isOccupied = true;
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].occupied = currentEnemies[i][0];
+            epositions[currentEnemies[i][1]][currentEnemies[i][2]].maxHP = enemyTypes[currentEnemies[i][0]].HP;
+            epositions[currentEnemies[i][1]][currentEnemies[i][2]].HP = enemyTypes[currentEnemies[i][0]].HP;
+            epositions[currentEnemies[i][1]][currentEnemies[i][2]].strength = enemyTypes[currentEnemies[i][0]].strength;
         }
     }
 
@@ -679,8 +698,14 @@ scenes.fight = () => {
                     if (fightaction == "attack3") {
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "grid";
                         attackAnimation(this.pos1, this.pos2, () => {
-                            epositions[this.pos1][this.pos2].isOccupied = false;
-                            epositions[this.pos1][this.pos2].occupied = false;
+                            epositions[this.pos1][this.pos2].HP -= game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].strength; // Deal damage
+                            if (epositions[this.pos1][this.pos2].HP < 1) { // Is dead?
+                                epositions[this.pos1][this.pos2].isOccupied = false;
+                                epositions[this.pos1][this.pos2].occupied = false;
+                                game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EXP += epositions[this.pos1][this.pos2].strength;
+                                checkLevelUps();
+                                checkAllDead();
+                            }
                             fightaction = "none";
                         });
                     }

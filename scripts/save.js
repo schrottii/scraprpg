@@ -25,8 +25,8 @@ let game = {
             EXP: 0,
             EP: 5,
             maxEP: 5,
-            maxHP: 18,
-            HP: 18,
+            maxHP: 16,
+            HP: 16,
             strength: 3,
 //            inventory: {}
         }
