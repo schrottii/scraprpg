@@ -97,6 +97,13 @@ function image_animation(image, pos, speed=100) {
     }
 }
 
+function getPlayer(character=1) {
+    if (character == 2) {
+        return game.characters[game.char2];
+    }
+    return game.characters[game.char1];
+}
+
 function isMobile() {
     // Somewhat
     if (width < 24) return true;

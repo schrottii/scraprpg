@@ -333,28 +333,28 @@ scenes.fight = () => {
     fightStats1.push(controls.label({
         anchor: [0.2, 0.7], offset: [74, 38],
         fontSize: 20, fill: "blue", align: "center",
-        text: game.characters.bleu.name,
+        text: getPlayer().name,
         alpha: 255,
     }));
 
     fightStats1.push(controls.label({
         anchor: [0.2, 0.7], offset: [74, 58],
         fontSize: 20, fill: "yellow", align: "center",
-        text: "Level: " + game.characters.bleu.level,
+        text: "Level: " + getPlayer().level,
         alpha: 255,
     }));
 
     fightStats1.push(controls.label({
         anchor: [0.42, 0.7], offset: [74, 38],
         fontSize: 20, fill: "blue", align: "center",
-        text: game.characters.corelle.name,
+        text: getPlayer(2).name,
         alpha: 255,
     }));
 
     fightStats1.push(controls.label({
         anchor: [0.42, 0.7], offset: [74, 58],
         fontSize: 20, fill: "yellow", align: "center",
-        text: "Level: " + game.characters.corelle.level,
+        text: "Level: " + getPlayer(2).level,
         alpha: 255,
     }));
 
@@ -375,14 +375,14 @@ scenes.fight = () => {
     fightStats2.push(controls.label({
         anchor: [0.26, 0.72], offset: [42, 78],
         fontSize: 14, fill: "black", align: "center",
-        text: game.characters["bleu"].HP + "/" + game.characters["bleu"].maxHP,
+        text: getPlayer().HP + "/" + getPlayer().maxHP,
         alpha: 255,
     }));
 
     fightStats2.push(controls.label({
         anchor: [0.26, 0.728], offset: [42, 98],
         fontSize: 14, fill: "black", align: "center",
-        text: game.characters["bleu"].EP + "/" + game.characters["bleu"].EP,
+        text: getPlayer().EP + "/" + getPlayer().EP,
         alpha: 255,
     }));
 
@@ -403,14 +403,14 @@ scenes.fight = () => {
     fightStats2.push(controls.label({
         anchor: [0.48, 0.72], offset: [42, 78],
         fontSize: 14, fill: "black", align: "center",
-        text: game.characters["bleu"].HP + "/" + game.characters["bleu"].maxHP,
+        text: getPlayer(2).HP + "/" + getPlayer(2).maxHP,
         alpha: 255,
     }));
 
     fightStats2.push(controls.label({
         anchor: [0.48, 0.728], offset: [42, 98],
         fontSize: 14, fill: "black", align: "center",
-        text: game.characters["bleu"].EP + "/" + game.characters["bleu"].EP,
+        text: getPlayer(2).EP + "/" + getPlayer(2).EP,
         alpha: 255,
     }));
 
@@ -431,14 +431,14 @@ scenes.fight = () => {
     fightStats3.push(controls.label({
         anchor: [0.32, 0.62], offset: [42, 78],
         fontSize: 14, fill: "black", align: "center",
-        text: "HP: " + game.characters["bleu"].HP + "/" + game.characters["bleu"].maxHP,
+        text: "HP: " + getPlayer().HP + "/" + getPlayer().maxHP,
         alpha: 0,
     }));
 
     fightStats3.push(controls.label({
         anchor: [0.32, 0.628], offset: [42, 98],
         fontSize: 14, fill: "black", align: "center",
-        text: "EP: " + game.characters["bleu"].EP + "/" + game.characters["bleu"].EP,
+        text: "EP: " + getPlayer().EP + "/" + getPlayer().maxEP,
         alpha: 0,
     }));
 
@@ -459,14 +459,14 @@ scenes.fight = () => {
     fightStats3.push(controls.label({
         anchor: [0.54, 0.62], offset: [42, 78],
         fontSize: 14, fill: "black", align: "center",
-        text: "HP: " + game.characters["bleu"].HP + "/" + game.characters["bleu"].maxHP,
+        text: "HP: " + getPlayer(2).HP + "/" + getPlayer(2).maxHP,
         alpha: 0,
     }));
 
     fightStats3.push(controls.label({
         anchor: [0.54, 0.628], offset: [42, 98],
         fontSize: 14, fill: "black", align: "center",
-        text: "EP: " + game.characters["bleu"].EP + "/" + game.characters["bleu"].EP,
+        text: "EP: " + getPlayer(2).EP + "/" + getPlayer(2).maxEP,
         alpha: 0,
     }));
 
@@ -567,8 +567,8 @@ scenes.fight = () => {
             [
                 {
                     pos: "top left",
-                    isOccupied: true, // bool
-                    occupied: "evil", // who?
+                    isOccupied: false, // bool
+                    occupied: false, // who?
                 },
                 {
                     pos: "top middle",
@@ -584,8 +584,8 @@ scenes.fight = () => {
             [
                 {
                     pos: "middle left",
-                    isOccupied: true, // bool
-                    occupied: "evil", // who?
+                    isOccupied: false, // bool
+                    occupied: false, // who?
                 },
                 {
                     pos: "middle middle",
@@ -601,8 +601,8 @@ scenes.fight = () => {
             [
                 {
                     pos: "bottom left",
-                    isOccupied: true, // bool
-                    occupied: "evil", // who?
+                    isOccupied: false, // bool
+                    occupied: false, // who?
                 },
                 {
                     pos: "bottom middle",
@@ -616,6 +616,14 @@ scenes.fight = () => {
                 },
             ],
         ];
+
+    if (currentEnemies.length > 0) {
+        console.log(currentEnemies);
+        for (i = 0; i < currentEnemies.length; i++) {
+            epositions[currentEnemies[i][1]][currentEnemies[i][2]].isOccupied = true;
+            epositions[currentEnemies[i][1]][currentEnemies[i][2]].occupied = currentEnemies[i][0];
+        }
+    }
 
     // Friendly pos (left)
     for (j = 0; j < 3; j++) {
@@ -659,7 +667,7 @@ scenes.fight = () => {
                 anchor: [0.975, 0.25], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
                 source: "gear",
                 alpha: 255,
-                snip: [0, 96, 32, 32],
+                snip: [0, 32, 32, 32],
                 pos1: i,
                 pos2: j,
                 onClick(args) {

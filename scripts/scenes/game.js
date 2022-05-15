@@ -68,38 +68,38 @@ scenes.game = () => {
         anchor: [.99, .68], offset: [-200, 20],
         alpha: 255,
         align: "left", fontSize: 18, fill: "#000000",
-        text: game.characters.bleu.name,
+        text: getPlayer().name,
     }));
     let mapDisplayStats1 = controls.label({
         anchor: [.99, .705], offset: [-200, 20],
         alpha: 255,
         align: "left", fontSize: 14, fill: "green",
-        text: "HP: " + game.characters.bleu.HP + "/" + game.characters.bleu.maxHP + "   EP: " + game.characters.bleu.EP,
+        text: "HP: " + getPlayer().HP + "/" + getPlayer().maxHP + "   EP: " + getPlayer().EP + "/" + getPlayer().maxEP,
     });
     let mapDisplayLevel1 = controls.label({
         anchor: [.99, .73], offset: [-200, 20],
         alpha: 255,
         align: "left", fontSize: 14, fill: "yellow",
-        text: "Level: " + game.characters.bleu.level,
+        text: "Level: " + getPlayer().level,
     }); 
 
     mapDisplay.push(controls.label({
         anchor: [.99, .76], offset: [-200, 20],
         alpha: 255,
         align: "left", fontSize: 18, fill: "#000000",
-        text: game.characters.corelle.name,
+        text: getPlayer(2).name,
     }));
     let mapDisplayStats2 = controls.label({
         anchor: [.99, .785], offset: [-200, 20],
         alpha: 255,
         align: "left", fontSize: 14, fill: "green",
-        text: "HP: " + game.characters.corelle.HP + "/" + game.characters.corelle.maxHP + "   EP: " + game.characters.corelle.EP,
+        text: "HP: " + getPlayer(2).HP + "/" + getPlayer(2).maxHP + "   EP: " + getPlayer(2).EP + "/" + getPlayer(2).maxEP,
     });
     let mapDisplayLevel2 = controls.label({
         anchor: [.99, .81], offset: [-200, 20],
         alpha: 255,
         align: "left", fontSize: 14, fill: "yellow",
-        text: "Level: " + game.characters.corelle.level,
+        text: "Level: " + getPlayer(2).level,
     });
 
     // Buttons, then images over them
@@ -158,6 +158,16 @@ scenes.game = () => {
         }));
     }
     
+    // Function used to create enemies
+    function createEnemy(type) {
+        if (currentEnemies.length < 9) {
+            currentEnemies.push([type, Math.ceil(Math.random() * 2), Math.ceil(Math.random() * 2)]);
+        }
+    }
+
+    function clearCurrentEnemies() {
+        currentEnemies = [];
+    }
 
     // Function used to grab tiles
     function getTile(map, x, y, l = 1) {
@@ -226,7 +236,16 @@ scenes.game = () => {
         if (game.position[0] == enemies[i].position[0] &&
             game.position[1] == enemies[i].position[1]) {
             // Fight !!!
-            console.log("touch");
+            clearCurrentEnemies();
+            for (i = 0; i < 5; i++) {
+                if (Math.random() > 0.6) {
+                    createEnemy("weakhelter");
+                }
+                if (Math.random() > 0.9) {
+                    createEnemy("stronghelter");
+                }
+            }
+
             image_animation(images.tokenattack, [71, 78, 51, 52,
                 166, 76, 62, 65,
                 266, 65, 89, 64,
@@ -357,9 +376,11 @@ scenes.game = () => {
                             }
                         }
 
-                        if (map.map[enemies[i].position[1]] == undefined
-                            || getTile(map, enemies[i].position[0], enemies[i].position[1]).occupied == true) { // Respawn if on ocean or occupied
-                            enemies[i].position = [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)];
+                        if (getTile(map, enemies[i].position[0], enemies[i].position[1]) != undefined) {
+                            if (map.map[enemies[i].position[1]] == undefined
+                                || getTile(map, enemies[i].position[0], enemies[i].position[1]).occupied == true) { // Respawn if on ocean or occupied
+                                enemies[i].position = [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)];
+                            }
                         }
 
                         if (game.position[0] == enemies[i].position[0] &&
@@ -448,10 +469,10 @@ scenes.game = () => {
             // Update bottom right texts
             // I think this method is inefficient, but I was not able to find a better one.
             // I searched and tried several things for hours.
-            mapDisplayLevel1.text = "Level: " + game.characters.bleu.level;
-            mapDisplayStats1.text = "HP: " + game.characters.bleu.HP + "/" + game.characters.bleu.maxHP + "   EP: " + game.characters.bleu.EP;
-            mapDisplayLevel2.text = "Level: " + game.characters.corelle.level;
-            mapDisplayStats2.text = "HP: " + game.characters.corelle.HP + "/" + game.characters.corelle.maxHP + "   EP: " + game.characters.corelle.EP;
+            mapDisplayLevel1.text = "Level: " + getPlayer().level;
+            mapDisplayStats1.text = "HP: " + getPlayer().HP + "/" + getPlayer().maxHP + "   EP: " + getPlayer().EP + "/" + getPlayer().maxEP;
+            mapDisplayLevel2.text = "Level: " + getPlayer(2).level;
+            mapDisplayStats2.text = "HP: " + getPlayer(2).HP + "/" + getPlayer(2).maxHP + "   EP: " + getPlayer(2).EP + "/" + getPlayer(2).maxEP;
         },
         controls: [
             ...walkPad, autoSaveText, ...mapDisplay,
