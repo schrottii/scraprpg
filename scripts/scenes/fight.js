@@ -70,7 +70,6 @@ scenes.fight = () => {
     }
 
     function executeActions() {
-        for (i = 0; i < 99; i++) {
             let highestAGI = 0;
             let whoAGI;
             let pos = [];
@@ -88,17 +87,47 @@ scenes.fight = () => {
             }
 
             // Stop if there is nobody (when is that?)
-            if (highestAGI == 0) break;
+            if (highestAGI == 0) return;
 
             // Ok, ok, now we know who (whoAGI) is first (highestAGI), so now do something
-            switch (whoAGI.action[0]) {
-                case "switch":
-                    switchThose = [[whoAGI.action[1], whoAGI.action[2]], [whoAGI.action[3], whoAGI.action[4]]];
-                    switchPositions();
-                    positions[pos[0]][pos[1]].action = false;
-                    break;
+        switch (whoAGI.action[0]) {
+            case "switch":
+                switchThose = [[whoAGI.action[1], whoAGI.action[2]], [whoAGI.action[3], whoAGI.action[4]]];
+                switchPositions();
+                positions[pos[0]][pos[1]].action = false;
+                executeActions();
+                break;
+            case "attack":
+                let pos1 = positions[pos[0]][pos[1]].action[3];
+                let pos2 = positions[pos[0]][pos[1]].action[4];
+                selectedAlly = [positions[pos[0]][pos[1]].action[1], positions[pos[0]][pos[1]].action[2]];
+
+                fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
+                attackAnimation(pos1, pos2, () => {
+                    let Damage = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].strength;
+                    epositions[pos1][pos2].HP -= Damage; // Deal damage
+
+                    fightlog.push(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " attacks " + epositions[pos1][pos2].name);
+                    fightlog.push("and deals " + Damage + " damage!");
+                    fightaction = "none";
+                    if (epositions[pos1][pos2].HP < 1) { // Is dead?
+                        epositions[pos1][pos2].isOccupied = false;
+                        epositions[pos1][pos2].occupied = false;
+
+                        let Experience = epositions[pos1][pos2].strength;
+                        game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EXP += Experience;
+
+                        fightlog.push(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " killed " + epositions[pos1][pos2].name);
+                        fightlog.push("and earned " + Experience + " EXP!");
+                        checkLevelUps();
+                        checkAllDead();
+                    }
+                    executeActions();
+                });
+                positions[pos[0]][pos[1]].action = false;
+                break;
+        
             }
-        }
     }
 
     function switchPositions() {
@@ -734,7 +763,7 @@ scenes.fight = () => {
                             fightaction = "none";
                         }
                     }
-                    if (fightaction == "attack2") {
+                    if (fightaction == "attack2" && positions[this.pos1][this.pos2].action == false) {
                         selectedAlly = [this.pos1, this.pos2];
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
                         fightaction = "attack3";
@@ -760,29 +789,12 @@ scenes.fight = () => {
                     // but add fighting here at some point
                     // THAT POINT IS NOW! Idiot
 
-                    if (fightaction == "attack3") {
+                    if (fightaction == "attack3" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "grid";
-                        fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
-                        attackAnimation(this.pos1, this.pos2, () => {
-                            let Damage = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].strength;
-                            epositions[this.pos1][this.pos2].HP -= Damage; // Deal damage
+                        positions[selectedAlly[0]][selectedAlly[1]].action = ["attack", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
 
-                            fightlog.push(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " attacks " + epositions[this.pos1][this.pos2].name);
-                            fightlog.push("and deals " + Damage + " damage!");
-                            if (epositions[this.pos1][this.pos2].HP < 1) { // Is dead?
-                                epositions[this.pos1][this.pos2].isOccupied = false;
-                                epositions[this.pos1][this.pos2].occupied = false;
-
-                                let Experience = epositions[this.pos1][this.pos2].strength;
-                                game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EXP += Experience;
-
-                                fightlog.push(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " killed " + epositions[this.pos1][this.pos2].name);
-                                fightlog.push("and earned " + Experience + " EXP!");
-                                checkLevelUps();
-                                checkAllDead();
-                            }
-                            fightaction = "none";
-                        });
+                        fightaction = "none";
+                        
                     }
                 }
             }));
