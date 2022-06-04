@@ -22,6 +22,8 @@ scenes.fight = () => {
     var switchThose = [[0, 0], [0, 0]];
     var selectedAlly = [0, 0];
 
+    var win = false;
+
     var fightlog = [
         "",
         "Battle has started!",
@@ -38,11 +40,14 @@ scenes.fight = () => {
                 }
             }
         }
-            if (alive == 0) { // All dead :)
+        if (alive == 0) { // All dead :)
+            win = true;
                 getPlayer(1).EXP += 5;
                 getPlayer(2).EXP += 5;
                 checkLevelUps();
-                setScene(scenes.game());
+                setTimeout(() => {
+                    setScene(scenes.game());
+                }, 2000);
             }
     }
 
@@ -298,8 +303,8 @@ scenes.fight = () => {
 
     for (i = 0; i < 12; i++) {
         fightLogComponents.push(controls.label({
-            anchor: [0.1, 0.7 + (i*0.02)], offset: [20, 0],
-            fontSize: 12, fill: "rgb(0, 0, 0)", align: "center",
+            anchor: [0.01, 0.7 + (i*0.02)], offset: [2, 0],
+            fontSize: 12, fill: "rgb(0, 0, 0)", align: "left",
             text: fightlog[Math.max(0, fightlog.length - 12 + i)],
             alpha: 255,
         }));
@@ -750,7 +755,13 @@ scenes.fight = () => {
             for (i = 0; i < 3; i++) {
                 if (positions[i]) {
                     if (positions[i][j].isOccupied == true) {
-                        positionControls[i + (j * 3)].source = positions[i][j].occupied;
+                        if (win == true) {
+                            positionControls[i + (j * 3)].source = positions[i][j].occupied + "_win";
+                            positionControls[i + (j * 3)].snip = [0, 0, 32, 32];
+                        }
+                        else {
+                            positionControls[i + (j * 3)].source = positions[i][j].occupied;
+                        }
                         positionControls[i + (j * 3)].alpha = 255;
                     }
                     else {

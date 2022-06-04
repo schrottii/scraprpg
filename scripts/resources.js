@@ -26,6 +26,9 @@ let images = {
     evil: "data/images/Map_Evil.png",
     selected: "data/images/selected.png",
 
+    bleu_win: "data/images/BleuW.png",
+    corelle_win: "data/images/BleuW.png",
+
     saveimage1: "data/images/PFP-1.png",
     saveimage2: "data/images/PFP-2.png",
     saveimage3: "data/images/PFP-3.png",
