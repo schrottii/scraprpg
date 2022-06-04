@@ -291,7 +291,7 @@ scenes.fight = () => {
     }));
 
     fightLogComponents.push(controls.rect({
-        anchor: [0.02, 0.67], offset: [0, 0], sizeAnchor: [0.16, 0.31], sizeOffset: [40, 0],
+        anchor: [0.01, 0.67], offset: [0, 0], sizeAnchor: [0.18, 0.31], sizeOffset: [40, 0],
         fill: "rgb(145, 178, 245)",
         alpha: 255,
     }));
@@ -314,7 +314,7 @@ scenes.fight = () => {
     }));
 
     fightOverview.push(controls.rect({
-        anchor: [0.82, 0.67], offset: [-40, 0], sizeAnchor: [0.16, 0.31], sizeOffset: [40, 0],
+        anchor: [0.81, 0.67], offset: [-40, 0], sizeAnchor: [0.18, 0.31], sizeOffset: [40, 0],
         fill: "rgb(245, 145, 178)",
         alpha: 255,
     }));
@@ -638,6 +638,7 @@ scenes.fight = () => {
         for (i = 0; i < currentEnemies.length; i++) {
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].isOccupied = true;
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].occupied = currentEnemies[i][0];
+            epositions[currentEnemies[i][1]][currentEnemies[i][2]].name = enemyTypes[currentEnemies[i][0]].name;
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].maxHP = enemyTypes[currentEnemies[i][0]].HP;
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].HP = enemyTypes[currentEnemies[i][0]].HP;
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].strength = enemyTypes[currentEnemies[i][0]].strength;
@@ -691,7 +692,7 @@ scenes.fight = () => {
                 pos2: j,
                 onClick(args) {
                     //epositions[this.pos1][this.pos2].occupied = "selected";
-                    // uhhh... no?
+                    // uhhh... no?F
                     // but add fighting here at some point
                     // THAT POINT IS NOW! Idiot
 
@@ -699,11 +700,20 @@ scenes.fight = () => {
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "grid";
                         fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
                         attackAnimation(this.pos1, this.pos2, () => {
-                            epositions[this.pos1][this.pos2].HP -= game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].strength; // Deal damage
+                            let Damage = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].strength;
+                            epositions[this.pos1][this.pos2].HP -= Damage; // Deal damage
+
+                            fightlog.push(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " attacks " + epositions[this.pos1][this.pos2].name);
+                            fightlog.push("and deals " + Damage + " damage!");
                             if (epositions[this.pos1][this.pos2].HP < 1) { // Is dead?
                                 epositions[this.pos1][this.pos2].isOccupied = false;
                                 epositions[this.pos1][this.pos2].occupied = false;
-                                game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EXP += epositions[this.pos1][this.pos2].strength;
+
+                                let Experience = epositions[this.pos1][this.pos2].strength;
+                                game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EXP += Experience;
+
+                                fightlog.push(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " killed " + epositions[this.pos1][this.pos2].name);
+                                fightlog.push("and earned " + Experience + " EXP!");
                                 checkLevelUps();
                                 checkAllDead();
                             }
