@@ -51,6 +51,56 @@ scenes.fight = () => {
             }
     }
 
+    function checkAllAction() {
+        let active = 0;
+        let needed = 0;
+
+        for (j = 0; j < 3; j++) {
+            for (i = 0; i < 3; i++) {
+                if (positions[i][j].isOccupied != false) {
+                    needed += 1;
+                }
+                if (positions[i][j].action != false) {
+                    active += 1;
+                }
+            }
+        }
+        if (active == needed) return true;
+        return false;
+    }
+
+    function executeActions() {
+        for (i = 0; i < 99; i++) {
+            let highestAGI = 0;
+            let whoAGI;
+            let pos = [];
+            // Look for the fastest man alive
+            for (j = 0; j < 3; j++) {
+                for (i = 0; i < 3; i++) {
+                    if (positions[i][j].action != false) { 
+                            if (game.characters[positions[i][j].occupied].agi > highestAGI) {
+                                highestAGI = game.characters[positions[i][j].occupied].agi;
+                                whoAGI = positions[i][j];
+                                pos = [i, j];
+                            }
+                    }
+                }
+            }
+
+            // Stop if there is nobody (when is that?)
+            if (highestAGI == 0) break;
+
+            // Ok, ok, now we know who (whoAGI) is first (highestAGI), so now do something
+            switch (whoAGI.action[0]) {
+                case "switch":
+                    switchThose = [[whoAGI.action[1], whoAGI.action[2]], [whoAGI.action[3], whoAGI.action[4]]];
+                    switchPositions();
+                    positions[pos[0]][pos[1]].action = false;
+                    break;
+            }
+        }
+    }
+
     function switchPositions() {
         // important variable here: switchThose
         // [0] is pos of which one to switch, [1] of where to switch to
@@ -69,7 +119,6 @@ scenes.fight = () => {
 
         // Clear this stuff
         switchThose = [[0, 0], [0, 0]];
-        fightaction = "none";
     }
 
     function attackAnimation(pos1, pos2, onFinish) {
@@ -535,16 +584,19 @@ scenes.fight = () => {
                     pos: "top left",
                     isOccupied: true, // bool
                     occupied: "bleu", // who?
+                    action: false,
                 },
                 {
                     pos: "top middle",
                     isOccupied: false, // bool
                     occupied: false, // who?
+                    action: false,
                 },
                 {
                     pos: "top right",
                     isOccupied: false, // bool
                     occupied: false, // who?
+                    action: false,
                 },
             ],
             [
@@ -552,16 +604,19 @@ scenes.fight = () => {
                     pos: "middle left",
                     isOccupied: false, // bool
                     occupied: false, // who?
+                    action: false,
                 },
                 {
                     pos: "middle middle",
                     isOccupied: false, // bool
                     occupied: false, // who?
+                    action: false,
                 },
                 {
                     pos: "middle right",
                     isOccupied: false, // bool
                     occupied: false, // who?
+                    action: false,
                 },
             ],
             [
@@ -569,16 +624,19 @@ scenes.fight = () => {
                     pos: "bottom left",
                     isOccupied: true, // bool
                     occupied: "corelle", // who?
+                    action: false,
                 },
                 {
                     pos: "bottom middle",
                     isOccupied: false, // bool
                     occupied: false, // who?
+                    action: false,
                 },
                 {
                     pos: "bottom right",
                     isOccupied: false, // bool
                     occupied: false, // who?
+                    action: false,
                 },
             ],
         ];
@@ -662,7 +720,7 @@ scenes.fight = () => {
                 pos2: j,
                 onClick(args) {
                     if (fightaction == "switch") {
-                        if (positions[this.pos1][this.pos2].isOccupied == true) {
+                        if (positions[this.pos1][this.pos2].isOccupied == true && positions[this.pos1][this.pos2].action == false) {
                             switchThose[0] = [this.pos1, this.pos2];
                             positionGrid[switchThose[0][0] + (switchThose[0][1] * 3)].source = "selected";
                             fightaction = "switch2"; //switch two: electric boogaloo
@@ -672,7 +730,8 @@ scenes.fight = () => {
                         if (switchThose[0][0] != [this.pos1] || switchThose[0][1] != [this.pos2]) {
                             switchThose[1] = [this.pos1, this.pos2];
                             positionGrid[switchThose[0][0] + (switchThose[0][1] * 3)].source = "grid";
-                            switchPositions();
+                            positions[switchThose[0][0]][switchThose[0][1]].action = ["switch", switchThose[0][0], switchThose[0][1], switchThose[1][0], switchThose[1][1]];
+                            fightaction = "none";
                         }
                     }
                     if (fightaction == "attack2") {
@@ -930,6 +989,10 @@ scenes.fight = () => {
             if (put > 99) {
                 put = 0;
                 updatePositions();
+                if (checkAllAction()) {
+                    executeActions();
+                }
+
             }
         },
 
