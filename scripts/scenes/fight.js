@@ -104,23 +104,28 @@ scenes.fight = () => {
 
                 fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
                 attackAnimation(pos1, pos2, () => {
-                    let Damage = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].strength;
-                    epositions[pos1][pos2].HP -= Damage; // Deal damage
-
-                    fightlog.push(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " attacks " + epositions[pos1][pos2].name);
-                    fightlog.push("and deals " + Damage + " damage!");
                     fightaction = "none";
-                    if (epositions[pos1][pos2].HP < 1) { // Is dead?
-                        epositions[pos1][pos2].isOccupied = false;
-                        epositions[pos1][pos2].occupied = false;
+                    if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].eva > (Math.random() * 100)) {
+                        let Damage = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].strength;
+                        epositions[pos1][pos2].HP -= Damage; // Deal damage
 
-                        let Experience = epositions[pos1][pos2].strength;
-                        game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EXP += Experience;
+                        fightlog.push(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " attacks " + epositions[pos1][pos2].name);
+                        fightlog.push("and deals " + Damage + " damage!");
+                        if (epositions[pos1][pos2].HP < 1) { // Is dead?
+                            epositions[pos1][pos2].isOccupied = false;
+                            epositions[pos1][pos2].occupied = false;
 
-                        fightlog.push(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " killed " + epositions[pos1][pos2].name);
-                        fightlog.push("and earned " + Experience + " EXP!");
-                        checkLevelUps();
-                        checkAllDead();
+                            let Experience = epositions[pos1][pos2].strength;
+                            game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EXP += Experience;
+
+                            fightlog.push(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " killed " + epositions[pos1][pos2].name);
+                            fightlog.push("and earned " + Experience + " EXP!");
+                            checkLevelUps();
+                            checkAllDead();
+                        }
+                    }
+                    else {
+                        fightlog.push(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " missed!");
                     }
                     executeActions();
                 });

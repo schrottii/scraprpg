@@ -17,6 +17,7 @@ let game = {
             HP: 20,
             strength: 4,
             agi: 15,
+            eva: 70,
 //            inventory: {}
         },
         corelle: {
@@ -30,6 +31,7 @@ let game = {
             HP: 16,
             strength: 3,
             agi: 20,
+            eva: 50,
 //            inventory: {}
         }
     }
