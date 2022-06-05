@@ -958,50 +958,6 @@ scenes.fight = () => {
                 fightLogComponents[2 + i].text = fightlog[Math.max(0, fightlog.length - 12 + i)];
             }
             
-
-
-            /*ctx.font = "12px NotoSans, sans-serif";
-            ctx.fillStyle = "black";
-            if (x == 0) {
-                ctx.fillText("4 " + gete(1).name + "s!", 620, 405);
-                ctx.fillText("Evil Helter Skelter", 620, 425);
-            }
-            else {
-                ctx.fillText(gete(x).name + " #" + x, 620, 405);
-                ctx.fillText("HP " + gete(x).HP + "/" + gete(x).maxHP, 620, 425);
-            }*/
-
-
-
-            /*if (attack_animation_progress == 0) {
-                ctx.drawImage(sprites.bleu, 0, 64, 64, 64, 100, 200, 32, 32);
-            }
-            else {
-                ctx.drawImage(images.attack_bleu, (Math.min(3, (Math.ceil(attack_animation_progress / 8)) - 1) * 64), 0, 64, 64, 100 + (attack_animation_progress * 15), 200, 32, 32);
-            }
-
-            ctx.drawImage(sprites.bleu, 0, 64, 64, 64, 140, 240, 32, 32);
-
-            if (gete(1).HP > 0) { ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 600, 200, 32, 32) };
-            if (fightselect == 1) { ctx.drawImage(images.selected32, 600, 200, 32, 32) };
-
-            if (gete(2).HP > 0) { ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 550, 250, 32, 32) };
-            if (fightselect == 2) { ctx.drawImage(images.selected32, 550, 250, 32, 32) };
-
-            if (gete(3).HP > 0) { ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 650, 200, 32, 32) };
-            if (fightselect == 3) { ctx.drawImage(images.selected32, 650, 200, 32, 32) };
-
-            if (gete(4).HP > 0) { ctx.drawImage(sprites.bleu, 0, 192, 64, 64, 600, 250, 32, 32) };
-            if (fightselect == 4) { ctx.drawImage(images.selected32, 600, 250, 32, 32) };
-
-            if (attack_animation_progress > 0) {
-                attack_animation_progress += 1;
-                if (attack_animation_progress == 31) {
-                    attack_animation_progress = 0;
-                }
-                setTimeout(scene_fight, 30);
-            }*/
-
             put += delta;
             if (put > 99) {
                 put = 0;

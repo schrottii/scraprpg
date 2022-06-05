@@ -35,9 +35,12 @@ scenes.title = () => {
             for (let a = 0; a < 3; a++) {
                 if (a == id) {
                     saveButtons[a].offset[1] = (-160 + 130 * a) * Math.max(1 - t / 600, 0) ** 2 - 60;
+                    saveImages[a].offset[1] = (-160 + 130 * a) * Math.max(1 - t / 600, 0) ** 2 - 60;
                 } else {
                     saveButtons[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
                     saveButtons[a].anchor[1] = .5 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
+                    saveImages[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
+                    saveImages[a].anchor[1] = .5 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
                 }
             }
             musicPlayer.volume = 0.5 * Math.max(1 - t / 4000, 0) ** 2;

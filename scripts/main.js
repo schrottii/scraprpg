@@ -91,6 +91,7 @@ var canMove = true;
 function onCanvasClick(e) {
     for (let a = scene.controls.length - 1; a >= 0; a--) {
         let con = scene.controls[a];
+        if (con == undefined) return;
         let mouseX = e.clientX;
         let mouseY = e.clientY;
         //console.log("   X: " + mouseX + " Y: " + mouseY);

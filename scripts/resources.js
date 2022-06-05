@@ -35,8 +35,9 @@ let images = {
     saveimage4: "data/images/PFP-4.png",
     saveimage5: "data/images/PFP-5.png",
 
-    weakhelter: "data/images/Map_Bleu.png",
+    weakhelter: "data/images/Map_Evil.png",
     stronghelter: "data/images/Map_Corelle.png",
+    itsalive: "data/images/Map_ItsAlive.png",
 
 
     p_bleu: "data/images/p_bleu.png",

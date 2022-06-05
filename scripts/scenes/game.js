@@ -143,7 +143,7 @@ scenes.game = () => {
             text: "",
             onClick(args) {
                 if (this.offset[0] == -220) {
-                    enemies.push(mapenemies.default({
+                    enemies.push(mapenemies.itsalivemap({
                         position: [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)], map: game.map,
                     }));
                     console.log(enemies);
@@ -257,19 +257,22 @@ scenes.game = () => {
         }
     }
 
-    function check_EnemyCollision() {
+    function check_EnemyCollision(i) {
         if (game.position[0] == enemies[i].position[0] &&
             game.position[1] == enemies[i].position[1]) {
             // Fight !!!
             clearCurrentEnemies();
+
+            // It automatically grabs the enemies that can appear in the fight
+            // based on what is defined in the enemies dict of the map enemy
+            // change in map_enemies.js
             while (currentEnemies.length < 1) {
-                for (i = 0; i < 5; i++) {
-                    if (Math.random() > 0.6) {
-                        createEnemy("weakhelter");
-                    }
-                    if (Math.random() > 0.9) {
-                        createEnemy("stronghelter");
-                    }
+            for (k = 0; k < 5; k++) {
+                for (j in enemies[i].enemies) {
+                        if (enemies[i].enemies[j] > (Math.random() * 100)) {
+                            createEnemy(j);
+                        }
+                }
                 }
             }
 
@@ -315,10 +318,15 @@ scenes.game = () => {
                     position: [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)], map: game.map,
                 }));
             }
+            if (Math.random() > 0.90) { // For the stupid: Somewhat unlikely
+                enemies.push(mapenemies.itsalivemap({
+                    position: [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)], map: game.map,
+                }));
+            }
         }
 
         for (i = 0; i < enemies.length; i++) {
-            check_EnemyCollision();
+            check_EnemyCollision(i);
         }
     }
 
@@ -410,9 +418,8 @@ scenes.game = () => {
                             }
                         }
 
-                        if (game.position[0] == enemies[i].position[0] &&
-                            game.position[1] == enemies[i].position[1]) {
-                            check_EnemyCollision();
+                        for (i = 0; i < enemies.length; i++) {
+                            check_EnemyCollision(i);
                         }
                     }
                 }
@@ -481,7 +488,7 @@ scenes.game = () => {
                 }
             }
 
-            ctx.drawImage(images["bleu"], 32 * Math.floor(walkTime), 32 * head, 32, 32,
+            ctx.drawImage(images[game.char1], 32 * Math.floor(walkTime), 32 * head, 32, 32,
                 scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5) ),
                 scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zoom * scale, zoom * scale)
             ctx.imageSmoothingEnabled = true;
