@@ -315,11 +315,11 @@ scenes.game = () => {
 
         // Calculate how many enemies can still be spawned.
         // The limit is now 8/map. This calculates how many are on the current map
-        let maxEnemies = 8;
+        let maxEnemies = map.maxEnemies;
         let enemiesOnThisMap = 0;
         for (i in enemies) {
             if (enemies[i].map == game.map) {
-                enemiesOnThisMap -= 1;
+                enemiesOnThisMap += 1;
             }
         }
 

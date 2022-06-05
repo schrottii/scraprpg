@@ -36,3 +36,7 @@ let game = {
         }
     }
 }
+
+let settings = {
+    grid: true
+}

@@ -899,6 +899,17 @@ scenes.fight = () => {
         }
     }
 
+    if (settings.grid == true) {
+        for (i in positionGrid) {
+            positionGrid[i].alpha = 255;
+        }
+    }
+    else {
+        for (i in positionGrid) {
+            positionGrid[i].alpha = 0;
+        }
+    }
+
     return {
         // Pre-render function
         preRender(ctx, delta) {

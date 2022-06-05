@@ -40,6 +40,7 @@ function init() {
                 onClick() {
                     musicPlayer.muted = true;
                     loadGame(0);
+                    loadSettings();
 
                     while (currentEnemies.length < 1) {
                         for (i = 0; i < 5; i++) {
@@ -214,7 +215,30 @@ function saveGame() {
     localStorage.setItem("SRPG" + saveNR, JSON.stringify(saveCopy));
 }
 
+function saveSettings() {
+    let settingsCopy = JSON.parse(JSON.stringify(settings));
+    localStorage.setItem("SRPGSETTINGS", JSON.stringify(settingsCopy));
+}
+
+function loadSettings() {
+    // Load settings
+    let settingsCopy;
+    settingsCopy = localStorage.getItem("SRPGSETTINGS");
+    if (settingsCopy !== null && settingsCopy !== "null") {
+        try {
+            settingsCopy = JSON.parse(settingsCopy);
+        }
+
+        catch (e) {
+            alert("Error (Settings)");
+            return;
+        }
+        settings = settingsCopy;
+    }
+}
+
 function loadGame() {
+    // Load saves
     let saveCopy;
     saveCopy = localStorage.getItem("SRPG" + saveNR);
     if (saveCopy !== null && saveCopy !== "null") {
@@ -234,4 +258,6 @@ function loadGame() {
     else {
         saveGame();
     }
+
+
 }

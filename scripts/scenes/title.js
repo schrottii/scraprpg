@@ -6,8 +6,8 @@ scenes.title = () => {
     let state = "intro";
 
     let particles = [];
-    
-        
+
+
     let gameIcon = controls.image({
         anchor: [.5, .4], offset: [-277.5, -200], sizeOffset: [555, 300],
         alpha: 0,
@@ -45,9 +45,9 @@ scenes.title = () => {
             }
             musicPlayer.volume = 0.5 * Math.max(1 - t / 4000, 0) ** 2;
             fadeOverlay.alpha = 1 - (1 - t / 4000) ** 2;
-            deleteButton.offset[1] = optionButton.offset[1] = 
+            deleteButton.offset[1] = optionButton.offset[1] =
                 (70 + 130 * (2 - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
-            deleteButton.anchor[1] = optionButton.anchor[1] = 
+            deleteButton.anchor[1] = optionButton.anchor[1] =
                 .5 + ((1 - Math.max(1 - t / 600, 0)) ** 2);
             if (t > 4000) {
                 setScene(scenes.game());
@@ -56,6 +56,45 @@ scenes.title = () => {
             return false;
         })
     }
+
+    function loadOptions() {
+        fadeOverlay.clickthrough = true;
+        addAnimator(function (t) {
+            for (let a = 0; a < 3; a++) {
+                id = a;
+                saveButtons[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
+                saveButtons[a].anchor[1] = .5 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
+                saveImages[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
+                saveImages[a].anchor[1] = .5 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
+            }
+
+            option.anchor[0] = -.8 + (1 - (1 - Math.max(Math.min(t / 800, 1), 0)) ** 4);
+            if (t > 1000) {
+                return true;
+            }
+            return false;
+        });
+    };
+
+    function hideOptions() {
+        fadeOverlay.clickthrough = true;
+        addAnimator(function (t) {
+            for (let a = 0; a < 3; a++) {
+                id = a;
+                saveButtons[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - (1000-t) / 600, 0) ** 2);
+                saveButtons[a].anchor[1] = .5 + (a > id ? 1 : -1) * ((1 - Math.max(1 - (1000 - t) / 600, 0)) ** 2);
+                saveImages[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - (1000 - t) / 600, 0) ** 2);
+                saveImages[a].anchor[1] = .5 + (a > id ? 1 : -1) * ((1 - Math.max(1 - (1000 - t) / 600, 0)) ** 2);
+            }
+
+            option.anchor[0] = -.8 + (1 - (1 - Math.max(Math.min((1000-t) / 800, 1), 0)) ** 4);
+            if (t > 1000) {
+                return true;
+            }
+            return false;
+        });
+    };
+
 
     let saveButtons = [];
     let saveImages = [];
@@ -71,7 +110,7 @@ scenes.title = () => {
                     loadGame(a);
                     loadSave(a);
                 }
-                else {
+                else if (mode == 1) {
                     saveNR = a;
                     localStorage["SRPG" + saveNR] = "null";
                     mode = 0;
@@ -106,14 +145,43 @@ scenes.title = () => {
             if (mode == 1) {
                 mode = 0;
             }
-            else {
+            else if (mode == 0) {
                 mode = 1;
+            }
+            else if (mode == 2) {
+                settings.grid = true;
             }
         }
     });
     let optionButton = controls.button({
         anchor: [-.2, .5], offset: [-150, 170], sizeOffset: [150, 50],
         fontSize: 16, text: "Options",
+        onClick(args) {
+            if (mode == 2) {
+                mode = 0;
+                saveSettings();
+                hideOptions();
+            }
+            else {
+                mode = 2;
+                loadOptions();
+            }
+        }
+    });
+
+    // Options
+
+    let option = controls.button({
+        anchor: [-.8, .1], offset: [0, 170], sizeOffset: [150, 50],
+        fontSize: 16, text: "Grid: ON",
+        onClick(args) {
+            if (settings.grid == true) {
+                settings.grid = false;
+            }
+            else {
+                settings.grid = true;
+            }
+        }
     });
 
     let fadeOverlay = controls.rect({
@@ -193,9 +261,22 @@ scenes.title = () => {
 
             if (mode == 0) {
                 deleteButton.text = "Delete";
+                optionButton.text = "Options";
+            }
+            if (mode == 1) {
+                deleteButton.text = "SELECT . . ."
+                optionButton.text = "Options";
+            }
+            if (mode == 2) {
+                deleteButton.text = "Reset All";
+                optionButton.text = "Go Back";
+            }
+
+            if (settings.grid == true) {
+                option.text = "Grid: ON";
             }
             else {
-                deleteButton.text = "SELECT . . ."
+                option.text = "Grid: OFF";
             }
 
         },
@@ -208,6 +289,7 @@ scenes.title = () => {
                 onClick() {
                     state = "menu";
                     this.clickthrough = true;
+                    loadSettings();
                     addAnimator(function (t) {
 
                         gameIcon.anchor[1] = .4 - .5 * Math.min(t / 800, 1) ** 4;
@@ -235,7 +317,7 @@ scenes.title = () => {
                 }
             }),
             ...saveButtons, ...saveImages,
-            deleteButton, optionButton, 
+            deleteButton, optionButton, option,
             fadeOverlay
         ],
     }
