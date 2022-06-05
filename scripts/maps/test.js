@@ -90,23 +90,23 @@ maps["test"] = {
             sprite: "sand_hole_with_barrels"
         },
         "025": {
-             sprite: "uv_roof_right",
-             occupied: true,
+            sprite: "uv_roof_right",
+            occupied: true,
         },
         "026": {
-             sprite: "uv_roof_left",
-             occupied: true,
+            sprite: "uv_roof_left",
+            occupied: true,
         },
         "027": {
-             sprite: "uv_house_door",
+            sprite: "uv_house_door",
         },
         "028": {
-             sprite: "uv_house_1",
-             occupied: true,
+            sprite: "uv_house_1",
+            occupied: true,
         },
         "029": {
-             sprite: "uv_house_left",
-             occupied: true,
+            sprite: "uv_house_left",
+            occupied: true,
         },
         "D01": {
             sprite: "uv_house_door",
@@ -124,32 +124,36 @@ maps["test"] = {
             sprite: "tend_central",
             teleport: ["test", 9, 38],
         },
-       "030": {
-           sprite: "fence_no_pole",
-           occupied: true,
+        "030": {
+            sprite: "fence_no_pole",
+            occupied: true,
         },
-       "031": {
-           sprite: "fence_right",
-           occupied: true,
+        "031": {
+            sprite: "fence_right",
+            occupied: true,
         },
-       "032": {
+        "032": {
             sprite: "fence_left",
             occupied: true,
-       },
-      "033": {
-           sprite: "table_right",
-           occupied:true,
-      },
-      "034": {
-           sprite: "table_left",
-           occupied:true,
         },
-      "035": {
-          sprite: "fence_single",
-          occupied: true,
+        "033": {
+            sprite: "table_right",
+            occupied: true,
+        },
+        "034": {
+            sprite: "table_left",
+            occupied: true,
+        },
+        "035": {
+            sprite: "fence_single",
+            occupied: true,
         },
 
-    // Do not remove this } here. Make sure there's a } right above this too
+        // Do not remove this } here. Make sure there's a } right above this too
+    },
+    spawns: {
+        "default": 10,
+        "itsalivemap" : 5
     },
     map: [
         "001 001 001 001 001 001 001 000 000 000 001 001 001 001 001 001 001 001",

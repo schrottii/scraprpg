@@ -130,6 +130,9 @@ maps["map2"] = {
 
     // Do not remove this } here. Make sure there's a } right above this too
     },
+    spawns: {
+        "itsalivemap": 25
+    },
     map: [
         "033 033 033 033 033 033 033 033 033 D01 033 033 033 033 033 033 033 033",
         "033 033 033 033 033 033 033 033 033 033 033 033 033 033 033 033 033 033",

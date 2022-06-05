@@ -259,7 +259,8 @@ scenes.game = () => {
 
     function check_EnemyCollision(i) {
         if (game.position[0] == enemies[i].position[0] &&
-            game.position[1] == enemies[i].position[1]) {
+            game.position[1] == enemies[i].position[1] &&
+            enemies[i].map == game.map) {
             // Fight !!!
             clearCurrentEnemies();
 
@@ -308,20 +309,28 @@ scenes.game = () => {
         }
     }
 
-    function ActionsOnMove(){
+    function ActionsOnMove() {
+        let map = maps[game.map];
         // Everything performed when the player moves successfully
 
-        // Spawn enemies (sometimes)
-        if (enemies.length < 8) {
-            if (Math.random() > 0.95) { // For the stupid: Somewhat unlikely
-                enemies.push(mapenemies.default({
-                    position: [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)], map: game.map,
-                }));
+        // Calculate how many enemies can still be spawned.
+        // The limit is now 8/map. This calculates how many are on the current map
+        let maxEnemies = 8;
+        let enemiesOnThisMap = 0;
+        for (i in enemies) {
+            if (enemies[i].map == game.map) {
+                enemiesOnThisMap -= 1;
             }
-            if (Math.random() > 0.90) { // For the stupid: Somewhat unlikely
-                enemies.push(mapenemies.itsalivemap({
-                    position: [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)], map: game.map,
-                }));
+        }
+
+        // Spawn enemies (sometimes)
+        if (enemiesOnThisMap < maxEnemies) {
+            for (possibleSpawns in map.spawns) {
+                if (map.spawns[possibleSpawns] > Math.random() * 100) { // For the stupid: Somewhat unlikely
+                        enemies.push(mapenemies[possibleSpawns]({
+                            position: [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)], map: game.map,
+                        }));
+                    }
             }
         }
 
@@ -411,16 +420,23 @@ scenes.game = () => {
                             }
                         }
 
-                        if (getTile(map, enemies[i].position[0], enemies[i].position[1]) != undefined) {
-                            if (map.map[enemies[i].position[1]] == undefined
-                                || getTile(map, enemies[i].position[0], enemies[i].position[1]).occupied == true) { // Respawn if on ocean or occupied
+                        // Respawn if on ocean or occupied
+                        if (map.map[enemies[i].position[1]] != undefined) {
+                            if (getTile(map, enemies[i].position[0], enemies[i].position[1]) == undefined) {
                                 enemies[i].position = [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)];
                             }
+                            else {
+                                if (getTile(map, enemies[i].position[0], enemies[i].position[1]).occupied == true) {
+                                    enemies[i].position = [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)];
+                                }
+                            }
+                        }
+                        else {
+                            enemies[i].position = [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)];
                         }
 
-                        for (i = 0; i < enemies.length; i++) {
-                            check_EnemyCollision(i);
-                        }
+                        // Don't put this in a for loop. lol
+                        check_EnemyCollision(i);
                     }
                 }
             }
