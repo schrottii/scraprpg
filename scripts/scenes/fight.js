@@ -48,7 +48,19 @@ scenes.fight = () => {
                 setTimeout(() => {
                     setScene(scenes.game());
                 }, 2000);
+        }
+
+        let aliveallies = 0;
+        for (j = 0; j < 3; j++) {
+            for (i = 0; i < 3; i++) {
+                if (positions[i][j].isOccupied == true) {
+                    aliveallies += 1;
+                }
             }
+        }
+        if (aliveallies == 0) { // All dead :)
+            setScene(scenes.title());
+        }
     }
 
     function checkAllAction() {
@@ -87,7 +99,19 @@ scenes.fight = () => {
             }
 
             // Stop if there is nobody (when is that?)
-            if (highestAGI == 0) return;
+        if (highestAGI == 0) {
+            fightaction = "enemiesturn";
+
+            for (j = 0; j < 3; j++) {
+                for (i = 0; i < 3; i++) {
+                    if (epositions[i][j].isOccupied != false) {
+                        epositions[i][j].action = true
+                    }
+                }
+            }
+            enemiesTurn(); // Is everyone done? Can we continue?
+            return;
+        }
 
             // Ok, ok, now we know who (whoAGI) is first (highestAGI), so now do something
         switch (whoAGI.action[0]) {
@@ -101,11 +125,9 @@ scenes.fight = () => {
                 let pos1 = positions[pos[0]][pos[1]].action[3];
                 let pos2 = positions[pos[0]][pos[1]].action[4];
                 selectedAlly = [positions[pos[0]][pos[1]].action[1], positions[pos[0]][pos[1]].action[2]];
-
                 fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
                 attackAnimation(pos1, pos2, () => {
-                    fightaction = "none";
-                    if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].eva > (Math.random() * 100)) {
+                    if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].acc - epositions[pos1][pos2].eva > (Math.random() * 100)) {
                         let Damage = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].strength;
                         epositions[pos1][pos2].HP -= Damage; // Deal damage
 
@@ -114,6 +136,7 @@ scenes.fight = () => {
                         if (epositions[pos1][pos2].HP < 1) { // Is dead?
                             epositions[pos1][pos2].isOccupied = false;
                             epositions[pos1][pos2].occupied = false;
+                            epositions[pos1][pos2].action = false;
 
                             let Experience = epositions[pos1][pos2].strength;
                             game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EXP += Experience;
@@ -132,8 +155,68 @@ scenes.fight = () => {
                 positions[pos[0]][pos[1]].action = false;
                 break;
         
-            }
+        }
     }
+
+
+    function enemiesTurn() {
+        let highestAGI = 0;
+        let whoAGI;
+        let pos = [];
+        // Look for the fastest man alive
+        for (j = 0; j < 3; j++) {
+            for (i = 0; i < 3; i++) {
+                if (epositions[i][j].action != false) {
+                    if (epositions[i][j].agi > highestAGI) {
+                        highestAGI = epositions[i][j].agi;
+                        whoAGI = epositions[i][j];
+                        pos = [i, j];
+                    }
+                }
+            }
+        }
+
+        // Stop if there is nobody (when is that?)
+        if (highestAGI == 0) {
+            fightaction = "none";
+            return;
+        }
+
+        selectedAlly = [75, 75];
+        while (selectedAlly[0] == 75) {
+            let randyTheIdiot = Math.random() * 2.98;
+            if (positions[Math.floor(randyTheIdiot)][0].isOccupied == true ||
+                positions[Math.floor(randyTheIdiot)][1].isOccupied == true ||
+                positions[Math.floor(randyTheIdiot)][2].isOccupied == true) {
+                selectedAlly[0] = Math.floor(randyTheIdiot);
+            }
+        }
+        while (selectedAlly[1] == 75) {
+            let randyTheIdiot = Math.random() * 2.98;
+            if (positions[selectedAlly[0]][Math.floor(randyTheIdiot)].isOccupied == true) {
+                selectedAlly[1] = Math.floor(randyTheIdiot);
+            }
+        }
+
+        // Ok, ok, now we know who (whoAGI) is first (highestAGI), so now do something
+        attackAnimation(pos[0], pos[1], () => {
+            let Damage = epositions[pos[0]][pos[1]].strength;
+            if (positions[selectedAlly[0]][selectedAlly[1]].isOccupied != false) {
+                game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP -= Damage;
+                fightlog.push(epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name);
+                fightlog.push("and deals " + Damage + " damage!");
+                epositions[pos[0]][pos[1]].action = false;
+
+                if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP < 1) {
+                    fightlog.push(epositions[pos[0]][pos[1]].name + " killed " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + "!");
+                    positions[selectedAlly[0]][selectedAlly[1]].isOccupied = false;
+                    checkAllDead();
+                }
+            }
+            enemiesTurn();
+        }, true); // very important true,bob
+    }
+
 
     function switchPositions() {
         // important variable here: switchThose
@@ -144,8 +227,9 @@ scenes.fight = () => {
         positions[switchThose[1][0]][switchThose[1][1]].occupied = positions[switchThose[0][0]][switchThose[0][1]].occupied;
         positions[switchThose[0][0]][switchThose[0][1]].occupied = cache123;
 
-        positions[switchThose[0][0]][switchThose[0][1]].isOccupied = positions[switchThose[1][0]][switchThose[1][1]].isOccupied;
-        positions[switchThose[1][0]][switchThose[1][1]].isOccupied = true;
+        let cache1234 = positions[switchThose[1][0]][switchThose[1][1]].isOccupied;
+        positions[switchThose[1][0]][switchThose[1][1]].isOccupied = positions[switchThose[0][0]][switchThose[0][1]].isOccupied;
+        positions[switchThose[0][0]][switchThose[0][1]].isOccupied = cache1234;
 
         // Fightlog
         fightlog.push("Swapped [" + (switchThose[0][0] + 1) + "/" + (switchThose[0][1] + 1) + "]");
@@ -155,20 +239,37 @@ scenes.fight = () => {
         switchThose = [[0, 0], [0, 0]];
     }
 
-    function attackAnimation(pos1, pos2, onFinish) {
-        addAnimator(function (t) {
-            positionControls[selectedAlly[0] + (selectedAlly[1]*3)].anchor[0] = 0.025 + ( 0.0005 * t);
+    function attackAnimation(pos1, pos2, onFinish, enemy = false) {
+        if (enemy == false) {
+            addAnimator(function (t) {
+                positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor[0] = 0.025 + (0.0005 * t);
 
-            if (positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor[0] + (positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].offset[0] / 1000) >
-                epositionControls[pos1 + (pos2 * 3)].anchor[0] + (epositionControls[pos1 + (pos2 * 3)].offset[0] / 1000)) {
+                if (positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor[0] + (positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].offset[0] / 1000) >
+                    epositionControls[pos1 + (pos2 * 3)].anchor[0] + (epositionControls[pos1 + (pos2 * 3)].offset[0] / 1000)) {
 
-                positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor[0] = 0.025;
+                    positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor[0] = 0.025;
 
-                onFinish();
-                return true;
-            }
-            return false;
-        })
+                    onFinish();
+                    return true;
+                }
+                return false;
+            });
+        }
+        else {
+            addAnimator(function (t) {
+                epositionControls[pos1 + (pos2 * 3)].anchor[0] = 0.975 - (0.0005 * t);
+
+                if (epositionControls[pos1 + (pos2 * 3)].anchor[0] + (epositionControls[pos1 + (pos2 * 3)].offset[0] / 1000) <
+                    positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor[0] + (positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].offset[0] / 1000)) {
+
+                    epositionControls[pos1 + (pos2 * 3)].anchor[0] = 0.975;
+
+                    onFinish();
+                    return true;
+                }
+                return false;
+            });
+        }
     }
 
     // Bottom rects
@@ -683,16 +784,19 @@ scenes.fight = () => {
                     pos: "top left",
                     isOccupied: false, // bool
                     occupied: false, // who?
+                    action: false,
                 },
                 {
                     pos: "top middle",
                     isOccupied: false, // bool
                     occupied: false, // who?
+                    action: false,
                 },
                 {
                     pos: "top right",
                     isOccupied: false, // bool
                     occupied: false, // who?
+                    action: false,
                 },
             ],
             [
@@ -700,16 +804,19 @@ scenes.fight = () => {
                     pos: "middle left",
                     isOccupied: false, // bool
                     occupied: false, // who?
+                    action: false,
                 },
                 {
                     pos: "middle middle",
                     isOccupied: false, // bool
                     occupied: false, // who?
+                    action: false,
                 },
                 {
                     pos: "middle right",
                     isOccupied: false, // bool
                     occupied: false, // who?
+                    action: false,
                 },
             ],
             [
@@ -717,16 +824,19 @@ scenes.fight = () => {
                     pos: "bottom left",
                     isOccupied: false, // bool
                     occupied: false, // who?
+                    action: false,
                 },
                 {
                     pos: "bottom middle",
                     isOccupied: false, // bool
                     occupied: false, // who?
+                    action: false,
                 },
                 {
                     pos: "bottom right",
                     isOccupied: false, // bool
                     occupied: false, // who?
+                    action: false,
                 },
             ],
         ];
@@ -739,6 +849,8 @@ scenes.fight = () => {
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].maxHP = enemyTypes[currentEnemies[i][0]].HP;
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].HP = enemyTypes[currentEnemies[i][0]].HP;
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].strength = enemyTypes[currentEnemies[i][0]].strength;
+            epositions[currentEnemies[i][1]][currentEnemies[i][2]].eva = enemyTypes[currentEnemies[i][0]].eva;
+            epositions[currentEnemies[i][1]][currentEnemies[i][2]].agi = enemyTypes[currentEnemies[i][0]].agi;
         }
     }
 
@@ -768,7 +880,7 @@ scenes.fight = () => {
                             fightaction = "none";
                         }
                     }
-                    if (fightaction == "attack2" && positions[this.pos1][this.pos2].action == false) {
+                    if (fightaction == "attack2" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true) {
                         selectedAlly = [this.pos1, this.pos2];
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
                         fightaction = "attack3";
@@ -841,8 +953,21 @@ scenes.fight = () => {
                         positionControls[i + (j * 3)].alpha = 255;
                     }
                     else {
-                        positionControls[i + (j * 3)].source = "gear";
-                        positionControls[i + (j * 3)].alpha = 0;
+                        if (positions[i][j].occupied != undefined && positions[i][j].occupied != false) {
+                            if (game.characters[positions[i][j].occupied].HP < 1) {
+                                positionControls[i + (j * 3)].source = positions[i][j].occupied + "_dead";
+                                positionControls[i + (j * 3)].snip = [0, 0, 32, 32];
+                            }
+                            else {
+                                positionControls[i + (j * 3)].source = "gear";
+                                positionControls[i + (j * 3)].alpha = 0;
+                            }
+                        }
+                        else {
+                            positionControls[i + (j * 3)].source = "gear";
+                            positionControls[i + (j * 3)].alpha = 0;
+                        }
+                
                     }
                 }
                 else {
@@ -963,6 +1088,11 @@ scenes.fight = () => {
                     attackButtons[i].alpha = 0;
                 }
             }
+
+            fightStats2[2].text = getPlayer(1).HP + "/" + getPlayer(1).maxHP;
+            fightStats2[6].text = getPlayer(2).HP + "/" + getPlayer(2).maxHP;
+            fightStats3[2].text = getPlayer(1).HP + "/" + getPlayer(1).maxHP;
+            fightStats3[6].text = getPlayer(2).HP + "/" + getPlayer(2).maxHP;
 
             // Update fightlog
             for (i = 0; i < 12; i++) {

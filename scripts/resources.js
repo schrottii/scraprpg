@@ -27,7 +27,10 @@ let images = {
     selected: "data/images/selected.png",
 
     bleu_win: "data/images/BleuW.png",
-    corelle_win: "data/images/BleuW.png",
+    corelle_win: "data/images/CorelleW.png",
+
+    bleu_dead: "data/images/BleuDead.png",
+    corelle_dead: "data/images/CorelleDead.png",
 
     saveimage1: "data/images/PFP-1.png",
     saveimage2: "data/images/PFP-2.png",

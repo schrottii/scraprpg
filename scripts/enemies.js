@@ -5,6 +5,8 @@ let enemyTypes = {
         name: "Helter Skelter",
         HP: 5,
         strength: 2,
+        eva: 0,
+        agi: 30
         //position: 1,
     },
 
@@ -12,6 +14,8 @@ let enemyTypes = {
         name: "Helter Skelter+",
         HP: 9,
         strength: 2,
+        eva: 0,
+        agi: 25
         //position: 1,
     },
 
@@ -19,6 +23,8 @@ let enemyTypes = {
         name: "It's Alive (aka the overpowered barrel in ScrapTD)",
         HP: 30,
         strength: 2,
+        eva: 40,
+        agi: 10
         //position: 1,
     },
 }
