@@ -95,7 +95,7 @@ var scenes = {
 };
 
 var audio = {
-    "bgm/vaporlim": "data/bgm/Vaporlim_OST.mp3",
+    "bgm/title": "data/bgm/Title_OST.mp3",
 };
 
 var maps = {
