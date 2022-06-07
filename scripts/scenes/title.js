@@ -1,5 +1,5 @@
 scenes.title = () => {
-    musicPlayer.src = audio["bgm/vaporlim"].src;
+    musicPlayer.src = audio["bgm/title"].src;
     musicPlayer.volume = .5;
     musicPlayer.play();
 
