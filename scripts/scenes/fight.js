@@ -707,6 +707,18 @@ scenes.fight = () => {
         alpha: 255,
     }));
 
+
+
+
+
+
+    actionDisplay = controls.label({
+        anchor: [0.4, 0.185],
+        fontSize: 16, fill: "rgb(125, 255, 0)", align: "left",
+        text: "...",
+        alpha: 255,
+    });
+
     // POSITIONS
     // Positions
 
@@ -858,7 +870,7 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             positionControls.push(controls.image({
-                anchor: [0.025, 0.25], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
+                anchor: [0.025, 0.35], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
                 source: "gear",
                 alpha: 255,
                 snip: [0, 64, 32, 32],
@@ -894,7 +906,7 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             epositionControls.push(controls.image({
-                anchor: [0.975, 0.25], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
+                anchor: [0.975, 0.35], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
                 source: "gear",
                 alpha: 255,
                 snip: [0, 32, 32, 32],
@@ -922,7 +934,7 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             positionGrid.push(controls.image({
-                anchor: [0.025, 0.25], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
+                anchor: [0.025, 0.35], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
                 source: "grid",
                 alpha: 255,
             }));
@@ -931,7 +943,7 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             positionGrid.push(controls.image({
-                anchor: [0.975, 0.25], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
+                anchor: [0.975, 0.35], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
                 source: "grid",
                 alpha: 255,
             }));
@@ -1039,6 +1051,18 @@ scenes.fight = () => {
                 }
             }
         }
+
+        actionDisplay.text =
+            {
+            "none" : "Choose what to do!",
+            "switch": "Select who to switch!",
+            "switch2": "Select where to switch to!",
+            "attack": "Select attack type",
+            "attack2": "Select who should attack!",
+            "attack3": "Select who should be attacked!",
+            "attack4": "So much damage! Wow!",
+            "enemiesturn": "It's the enemies' turn..."
+            }[fightaction];
     }
 
     for (j = 0; j < 3; j++) {
@@ -1137,7 +1161,7 @@ scenes.fight = () => {
             ...fightLogComponents,
             ...fightOverview,
             ...fightPortraits,
-            ...fightStats1, ...fightStats2, ...fightStats3,
+            ...fightStats1, ...fightStats2, ...fightStats3, actionDisplay,
             ...positionControls, ...epositionControls, ...positionGrid,
         ],
     }
