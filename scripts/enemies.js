@@ -20,11 +20,20 @@ let enemyTypes = {
     },
 
     "itsalive": {
-        name: "It's Alive (aka the overpowered barrel in ScrapTD)",
+        name: "It's Alive",
         HP: 30,
         strength: 2,
-        eva: 40,
+        eva: 30,
         agi: 10
+        //position: 1,
+    },
+
+    "livingbarrel": {
+        name: "Living Barrel",
+        HP: 10,
+        strength: 6,
+        eva: 10,
+        agi: 23
         //position: 1,
     },
 }

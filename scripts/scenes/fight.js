@@ -866,7 +866,7 @@ scenes.fight = () => {
                 pos2: j,
                 onClick(args) {
                     if (fightaction == "switch") {
-                        if (positions[this.pos1][this.pos2].isOccupied == true && positions[this.pos1][this.pos2].action == false) {
+                        if (positions[this.pos1][this.pos2].isOccupied == true && positions[this.pos1][this.pos2].action == false && game.characters[positions[this.pos1][this.pos2].occupied].HP > 0) {
                             switchThose[0] = [this.pos1, this.pos2];
                             positionGrid[switchThose[0][0] + (switchThose[0][1] * 3)].source = "selected";
                             fightaction = "switch2"; //switch two: electric boogaloo
@@ -880,7 +880,7 @@ scenes.fight = () => {
                             fightaction = "none";
                         }
                     }
-                    if (fightaction == "attack2" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true) {
+                    if (fightaction == "attack2" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true && game.characters[positions[this.pos1][this.pos2].occupied].HP > 0) {
                         selectedAlly = [this.pos1, this.pos2];
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
                         fightaction = "attack3";
@@ -954,7 +954,7 @@ scenes.fight = () => {
                     }
                     else {
                         if (positions[i][j].occupied != undefined && positions[i][j].occupied != false) {
-                            if (game.characters[positions[i][j].occupied].HP < 1) {
+                            if (game.characters[positions[i][j].occupied].HP < 1 || positions[i][j].isOccupied == false) {
                                 positionControls[i + (j * 3)].source = positions[i][j].occupied + "_dead";
                                 positionControls[i + (j * 3)].snip = [0, 0, 32, 32];
                             }
@@ -964,8 +964,8 @@ scenes.fight = () => {
                             }
                         }
                         else {
-                            positionControls[i + (j * 3)].source = "gear";
-                            positionControls[i + (j * 3)].alpha = 0;
+                                positionControls[i + (j * 3)].source = "gear";
+                                positionControls[i + (j * 3)].alpha = 0;
                         }
                 
                     }
@@ -1022,16 +1022,35 @@ scenes.fight = () => {
                 }
             }
         }
-    }
 
-    if (settings.grid == true) {
-        for (i in positionGrid) {
-            positionGrid[i].alpha = 255;
+
+        if (settings.grid == true) {
+            for (i in positionGrid) {
+                positionGrid[i].alpha = 255;
+            }
+        }
+        else {
+            for (i in positionGrid) {
+                if (positionGrid[i].source != "grid") {
+                    positionGrid[i].alpha = 255;
+                }
+                else {
+                    positionGrid[i].alpha = 0;
+                }
+            }
         }
     }
-    else {
-        for (i in positionGrid) {
-            positionGrid[i].alpha = 0;
+
+    for (j = 0; j < 3; j++) {
+        for (i = 0; i < 3; i++) {
+            if (positions[i][j].occupied != undefined) {
+                if (positions[i][j].occupied != false) {
+                    if (game.characters[positions[i][j].occupied].HP < 1) {
+                        positions[i][j].isOccupied = false;
+                        positions[i][j].action = false;
+                    }
+                }
+            }
         }
     }
 

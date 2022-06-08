@@ -153,7 +153,7 @@ maps["test"] = {
     },
     spawns: {
         "default": 10,
-        "itsalivemap" : 5
+        "itsalivemap" : 2
     },
     maxEnemies: 8,
     map: [

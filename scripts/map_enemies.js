@@ -12,7 +12,7 @@ let mapenemies = {
             enemies: {
                 "weakhelter": 60,
                 "stronghelter": 10,
-                "itsalive": 2
+                "livingbarrel": 2
             },
 
             render(ctx) {
