@@ -154,7 +154,13 @@ scenes.fight = () => {
                 });
                 positions[pos[0]][pos[1]].action = false;
                 break;
-        
+            case "heal":
+                selectedAlly = [positions[pos[0]][pos[1]].action[1], positions[pos[0]][pos[1]].action[2]];
+
+                game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].HP += game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].strength;
+                
+                positions[pos[0]][pos[1]].action = false;
+                break;
         }
     }
 
@@ -709,6 +715,33 @@ scenes.fight = () => {
 
 
 
+    attackButtons.push(controls.rect({
+        anchor: [0.15, 0.03], offset: [0, 0], sizeAnchor: [0.05, 0], sizeOffset: [40, 58],
+        fill: "rgb(47, 95, 191)", text: "",
+        alpha: 255,
+        onClick(args) {
+            if (this.alpha == 255) {
+                fightaction = "heal1";
+            }
+        }
+    }));
+    attackButtons.push(controls.rect({
+        anchor: [0.15, 0.03], offset: [5, 5], sizeAnchor: [0.05, 0], sizeOffset: [30, 48],
+        fill: "rgb(191, 212, 255)",
+        alpha: 255,
+    }));
+    attackButtons.push(controls.image({
+        anchor: [0.15, 0.03], offset: [5, 5], sizeOffset: [48, 48],
+        source: "actions",
+        alpha: 255,
+    }));
+    attackButtons.push(controls.label({
+        anchor: [0.2, 0.03], offset: [30, 20], sizeOffset: [48, 48],
+        fontSize: 14, fill: "rgb(0, 32, 102)", align: "right",
+        text: "Heal",
+        alpha: 255,
+    }));
+
 
 
 
@@ -870,7 +903,7 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             positionControls.push(controls.image({
-                anchor: [0.025, 0.35], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
+                anchor: [0.025, 0.375], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
                 source: "gear",
                 alpha: 255,
                 snip: [0, 64, 32, 32],
@@ -897,6 +930,16 @@ scenes.fight = () => {
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
                         fightaction = "attack3";
                     }
+                    if (fightaction == "heal1" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true && game.characters[positions[this.pos1][this.pos2].occupied].HP > 0) {
+                        selectedAlly = [this.pos1, this.pos2];
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
+                        fightaction = "heal2";
+                    }
+                    else if (fightaction == "heal2" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true && game.characters[positions[this.pos1][this.pos2].occupied].HP > 0) {
+                        positions[selectedAlly[0]][selectedAlly[1]].action = ["heal", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "grid";
+                        fightaction = "none";
+                    }
                 }
             }));
         }
@@ -906,7 +949,7 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             epositionControls.push(controls.image({
-                anchor: [0.975, 0.35], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
+                anchor: [0.975, 0.375], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
                 source: "gear",
                 alpha: 255,
                 snip: [0, 32, 32, 32],
@@ -920,7 +963,7 @@ scenes.fight = () => {
 
                     if (fightaction == "attack3" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "grid";
-                        positions[selectedAlly[0]][selectedAlly[1]].action = ["attack", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
+                        positions[selectedAlly[0]][selectedAlly[1]].action = ["heal", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
 
                         fightaction = "none";
                         
@@ -934,7 +977,7 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             positionGrid.push(controls.image({
-                anchor: [0.025, 0.35], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
+                anchor: [0.025, 0.375], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
                 source: "grid",
                 alpha: 255,
             }));
@@ -943,7 +986,7 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             positionGrid.push(controls.image({
-                anchor: [0.975, 0.35], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
+                anchor: [0.975, 0.375], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
                 source: "grid",
                 alpha: 255,
             }));
@@ -1061,7 +1104,9 @@ scenes.fight = () => {
             "attack2": "Select who should attack!",
             "attack3": "Select who should be attacked!",
             "attack4": "So much damage! Wow!",
-            "enemiesturn": "It's the enemies' turn..."
+            "enemiesturn": "It's the enemies' turn...",
+            "heal1": "Select the wizard who will heal",
+            "heal2": "heal who?"
             }[fightaction];
     }
 
