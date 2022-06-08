@@ -7,11 +7,10 @@ DecastarWasNeverACoder (More known as *Decastar* or *nameTheFights*) was the fir
 Lead Programmer, Main Game Developer, Lead Graphic Designer
 - **dudcat0507**
 Programmer
-### Jacks' Staff
+### Staff of All Trades
 These are mainly the bosses of things other than programming and releasing the game.
 - **Barduzzi (*Salveeny* in GitHub)**
 Discord Server Owner, Idea Planner, Graphic Designer
-**
 - **nameTheFights (Decastar)**
 [Father of ScrapRPG](https://youtube.com/playlist?list=PLl18EjlJraJi3R_jBT266QQ8-smWw0GMn), Graphic Designer, Lead Composer, Lead Story Writer
 - **Daem S. (TheKingofTrash)**
