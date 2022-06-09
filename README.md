@@ -15,8 +15,8 @@ Discord Server Owner, Idea Planner, Graphic Designer
 [Father of ScrapRPG](https://youtube.com/playlist?list=PLl18EjlJraJi3R_jBT266QQ8-smWw0GMn), Graphic Designer, Lead Composer, Lead Story Writer
 - **Daem S. (TheKingofTrash)**
 Graphic Designer, Story Writer
-- **zedorekuXD**
-Composer
+
+
 - **RydeR (His name changes often, so we call him Lexi most of the time.)**
 Idea Planner, Composer
 - **KGuy (historically known as KGod)**
