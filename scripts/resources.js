@@ -87,6 +87,9 @@ let images = {
     "tiles/table_left": "data/images/tiles/tile_table_left.png",
     "tiles/house_floor": "data/images/tiles/tile_house_floor.png",
     "tiles/fence_single": "data/images/tiles/tile_fence_single.png",
+    "tiles/hay_central": "data/images/tiles/tile_hay_central.png",
+    "tiles/hay_right": "data/images/tiles/tile_hay_right.png",
+    "tiles/hay_left": "data/images/tiles/tile_hay_left.png",
 };
 
 var scenes = {
