@@ -81,6 +81,20 @@ scenes.fight = () => {
         return false;
     }
 
+    function calculateDamage(type, pos1, pos2, enpos1, enpos2) {
+        if (type == 1) { // Allies
+            return Math.round(game.characters[positions[pos1][pos2].occupied].strength
+                * (0.67 + (0.33 * pos1))
+                * (1.33 - (0.33 * enpos1)));
+        }
+            
+        if (type == 2) { // Evil men
+            return Math.round(epositions[pos1][pos2].strength
+                * (1.33 - (0.33 * pos1))
+                * (0.67 + (0.33 * enpos1)));
+        }
+    }
+
     function executeActions() {
             let highestAGI = 0;
             let whoAGI;
@@ -128,7 +142,7 @@ scenes.fight = () => {
                 fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
                 attackAnimation(pos1, pos2, () => {
                     if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].acc - epositions[pos1][pos2].eva > (Math.random() * 100)) {
-                        let Damage = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].strength;
+                        let Damage = calculateDamage(1, selectedAlly[0], selectedAlly[1], pos1, pos2);
                         epositions[pos1][pos2].HP -= Damage; // Deal damage
 
                         fightlog.push(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " attacks " + epositions[pos1][pos2].name);
@@ -207,7 +221,7 @@ scenes.fight = () => {
 
         // Ok, ok, now we know who (whoAGI) is first (highestAGI), so now do something
         attackAnimation(pos[0], pos[1], () => {
-            let Damage = epositions[pos[0]][pos[1]].strength;
+            let Damage = calculateDamage(2, pos[0], pos[1], selectedAlly[0], selectedAlly[1]);
             if (positions[selectedAlly[0]][selectedAlly[1]].isOccupied != false) {
                 game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP -= Damage;
                 fightlog.push(epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name);
