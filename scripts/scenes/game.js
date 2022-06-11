@@ -1,7 +1,9 @@
 var zoom = 1;
 var kofs = [0, 0, 0];
 var walkTime = 0;
-
+var inDialogue = false;
+var currentDialogue;
+var dialogueProgress = 0;
 
 // Function used to create enemies
 function createEnemy(type) {
@@ -135,6 +137,41 @@ scenes.game = () => {
         text: "Level: " + getPlayer(2).level,
     });
 
+
+    let dialogueComponents = []
+    dialogueComponents.push(controls.rect({
+        anchor: [0, 1], offset: [0, -140], sizeAnchor: [1, 0], sizeOffset: [0, 140],
+        clickthrough: false,
+        fill: "#B58542",
+        alpha: 0,
+    }));
+    dialogueComponents.push(controls.image({
+        anchor: [0, 1], offset: [0, -128], sizeOffset: [128, 128],
+        source: "p_bleu",
+        alpha: 0,
+    }));
+    dialogueComponents.push(controls.label({
+        anchor: [0, 1], offset: [156, -105],
+        align: "left", fontSize: 14, fill: "black",
+        text: "...",
+        alpha: 0,
+    }));
+    dialogueComponents.push(controls.button({
+        anchor: [0.8, 1], offset: [0, -105], sizeAnchor: [0.2, 0.05],
+        text: "Continue...",
+        onClick(args) {
+            dialogueProgress += 1;
+            if (dialogueProgress >= maps[game.map].dialogues[currentDialogue].length) {
+                inDialogue = false;
+                currentDialogue = false;
+                dialogueProgress = 0;
+                canMove = true;
+            }
+        },
+        alpha: 0,
+    }));
+
+
     // Buttons, then images over them
     for (i = 0; i < 3; i++) {
         mapDisplay.push(controls.button({
@@ -142,13 +179,13 @@ scenes.game = () => {
             alpha: 255,
             text: "",
             onClick(args) {
-                if (this.offset[0] == -220) {
+                if (this.offset[0] == -220 && canMove == true) {
                     enemies.push(mapenemies.itsalivemap({
                         position: [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)], map: game.map,
                     }));
                     console.log(enemies);
                 }
-                if (this.offset[0] == -145) {
+                if (this.offset[0] == -145 && canMove == true) {
                     if (zoom == 2) {
                         zoom = 3;
                     }
@@ -159,7 +196,7 @@ scenes.game = () => {
                         zoom = 2;
                     }
                 }
-                if (this.offset[0] == -70) {
+                if (this.offset[0] == -70 && canMove == true) {
                     if (this.alpha == 255) {
                         for (i = 0; i < mapDisplay.length; i++) {
                             mapDisplay[i].alpha = 0;
@@ -337,6 +374,13 @@ scenes.game = () => {
         for (i = 0; i < enemies.length; i++) {
             check_EnemyCollision(i);
         }
+
+        if (getTile(map, game.position[0], game.position[1]).dialogue != undefined) {
+            inDialogue = true;
+            currentDialogue = getTile(map, game.position[0], game.position[1]).dialogue;
+            dialogueProgress = 0;
+            canMove = false;
+        }
     }
 
     return {
@@ -509,6 +553,17 @@ scenes.game = () => {
                 scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zoom * scale, zoom * scale)
             ctx.imageSmoothingEnabled = true;
 
+            if (inDialogue == true) {
+                for (i = 0; i < dialogueComponents.length; i++) {
+                    dialogueComponents[i].alpha = 255;
+                }
+                dialogueComponents[2].text = map.dialogues[currentDialogue][dialogueProgress];
+            }
+            else if (dialogueComponents[0].alpha != 0) {
+                for (i = 0; i < dialogueComponents.length; i++) {
+                    dialogueComponents[i].alpha = 0;
+                }
+            }
 
             // ...leave?
             if (currentKeys["q"]) {
@@ -527,7 +582,7 @@ scenes.game = () => {
         controls: [
             ...walkPad, autoSaveText, ...mapDisplay,
             mapDisplayStats1, mapDisplayStats2,
-            mapDisplayLevel1, mapDisplayLevel2,
+            mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents
         ],
     }
 }

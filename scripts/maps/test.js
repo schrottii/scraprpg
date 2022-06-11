@@ -40,6 +40,7 @@ maps["test"] = {
         },
         "009": {
             sprite: "tend_high_left",
+            dialogue: 1,
         },
         "010": {
             sprite: "tend_mid_high",
@@ -256,5 +257,10 @@ maps["test"] = {
         "---",
         "---",
         "---",
-    ]
+    ],
+    dialogues: {
+        1: ["Hello this is a test dialogue",
+            "Second text",
+            "Don't forget to subscribe to my channel"]
+    }
 }
