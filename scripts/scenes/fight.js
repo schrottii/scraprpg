@@ -155,11 +155,12 @@ scenes.fight = () => {
                 positions[pos[0]][pos[1]].action = false;
                 break;
             case "heal":
-                selectedAlly = [positions[pos[0]][pos[1]].action[1], positions[pos[0]][pos[1]].action[2]];
+                selectedAlly = [whoAGI.action[1], whoAGI.action[2]];
 
                 game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].HP += game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].strength;
                 
                 positions[pos[0]][pos[1]].action = false;
+                executeActions();
                 break;
         }
     }
@@ -963,7 +964,7 @@ scenes.fight = () => {
 
                     if (fightaction == "attack3" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "grid";
-                        positions[selectedAlly[0]][selectedAlly[1]].action = ["heal", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
+                        positions[selectedAlly[0]][selectedAlly[1]].action = ["attack", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
 
                         fightaction = "none";
                         
