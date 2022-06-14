@@ -23,3 +23,4 @@ Idea Planner, Composer
 Game Tester, Graphic Artist
 ## Links
 - Discord Server: https://discord.gg/kavN4FYyDB
+- [**ALL PROTOTYPE RELEASES!!**](https://www.youtube.com/watch?v=eI1BGwziW10)
