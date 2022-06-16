@@ -98,6 +98,7 @@ let images = {
     "tiles/uv_house_angle_left_down": "data/images/tiles/tile_uv_house_angle_left_down.png",
     "tiles/uv_house_angle_right_up": "data/images/tiles/tile_uv_house_angle_right_up.png",
     "tiles/uv_house_angle_right_down": "data/images/tiles/tile_uv_house_angle_right_down.png",
+    "tiles/uv_house_up_window": "data/images/tiles/tile_uv_house_up_window.png",
 };
 
 var scenes = {
