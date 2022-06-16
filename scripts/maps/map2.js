@@ -147,7 +147,7 @@ maps["map2"] = {
              sprite: "uv_house_angle_left_down",
         },
         "040": {
-             sprite: "uv_house_angle_right_up_2",
+             sprite: "uv_house_angle_right_up",
         },
         "041": {
              sprite: "uv_house_angle_right_down",
