@@ -90,41 +90,41 @@ maps["map2"] = {
             sprite: "sand_hole_with_barrels"
         },
         "025": {
-             sprite: "uv_roof_right",
-             occupied: true,
+            sprite: "uv_roof_right",
+            occupied: true,
         },
         "026": {
-             sprite: "uv_roof_left",
-             occupied: true,
+            sprite: "uv_roof_left",
+            occupied: true,
         },
         "027": {
-             sprite: "uv_house_door",
+            sprite: "uv_house_door",
         },
         "028": {
-             sprite: "uv_house_1",
-             occupied: true,
+            sprite: "uv_house_1",
+            occupied: true,
         },
         "029": {
-             sprite: "uv_house_left",
-             occupied: true,
+            sprite: "uv_house_left",
+            occupied: true,
         },
         "D01": {
             sprite: "uv_house_door",
             teleport: ["test", 4, 4],
         },
-       "030": {
-           sprite: "fence_no_pole",
-           occupied: true,
+        "030": {
+            sprite: "fence_no_pole",
+            occupied: true,
         },
-       "031": {
-           sprite: "fence_right",
-           occupied: true,
+        "031": {
+            sprite: "fence_right",
+            occupied: true,
         },
-       "032": {
+        "032": {
             sprite: "fence_left",
             occupied: true,
         },
-       "033": {
+        "033": {
             sprite: "house_floor",
         },
         "034": {
@@ -132,38 +132,38 @@ maps["map2"] = {
             occupied: true,
         },
         "035": {
-             sprite: "uv_house_left_in",
-             occupied: true,
-        },
-        "036": {
-             sprite: "uv_house_right",
-             occupied: true,
-        },
-        "037": {
-             sprite: "uv_house_down",
-             occupied: true,
-        },
-        "038": {
-             sprite: "uv_house_angle_left_up",
-             occupied: true,
-        },
-        "039": {
-             sprite: "uv_house_angle_left_down",
-             occupied: true,
-        },
-        "040": {
-             sprite: "uv_house_angle_right_up",
-             occupied: true,
-        },
-        "041": {
-             sprite: "uv_house_angle_right_down",
-             occupied: true,
-        },
-        "042": {
-            sprite: "uv_house_up_window"
+            sprite: "uv_house_left_in",
             occupied: true,
         },
-
+        "036": {
+            sprite: "uv_house_right",
+            occupied: true,
+        },
+        "037": {
+            sprite: "uv_house_down",
+            occupied: true,
+        },
+        "038": {
+            sprite: "uv_house_angle_left_up",
+            occupied: true,
+        },
+        "039": {
+            sprite: "uv_house_angle_left_down",
+            occupied: true,
+        },
+        "040": {
+            sprite: "uv_house_angle_right_up",
+            occupied: true,
+        },
+        "041": {
+            sprite: "uv_house_angle_right_down",
+            occupied: true,
+        },
+        "042": {
+            sprite: "uv_house_up_window",
+            occupied: true,
+        },
+    
     // Do not remove this } here. Make sure there's a } right above this too
     },
     spawns: {

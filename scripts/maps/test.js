@@ -123,7 +123,7 @@ maps["test"] = {
         },
         "D04": {
             sprite: "tend_central",
-            teleport: ["test", 9, 38],
+            teleport: ["test", 10, 37],
         },
         "030": {
             sprite: "fence_no_pole",
