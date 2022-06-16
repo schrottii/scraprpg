@@ -128,7 +128,7 @@ maps["map2"] = {
             sprite: "house_floor",
         },
         "034": {
-            sprite: "uv_house_full_wall",
+            sprite: "uv_house_up",
             occupied: true,
         },
         "035": {
