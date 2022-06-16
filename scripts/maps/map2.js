@@ -129,28 +129,39 @@ maps["map2"] = {
         },
         "034": {
             sprite: "uv_house_full_wall",
+            occupied: true,
         },
         "035": {
              sprite: "uv_house_left_in",
+             occupied: true,
         },
         "036": {
              sprite: "uv_house_right",
+             occupied: true,
         },
         "037": {
              sprite: "uv_house_down",
              occupied: true,
         },
         "038": {
-             sprite: "uv_house_angle_left_up_2",
+             sprite: "uv_house_angle_left_up",
+             occupied: true,
         },
         "039": {
              sprite: "uv_house_angle_left_down",
+             occupied: true,
         },
         "040": {
              sprite: "uv_house_angle_right_up",
+             occupied: true,
         },
         "041": {
              sprite: "uv_house_angle_right_down",
+             occupied: true,
+        },
+        "042": {
+            sprite: "uv_house_up_window"
+            occupied: true,
         },
 
     // Do not remove this } here. Make sure there's a } right above this too
