@@ -127,6 +127,18 @@ maps["map2"] = {
        "033": {
             sprite: "house_floor",
         },
+        "034": {
+            sprite: "uv_house_full_wall",
+        },
+        "035": {
+             sprite: "uv_house_left_in",
+        },
+        "036": {
+             sprite: "uv_house_right",
+        },
+        "037": {
+             sprite: "uv_house_down",
+        },
 
     // Do not remove this } here. Make sure there's a } right above this too
     },
