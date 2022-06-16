@@ -94,6 +94,10 @@ let images = {
     "tiles/uv_house_right": "data/images/tiles/tile_uv_house_right.png",
     "tiles/uv_house_down": "data/images/tiles/tile_uv_house_down.png",
     "tiles/uv_house_left_in": "data/images/tiles/tile_uv_house_left_in.png",
+    "tiles/uv_house_angle_left_up": "data/images/tiles/tile_uv_house_angle_left_up.png",
+    "tiles/uv_house_angle_left_down": "data/images/tiles/tile_uv_house_angle_left_down.png",
+    "tiles/uv_house_angle_right_up": "data/images/tiles/tile_uv_house_angle_right_up.png",
+    "tiles/uv_house_angle_right_down": "data/images/tiles/tile_uv_house_angle_right_down.png",
 };
 
 var scenes = {
