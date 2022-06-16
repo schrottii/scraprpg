@@ -90,7 +90,7 @@ let images = {
     "tiles/hay_central": "data/images/tiles/tile_hay_central.png",
     "tiles/hay_right": "data/images/tiles/tile_hay_right.png",
     "tiles/hay_left": "data/images/tiles/tile_hay_left.png",
-    "tiles/uv_house_full_wall": "data/images/tiles/tile_uv_house_up.png",
+    "tiles/uv_house_up": "data/images/tiles/tile_uv_house_up.png",
     "tiles/uv_house_right": "data/images/tiles/tile_uv_house_right.png",
     "tiles/uv_house_down": "data/images/tiles/tile_uv_house_down.png",
     "tiles/uv_house_left_in": "data/images/tiles/tile_uv_house_left_in.png",
