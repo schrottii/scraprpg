@@ -295,32 +295,103 @@ scenes.fight = () => {
 
 
     // Top row buttons
-    for (i = 0; i < 6; i++) {
-        fightButtons.push(controls.rect({
-            anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.1, 0.04],
-            fill: "rgb(157, 111, 62)", text: "hmmm",
-            alpha: 255,
-            onClick(args) {
-                if (this.alpha == 255) {
-                    fightaction = "attack";
+    function topRowButton() {
+        if (i == 0) { // Normal Actions
+            fightButtons.push(controls.rect({
+                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.1, 0.04],
+                fill: "rgb(191, 137, 69)",
+                alpha: 255,
+                onClick(args) {
+                    if (this.alpha == 255) {
+                        fightaction = "attack";
+                    }
                 }
-            }
-        }))
+            }))
+        }
+        if (i == 1) { // Item Inventory
+            fightButtons.push(controls.rect({
+                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.1, 0.04],
+                fill: "rgb(191, 137, 69)",
+                alpha: 255,
+                onClick(args) {
+                    if (this.alpha == 255) {
+                        
+                    }
+                }
+            }))
+        }
+        if (i == 2) { // Magic
+            fightButtons.push(controls.rect({
+                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.1, 0.04],
+                fill: "rgb(191, 137, 69)",
+                alpha: 255,
+                onClick(args) {
+                    if (this.alpha == 255) {
+                    }
+                }
+            }))
+        }
+        if (i == 3) { // Mastery Techniques
+            fightButtons.push(controls.rect({
+                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.1, 0.04],
+                fill: "rgb(191, 137, 69)",
+                alpha: 255,
+                onClick(args) {
+                    if (this.alpha == 255) {
+                        fightlog.push(prompt("Put what?"));
+                    }
+                }
+            }))
+        }
+        if (i == 4) { // Macro
+            fightButtons.push(controls.rect({
+                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.1, 0.04],
+                fill: "rgb(191, 137, 69)",
+                alpha: 255,
+                onClick(args) {
+                    if (this.alpha == 255) {
+                        fightaction = "switch";
+                    }
+                }
+            }))
+        }
+        if (i == 5) { // Flee
+            fightButtons.push(controls.rect({
+                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.1, 0.04],
+                fill: "rgb(191, 137, 69)",
+                alpha: 255,
+                onClick(args) {
+                    if (this.alpha == 255) {
+                        setScene(scenes.game());
+                    }
+                }
+            }))
+        }
+
+    }
+    for (i = 0; i < 6; i++) {
+        topRowButton(i);
         fightButtons.push(controls.rect({
             anchor: [0.0025, 0.0325 + (i * 0.04)], sizeAnchor: [0.095, 0.035],
-            fill: "rgb(193, 156, 62)",
+            fill: "rgb(221, 155, 79)",
             alpha: 255,
         }))
         fightButtons.push(controls.label({
             anchor: [0.095, 0.05 + (i * 0.04)],
             text: ["Normal Actions", "Item Inventory", "Magic", "Mastery Techniques", "Macro", "Flee"][i],
-            fill: "black", align: "right", fontSize: 16,
+            fontSize: 16, fill: "black", align: "right", 
             alpha: 255,
         }))
-
-
         
     }
+
+
+    actionDisplay = controls.label({
+        anchor: [0.0025, 0.3],
+        fontSize: 16, fill: "rgb(125, 255, 0)", align: "left",
+        text: "...",
+        alpha: 255,
+    });
 
     /*
     fightButtons.push(controls.rect({
@@ -764,12 +835,6 @@ scenes.fight = () => {
 
 
 
-    actionDisplay = controls.label({
-        anchor: [0.4, 0.185],
-        fontSize: 16, fill: "rgb(125, 255, 0)", align: "left",
-        text: "...",
-        alpha: 255,
-    });
     */
 
     // POSITIONS
@@ -1114,7 +1179,7 @@ scenes.fight = () => {
                 }
             }
         }
-        /*
+        
         actionDisplay.text =
             {
             "none" : "Choose what to do!",
@@ -1128,7 +1193,7 @@ scenes.fight = () => {
             "heal1": "Select the wizard who will heal",
             "heal2": "heal who?"
             }[fightaction];
-            */
+            
     }
 
     for (j = 0; j < 3; j++) {
@@ -1227,7 +1292,7 @@ scenes.fight = () => {
             ...fightLogComponents,
             ...fightOverview,
             ...fightPortraits,
-            ...fightStats1, ...fightStats2, ...fightStats3, //actionDisplay,
+            ...fightStats1, ...fightStats2, ...fightStats3, actionDisplay,
             ...positionControls, ...epositionControls, ...positionGrid,
         ],
     }
