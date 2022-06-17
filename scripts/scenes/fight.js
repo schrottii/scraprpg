@@ -6,7 +6,7 @@ scenes.fight = () => {
 
     var fightBgRects = [];
     var fightButtons = [];
-    var attackButtons = [];
+    var fightActions = [];
 
     var fightLogComponents = [];
     var fightOverview = [];
@@ -303,7 +303,7 @@ scenes.fight = () => {
                 alpha: 255,
                 onClick(args) {
                     if (this.alpha == 255) {
-                        fightaction = "attack";
+                        fightaction = "attack2";
                     }
                 }
             }))
@@ -392,6 +392,33 @@ scenes.fight = () => {
         text: "...",
         alpha: 255,
     });
+
+
+    for (j = 0; j < 2; j++) {
+        for (i = 0; i < 6; i++) {
+            fightButtons.push(controls.rect({
+                anchor: [0.33 + (j * 0.17), 0.03 + (i * 0.0425)], sizeAnchor: [0.17, 0.0425],
+                fill: "rgb(38, 52, 38)",
+                alpha: 255,
+                onClick(args) {
+                    if (this.alpha == 255) {
+                    }
+                }
+            }))
+            fightActions.push(controls.rect({
+                anchor: [0.3325 + (j * 0.17), 0.0325 + (i * 0.0425)], sizeAnchor: [0.165, 0.0375],
+                fill: "rgb(42, 87, 44)",
+                alpha: 255,
+            }))
+            fightActions.push(controls.label({
+                anchor: [0.49 + (j * 0.17), 0.055 + (i * 0.0425)],
+                text: "Coming soon...",
+                fontSize: 16, fill: "white", align: "right",
+                alpha: 255,
+            }))
+
+        }
+    }
 
     /*
     fightButtons.push(controls.rect({
@@ -1288,7 +1315,7 @@ scenes.fight = () => {
         controls: [
             // Load all the nice stuff
             //...fightBgRects,
-            ...fightButtons, //...attackButtons,
+            ...fightButtons, ...fightActions,
             ...fightLogComponents,
             ...fightOverview,
             ...fightPortraits,
