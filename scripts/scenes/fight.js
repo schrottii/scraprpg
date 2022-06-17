@@ -295,6 +295,32 @@ scenes.fight = () => {
 
 
     // Top row buttons
+    for (i = 0; i < 6; i++) {
+        fightButtons.push(controls.rect({
+            anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.1, 0.04],
+            fill: "rgb(157, 111, 62)", text: "hmmm",
+            alpha: 255,
+            onClick(args) {
+                if (this.alpha == 255) {
+                    fightaction = "attack";
+                }
+            }
+        }))
+        fightButtons.push(controls.rect({
+            anchor: [0.0025, 0.0325 + (i * 0.04)], sizeAnchor: [0.095, 0.035],
+            fill: "rgb(193, 156, 62)",
+            alpha: 255,
+        }))
+        fightButtons.push(controls.label({
+            anchor: [0.095, 0.05 + (i * 0.04)],
+            text: ["Normal Actions", "Item Inventory", "Magic", "Mastery Techniques", "Macro", "Flee"][i],
+            fill: "black", align: "right", fontSize: 16,
+            alpha: 255,
+        }))
+
+
+        
+    }
 
     /*
     fightButtons.push(controls.rect({
@@ -1197,7 +1223,7 @@ scenes.fight = () => {
         controls: [
             // Load all the nice stuff
             //...fightBgRects,
-            //...fightButtons, ...attackButtons,
+            ...fightButtons, //...attackButtons,
             ...fightLogComponents,
             ...fightOverview,
             ...fightPortraits,
