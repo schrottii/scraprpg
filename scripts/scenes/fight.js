@@ -293,21 +293,10 @@ scenes.fight = () => {
         }
     }
 
-    // Bottom rects
-
-    fightBgRects.push(controls.rect({
-        anchor: [0.0, 0.0], offset: [0, 0], sizeAnchor: [1, 0.2],
-        fill: "rgb(114, 95, 57)",
-        alpha: 255,
-    }));
-    fightBgRects.push(controls.rect({
-        anchor: [0.0, 0.025], offset: [0, 0], sizeAnchor: [1, 0.15],
-        fill: "rgb(186, 154, 89)",
-        alpha: 255,
-    }));
 
     // Top row buttons
 
+    /*
     fightButtons.push(controls.rect({
         anchor: [0.05, 0.03], offset: [0, 0], sizeAnchor: [0.05, 0],  sizeOffset: [40, 58],
         fill: "rgb(47, 95, 191)", text: "",
@@ -477,19 +466,7 @@ scenes.fight = () => {
         text: "Fight",
         alpha: 255,
     }));
-
-    // Bottom rects
-
-    fightBgRects.push(controls.rect({
-        anchor: [0.0, 0.7], offset: [0, 0], sizeAnchor: [1, 0.3],
-        fill: "rgb(186, 154, 89)",
-        alpha: 255,
-    }));
-    fightBgRects.push(controls.rect({
-        anchor: [0.0, 0.95], offset: [0, 0], sizeAnchor: [1, 0.05],
-        fill: "rgb(114, 95, 57)",
-        alpha: 255,
-    }));
+    */
 
 
     // Battle Log (Bottom Left)
@@ -701,6 +678,7 @@ scenes.fight = () => {
     // Attack Buttons
     // Visible after pressing Battle Actions
 
+    /*
     attackButtons.push(controls.rect({
         anchor: [0.05, 0.03], offset: [0, 0], sizeAnchor: [0.05, 0], sizeOffset: [40, 58],
         fill: "rgb(47, 95, 191)", text: "",
@@ -766,6 +744,7 @@ scenes.fight = () => {
         text: "...",
         alpha: 255,
     });
+    */
 
     // POSITIONS
     // Positions
@@ -1109,7 +1088,7 @@ scenes.fight = () => {
                 }
             }
         }
-
+        /*
         actionDisplay.text =
             {
             "none" : "Choose what to do!",
@@ -1123,6 +1102,7 @@ scenes.fight = () => {
             "heal1": "Select the wizard who will heal",
             "heal2": "heal who?"
             }[fightaction];
+            */
     }
 
     for (j = 0; j < 3; j++) {
@@ -1141,12 +1121,12 @@ scenes.fight = () => {
     return {
         // Pre-render function
         preRender(ctx, delta) {
-            ctx.drawImage(images.fight_bg, 0, 100, width * scale, height);
+            ctx.drawImage(images.fight_bg, 0, 0, width * scale, height);
 
 
 
             // Buttons
-
+            /*
             if (fightaction == "none") {
                 for (i = 0; i < fightButtons.length; i++) {
                     fightButtons[i].alpha = 255;
@@ -1191,7 +1171,7 @@ scenes.fight = () => {
                     attackButtons[i].alpha = 0;
                 }
             }
-
+            */
             fightStats2[2].text = getPlayer(1).HP + "/" + getPlayer(1).maxHP;
             fightStats2[6].text = getPlayer(2).HP + "/" + getPlayer(2).maxHP;
             fightStats3[2].text = getPlayer(1).HP + "/" + getPlayer(1).maxHP;
@@ -1216,12 +1196,12 @@ scenes.fight = () => {
         // Controls
         controls: [
             // Load all the nice stuff
-            ...fightBgRects,
-            ...fightButtons, ...attackButtons,
+            //...fightBgRects,
+            //...fightButtons, ...attackButtons,
             ...fightLogComponents,
             ...fightOverview,
             ...fightPortraits,
-            ...fightStats1, ...fightStats2, ...fightStats3, actionDisplay,
+            ...fightStats1, ...fightStats2, ...fightStats3, //actionDisplay,
             ...positionControls, ...epositionControls, ...positionGrid,
         ],
     }
