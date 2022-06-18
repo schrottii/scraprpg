@@ -298,7 +298,7 @@ scenes.fight = () => {
     function topRowButton() {
         if (i == 0) { // Normal Actions
             fightButtons.push(controls.rect({
-                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.1, 0.04],
+                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.15, 0.04],
                 fill: "rgb(191, 137, 69)",
                 alpha: 255,
                 onClick(args) {
@@ -310,7 +310,7 @@ scenes.fight = () => {
         }
         if (i == 1) { // Item Inventory
             fightButtons.push(controls.rect({
-                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.1, 0.04],
+                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.15, 0.04],
                 fill: "rgb(191, 137, 69)",
                 alpha: 255,
                 onClick(args) {
@@ -322,7 +322,7 @@ scenes.fight = () => {
         }
         if (i == 2) { // Magic
             fightButtons.push(controls.rect({
-                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.1, 0.04],
+                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.15, 0.04],
                 fill: "rgb(191, 137, 69)",
                 alpha: 255,
                 onClick(args) {
@@ -333,7 +333,7 @@ scenes.fight = () => {
         }
         if (i == 3) { // Mastery Techniques
             fightButtons.push(controls.rect({
-                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.1, 0.04],
+                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.15, 0.04],
                 fill: "rgb(191, 137, 69)",
                 alpha: 255,
                 onClick(args) {
@@ -345,7 +345,7 @@ scenes.fight = () => {
         }
         if (i == 4) { // Macro
             fightButtons.push(controls.rect({
-                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.1, 0.04],
+                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.15, 0.04],
                 fill: "rgb(191, 137, 69)",
                 alpha: 255,
                 onClick(args) {
@@ -357,7 +357,7 @@ scenes.fight = () => {
         }
         if (i == 5) { // Flee
             fightButtons.push(controls.rect({
-                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.1, 0.04],
+                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.15, 0.04],
                 fill: "rgb(191, 137, 69)",
                 alpha: 255,
                 onClick(args) {
@@ -372,12 +372,12 @@ scenes.fight = () => {
     for (i = 0; i < 6; i++) {
         topRowButton(i);
         fightButtons.push(controls.rect({
-            anchor: [0.0025, 0.0325 + (i * 0.04)], sizeAnchor: [0.095, 0.035],
+            anchor: [0.0025, 0.0325 + (i * 0.04)], sizeAnchor: [0.145, 0.035],
             fill: "rgb(221, 155, 79)",
             alpha: 255,
         }))
         fightButtons.push(controls.label({
-            anchor: [0.095, 0.05 + (i * 0.04)],
+            anchor: [0.145, 0.05 + (i * 0.04)],
             text: ["Normal Actions", "Item Inventory", "Magic", "Mastery Techniques", "Macro", "Flee"][i],
             fontSize: 16, fill: "black", align: "right", 
             alpha: 255,
@@ -596,21 +596,21 @@ scenes.fight = () => {
     // Battle Log (Bottom Left)
 
     fightLogComponents.push(controls.rect({
-        anchor: [0, 0.65], offset: [0, 0], sizeAnchor: [0.20, 0.35], sizeOffset: [40, 0],
-        fill: "rgb(50, 78, 131)",
+        anchor: [0, 0.775], sizeAnchor: [0.15, 0.225],
+        fill: "rgb(191, 137, 69)",
         alpha: 255,
     }));
 
     fightLogComponents.push(controls.rect({
-        anchor: [0.01, 0.67], offset: [0, 0], sizeAnchor: [0.18, 0.31], sizeOffset: [40, 0],
-        fill: "rgb(145, 178, 245)",
+        anchor: [0.005, 0.78], sizeAnchor: [0.14, 0.215],
+        fill: "rgb(221, 155, 79)",
         alpha: 255,
     }));
 
     for (i = 0; i < 12; i++) {
         fightLogComponents.push(controls.label({
-            anchor: [0.01, 0.7 + (i*0.02)], offset: [2, 0],
-            fontSize: 12, fill: "rgb(0, 0, 0)", align: "left",
+            anchor: [0.01, 0.8 + (i*0.016)], offset: [2, 0],
+            fontSize: 16, fill: "rgb(0, 0, 0)", align: "left",
             text: fightlog[Math.max(0, fightlog.length - 12 + i)],
             alpha: 255,
         }));
