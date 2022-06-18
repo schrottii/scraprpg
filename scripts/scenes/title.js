@@ -15,7 +15,7 @@ scenes.title = () => {
     });
     let contLabel = controls.label({
         anchor: [.5, .6], offset: [0, 75],
-        alpha: 0,
+        fontSize: 16, alpha: 0,
         text: "Click anywhere to continue...",
     });
     let infoLabel = controls.label({
