@@ -116,6 +116,7 @@ var audio = {
 var maps = {
     "test": "scripts/maps/test.js",
     "map2": "scripts/maps/map2.js",
+    "original": "original/maps/original.js",
 };
 
 var resCount = 0;
