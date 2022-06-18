@@ -1,7 +1,5 @@
 scenes.title = () => {
-    musicPlayer.src = audio["bgm/title"].src;
-    musicPlayer.volume = .5;
-    musicPlayer.play();
+
 
     let state = "intro";
 
@@ -287,6 +285,13 @@ scenes.title = () => {
             controls.base({
                 anchor: [0, 0], sizeAnchor: [1, 1],
                 onClick() {
+                    soundPlayer.src = audio["titletransition"].src;
+                    soundPlayer.volume = 1;
+                    soundPlayer.play();
+
+                    musicPlayer.src = audio["bgm/title"].src;
+                    musicPlayer.volume = .5;
+                    musicPlayer.play();
                     state = "menu";
                     this.clickthrough = true;
                     loadSettings();

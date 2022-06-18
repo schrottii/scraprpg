@@ -109,6 +109,7 @@ var scenes = {
 
 var audio = {
     "bgm/title": "data/bgm/Title_OST.mp3",
+    "titletransition": "data/sounds/Title_screen_transition.mp3",
 };
 
 var maps = {
