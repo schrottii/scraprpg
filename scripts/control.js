@@ -114,10 +114,10 @@ let controls = {
                         ctx.strokeText(this.text,
                             this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width,
                             this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height);
+                    }
                     ctx.fillText(this.text,
                         this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width,
                         this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height);
-                    }
                 }
                 else {
                     ctx.font = this.fontSize + "px NotoSans, sans-serif";

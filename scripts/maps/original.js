@@ -162,20 +162,20 @@ maps["original"] = {
             occupied: true,
         },
         "D05": {
-             sprite: "teleport",
-             teleport: ["original", 4, 4],
+            sprite: "teleport",
+            teleport: ["original", 4, 4],
         },
         "D06": {
-              sprite: "teleport",
-              teleport: ["test", 4, 5],
-            
+            sprite: "teleport",
+            teleport: ["test", 4, 5],
+
         },
 
         // Do not remove this } here. Make sure there's a } right above this too
     },
     spawns: {
         "default": 10,
-        "itsalivemap" : 2
+        "itsalivemap": 2
     },
     maxEnemies: 8,
     map: [
@@ -196,3 +196,8 @@ maps["original"] = {
         "001 001 001 001 001 001 001 001 001 025 026 001 001 001 001",
         "001 001 001 001 001 001 001 001 001 027 028 001 001 001 001",
         "002 002 002 002 002 002 002 002 002 002 002 002 002 002 002",
+    ],
+    mapfg: [
+        "--- --- --- ---"
+    ]
+}

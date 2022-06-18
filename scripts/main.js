@@ -30,6 +30,7 @@ function init() {
                 text: "Start Muted",
                 onClick() {
                     musicPlayer.muted = true;
+                    soundPlayer.muted = true;
                     setScene(scenes.title());
                 }
             }),
