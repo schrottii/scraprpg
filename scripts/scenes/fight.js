@@ -8,6 +8,7 @@ scenes.fight = () => {
 
     var fightLogComponents = [];
     var enemyListComponents = [];
+    var enemyAmounts = ["", "", "", "", "", "", "", "", ""];
     var fightOverview = [];
     var fightStats1 = [];
     var fightStats2 = [];
@@ -105,8 +106,14 @@ scenes.fight = () => {
                 superTempText = "";
             }
             if (superTempText.length + tempText.length > maxLength) {
-                fightlog.push(tempText);
-                tempText = "";
+                if (tempText == "") {
+                    fightlog.push(superTempText);
+                    superTempText = "";
+                }
+                else {
+                    fightlog.push(tempText);
+                    tempText = "";
+                }
             }
         }
         fightlog.push(superTempText + tempText);
@@ -651,7 +658,7 @@ scenes.fight = () => {
         enemyListComponents.push(controls.label({
             anchor: [0.86, 0.816 + (i * 0.016)], offset: [2, 0],
             fontSize: 16, fill: "rgb(0, 0, 0)", align: "left",
-            text: "ERROR",
+            text: "ERROR" + i,
             alpha: 255,
         }));
     }
@@ -1147,7 +1154,31 @@ scenes.fight = () => {
                     if (epositions[i][j].isOccupied == true) {
                         epositionControls[i + (j * 3)].source = epositions[i][j].occupied;
                         epositionControls[i + (j * 3)].alpha = 255;
-                        enemyListComponents[(i + (j * 3)) + 2].text = enemyTypes[epositions[i][j].occupied].name;
+
+                        // I hate this code here
+                        let doWeHaveThisOneDoWe = 0;
+                        let amount = 0;
+                        let which = 0;
+                        for (k = 0; k < 3; k++) {
+                            for (l = 0; l < 3; l++) {
+                                if (enemyAmounts[k + (l * 3)] != undefined) if (enemyAmounts[k + (l * 3)] == enemyTypes[epositions[i][j].occupied].name) {
+                                    if(which == 0) which = k + (l * 3);
+                                    doWeHaveThisOneDoWe += 1;
+                                }
+                                if (enemyTypes[epositions[k][l].occupied] != undefined )if (enemyTypes[epositions[k][l].occupied].name == enemyTypes[epositions[i][j].occupied].name) amount += 1;
+                            }
+                        }
+                        if (doWeHaveThisOneDoWe == 0) {
+                            enemyListComponents[(i + (j * 3)) + 2].text = enemyTypes[epositions[i][j].occupied].name + " x" + amount;
+                            enemyAmounts[i + (j * 3)] = enemyTypes[epositions[i][j].occupied].name;
+                        }
+                        else if (doWeHaveThisOneDoWe == 1 && which == i + (j * 3)) {
+                            enemyListComponents[(i + (j * 3)) + 2].text = enemyTypes[epositions[i][j].occupied].name + " x" + amount;
+                        }
+                        else {
+                            enemyListComponents[(i + (j * 3)) + 2].text = "";
+                        }
+
                     }
                     else {
                         epositionControls[i + (j * 3)].source = "gear";
