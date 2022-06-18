@@ -22,20 +22,36 @@ let controls = {
             source: null,
             snip: false,
             render(ctx) {
+                if (isLs() == true) {
+                    let w = this.sizeOffset[0] / 2 + this.sizeAnchor[0] * ctx.canvas.width;
+                    let h = this.sizeOffset[1] / 2+ this.sizeAnchor[1] * ctx.canvas.height;
 
-                let w = this.sizeOffset[0] + this.sizeAnchor[0] * ctx.canvas.width;
-                let h = this.sizeOffset[1] + this.sizeAnchor[1] * ctx.canvas.height;
+                    if (w > 0 && h > 0 && this.snip != false) ctx.drawImage(images[this.source],
+                        this.snip[0], this.snip[1], this.snip[2], this.snip[3],
+                        this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width,
+                        this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height, w, h);
+                    else if (w > 0 && h > 0) ctx.drawImage(images[this.source],
+                        this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width,
+                        this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height, w, h);
+                    else ctx.drawImage(images[this.source],
+                        this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width,
+                        this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height);
+                }
+                else {
+                    let w = this.sizeOffset[0] + this.sizeAnchor[0] * ctx.canvas.width;
+                    let h = this.sizeOffset[1] + this.sizeAnchor[1] * ctx.canvas.height;
 
-                if (w > 0 && h > 0 && this.snip != false) ctx.drawImage(images[this.source],
-                    this.snip[0], this.snip[1], this.snip[2], this.snip[3], 
-                    this.offset[0] + this.anchor[0] * ctx.canvas.width,
-                    this.offset[1] + this.anchor[1] * ctx.canvas.height, w, h);
-                else if (w > 0 && h > 0) ctx.drawImage(images[this.source], 
-                    this.offset[0] + this.anchor[0] * ctx.canvas.width, 
-                    this.offset[1] + this.anchor[1] * ctx.canvas.height, w, h);
-                else ctx.drawImage(images[this.source], 
-                    this.offset[0] + this.anchor[0] * ctx.canvas.width, 
-                    this.offset[1] + this.anchor[1] * ctx.canvas.height);
+                    if (w > 0 && h > 0 && this.snip != false) ctx.drawImage(images[this.source],
+                        this.snip[0], this.snip[1], this.snip[2], this.snip[3],
+                        this.offset[0] + this.anchor[0] * ctx.canvas.width,
+                        this.offset[1] + this.anchor[1] * ctx.canvas.height, w, h);
+                    else if (w > 0 && h > 0) ctx.drawImage(images[this.source],
+                        this.offset[0] + this.anchor[0] * ctx.canvas.width,
+                        this.offset[1] + this.anchor[1] * ctx.canvas.height, w, h);
+                    else ctx.drawImage(images[this.source],
+                        this.offset[0] + this.anchor[0] * ctx.canvas.width,
+                        this.offset[1] + this.anchor[1] * ctx.canvas.height);
+                }
             },
             ...args || {},
         }
@@ -46,17 +62,32 @@ let controls = {
             fill: "#000000",
             render(ctx) {
 
-                let w = this.sizeOffset[0] + this.sizeAnchor[0] * ctx.canvas.width;
-                let h = this.sizeOffset[1] + this.sizeAnchor[1] * ctx.canvas.height;
+                if (isLs() == true) {
+                    let w = this.sizeOffset[0] / 2 + this.sizeAnchor[0] * ctx.canvas.width;
+                    let h = this.sizeOffset[1] / 2 + this.sizeAnchor[1] * ctx.canvas.height;
 
-                ctx.fillStyle = this.fill;
+                    ctx.fillStyle = this.fill;
 
-                if (w > 0 && h > 0) ctx.fillRect(
-                    this.offset[0] + this.anchor[0] * ctx.canvas.width, 
-                    this.offset[1] + this.anchor[1] * ctx.canvas.height, w, h);
-                else ctx.fillRect(
-                    this.offset[0] + this.anchor[0] * ctx.canvas.width, 
-                    this.offset[1] + this.anchor[1] * ctx.canvas.height);
+                    if (w > 0 && h > 0) ctx.fillRect(
+                        this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width,
+                        this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height, w, h);
+                    else ctx.fillRect(
+                        this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width,
+                        this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height);
+                }
+                else {
+                    let w = this.sizeOffset[0] + this.sizeAnchor[0] * ctx.canvas.width;
+                    let h = this.sizeOffset[1] + this.sizeAnchor[1] * ctx.canvas.height;
+
+                    ctx.fillStyle = this.fill;
+
+                    if (w > 0 && h > 0) ctx.fillRect(
+                        this.offset[0] + this.anchor[0] * ctx.canvas.width,
+                        this.offset[1] + this.anchor[1] * ctx.canvas.height, w, h);
+                    else ctx.fillRect(
+                        this.offset[0] + this.anchor[0] * ctx.canvas.width,
+                        this.offset[1] + this.anchor[1] * ctx.canvas.height);
+                }
             },
             ...args || {},
         }
@@ -74,9 +105,16 @@ let controls = {
                 ctx.fillStyle = this.fill;
                 ctx.textAlign = this.align;
                 ctx.textBaseline = this.baseline;
-                ctx.fillText(this.text, 
-                    this.offset[0] + this.anchor[0] * ctx.canvas.width, 
-                    this.offset[1] + this.anchor[1] * ctx.canvas.height);
+                if (isLs() == true) {
+                    ctx.fillText(this.text,
+                        this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width,
+                        this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height);
+                }
+                else {
+                    ctx.fillText(this.text,
+                        this.offset[0] + this.anchor[0] * ctx.canvas.width,
+                        this.offset[1] + this.anchor[1] * ctx.canvas.height);
+                }
             },
             ...args || {},
         }
@@ -91,17 +129,27 @@ let controls = {
             fontSize: 30,
             render(ctx) {
 
-                let x = this.offset[0] + this.anchor[0] * ctx.canvas.width;
-                let y = this.offset[1] + this.anchor[1] * ctx.canvas.height;
-                let w = this.sizeOffset[0] + this.sizeAnchor[0] * ctx.canvas.width;
-                let h = this.sizeOffset[1] + this.sizeAnchor[1] * ctx.canvas.height;
+                let x, y, w, h;
+                if (isLs() == true) {
+                    x = this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width;
+                    y = this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height;
+                    w = this.sizeOffset[0] / 2 + this.sizeAnchor[0] * ctx.canvas.width;
+                    h = this.sizeOffset[1] / 2 + this.sizeAnchor[1] * ctx.canvas.height;
+                }
+                else {
+                    x = this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width;
+                    y = this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height;
+                    w = this.sizeOffset[0] / 2 + this.sizeAnchor[0] * ctx.canvas.width;
+                    h = this.sizeOffset[1] / 2 + this.sizeAnchor[1] * ctx.canvas.height;
+                }
 
                 ctx.fillStyle = this.fillTop;
                 ctx.fillRect(x, y, w, h / 2 + 0.25);
                 ctx.fillStyle = this.fillBottom;
                 ctx.fillRect(x, y + h / 2, w, h / 2);
-                
-                ctx.font = this.fontSize + "px NotoSans, sans-serif";
+
+                if (isLs() == false) ctx.font = this.fontSize + "px NotoSans, sans-serif";
+                if (isLs() == true) ctx.font = (this.fontSize / 2) + "px NotoSans, sans-serif";
                 ctx.fillStyle = this.fillText;
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";

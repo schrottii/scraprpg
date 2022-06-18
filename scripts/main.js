@@ -98,15 +98,25 @@ function onCanvasClick(e) {
         //console.log("   X: " + mouseX + " Y: " + mouseY);
 
         // offset - Get the position where the element starts. size - How big. Combine them to define the clickable area!
-        let offsetX = con.offset[0] + con.anchor[0] * mainCanvas.width;
-        let offsetY = con.offset[1] + con.anchor[1] * mainCanvas.height;
-        let sizeX = con.sizeOffset[0] + con.sizeAnchor[0] * mainCanvas.width;
-        let sizeY = con.sizeOffset[1] + con.sizeAnchor[1] * mainCanvas.height;
 
-        if (!scene.controls[a].clickthrough && scene.controls[a].onClick && 
-            mouseX >= offsetX && mouseX < offsetX + sizeX && 
-            mouseY >= offsetY && mouseY < offsetY + sizeY && 
-            scene.controls[a].onClick()) return;
+        let offsetX, offsetY, sizeX, sizeY
+        if (isLs() == false) {
+            offsetX = con.offset[0] + con.anchor[0] * mainCanvas.width;
+            offsetY = con.offset[1] + con.anchor[1] * mainCanvas.height;
+            sizeX = con.sizeOffset[0] + con.sizeAnchor[0] * mainCanvas.width;
+            sizeY = con.sizeOffset[1] + con.sizeAnchor[1] * mainCanvas.height;
+        }
+        else {
+            offsetX = con.offset[0] / 2 + con.anchor[0] * mainCanvas.width;
+            offsetY = con.offset[1] / 2+ con.anchor[1] * mainCanvas.height;
+            sizeX = con.sizeOffset[0] / 2 + con.sizeAnchor[0] * mainCanvas.width;
+            sizeY = con.sizeOffset[1] / 2 + con.sizeAnchor[1] * mainCanvas.height;
+        }
+
+            if (!scene.controls[a].clickthrough && scene.controls[a].onClick &&
+                mouseX >= offsetX && mouseX < offsetX + sizeX &&
+                mouseY >= offsetY && mouseY < offsetY + sizeY &&
+                scene.controls[a].onClick()) return;
     }
 }
 
@@ -144,6 +154,11 @@ function isMobile() {
     if (width < 24) return true;
     return false;
 }
+function isLs() {
+    // Somewhat
+    if (scale < 24) return true;
+    return false;
+}
 
 function loop() {
     // Tick time
@@ -174,7 +189,7 @@ function loop() {
     ctx.fillStyle = "white";
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
-    ctx.fillText((1000 / delta).toFixed(0) + "fps " + delta + "ms  | w: " + width + "  scale: " + scale + "   h: " + height + " mob: " + isMobile(), 2, 12);
+    ctx.fillText((1000 / delta).toFixed(0) + "fps " + delta + "ms  | w: " + width + "  scale: " + scale + "   h: " + height + " mob: " + isMobile() + " ls: " + isLs(), 2, 12);
 
     // Auto Save
     if (autoSaveTime > -1) {
