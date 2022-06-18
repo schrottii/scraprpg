@@ -1,16 +1,14 @@
 scenes.fight = () => {
 
     var fightaction = "none";
-    var attack_animation_progress = 0;
     var put = 0; //positions update time
 
-    var fightBgRects = [];
     var fightButtons = [];
     var fightActions = [];
 
     var fightLogComponents = [];
+    var enemyListComponents = [];
     var fightOverview = [];
-    var fightPortraits = [];
     var fightStats1 = [];
     var fightStats2 = [];
     var fightStats3 = [];
@@ -302,7 +300,7 @@ scenes.fight = () => {
                 fill: "rgb(191, 137, 69)",
                 alpha: 255,
                 onClick(args) {
-                    if (this.alpha == 255) {
+                    if (this.alpha == 255 && fightaction == "none") {
                         fightaction = "attack2";
                     }
                 }
@@ -618,17 +616,26 @@ scenes.fight = () => {
 
     // Fight Overview (bottom right)
 
-    fightOverview.push(controls.rect({
-        anchor: [0.8, 0.65], offset: [-40, 0], sizeAnchor: [0.20, 0.35], sizeOffset: [40, 0],
-        fill: "rgb(131, 50, 78)",
+    enemyListComponents.push(controls.rect({
+        anchor: [0.85, 0.775], sizeAnchor: [0.15, 0.225],
+        fill: "rgb(191, 137, 69)",
         alpha: 255,
     }));
 
-    fightOverview.push(controls.rect({
-        anchor: [0.81, 0.67], offset: [-40, 0], sizeAnchor: [0.18, 0.31], sizeOffset: [40, 0],
-        fill: "rgb(245, 145, 178)",
+    enemyListComponents.push(controls.rect({
+        anchor: [0.855, 0.78], sizeAnchor: [0.14, 0.215],
+        fill: "rgb(221, 155, 79)",
         alpha: 255,
     }));
+    
+    for (i = 0; i < 9; i++) {
+        enemyListComponents.push(controls.label({
+            anchor: [0.86, 0.816 + (i * 0.016)], offset: [2, 0],
+            fontSize: 16, fill: "rgb(0, 0, 0)", align: "left",
+            text: "ERROR",
+            alpha: 255,
+        }));
+    }
 
 
     // Fight stats 1 - always below portraits
@@ -1121,10 +1128,12 @@ scenes.fight = () => {
                     if (epositions[i][j].isOccupied == true) {
                         epositionControls[i + (j * 3)].source = epositions[i][j].occupied;
                         epositionControls[i + (j * 3)].alpha = 255;
+                        enemyListComponents[(i + (j * 3)) + 2].text = enemyTypes[epositions[i][j].occupied].name;
                     }
                     else {
                         epositionControls[i + (j * 3)].source = "gear";
                         epositionControls[i + (j * 3)].alpha = 0;
+                        enemyListComponents[(i + (j * 3)) + 2].text = "";
                     }
                 }
                 else {
@@ -1291,7 +1300,7 @@ scenes.fight = () => {
             // Load all the nice stuff
             //...fightBgRects,
             ...fightButtons, ...fightActions,
-            ...fightLogComponents,
+            ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
             ...fightStats1, ...fightStats2, ...fightStats3, actionDisplay,
             ...positionControls, ...epositionControls, ...positionGrid,
