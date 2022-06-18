@@ -100,18 +100,34 @@ let controls = {
             fontSize: 30,
             align: "center",
             baseline: "middle",
+            outline: "none",
+            outlineSize: 0,
             render(ctx) {
                 ctx.fillStyle = this.fill;
                 ctx.textAlign = this.align;
                 ctx.textBaseline = this.baseline;
                 if (isLs() == true) {
                     ctx.font = (this.fontSize / 2) + "px NotoSans, sans-serif";
+                    if (this.outline != "none") {
+                        ctx.strokeStyle = this.outline;
+                        ctx.lineWidth = this.outlineSize;
+                        ctx.strokeText(this.text,
+                            this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width,
+                            this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height);
                     ctx.fillText(this.text,
                         this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width,
                         this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height);
+                    }
                 }
                 else {
                     ctx.font = this.fontSize + "px NotoSans, sans-serif";
+                    if (this.outline != "none") {
+                        ctx.strokeStyle = this.outline;
+                        ctx.lineWidth = this.outlineSize;
+                        ctx.strokeText(this.text,
+                            this.offset[0] + this.anchor[0] * ctx.canvas.width,
+                            this.offset[1] + this.anchor[1] * ctx.canvas.height);
+                    }
                     ctx.fillText(this.text,
                         this.offset[0] + this.anchor[0] * ctx.canvas.width,
                         this.offset[1] + this.anchor[1] * ctx.canvas.height);

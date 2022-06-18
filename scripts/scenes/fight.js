@@ -436,7 +436,7 @@ scenes.fight = () => {
     for (i = 0; i < 3; i++) {
         actionDisplay.push(controls.label({
             anchor: [0.175, 0.07 + (0.02 * i)],
-            fontSize: 20, fill: "rgb(125, 255, 0)", align: "left",
+            fontSize: 20, fill: "rgb(125, 255, 0)", align: "left", outline: "darkgreen", outlineSize: 8,
             text: actionText[Math.max(0, actionText.length - 3 + i)],
             alpha: 255,
         }));
