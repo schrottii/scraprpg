@@ -137,10 +137,10 @@ let controls = {
                     h = this.sizeOffset[1] / 2 + this.sizeAnchor[1] * ctx.canvas.height;
                 }
                 else {
-                    x = this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width;
-                    y = this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height;
-                    w = this.sizeOffset[0] / 2 + this.sizeAnchor[0] * ctx.canvas.width;
-                    h = this.sizeOffset[1] / 2 + this.sizeAnchor[1] * ctx.canvas.height;
+                    x = this.offset[0] + this.anchor[0] * ctx.canvas.width;
+                    y = this.offset[1] + this.anchor[1] * ctx.canvas.height;
+                    w = this.sizeOffset[0] + this.sizeAnchor[0] * ctx.canvas.width;
+                    h = this.sizeOffset[1] + this.sizeAnchor[1] * ctx.canvas.height;
                 }
 
                 ctx.fillStyle = this.fillTop;
