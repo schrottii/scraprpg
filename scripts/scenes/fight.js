@@ -13,6 +13,8 @@ scenes.fight = () => {
     var fightStats1 = [];
     var fightStats2 = [];
     var fightStats3 = [];
+    var actionDisplay = [];
+    var actionText = [];
 
     var positionControls = [];
     var epositionControls = [];
@@ -117,6 +119,31 @@ scenes.fight = () => {
             }
         }
         fightlog.push(tempText + superTempText);
+    }
+
+    function postAction(text) {
+        let maxLength = 24;
+        let tempText = "";
+        let superTempText = "";
+
+        for (i = 0; i < text.length; i++) {
+            superTempText = superTempText + text[i];
+            if (text[i] == " ") {
+                tempText = tempText + superTempText;
+                superTempText = "";
+            }
+            if (superTempText.length + tempText.length > maxLength) {
+                if (tempText == "") {
+                    tempText = tempText + superTempText;
+                    superTempText = "";
+                }
+                else {
+                    actionText.push(tempText);
+                    tempText = "";
+                }
+            }
+        }
+        actionText.push(tempText + superTempText);
     }
 
     function executeActions() {
@@ -406,12 +433,14 @@ scenes.fight = () => {
     }
 
 
-    actionDisplay = controls.label({
-        anchor: [0.0025, 0.25],
-        fontSize: 16, fill: "rgb(125, 255, 0)", align: "left",
-        text: "...",
-        alpha: 255,
-    });
+    for (i = 0; i < 3; i++) {
+        actionDisplay.push(controls.label({
+            anchor: [0.175, 0.07 + (0.02 * i)],
+            fontSize: 20, fill: "rgb(125, 255, 0)", align: "left",
+            text: actionText[Math.max(0, actionText.length - 3 + i)],
+            alpha: 255,
+        }));
+    }
 
 
     for (j = 0; j < 2; j++) {
@@ -1236,20 +1265,17 @@ scenes.fight = () => {
                 }
             }
         }
-        
-        actionDisplay.text =
-            {
-            "none" : "Choose what to do!",
-            "switch": "Select who to switch!",
-            "switch2": "Select where to switch to!",
-            "attack": "Select attack type",
-            "attack2": "Select who should attack!",
-            "attack3": "Select who should be attacked!",
-            "attack4": "So much damage! Wow!",
-            "enemiesturn": "It's the enemies' turn...",
-            "heal1": "Select the wizard who will heal",
-            "heal2": "heal who?"
-            }[fightaction];
+
+        actionText = [];
+        if (fightaction == "none") postAction("Select a character before assigning a command.");
+        if (fightaction == "attack") postAction("What will you assign for <character>?");
+        if (fightaction == "attack2") postAction("Choose a character.");
+        if (fightaction == "attack3") postAction("Choose a target.");
+        if (fightaction == "attack4") postAction("What <category> will <character> use?");
+        if (fightaction == "macro") postAction("What predetermined set ot actions will <character> use?");
+        while (actionText.length < 3) {
+            actionText.push("");
+        }
             
     }
 
@@ -1329,6 +1355,9 @@ scenes.fight = () => {
             for (i = 0; i < 12; i++) {
                 fightLogComponents[2 + i].text = fightlog[Math.max(0, fightlog.length - 12 + i)];
             }
+            for (i = 0; i < 3; i++) {
+                actionDisplay[i].text = actionText[i];
+            }
             
             put += delta;
             if (put > 99) {
@@ -1348,7 +1377,7 @@ scenes.fight = () => {
             ...fightButtons, ...fightActions,
             ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
-            ...fightStats1, ...fightStats2, ...fightStats3, actionDisplay,
+            ...fightStats1, ...fightStats2, ...fightStats3, ...actionDisplay,
             ...positionControls, ...epositionControls, ...positionGrid,
         ],
     }
