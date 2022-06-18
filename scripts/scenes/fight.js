@@ -93,6 +93,25 @@ scenes.fight = () => {
         }
     }
 
+    function postLog(text) {
+        let maxLength = 24;
+        let tempText = "";
+        let superTempText = "";
+
+        for (i = 0; i < text.length; i++) {
+            superTempText = superTempText + text[i];
+            if (text[i] == " ") {
+                tempText = tempText + superTempText;
+                superTempText = "";
+            }
+            if (superTempText.length + tempText.length > maxLength) {
+                fightlog.push(tempText);
+                tempText = "";
+            }
+        }
+        fightlog.push(superTempText + tempText);
+    }
+
     function executeActions() {
             let highestAGI = 0;
             let whoAGI;
@@ -143,8 +162,8 @@ scenes.fight = () => {
                         let Damage = calculateDamage(1, selectedAlly[0], selectedAlly[1], pos1, pos2);
                         epositions[pos1][pos2].HP -= Damage; // Deal damage
 
-                        fightlog.push(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " attacks " + epositions[pos1][pos2].name);
-                        fightlog.push("and deals " + Damage + " damage!");
+                        postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " attacks " + epositions[pos1][pos2].name);
+                        postLog("and deals " + Damage + " damage!");
                         if (epositions[pos1][pos2].HP < 1) { // Is dead?
                             epositions[pos1][pos2].isOccupied = false;
                             epositions[pos1][pos2].occupied = false;
@@ -153,14 +172,14 @@ scenes.fight = () => {
                             let Experience = epositions[pos1][pos2].strength;
                             game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EXP += Experience;
 
-                            fightlog.push(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " killed " + epositions[pos1][pos2].name);
-                            fightlog.push("and earned " + Experience + " EXP!");
+                            postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " killed " + epositions[pos1][pos2].name);
+                            postLog("and earned " + Experience + " EXP!");
                             checkLevelUps();
                             checkAllDead();
                         }
                     }
                     else {
-                        fightlog.push(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " missed!");
+                        postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " missed!");
                     }
                     executeActions();
                 });
@@ -222,12 +241,12 @@ scenes.fight = () => {
             let Damage = calculateDamage(2, pos[0], pos[1], selectedAlly[0], selectedAlly[1]);
             if (positions[selectedAlly[0]][selectedAlly[1]].isOccupied != false) {
                 game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP -= Damage;
-                fightlog.push(epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name);
-                fightlog.push("and deals " + Damage + " damage!");
+                postLog(epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name);
+                postLog("and deals " + Damage + " damage!");
                 epositions[pos[0]][pos[1]].action = false;
 
                 if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP < 1) {
-                    fightlog.push(epositions[pos[0]][pos[1]].name + " killed " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + "!");
+                    postLog(epositions[pos[0]][pos[1]].name + " killed " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + "!");
                     positions[selectedAlly[0]][selectedAlly[1]].isOccupied = false;
                     checkAllDead();
                 }
@@ -251,8 +270,8 @@ scenes.fight = () => {
         positions[switchThose[0][0]][switchThose[0][1]].isOccupied = cache1234;
 
         // Fightlog
-        fightlog.push("Swapped [" + (switchThose[0][0] + 1) + "/" + (switchThose[0][1] + 1) + "]");
-        fightlog.push("with [" + (switchThose[1][0] + 1) + "/" + (switchThose[1][1] + 1) + "]!");
+        postLog("Swapped [" + (switchThose[0][0] + 1) + "/" + (switchThose[0][1] + 1) + "]");
+        fpostLog("with [" + (switchThose[1][0] + 1) + "/" + (switchThose[1][1] + 1) + "]!");
 
         // Clear this stuff
         switchThose = [[0, 0], [0, 0]];
@@ -336,7 +355,7 @@ scenes.fight = () => {
                 alpha: 255,
                 onClick(args) {
                     if (this.alpha == 255) {
-                        fightlog.push(prompt("Put what?"));
+                        postLog(prompt("Put what?"));
                     }
                 }
             }))
