@@ -101,16 +101,17 @@ let controls = {
             align: "center",
             baseline: "middle",
             render(ctx) {
-                ctx.font = this.fontSize + "px NotoSans, sans-serif";
                 ctx.fillStyle = this.fill;
                 ctx.textAlign = this.align;
                 ctx.textBaseline = this.baseline;
                 if (isLs() == true) {
+                    ctx.font = (this.fontSize / 2) + "px NotoSans, sans-serif";
                     ctx.fillText(this.text,
                         this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width,
                         this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height);
                 }
                 else {
+                    ctx.font = this.fontSize + "px NotoSans, sans-serif";
                     ctx.fillText(this.text,
                         this.offset[0] + this.anchor[0] * ctx.canvas.width,
                         this.offset[1] + this.anchor[1] * ctx.canvas.height);
