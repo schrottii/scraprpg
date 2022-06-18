@@ -298,7 +298,7 @@ scenes.fight = () => {
     function topRowButton() {
         if (i == 0) { // Normal Actions
             fightButtons.push(controls.rect({
-                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.15, 0.04],
+                anchor: [0.00, 0 + (i * 0.035)], sizeAnchor: [0.15, 0.035],
                 fill: "rgb(191, 137, 69)",
                 alpha: 255,
                 onClick(args) {
@@ -310,7 +310,7 @@ scenes.fight = () => {
         }
         if (i == 1) { // Item Inventory
             fightButtons.push(controls.rect({
-                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.15, 0.04],
+                anchor: [0.00, 0 + (i * 0.035)], sizeAnchor: [0.15, 0.035],
                 fill: "rgb(191, 137, 69)",
                 alpha: 255,
                 onClick(args) {
@@ -322,7 +322,7 @@ scenes.fight = () => {
         }
         if (i == 2) { // Magic
             fightButtons.push(controls.rect({
-                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.15, 0.04],
+                anchor: [0.00, 0 + (i * 0.035)], sizeAnchor: [0.15, 0.035],
                 fill: "rgb(191, 137, 69)",
                 alpha: 255,
                 onClick(args) {
@@ -333,7 +333,7 @@ scenes.fight = () => {
         }
         if (i == 3) { // Mastery Techniques
             fightButtons.push(controls.rect({
-                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.15, 0.04],
+                anchor: [0.00, 0 + (i * 0.035)], sizeAnchor: [0.15, 0.035],
                 fill: "rgb(191, 137, 69)",
                 alpha: 255,
                 onClick(args) {
@@ -345,7 +345,7 @@ scenes.fight = () => {
         }
         if (i == 4) { // Macro
             fightButtons.push(controls.rect({
-                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.15, 0.04],
+                anchor: [0.00, 0 + (i * 0.035)], sizeAnchor: [0.15, 0.035],
                 fill: "rgb(191, 137, 69)",
                 alpha: 255,
                 onClick(args) {
@@ -357,7 +357,7 @@ scenes.fight = () => {
         }
         if (i == 5) { // Flee
             fightButtons.push(controls.rect({
-                anchor: [0.00, 0.03 + (i * 0.04)], sizeAnchor: [0.15, 0.04],
+                anchor: [0.00, 0 + (i * 0.035)], sizeAnchor: [0.15, 0.035],
                 fill: "rgb(191, 137, 69)",
                 alpha: 255,
                 onClick(args) {
@@ -372,12 +372,12 @@ scenes.fight = () => {
     for (i = 0; i < 6; i++) {
         topRowButton(i);
         fightButtons.push(controls.rect({
-            anchor: [0.0025, 0.0325 + (i * 0.04)], sizeAnchor: [0.145, 0.035],
+            anchor: [0.0025, 0.0025 + (i * 0.035)], sizeAnchor: [0.145, 0.03],
             fill: "rgb(221, 155, 79)",
             alpha: 255,
         }))
         fightButtons.push(controls.label({
-            anchor: [0.145, 0.05 + (i * 0.04)],
+            anchor: [0.145, 0.02 + (i * 0.035)],
             text: ["Normal Actions", "Item Inventory", "Magic", "Mastery Techniques", "Macro", "Flee"][i],
             fontSize: 16, fill: "black", align: "right", 
             alpha: 255,
@@ -387,7 +387,7 @@ scenes.fight = () => {
 
 
     actionDisplay = controls.label({
-        anchor: [0.0025, 0.3],
+        anchor: [0.0025, 0.25],
         fontSize: 16, fill: "rgb(125, 255, 0)", align: "left",
         text: "...",
         alpha: 255,
@@ -397,7 +397,7 @@ scenes.fight = () => {
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 6; i++) {
             fightButtons.push(controls.rect({
-                anchor: [0.33 + (j * 0.17), 0.03 + (i * 0.0425)], sizeAnchor: [0.17, 0.0425],
+                anchor: [0.33 + (j * 0.17), 0 + (i * 0.0375)], sizeAnchor: [0.17, 0.0375],
                 fill: "rgb(38, 52, 38)",
                 alpha: 255,
                 onClick(args) {
@@ -406,12 +406,12 @@ scenes.fight = () => {
                 }
             }))
             fightActions.push(controls.rect({
-                anchor: [0.3325 + (j * 0.17), 0.0325 + (i * 0.0425)], sizeAnchor: [0.165, 0.0375],
+                anchor: [0.3325 + (j * 0.17), 0.0025 + (i * 0.0375)], sizeAnchor: [0.165, 0.0325],
                 fill: "rgb(42, 87, 44)",
                 alpha: 255,
             }))
             fightActions.push(controls.label({
-                anchor: [0.49 + (j * 0.17), 0.055 + (i * 0.0425)],
+                anchor: [0.49 + (j * 0.17), 0.025 + (i * 0.0375)],
                 text: "Coming soon...",
                 fontSize: 16, fill: "white", align: "right",
                 alpha: 255,
@@ -630,31 +630,6 @@ scenes.fight = () => {
         alpha: 255,
     }));
 
-    // Portraits (is that how you spell it?)
-
-    fightPortraits.push(controls.rect({
-        anchor: [0.2, 0.625], offset: [40, 0], sizeOffset: [68, 68],
-        fill: "yellow",
-        alpha: 255,
-    }));
-    
-    fightPortraits.push(controls.image({
-        anchor: [0.2, 0.625], offset: [42, 2], sizeOffset: [64, 64],
-        source: "p_bleu",
-        alpha: 255,
-    }));
-
-    fightPortraits.push(controls.rect({
-        anchor: [0.42, 0.625], offset: [40, 0], sizeOffset: [68, 68],
-        fill: "yellow",
-        alpha: 255,
-    }));
-
-    fightPortraits.push(controls.image({
-        anchor: [0.42, 0.625], offset: [42, 2], sizeOffset: [64, 64],
-        source: "p_corelle",
-        alpha: 255,
-    }));
 
     // Fight stats 1 - always below portraits
 
@@ -1318,7 +1293,6 @@ scenes.fight = () => {
             ...fightButtons, ...fightActions,
             ...fightLogComponents,
             ...fightOverview,
-            ...fightPortraits,
             ...fightStats1, ...fightStats2, ...fightStats3, actionDisplay,
             ...positionControls, ...epositionControls, ...positionGrid,
         ],
