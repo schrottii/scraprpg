@@ -185,18 +185,58 @@ scenes.game = () => {
         anchor: [0.8, 1], offset: [0, -105], sizeAnchor: [0.2, 0.05],
         text: "Continue...",
         onClick(args) {
-            dialogueProgress += 1;
-            if (dialogueProgress >= maps[game.map].dialogues[currentDialogue].length || maps[game.map].dialogues[currentDialogue][dialogueProgress] == undefined) {
-                inDialogue = false;
-                currentDialogue = false;
-                dialogueEmotion = "neutral";
-                dialogueProgress = 0;
-                canMove = true;
+            if (this.alpha == 255) {
+                dialogueProgress += 1;
+                if (dialogueProgress >= maps[game.map].dialogues[currentDialogue].length || maps[game.map].dialogues[currentDialogue][dialogueProgress] == undefined) {
+                    inDialogue = false;
+                    currentDialogue = false;
+                    dialogueEmotion = "neutral";
+                    dialogueProgress = 0;
+                    canMove = true;
+                }
             }
         },
         alpha: 0,
     }));
 
+
+
+    let actionButton = controls.image({
+        anchor: [0.8, 0.8], sizeOffset: [64, 64],
+        alpha: 255,
+        source: "actionbutton",
+        onClick(args) {
+            let map = maps[game.map];
+            if (head == 0) { // Down
+                if (getTile(map, game.position[0], game.position[1] + 1) != undefined) {
+                    if (getTile(map, game.position[0], game.position[1] + 1).action != undefined) {
+                        getTile(map, game.position[0], game.position[1] + 1).action();
+                    }
+                }
+            }
+            else if (head == 1) { // Left
+                if (getTile(map, game.position[0] - 1, game.position[1]) != undefined) {
+                    if (getTile(map, game.position[0] - 1, game.position[1]).action != undefined) {
+                        getTile(map, game.position[0] - 1, game.position[1]).action();
+                    }
+                }
+            }
+            else if (head == 2) { // Right
+                if (getTile(map, game.position[0] + 1, game.position[1]) != undefined) {
+                    if (getTile(map, game.position[0] + 1, game.position[1]).action != undefined) {
+                        getTile(map, game.position[0] + 1, game.position[1]).action();
+                    }
+                }
+            }
+            else if (head == 3) { // Up
+                if (getTile(map, game.position[0], game.position[1] - 1) != undefined) {
+                    if (getTile(map, game.position[0], game.position[1] - 1).action != undefined) {
+                        getTile(map, game.position[0], game.position[1] - 1).action();
+                    }
+                }
+            }   
+        }
+    });
 
     // Buttons, then images over them
     for (i = 0; i < 3; i++) {
@@ -524,38 +564,54 @@ scenes.game = () => {
                 if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up")) {
                     head = 3;
                     direction = "up";
+                    if (getTile(map, game.position[0], game.position[1] - 1) != undefined) if (getTile(map, game.position[0], game.position[1] - 1).action != undefined) actionButton.source = "actionbutton_active"
+                    else actionButton.source = "actionbutton"
                     if (isWalkable(map, game.position[0], game.position[1] - 1)) { //Direction-change-against-wall
                         kofs = [0, -1, 1];
                         game.position[1]--;
                         ActionsOnMove();
                         tryTeleport(map, game.position[0], game.position[1]);
+                        if (getTile(map, game.position[0], game.position[1] - 1) != undefined) if (getTile(map, game.position[0], game.position[1] - 1).action != undefined) actionButton.source = "actionbutton_active"
+                        else actionButton.source = "actionbutton"
                     }
                 } else if ((currentKeys["s"] || currentKeys["arrowdown"] || pad == "down")) {
                     head = 0;
                     direction = "down";
+                    if (getTile(map, game.position[0], game.position[1] + 1) != undefined) if (getTile(map, game.position[0], game.position[1] + 1).action != undefined) actionButton.source = "actionbutton_active"
+                    else actionButton.source = "actionbutton"
                     if (isWalkable(map, game.position[0], game.position[1] + 1)) { //Direction-change-against-wall
                         kofs = [0, 1, 1];
                         game.position[1]++;
                         ActionsOnMove();
                         tryTeleport(map, game.position[0], game.position[1]);
+                        if (getTile(map, game.position[0], game.position[1] + 1) != undefined) if (getTile(map, game.position[0], game.position[1] + 1).action != undefined) actionButton.source = "actionbutton_active"
+                        else actionButton.source = "actionbutton"
                     }
                 } else if ((currentKeys["a"] || currentKeys["arrowleft"] || pad == "left")) {
                     head = 1;
                     direction = "left";
+                    if (getTile(map, game.position[0] - 1, game.position[1]) != undefined) if (getTile(map, game.position[0] - 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
+                    else actionButton.source = "actionbutton"
                     if (isWalkable(map, game.position[0] - 1, game.position[1])) { //Direction-change-against-wall
                         kofs = [-1, 0, 1];
                         game.position[0]--;
                         ActionsOnMove();
                         tryTeleport(map, game.position[0], game.position[1]);
+                        if (getTile(map, game.position[0] - 1, game.position[1]) != undefined) if (getTile(map, game.position[0] - 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
+                        else actionButton.source = "actionbutton"
                     }
                 } else if ((currentKeys["d"] || currentKeys["arrowright"] || pad == "right")) {
                     head = 2;
                     direction = "right";
+                    if (getTile(map, game.position[0] + 1, game.position[1]) != undefined) if (getTile(map, game.position[0] + 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
+                    else actionButton.source = "actionbutton"
                     if (isWalkable(map, game.position[0] + 1, game.position[1])) { //Direction-change-against-wall
                         kofs = [1, 0, 1];
                         game.position[0]++;
                         ActionsOnMove();
                         tryTeleport(map, game.position[0], game.position[1]);
+                        if (getTile(map, game.position[0] + 1, game.position[1]) != undefined) if (getTile(map, game.position[0] + 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
+                        else actionButton.source = "actionbutton"
                     }
                 }
                 pad = "";
@@ -642,7 +698,7 @@ scenes.game = () => {
             mapDisplayStats2.text = "HP: " + getPlayer(2).HP + "/" + getPlayer(2).maxHP + "   EP: " + getPlayer(2).EP + "/" + getPlayer(2).maxEP;
         },
         controls: [
-            ...walkPad, autoSaveText, ...mapDisplay,
+            ...walkPad, autoSaveText, ...mapDisplay, actionButton,
             mapDisplayStats1, mapDisplayStats2,
             mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents
         ],

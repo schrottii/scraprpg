@@ -26,6 +26,9 @@ let images = {
     evil: "data/images/Map_Evil.png",
     selected: "data/images/selected.png",
 
+    actionbutton: "data/images/actionbutton_inactive.png",
+    actionbutton_active: "data/images/actionbutton_active.png",
+
     bleu_win: "data/images/BleuW.png",
     corelle_win: "data/images/CorelleW.png",
 

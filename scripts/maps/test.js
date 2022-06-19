@@ -37,6 +37,7 @@ maps["test"] = {
         "999": {
             sprite: "placeholder",
             occupied: true,
+            action: () => {console.log("Wtf is this")},
         },
         "009": {
             sprite: "tend_high_left",
@@ -152,6 +153,9 @@ maps["test"] = {
         "036": {
             sprite: "hay_right",
             occupied: true,
+            action: () => {
+                zoom = 2.5;
+            }
         },
         "037": {
             sprite: "hay_central",
@@ -160,6 +164,9 @@ maps["test"] = {
         "038": {
             sprite: "hay_left",
             occupied: true,
+            action: () => {
+                zoom = 1;
+            }
         },
         "D05": {
              sprite: "teleport",
