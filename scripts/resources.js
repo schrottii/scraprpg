@@ -101,6 +101,12 @@ let images = {
     "tiles/uv_house_up_window": "data/images/tiles/tile_uv_house_up_window.png",
     "tiles/teleport": "data/images/tiles/tile_teleport.png",
     "tiles/bush_1": "data/images/tiles/tile_bush_1.png",
+    "tiles/well_1": "data/images/tiles/tile_well_1.png",
+    "tiles/well_2": "data/images/tiles/tile_well_2.png",
+    "tiles/well_3": "data/images/tiles/tile_well_3.png",
+    "tiles/well_4": "data/images/tiles/tile_well_4.png",
+    "tiles/well_5": "data/images/tiles/tile_well_5.png",
+    "tiles/well_6": "data/images/tiles/tile_well_6.png",
 };
 
 var scenes = {
