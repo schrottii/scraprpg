@@ -110,6 +110,9 @@ let images = {
     "tiles/well_4": "data/images/tiles/tile_well_4.png",
     "tiles/well_5": "data/images/tiles/tile_well_5.png",
     "tiles/well_6": "data/images/tiles/tile_well_6.png",
+    "tiles/sc": "data/images/tiles/tile_sc.png",
+    "tiles/sc_light_1": "data/images/tiles/tile_sc_light_1.png",
+    "tiles/sc_light_2": "data/images/tiles/tile_sc_light_2.png",
 };
 
 var scenes = {
