@@ -313,31 +313,34 @@ scenes.game = () => {
 
     // Function to check if a tile is, well, walkable
     // Define if a tile (e. g. water) is walkable in the sprites dict
-    function isWalkable(map, x, y) {
-        if (map.map[y] && getTile(map, x, y)) { //Check if tile exists
-            if (getTile(map, x, y).occupied != undefined) { //Check if occupied exists
-                if (typeof (getTile(map, x, y).occupied) == "object") { // Config exists?
-                    if (direction == "up" && getTile(map, x, y).occupied.includes("up")) {
+    function isWalkable(map, x, y, l=1) {
+        if (map.map[y] && getTile(map, x, y, l)) { //Check if tile exists
+            if (getTile(map, x, y, l).occupied != undefined) { //Check if occupied exists
+                if (typeof (getTile(map, x, y, l).occupied) == "object") { // Config exists?
+                    if (direction == "up" && getTile(map, x, y, l).occupied.includes("up")) {
                         return true
                     }
-                    else if (direction == "left" && getTile(map, x, y).occupied.includes("left")) {
+                    else if (direction == "left" && getTile(map, x, y, l).occupied.includes("left")) {
                         return true
                     }
-                    else if (direction == "down" && getTile(map, x, y).occupied.includes("down")) {
+                    else if (direction == "down" && getTile(map, x, y, l).occupied.includes("down")) {
                         return true
                     }
-                    else if (direction == "right" && getTile(map, x, y).occupied.includes("right")) {
+                    else if (direction == "right" && getTile(map, x, y, l).occupied.includes("right")) {
                         return true
                     }
                     else { // Config denies passing
                         return false;
                     }
                 }
-                return !getTile(map, x, y).occupied // No config, is it occupied?
+                return !getTile(map, x, y, l).occupied // No config, is it occupied?
             }
-        // Unoccupied, you can pass!
+            // Unoccupied, you can pass!
             return true;
-        } else return false;
+        } else {
+            if (l == 1) return false;
+            return true;
+        }
     }
 
     function isTeleport(map, x, y) {
@@ -566,7 +569,8 @@ scenes.game = () => {
                     direction = "up";
                     if (getTile(map, game.position[0], game.position[1] - 1) != undefined) if (getTile(map, game.position[0], game.position[1] - 1).action != undefined) actionButton.source = "actionbutton_active"
                     else actionButton.source = "actionbutton"
-                    if (isWalkable(map, game.position[0], game.position[1] - 1)) { //Direction-change-against-wall
+                    if (isWalkable(map, game.position[0], game.position[1] - 1)
+                        && isWalkable(map, game.position[0], game.position[1] - 1, 2)) { //Direction-change-against-wall
                         kofs = [0, -1, 1];
                         game.position[1]--;
                         ActionsOnMove();
@@ -579,7 +583,8 @@ scenes.game = () => {
                     direction = "down";
                     if (getTile(map, game.position[0], game.position[1] + 1) != undefined) if (getTile(map, game.position[0], game.position[1] + 1).action != undefined) actionButton.source = "actionbutton_active"
                     else actionButton.source = "actionbutton"
-                    if (isWalkable(map, game.position[0], game.position[1] + 1)) { //Direction-change-against-wall
+                    if (isWalkable(map, game.position[0], game.position[1] + 1)
+                        && isWalkable(map, game.position[0], game.position[1] + 1, 2)) { //Direction-change-against-wall
                         kofs = [0, 1, 1];
                         game.position[1]++;
                         ActionsOnMove();
@@ -592,7 +597,8 @@ scenes.game = () => {
                     direction = "left";
                     if (getTile(map, game.position[0] - 1, game.position[1]) != undefined) if (getTile(map, game.position[0] - 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
                     else actionButton.source = "actionbutton"
-                    if (isWalkable(map, game.position[0] - 1, game.position[1])) { //Direction-change-against-wall
+                    if (isWalkable(map, game.position[0] - 1, game.position[1])
+                        && isWalkable(map, game.position[0] - 1, game.position[1], 2)) { //Direction-change-against-wall
                         kofs = [-1, 0, 1];
                         game.position[0]--;
                         ActionsOnMove();
@@ -605,7 +611,8 @@ scenes.game = () => {
                     direction = "right";
                     if (getTile(map, game.position[0] + 1, game.position[1]) != undefined) if (getTile(map, game.position[0] + 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
                     else actionButton.source = "actionbutton"
-                    if (isWalkable(map, game.position[0] + 1, game.position[1])) { //Direction-change-against-wall
+                    if (isWalkable(map, game.position[0] + 1, game.position[1])
+                        && isWalkable(map, game.position[0] + 1, game.position[1], 2)) { //Direction-change-against-wall
                         kofs = [1, 0, 1];
                         game.position[0]++;
                         ActionsOnMove();
