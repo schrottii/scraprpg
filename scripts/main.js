@@ -40,6 +40,7 @@ function init() {
                 text: "Dev Mode",
                 onClick() {
                     musicPlayer.muted = true;
+                    soundPlayer.muted = true;
                     loadGame(0);
                     loadSettings();
 
