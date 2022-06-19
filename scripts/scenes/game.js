@@ -1,6 +1,7 @@
 var zoom = 1;
 var kofs = [0, 0, 0];
 var walkTime = 0;
+var direction = "none";
 var inDialogue = false;
 var currentDialogue;
 var dialogueProgress = 0;
@@ -276,16 +277,16 @@ scenes.game = () => {
         if (map.map[y] && getTile(map, x, y)) { //Check if tile exists
             if (getTile(map, x, y).occupied != undefined) { //Check if occupied exists
                 if (typeof (getTile(map, x, y).occupied) == "object") { // Config exists?
-                    if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up") && getTile(map, x, y).occupied.includes("up")) {
+                    if (direction == "up" && getTile(map, x, y).occupied.includes("up")) {
                         return true
                     }
-                    else if ((currentKeys["a"] || currentKeys["arrowleft"] || pad == "left") && getTile(map, x, y).occupied.includes("left")) {
+                    else if (direction == "left" && getTile(map, x, y).occupied.includes("left")) {
                         return true
                     }
-                    else if ((currentKeys["s"] || currentKeys["arrowdown"] || pad == "down") && getTile(map, x, y).occupied.includes("down")) {
+                    else if (direction == "down" && getTile(map, x, y).occupied.includes("down")) {
                         return true
                     }
-                    else if ((currentKeys["d"] || currentKeys["arrowright"] || pad == "right") && getTile(map, x, y).occupied.includes("right")) {
+                    else if (direction == "right" && getTile(map, x, y).occupied.includes("right")) {
                         return true
                     }
                     else { // Config denies passing
@@ -518,6 +519,7 @@ scenes.game = () => {
             if (!kofs[2] && canMove == true) {
                 if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up")) {
                     head = 3;
+                    direction = "up";
                     if (isWalkable(map, game.position[0], game.position[1] - 1)) { //Direction-change-against-wall
                         kofs = [0, -1, 1];
                         game.position[1]--;
@@ -526,6 +528,7 @@ scenes.game = () => {
                     }
                 } else if ((currentKeys["s"] || currentKeys["arrowdown"] || pad == "down")) {
                     head = 0;
+                    direction = "down";
                     if (isWalkable(map, game.position[0], game.position[1] + 1)) { //Direction-change-against-wall
                         kofs = [0, 1, 1];
                         game.position[1]++;
@@ -534,6 +537,7 @@ scenes.game = () => {
                     }
                 } else if ((currentKeys["a"] || currentKeys["arrowleft"] || pad == "left")) {
                     head = 1;
+                    direction = "left";
                     if (isWalkable(map, game.position[0] - 1, game.position[1])) { //Direction-change-against-wall
                         kofs = [-1, 0, 1];
                         game.position[0]--;
@@ -542,6 +546,7 @@ scenes.game = () => {
                     }
                 } else if ((currentKeys["d"] || currentKeys["arrowright"] || pad == "right")) {
                     head = 2;
+                    direction = "right";
                     if (isWalkable(map, game.position[0] + 1, game.position[1])) { //Direction-change-against-wall
                         kofs = [1, 0, 1];
                         game.position[0]++;
