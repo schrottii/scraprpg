@@ -201,6 +201,7 @@ scenes.fight = () => {
                             epositions[pos1][pos2].isOccupied = false;
                             epositions[pos1][pos2].occupied = false;
                             epositions[pos1][pos2].action = false;
+                            enemyAmounts[pos1 + (pos2 * 3)] = "";
 
                             let Experience = epositions[pos1][pos2].strength;
                             game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EXP += Experience;
