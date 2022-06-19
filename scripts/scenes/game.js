@@ -450,45 +450,49 @@ scenes.game = () => {
                                         if (getTile(map, enemies[i].position[0], enemies[i].position[1] + 1).occupied != true) {
                                             enemies[i].position[1] += 1;
                                             enemies[i].head = 0;
+                                            enemies[i].kofs = [0, 1, 1];
                                         }
                                     }
                                 }
                             }
                         }
 
-                        if (Math.random() > 0.40) { // Left
+                        else if (Math.random() > 0.40) { // Left
                             if (map.map[enemies[i].position[1]] != undefined) {
                                 if (map.map[enemies[i].position[1]][enemies[i].position[0]] != undefined) {
                                     if (getTile(map, enemies[i].position[0] - 1, enemies[i].position[1]) != undefined) {
                                         if (getTile(map, enemies[i].position[0] - 1, enemies[i].position[1]).occupied != true) {
                                             enemies[i].position[0] -= 1;
                                             enemies[i].head = 1;
+                                            enemies[i].kofs = [-1, 0, 1];
                                         }
                                     }
                                 }
                             }
                         }
 
-                        if (Math.random() > 0.40) { // Right
+                        else if (Math.random() > 0.40) { // Right
                             if (map.map[enemies[i].position[1]] != undefined) {
                                 if (map.map[enemies[i].position[1]][enemies[i].position[0]] != undefined) {
                                     if (getTile(map, enemies[i].position[0] + 1, enemies[i].position[1]) != undefined) {
                                         if (getTile(map, enemies[i].position[0] + 1, enemies[i].position[1]).occupied != true) {
                                             enemies[i].position[0] += 1;
                                             enemies[i].head = 2;
+                                            enemies[i].kofs = [1, 0, 1];
                                         }
                                     }
                                 }
                             }
                         }
 
-                        if (Math.random() > 0.40) { // Up
+                        else if (Math.random() > 0.40) { // Up
                             if (map.map[enemies[i].position[1]] != undefined) {
                                 if (map.map[enemies[i].position[1]][enemies[i].position[0] - 1] != undefined) {
                                     if (getTile(map, enemies[i].position[0], enemies[i].position[1] - 1) != undefined) {
                                         if (getTile(map, enemies[i].position[0], enemies[i].position[1] - 1).occupied != true) {
                                             enemies[i].position[1] -= 1;
                                             enemies[i].head = 3;
+                                            enemies[i].kofs = [0, -1, 1];
                                         }
                                     }
                                 }
