@@ -490,30 +490,38 @@ scenes.game = () => {
             }
 
             if (!kofs[2] && canMove == true) {
-                if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up") && isWalkable(map, game.position[0], game.position[1] - 1)) {
-                    kofs = [0, -1, 1];
-                    game.position[1]--;
+                if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up")) {
                     head = 3;
-                    ActionsOnMove();
-                    tryTeleport(map, game.position[0], game.position[1]);
-                } else if ((currentKeys["s"] || currentKeys["arrowdown"] || pad == "down") && isWalkable(map, game.position[0], game.position[1] + 1)) {
-                    kofs = [0, 1, 1];
-                    game.position[1]++;
+                    if (isWalkable(map, game.position[0], game.position[1] - 1)) {
+                        kofs = [0, -1, 1];
+                        game.position[1]--;
+                        ActionsOnMove();
+                        tryTeleport(map, game.position[0], game.position[1]);
+                    }
+                } else if ((currentKeys["s"] || currentKeys["arrowdown"] || pad == "down")) {
                     head = 0;
-                    ActionsOnMove();
-                    tryTeleport(map, game.position[0], game.position[1]);
-                } else if ((currentKeys["a"] || currentKeys["arrowleft"] || pad == "left") && isWalkable(map, game.position[0] - 1, game.position[1])) {
-                    kofs = [-1, 0, 1];
-                    game.position[0]--;
+                    if (isWalkable(map, game.position[0], game.position[1] + 1)) {
+                        kofs = [0, 1, 1];
+                        game.position[1]++;
+                        ActionsOnMove();
+                        tryTeleport(map, game.position[0], game.position[1]);
+                    }
+                } else if ((currentKeys["a"] || currentKeys["arrowleft"] || pad == "left")) {
                     head = 1;
-                    ActionsOnMove();
-                    tryTeleport(map, game.position[0], game.position[1]);
-                } else if ((currentKeys["d"] || currentKeys["arrowright"] || pad == "right") && isWalkable(map, game.position[0] + 1, game.position[1])) {
-                    kofs = [1, 0, 1];
-                    game.position[0]++;
+                    if (isWalkable(map, game.position[0] - 1, game.position[1])) {
+                        kofs = [-1, 0, 1];
+                        game.position[0]--;
+                        ActionsOnMove();
+                        tryTeleport(map, game.position[0], game.position[1]);
+                    }
+                } else if ((currentKeys["d"] || currentKeys["arrowright"] || pad == "right")) {
                     head = 2;
-                    ActionsOnMove();
-                    tryTeleport(map, game.position[0], game.position[1]);
+                    if (isWalkable(map, game.position[0] + 1, game.position[1])) {
+                        kofs = [1, 0, 1];
+                        game.position[0]++;
+                        ActionsOnMove();
+                        tryTeleport(map, game.position[0], game.position[1]);
+                    }
                 }
                 pad = "";
             }
