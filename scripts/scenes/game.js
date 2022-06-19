@@ -4,6 +4,7 @@ var walkTime = 0;
 var inDialogue = false;
 var currentDialogue;
 var dialogueProgress = 0;
+var dialogueEmotion = "neutral";
 
 // Function used to create enemies
 function createEnemy(type) {
@@ -34,6 +35,29 @@ function checkLevelUps() {
         game.characters.corelle.maxHP = 14 + (game.characters.corelle.level * 2);
 
         game.characters.corelle.HP = game.characters.corelle.maxHP;
+    }
+}
+
+function getEmotion(emotion) { //How do you spell portrait?
+    switch (emotion) {
+        case "neutral":
+            return [0, 0, 64, 64];
+            break;
+        case "happy":
+            return [0, 64, 64, 64];
+            break;
+        case "disappointed":
+            return [0, 128, 64, 64];
+            break;
+        case "sad":
+            return [0, 192, 64, 64];
+            break;
+        case "angry":
+            return [0, 256, 64, 64];
+            break;
+        default:
+            return [0, 0, 64, 64];
+            break;
     }
 }
 
@@ -146,8 +170,8 @@ scenes.game = () => {
         alpha: 0,
     }));
     dialogueComponents.push(controls.image({
-        anchor: [0, 1], offset: [0, -128], sizeOffset: [128, 128],
-        source: "p_bleu",
+        anchor: [0, 1], offset: [0, -128], sizeOffset: [128, 128], snip: [0, 0, 64, 64],
+        source: "Portraits_Bleu",
         alpha: 0,
     }));
     dialogueComponents.push(controls.label({
@@ -161,9 +185,10 @@ scenes.game = () => {
         text: "Continue...",
         onClick(args) {
             dialogueProgress += 1;
-            if (dialogueProgress >= maps[game.map].dialogues[currentDialogue].length) {
+            if (dialogueProgress >= maps[game.map].dialogues[currentDialogue].length || maps[game.map].dialogues[currentDialogue][dialogueProgress] == undefined) {
                 inDialogue = false;
                 currentDialogue = false;
+                dialogueEmotion = "neutral";
                 dialogueProgress = 0;
                 canMove = true;
             }
@@ -383,6 +408,7 @@ scenes.game = () => {
             inDialogue = true;
             currentDialogue = getTile(map, game.position[0], game.position[1]).dialogue;
             dialogueProgress = 0;
+            dialogueEmotion = map.dialogues[currentDialogue][dialogueProgress][1];
             canMove = false;
         }
     }
@@ -492,7 +518,7 @@ scenes.game = () => {
             if (!kofs[2] && canMove == true) {
                 if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up")) {
                     head = 3;
-                    if (isWalkable(map, game.position[0], game.position[1] - 1)) {
+                    if (isWalkable(map, game.position[0], game.position[1] - 1)) { //Direction-change-against-wall
                         kofs = [0, -1, 1];
                         game.position[1]--;
                         ActionsOnMove();
@@ -500,7 +526,7 @@ scenes.game = () => {
                     }
                 } else if ((currentKeys["s"] || currentKeys["arrowdown"] || pad == "down")) {
                     head = 0;
-                    if (isWalkable(map, game.position[0], game.position[1] + 1)) {
+                    if (isWalkable(map, game.position[0], game.position[1] + 1)) { //Direction-change-against-wall
                         kofs = [0, 1, 1];
                         game.position[1]++;
                         ActionsOnMove();
@@ -508,7 +534,7 @@ scenes.game = () => {
                     }
                 } else if ((currentKeys["a"] || currentKeys["arrowleft"] || pad == "left")) {
                     head = 1;
-                    if (isWalkable(map, game.position[0] - 1, game.position[1])) {
+                    if (isWalkable(map, game.position[0] - 1, game.position[1])) { //Direction-change-against-wall
                         kofs = [-1, 0, 1];
                         game.position[0]--;
                         ActionsOnMove();
@@ -516,7 +542,7 @@ scenes.game = () => {
                     }
                 } else if ((currentKeys["d"] || currentKeys["arrowright"] || pad == "right")) {
                     head = 2;
-                    if (isWalkable(map, game.position[0] + 1, game.position[1])) {
+                    if (isWalkable(map, game.position[0] + 1, game.position[1])) { //Direction-change-against-wall
                         kofs = [1, 0, 1];
                         game.position[0]++;
                         ActionsOnMove();
@@ -580,7 +606,11 @@ scenes.game = () => {
                 for (i = 0; i < dialogueComponents.length; i++) {
                     dialogueComponents[i].alpha = 255;
                 }
-                dialogueComponents[2].text = map.dialogues[currentDialogue][dialogueProgress];
+                if (map.dialogues[currentDialogue][dialogueProgress] != undefined) {
+                    dialogueComponents[2].text = map.dialogues[currentDialogue][dialogueProgress][0];
+                    dialogueEmotion = map.dialogues[currentDialogue][dialogueProgress][1];
+                    dialogueComponents[1].snip = getEmotion(dialogueEmotion);
+                }
             }
             else if (dialogueComponents[0].alpha != 0) {
                 for (i = 0; i < dialogueComponents.length; i++) {

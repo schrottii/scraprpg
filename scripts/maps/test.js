@@ -254,8 +254,8 @@ maps["test"] = {
         "--- --- --- --- --- --- 034 033",
         ],
     dialogues: {
-        1: ["Hello this is a test dialogue",
-            "Second text",
-            "Don't forget to subscribe to my channel"]
+        1: [["Hello this is a test dialogue", "happy"],
+            ["Second text", "neutral"],
+            ["Don't forget to subscribe to my channel", "angry"]]
     }
 }

@@ -44,7 +44,7 @@ let images = {
     livingbarrel: "data/images/Map_LivingBarrel.png",
 
 
-    p_bleu: "data/images/p_bleu.png",
+    Portraits_Bleu: "data/images/Portraits_Bleu.png",
     p_corelle: "data/images/p_corelle.png",
 
     "tiles/grass1": "data/images/tiles/grass1.png",
