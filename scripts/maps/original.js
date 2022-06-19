@@ -172,6 +172,26 @@ maps["original"] = {
         "039": {
             sprite: "bush_1",
             occupied: true,
+        },
+        "040": {
+             sprite: "well_1",
+             occupied: true,
+        },
+        "041": {
+              sprite: "well_2",
+              occupied: true,
+        },
+        "042": {
+             sprite: "well_3",
+        }, 
+        "043": {
+             sprite: "well_4",
+        },
+        "044": {
+             sprite: "well_5",
+        },
+        "045": {
+              sprite: "well_6"
 
         },
 
