@@ -1,6 +1,7 @@
 scenes.fight = () => {
 
     var fightaction = "none";
+    var turn = 1;
     var put = 0; //positions update time
 
     var fightButtons = [];
@@ -251,6 +252,7 @@ scenes.fight = () => {
         // Stop if there is nobody (when is that?)
         if (highestAGI == 0) {
             fightaction = "none";
+            turn += 1;
             return;
         }
 
@@ -438,13 +440,20 @@ scenes.fight = () => {
 
     for (i = 0; i < 3; i++) {
         actionDisplay.push(controls.label({
-            anchor: [0.175, 0.07 + (0.02 * i)],
-            fontSize: 20, fill: "rgb(125, 255, 0)", align: "left", outline: "darkgreen", outlineSize: 8,
+            anchor: [0.175, 0.07 + (0.03 * i)],
+            fontSize: 24, fill: "rgb(125, 255, 0)", align: "left", outline: "darkgreen", outlineSize: 8,
             text: actionText[Math.max(0, actionText.length - 3 + i)],
             alpha: 255,
         }));
     }
 
+    // finally a non array
+    turnDisplay = controls.label({
+        anchor: [0.95, 0.07],
+        fontSize: 36, fill: "blue", align: "right", outline: "black", outlineSize: 8,
+        text: "Turn 1",
+        alpha: 255,
+    });
 
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 6; i++) {
@@ -1051,7 +1060,7 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             positionControls.push(controls.image({
-                anchor: [0.025, 0.375], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
+                anchor: [0.025, 0.45], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
                 source: "gear",
                 alpha: 255,
                 snip: [0, 64, 32, 32],
@@ -1097,7 +1106,7 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             epositionControls.push(controls.image({
-                anchor: [0.975, 0.375], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
+                anchor: [0.975, 0.45], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
                 source: "gear",
                 alpha: 255,
                 snip: [0, 32, 32, 32],
@@ -1125,7 +1134,7 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             positionGrid.push(controls.image({
-                anchor: [0.025, 0.375], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
+                anchor: [0.025, 0.45], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
                 source: "grid",
                 alpha: 255,
             }));
@@ -1134,7 +1143,7 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             positionGrid.push(controls.image({
-                anchor: [0.975, 0.375], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
+                anchor: [0.975, 0.45], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
                 source: "grid",
                 alpha: 255,
             }));
@@ -1279,6 +1288,8 @@ scenes.fight = () => {
         while (actionText.length < 3) {
             actionText.push("");
         }
+
+        turnDisplay.text = "Turn " + turn;
             
     }
 
@@ -1377,7 +1388,7 @@ scenes.fight = () => {
         controls: [
             // Load all the nice stuff
             //...fightBgRects,
-            ...fightButtons, ...fightActions,
+            ...fightButtons, ...fightActions, turnDisplay,
             ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
             ...fightStats1, ...fightStats2, ...fightStats3, ...actionDisplay,
