@@ -111,7 +111,14 @@ var scenes = {
 
 var audio = {
     "bgm/title": "data/bgm/Title_OST.mp3",
+
     "titletransition": "data/sounds/Title_screen_transition.mp3",
+    "ok": "data/sounds/sound_ok.wav",
+    "no": "data/sounds/sound_no.wav",
+    "cancel": "data/sounds/sound_cancel.wav",
+    "keyitem": "data/sounds/important_item.wav",
+    "damage": "data/sounds/damage.wav",
+    "teleport": "data/sounds/Teleport_sound.ogg",
 };
 
 var maps = {

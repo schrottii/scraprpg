@@ -196,6 +196,7 @@ scenes.fight = () => {
                         let Damage = calculateDamage(1, selectedAlly[0], selectedAlly[1], pos1, pos2);
                         epositions[pos1][pos2].HP -= Damage; // Deal damage
 
+                        playSound("damage");
                         postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " attacks " + epositions[pos1][pos2].name + " and deals " + Damage + " damage!");
                         if (epositions[pos1][pos2].HP < 1) { // Is dead?
                             epositions[pos1][pos2].isOccupied = false;
@@ -277,6 +278,7 @@ scenes.fight = () => {
                 postLog(epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " and deals " + Damage + " damage!");
                 epositions[pos[0]][pos[1]].action = false;
 
+                playSound("damage");
                 if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP < 1) {
                     postLog(epositions[pos[0]][pos[1]].name + " killed " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + "!");
                     positions[selectedAlly[0]][selectedAlly[1]].isOccupied = false;

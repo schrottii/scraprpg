@@ -91,6 +91,16 @@ var moveEnemiesTime = 0;
 
 var canMove = true;
 
+function playMusic(name) {
+    musicPlayer.src = audio[name].src;
+    musicPlayer.play();
+}
+
+function playSound(name) {
+    soundPlayer.src = audio[name].src;
+    soundPlayer.play();
+}
+
 function onCanvasClick(e) {
     for (let a = scene.controls.length - 1; a >= 0; a--) {
         let con = scene.controls[a];

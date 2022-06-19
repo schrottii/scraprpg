@@ -105,6 +105,7 @@ scenes.title = () => {
             onClick(args) {
                 if (mode == 0) {
                     saveNR = a;
+                    playSound("ok");
                     loadGame(a);
                     loadSave(a);
                 }
@@ -285,13 +286,11 @@ scenes.title = () => {
             controls.base({
                 anchor: [0, 0], sizeAnchor: [1, 1],
                 onClick() {
-                    soundPlayer.src = audio["titletransition"].src;
                     soundPlayer.volume = 1;
-                    soundPlayer.play();
+                    playSound("titletransition");
 
-                    musicPlayer.src = audio["bgm/title"].src;
                     musicPlayer.volume = .5;
-                    musicPlayer.play();
+                    playMusic("bgm/title");
                     state = "menu";
                     this.clickthrough = true;
                     loadSettings();

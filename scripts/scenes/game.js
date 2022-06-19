@@ -294,6 +294,7 @@ scenes.game = () => {
             game.map = themap.teleport[0];
             game.position[0] = themap.teleport[1];
             game.position[1] = themap.teleport[2];
+            playSound("teleport");
         }
     }
 
