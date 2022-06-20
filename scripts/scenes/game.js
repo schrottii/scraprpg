@@ -304,7 +304,9 @@ scenes.game = () => {
             }
         }
         if (l == 2) {
-            return map.tiles[map.mapbg2[y][x * 4] + map.mapbg2[y][(x * 4) + 1] + map.mapbg2[y][(x * 4) + 2]];
+            if (map.mapbg2[y] != undefined) {
+                return map.tiles[map.mapbg2[y][x * 4] + map.mapbg2[y][(x * 4) + 1] + map.mapbg2[y][(x * 4) + 2]];
+            }
         }
         if (l == 3) {
             return map.tiles[map.mapfg[y][x * 4] + map.mapfg[y][(x * 4) + 1] + map.mapfg[y][(x * 4) + 2]];
