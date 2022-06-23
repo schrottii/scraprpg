@@ -11,7 +11,7 @@ Programmer
 These are mainly the bosses of things other than programming and releasing the game.
 - **Barduzzi (*Salveeny* in GitHub)**
 Discord Server Owner, Idea Planner, Graphic Designer
-- **nameTheFights (Decastar)**
+- **Decastar**
 [Father of ScrapRPG](https://youtube.com/playlist?list=PLl18EjlJraJi3R_jBT266QQ8-smWw0GMn), Graphic Designer, Lead Composer, Lead Story Writer
 - **Daem S. (TheKingofTrash)**
 Graphic Designer, Story Writer
