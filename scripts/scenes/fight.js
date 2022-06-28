@@ -28,7 +28,7 @@ scenes.fight = () => {
 
     var win = false;
 
-    const amountStats = 8;
+    const amountStats = 10;
 
     var fightlog = [
         "",
@@ -499,6 +499,12 @@ scenes.fight = () => {
                 source: "bleu",
                 alpha: 255
             }))
+
+            fightStats.push(controls.rect({
+                anchor: [0.24 + (j * 0.35), 0.78 + (i * 0.075)], sizeAnchor: [0.2, 0.025],
+                fill: "rgb(5, 51, 5)",
+                alpha: 255
+            }))
             fightStats.push(controls.rect({
                 anchor: [0.24 + (j * 0.35), 0.78 + (i * 0.075)], sizeAnchor: [0.2, 0.025],
                 fill: "rgb(63, 127, 63)",
@@ -507,6 +513,12 @@ scenes.fight = () => {
             fightStats.push(controls.rect({
                 anchor: [0.242 + (j * 0.35), 0.782 + (i * 0.075)], sizeAnchor: [0.1960, 0.0210],
                 fill: "rgb(20, 204, 20)",
+                alpha: 255
+            }))
+
+            fightStats.push(controls.rect({
+                anchor: [0.24 + (j * 0.35), 0.81 + (i * 0.075)], sizeAnchor: [0.2, 0.025],
+                fill: "rgb(51, 0, 51)",
                 alpha: 255
             }))
             fightStats.push(controls.rect({
@@ -986,8 +998,11 @@ scenes.fight = () => {
             // Update the stats stuff at the bottom
             for (i = 0; i < 6; i++) {
                 fightStats[amountStats * i].text = "Lvl. " + getPlayer(i + 1).level;
-                fightStats[6 + amountStats * i].text = getPlayer(i + 1).HP + "/" + getPlayer(i + 1).maxHP;
-                fightStats[7 + amountStats * i].text = getPlayer(i + 1).EP + "/" + getPlayer(i + 1).maxEP;
+                fightStats[1 + amountStats * i].source = getPlayer(i + 1).name.toLowerCase();
+                fightStats[4 + amountStats * i].sizeAnchor[0] = 0.1960 * 1 - ((getPlayer(i + 1).maxHP - getPlayer(i + 1).HP)/100);
+                fightStats[7 + amountStats * i].sizeAnchor[0] = 0.1960 * 1 - ((getPlayer(i + 1).maxEP - getPlayer(i + 1).EP)/100);
+                fightStats[8 + amountStats * i].text = getPlayer(i + 1).HP + "/" + getPlayer(i + 1).maxHP;
+                fightStats[9 + amountStats * i].text = getPlayer(i + 1).EP + "/" + getPlayer(i + 1).maxEP;
             }
 
             // Update fightlog
