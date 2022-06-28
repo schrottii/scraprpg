@@ -28,7 +28,7 @@ scenes.fight = () => {
 
     var win = false;
 
-    const amountStats = 10;
+    const amountStats = 12;
 
     var fightlog = [
         "",
@@ -280,11 +280,32 @@ scenes.fight = () => {
         attackAnimation(pos[0], pos[1], () => {
             let Damage = calculateDamage(2, pos[0], pos[1], selectedAlly[0], selectedAlly[1]);
             if (positions[selectedAlly[0]][selectedAlly[1]].isOccupied != false) {
+                let HealthBefore = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP;
                 game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP -= Damage;
                 postLog(epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " and deals " + Damage + " damage!");
                 epositions[pos[0]][pos[1]].action = false;
 
                 playSound("damage");
+
+                // Bar animation! (Cowboy moment)
+                // Only for first char atm
+                if (epositions[pos[0]][pos[1]].name == "Bleu") {
+                    fightStats[5].alpha = 255;
+                    let HealthAfter = HealthBefore - Damage;
+                    let Leftend = 0.1960 * 1 - ((getPlayer(1).maxHP - HealthAfter) / 100);
+                    let Length = 0.1960 * 0 + ((HealthBefore - HealthAfter) / 100);
+                    fightStats[5].anchor[0] = 0.242 + Leftend;
+                    fightStats[5].sizeAnchor[0] = Length;
+                    addAnimator(function (t) {
+                        // ...
+
+                        if (t > 1200) {
+                            fightStats[5].alpha = 0;
+                            return true;
+                        }
+                    });
+                }
+
                 if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP < 1) {
                     postLog(epositions[pos[0]][pos[1]].name + " killed " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + "!");
                     positions[selectedAlly[0]][selectedAlly[1]].isOccupied = false;
@@ -500,14 +521,15 @@ scenes.fight = () => {
                 alpha: 255
             }))
 
-            fightStats.push(controls.rect({
-                anchor: [0.24 + (j * 0.35), 0.78 + (i * 0.075)], sizeAnchor: [0.2, 0.025],
-                fill: "rgb(5, 51, 5)",
-                alpha: 255
-            }))
+
             fightStats.push(controls.rect({
                 anchor: [0.24 + (j * 0.35), 0.78 + (i * 0.075)], sizeAnchor: [0.2, 0.025],
                 fill: "rgb(63, 127, 63)",
+                alpha: 255
+            }))
+            fightStats.push(controls.rect({ // The bg behind the bar
+                anchor: [0.242 + (j * 0.35), 0.782 + (i * 0.075)], sizeAnchor: [0.1960, 0.0210],
+                fill: "rgb(5, 51, 5)",
                 alpha: 255
             }))
             fightStats.push(controls.rect({
@@ -515,15 +537,21 @@ scenes.fight = () => {
                 fill: "rgb(20, 204, 20)",
                 alpha: 255
             }))
+            fightStats.push(controls.rect({ // Loss
+                anchor: [0.242 + (j * 0.35), 0.782 + (i * 0.075)], sizeAnchor: [0.1960, 0.0210],
+                fill: "rgb(200, 204, 200)",
+                alpha: 0
+            }))
+
 
             fightStats.push(controls.rect({
                 anchor: [0.24 + (j * 0.35), 0.81 + (i * 0.075)], sizeAnchor: [0.2, 0.025],
-                fill: "rgb(51, 0, 51)",
+                fill: "rgb(30, 109, 30)",
                 alpha: 255
             }))
-            fightStats.push(controls.rect({
-                anchor: [0.24 + (j * 0.35), 0.81 + (i * 0.075)], sizeAnchor: [0.2, 0.025],
-                fill: "rgb(30, 109, 30)",
+            fightStats.push(controls.rect({ // The bg behind the bar
+                anchor: [0.242 + (j * 0.35), 0.812 + (i * 0.075)], sizeAnchor: [0.1960, 0.0210],
+                fill: "rgb(51, 0, 51)",
                 alpha: 255
             }))
             fightStats.push(controls.rect({
@@ -531,6 +559,12 @@ scenes.fight = () => {
                 fill: "rgb(205, 0, 205)",
                 alpha: 255
             }))
+            fightStats.push(controls.rect({ // Loss
+                anchor: [0.242 + (j * 0.35), 0.812 + (i * 0.075)], sizeAnchor: [0.1960, 0.0210],
+                fill: "rgb(255, 255, 255)",
+                alpha: 0
+            }))
+
 
             fightStats.push(controls.label({
                 anchor: [0.438 + (j * 0.35), 0.792 + (i * 0.075)],
@@ -1000,9 +1034,9 @@ scenes.fight = () => {
                 fightStats[amountStats * i].text = "Lvl. " + getPlayer(i + 1).level;
                 fightStats[1 + amountStats * i].source = getPlayer(i + 1).name.toLowerCase();
                 fightStats[4 + amountStats * i].sizeAnchor[0] = 0.1960 * 1 - ((getPlayer(i + 1).maxHP - getPlayer(i + 1).HP)/100);
-                fightStats[7 + amountStats * i].sizeAnchor[0] = 0.1960 * 1 - ((getPlayer(i + 1).maxEP - getPlayer(i + 1).EP)/100);
-                fightStats[8 + amountStats * i].text = getPlayer(i + 1).HP + "/" + getPlayer(i + 1).maxHP;
-                fightStats[9 + amountStats * i].text = getPlayer(i + 1).EP + "/" + getPlayer(i + 1).maxEP;
+                fightStats[8 + amountStats * i].sizeAnchor[0] = 0.1960 * 1 - ((getPlayer(i + 1).maxEP - getPlayer(i + 1).EP)/100);
+                fightStats[10 + amountStats * i].text = getPlayer(i + 1).HP + "/" + getPlayer(i + 1).maxHP;
+                fightStats[11 + amountStats * i].text = getPlayer(i + 1).EP + "/" + getPlayer(i + 1).maxEP;
             }
 
             // Update fightlog
