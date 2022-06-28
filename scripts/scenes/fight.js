@@ -289,7 +289,7 @@ scenes.fight = () => {
 
                 // Bar animation! (Cowboy moment)
                 // Only for first char atm
-                if (epositions[pos[0]][pos[1]].name == "Bleu") {
+                if (positions[selectedAlly[0]][selectedAlly[1]].occupied == "bleu") {
                     fightStats[5].alpha = 255;
                     let HealthAfter = HealthBefore - Damage;
                     let Leftend = 0.1960 * 1 - ((getPlayer(1).maxHP - HealthAfter) / 100);
@@ -297,9 +297,11 @@ scenes.fight = () => {
                     fightStats[5].anchor[0] = 0.242 + Leftend;
                     fightStats[5].sizeAnchor[0] = Length;
                     addAnimator(function (t) {
-                        // ...
+                        if (t > 400) {
+                            fightStats[5].sizeAnchor[0] = Length * Math.max(0.01, (1 - (Math.min((t - 399) * 0.01, 1))));
+                        }
 
-                        if (t > 1200) {
+                        if (t > 1400) {
                             fightStats[5].alpha = 0;
                             return true;
                         }
