@@ -7,6 +7,8 @@ scenes.fight = () => {
     var fightButtons = [];
     var fightActions = [];
 
+    var fightStats = [];
+
     var fightLogComponents = [];
     var enemyListComponents = [];
     var enemyAmounts = ["", "", "", "", "", "", "", "", ""];
@@ -25,6 +27,8 @@ scenes.fight = () => {
     var selectedAlly = [0, 0];
 
     var win = false;
+
+    const amountStats = 8;
 
     var fightlog = [
         "",
@@ -481,6 +485,55 @@ scenes.fight = () => {
         }
     }
 
+
+    for (j = 0; j < 2; j++) {
+        for (i = 0; i < 3; i++) {
+            fightStats.push(controls.label({
+                anchor: [0.155 + (j * 0.35), 0.8 + (i * 0.075)], offset: [0, 0],
+                text: "Lvl. 1",
+                fontSize: 16, fill: "rgb(0, 255, 0)", align: "left", outline: "black", outlineSize: 6,
+                alpha: 255
+            }))
+            fightStats.push(controls.image({
+                anchor: [0.19 + (j * 0.35), 0.775 + (i * 0.075)], sizeOffset: [64, 64], snip: [0, 0, 32, 32],
+                source: "bleu",
+                alpha: 255
+            }))
+            fightStats.push(controls.rect({
+                anchor: [0.24 + (j * 0.35), 0.78 + (i * 0.075)], sizeAnchor: [0.2, 0.025],
+                fill: "rgb(63, 127, 63)",
+                alpha: 255
+            }))
+            fightStats.push(controls.rect({
+                anchor: [0.242 + (j * 0.35), 0.782 + (i * 0.075)], sizeAnchor: [0.1960, 0.0210],
+                fill: "rgb(20, 204, 20)",
+                alpha: 255
+            }))
+            fightStats.push(controls.rect({
+                anchor: [0.24 + (j * 0.35), 0.81 + (i * 0.075)], sizeAnchor: [0.2, 0.025],
+                fill: "rgb(30, 109, 30)",
+                alpha: 255
+            }))
+            fightStats.push(controls.rect({
+                anchor: [0.242 + (j * 0.35), 0.812 + (i * 0.075)], sizeAnchor: [0.1960, 0.0210],
+                fill: "rgb(205, 0, 205)",
+                alpha: 255
+            }))
+
+            fightStats.push(controls.label({
+                anchor: [0.438 + (j * 0.35), 0.792 + (i * 0.075)],
+                fill: "white", align: "right", fontSize: 20,
+                text: "0",
+                alpha: 255
+            }))
+            fightStats.push(controls.label({
+                anchor: [0.438 + (j * 0.35), 0.822 + (i * 0.075)],
+                fill: "white", align: "right", fontSize: 20,
+                text: "5/5",
+                alpha: 255
+            }))
+        }
+    }
     /*
     fightButtons.push(controls.rect({
         anchor: [0.05, 0.03], offset: [0, 0], sizeAnchor: [0.05, 0],  sizeOffset: [40, 58],
@@ -703,6 +756,7 @@ scenes.fight = () => {
 
     // Fight stats 1 - always below portraits
 
+    /*
     fightStats1.push(controls.label({
         anchor: [0.2, 0.7], offset: [74, 38],
         fontSize: 20, fill: "blue", align: "center",
@@ -847,7 +901,6 @@ scenes.fight = () => {
     // Attack Buttons
     // Visible after pressing Battle Actions
 
-    /*
     attackButtons.push(controls.rect({
         anchor: [0.05, 0.03], offset: [0, 0], sizeAnchor: [0.05, 0], sizeOffset: [40, 58],
         fill: "rgb(47, 95, 191)", text: "",
@@ -1359,11 +1412,16 @@ scenes.fight = () => {
                     attackButtons[i].alpha = 0;
                 }
             }
-            */
-            fightStats2[2].text = getPlayer(1).HP + "/" + getPlayer(1).maxHP;
-            fightStats2[6].text = getPlayer(2).HP + "/" + getPlayer(2).maxHP;
-            fightStats3[2].text = getPlayer(1).HP + "/" + getPlayer(1).maxHP;
-            fightStats3[6].text = getPlayer(2).HP + "/" + getPlayer(2).maxHP;
+            
+
+            
+    */
+            // Update the stats stuff at the bottom
+            for (i = 0; i < 6; i++) {
+                fightStats[amountStats * i].text = "Lvl. " + getPlayer(i + 1).level;
+                fightStats[6 + amountStats * i].text = getPlayer(i + 1).HP + "/" + getPlayer(i + 1).maxHP;
+                fightStats[7 + amountStats * i].text = getPlayer(i + 1).EP + "/" + getPlayer(i + 1).maxEP;
+            }
 
             // Update fightlog
             for (i = 0; i < 12; i++) {
@@ -1391,7 +1449,7 @@ scenes.fight = () => {
             ...fightButtons, ...fightActions, turnDisplay,
             ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
-            ...fightStats1, ...fightStats2, ...fightStats3, ...actionDisplay,
+            ...fightStats, ...actionDisplay,
             ...positionControls, ...epositionControls, ...positionGrid,
         ],
     }
