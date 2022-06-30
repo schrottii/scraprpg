@@ -376,16 +376,44 @@ scenes.fight = () => {
         }
     }
 
+    function showFightButtons() {
+        addAnimator(function (t) {
+            for (i = 0; i < fightButtons.length; i++) {
+                fightButtons[i].offset[1] = -500 + t;
+            }
+            if (t > 499) {
+                for (i = 0; i < fightButtons.length; i++) {
+                    fightButtons[i].offset[1] = 0;
+                }
+                return true;
+            }
+        })
+    }
+
+    function hideFightButtons() {
+        addAnimator(function (t) {
+            for (i = 0; i < fightButtons.length; i++) {
+                fightButtons[i].offset[1] = -t;
+            }
+            if (t > 499) {
+                for (i = 0; i < fightButtons.length; i++) {
+                    fightButtons[i].offset[1] = -500;
+                }
+                return true;
+            }
+        })
+    }
+
 
     // Top row buttons
     function topRowButton() {
         if (i == 0) { // Normal Actions
             fightButtons.push(controls.rect({
-                anchor: [0.00, 0 + (i * 0.035)], sizeAnchor: [0.15, 0.035],
+                anchor: [0.00, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
                 alpha: 255,
                 onClick(args) {
-                    if (this.alpha == 255 && fightaction == "none") {
+                    if (this.alpha == 255 && fightaction == "active") {
                         fightaction = "attack2";
                     }
                 }
@@ -393,11 +421,11 @@ scenes.fight = () => {
         }
         if (i == 1) { // Item Inventory
             fightButtons.push(controls.rect({
-                anchor: [0.00, 0 + (i * 0.035)], sizeAnchor: [0.15, 0.035],
+                anchor: [0.00, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
                 alpha: 255,
                 onClick(args) {
-                    if (this.alpha == 255) {
+                    if (this.alpha == 255 && fightaction == "active") {
                         
                     }
                 }
@@ -405,18 +433,18 @@ scenes.fight = () => {
         }
         if (i == 2) { // Magic
             fightButtons.push(controls.rect({
-                anchor: [0.00, 0 + (i * 0.035)], sizeAnchor: [0.15, 0.035],
+                anchor: [0.00, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
                 alpha: 255,
                 onClick(args) {
-                    if (this.alpha == 255) {
+                    if (this.alpha == 255 && fightaction == "active") {
                     }
                 }
             }))
         }
         if (i == 3) { // Mastery Techniques
             fightButtons.push(controls.rect({
-                anchor: [0.00, 0 + (i * 0.035)], sizeAnchor: [0.15, 0.035],
+                anchor: [0.00, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
                 alpha: 255,
                 onClick(args) {
@@ -428,11 +456,11 @@ scenes.fight = () => {
         }
         if (i == 4) { // Macro
             fightButtons.push(controls.rect({
-                anchor: [0.00, 0 + (i * 0.035)], sizeAnchor: [0.15, 0.035],
+                anchor: [0.00, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
                 alpha: 255,
                 onClick(args) {
-                    if (this.alpha == 255) {
+                    if (this.alpha == 255 && fightaction == "active") {
                         fightaction = "switch";
                     }
                 }
@@ -440,11 +468,11 @@ scenes.fight = () => {
         }
         if (i == 5) { // Flee
             fightButtons.push(controls.rect({
-                anchor: [0.00, 0 + (i * 0.035)], sizeAnchor: [0.15, 0.035],
+                anchor: [0.00, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
                 alpha: 255,
                 onClick(args) {
-                    if (this.alpha == 255) {
+                    if (this.alpha == 255 && fightaction == "active") {
                         setScene(scenes.game());
                     }
                 }
@@ -455,12 +483,12 @@ scenes.fight = () => {
     for (i = 0; i < 6; i++) {
         topRowButton(i);
         fightButtons.push(controls.rect({
-            anchor: [0.0025, 0.0025 + (i * 0.035)], sizeAnchor: [0.145, 0.03],
+            anchor: [0.0025, 0.0025 + (i * 0.035)], sizeAnchor: [0.145, 0.03], offset: [0, -500],
             fill: "rgb(221, 155, 79)",
             alpha: 255,
         }))
         fightButtons.push(controls.label({
-            anchor: [0.145, 0.02 + (i * 0.035)],
+            anchor: [0.145, 0.02 + (i * 0.035)], offset: [0, -500],
             text: ["Normal Actions", "Item Inventory", "Magic", "Mastery Techniques", "Macro", "Flee"][i],
             fontSize: 16, fill: "black", align: "right", 
             alpha: 255,
@@ -488,7 +516,7 @@ scenes.fight = () => {
 
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 6; i++) {
-            fightButtons.push(controls.rect({
+            fightActions.push(controls.rect({
                 anchor: [0.33 + (j * 0.17), 0 + (i * 0.0375)], sizeAnchor: [0.17, 0.0375],
                 fill: "rgb(38, 52, 38)",
                 alpha: 255,
@@ -791,25 +819,25 @@ scenes.fight = () => {
                 pos1: i,
                 pos2: j,
                 onClick(args) {
-                    if (fightaction == "switch") {
-                        if (positions[this.pos1][this.pos2].isOccupied == true && positions[this.pos1][this.pos2].action == false && game.characters[positions[this.pos1][this.pos2].occupied].HP > 0) {
-                            switchThose[0] = [this.pos1, this.pos2];
-                            positionGrid[switchThose[0][0] + (switchThose[0][1] * 3)].source = "selected";
-                            fightaction = "switch2"; //switch two: electric boogaloo
-                        }
+                    // Select character
+                    if (fightaction == "none" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true) {
+                        selectedAlly = [this.pos1, this.pos2];
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
+                        fightaction = "active";
+                        showFightButtons();
                     }
-                    else if (fightaction == "switch2") {
+
+
+
+                    if (fightaction == "switch") {
                         if (switchThose[0][0] != [this.pos1] || switchThose[0][1] != [this.pos2]) {
+                            switchThose[0] = selectedAlly;
                             switchThose[1] = [this.pos1, this.pos2];
                             positionGrid[switchThose[0][0] + (switchThose[0][1] * 3)].source = "grid";
                             positions[switchThose[0][0]][switchThose[0][1]].action = ["switch", switchThose[0][0], switchThose[0][1], switchThose[1][0], switchThose[1][1]];
                             fightaction = "none";
+                            hideFightButtons();
                         }
-                    }
-                    if (fightaction == "attack2" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true && game.characters[positions[this.pos1][this.pos2].occupied].HP > 0) {
-                        selectedAlly = [this.pos1, this.pos2];
-                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
-                        fightaction = "attack3";
                     }
                     if (fightaction == "heal1" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true && game.characters[positions[this.pos1][this.pos2].occupied].HP > 0) {
                         selectedAlly = [this.pos1, this.pos2];
@@ -842,11 +870,12 @@ scenes.fight = () => {
                     // but add fighting here at some point
                     // THAT POINT IS NOW! Idiot
 
-                    if (fightaction == "attack3" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
+                    if (fightaction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "grid";
                         positions[selectedAlly[0]][selectedAlly[1]].action = ["attack", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
 
                         fightaction = "none";
+                        hideFightButtons();
                         
                     }
                 }
@@ -1004,10 +1033,9 @@ scenes.fight = () => {
 
         actionText = [];
         if (fightaction == "none") postAction("Select a character before assigning a command.");
-        if (fightaction == "attack") postAction("What will you assign for <character>?");
-        if (fightaction == "attack2") postAction("Choose a character.");
-        if (fightaction == "attack3") postAction("Choose a target.");
-        if (fightaction == "attack4") postAction("What <category> will <character> use?");
+        if (fightaction == "active") postAction("What will you assign for <character>?");
+        if (fightaction == "attack1") postAction("What <category> will <character> use?");
+        if (fightaction == "attack2") postAction("Choose a target.");
         if (fightaction == "macro") postAction("What predetermined set ot actions will <character> use?");
         while (actionText.length < 3) {
             actionText.push("");
