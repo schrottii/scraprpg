@@ -257,6 +257,12 @@ scenes.fight = () => {
         if (highestAGI == 0) {
             fightaction = "none";
             turn += 1;
+
+            for (j = 0; j < 3; j++) {
+                for (i = 0; i < 3; i++) {
+                    positionGrid[i + (j * 3)].source = "grid";
+                }
+            }
             return;
         }
 
@@ -335,6 +341,9 @@ scenes.fight = () => {
         let cache1234 = positions[switchThose[1][0]][switchThose[1][1]].isOccupied;
         positions[switchThose[1][0]][switchThose[1][1]].isOccupied = positions[switchThose[0][0]][switchThose[0][1]].isOccupied;
         positions[switchThose[0][0]][switchThose[0][1]].isOccupied = cache1234;
+
+        positionGrid[switchThose[0][0] + (switchThose[0][1] * 3)].source = "grid";
+        positionGrid[switchThose[1][0] + (switchThose[1][1] * 3)].source = "hasaction";
 
         // Fightlog
         postLog("Swapped [" + (switchThose[0][0] + 1) + "/" + (switchThose[0][1] + 1) + "] with [" + (switchThose[1][0] + 1) + "/" + (switchThose[1][1] + 1) + "]!");
@@ -833,7 +842,7 @@ scenes.fight = () => {
                         if (switchThose[0][0] != [this.pos1] || switchThose[0][1] != [this.pos2]) {
                             switchThose[0] = selectedAlly;
                             switchThose[1] = [this.pos1, this.pos2];
-                            positionGrid[switchThose[0][0] + (switchThose[0][1] * 3)].source = "grid";
+                            positionGrid[switchThose[0][0] + (switchThose[0][1] * 3)].source = "hasaction";
                             positions[switchThose[0][0]][switchThose[0][1]].action = ["switch", switchThose[0][0], switchThose[0][1], switchThose[1][0], switchThose[1][1]];
                             fightaction = "none";
                             hideFightButtons();
@@ -846,7 +855,7 @@ scenes.fight = () => {
                     }
                     else if (fightaction == "heal2" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true && game.characters[positions[this.pos1][this.pos2].occupied].HP > 0) {
                         positions[selectedAlly[0]][selectedAlly[1]].action = ["heal", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
-                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "grid";
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                         fightaction = "none";
                     }
                 }
@@ -871,7 +880,7 @@ scenes.fight = () => {
                     // THAT POINT IS NOW! Idiot
 
                     if (fightaction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
-                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "grid";
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                         positions[selectedAlly[0]][selectedAlly[1]].action = ["attack", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
 
                         fightaction = "none";
@@ -1015,22 +1024,6 @@ scenes.fight = () => {
         }
 
 
-        if (settings.grid == true) {
-            for (i in positionGrid) {
-                positionGrid[i].alpha = 255;
-            }
-        }
-        else {
-            for (i in positionGrid) {
-                if (positionGrid[i].source != "grid") {
-                    positionGrid[i].alpha = 255;
-                }
-                else {
-                    positionGrid[i].alpha = 0;
-                }
-            }
-        }
-
         actionText = [];
         if (fightaction == "none") postAction("Select a character before assigning a command.");
         if (fightaction == "active") postAction("What will you assign for <character>?");
@@ -1079,6 +1072,23 @@ scenes.fight = () => {
             }
             for (i = 0; i < 3; i++) {
                 actionDisplay[i].text = actionText[i];
+            }
+
+            // Grid thing
+            if (settings.grid == true) {
+                for (i in positionGrid) {
+                    positionGrid[i].alpha = 255;
+                }
+            }
+            else {
+                for (i in positionGrid) {
+                    if (positionGrid[i].source != "grid") {
+                        positionGrid[i].alpha = 255;
+                    }
+                    else {
+                        positionGrid[i].alpha = 0;
+                    }
+                }
             }
             
             put += delta;

@@ -25,6 +25,7 @@ let images = {
     corelle: "data/images/Map_Corelle.png",
     evil: "data/images/Map_Evil.png",
     selected: "data/images/selected.png",
+    hasaction: "data/images/done.png",
 
     actionbutton: "data/images/actionbutton_inactive.png",
     actionbutton_active: "data/images/actionbutton_active.png",
