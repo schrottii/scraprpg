@@ -135,9 +135,9 @@ function image_animation(image, pos, speed=100) {
 
 function getPlayer(character=1) {
     if (character == 2) {
-        return game.characters[game.char2];
+        return game.characters[game.chars[1]];
     }
-    return game.characters[game.char1];
+    return game.characters[game.chars[0]];
 }
 
 function isMobile() {
@@ -258,6 +258,7 @@ function loadGame() {
         }
 
         if (saveCopy.characters == undefined) saveCopy.characters = game.characters;
+        if (saveCopy.chars == undefined) saveCopy.chars = [saveCopy.char1, saveCopy.char2];
 
         game = saveCopy;
     }

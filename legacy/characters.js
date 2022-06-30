@@ -36,5 +36,5 @@ characters = {
 12th: Lucas (He's a Rhapsody in Green barrel from Brazil)
 */       
 
-char1 = "bleu";
-char2 = "corelle";
+chars[0] = "bleu";
+chars[1] = "corelle";

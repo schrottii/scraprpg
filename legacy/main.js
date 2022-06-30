@@ -139,7 +139,7 @@ function createEnemy(x, type) {
 }
 
 function check_gameover() {
-    if (characters[char1].HP < 1 || characters[char2].HP < 1) {
+    if (characters[chars[0]].HP < 1 || characters[chars[1]].HP < 1) {
         changeScene(4);
         return;
     }
@@ -288,24 +288,24 @@ function UI_UpdateCharacters() {
     ctx.font = "20px NotoSans, sans-serif";
     ctx.fillStyle = "lightblue";
 
-    ctx.fillText(characters[char1].name, 612, 328);
-    ctx.fillText(characters[char2].name, 612, 392);
+    ctx.fillText(characters[chars[0]].name, 612, 328);
+    ctx.fillText(characters[chars[1]].name, 612, 392);
 
     ctx.font = "16px NotoSans, sans-serif";
     ctx.fillStyle = "green";
 
-    ctx.fillText("HP: " + characters[char1].HP + "/" + characters[char1].maxHP, 612, 348);
-    ctx.fillText("HP: " + characters[char2].HP + "/" + characters[char2].maxHP, 612, 412);
+    ctx.fillText("HP: " + characters[chars[0]].HP + "/" + characters[chars[0]].maxHP, 612, 348);
+    ctx.fillText("HP: " + characters[chars[1]].HP + "/" + characters[chars[1]].maxHP, 612, 412);
 
     ctx.fillStyle = "yellow";
 
-    ctx.fillText("Level " + characters[char1].level + "    " + characters[char1].EXP + "/" + calculate_EXP(characters[char1].level), 612, 364);
-    ctx.fillText("Level " + characters[char2].level + "    " + characters[char2].EXP + "/" + calculate_EXP(characters[char2].level), 612, 428);
+    ctx.fillText("Level " + characters[chars[0]].level + "    " + characters[chars[0]].EXP + "/" + calculate_EXP(characters[chars[0]].level), 612, 364);
+    ctx.fillText("Level " + characters[chars[1]].level + "    " + characters[chars[1]].EXP + "/" + calculate_EXP(characters[chars[1]].level), 612, 428);
 
     ctx.fillStyle = "black";
 
-    ctx.fillText("EP: " + characters[char1].EP + "/" + characters[char1].EP, 708, 348);
-    ctx.fillText("EP: " + characters[char2].EP + "/" + characters[char2].EP, 708, 412);
+    ctx.fillText("EP: " + characters[chars[0]].EP + "/" + characters[chars[0]].EP, 708, 348);
+    ctx.fillText("EP: " + characters[chars[1]].EP + "/" + characters[chars[1]].EP, 708, 412);
 }
 
 function UI_FightE(x = 0) {
@@ -396,20 +396,20 @@ function draw() {
 
             let buttonSwitch = new Button(365, 12, 96, 58, false, () => {
                 if (fightaction == 0) {
-                    if (char1 == "bleu") {
-                        char1 = "corelle";
-                        char2 = "bleu";
+                    if (chars[0] == "bleu") {
+                        chars[0] = "corelle";
+                        chars[1] = "bleu";
                     }
                     else {
-                        char1 = "bleu";
-                        char2 = "corelle";
+                        chars[0] = "bleu";
+                        chars[1] = "corelle";
                     }
                     scene_fight();
                 }
             });
             buttonSwitch.render();
 
-            let buttonFlee = new Button(475, 12, 96, 58, false, () => { if (fightaction == 0) { characters[char1].HP -= 10; characters[char2].HP -= 10; control = true; changeScene(1); }});
+            let buttonFlee = new Button(475, 12, 96, 58, false, () => { if (fightaction == 0) { characters[chars[0]].HP -= 10; characters[chars[1]].HP -= 10; control = true; changeScene(1); }});
             buttonFlee.render();
 
             //That's only for graphics and some basic ifs and stuff
@@ -419,8 +419,8 @@ function draw() {
             control = false;
             setTimeout(() => { ctx.drawImage(images.gameover, 0, 0, 800, 500) }, 10);
             setTimeout(() => { changeScene(0); control = true; }, 5000);
-            characters[char1].HP = characters[char1].maxHP;
-            characters[char2].HP = characters[char2].maxHP;
+            characters[chars[0]].HP = characters[chars[0]].maxHP;
+            characters[chars[1]].HP = characters[chars[1]].maxHP;
             break;
     }
 }
@@ -439,21 +439,21 @@ function seeInventory() {
 
     ctx.font = "16px NotoSans, sans-serif";
 
-    ctx.fillText(characters[char1].name, 210, 150);
+    ctx.fillText(characters[chars[0]].name, 210, 150);
     for (p = 0; p < 5; p++) {
-        if (Object.keys(characters[char1].inventory)[p] != undefined) {
-            ctx.fillText(characters[char1].inventory[Object.keys(characters[char1].inventory)[p]] + "  " + Object.keys(characters[char1].inventory)[p], 200, 170 + (32 * p));
-            ctx.drawImage(items[Object.keys(characters[char1].inventory)[p]], 170, 144 + (32 * p), 32, 32);
+        if (Object.keys(characters[chars[0]].inventory)[p] != undefined) {
+            ctx.fillText(characters[chars[0]].inventory[Object.keys(characters[chars[0]].inventory)[p]] + "  " + Object.keys(characters[chars[0]].inventory)[p], 200, 170 + (32 * p));
+            ctx.drawImage(items[Object.keys(characters[chars[0]].inventory)[p]], 170, 144 + (32 * p), 32, 32);
         }
         else {
             ctx.fillText("---", 200, 170 + (32 * p));
         }
     }
-    ctx.fillText(characters[char2].name, 510, 150);
+    ctx.fillText(characters[chars[1]].name, 510, 150);
     for (p = 0; p < 5; p++) {
-        if (Object.keys(characters[char2].inventory)[p] != undefined) {
-            ctx.fillText(characters[char2].inventory[Object.keys(characters[char2].inventory)[p]] + "  " + Object.keys(characters[char2].inventory)[p], 500, 170 + (32 * p));
-            ctx.drawImage(items[Object.keys(characters[char2].inventory)[p]], 470, 144 + (32 * p), 32, 32);
+        if (Object.keys(characters[chars[1]].inventory)[p] != undefined) {
+            ctx.fillText(characters[chars[1]].inventory[Object.keys(characters[chars[1]].inventory)[p]] + "  " + Object.keys(characters[chars[1]].inventory)[p], 500, 170 + (32 * p));
+            ctx.drawImage(items[Object.keys(characters[chars[1]].inventory)[p]], 470, 144 + (32 * p), 32, 32);
         }
         else {
             ctx.fillText("---", 500, 170 + (32 * p));
@@ -462,17 +462,17 @@ function seeInventory() {
 }
 
 function inventoryClicked() {
-    // Char1 Items
+    // chars[0] Items
     for (x = 0; x < 5; x++) {
         if (mouseX > 170 && mouseX < 300 && mouseY > 145 + (32 * x) && mouseY < 177 + (32 * x)) {
-            useItem(Object.keys(characters[char1].inventory)[x], char1);
+            useItem(Object.keys(characters[chars[0]].inventory)[x], chars[0]);
         }
     }
 
-    // Char2 Items
+    // chars[1] Items
     for (x = 0; x < 5; x++) {
         if (mouseX > 470 && mouseX < 700 && mouseY > 145 + (32 * x) && mouseY < 177 + (32 * x)) {
-            useItem(Object.keys(characters[char2].inventory)[x], char2);
+            useItem(Object.keys(characters[chars[1]].inventory)[x], chars[1]);
         }
     }
 }
@@ -581,14 +581,14 @@ function scene_fight() {
     ctx.font = "16px NotoSans, sans-serif";
     ctx.fillStyle = "lightblue";
 
-    ctx.fillText(characters[char1].name, 612, 30);
-    ctx.fillText(characters[char2].name, 612, 58);
+    ctx.fillText(characters[chars[0]].name, 612, 30);
+    ctx.fillText(characters[chars[1]].name, 612, 58);
 
     ctx.font = "12px NotoSans, sans-serif";
     ctx.fillStyle = "green";
 
-    ctx.fillText("HP: " + characters[char1].HP + "/" + characters[char1].maxHP, 612, 44);
-    ctx.fillText("HP: " + characters[char2].HP + "/" + characters[char2].maxHP, 612, 72);
+    ctx.fillText("HP: " + characters[chars[0]].HP + "/" + characters[chars[0]].maxHP, 612, 44);
+    ctx.fillText("HP: " + characters[chars[1]].HP + "/" + characters[chars[1]].maxHP, 612, 72);
     */
 
     ctx.fillStyle = "rgb(50, 78, 131)";
@@ -605,11 +605,11 @@ function scene_fight() {
 
     ctx.fillStyle = "yellow";
     ctx.fillRect(225, 375, 75, 75);
-    ctx.drawImage(portraits[char1], 230, 380, 65, 65);
+    ctx.drawImage(portraits[chars[0]], 230, 380, 65, 65);
     ctx.font = "20px NotoSans, sans-serif";
-    ctx.fillText("Level " + characters[char1].level, 230, 480);
+    ctx.fillText("Level " + characters[chars[0]].level, 230, 480);
     ctx.fillStyle = "blue";
-    ctx.fillText(characters[char1].name, 240, 465);
+    ctx.fillText(characters[chars[0]].name, 240, 465);
 
     ctx.fillStyle = "rgb(0, 145, 40)";
     ctx.fillRect(310, 410, 80, 20);
@@ -617,16 +617,16 @@ function scene_fight() {
     ctx.fillRect(310, 430, 80, 20);
 
     ctx.fillStyle = "black";
-    ctx.fillText(characters[char1].HP + "/" + characters[char1].maxHP, 310, 425);
-    ctx.fillText(characters[char1].EP + "/" + characters[char1].EP, 310, 445);
+    ctx.fillText(characters[chars[0]].HP + "/" + characters[chars[0]].maxHP, 310, 425);
+    ctx.fillText(characters[chars[0]].EP + "/" + characters[chars[0]].EP, 310, 445);
 
     ctx.fillStyle = "yellow";
     ctx.fillRect(395, 375, 75, 75);
-    ctx.drawImage(portraits[char2], 400, 380, 65, 65);
+    ctx.drawImage(portraits[chars[1]], 400, 380, 65, 65);
     ctx.font = "20px NotoSans, sans-serif";
-    ctx.fillText("Level " + characters[char1].level, 400, 480);
+    ctx.fillText("Level " + characters[chars[0]].level, 400, 480);
     ctx.fillStyle = "blue";
-    ctx.fillText(characters[char2].name, 400, 465);
+    ctx.fillText(characters[chars[1]].name, 400, 465);
 
     ctx.fillStyle = "rgb(0, 145, 40)";
     ctx.fillRect(480, 410, 60, 20);
@@ -634,8 +634,8 @@ function scene_fight() {
     ctx.fillRect(480, 430, 60, 20);
 
     ctx.fillStyle = "black";
-    ctx.fillText(characters[char2].HP + "/" + characters[char2].maxHP, 480, 425);
-    ctx.fillText(characters[char2].EP + "/" + characters[char2].EP, 480, 445);
+    ctx.fillText(characters[chars[1]].HP + "/" + characters[chars[1]].maxHP, 480, 425);
+    ctx.fillText(characters[chars[1]].EP + "/" + characters[chars[1]].EP, 480, 445);
 
     draw_fighters();
 }
@@ -643,7 +643,7 @@ function scene_fight() {
 function fight_enemy(x) {
     attack_animation_progress = 1;
 
-    gete(x).HP -= characters[char1].strength;
+    gete(x).HP -= characters[chars[0]].strength;
     fightaction = 0;
 
     if (gete(x).HP < 1) {
@@ -653,36 +653,36 @@ function fight_enemy(x) {
     if (gete(1).HP < 1 && gete(2).HP < 1 && gete(3).HP < 1 && gete(4).HP < 1) { //WON!!!
         attack_animation_progress = 0;
 
-        characters[char1].EXP += 10;
-        characters[char2].EXP += 10;
+        characters[chars[0]].EXP += 10;
+        characters[chars[1]].EXP += 10;
 
         // Placeholder. This will be reworked later.
         if (Math.random() > 0.6) {
-            addItem(char1, "potion", 1);
+            addItem(chars[0], "potion", 1);
         }
         if (Math.random() > 0.6) {
-            addItem(char2, "potion", 1);
+            addItem(chars[1], "potion", 1);
         }
         if (Math.random() > 0.95) {
-            addItem(char1, "bigpotion", 1);
+            addItem(chars[0], "bigpotion", 1);
         }
         if (Math.random() > 0.95) {
-            addItem(char2, "bigpotion", 1);
+            addItem(chars[1], "bigpotion", 1);
         }
 
-        if (characters[char1].EXP >= calculate_EXP(characters[char1].level)) {
-            characters[char1].level += 1;
-            characters[char1].EXP -= calculate_EXP(characters[char1].level);
-            characters[char1].maxHP += Math.round(characters[char1].maxHP / 8);
-            characters[char1].HP = characters[char1].maxHP;
-            characters[char1].strength += Math.round(characters[char1].strength / 8);
+        if (characters[chars[0]].EXP >= calculate_EXP(characters[chars[0]].level)) {
+            characters[chars[0]].level += 1;
+            characters[chars[0]].EXP -= calculate_EXP(characters[chars[0]].level);
+            characters[chars[0]].maxHP += Math.round(characters[chars[0]].maxHP / 8);
+            characters[chars[0]].HP = characters[chars[0]].maxHP;
+            characters[chars[0]].strength += Math.round(characters[chars[0]].strength / 8);
         }
-        if (characters[char2].EXP >= calculate_EXP(characters[char1].level)) {
-            characters[char2].level += 1;
-            characters[char2].EXP -= calculate_EXP(characters[char1].level);
-            characters[char2].maxHP += Math.round(characters[char2].maxHP / 8);
-            characters[char2].HP = characters[char2].maxHP;
-            characters[char2].strength += Math.round(characters[char2].strength / 8);
+        if (characters[chars[1]].EXP >= calculate_EXP(characters[chars[0]].level)) {
+            characters[chars[1]].level += 1;
+            characters[chars[1]].EXP -= calculate_EXP(characters[chars[0]].level);
+            characters[chars[1]].maxHP += Math.round(characters[chars[1]].maxHP / 8);
+            characters[chars[1]].HP = characters[chars[1]].maxHP;
+            characters[chars[1]].strength += Math.round(characters[chars[1]].strength / 8);
         }
         control = true;
         changeScene(1);
@@ -691,10 +691,10 @@ function fight_enemy(x) {
         // U god addacked hmmmm
         for (i = 0; i < Object.keys(currentEnemies).length; i++) {
             if (Math.random() > 0.5) {
-                var curattack = char1;
+                var curattack = chars[0];
             }
             else{
-                var curattack = char2;
+                var curattack = chars[1];
             }
             if (Math.random() > 0.7) {
                 characters[curattack].HP -= gete(i + 1).damage;

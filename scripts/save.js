@@ -2,8 +2,7 @@ let game = {
     pfp: 1,
     map: "test",
     position: [4, 4],
-    char1: "bleu",
-    char2: "corelle",
+    chars: ["bleu", "corelle"], // MAX 6!!!
 
     characters: {
         bleu: {

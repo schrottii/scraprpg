@@ -296,7 +296,7 @@ scenes.fight = () => {
                 // Bar animation! (Cowboy moment)
                 let skip = 0; //No idea what else to call this
 
-                if (positions[selectedAlly[0]][selectedAlly[1]].occupied == game.char2.toLowerCase()) {
+                if (positions[selectedAlly[0]][selectedAlly[1]].occupied == game.chars[1].toLowerCase()) {
                     skip = 1;
                 }
                 let which = 5 + (skip * amountStats);
@@ -556,12 +556,12 @@ scenes.fight = () => {
                 anchor: [0.155 + (j * 0.35), 0.8 + (i * 0.075)], offset: [0, 0],
                 text: "Lvl. 1",
                 fontSize: 16, fill: "rgb(0, 255, 0)", align: "left", outline: "black", outlineSize: 6,
-                alpha: 255
+                alpha: 0
             }))
             fightStats.push(controls.image({
                 anchor: [0.19 + (j * 0.35), 0.775 + (i * 0.075)], sizeOffset: [64, 64], snip: [0, 0, 32, 32],
                 source: "bleu",
-                alpha: 255
+                alpha: 0
             }))
 
 
@@ -577,7 +577,7 @@ scenes.fight = () => {
             }))
             fightStats.push(controls.rect({
                 anchor: [0.242 + (j * 0.35), 0.782 + (i * 0.075)], sizeAnchor: [0.1960, 0.0210],
-                fill: "rgb(20, 204, 20)",
+                fill: "rgb(128, 128, 128)",
                 alpha: 255
             }))
             fightStats.push(controls.rect({ // Loss
@@ -599,7 +599,7 @@ scenes.fight = () => {
             }))
             fightStats.push(controls.rect({
                 anchor: [0.242 + (j * 0.35), 0.812 + (i * 0.075)], sizeAnchor: [0.1960, 0.0210],
-                fill: "rgb(205, 0, 205)",
+                fill: "rgb(85, 85, 85)",
                 alpha: 255
             }))
             fightStats.push(controls.rect({ // Loss
@@ -613,13 +613,13 @@ scenes.fight = () => {
                 anchor: [0.438 + (j * 0.35), 0.792 + (i * 0.075)],
                 fill: "white", align: "right", fontSize: 20,
                 text: "0",
-                alpha: 255
+                alpha: 0
             }))
             fightStats.push(controls.label({
                 anchor: [0.438 + (j * 0.35), 0.822 + (i * 0.075)],
                 fill: "white", align: "right", fontSize: 20,
                 text: "5/5",
-                alpha: 255
+                alpha: 0
             }))
         }
     }
@@ -989,6 +989,16 @@ scenes.fight = () => {
                     epositionControls[i + (j * 3)].source = "gear";
                 }
             }
+        }
+
+        // When the fight starts. How many chars do we have? Who exists? Show/Hide/Gray out stats
+        for (i = 0; i < game.chars.length; i++) {
+            fightStats[amountStats * i].alpha = 255;
+            fightStats[1 + amountStats * i].alpha = 255;
+            fightStats[4 + amountStats * i].fill = "rgb(20, 204, 20)";
+            fightStats[8 + amountStats * i].fill = "rgb(205, 0, 205)";
+            fightStats[10 + amountStats * i].alpha = 255;
+            fightStats[11 + amountStats * i].alpha = 255;
         }
 
         // Mobile resizing
