@@ -237,6 +237,9 @@ function loadSettings() {
             alert("Error (Settings)");
             return;
         }
+        for (i in settings) {
+            if (settingsCopy[i] == undefined) settingsCopy[i] = settings[i];
+        }
         settings = settingsCopy;
     }
 }

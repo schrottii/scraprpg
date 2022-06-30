@@ -51,5 +51,7 @@ let game = {
 }
 
 let settings = {
-    grid: true
+    grid: true,
+    musicVolume: 0.5,
+    soundVolume: 0.5
 }
