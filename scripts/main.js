@@ -133,11 +133,9 @@ function image_animation(image, pos, speed=100) {
     }
 }
 
-function getPlayer(character=1) {
-    if (character == 2) {
-        return game.characters[game.chars[1]];
-    }
-    return game.characters[game.chars[0]];
+function getPlayer(character = 1) {
+    if (character > 3) character = 1;
+    return game.characters[game.chars[character - 1]];
 }
 
 function isMobile() {
@@ -258,7 +256,13 @@ function loadGame() {
         }
 
         if (saveCopy.characters == undefined) saveCopy.characters = game.characters;
+        for (i in characters) {
+            if (saveCopy.characters[characters[i]] == undefined) {
+                saveCopy.characters[characters[i]] = game.characters[characters[i]];
+            }
+        }
         if (saveCopy.chars == undefined) saveCopy.chars = [saveCopy.char1, saveCopy.char2];
+        if (saveCopy.chars.length == 2) saveCopy.chars.push("gau");
 
         game = saveCopy;
     }

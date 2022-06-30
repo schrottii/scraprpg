@@ -21,20 +21,24 @@ let images = {
     selected: "data/images/selected.png",
     grid: "data/images/gridempty.png",
     potion: "data/images/Items/potion.png",
-    bleu: "data/images/Map_Bleu.png",
-    corelle: "data/images/Map_Corelle.png",
     evil: "data/images/Map_Evil.png",
     selected: "data/images/selected.png",
     hasaction: "data/images/done.png",
+
+    bleu: "data/images/Map_Bleu.png",
+    corelle: "data/images/Map_Corelle.png",
+    gau: "data/images/Map_Gau.png",
 
     actionbutton: "data/images/actionbutton_inactive.png",
     actionbutton_active: "data/images/actionbutton_active.png",
 
     bleu_win: "data/images/BleuW.png",
     corelle_win: "data/images/CorelleW.png",
+    gau_win: "data/images/CorelleW.png",
 
     bleu_dead: "data/images/BleuDead.png",
     corelle_dead: "data/images/CorelleDead.png",
+    gau_dead: "data/images/CorelleDead.png",
 
     saveimage1: "data/images/PFP-1.png",
     saveimage2: "data/images/PFP-2.png",

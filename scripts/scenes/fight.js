@@ -726,8 +726,8 @@ scenes.fight = () => {
                 },
                 {
                     pos: "bottom middle",
-                    isOccupied: false, // bool
-                    occupied: false, // who?
+                    isOccupied: true, // bool
+                    occupied: "gau", // who?
                     action: false,
                 },
                 {

@@ -7,6 +7,8 @@ var currentDialogue;
 var dialogueProgress = 0;
 var dialogueEmotion = "neutral";
 
+var characters = ["bleu", "corelle", "gau"];
+
 // Function used to create enemies
 function createEnemy(type) {
     if (currentEnemies.length < 9) {
@@ -36,6 +38,15 @@ function checkLevelUps() {
         game.characters.corelle.maxHP = 14 + (game.characters.corelle.level * 2);
 
         game.characters.corelle.HP = game.characters.corelle.maxHP;
+    }
+    if (game.characters.gau.EXP > 24) {
+        game.characters.gau.EXP -= 25;
+        game.characters.gau.level += 1;
+
+        game.characters.gau.strength = 6 + game.characters.gau.level;
+        game.characters.gau.maxHP = 8 + (game.characters.gau.level * 2);
+
+        game.characters.gau.HP = game.characters.corelle.maxHP;
     }
 }
 
