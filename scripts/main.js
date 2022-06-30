@@ -20,7 +20,8 @@ function init() {
                 anchor: [.5, .5], offset: [-100, -55], sizeOffset: [200, 50],
                 clickthrough: true, fontSize: 16, alpha: 0,
                 text: "Start with Sound",
-                onClick() { 
+                onClick() {
+                    musicPlayer.loop = true;
                     setScene(scenes.title());
                 }
             }),
