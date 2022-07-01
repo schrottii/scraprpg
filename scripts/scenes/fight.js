@@ -200,7 +200,10 @@ scenes.fight = () => {
                 selectedAlly = [positions[pos[0]][pos[1]].action[1], positions[pos[0]][pos[1]].action[2]];
                 fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
                 attackAnimation(pos1, pos2, () => {
-                    if (epositions[pos1][pos2].isOccupied == false) return false;
+                    if (epositions[pos1][pos2].isOccupied == false) {
+                        positions[pos[0]][pos[1]].action = false;
+                        return false;
+                    }
                     if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].acc - epositions[pos1][pos2].eva > (Math.random() * 100)) {
                         let Damage = calculateDamage(1, selectedAlly[0], selectedAlly[1], pos1, pos2);
                         epositions[pos1][pos2].HP -= Damage; // Deal damage
@@ -310,26 +313,31 @@ scenes.fight = () => {
                 if (positions[selectedAlly[0]][selectedAlly[1]].occupied == game.chars[1].toLowerCase()) {
                     skip = 1;
                 }
+                if (positions[selectedAlly[0]][selectedAlly[1]].occupied == game.chars[2].toLowerCase()) {
+                    skip = 2;
+                }
                 let which = 5 + (skip * amountStats);
-                fightStats[which].alpha = 255;
-                let HealthAfter = HealthBefore - Damage;
-                let Leftend = 0.1960 * 1 - ((getPlayer(1 + skip).maxHP - HealthAfter) / 100);
-                let Length = 0.1960 * 0 + ((HealthBefore - HealthAfter) / 100);
-                fightStats[which].anchor[0] = 0.242 + Leftend;
-                fightStats[which].sizeAnchor[0] = Length;
-                addAnimator(function (t) {
-                    if (t > 400) {
-                        fightStats[which].sizeAnchor[0] = Length * Math.max(0.01, (1 - (Math.min((t - 399) * 0.01, 1))));
-                    }
+                if (positions[selectedAlly[0]][selectedAlly[1]].HP > 0) {
+                    fightStats[which].alpha = 255;
+                    let HealthAfter = HealthBefore - Damage;
+                    let Leftend = 0.1960 * 1 - ((getPlayer(1 + skip).maxHP - HealthAfter) / 100);
+                    let Length = 0.1960 * 0 + ((HealthBefore - HealthAfter) / 100);
+                    fightStats[which].anchor[0] = 0.242 + Leftend;
+                    fightStats[which].sizeAnchor[0] = Length;
+                    addAnimator(function (t) {
+                        if (t > 400) {
+                            fightStats[which].sizeAnchor[0] = Length * Math.max(0.01, (1 - (Math.min((t - 399) * 0.01, 1))));
+                        }
 
-                    if (t > 1400) {
-                        fightStats[which].alpha = 0;
-                        return true;
-                    }
-                });
-
+                        if (t > 1400) {
+                            fightStats[which].alpha = 0;
+                            return true;
+                        }
+                    });
+                }
 
                 if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP < 1) {
+                    fightStats[which].alpha = 0;
                     postLog(epositions[pos[0]][pos[1]].name + " killed " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + "!");
                     positions[selectedAlly[0]][selectedAlly[1]].isOccupied = false;
                     checkAllDead();
@@ -1152,8 +1160,8 @@ scenes.fight = () => {
             for (i = 0; i < 6; i++) {
                 fightStats[amountStats * i].text = "Lvl. " + getPlayer(i + 1).level;
                 fightStats[1 + amountStats * i].source = getPlayer(i + 1).name.toLowerCase();
-                fightStats[4 + amountStats * i].sizeAnchor[0] = 0.1960 * 1 - ((getPlayer(i + 1).maxHP - getPlayer(i + 1).HP)/100);
-                fightStats[8 + amountStats * i].sizeAnchor[0] = 0.1960 * 1 - ((getPlayer(i + 1).maxEP - getPlayer(i + 1).EP)/100);
+                if (getPlayer(i + 1).HP > 0) fightStats[4 + amountStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(i + 1).HP / getPlayer(i + 1).maxHP);
+                if (getPlayer(i + 1).EP > 0) fightStats[8 + amountStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(i + 1).EP / getPlayer(i + 1).maxEP);
                 fightStats[10 + amountStats * i].text = getPlayer(i + 1).HP + "/" + getPlayer(i + 1).maxHP;
                 fightStats[11 + amountStats * i].text = getPlayer(i + 1).EP + "/" + getPlayer(i + 1).maxEP;
             }
