@@ -202,9 +202,8 @@ scenes.fight = () => {
                 attackAnimation(pos1, pos2, () => {
                     if (epositions[pos1][pos2].isOccupied == false) {
                         positions[pos[0]][pos[1]].action = false;
-                        return false;
                     }
-                    if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].acc - epositions[pos1][pos2].eva > (Math.random() * 100)) {
+                    else if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].acc - epositions[pos1][pos2].eva > (Math.random() * 100)) {
                         let Damage = calculateDamage(1, selectedAlly[0], selectedAlly[1], pos1, pos2);
                         epositions[pos1][pos2].HP -= Damage; // Deal damage
 
@@ -317,7 +316,7 @@ scenes.fight = () => {
                     skip = 2;
                 }
                 let which = 5 + (skip * amountStats);
-                if (positions[selectedAlly[0]][selectedAlly[1]].HP > 0) {
+                if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP > 0) {
                     fightStats[which].alpha = 255;
                     let HealthAfter = HealthBefore - Damage;
                     let Leftend = 0.1960 * 1 - ((getPlayer(1 + skip).maxHP - HealthAfter) / 100);
