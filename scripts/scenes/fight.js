@@ -199,6 +199,7 @@ scenes.fight = () => {
                 selectedAlly = [positions[pos[0]][pos[1]].action[1], positions[pos[0]][pos[1]].action[2]];
                 fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
                 attackAnimation(pos1, pos2, () => {
+                    if (epositions[pos1][pos2].isOccupied == false) return false;
                     if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].acc - epositions[pos1][pos2].eva > (Math.random() * 100)) {
                         let Damage = calculateDamage(1, selectedAlly[0], selectedAlly[1], pos1, pos2);
                         epositions[pos1][pos2].HP -= Damage; // Deal damage
