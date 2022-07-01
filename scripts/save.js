@@ -16,7 +16,7 @@ let game = {
             HP: 20,
             strength: 4,
             agi: 15,
-            acc: 70,
+            acc: 90,
             element: "water",
 //            inventory: {}
         },
@@ -31,7 +31,7 @@ let game = {
             HP: 16,
             strength: 3,
             agi: 20,
-            acc: 50,
+            acc: 80,
             element: "fire",
 //            inventory: {}
         },

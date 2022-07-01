@@ -48,8 +48,9 @@ scenes.fight = () => {
         }
         if (alive == 0) { // All dead :)
             win = true;
-                getPlayer(1).EXP += 5;
-                getPlayer(2).EXP += 5;
+            getPlayer(1).EXP += 5;
+            getPlayer(2).EXP += 5;
+            getPlayer(3).EXP += 5;
                 checkLevelUps();
                 setTimeout(() => {
                     setScene(scenes.game());

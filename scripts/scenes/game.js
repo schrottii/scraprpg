@@ -46,7 +46,7 @@ function checkLevelUps() {
         game.characters.gau.strength = 6 + game.characters.gau.level;
         game.characters.gau.maxHP = 8 + (game.characters.gau.level * 2);
 
-        game.characters.gau.HP = game.characters.corelle.maxHP;
+        game.characters.gau.HP = game.characters.gau.maxHP;
     }
 }
 
