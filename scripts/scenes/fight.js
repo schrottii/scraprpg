@@ -91,13 +91,15 @@ scenes.fight = () => {
         if (type == 1) { // Allies
             return Math.round(game.characters[positions[pos1][pos2].occupied].strength
                 * (0.67 + (0.33 * pos1))
-                * (1.33 - (0.33 * enpos1)));
+                * (1.33 - (0.33 * enpos1))
+                * getElementDamage(game.characters[positions[pos1][pos2].occupied].element, epositions[enpos1][enpos2].element));
         }
             
         if (type == 2) { // Evil men
             return Math.round(epositions[pos1][pos2].strength
                 * (1.33 - (0.33 * pos1))
-                * (0.67 + (0.33 * enpos1)));
+                * (0.67 + (0.33 * enpos1))
+                * getElementDamage(epositions[pos1][pos2].element, game.characters[positions[enpos1][enpos2].occupied].element));
         }
     }
 
@@ -203,6 +205,10 @@ scenes.fight = () => {
 
                         playSound("damage");
                         postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " attacks " + epositions[pos1][pos2].name + " and deals " + Damage + " damage!");
+                        if (getElementDamage(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].element, epositions[pos1][pos2].element) != 1){
+                            postLog("Element boost: x" + getElementDamage(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].element, epositions[pos1][pos2].element) + "!");
+                        }
+
                         if (epositions[pos1][pos2].HP < 1) { // Is dead?
                             epositions[pos1][pos2].isOccupied = false;
                             epositions[pos1][pos2].occupied = false;
@@ -288,10 +294,13 @@ scenes.fight = () => {
             if (positions[selectedAlly[0]][selectedAlly[1]].isOccupied != false) {
                 let HealthBefore = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP;
                 game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP -= Damage;
-                postLog(epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " and deals " + Damage + " damage!");
                 epositions[pos[0]][pos[1]].action = false;
 
                 playSound("damage");
+                postLog(epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " and deals " + Damage + " damage!");
+                if (getElementDamage(epositions[pos[0]][pos[1]].element, game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].element) != 1) {
+                    postLog("Element boost: x" + getElementDamage(epositions[pos[0]][pos[1]].element, game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].element) + "!");
+                }
 
                 // Bar animation! (Cowboy moment)
                 let skip = 0; //No idea what else to call this
@@ -412,6 +421,68 @@ scenes.fight = () => {
             }
         })
     }
+
+
+
+    // Elements! Yay (ft. some rapper you have never heard of)
+    function elementLogic(myElement, theirElement) {
+        switch (myElement) {
+            case "fire":
+                if (theirElement == "dark") return "weak";
+                if (theirElement == "earth") return "strong";
+                return "none";
+            case "earth":
+                if (theirElement == "fire") return "weak";
+                if (theirElement == "wind") return "strong";
+                return "none";
+            case "wind":
+                if (theirElement == "earth") return "weak";
+                if (theirElement == "lightning") return "strong";
+                return "none";
+            case "lightning":
+                if (theirElement == "wind") return "weak";
+                if (theirElement == "water") return "strong";
+                return "none";
+            case "water":
+                if (theirElement == "lightning") return "weak";
+                if (theirElement == "light") return "strong";
+                return "none";
+            case "light":
+                if (theirElement == "water") return "weak";
+                if (theirElement == "dark") return "strong";
+                return "none";
+            case "dark":
+                if (theirElement == "light") return "weak";
+                if (theirElement == "fire") return "strong";
+                return "none";
+
+            case "physical":
+                if (theirElement == "ectoplasm") return "weak";
+                return "none";
+            case "ectoplasm":
+                if (theirElement == "physical") return "strong";
+                return "none";
+        }
+    }
+
+    function getElementDamage(myElements, theirElements) {
+        if (typeof (myElements) == "string") myElements = [myElements];
+        if (typeof (theirElements) == "string") theirElements = [theirElements];
+
+        let damageBoost = 1; // 1 = 100%
+
+        for (i in myElements) {
+            for (j in theirElements) {
+                //console.log("i: " + i, "   j:" + j);
+                if (elementLogic(myElements[i], theirElements[j]) == "weak") damageBoost -= 0.33;
+                if (elementLogic(myElements[i], theirElements[j]) == "strong") damageBoost += 0.33;
+            }
+        }
+        return Math.round(damageBoost*100)/100;
+    }
+
+
+
 
 
     // Top row buttons
@@ -820,6 +891,7 @@ scenes.fight = () => {
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].strength = enemyTypes[currentEnemies[i][0]].strength;
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].eva = enemyTypes[currentEnemies[i][0]].eva;
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].agi = enemyTypes[currentEnemies[i][0]].agi;
+            epositions[currentEnemies[i][1]][currentEnemies[i][2]].element = enemyTypes[currentEnemies[i][0]].element;
         }
     }
 

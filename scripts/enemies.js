@@ -6,8 +6,8 @@ let enemyTypes = {
         HP: 5,
         strength: 2,
         eva: 0,
-        agi: 30
-        //position: 1,
+        agi: 30,
+        element: "light",
     },
 
     "stronghelter": {
@@ -15,8 +15,8 @@ let enemyTypes = {
         HP: 9,
         strength: 2,
         eva: 0,
-        agi: 25
-        //position: 1,
+        agi: 25,
+        element: "physical",
     },
 
     "itsalive": {
@@ -24,8 +24,8 @@ let enemyTypes = {
         HP: 30,
         strength: 2,
         eva: 30,
-        agi: 10
-        //position: 1,
+        agi: 10,
+        element: "air",
     },
 
     "livingbarrel": {
@@ -33,8 +33,8 @@ let enemyTypes = {
         HP: 10,
         strength: 6,
         eva: 10,
-        agi: 23
-        //position: 1,
+        agi: 23,
+        element: "dark",
     },
 }
 
