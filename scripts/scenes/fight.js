@@ -28,7 +28,7 @@ scenes.fight = () => {
 
     var win = false;
 
-    const amountStats = 12;
+    const amountStats = 13;
 
     var fightlog = [
         "",
@@ -621,6 +621,12 @@ scenes.fight = () => {
                 text: "5/5",
                 alpha: 0
             }))
+
+            fightStats.push(controls.image({
+                anchor: [0.16 + (j * 0.35), 0.81 + (i * 0.075)], sizeOffset: [32, 32],
+                source: "physical",
+                alpha: 0
+            }))
         }
     }
 
@@ -999,6 +1005,8 @@ scenes.fight = () => {
             fightStats[8 + amountStats * i].fill = "rgb(205, 0, 205)";
             fightStats[10 + amountStats * i].alpha = 255;
             fightStats[11 + amountStats * i].alpha = 255;
+            fightStats[12 + amountStats * i].alpha = 255;
+            if (game.characters[characters[i]].element != undefined) fightStats[12 + amountStats * i].source = game.characters[characters[i]].element;
         }
 
         // Mobile resizing

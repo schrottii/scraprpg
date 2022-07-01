@@ -55,6 +55,16 @@ let images = {
     Portraits_Bleu: "data/images/Portraits_Bleu.png",
     p_corelle: "data/images/p_corelle.png",
 
+    fire: "data/images/elements/fire_element.png",
+    earth: "data/images/elements/earth_element.png",
+    wind: "data/images/elements/wind_element_colored.png",
+    lightning: "data/images/elements/lightning_element.png",
+    water: "data/images/elements/water_element.png",
+    light: "data/images/elements/light_element.png",
+    dark: "data/images/elements/dark_element.png",
+    physical: "data/images/elements/physical_element.png",
+    ectoplasm: "data/images/elements/ectoplasm_element.png",
+
     "tiles/grass1": "data/images/tiles/grass1.png",
     "tiles/grass2": "data/images/tiles/grass2.png",
     "tiles/sand1": "data/images/tiles/sand1.png",

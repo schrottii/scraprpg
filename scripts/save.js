@@ -17,6 +17,7 @@ let game = {
             strength: 4,
             agi: 15,
             acc: 70,
+            element: "water",
 //            inventory: {}
         },
         corelle: {
@@ -31,6 +32,7 @@ let game = {
             strength: 3,
             agi: 20,
             acc: 50,
+            element: "fire",
 //            inventory: {}
         },
         gau: {
@@ -45,6 +47,7 @@ let game = {
             strength: 6,
             agi: 12,
             acc: 80,
+            element: "physical",
 //            inventory: {}
         }
     }
