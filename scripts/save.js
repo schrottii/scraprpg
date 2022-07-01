@@ -18,6 +18,7 @@ let game = {
             agi: 15,
             acc: 90,
             element: "water",
+            pos: [0, 0],
 //            inventory: {}
         },
         corelle: {
@@ -33,6 +34,7 @@ let game = {
             agi: 20,
             acc: 80,
             element: "fire",
+            pos: [0, 1],
 //            inventory: {}
         },
         gau: {
@@ -48,6 +50,7 @@ let game = {
             agi: 12,
             acc: 80,
             element: "physical",
+            pos: [2, 2],
 //            inventory: {}
         }
     }

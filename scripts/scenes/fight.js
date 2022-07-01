@@ -351,6 +351,7 @@ scenes.fight = () => {
     function switchPositions() {
         // important variable here: switchThose
         // [0] is pos of which one to switch, [1] of where to switch to
+        game.characters[positions[switchThose[0][0]][switchThose[0][1]].occupied].pos = [switchThose[1][0], switchThose[1][1]];
 
         // Switch them and adjust isOccupied
         let cache123 = positions[switchThose[1][0]][switchThose[1][1]].occupied;
@@ -363,6 +364,7 @@ scenes.fight = () => {
 
         positionGrid[switchThose[0][0] + (switchThose[0][1] * 3)].source = "grid";
         positionGrid[switchThose[1][0] + (switchThose[1][1] * 3)].source = "hasaction";
+
 
         // Fightlog
         postLog("Swapped [" + (switchThose[0][0] + 1) + "/" + (switchThose[0][1] + 1) + "] with [" + (switchThose[1][0] + 1) + "/" + (switchThose[1][1] + 1) + "]!");
@@ -767,8 +769,8 @@ scenes.fight = () => {
             [
                 {
                     pos: "top left",
-                    isOccupied: true, // bool
-                    occupied: "bleu", // who?
+                    isOccupied: false, // bool
+                    occupied: false, // who?
                     action: false,
                 },
                 {
@@ -807,14 +809,14 @@ scenes.fight = () => {
             [
                 {
                     pos: "bottom left",
-                    isOccupied: true, // bool
-                    occupied: "corelle", // who?
+                    isOccupied: false, // bool
+                    occupied: false, // who?
                     action: false,
                 },
                 {
                     pos: "bottom middle",
-                    isOccupied: true, // bool
-                    occupied: "gau", // who?
+                    isOccupied: false, // bool
+                    occupied: false, // who?
                     action: false,
                 },
                 {
@@ -1136,6 +1138,13 @@ scenes.fight = () => {
 
         turnDisplay.text = "Turn " + turn;
             
+    }
+
+    for (i in game.characters) {
+        if (game.characters[i].pos != undefined) {
+            positions[game.characters[i].pos[0]][game.characters[i].pos[1]].occupied = game.characters[i].name.toLowerCase();
+            positions[game.characters[i].pos[0]][game.characters[i].pos[1]].isOccupied = true;
+        }
     }
 
     for (j = 0; j < 3; j++) {

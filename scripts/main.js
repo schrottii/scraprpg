@@ -267,6 +267,11 @@ function loadGame() {
         }
         if (saveCopy.chars == undefined) saveCopy.chars = [saveCopy.char1, saveCopy.char2];
         if (saveCopy.chars.length == 2) saveCopy.chars.push("gau");
+        if (saveCopy.characters.bleu.pos == undefined) {
+            saveCopy.characters.bleu.pos = [0, 0];
+            saveCopy.characters.corelle.pos = [0, 1];
+            saveCopy.characters.gau.pos = [2, 2];
+        }
 
         game = saveCopy;
     }
