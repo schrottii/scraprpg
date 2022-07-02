@@ -135,6 +135,14 @@ scenes.game = () => {
         fill: "#B58542",
     }));
 
+
+
+    let poisonBlack = controls.rect({
+        anchor: [0, 0], sizeAnchor: [1, 1],
+        alpha: 0,
+        fill: "black",
+    }); 
+
     // Names, stats, etc.
     mapDisplay.push(controls.label({
         anchor: [.99, .68], offset: [-200, 20],
@@ -471,6 +479,22 @@ scenes.game = () => {
             }
         }
 
+        // Poison
+        for (i = 0; i < characters.length; i++) {
+            if (getPlayer(i + 1).effect[0] == "poison") {
+                getPlayer(i + 1).HP -= 1;
+                poisonBlack.alpha = 255;
+                poisonBlack.fill = "black";
+                addAnimator(function (t){
+                    poisonBlack.fill = "rgb(" + (0 + (t/3)) + "," + (0 + (t/3)) + "," + (0 + (t/3)) + ")";
+                    if (t > 200) {
+                        poisonBlack.alpha = 0;
+                        return true;
+                    }
+                })
+            }
+        }
+
         // Spawn enemies (sometimes)
         if (enemiesOnThisMap < maxEnemies) {
             for (possibleSpawns in map.spawns) {
@@ -744,7 +768,7 @@ scenes.game = () => {
         },
         controls: [
             ...walkPad, autoSaveText, ...mapDisplay, actionButton,
-            mapDisplayStats1, mapDisplayStats2,
+            mapDisplayStats1, mapDisplayStats2, poisonBlack,
             mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents
         ],
     }

@@ -370,12 +370,34 @@ scenes.fight = () => {
 
             if (getPlayer(i + 1).effect[0] == "acid") {
                 getPlayer(i + 1).HP -= Math.ceil(getPlayer(i + 1).maxHP / 15);
-                postLog(getPlayer(i + 1).name + " took " + Math.ceil(getPlayer(i + 1).maxHP / 15) + " damage from acid!")
-                
+                postLog(getPlayer(i + 1).name + " took " + Math.ceil(getPlayer(i + 1).maxHP / 20) + " damage from acid!")
+
                 getPlayer(i + 1).effect[1] -= 1;
                 if (getPlayer(i + 1).effect[1] < 1) {
                     getPlayer(i + 1).effect[0] = "none";
                     postLog(getPlayer(i + 1).name + "'s acid is over!")
+                }
+            }
+
+            if (getPlayer(i + 1).effect[0] == "poison") {
+                getPlayer(i + 1).HP -= Math.ceil(getPlayer(i + 1).maxHP / 15);
+                postLog(getPlayer(i + 1).name + " took " + Math.ceil(getPlayer(i + 1).maxHP / 20) + " damage from poison!")
+
+                getPlayer(i + 1).effect[1] -= 1;
+                if (getPlayer(i + 1).effect[1] < 1) {
+                    getPlayer(i + 1).effect[0] = "none";
+                    postLog(getPlayer(i + 1).name + "'s poison is over!")
+                }
+            }
+
+            if (getPlayer(i + 1).effect[0] == "burn") {
+                getPlayer(i + 1).HP -= Math.ceil(getPlayer(i + 1).maxHP / 10);
+                postLog(getPlayer(i + 1).name + " burns and took " + Math.ceil(getPlayer(i + 1).maxHP / 10) + " damage!")
+
+                getPlayer(i + 1).effect[1] -= 1;
+                if (getPlayer(i + 1).effect[1] < 1) {
+                    getPlayer(i + 1).effect[0] = "none";
+                    postLog(getPlayer(i + 1).name + "'s burn is over!")
                 }
             }
 
@@ -572,7 +594,15 @@ scenes.fight = () => {
                 alpha: 255,
                 onClick(args) {
                     if (this.alpha == 255 && fightaction == "active") {
-                        getPlayer(i + 1).effect = ["acid", 3];
+                        if (Math.random() < 0.5) {
+                            getPlayer(i + 1).effect = ["acid", 3];
+                        }
+                        else if (Math.random() < 0.5) {
+                            getPlayer(i + 1).effect = ["poison", 4];
+                        }
+                        else {
+                            getPlayer(i + 1).effect = ["burn", 4];
+                        }
                     }
                 }
             }))
