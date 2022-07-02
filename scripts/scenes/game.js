@@ -6,6 +6,7 @@ var inDialogue = false;
 var currentDialogue;
 var dialogueProgress = 0;
 var dialogueEmotion = "neutral";
+var overWorldStatsScroll = 0;
 
 var characters = ["bleu", "corelle", "gau"];
 
@@ -172,6 +173,30 @@ scenes.game = () => {
         align: "left", fontSize: 14, fill: "yellow",
         text: "Level: " + getPlayer(2).level,
     });
+
+    mapDisplay.push(controls.image({
+        anchor: [.99, .82], offset: [-200, 20], sizeOffset: [24, 23],
+        source: "arrowup",
+        onClick(args) {
+            overWorldStatsScroll -= 1;
+            if (overWorldStatsScroll < 0) overWorldStatsScroll = 0;
+            mapDisplay[1].text = getPlayer(1 + overWorldStatsScroll).name;
+            mapDisplay[2].text = getPlayer(2 + overWorldStatsScroll).name;
+        },
+        alpha: 255,
+    }));
+
+    mapDisplay.push(controls.image({
+        anchor: [.99, .82], offset: [-174, 20], sizeOffset: [24, 23],
+        source: "arrowdown",
+        onClick(args) {
+            overWorldStatsScroll += 1;
+            if (overWorldStatsScroll > characters.length - 2) overWorldStatsScroll = 0;
+            mapDisplay[1].text = getPlayer(1 + overWorldStatsScroll).name;
+            mapDisplay[2].text = getPlayer(2 + overWorldStatsScroll).name;
+        },
+        alpha: 255,
+    }));
 
 
     let dialogueComponents = []
@@ -712,10 +737,10 @@ scenes.game = () => {
             // Update bottom right texts
             // I think this method is inefficient, but I was not able to find a better one.
             // I searched and tried several things for hours.
-            mapDisplayLevel1.text = "Level: " + getPlayer().level + "  EXP: " + getPlayer().EXP + "/25";
-            mapDisplayStats1.text = "HP: " + getPlayer().HP + "/" + getPlayer().maxHP + "   EP: " + getPlayer().EP + "/" + getPlayer().maxEP;
-            mapDisplayLevel2.text = "Level: " + getPlayer(2).level + "  EXP: " + getPlayer(2).EXP + "/25";
-            mapDisplayStats2.text = "HP: " + getPlayer(2).HP + "/" + getPlayer(2).maxHP + "   EP: " + getPlayer(2).EP + "/" + getPlayer(2).maxEP;
+            mapDisplayLevel1.text = "Level: " + getPlayer(1 + overWorldStatsScroll).level + "  EXP: " + getPlayer(1 + overWorldStatsScroll).EXP + "/25";
+            mapDisplayStats1.text = "HP: " + getPlayer(1 + overWorldStatsScroll).HP + "/" + getPlayer(1 + overWorldStatsScroll).maxHP + "   EP: " + getPlayer(1 + overWorldStatsScroll).EP + "/" + getPlayer(1 + overWorldStatsScroll).maxEP;
+            mapDisplayLevel2.text = "Level: " + getPlayer(2 + overWorldStatsScroll).level + "  EXP: " + getPlayer(2 + overWorldStatsScroll).EXP + "/25";
+            mapDisplayStats2.text = "HP: " + getPlayer(2 + overWorldStatsScroll).HP + "/" + getPlayer(2 + overWorldStatsScroll).maxHP + "   EP: " + getPlayer(2 + overWorldStatsScroll).EP + "/" + getPlayer(2 + overWorldStatsScroll).maxEP;
         },
         controls: [
             ...walkPad, autoSaveText, ...mapDisplay, actionButton,
