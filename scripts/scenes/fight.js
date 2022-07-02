@@ -13,9 +13,7 @@ scenes.fight = () => {
     var enemyListComponents = [];
     var enemyAmounts = ["", "", "", "", "", "", "", "", ""];
     var fightOverview = [];
-    var fightStats1 = [];
-    var fightStats2 = [];
-    var fightStats3 = [];
+    var winScreen = [];
     var actionDisplay = [];
     var actionText = [];
 
@@ -48,13 +46,18 @@ scenes.fight = () => {
         }
         if (alive == 0) { // All dead :)
             win = true;
+
+
+            for (i = 0; i < characters.length; i++) {
+                winScreen[2 + i].text = getPlayer(i + 1).name + "  + " + 5 + "XP!     " + getPlayer(i + 1).EXP + "/25";
+            }
+            for (i = 0; i < winScreen.length; i++) {
+                winScreen[i].alpha = 255;
+            }
             getPlayer(1).EXP += 5;
             getPlayer(2).EXP += 5;
             getPlayer(3).EXP += 5;
-                checkLevelUps();
-                setTimeout(() => {
-                    setScene(scenes.game());
-                }, 2000);
+            checkLevelUps();
         }
 
         let aliveallies = 0;
@@ -712,6 +715,36 @@ scenes.fight = () => {
         }
     }
 
+
+    // Win Screen
+    winScreen.push(controls.rect({
+        anchor: [0.2, 0.3], sizeAnchor: [0.6, 0.4],
+        fill: "rgb(181, 133, 66)",
+        alpha: 0,
+    }));
+    winScreen.push(controls.label({
+        anchor: [0.5, 0.32],
+        text: "Victory!",
+        fontSize: 28, fill: "black", align: "center",
+        alpha: 0,
+    }));
+    for (i = 0; i < characters.length; i++) {
+        winScreen.push(controls.label({
+            anchor: [0.22, 0.4 + (0.025 * i)],
+            text: "Nobody +0 XP",
+            fontSize: 20, fill: "black", align: "left",
+            alpha: 0,
+        }));
+    }
+    winScreen.push(controls.button({
+        anchor: [0.7, 0.6], sizeAnchor: [0.075, 0.05],
+        text: "Continue",
+        onClick(args) {
+            setScene(scenes.game());
+        },
+        alpha: 0,
+    }));
+
     // Battle Log (Bottom Left)
 
     fightLogComponents.push(controls.rect({
@@ -1217,7 +1250,7 @@ scenes.fight = () => {
             ...fightButtons, ...fightActions, turnDisplay,
             ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
-            ...fightStats, ...actionDisplay,
+            ...fightStats, ...actionDisplay, ...winScreen,
             ...positionControls, ...epositionControls, ...positionGrid,
         ],
     }
