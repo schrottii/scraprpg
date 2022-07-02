@@ -272,6 +272,9 @@ function loadGame() {
             saveCopy.characters.corelle.pos = [0, 1];
             saveCopy.characters.gau.pos = [2, 2];
         }
+        saveCopy.characters.bleu.effect = ["none", 0];
+        saveCopy.characters.corelle.effect = ["none", 0];
+        saveCopy.characters.gau.effect = ["none", 0];
 
         game = saveCopy;
     }

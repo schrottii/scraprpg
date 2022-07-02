@@ -65,6 +65,9 @@ let images = {
     physical: "data/images/elements/physical_element.png",
     ectoplasm: "data/images/elements/ectoplasm_element.png",
 
+
+    acid: "data/images/effects/acid.png",
+
     "tiles/grass1": "data/images/tiles/grass1.png",
     "tiles/grass2": "data/images/tiles/grass2.png",
     "tiles/sand1": "data/images/tiles/sand1.png",

@@ -26,7 +26,7 @@ scenes.fight = () => {
 
     var win = false;
 
-    const amountStats = 13;
+    const amountStats = 14;
 
     var fightlog = [
         "",
@@ -46,6 +46,13 @@ scenes.fight = () => {
         }
         if (alive == 0) { // All dead :)
             win = true;
+
+            // Get rid of acid effect
+            for (i = 0; i < characters.length; i++) {
+                if (getPlayer(i + 1).effect[0] == "acid") {
+                    getPlayer(i + 1).effect = ["none", 0];
+                }
+            }
 
             let EXPforAll = 2;
             for (j = 0; j < 3; j++) {
@@ -278,6 +285,7 @@ scenes.fight = () => {
         if (highestAGI == 0) {
             fightaction = "none";
             turn += 1;
+            endOfTurnEvents();
 
             for (j = 0; j < 3; j++) {
                 for (i = 0; i < 3; i++) {
@@ -357,6 +365,30 @@ scenes.fight = () => {
         }, true); // very important true,bob
     }
 
+    function endOfTurnEvents() {
+        for (i = 0; i < characters.length; i++) {
+
+            if (getPlayer(i + 1).effect[0] == "acid") {
+                getPlayer(i + 1).HP -= Math.ceil(getPlayer(i + 1).maxHP / 15);
+                postLog(getPlayer(i + 1).name + " took " + Math.ceil(getPlayer(i + 1).maxHP / 15) + " damage from acid!")
+                
+                getPlayer(i + 1).effect[1] -= 1;
+                if (getPlayer(i + 1).effect[1] < 1) {
+                    getPlayer(i + 1).effect[0] = "none";
+                    postLog(getPlayer(i + 1).name + "'s acid is over!")
+                }
+            }
+
+            if (getPlayer(i + 1).HP < 1) {
+                //fightStats[which].alpha = 0;
+                postLog(getPlayer(i + 1).name + "died!");
+                positions[getPlayer(i + 1).pos[0]][getPlayer(i + 1).pos[1]].isOccupied = false;
+                checkAllDead();
+            }
+        }
+
+
+    }
 
     function switchPositions() {
         // important variable here: switchThose
@@ -540,6 +572,7 @@ scenes.fight = () => {
                 alpha: 255,
                 onClick(args) {
                     if (this.alpha == 255 && fightaction == "active") {
+                        getPlayer(i + 1).effect = ["acid", 3];
                     }
                 }
             }))
@@ -718,6 +751,12 @@ scenes.fight = () => {
             fightStats.push(controls.image({
                 anchor: [0.16 + (j * 0.35), 0.81 + (i * 0.075)], sizeOffset: [32, 32],
                 source: "physical",
+                alpha: 0
+            }))
+
+            fightStats.push(controls.image({
+                anchor: [0.22 + (j * 0.35), 0.81 + (i * 0.075)], sizeOffset: [32, 32],
+                source: "gear",
                 alpha: 0
             }))
         }
@@ -1206,13 +1245,17 @@ scenes.fight = () => {
             ctx.drawImage(images.fight_bg, 0, 0, width * scale, height);
 
             // Update the stats stuff at the bottom
-            for (i = 0; i < 6; i++) {
+            for (i = 0; i < characters.length; i++) {
                 fightStats[amountStats * i].text = "Lvl. " + getPlayer(i + 1).level;
                 fightStats[1 + amountStats * i].source = getPlayer(i + 1).name.toLowerCase();
                 if (getPlayer(i + 1).HP > 0) fightStats[4 + amountStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(i + 1).HP / getPlayer(i + 1).maxHP);
                 if (getPlayer(i + 1).EP > 0) fightStats[8 + amountStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(i + 1).EP / getPlayer(i + 1).maxEP);
                 fightStats[10 + amountStats * i].text = getPlayer(i + 1).HP + "/" + getPlayer(i + 1).maxHP;
                 fightStats[11 + amountStats * i].text = getPlayer(i + 1).EP + "/" + getPlayer(i + 1).maxEP;
+
+                if (getPlayer(i + 1).effect[0] != "none") fightStats[13 + amountStats * i].alpha = 255;
+                if (getPlayer(i + 1).effect[0] != "none") fightStats[13 + amountStats * i].source = getPlayer(i + 1).effect[0];
+                if (getPlayer(i + 1).effect[0] == "none") fightStats[13 + amountStats * i].alpha = 0;
             }
 
             // Update fightlog

@@ -18,6 +18,7 @@ let game = {
             agi: 15,
             acc: 90,
             element: "water",
+            effect: ["none", 0],
             pos: [0, 0],
 //            inventory: {}
         },
@@ -34,6 +35,7 @@ let game = {
             agi: 20,
             acc: 80,
             element: "fire",
+            effect: ["none", 0],
             pos: [0, 1],
 //            inventory: {}
         },
@@ -50,6 +52,7 @@ let game = {
             agi: 12,
             acc: 80,
             element: "physical",
+            effect: ["none", 0],
             pos: [2, 2],
 //            inventory: {}
         }
