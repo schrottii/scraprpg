@@ -47,16 +47,24 @@ scenes.fight = () => {
         if (alive == 0) { // All dead :)
             win = true;
 
-
+            let EXPforAll = 2;
+            for (j = 0; j < 3; j++) {
+                for (i = 0; i < 3; i++) {
+                    if (epositions[i][j].strength != undefined) EXPforAll += epositions[i][j].strength / 3;
+                    if (epositions[i][j].maxHP != undefined) EXPforAll += epositions[i][j].maxHP / 14;
+                }
+            }
+            EXPforAll = Math.ceil(EXPforAll);
+                
             for (i = 0; i < characters.length; i++) {
-                winScreen[2 + i].text = getPlayer(i + 1).name + "  + " + 5 + "XP!     " + getPlayer(i + 1).EXP + "/25";
+                winScreen[2 + i].text = getPlayer(i + 1).name + "  + " + EXPforAll + "XP!     " + getPlayer(i + 1).EXP + "/25";
             }
             for (i = 0; i < winScreen.length; i++) {
                 winScreen[i].alpha = 255;
             }
-            getPlayer(1).EXP += 5;
-            getPlayer(2).EXP += 5;
-            getPlayer(3).EXP += 5;
+            getPlayer(1).EXP += EXPforAll;
+            getPlayer(2).EXP += EXPforAll;
+            getPlayer(3).EXP += EXPforAll;
             checkLevelUps();
         }
 
