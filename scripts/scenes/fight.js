@@ -338,8 +338,8 @@ scenes.fight = () => {
                 if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP > 0) {
                     fightStats[which].alpha = 255;
                     let HealthAfter = HealthBefore - Damage;
-                    let Leftend = 0.1960 * 1 - ((getPlayer(1 + skip).maxHP - HealthAfter) / 100);
-                    let Length = 0.1960 * 0 + ((HealthBefore - HealthAfter) / 100);
+                    let Leftend = 0.1960 * (getPlayer(1 + skip).HP / getPlayer(1 + skip).maxHP);
+                    let Length = (0.1960 * (HealthBefore / getPlayer(1 + skip).maxHP))-Leftend;
                     fightStats[which].anchor[0] = 0.242 + Leftend;
                     fightStats[which].sizeAnchor[0] = Length;
                     addAnimator(function (t) {
