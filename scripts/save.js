@@ -8,7 +8,6 @@ let game = {
     characters: {
         bleu: {
             name: "Bleu",
-//            unlocked: true,
             level: 1,
             EXP: 0,
             EP: 3,
@@ -25,7 +24,6 @@ let game = {
         },
         corelle: {
             name: "Corelle",
-//            unlocked: true,
             level: 1,
             EXP: 0,
             EP: 5,
@@ -42,7 +40,6 @@ let game = {
         },
         gau: {
             name: "Gau",
-//            unlocked: true,
             level: 1,
             EXP: 0,
             EP: 2,

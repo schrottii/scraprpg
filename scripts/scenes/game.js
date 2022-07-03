@@ -13,10 +13,6 @@ const characters = ["bleu", "corelle", "gau"];
 
 // Function used to create enemies
 function createEnemy(type) {
-    if (mapenemies[type] != undefined) {
-        if (mapenemies[type]().time == "day" && !isDay()) return false;
-        if (mapenemies[type]().time == "night" && !isNight()) return false;
-    }
     if (currentEnemies.length < 9) {
         currentEnemies.push([type, Math.ceil(Math.random() * 2), Math.ceil(Math.random() * 2)]);
     }
@@ -569,6 +565,10 @@ scenes.game = () => {
         if (enemiesOnThisMap < maxEnemies) {
             for (possibleSpawns in map.spawns) {
                 if (map.spawns[possibleSpawns] > Math.random() * 100) { // For the stupid: Somewhat unlikely
+                    if (mapenemies[possibleSpawns] != undefined) {
+                        if (mapenemies[possibleSpawns]().time == "day" && !isDay()) return false;
+                        if (mapenemies[possibleSpawns]().time == "night" && !isNight()) return false;
+                    }
                         enemies.push(mapenemies[possibleSpawns]({
                             position: [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)], map: game.map,
                         }));
