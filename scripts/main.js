@@ -70,6 +70,12 @@ var autoSaveTime = 0;
 
 var canMove = true;
 
+function getTime() {
+    let hours = Math.round(game.time / 1000);
+    let minutes = Math.round((game.time % 1000) / 16.667);
+    return hours + ":" + minutes;
+}
+
 function playMusic(name) {
     musicPlayer.src = audio[name].src;
     musicPlayer.play();
@@ -197,7 +203,10 @@ function loop() {
             animationtime = -1;
         }
     }
-
+    game.time += (delta/60);
+    if (game.time >= 24000) { // 1000 = 1 hour in-game.
+        game.time = 0;
+    }
     updateAnimators(delta);
 
     requestAnimationFrame(loop);
@@ -272,6 +281,7 @@ function loadGame() {
         saveCopy.characters.bleu.effect = ["none", 0];
         saveCopy.characters.corelle.effect = ["none", 0];
         saveCopy.characters.gau.effect = ["none", 0];
+        if (saveCopy.time == undefined) saveCopy.time = 0;
 
         game = saveCopy;
     }

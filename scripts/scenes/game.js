@@ -999,14 +999,18 @@ scenes.game = () => {
                     dialogueComponents[i].alpha = 255;
                 }
                 if (map.dialogues != undefined) {
-                    dialogueComponents[6].text = currentDialogue[dialogueProgress][0];
+                    if (typeof (currentDialogue[dialogueProgress][0]) == "string") dialogueComponents[6].text = currentDialogue[dialogueProgress][0];
+                    else dialogueComponents[6].text = currentDialogue[dialogueProgress][0]();
+                    
                     if (currentDialogue[dialogueProgress][3] != undefined) dialogueComponents[3].text = currentDialogue[dialogueProgress][3];
                     dialogueEmotion = currentDialogue[dialogueProgress][2];
                     dialogueComponents[5].source = currentDialogue[dialogueProgress][1];
                     dialogueComponents[5].snip = getEmotion(dialogueEmotion);
                 }
                 else {
-                    dialogueComponents[6].text = currentDialogue[dialogueProgress][0];
+                    if (typeof (currentDialogue[dialogueProgress][0]) == "string") dialogueComponents[6].text = currentDialogue[dialogueProgress][0];
+                    else dialogueComponents[6].text = currentDialogue[dialogueProgress][0]();
+
                     if (currentDialogue[dialogueProgress][3] != undefined) dialogueComponents[3].text = currentDialogue[dialogueProgress][3];
                     dialogueEmotion = currentDialogue[dialogueProgress][2];
                     dialogueComponents[5].source = currentDialogue[dialogueProgress][1];

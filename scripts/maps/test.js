@@ -109,6 +109,13 @@ maps["test"] = {
         "029": {
             sprite: "uv_house_left",
             occupied: true,
+            action: () => {
+                inDialogue = true;
+                currentDialogue = maps["test"].dialogues[2];
+                dialogueProgress = 0;
+                dialogueEmotion = currentDialogue[dialogueProgress][1];
+                canMove = false;
+            }
         },
         "D01": {
             sprite: "uv_house_door",
@@ -262,7 +269,9 @@ maps["test"] = {
         ],
     dialogues: {
         1: [["Hello this is a test dialogue", "Portraits_Bleu", "happy"],
-            ["Second text", "Portraits_Bleu", "neutral"],
-            ["Don't forget to subscribe to my channel", "Portraits_Bleu", "angry"]]
+        ["Second text", "Portraits_Bleu", "neutral"],
+            ["Don't forget to subscribe to my channel", "Portraits_Bleu", "angry"]],
+        2:  [["Hmm...", "Portraits_Bleu", "neutral"],
+            [() => { return "It is " + getTime() + "!" }, "Portraits_Bleu", "happy"]],
     }
 }
