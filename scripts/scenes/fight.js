@@ -444,7 +444,8 @@ scenes.fight = () => {
                 positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor[0] = 0.025 + (0.0005 * t);
 
                 if (positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor[0] + (positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].offset[0] / 1000) >
-                    epositionControls[pos1 + (pos2 * 3)].anchor[0] + (epositionControls[pos1 + (pos2 * 3)].offset[0] / 1000)) {
+                    epositionControls[pos1 + (pos2 * 3)].anchor[0] + (epositionControls[pos1 + (pos2 * 3)].offset[0] / 1000)
+                    || epositions[pos1][pos2].HP < 1) {
 
                     positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor[0] = 0.025;
 

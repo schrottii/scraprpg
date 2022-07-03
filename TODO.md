@@ -1,5 +1,21 @@
 ##TODO:
 
+- Battle numbers
+- Proper battle fighting animations
+- Proper victory scene
+- Proper defeat scene
+- Non-Game-Over defeat 
+- Proper battle transition
+- Black fade effect during area enter
+- Overworld menu (items, equip, save, etc.)
+- Startup introduction
+- NPCs
+- Items
+- Key items
+- Time
+- Mastery Techs
+- Duo Mastery Techs
+- Add items
 - Implement inventory
 - Save character stats somewhere else, only save level, current hp, etc. in save.js / storage. Functions for calculating current stat based on level
 - this will allow us to easily change stats of charactes (e. g. nerfs in future updates)
