@@ -60,7 +60,7 @@ let npcs = {
                     ["Why are you blue like me that can't be you're a clone", "Portraits_Bleu", "sad", "Blue"],
                     ["Idiots.", "Portraits_Corelle", "neutral", "The girl"]],
             },
-            movement: 0,
+            movement: 1,
             ...args || {},
 
         }
