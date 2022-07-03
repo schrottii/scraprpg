@@ -48,7 +48,7 @@ scenes.fight = () => {
             win = true;
 
             // Get rid of acid effect
-            for (i = 0; i < characters.length; i++) {
+            for (i = 0; i < game.chars.length; i++) {
                 if (getPlayer(i + 1).effect[0] == "acid") {
                     getPlayer(i + 1).effect = ["none", 0];
                 }
@@ -62,16 +62,17 @@ scenes.fight = () => {
                 }
             }
             EXPforAll = Math.ceil(EXPforAll);
+
+            for (i = 0; i < game.chars.length; i++) {
+                getPlayer(1 + i).EXP += EXPforAll;
+            }
                 
-            for (i = 0; i < characters.length; i++) {
+            for (i = 0; i < game.chars.length; i++) {
                 winScreen[2 + i].text = getPlayer(i + 1).name + "  + " + EXPforAll + "XP!     " + getPlayer(i + 1).EXP + "/25";
             }
             for (i = 0; i < winScreen.length; i++) {
                 winScreen[i].alpha = 255;
             }
-            getPlayer(1).EXP += EXPforAll;
-            getPlayer(2).EXP += EXPforAll;
-            getPlayer(3).EXP += EXPforAll;
             checkLevelUps();
         }
 
@@ -328,12 +329,12 @@ scenes.fight = () => {
                 // Bar animation! (Cowboy moment)
                 let skip = 0; //No idea what else to call this
 
-                if (positions[selectedAlly[0]][selectedAlly[1]].occupied == game.chars[1].toLowerCase()) {
-                    skip = 1;
+                for (i = 0; i < game.chars.length; i++) {
+                    if (game.chars.length > i+1) if (positions[selectedAlly[0]][selectedAlly[1]].occupied == game.chars[i+1].toLowerCase()) {
+                        skip = i+1;
+                    }
                 }
-                if (positions[selectedAlly[0]][selectedAlly[1]].occupied == game.chars[2].toLowerCase()) {
-                    skip = 2;
-                }
+
                 let which = 5 + (skip * amountStats);
                 if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP > 0) {
                     fightStats[which].alpha = 255;
@@ -366,7 +367,7 @@ scenes.fight = () => {
     }
 
     function endOfTurnEvents() {
-        for (i = 0; i < characters.length; i++) {
+        for (i = 0; i < game.chars.length; i++) {
 
             if (getPlayer(i + 1).effect[0] == "acid") {
                 getPlayer(i + 1).HP -= Math.ceil(getPlayer(i + 1).maxHP / 15);
@@ -805,7 +806,7 @@ scenes.fight = () => {
         fontSize: 28, fill: "black", align: "center",
         alpha: 0,
     }));
-    for (i = 0; i < characters.length; i++) {
+    for (i = 0; i < game.chars.length; i++) {
         winScreen.push(controls.label({
             anchor: [0.22, 0.4 + (0.025 * i)],
             text: "Nobody +0 XP",
@@ -1250,9 +1251,11 @@ scenes.fight = () => {
     }
 
     for (i in game.characters) {
-        if (game.characters[i].pos != undefined) {
-            positions[game.characters[i].pos[0]][game.characters[i].pos[1]].occupied = game.characters[i].name.toLowerCase();
-            positions[game.characters[i].pos[0]][game.characters[i].pos[1]].isOccupied = true;
+        if (game.chars.includes(game.characters[i].name.toLowerCase())) {
+            if (game.characters[i].pos != undefined) {
+                positions[game.characters[i].pos[0]][game.characters[i].pos[1]].occupied = game.characters[i].name.toLowerCase();
+                positions[game.characters[i].pos[0]][game.characters[i].pos[1]].isOccupied = true;
+            }
         }
     }
 
@@ -1275,7 +1278,7 @@ scenes.fight = () => {
             ctx.drawImage(images.fight_bg, 0, 0, width * scale, height);
 
             // Update the stats stuff at the bottom
-            for (i = 0; i < characters.length; i++) {
+            for (i = 0; i < game.chars.length; i++) {
                 fightStats[amountStats * i].text = "Lvl. " + getPlayer(i + 1).level;
                 fightStats[1 + amountStats * i].source = getPlayer(i + 1).name.toLowerCase();
                 if (getPlayer(i + 1).HP > 0) fightStats[4 + amountStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(i + 1).HP / getPlayer(i + 1).maxHP);

@@ -8,7 +8,8 @@ var dialogueProgress = 0;
 var dialogueEmotion = "neutral";
 var overWorldStatsScroll = 0;
 
-var characters = ["bleu", "corelle", "gau"];
+// This is ALL protagonists in the game. Not only the ones you have equipped right now.
+const characters = ["bleu", "corelle", "gau"];
 
 // Function used to create enemies
 function createEnemy(type) {
@@ -199,7 +200,7 @@ scenes.game = () => {
         source: "arrowdown",
         onClick(args) {
             overWorldStatsScroll += 1;
-            if (overWorldStatsScroll > characters.length - 2) overWorldStatsScroll = 0;
+            if (overWorldStatsScroll > game.chars.length - 2) overWorldStatsScroll = 0;
             mapDisplay[1].text = getPlayer(1 + overWorldStatsScroll).name;
             mapDisplay[2].text = getPlayer(2 + overWorldStatsScroll).name;
         },
@@ -480,7 +481,7 @@ scenes.game = () => {
         }
 
         // Poison
-        for (i = 0; i < characters.length; i++) {
+        for (i = 0; i < game.chars.length; i++) {
             if (getPlayer(i + 1).effect[0] == "poison") {
                 getPlayer(i + 1).HP -= 1;
                 poisonBlack.alpha = 255;
