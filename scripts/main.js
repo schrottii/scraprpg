@@ -71,9 +71,25 @@ var autoSaveTime = 0;
 var canMove = true;
 
 function getTime() {
-    let hours = Math.round(game.time / 1000);
+    let hours = Math.floor(game.time / 1000);
     let minutes = Math.round((game.time % 1000) / 16.667);
     return hours + ":" + minutes;
+}
+
+//   Day: 6:00 - 19:59 (14 hours)
+// Night: 20:00 - 5:59 (10 hours)
+function isDay() {
+    if (game.time > 5999 && game.time < 20000) {
+        return true;
+    }
+    return false;
+}
+
+function isNight() {
+    if (game.time > 19999 || game.time < 6000) {
+        return true;
+    }
+    return false;
 }
 
 function playMusic(name) {

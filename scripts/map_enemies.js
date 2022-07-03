@@ -9,7 +9,8 @@ let mapenemies = {
             alpha: 255,
             head: 0,
             skin: "evil",
-            kofs: [0,0,0],
+            kofs: [0, 0, 0],
+            time: "both",
             enemies: {
                 "weakhelter": 60,
                 "stronghelter": 10,
@@ -46,6 +47,20 @@ let mapenemies = {
                 "itsalive": 60
             },
             walkingSpeed: 2,
+            ...args || {},
+
+        }
+    },
+    livingbarrelmap(args) {
+        return {
+            ...mapenemies.default(),
+            skin: "livingbarrel",
+            enemies: {
+                "livingbarrel": 70,
+                "itsalive": 30
+            },
+            walkingSpeed: 0.12,
+            time: "night",
             ...args || {},
 
         }

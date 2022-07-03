@@ -193,7 +193,8 @@ maps["test"] = {
     },
     spawns: {
         "default": 10,
-        "itsalivemap" : 2
+        "itsalivemap": 2,
+        "livingbarrelmap" : 10,
     },
     maxEnemies: 8,
     map: [

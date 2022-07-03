@@ -13,6 +13,10 @@ const characters = ["bleu", "corelle", "gau"];
 
 // Function used to create enemies
 function createEnemy(type) {
+    if (mapenemies[type] != undefined) {
+        if (mapenemies[type]().time == "day" && !isDay()) return false;
+        if (mapenemies[type]().time == "night" && !isNight()) return false;
+    }
     if (currentEnemies.length < 9) {
         currentEnemies.push([type, Math.ceil(Math.random() * 2), Math.ceil(Math.random() * 2)]);
     }
@@ -126,10 +130,14 @@ scenes.game = () => {
     });
 
 
+    let nightEffect = controls.image({
+        anchor: [0, 0], sizeAnchor: [1, 1],
+        source: "nighteffect",
+    });
 
-    // Alright, alright, we need comments, so let me comment this
-    // This is for the map's display. In the BOTTOM RIGHT. No idea what else to call it.
-    let mapDisplay = []
+        // Alright, alright, we need comments, so let me comment this
+        // This is for the map's display. In the BOTTOM RIGHT. No idea what else to call it.
+        let mapDisplay = [];
 
     // The top bg rect
     mapDisplay.push(controls.rect({
@@ -978,6 +986,11 @@ scenes.game = () => {
                 }
             }
 
+            if (isNight()) nightEffect.alpha = 255;
+            else nightEffect.alpha = 0;
+            if (walkTime > 1) nightEffect.source = "nighteffect2";
+            else nightEffect.source = "nighteffect";
+
             ctx.drawImage(images[game.chars[0]], 32 * Math.floor(walkTime), 32 * head, 32, 32,
                 scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5) ),
                 scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zoom * scale, zoom * scale)
@@ -1017,6 +1030,7 @@ scenes.game = () => {
                     dialogueComponents[5].snip = getEmotion(dialogueEmotion);
                 }
             }
+
             else if (dialogueComponents[0].alpha != 0) {
                 for (i = 0; i < dialogueComponents.length; i++) {
                     dialogueComponents[i].alpha = 0;
@@ -1039,7 +1053,7 @@ scenes.game = () => {
         },
         controls: [
             ...walkPad, autoSaveText, ...mapDisplay, actionButton,
-            mapDisplayStats1, mapDisplayStats2, poisonBlack,
+            mapDisplayStats1, mapDisplayStats2, poisonBlack, nightEffect,
             mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents
         ],
     }
