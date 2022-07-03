@@ -54,7 +54,7 @@ let images = {
 
 
     Portraits_Bleu: "data/images/Portraits_Bleu.png",
-    p_corelle: "data/images/p_corelle.png",
+    Portraits_Corelle: "data/images/Portraits_Corelle.png",
 
     fire: "data/images/elements/fire_element.png",
     earth: "data/images/elements/earth_element.png",

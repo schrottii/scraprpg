@@ -15,9 +15,9 @@ let npcs = {
             skin: "evil",
             kofs: [0, 0, 0],
             dialogues: {
-                1: [["Hello this is a test dialogue", "happy"],
-                ["Second text", "neutral"],
-                ["Don't forget to subscribe to my channel", "angry"]]
+                1: [["Hello this is a test dialogue", "Portraits_Bleu", "happy"],
+                    ["Second text", "Portraits_Bleu", "neutral"],
+                    ["Don't forget to subscribe to my channel", "Portraits_Bleu", "angry"]]
             },
             movement: 0,
             talk: false,
@@ -49,13 +49,16 @@ let npcs = {
     itsalivemap(args) {
         return {
             ...npcs.default(),
-            position: [10, 8],
-            map: "test",
-            skin: "itsalive",
+            position: [5, 1],
+            map: "map2",
+            skin: "bleu",
             dialogues: {
-                1: [["Hello welcome is a test dialogue", "happy"],
-                    ["Second welcome", "neutral"],
-                    ["Don't forget to welcome to my channel", "angry"]]
+                1: [["Hii I'm Blue", "Portraits_Bleu", "happy", "Blue"],
+                    ["No I'm not Bleu! I'm not you! I'm Blue!", "Portraits_Bleu", "angry", "Blue"],
+                    ["Hey man, I think you're me.", "Portraits_Bleu", "neutral", "Bleu"],
+                    ["I'm a greek emo. I hate you!!!", "Portraits_Bleu", "sad", "Blue"],
+                    ["Why are you blue like me that can't be you're a clone", "Portraits_Bleu", "sad", "Blue"],
+                    ["Idiots.", "Portraits_Corelle", "neutral", "The girl"]],
             },
             movement: 0,
             ...args || {},

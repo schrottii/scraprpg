@@ -230,7 +230,7 @@ scenes.game = () => {
         alpha: 0, 
     }));
     dialogueComponents.push(controls.rect({
-        anchor: [0.01, 1.01], offset: [0, -200], sizeOffset: [128, 128],
+        anchor: [0.01, 1.01], offset: [0, -200], sizeOffset: [136, 136],
         clickthrough: false,
         fill: "#D49F52",
         alpha: 0,
@@ -470,6 +470,7 @@ scenes.game = () => {
             let themap = getTile(map, x, y);
             // Set map and pos
             game.map = themap.teleport[0];
+            loadNPCs();
             game.position[0] = themap.teleport[1];
             game.position[1] = themap.teleport[2];
             playSound("teleport");
@@ -582,13 +583,17 @@ scenes.game = () => {
         }
     }
 
-    for (i in Object.keys(npcs)) {
-        j = Object.keys(npcs)[i];
-        npc = npcs[j]();
-        if (npc.alpha > 0 && npc.map == game.map) {
-            activenpcs.push(npcs[j]());
+    function loadNPCs() {
+        activenpcs = [];
+        for (i in Object.keys(npcs)) {
+            j = Object.keys(npcs)[i];
+            npc = npcs[j]();
+            if (npc.alpha > 0 && npc.map == game.map) {
+                activenpcs.push(npcs[j]());
+            }
         }
     }
+    loadNPCs();
 
     return {
         preRender(ctx, delta) {
@@ -870,14 +875,18 @@ scenes.game = () => {
                 for (i = 0; i < dialogueComponents.length; i++) {
                     dialogueComponents[i].alpha = 255;
                 }
-                if (map.dialogues[currentDialogue] != undefined) {
-                    dialogueComponents[6].text = map.dialogues[currentDialogue][dialogueProgress][0];
-                    dialogueEmotion = map.dialogues[currentDialogue][dialogueProgress][1];
+                if (map.dialogues != undefined) {
+                    dialogueComponents[6].text = currentDialogue[dialogueProgress][0];
+                    if (currentDialogue[dialogueProgress][3] != undefined) dialogueComponents[3].text = currentDialogue[dialogueProgress][3];
+                    dialogueEmotion = currentDialogue[dialogueProgress][2];
+                    dialogueComponents[5].source = currentDialogue[dialogueProgress][1];
                     dialogueComponents[5].snip = getEmotion(dialogueEmotion);
                 }
                 else {
                     dialogueComponents[6].text = currentDialogue[dialogueProgress][0];
-                    dialogueEmotion = currentDialogue[dialogueProgress][1];
+                    if (currentDialogue[dialogueProgress][3] != undefined) dialogueComponents[3].text = currentDialogue[dialogueProgress][3];
+                    dialogueEmotion = currentDialogue[dialogueProgress][2];
+                    dialogueComponents[5].source = currentDialogue[dialogueProgress][1];
                     dialogueComponents[5].snip = getEmotion(dialogueEmotion);
                 }
             }
