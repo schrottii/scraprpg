@@ -210,25 +210,9 @@ scenes.game = () => {
 
     let dialogueComponents = []
     dialogueComponents.push(controls.rect({
-        anchor: [0, 1], offset: [0, -140], sizeAnchor: [1, 0], sizeOffset: [0, 140],
+        anchor: [0, 1], offset: [0, -200], sizeAnchor: [1, 0], sizeOffset: [0, 200],
         clickthrough: false,
         fill: "#B58542",
-        alpha: 0,
-    }));
-    dialogueComponents.push(controls.image({
-        anchor: [0, 1], offset: [0, -128], sizeOffset: [128, 128], snip: [0, 0, 64, 64],
-        source: "Portraits_Bleu",
-        alpha: 0,
-    }));
-    dialogueComponents.push(controls.label({
-        anchor: [0, 1], offset: [156, -105],
-        align: "left", fontSize: 14, fill: "black",
-        text: "...",
-        alpha: 0,
-    }));
-    dialogueComponents.push(controls.button({
-        anchor: [0.8, 1], offset: [0, -105], sizeAnchor: [0.2, 0.05],
-        text: "Continue...",
         onClick(args) {
             if (this.alpha == 255) {
                 dialogueProgress += 1;
@@ -241,6 +225,41 @@ scenes.game = () => {
                 }
             }
         },
+        alpha: 0, 
+    }));
+    dialogueComponents.push(controls.rect({
+        anchor: [0.01, 1.01], offset: [0, -200], sizeOffset: [128, 128],
+        clickthrough: false,
+        fill: "#D49F52",
+        alpha: 0,
+    }));
+    dialogueComponents.push(controls.rect({
+        anchor: [0.01, 1.01], offset: [0, -54], sizeOffset: [128, 32],
+        clickthrough: false,
+        fill: "#D49F52",
+        alpha: 0,
+    }));
+    dialogueComponents.push(controls.label({
+        anchor: [0.01, 1.01], offset: [64, -34],
+        align: "center", fontSize: 20, fill: "black",
+        text: "Bleu",
+        alpha: 0,
+    }));
+    dialogueComponents.push(controls.rect({
+        anchor: [0.01, 1.01], offset: [164, -200], sizeOffset: [0, 178], sizeAnchor: [0.8, 0],
+        clickthrough: false,
+        fill: "#D49F52",
+        alpha: 0,
+    }));
+    dialogueComponents.push(controls.image({
+        anchor: [0.01, 1.01], offset: [0, -192], sizeOffset: [128, 128], snip: [0, 0, 64, 64],
+        source: "Portraits_Bleu",
+        alpha: 0,
+    }));
+    dialogueComponents.push(controls.label({ // 6
+        anchor: [0, 1], offset: [196, -168],
+        align: "left", fontSize: 16, fill: "black",
+        text: "...",
         alpha: 0,
     }));
 
@@ -742,9 +761,9 @@ scenes.game = () => {
                     dialogueComponents[i].alpha = 255;
                 }
                 if (map.dialogues[currentDialogue][dialogueProgress] != undefined) {
-                    dialogueComponents[2].text = map.dialogues[currentDialogue][dialogueProgress][0];
+                    dialogueComponents[6].text = map.dialogues[currentDialogue][dialogueProgress][0];
                     dialogueEmotion = map.dialogues[currentDialogue][dialogueProgress][1];
-                    dialogueComponents[1].snip = getEmotion(dialogueEmotion);
+                    dialogueComponents[5].snip = getEmotion(dialogueEmotion);
                 }
             }
             else if (dialogueComponents[0].alpha != 0) {
