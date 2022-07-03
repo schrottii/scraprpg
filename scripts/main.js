@@ -67,7 +67,6 @@ function init() {
 
 var currentKeys = {};
 var autoSaveTime = 0;
-var moveEnemiesTime = 0;
 
 var canMove = true;
 
@@ -198,8 +197,6 @@ function loop() {
             animationtime = -1;
         }
     }
-
-    moveEnemiesTime += delta;
 
     updateAnimators(delta);
 

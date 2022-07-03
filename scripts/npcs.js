@@ -24,6 +24,9 @@ let npcs = {
             path: false, // 0 down 1 left 2 right 3 up
             pathProgress: 0,
 
+            movementTime: 0,
+            walkingSpeed: 0.5,
+
             render(ctx) {
                 let tileX = this.position[0];
                 let tileY = this.position[1];

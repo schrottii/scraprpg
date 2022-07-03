@@ -616,132 +616,136 @@ scenes.game = () => {
                 autoSaveTime = -3; // To prevent saving multiple times!
             }
 
-            // Check if it's time for enemies to move
-            if (moveEnemiesTime > 499) {
-                moveEnemiesTime = 0;
-                if (canMove == true) {
-                    for (i = 0; i < activenpcs.length; i++) {
-                        if (activenpcs[i].movement == 1 && activenpcs[i].talk == false) {
-                            // Random moving
-                            if (Math.random() > 0.40) { // Down
-                                if (map.map[activenpcs[i].position[1]] != undefined) {
-                                    if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0] + 1] != undefined) {
-                                        if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] + 1) != undefined) {
-                                            if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] + 1).occupied != true) {
-                                                activenpcs[i].position[1] += 1;
-                                                activenpcs[i].head = 0;
-                                                activenpcs[i].kofs = [0, 1, 1];
-                                            }
+            // Check if it's time for enemies to mové
+            if (canMove == true) {
+                for (i = 0; i < activenpcs.length; i++) {
+                    activenpcs[i].movementTime += delta;
+                    if (activenpcs[i].movement == 1 && activenpcs[i].talk == false && activenpcs[i].movementTime > activenpcs[i].walkingSpeed * 1000) {
+                        activenpcs[i].movementTime = 0;
+                        // Random moving
+                        if (Math.random() > 0.40) { // Down
+                            if (map.map[activenpcs[i].position[1]] != undefined) {
+                                if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0] + 1] != undefined) {
+                                    if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] + 1) != undefined) {
+                                        if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] + 1).occupied != true) {
+                                            activenpcs[i].position[1] += 1;
+                                            activenpcs[i].head = 0;
+                                            activenpcs[i].kofs = [0, 1, 1];
                                         }
                                     }
                                 }
                             }
-                            else if (Math.random() > 0.40) { // Left
-                                if (map.map[activenpcs[i].position[1]] != undefined) {
-                                    if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0]] != undefined) {
-                                        if (getTile(map, activenpcs[i].position[0] - 1, activenpcs[i].position[1]) != undefined) {
-                                            if (getTile(map, activenpcs[i].position[0] - 1, activenpcs[i].position[1]).occupied != true) {
-                                                activenpcs[i].position[0] -= 1;
-                                                activenpcs[i].head = 1;
-                                                activenpcs[i].kofs = [-1, 0, 1];
-                                            }
+                        }
+                        else if (Math.random() > 0.40) { // Left
+                            if (map.map[activenpcs[i].position[1]] != undefined) {
+                                if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0]] != undefined) {
+                                    if (getTile(map, activenpcs[i].position[0] - 1, activenpcs[i].position[1]) != undefined) {
+                                        if (getTile(map, activenpcs[i].position[0] - 1, activenpcs[i].position[1]).occupied != true) {
+                                            activenpcs[i].position[0] -= 1;
+                                            activenpcs[i].head = 1;
+                                            activenpcs[i].kofs = [-1, 0, 1];
                                         }
                                     }
                                 }
                             }
-
-
-                            else if (Math.random() > 0.40) { // Right
-                                if (map.map[activenpcs[i].position[1]] != undefined) {
-                                    if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0]] != undefined) {
-                                        if (getTile(map, activenpcs[i].position[0] + 1, activenpcs[i].position[1]) != undefined) {
-                                            if (getTile(map, activenpcs[i].position[0] + 1, activenpcs[i].position[1]).occupied != true) {
-                                                activenpcs[i].position[0] += 1;
-                                                activenpcs[i].head = 2;
-                                                activenpcs[i].kofs = [1, 0, 1];
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            else if (Math.random() > 0.40) { // Up
-                                if (map.map[activenpcs[i].position[1]] != undefined) {
-                                    if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0] - 1] != undefined) {
-                                        if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] - 1) != undefined) {
-                                            if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] - 1).occupied != true) {
-                                                activenpcs[i].position[1] -= 1;
-                                                activenpcs[i].head = 3;
-                                                activenpcs[i].kofs = [0, -1, 1];
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        
                         }
 
-                        if (activenpcs[i].movement == 2 && activenpcs[i].talk == false) {
-                            if (activenpcs[i].pathProgress > activenpcs[i].path.length) {
-                                activenpcs[i].pathProgress = 0;
-                            }
-                            if (activenpcs[i].path[activenpcs[i].pathProgress] == 0) { // Down
-                                if (map.map[activenpcs[i].position[1]] != undefined) {
-                                    if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0] + 1] != undefined) {
-                                        if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] + 1) != undefined) {
-                                            if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] + 1).occupied != true) {
-                                                activenpcs[i].position[1] += 1;
-                                                activenpcs[i].head = 0;
-                                                activenpcs[i].kofs = [0, 1, 1];
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            if (activenpcs[i].path[activenpcs[i].pathProgress] == 1) { // Left
-                                if (map.map[activenpcs[i].position[1]] != undefined) {
-                                    if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0]] != undefined) {
-                                        if (getTile(map, activenpcs[i].position[0] - 1, activenpcs[i].position[1]) != undefined) {
-                                            if (getTile(map, activenpcs[i].position[0] - 1, activenpcs[i].position[1]).occupied != true) {
-                                                activenpcs[i].position[0] -= 1;
-                                                activenpcs[i].head = 1;
-                                                activenpcs[i].kofs = [-1, 0, 1];
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            if (activenpcs[i].path[activenpcs[i].pathProgress] == 2) { // Right
-                                if (map.map[activenpcs[i].position[1]] != undefined) {
-                                    if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0]] != undefined) {
-                                        if (getTile(map, activenpcs[i].position[0] + 1, activenpcs[i].position[1]) != undefined) {
-                                            if (getTile(map, activenpcs[i].position[0] + 1, activenpcs[i].position[1]).occupied != true) {
-                                                activenpcs[i].position[0] += 1;
-                                                activenpcs[i].head = 2;
-                                                activenpcs[i].kofs = [1, 0, 1];
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            if (activenpcs[i].path[activenpcs[i].pathProgress] == 3) { // Up
-                                if (map.map[activenpcs[i].position[1]] != undefined) {
-                                    if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0] - 1] != undefined) {
-                                        if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] - 1) != undefined) {
-                                            if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] - 1).occupied != true) {
-                                                activenpcs[i].position[1] -= 1;
-                                                activenpcs[i].head = 3;
-                                                activenpcs[i].kofs = [0, -1, 1];
-                                            }
-                                        }
-                                    }
-                                }
-                            }
 
-                            activenpcs[i].pathProgress += 1;
+                        else if (Math.random() > 0.40) { // Right
+                            if (map.map[activenpcs[i].position[1]] != undefined) {
+                                if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0]] != undefined) {
+                                    if (getTile(map, activenpcs[i].position[0] + 1, activenpcs[i].position[1]) != undefined) {
+                                        if (getTile(map, activenpcs[i].position[0] + 1, activenpcs[i].position[1]).occupied != true) {
+                                            activenpcs[i].position[0] += 1;
+                                            activenpcs[i].head = 2;
+                                            activenpcs[i].kofs = [1, 0, 1];
+                                        }
+                                    }
+                                }
+                            }
                         }
+
+                        else if (Math.random() > 0.40) { // Up
+                            if (map.map[activenpcs[i].position[1]] != undefined) {
+                                if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0] - 1] != undefined) {
+                                    if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] - 1) != undefined) {
+                                        if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] - 1).occupied != true) {
+                                            activenpcs[i].position[1] -= 1;
+                                            activenpcs[i].head = 3;
+                                            activenpcs[i].kofs = [0, -1, 1];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                     }
-                    for (i = 0; i < enemies.length; i++) {
+
+                    if (activenpcs[i].movement == 2 && activenpcs[i].talk == false && activenpcs[i].movementTime > activenpcs[i].walkingSpeed * 1000) {
+                        activenpcs[i].movementTime = 0;
+                        if (activenpcs[i].pathProgress > activenpcs[i].path.length) {
+                            activenpcs[i].pathProgress = 0;
+                        }
+                        if (activenpcs[i].path[activenpcs[i].pathProgress] == 0) { // Down
+                            if (map.map[activenpcs[i].position[1]] != undefined) {
+                                if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0] + 1] != undefined) {
+                                    if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] + 1) != undefined) {
+                                        if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] + 1).occupied != true) {
+                                            activenpcs[i].position[1] += 1;
+                                            activenpcs[i].head = 0;
+                                            activenpcs[i].kofs = [0, 1, 1];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (activenpcs[i].path[activenpcs[i].pathProgress] == 1) { // Left
+                            if (map.map[activenpcs[i].position[1]] != undefined) {
+                                if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0]] != undefined) {
+                                    if (getTile(map, activenpcs[i].position[0] - 1, activenpcs[i].position[1]) != undefined) {
+                                        if (getTile(map, activenpcs[i].position[0] - 1, activenpcs[i].position[1]).occupied != true) {
+                                            activenpcs[i].position[0] -= 1;
+                                            activenpcs[i].head = 1;
+                                            activenpcs[i].kofs = [-1, 0, 1];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (activenpcs[i].path[activenpcs[i].pathProgress] == 2) { // Right
+                            if (map.map[activenpcs[i].position[1]] != undefined) {
+                                if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0]] != undefined) {
+                                    if (getTile(map, activenpcs[i].position[0] + 1, activenpcs[i].position[1]) != undefined) {
+                                        if (getTile(map, activenpcs[i].position[0] + 1, activenpcs[i].position[1]).occupied != true) {
+                                            activenpcs[i].position[0] += 1;
+                                            activenpcs[i].head = 2;
+                                            activenpcs[i].kofs = [1, 0, 1];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (activenpcs[i].path[activenpcs[i].pathProgress] == 3) { // Up
+                            if (map.map[activenpcs[i].position[1]] != undefined) {
+                                if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0] - 1] != undefined) {
+                                    if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] - 1) != undefined) {
+                                        if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] - 1).occupied != true) {
+                                            activenpcs[i].position[1] -= 1;
+                                            activenpcs[i].head = 3;
+                                            activenpcs[i].kofs = [0, -1, 1];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        activenpcs[i].pathProgress += 1;
+                    }
+                }
+                for (i = 0; i < enemies.length; i++) { 
+                    enemies[i].movementTime += delta;
+                    if (enemies[i].movementTime > enemies[i].walkingSpeed * 1000) {
+                        enemies[i].movementTime = 0;
                         // Random moving
                         if (Math.random() > 0.40) { // Down
                             if (map.map[enemies[i].position[1]] != undefined) {
