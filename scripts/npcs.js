@@ -21,6 +21,8 @@ let npcs = {
             },
             movement: 0,
             talk: false,
+            path: false, // 0 down 1 left 2 right 3 up
+            pathProgress: 0,
 
             render(ctx) {
                 let tileX = this.position[0];
@@ -46,7 +48,7 @@ let npcs = {
             ...args || {},
         }
     },
-    itsalivemap(args) {
+    blue(args) {
         return {
             ...npcs.default(),
             position: [5, 1],
@@ -61,6 +63,22 @@ let npcs = {
                     ["Idiots.", "Portraits_Corelle", "neutral", "The girl"]],
             },
             movement: 1,
+            ...args || {},
+
+        }
+    },
+    placeholder3(args) {
+        return {
+            ...npcs.default(),
+            position: [3, 22],
+            map: "test",
+            skin: "bleu",
+            dialogues: {
+                1: [["Ey", "Portraits_Bleu", "happy", "Bleu"],
+                ["Ayo", "Portraits_Bleu", "angry", "Bleu"]]
+            },
+            movement: 2,
+            path: [2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3],
             ...args || {},
 
         }

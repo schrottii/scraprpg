@@ -680,6 +680,66 @@ scenes.game = () => {
                             }
                         
                         }
+
+                        if (activenpcs[i].movement == 2 && activenpcs[i].talk == false) {
+                            if (activenpcs[i].pathProgress > activenpcs[i].path.length) {
+                                activenpcs[i].pathProgress = 0;
+                            }
+                            if (activenpcs[i].path[activenpcs[i].pathProgress] == 0) { // Down
+                                if (map.map[activenpcs[i].position[1]] != undefined) {
+                                    if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0] + 1] != undefined) {
+                                        if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] + 1) != undefined) {
+                                            if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] + 1).occupied != true) {
+                                                activenpcs[i].position[1] += 1;
+                                                activenpcs[i].head = 0;
+                                                activenpcs[i].kofs = [0, 1, 1];
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (activenpcs[i].path[activenpcs[i].pathProgress] == 1) { // Left
+                                if (map.map[activenpcs[i].position[1]] != undefined) {
+                                    if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0]] != undefined) {
+                                        if (getTile(map, activenpcs[i].position[0] - 1, activenpcs[i].position[1]) != undefined) {
+                                            if (getTile(map, activenpcs[i].position[0] - 1, activenpcs[i].position[1]).occupied != true) {
+                                                activenpcs[i].position[0] -= 1;
+                                                activenpcs[i].head = 1;
+                                                activenpcs[i].kofs = [-1, 0, 1];
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (activenpcs[i].path[activenpcs[i].pathProgress] == 2) { // Right
+                                if (map.map[activenpcs[i].position[1]] != undefined) {
+                                    if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0]] != undefined) {
+                                        if (getTile(map, activenpcs[i].position[0] + 1, activenpcs[i].position[1]) != undefined) {
+                                            if (getTile(map, activenpcs[i].position[0] + 1, activenpcs[i].position[1]).occupied != true) {
+                                                activenpcs[i].position[0] += 1;
+                                                activenpcs[i].head = 2;
+                                                activenpcs[i].kofs = [1, 0, 1];
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (activenpcs[i].path[activenpcs[i].pathProgress] == 3) { // Up
+                                if (map.map[activenpcs[i].position[1]] != undefined) {
+                                    if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0] - 1] != undefined) {
+                                        if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] - 1) != undefined) {
+                                            if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] - 1).occupied != true) {
+                                                activenpcs[i].position[1] -= 1;
+                                                activenpcs[i].head = 3;
+                                                activenpcs[i].kofs = [0, -1, 1];
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            activenpcs[i].pathProgress += 1;
+                        }
                     }
                     for (i = 0; i < enemies.length; i++) {
                         // Random moving
