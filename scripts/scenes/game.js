@@ -83,6 +83,7 @@ scenes.game = () => {
     var scale;
 
     var enemies = [];
+    var activenpcs = [];
 
     let walkPad = [];
     walkPad.push(controls.image({ // Up
@@ -216,13 +217,14 @@ scenes.game = () => {
         onClick(args) {
             if (this.alpha == 255) {
                 dialogueProgress += 1;
-                if (dialogueProgress >= maps[game.map].dialogues[currentDialogue].length || maps[game.map].dialogues[currentDialogue][dialogueProgress] == undefined) {
-                    inDialogue = false;
-                    currentDialogue = false;
-                    dialogueEmotion = "neutral";
-                    dialogueProgress = 0;
-                    canMove = true;
-                }
+                    if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
+                        inDialogue = false;
+                        currentDialogue = false;
+                        dialogueEmotion = "neutral";
+                        dialogueProgress = 0;
+                        canMove = true;
+                    }
+
             }
         },
         alpha: 0, 
@@ -277,11 +279,29 @@ scenes.game = () => {
                         getTile(map, game.position[0], game.position[1] + 1).action();
                     }
                 }
+                for (i in activenpcs) {
+                    if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] + 1) {
+                        inDialogue = true;
+                        currentDialogue = activenpcs[i].dialogues[1];
+                        dialogueProgress = 0;
+                        dialogueEmotion = currentDialogue[dialogueProgress][1];
+                        canMove = false;
+                    }
+                }
             }
             else if (head == 1) { // Left
                 if (getTile(map, game.position[0] - 1, game.position[1]) != undefined) {
                     if (getTile(map, game.position[0] - 1, game.position[1]).action != undefined) {
                         getTile(map, game.position[0] - 1, game.position[1]).action();
+                    }
+                }
+                for (i in activenpcs) {
+                    if (activenpcs[i].position[0] == game.position[0] - 1 && activenpcs[i].position[1] == game.position[1]) {
+                        inDialogue = true;
+                        currentDialogue = activenpcs[i].dialogues[1];
+                        dialogueProgress = 0;
+                        dialogueEmotion = currentDialogue[dialogueProgress][1];
+                        canMove = false;
                     }
                 }
             }
@@ -291,11 +311,29 @@ scenes.game = () => {
                         getTile(map, game.position[0] + 1, game.position[1]).action();
                     }
                 }
+                for (i in activenpcs) {
+                    if (activenpcs[i].position[0] == game.position[0] + 1 && activenpcs[i].position[1] == game.position[1]) {
+                        inDialogue = true;
+                        currentDialogue = activenpcs[i].dialogues[1];
+                        dialogueProgress = 0;
+                        dialogueEmotion = currentDialogue[dialogueProgress][1];
+                        canMove = false;
+                    }
+                }
             }
             else if (head == 3) { // Up
                 if (getTile(map, game.position[0], game.position[1] - 1) != undefined) {
                     if (getTile(map, game.position[0], game.position[1] - 1).action != undefined) {
                         getTile(map, game.position[0], game.position[1] - 1).action();
+                    }
+                }
+                for (i in activenpcs) {
+                    if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] - 1) {
+                        inDialogue = true;
+                        currentDialogue = activenpcs[i].dialogues[1];
+                        dialogueProgress = 0;
+                        dialogueEmotion = currentDialogue[dialogueProgress][1];
+                        canMove = false;
                     }
                 }
             }   
@@ -381,19 +419,24 @@ scenes.game = () => {
     // Define if a tile (e. g. water) is walkable in the sprites dict
     function isWalkable(map, x, y, l=1) {
         if (map.map[y] && getTile(map, x, y, l)) { //Check if tile exists
+            for (i in Object.keys(npcs)) {
+                j = Object.keys(npcs)[i];
+                npc = npcs[j]();
+                if (npc.position[0] == x && npc.position[1] == y) return false;
+            }
             if (getTile(map, x, y, l).occupied != undefined) { //Check if occupied exists
                 if (typeof (getTile(map, x, y, l).occupied) == "object") { // Config exists?
                     if (direction == "up" && getTile(map, x, y, l).occupied.includes("up")) {
-                        return true
+                        return true;
                     }
                     else if (direction == "left" && getTile(map, x, y, l).occupied.includes("left")) {
-                        return true
+                        return true;
                     }
                     else if (direction == "down" && getTile(map, x, y, l).occupied.includes("down")) {
-                        return true
+                        return true;
                     }
                     else if (direction == "right" && getTile(map, x, y, l).occupied.includes("right")) {
-                        return true
+                        return true;
                     }
                     else { // Config denies passing
                         return false;
@@ -532,10 +575,18 @@ scenes.game = () => {
 
         if (getTile(map, game.position[0], game.position[1]).dialogue != undefined) {
             inDialogue = true;
-            currentDialogue = getTile(map, game.position[0], game.position[1]).dialogue;
+            currentDialogue = map.dialogues[getTile(map, game.position[0], game.position[1]).dialogue];
             dialogueProgress = 0;
-            dialogueEmotion = map.dialogues[currentDialogue][dialogueProgress][1];
+            dialogueEmotion = currentDialogue[dialogueProgress][1];
             canMove = false;
+        }
+    }
+
+    for (i in Object.keys(npcs)) {
+        j = Object.keys(npcs)[i];
+        npc = npcs[j]();
+        if (npc.alpha > 0 && npc.map == game.map) {
+            activenpcs.push(npcs[j]());
         }
     }
 
@@ -649,22 +700,37 @@ scenes.game = () => {
                 if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up")) {
                     head = 3;
                     direction = "up";
+
                     if (getTile(map, game.position[0], game.position[1] - 1) != undefined) if (getTile(map, game.position[0], game.position[1] - 1).action != undefined) actionButton.source = "actionbutton_active"
                     else actionButton.source = "actionbutton"
+                    for (i in activenpcs) {
+                        if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] - 1) actionButton.source = "actionbutton_active";
+                    }
+
+
                     if (isWalkable(map, game.position[0], game.position[1] - 1)
                         && isWalkable(map, game.position[0], game.position[1] - 1, 2)) { //Direction-change-against-wall
                         kofs = [0, -1, 1];
                         game.position[1]--;
                         ActionsOnMove();
                         tryTeleport(map, game.position[0], game.position[1]);
+
                         if (getTile(map, game.position[0], game.position[1] - 1) != undefined) if (getTile(map, game.position[0], game.position[1] - 1).action != undefined) actionButton.source = "actionbutton_active"
                         else actionButton.source = "actionbutton"
+                        for (i in activenpcs) {
+                            if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] - 1) actionButton.source = "actionbutton_active";
+                        }
                     }
                 } else if ((currentKeys["s"] || currentKeys["arrowdown"] || pad == "down")) {
                     head = 0;
                     direction = "down";
+
                     if (getTile(map, game.position[0], game.position[1] + 1) != undefined) if (getTile(map, game.position[0], game.position[1] + 1).action != undefined) actionButton.source = "actionbutton_active"
                     else actionButton.source = "actionbutton"
+                    for (i in activenpcs) {
+                        if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] + 1) actionButton.source = "actionbutton_active";
+                    }
+
                     if (isWalkable(map, game.position[0], game.position[1] + 1)
                         && isWalkable(map, game.position[0], game.position[1] + 1, 2)) { //Direction-change-against-wall
                         kofs = [0, 1, 1];
@@ -673,34 +739,55 @@ scenes.game = () => {
                         tryTeleport(map, game.position[0], game.position[1]);
                         if (getTile(map, game.position[0], game.position[1] + 1) != undefined) if (getTile(map, game.position[0], game.position[1] + 1).action != undefined) actionButton.source = "actionbutton_active"
                         else actionButton.source = "actionbutton"
+                        for (i in activenpcs) {
+                            if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] + 1) actionButton.source = "actionbutton_active";
+                        }
                     }
                 } else if ((currentKeys["a"] || currentKeys["arrowleft"] || pad == "left")) {
                     head = 1;
                     direction = "left";
+
                     if (getTile(map, game.position[0] - 1, game.position[1]) != undefined) if (getTile(map, game.position[0] - 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
                     else actionButton.source = "actionbutton"
+                    for (i in activenpcs) {
+                        if (activenpcs[i].position[0] == game.position[0] - 1 && activenpcs[i].position[1] == game.position[1]) actionButton.source = "actionbutton_active";
+                    }
+
                     if (isWalkable(map, game.position[0] - 1, game.position[1])
                         && isWalkable(map, game.position[0] - 1, game.position[1], 2)) { //Direction-change-against-wall
                         kofs = [-1, 0, 1];
                         game.position[0]--;
                         ActionsOnMove();
                         tryTeleport(map, game.position[0], game.position[1]);
+
                         if (getTile(map, game.position[0] - 1, game.position[1]) != undefined) if (getTile(map, game.position[0] - 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
                         else actionButton.source = "actionbutton"
+                        for (i in activenpcs) {
+                            if (activenpcs[i].position[0] == game.position[0] - 1 && activenpcs[i].position[1] == game.position[1]) actionButton.source = "actionbutton_active";
+                        }
                     }
                 } else if ((currentKeys["d"] || currentKeys["arrowright"] || pad == "right")) {
                     head = 2;
                     direction = "right";
+
                     if (getTile(map, game.position[0] + 1, game.position[1]) != undefined) if (getTile(map, game.position[0] + 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
                     else actionButton.source = "actionbutton"
+                    for (i in activenpcs) {
+                        if (activenpcs[i].position[0] == game.position[0] + 1 && activenpcs[i].position[1] == game.position[1]) actionButton.source = "actionbutton_active";
+                    }
+
                     if (isWalkable(map, game.position[0] + 1, game.position[1])
                         && isWalkable(map, game.position[0] + 1, game.position[1], 2)) { //Direction-change-against-wall
                         kofs = [1, 0, 1];
                         game.position[0]++;
                         ActionsOnMove();
                         tryTeleport(map, game.position[0], game.position[1]);
+
                         if (getTile(map, game.position[0] + 1, game.position[1]) != undefined) if (getTile(map, game.position[0] + 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
                         else actionButton.source = "actionbutton"
+                        for (i in activenpcs) {
+                            if (activenpcs[i].position[0] == game.position[0] + 1 && activenpcs[i].position[1] == game.position[1]) actionButton.source = "actionbutton_active";
+                        }
                     }
                 }
                 pad = "";
@@ -740,6 +827,13 @@ scenes.game = () => {
                 }
             }
 
+            for (i in activenpcs) {
+                if (activenpcs[i].alpha > 0) {
+                    ctx.globalAlpha = activenpcs[i].alpha;
+                    activenpcs[i].render(ctx);
+                }
+            }
+
             ctx.drawImage(images[game.chars[0]], 32 * Math.floor(walkTime), 32 * head, 32, 32,
                 scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5) ),
                 scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zoom * scale, zoom * scale)
@@ -760,9 +854,14 @@ scenes.game = () => {
                 for (i = 0; i < dialogueComponents.length; i++) {
                     dialogueComponents[i].alpha = 255;
                 }
-                if (map.dialogues[currentDialogue][dialogueProgress] != undefined) {
+                if (map.dialogues[currentDialogue] != undefined) {
                     dialogueComponents[6].text = map.dialogues[currentDialogue][dialogueProgress][0];
                     dialogueEmotion = map.dialogues[currentDialogue][dialogueProgress][1];
+                    dialogueComponents[5].snip = getEmotion(dialogueEmotion);
+                }
+                else {
+                    dialogueComponents[6].text = currentDialogue[dialogueProgress][0];
+                    dialogueEmotion = currentDialogue[dialogueProgress][1];
                     dialogueComponents[5].snip = getEmotion(dialogueEmotion);
                 }
             }
