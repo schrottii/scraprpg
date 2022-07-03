@@ -704,7 +704,11 @@ scenes.game = () => {
                     if (getTile(map, game.position[0], game.position[1] - 1) != undefined) if (getTile(map, game.position[0], game.position[1] - 1).action != undefined) actionButton.source = "actionbutton_active"
                     else actionButton.source = "actionbutton"
                     for (i in activenpcs) {
-                        if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] - 1) actionButton.source = "actionbutton_active";
+                        activenpcs[i].talk = false;
+                        if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] - 1) {
+                            actionButton.source = "actionbutton_active";
+                            activenpcs[i].talk = true;
+                        }
                     }
 
 
@@ -728,7 +732,11 @@ scenes.game = () => {
                     if (getTile(map, game.position[0], game.position[1] + 1) != undefined) if (getTile(map, game.position[0], game.position[1] + 1).action != undefined) actionButton.source = "actionbutton_active"
                     else actionButton.source = "actionbutton"
                     for (i in activenpcs) {
-                        if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] + 1) actionButton.source = "actionbutton_active";
+                        activenpcs[i].talk = false;
+                        if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] + 1) {
+                            actionButton.source = "actionbutton_active";
+                            activenpcs[i].talk = true;
+                        }
                     }
 
                     if (isWalkable(map, game.position[0], game.position[1] + 1)
@@ -750,7 +758,11 @@ scenes.game = () => {
                     if (getTile(map, game.position[0] - 1, game.position[1]) != undefined) if (getTile(map, game.position[0] - 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
                     else actionButton.source = "actionbutton"
                     for (i in activenpcs) {
-                        if (activenpcs[i].position[0] == game.position[0] - 1 && activenpcs[i].position[1] == game.position[1]) actionButton.source = "actionbutton_active";
+                        activenpcs[i].talk = false;
+                        if (activenpcs[i].position[0] == game.position[0] - 1 && activenpcs[i].position[1] == game.position[1]) {
+                            actionButton.source = "actionbutton_active";
+                            activenpcs[i].talk = true;
+                        }
                     }
 
                     if (isWalkable(map, game.position[0] - 1, game.position[1])
@@ -773,7 +785,11 @@ scenes.game = () => {
                     if (getTile(map, game.position[0] + 1, game.position[1]) != undefined) if (getTile(map, game.position[0] + 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
                     else actionButton.source = "actionbutton"
                     for (i in activenpcs) {
-                        if (activenpcs[i].position[0] == game.position[0] + 1 && activenpcs[i].position[1] == game.position[1]) actionButton.source = "actionbutton_active";
+                        activenpcs[i].talk = false;
+                        if (activenpcs[i].position[0] == game.position[0] + 1 && activenpcs[i].position[1] == game.position[1]) {
+                            actionButton.source = "actionbutton_active";
+                            activenpcs[i].talk = true;
+                        }
                     }
 
                     if (isWalkable(map, game.position[0] + 1, game.position[1])

@@ -24,6 +24,7 @@ let images = {
     evil: "data/images/Map_Evil.png",
     selected: "data/images/selected.png",
     hasaction: "data/images/done.png",
+    talk: "data/images/talk.png",
 
     bleu: "data/images/Map_Bleu.png",
     corelle: "data/images/Map_Corelle.png",
