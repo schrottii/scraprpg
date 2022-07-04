@@ -193,7 +193,16 @@ maps["cave1"] = {
              sprite: "well_5",
         },
         "045": {
-              sprite: "well_6"
+              sprite: "well_6",
+        },
+        "046": {
+              sprite: "sc",
+        },
+        "047": {
+              sprite: "sc_light_1",
+        },
+        "048": {
+              sprite: "sc_light_2",
 
         },
 
