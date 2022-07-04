@@ -194,6 +194,24 @@ maps["original"] = {
         },
         "045": {
               sprite: "well_6"
+        },
+        "D07": {
+              sprite: "hole_1"
+              teleport: ["cave", 14, 15],
+        },
+        "D08": {
+             sprite: "hole_2"
+             teleport: ["cave", 14, 15],
+        },
+        "D08": {
+             sprite: "hole_3"
+             teleport: ["cave", 14, 15],
+        },
+        "D09": {
+             sprite: "hole_4"
+             teleport: ["cave", 14, 15],
+             
+        
 
         },
 
