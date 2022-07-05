@@ -68,7 +68,6 @@ function init() {
 
 var currentKeys = {};
 var autoSaveTime = 0;
-
 var canMove = true;
 
 function getTime() {
@@ -154,9 +153,14 @@ function image_animation(image, pos, speed=100) {
     animation = [image, pos];
     animationspeed = speed;
     canMove = false;
-    let ctx = mainCanvas.getContext("2d");
-    for (i = 0; i < pos.length / 4; i++) {
-        setTimeout(() => { ctx.drawImage(image, pos[i], pos[i+1], pos[i+2], pos[i+3], 0, 0, width, scale); }, i * 100);
+    for (i = 0; i < animation.length; i++) {
+            if (animation[1][i][6] != undefined) {
+                animation[1][i][6] = width;
+            }
+            if (animation[1][i][7] != undefined) {
+                animation[1][i][7] = height;
+            }
+
     }
 }
 
@@ -213,9 +217,9 @@ function loop() {
     }
 
     if (animationtime > -1) {
-        let i = Math.floor(animationtime / animationspeed)*4;
-        if (animation[1][i + 3] != undefined) {
-            ctx.drawImage(animation[0], animation[1][i], animation[1][i + 1], animation[1][i + 2], animation[1][i + 3], 0, 0, width * scale, height);
+        let i = Math.floor(animationtime / animationspeed);
+        if (animation[1][i] != undefined) {
+            ctx.drawImage(animation[0], animation[1][i][0], animation[1][i][1], animation[1][i][2], animation[1][i][3], width * animation[1][i][4], Math.max(0,scale * animation[1][i][5]), width * animation[1][i][6], scale * animation[1][i][7]);
             animationtime += delta;
         }
         else {
@@ -228,6 +232,7 @@ function loop() {
     if (game.time >= 24000) { // 1000 = 1 hour in-game.
         game.time = 0;
     }
+
     updateAnimators(delta);
 
     requestAnimationFrame(loop);
