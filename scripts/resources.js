@@ -141,6 +141,7 @@ let images = {
     "tiles/hole_3": "data/images/tiles/tile_hole_3.png",
     "tiles/hole_4": "data/images/tiles/tile_hole_4.png",
     "tiles/cave": "data/images/tiles/tile_cave.png",
+    "tiles/black_tile": "data/images/tiles/tile_black_tile.png",
 };
 
 var scenes = {
