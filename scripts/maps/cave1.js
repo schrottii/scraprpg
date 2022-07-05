@@ -4,7 +4,7 @@ maps["cave1"] = {
             sprite: "cave",
         },
         "---": {
-            sprite: "cave",
+            sprite: "black",
             occupied: true,
         },
 
@@ -211,6 +211,10 @@ maps["cave1"] = {
         "D11": {
               sprite: "sc_light_2",
               teleport: ["original", 7, 8],
+        },
+        "050": {
+              sprite: "black_tile"
+              occupied: true,
 
         },
 
