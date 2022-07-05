@@ -17,7 +17,7 @@ Discord Server Owner, Idea Planner, Graphic Designer
 Graphic Designer, Story Writer
 
 
-- **RydeR (His name changes often, so we call him Lexi most of the time.)**
+- **DeLorean (His name changes often, so we call him Lexi most of the time.)**
 Idea Planner, Composer
 - **KGuy (historically known as KGod)**
 Game Tester, Graphic Artist
