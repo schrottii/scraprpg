@@ -3,6 +3,10 @@ maps["cave1"] = {
         empty: {
             sprite: "water1",
         },
+        "---": {
+            sprite: "cave",
+            occupied: true,
+        },
 
         "000": {
             sprite: "grass1",

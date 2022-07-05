@@ -136,10 +136,11 @@ let images = {
     "tiles/sc": "data/images/tiles/tile_sc.png",
     "tiles/sc_light_1": "data/images/tiles/tile_sc_light_1.png",
     "tiles/sc_light_2": "data/images/tiles/tile_sc_light_2.png",
-    "tiles/hole_1:" "data/images/tiles/tile_hole_1.png",
-    "tiles/hole_2:" "data/images/tiles/tile_hole_2.png",
-    "tiles/hole_3:" "data/images/tiles/tile_hole_3.png",
-    "tiles/hole_4:" "data/images/tiles/tile_hole_4.png",
+    "tiles/hole_1" : "data/images/tiles/tile_hole_1.png",
+    "tiles/hole_2" : "data/images/tiles/tile_hole_2.png",
+    "tiles/hole_3": "data/images/tiles/tile_hole_3.png",
+    "tiles/hole_4": "data/images/tiles/tile_hole_4.png",
+    "tiles/cave": "data/images/tiles/tile_cave.png",
 };
 
 var scenes = {
@@ -164,6 +165,7 @@ var maps = {
     "test": "scripts/maps/test.js",
     "map2": "scripts/maps/map2.js",
     "original": "scripts/maps/original.js",
+    "cave1": "scripts/maps/cave1.js",
 };
 
 var resCount = 0;
