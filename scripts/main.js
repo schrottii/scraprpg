@@ -42,6 +42,7 @@ function init() {
                 onClick() {
                     musicPlayer.muted = true;
                     soundPlayer.muted = true;
+                    stopMusic();
                     loadGame(0);
                     loadSettings();
 
@@ -95,6 +96,10 @@ function isNight() {
 function playMusic(name) {
     musicPlayer.src = audio[name].src;
     musicPlayer.play();
+}
+
+function stopMusic(name) {
+    musicPlayer.pause();
 }
 
 function playSound(name) {

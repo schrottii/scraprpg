@@ -110,6 +110,7 @@ scenes.title = () => {
                 if (mode == 0) {
                     saveNR = a;
                     playSound("ok");
+                    stopMusic();
                     loadGame(a);
                     loadSave(a);
                 }
@@ -127,6 +128,7 @@ scenes.title = () => {
             onClick(args) { //Change the image when clicked
                 saveNR = a;
                 saveButtons[a].clickthrough = true; //To avoid savegame loading when changing image (God tier code)
+                stopMusic();
                 loadGame(saveNR);
                 if (game.pfp == 5) { //To avoid changing to a pic that does not exist
                     game.pfp = 1;
