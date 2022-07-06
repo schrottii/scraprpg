@@ -5,6 +5,7 @@ let game = {
     chars: ["bleu", "corelle", "gau"], // MAX 6!!!
     time: 0,
     wrenches: 0,
+    inventory: {},
 
     characters: {
         bleu: {
@@ -21,7 +22,6 @@ let game = {
             element: "water",
             effect: ["none", 0],
             pos: [0, 0],
-//            inventory: {}
         },
         corelle: {
             name: "Corelle",
@@ -37,7 +37,6 @@ let game = {
             element: "fire",
             effect: ["none", 0],
             pos: [0, 1],
-//            inventory: {}
         },
         gau: {
             name: "Gau",
@@ -53,7 +52,6 @@ let game = {
             element: "physical",
             effect: ["none", 0],
             pos: [2, 2],
-//            inventory: {}
         }
     }
 }

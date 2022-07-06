@@ -512,6 +512,44 @@ scenes.fight = () => {
     }
 
 
+    function showFightActions() {
+        addAnimator(function (t) {
+            for (i = 0; i < fightActions.length; i++) {
+                fightActions[i].offset[1] = -500 + t;
+            }
+            if (t > 499) {
+                for (i = 0; i < fightActions.length; i++) {
+                    fightActions[i].offset[1] = 0;
+                }
+                return true;
+            }
+        })
+    }
+
+    function hideFightActions() {
+        addAnimator(function (t) {
+            for (i = 0; i < fightActions.length; i++) {
+                fightActions[i].offset[1] = -t;
+            }
+            if (t > 499) {
+                for (i = 0; i < fightActions.length; i++) {
+                    fightActions[i].offset[1] = -500;
+                }
+                return true;
+            }
+        })
+    }
+
+    function showItems() {
+    let inventory = Object.keys(game.inventory);
+        for (i = 0; i < fightActions.length; i++) {
+            if (inventory[i] == undefined) break;
+            fightActions[(i * 3)].item = items[inventory[i]];
+            fightActions[(i * 3) + 2].text = items[inventory[i]]().name;
+        }
+
+    }
+
 
     // Elements! Yay (ft. some rapper you have never heard of)
     function elementLogic(myElement, theirElement) {
@@ -607,7 +645,8 @@ scenes.fight = () => {
                 alpha: 255,
                 onClick(args) {
                     if (this.alpha == 255 && fightaction == "active") {
-                        
+                        showFightActions();
+                        showItems();
                     }
                 }
             }))
@@ -669,6 +708,7 @@ scenes.fight = () => {
                         fleeLoss.alpha = 255;
                         fleeIcon.alpha = 255;
                         hideFightButtons();
+                        hideFightActions();
                         setTimeout(() => {
                             fleeLoss.alpha = 0;
                             fleeIcon.alpha = 0;
@@ -717,21 +757,25 @@ scenes.fight = () => {
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 6; i++) {
             fightActions.push(controls.rect({
-                anchor: [0.33 + (j * 0.17), 0 + (i * 0.0375)], sizeAnchor: [0.17, 0.0375],
+                anchor: [0.33 + (j * 0.17), 0 + (i * 0.0375)], sizeAnchor: [0.17, 0.0375], offset: [0, -500],
                 fill: "rgb(38, 52, 38)",
                 alpha: 255,
+                item: "",
                 onClick(args) {
                     if (this.alpha == 255) {
+                        this.item().effect();
+                        game.inventory[this.item.name] -= 1;
+                        hideFightActions();
                     }
                 }
             }))
             fightActions.push(controls.rect({
-                anchor: [0.3325 + (j * 0.17), 0.0025 + (i * 0.0375)], sizeAnchor: [0.165, 0.0325],
+                anchor: [0.3325 + (j * 0.17), 0.0025 + (i * 0.0375)], sizeAnchor: [0.165, 0.0325], offset: [0, -500],
                 fill: "rgb(42, 87, 44)",
                 alpha: 255,
             }))
             fightActions.push(controls.label({
-                anchor: [0.49 + (j * 0.17), 0.025 + (i * 0.0375)],
+                anchor: [0.49 + (j * 0.17), 0.025 + (i * 0.0375)], offset: [0, -500],
                 text: "Coming soon...",
                 fontSize: 16, fill: "white", align: "right",
                 alpha: 255,

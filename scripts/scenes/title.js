@@ -24,7 +24,7 @@ scenes.title = () => {
     let verLabel = controls.label({
         anchor: [.98, .98], offset: [-5, -12],
         align: "right", baseline: "alphabetic", fontSize: 16, fill: "#7f7f7f", alpha: 0,
-        text: "Prototype 7",
+        text: "Prototype 8",
     });
 
     function loadSave(id) {
