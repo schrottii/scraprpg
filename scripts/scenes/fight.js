@@ -573,6 +573,18 @@ scenes.fight = () => {
 
 
 
+    let fleeLoss = controls.label({
+        anchor: [0.5, 0.5],
+        text: ":(",
+        fontSize: 32, fill: "white", align: "center", outline: "gray", outlineSize: 12,
+        alpha: 0,
+    })
+
+    let fleeIcon = controls.image({
+        anchor: [0.55, 0.5], offset: [-32, -32], sizeOffset: [64, 64],
+        source: "wrench",
+        alpha: 0,
+    })
 
     // Top row buttons
     function topRowButton() {
@@ -651,7 +663,17 @@ scenes.fight = () => {
                 alpha: 255,
                 onClick(args) {
                     if (this.alpha == 255 && fightaction == "active") {
-                        setScene(scenes.game());
+                        let loss = Math.round(50 + (game.wrenches / 100)) * (-1);
+                        addWrenches(loss);
+                        fleeLoss.text = loss + "!";
+                        fleeLoss.alpha = 255;
+                        fleeIcon.alpha = 255;
+                        hideFightButtons();
+                        setTimeout(() => {
+                            fleeLoss.alpha = 0;
+                            fleeIcon.alpha = 0;
+                            setScene(scenes.game());
+                        }, 4000);
                     }
                 }
             }))
@@ -1349,7 +1371,7 @@ scenes.fight = () => {
         controls: [
             // Load all the nice stuff
             //...fightBgRects,
-            ...fightButtons, ...fightActions, turnDisplay,
+            ...fightButtons, ...fightActions, turnDisplay, fleeLoss, fleeIcon,
             ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
             ...fightStats, ...actionDisplay, ...winScreen,

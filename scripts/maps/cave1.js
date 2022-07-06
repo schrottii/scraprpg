@@ -213,7 +213,7 @@ maps["cave1"] = {
               teleport: ["original", 7, 8],
         },
         "050": {
-              sprite: "black_tile"
+              sprite: "black_tile",
               occupied: true,
 
         },
