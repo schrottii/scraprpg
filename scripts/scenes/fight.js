@@ -55,20 +55,31 @@ scenes.fight = () => {
             }
 
             let EXPforAll = 2;
+            let wrenchGain = 100;
             for (j = 0; j < 3; j++) {
                 for (i = 0; i < 3; i++) {
                     if (epositions[i][j].strength != undefined) EXPforAll += epositions[i][j].strength / 3;
                     if (epositions[i][j].maxHP != undefined) EXPforAll += epositions[i][j].maxHP / 14;
                 }
             }
+            for (j = 0; j < 3; j++) {
+                for (i = 0; i < 3; i++) {
+                    if (epositions[i][j].strength != undefined) wrenchGain += epositions[i][j].strength * 16;
+                    if (epositions[i][j].maxHP != undefined) wrenchGain += epositions[i][j].maxHP / 3;
+                }
+            }
             EXPforAll = Math.ceil(EXPforAll);
+            wrenchGain = Math.ceil(wrenchGain);
+
+            addWrenches(wrenchGain);
+            winScreen[2].text = "+" + wrenchGain + " wrenches!";
 
             for (i = 0; i < game.chars.length; i++) {
                 getPlayer(1 + i).EXP += EXPforAll;
             }
                 
             for (i = 0; i < game.chars.length; i++) {
-                winScreen[2 + i].text = getPlayer(i + 1).name + "  + " + EXPforAll + "XP!     " + getPlayer(i + 1).EXP + "/25";
+                winScreen[3 + i].text = getPlayer(i + 1).name + "  + " + EXPforAll + "XP!     " + getPlayer(i + 1).EXP + "/25";
             }
             for (i = 0; i < winScreen.length; i++) {
                 winScreen[i].alpha = 255;
@@ -805,6 +816,12 @@ scenes.fight = () => {
         anchor: [0.5, 0.32],
         text: "Victory!",
         fontSize: 28, fill: "black", align: "center",
+        alpha: 0,
+    }));
+    winScreen.push(controls.label({
+        anchor: [0.62, 0.4 + (0.025 * i)],
+        text: "wrenches",
+        fontSize: 20, fill: "black", align: "left",
         alpha: 0,
     }));
     for (i = 0; i < game.chars.length; i++) {

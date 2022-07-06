@@ -4,6 +4,7 @@ let game = {
     position: [4, 4],
     chars: ["bleu", "corelle", "gau"], // MAX 6!!!
     time: 0,
+    wrenches: 0,
 
     characters: {
         bleu: {

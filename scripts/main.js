@@ -238,6 +238,17 @@ function loop() {
     requestAnimationFrame(loop);
 }
 
+function addWrenches(amount = 0) {
+    if (game.wrenches != undefined) {
+        if (game.wrenches < 999999999999) {
+            game.wrenches += amount;
+        }
+        else {
+            game.wrenches = 999999999999;
+        }
+    }
+}
+
 // I copied these almost 1:1 from legacy.
 // Got a problem with that? Huh?
 
@@ -308,6 +319,7 @@ function loadGame() {
         saveCopy.characters.corelle.effect = ["none", 0];
         saveCopy.characters.gau.effect = ["none", 0];
         if (saveCopy.time == undefined) saveCopy.time = 0;
+        if (saveCopy.wrenches == undefined) saveCopy.wrenches = 0;
 
         game = saveCopy;
     }
