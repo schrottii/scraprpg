@@ -421,7 +421,7 @@ scenes.fight = () => {
 
             if (getPlayer(i + 1).HP < 1) {
                 //fightStats[which].alpha = 0;
-                postLog(getPlayer(i + 1).name + "died!");
+                postLog(getPlayer(i + 1).name + " died!");
                 positions[getPlayer(i + 1).pos[0]][getPlayer(i + 1).pos[1]].isOccupied = false;
                 checkAllDead();
             }

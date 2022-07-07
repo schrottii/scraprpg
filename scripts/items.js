@@ -25,4 +25,18 @@ let items = {
             ...args || {},
         }
     },
+    potion(args) {
+        return {
+            source: "potion",
+            name: "Small Potion",
+            shopcost: 250,
+            max: 99,
+            effect: () => {
+                args.player.HP += 50;
+                if (args.player.HP > args.player.maxHP) args.player.HP = args.player.maxHP;
+            },
+
+            ...args || {},
+        }
+    },
 }

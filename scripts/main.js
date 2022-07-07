@@ -320,7 +320,7 @@ function loadGame() {
         saveCopy.characters.gau.effect = ["none", 0];
         if (saveCopy.time == undefined) saveCopy.time = 0;
         if (saveCopy.wrenches == undefined) saveCopy.wrenches = 0;
-        if (saveCopy.inventory == undefined) saveCopy.inventory = {"brickyleaf" : 5};
+        if (saveCopy.inventory == undefined) saveCopy.inventory = {"brickyleaf" : 5, "potion" : 3};
 
         game = saveCopy;
     }
