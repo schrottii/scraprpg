@@ -550,10 +550,14 @@ scenes.fight = () => {
     function showItems() {
     let inventory = Object.keys(game.inventory);
         for (i = 0; i < fightActions.length; i++) {
-            if (inventory[i] == undefined) break;
+            if (inventory[i] == undefined) {
+                fightActions[(i * 3) + 2].text = "---";
+                break;
+            }
             if (game.inventory[items[inventory[i]].name] > 0) {
                 fightActions[(i * 3)].item = items[inventory[i]];
-                fightActions[(i * 3) + 2].text = items[inventory[i]]().name;
+                if (game.inventory[items[inventory[i]].name] > 1) fightActions[(i * 3) + 2].text = items[inventory[i]]().name + " x" + game.inventory[items[inventory[i]].name];
+                else fightActions[(i * 3) + 2].text = items[inventory[i]]().name;
             }
             else {
                 fightActions[(i * 3) + 2].text = "---";
@@ -777,7 +781,7 @@ scenes.fight = () => {
                     if (this.alpha == 255) {
                         if (positions[selectedAlly[0]][selectedAlly[1]].action == false && game.inventory[this.item.name] > 0) {
                             positions[selectedAlly[0]][selectedAlly[1]].action = ["item", this.item.name, selectedAlly[0], selectedAlly[1]];
-                            game.inventory[this.item.name] -= 1;
+                            removeItem(this.item.name, 1);
                             hideFightActions();
                             fightaction = "none";
                             positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";

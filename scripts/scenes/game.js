@@ -75,8 +75,18 @@ function getEmotion(emotion) { //How do you spell portrait?
     }
 }
 
-function addItem(name, amount=1) {
+function addItem(name, amount = 1) {
+    if (game.inventory[name] == undefined) {
+        game.inventory.push(name);
+    }
     game.inventory[name] += amount;
+}
+
+function removeItem(name, amount = 1) {
+    game.inventory[name] -= amount;
+    if (game.inventory[name] < 1 || game.inventory[name] == undefined) {
+        delete game.inventory[name];
+    }
 }
 
 scenes.game = () => {
