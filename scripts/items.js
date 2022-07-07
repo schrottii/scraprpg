@@ -19,8 +19,7 @@ let items = {
             shopcost: 500,
             max: 99,
             effect: () => {
-                console.log("hey!!!");
-                if (getPlayer(1).effect[0] == "poison") getPlayer(1).effect = ["none", 0];
+                if (args.player.effect[0] == "poison") args.player.effect = ["none", 0];
             },
 
             ...args || {},

@@ -763,7 +763,7 @@ scenes.fight = () => {
                 item: "",
                 onClick(args) {
                     if (this.alpha == 255) {
-                        this.item().effect();
+                        this.item({ player: game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied] }).effect();
                         game.inventory[this.item.name] -= 1;
                         hideFightActions();
                     }
