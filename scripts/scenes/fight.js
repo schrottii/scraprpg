@@ -533,6 +533,7 @@ scenes.fight = () => {
     }
 
     function hideFightActions() {
+        if (fightActions[i].offset[1] == -500) return false;
         addAnimator(function (t) {
             for (i = 0; i < fightActions.length; i++) {
                 fightActions[i].offset[1] = -t;
@@ -781,6 +782,7 @@ scenes.fight = () => {
                             fightaction = "none";
                             positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                             hideFightButtons();
+                            hideFightActions();
                         }
                     }
                 }
@@ -1146,6 +1148,7 @@ scenes.fight = () => {
                             positions[switchThose[0][0]][switchThose[0][1]].action = ["switch", switchThose[0][0], switchThose[0][1], switchThose[1][0], switchThose[1][1]];
                             fightaction = "none";
                             hideFightButtons();
+                            hideFightActions();
                         }
                     }
                     if (fightaction == "heal1" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true && game.characters[positions[this.pos1][this.pos2].occupied].HP > 0) {
@@ -1185,6 +1188,7 @@ scenes.fight = () => {
 
                         fightaction = "none";
                         hideFightButtons();
+                        hideFightActions();
                         
                     }
                 }
