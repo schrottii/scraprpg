@@ -550,8 +550,13 @@ scenes.fight = () => {
     let inventory = Object.keys(game.inventory);
         for (i = 0; i < fightActions.length; i++) {
             if (inventory[i] == undefined) break;
-            fightActions[(i * 3)].item = items[inventory[i]];
-            fightActions[(i * 3) + 2].text = items[inventory[i]]().name;
+            if (game.inventory[items[inventory[i]].name] > 0) {
+                fightActions[(i * 3)].item = items[inventory[i]];
+                fightActions[(i * 3) + 2].text = items[inventory[i]]().name;
+            }
+            else {
+                fightActions[(i * 3) + 2].text = "---";
+            }
         }
 
     }
@@ -769,7 +774,7 @@ scenes.fight = () => {
                 item: "",
                 onClick(args) {
                     if (this.alpha == 255) {
-                        if (positions[selectedAlly[0]][selectedAlly[1]].action == false) {
+                        if (positions[selectedAlly[0]][selectedAlly[1]].action == false && game.inventory[this.item.name] > 0) {
                             positions[selectedAlly[0]][selectedAlly[1]].action = ["item", this.item.name, selectedAlly[0], selectedAlly[1]];
                             game.inventory[this.item.name] -= 1;
                             hideFightActions();
@@ -787,7 +792,7 @@ scenes.fight = () => {
             }))
             fightActions.push(controls.label({
                 anchor: [0.49 + (j * 0.17), 0.025 + (i * 0.0375)], offset: [0, -500],
-                text: "Coming soon...",
+                text: "---",
                 fontSize: 16, fill: "white", align: "right",
                 alpha: 255,
             }))
