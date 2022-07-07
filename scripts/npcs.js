@@ -78,7 +78,9 @@ let npcs = {
             skin: "bleu",
             dialogues: {
                 1: [["Ey", "Portraits_Bleu", "happy", "Bleu"],
-                ["Ayo", "Portraits_Bleu", "angry", "Bleu"]]
+                    ["Ayo (+1 Potion!)", "Portraits_Bleu", "angry", "Bleu", () => {
+                        addItem("potion", 1);
+                    }]]
             },
             movement: 2,
             path: [2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3],

@@ -75,6 +75,10 @@ function getEmotion(emotion) { //How do you spell portrait?
     }
 }
 
+function addItem(name, amount=1) {
+    game.inventory[name] += amount;
+}
+
 scenes.game = () => {
     
     let head = 0;
@@ -221,13 +225,16 @@ scenes.game = () => {
         onClick(args) {
             if (this.alpha == 255) {
                 dialogueProgress += 1;
-                    if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
-                        inDialogue = false;
-                        currentDialogue = false;
-                        dialogueEmotion = "neutral";
-                        dialogueProgress = 0;
-                        canMove = true;
-                    }
+                if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
+                    inDialogue = false;
+                    currentDialogue = false;
+                    dialogueEmotion = "neutral";
+                    dialogueProgress = 0;
+                    canMove = true;
+                }
+                else if (currentDialogue[dialogueProgress][4] != undefined) {
+                    currentDialogue[dialogueProgress][4]();
+                }
 
             }
         },
