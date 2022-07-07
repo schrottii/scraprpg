@@ -272,6 +272,12 @@ scenes.fight = () => {
                 positions[pos[0]][pos[1]].action = false;
                 executeActions();
                 break;
+            case "item":
+                items[whoAGI.action[1]]({ player: game.characters[positions[whoAGI.action[2]][whoAGI.action[3]].occupied] }).effect();
+                positions[pos[0]][pos[1]].action = false;
+                executeActions();
+                break;
+
         }
     }
 
@@ -763,9 +769,14 @@ scenes.fight = () => {
                 item: "",
                 onClick(args) {
                     if (this.alpha == 255) {
-                        this.item({ player: game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied] }).effect();
-                        game.inventory[this.item.name] -= 1;
-                        hideFightActions();
+                        if (positions[selectedAlly[0]][selectedAlly[1]].action == false) {
+                            positions[selectedAlly[0]][selectedAlly[1]].action = ["item", this.item.name, selectedAlly[0], selectedAlly[1]];
+                            game.inventory[this.item.name] -= 1;
+                            hideFightActions();
+                            fightaction = "none";
+                            positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
+                            hideFightButtons();
+                        }
                     }
                 }
             }))
