@@ -4,7 +4,7 @@ maps["cave1"] = {
             sprite: "cave",
         },
         "---": {
-            sprite: "black",
+            sprite: "black_tile",
             occupied: true,
         },
 

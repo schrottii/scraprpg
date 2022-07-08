@@ -789,7 +789,7 @@ scenes.fight = () => {
                             removeItem(this.item.name, 1);
                             hideFightActions();
                             fightaction = "none";
-                            positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
+                            positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "items/" + this.item().source;
                             hideFightButtons();
                             hideFightActions();
                         }
@@ -1329,10 +1329,22 @@ scenes.fight = () => {
                     positionControls[i + (j * 3)].offset = [56 * i, 72 * j];
                     epositionControls[i + (j * 3)].sizeOffset = [48, 48];
                     epositionControls[i + (j * 3)].offset = [-(48 + (56 * i)), 72 * j];
-                    positionGrid[i + (j * 3)].sizeOffset = [48, 48];
-                    positionGrid[i + (j * 3)].offset = [56 * i, 72 * j];
-                    positionGrid[9 + i + (j * 3)].sizeOffset = [48, 48];
-                    positionGrid[9 + i + (j * 3)].offset = [-(48 + (56 * i)), 72 * j];
+                    if (positionGrid[i + (j * 3)].source == "grid" || positionGrid[i + (j * 3)].source == "hasaction" || positionGrid[i + (j * 3)].source == "selected") {
+                        positionGrid[i + (j * 3)].sizeOffset = [48, 48];
+                        positionGrid[i + (j * 3)].offset = [56 * i, 72 * j];
+                    }
+                    else {
+                        positionGrid[i + (j * 3)].sizeOffset = [24, 24];
+                        positionGrid[i + (j * 3)].offset = [(56 * i) + 24, (72 * j) + 24];
+                    }
+                    if (positionGrid[9 + i + (j * 3)].source == "grid" || positionGrid[9 + i + (j * 3)].source == "hasaction" || positionGrid[9 + i + (j * 3)].source == "selected") {
+                        positionGrid[9 + i + (j * 3)].sizeOffset = [48, 48];
+                        positionGrid[9 + i + (j * 3)].offset = [-(48 + (56 * i)), 72 * j];
+                    }
+                    else {
+                        positionGrid[9 + i + (j * 3)].sizeOffset = [24, 24];
+                        positionGrid[9 + i + (j * 3)].offset = [(56 * i) + 24, (72 * j) + 24];
+                    }
 
                     
                 }
@@ -1345,10 +1357,22 @@ scenes.fight = () => {
                     positionControls[i + (j * 3)].offset = [72 * i, 72 * j];
                     epositionControls[i + (j * 3)].sizeOffset = [64, 64];
                     epositionControls[i + (j * 3)].offset = [-(72 + (72 * i)), 72 * j]
-                    positionGrid[i + (j * 3)].sizeOffset = [64, 64];
-                    positionGrid[i + (j * 3)].offset = [72 * i, 72 * j];
-                    positionGrid[9 + i + (j * 3)].sizeOffset = [64, 64];
-                    positionGrid[9 + i + (j * 3)].offset = [-(72 + (72 * i)), 72 * j];
+                    if (positionGrid[i + (j * 3)].source == "grid" || positionGrid[i + (j * 3)].source == "hasaction" || positionGrid[i + (j * 3)].source == "selected") {
+                        positionGrid[i + (j * 3)].sizeOffset = [64, 64];
+                        positionGrid[i + (j * 3)].offset = [72 * i, 72 * j];
+                    }
+                    else {
+                        positionGrid[i + (j * 3)].sizeOffset = [32, 32];
+                        positionGrid[i + (j * 3)].offset = [(72 * i) + 32, (72 * j) + 32];
+                    }
+                    if (positionGrid[9 + i + (j * 3)].source == "grid" || positionGrid[9 + i + (j * 3)].source == "hasaction" || positionGrid[9 + i + (j * 3)].source == "selected") {
+                        positionGrid[9 + i + (j * 3)].sizeOffset = [64, 64];
+                        positionGrid[9 + i + (j * 3)].offset = [-(72 + (72 * i)), 72 * j];
+                    }
+                    else {
+                        positionGrid[9 + i + (j * 3)].sizeOffset = [32, 32];
+                        positionGrid[9 + i + (j * 3)].offset = [(72 * i) + 32, (72 * j) + 32];
+                    }
                 }
             }
         }
