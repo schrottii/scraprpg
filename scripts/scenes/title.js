@@ -27,6 +27,11 @@ scenes.title = () => {
         text: "Prototype 8",
     });
 
+    let settingsSaveText = controls.label({
+        anchor: [.04, .98], offset: [12, -12],
+        fontSize: 16, text: "Settings saved!", alpha: 0,
+    });
+
     function loadSave(id) {
         fadeOverlay.clickthrough = false;
         addAnimator(function (t) {
@@ -95,6 +100,14 @@ scenes.title = () => {
             }
             return false;
         });
+        addAnimator(function (t) {
+            settingsSaveText.alpha = t / 10;
+            if (t > 2500) {
+                settingsSaveText.alpha = 0;
+                return true;
+            }
+            return false;
+        })
     };
 
 
@@ -389,7 +402,7 @@ scenes.title = () => {
                     })
                 }
             }),
-            ...saveButtons, ...saveImages,
+            ...saveButtons, ...saveImages, settingsSaveText,
             deleteButton, optionButton, ...options,
             fadeOverlay
         ],
