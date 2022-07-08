@@ -522,10 +522,12 @@ scenes.fight = () => {
         addAnimator(function (t) {
             for (i = 0; i < fightActions.length; i++) {
                 fightActions[i].offset[1] = -500 + t;
+                if (fightActions[i].source != undefined) fightActions[i].offset[1] = -520 + t;
             }
             if (t > 499) {
                 for (i = 0; i < fightActions.length; i++) {
                     fightActions[i].offset[1] = 0;
+                    if (fightActions[i].source != undefined) fightActions[i].offset[1] = -20;
                 }
                 return true;
             }
@@ -533,7 +535,7 @@ scenes.fight = () => {
     }
 
     function hideFightActions() {
-        if (fightActions[i].offset[1] == -500) return false;
+        if (fightActions[0].offset[1] == -500) return false;
         addAnimator(function (t) {
             for (i = 0; i < fightActions.length; i++) {
                 fightActions[i].offset[1] = -t;
@@ -550,17 +552,20 @@ scenes.fight = () => {
     function showItems() {
     let inventory = Object.keys(game.inventory);
         for (i = 0; i < fightActions.length; i++) {
+            fightActions[(i * 4) + 3].alpha = 0;
             if (inventory[i] == undefined) {
-                fightActions[(i * 3) + 2].text = "---";
+                fightActions[(i * 4) + 2].text = "---";
                 break;
             }
             if (game.inventory[items[inventory[i]].name] > 0) {
-                fightActions[(i * 3)].item = items[inventory[i]];
-                if (game.inventory[items[inventory[i]].name] > 1) fightActions[(i * 3) + 2].text = items[inventory[i]]().name + " x" + game.inventory[items[inventory[i]].name];
-                else fightActions[(i * 3) + 2].text = items[inventory[i]]().name;
+                fightActions[(i * 4)].item = items[inventory[i]];
+                if (game.inventory[items[inventory[i]].name] > 1) fightActions[(i * 4) + 2].text = items[inventory[i]]().name + " x" + game.inventory[items[inventory[i]].name];
+                else fightActions[(i * 4) + 2].text = items[inventory[i]]().name;
+                fightActions[(i * 4) + 3].source = "items/" + items[inventory[i]]().source;
+                fightActions[(i * 4) + 3].alpha = 255;
             }
             else {
-                fightActions[(i * 3) + 2].text = "---";
+                fightActions[(i * 4) + 2].text = "---";
             }
         }
 
@@ -797,10 +802,15 @@ scenes.fight = () => {
                 alpha: 255,
             }))
             fightActions.push(controls.label({
-                anchor: [0.49 + (j * 0.17), 0.025 + (i * 0.0375)], offset: [0, -500],
+                anchor: [0.48 + (j * 0.17), 0.025 + (i * 0.0375)], offset: [-24, -500],
                 text: "---",
                 fontSize: 16, fill: "white", align: "right",
                 alpha: 255,
+            }))
+            fightActions.push(controls.image({
+                anchor: [0.48 + (j * 0.17), 0.025 + (i * 0.0375)], sizeOffset: [32, 32], offset: [0, -520],
+                source: "gear",
+                alpha: 0,
             }))
 
         }

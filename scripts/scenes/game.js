@@ -77,7 +77,7 @@ function getEmotion(emotion) { //How do you spell portrait?
 
 function addItem(name, amount = 1) {
     if (game.inventory[name] == undefined) {
-        game.inventory.push(name);
+        game.inventory[name] = 0;
     }
     game.inventory[name] += amount;
 }

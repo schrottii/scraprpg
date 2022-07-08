@@ -21,7 +21,6 @@ let images = {
     gameover: "data/images/gameover.png",
     selected: "data/images/selected.png",
     grid: "data/images/gridempty.png",
-    potion: "data/images/Items/potion.png",
     evil: "data/images/Map_Evil.png",
     selected: "data/images/selected.png",
     hasaction: "data/images/done.png",
