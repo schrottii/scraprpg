@@ -70,17 +70,19 @@ var currentKeys = {};
 var autoSaveTime = 0;
 var canMove = true;
 
-function getTime() {
-    let hours = Math.floor(game.time / 1000);
-    let minutes = Math.round((game.time % 1000) / 16.667);
-    return hours + ":" + minutes;
-}
-
 //   Day: 6:00 - 17:59 (12 hours)
 //  ----> Dawn: 6:00 - 8:59
 //  ----> Noon: 9:00 - 14:59
 //  ----> Dusk: 15:00 - 17:59
 // Night: 18:00 - 5:59 (12 hours)
+
+function getTime() {
+    let hours = Math.floor(game.time / 1000);
+    let minutes = Math.round((game.time % 1000) / 16.667);
+    if (minutes == 60) return hours+1 + ":00";
+    if (minutes < 10) return hours + ":0" + minutes;
+    return hours + ":" + minutes;
+}
 
 function isDay() {
     if (game.time > 5999 && game.time < 18000) {
