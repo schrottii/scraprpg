@@ -88,7 +88,7 @@ function addItem(name, amount = 1) {
     }
     else {
         game.inventory[name] = items[name]().max;
-        return false;
+        return true;
     }
 }
 
@@ -1028,7 +1028,6 @@ scenes.game = () => {
             if (map.items != undefined) {
                 for (let item of map.items) {
                     if (item[4] == true) {
-                        console.log(item[0]);
                         ctx.drawImage(images["items/" + item[2]],
                             ((zoom * scale) * (item[0] + kofs[0] * kofs[2] - (game.position[0] - width / 2 + 0.5))) - ((zoom - 1) * scale * (width / 2)),
                             (zoom * scale) * (item[1] + kofs[1] * kofs[2] - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7),
