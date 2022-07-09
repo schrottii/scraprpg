@@ -152,8 +152,8 @@ scenes.game = () => {
 
 
     let nightEffect = controls.image({
-        anchor: [0, 0], sizeAnchor: [1, 1],
-        source: "nighteffect",
+        anchor: [0, 0], sizeAnchor: [1, 1], snip: [0, 0, 8, 8],
+        source: "nighteffect", alpha: 255,
     });
 
         // Alright, alright, we need comments, so let me comment this
@@ -628,6 +628,9 @@ scenes.game = () => {
                 if (map.spawns[possibleSpawns] > Math.random() * 100) { // For the stupid: Somewhat unlikely
                     if (mapenemies[possibleSpawns] != undefined) {
                         if (mapenemies[possibleSpawns]().time == "day" && !isDay()) return false;
+                        if (mapenemies[possibleSpawns]().time == "dawn" && !isDawn()) return false;
+                        if (mapenemies[possibleSpawns]().time == "noon" && !isNoon()) return false;
+                        if (mapenemies[possibleSpawns]().time == "dusk" && !isDusk()) return false;
                         if (mapenemies[possibleSpawns]().time == "night" && !isNight()) return false;
                     }
                         enemies.push(mapenemies[possibleSpawns]({
@@ -1079,10 +1082,10 @@ scenes.game = () => {
                 }
             }
 
-            if (isNight()) nightEffect.alpha = 255;
-            else nightEffect.alpha = 0;
-            if (walkTime > 1) nightEffect.source = "nighteffect2";
-            else nightEffect.source = "nighteffect";
+            if (isDawn()) nightEffect.snip = [24, 0, 8, 8];
+            else if (isNoon()) nightEffect.snip = [0, 0, 8, 8];
+            else if (isDusk()) nightEffect.snip = [8, 0, 8, 8];
+            else if (isNight()) nightEffect.snip = [16, 0, 8, 8];
 
             ctx.drawImage(images[game.chars[0]], 32 * Math.floor(walkTime), 32 * head, 32, 32,
                 scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5) ),

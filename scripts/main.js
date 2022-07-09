@@ -76,17 +76,40 @@ function getTime() {
     return hours + ":" + minutes;
 }
 
-//   Day: 6:00 - 19:59 (14 hours)
-// Night: 20:00 - 5:59 (10 hours)
+//   Day: 6:00 - 17:59 (12 hours)
+//  ----> Dawn: 6:00 - 8:59
+//  ----> Noon: 9:00 - 14:59
+//  ----> Dusk: 15:00 - 17:59
+// Night: 18:00 - 5:59 (12 hours)
+
 function isDay() {
-    if (game.time > 5999 && game.time < 20000) {
+    if (game.time > 5999 && game.time < 18000) {
+        return true;
+    }
+    return false;
+}
+
+function isDawn() {
+    if (game.time > 5999 && game.time < 9000) {
+        return true;
+    }
+    return false;
+}
+function isNoon() {
+    if (game.time > 8999 && game.time < 15000) {
+        return true;
+    }
+    return false;
+}
+function isDusk() {
+    if (game.time > 14999 && game.time < 18000) {
         return true;
     }
     return false;
 }
 
 function isNight() {
-    if (game.time > 19999 || game.time < 6000) {
+    if (game.time > 17999 || game.time < 6000) {
         return true;
     }
     return false;
