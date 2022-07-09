@@ -551,6 +551,17 @@ scenes.game = () => {
         }
     }
 
+    function check_ItemCollision(i) {
+        let map = maps[game.map];
+        if (game.position[0] == map.items[i][0] &&
+            game.position[1] == map.items[i][1]) {
+            // Collision!
+
+            addItem(map.items[i][2], map.items[i][3]);
+            map.items[i][4] = false;
+        }
+    }
+
     function ActionsOnMove() {
         let map = maps[game.map];
         // Everything performed when the player moves successfully
@@ -598,6 +609,12 @@ scenes.game = () => {
 
         for (i = 0; i < enemies.length; i++) {
             check_EnemyCollision(i);
+        }
+
+        if (map.items != undefined) {
+            for (i = 0; i < map.items.length; i++) {
+                check_ItemCollision(i);
+            }
         }
 
         if (getTile(map, game.position[0], game.position[1]).dialogue != undefined) {
@@ -996,6 +1013,18 @@ scenes.game = () => {
                 if (enemy.alpha > 0) {
                     ctx.globalAlpha = enemy.alpha;
                     enemy.render(ctx);
+                }
+            }
+
+            if (map.items != undefined) {
+                for (let item of map.items) {
+                    if (item[4] == true) {
+                        console.log(item[0]);
+                        ctx.drawImage(images["items/" + item[2]],
+                            ((zoom * scale) * (item[0] + kofs[0] * kofs[2] - (game.position[0] - width / 2 + 0.5))) - ((zoom - 1) * scale * (width / 2)),
+                            (zoom * scale) * (item[1] + kofs[1] * kofs[2] - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7),
+                            zoom * scale, zoom * scale)
+                    }
                 }
             }
 

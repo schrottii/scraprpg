@@ -13,5 +13,4 @@
 - Key items
 - Mastery Techs
 - Duo Mastery Techs
-- Add items
 - Implement inventory

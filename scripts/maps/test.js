@@ -196,6 +196,9 @@ maps["test"] = {
         "itsalivemap": 2,
         "livingbarrelmap" : 10,
     },
+    items: [
+        [8, 0, "brickyleaf", 1, true]
+    ],
     maxEnemies: 8,
     map: [
         "001 001 001 001 001 001 001 000 000 000 001 001 001 001 001 001 001 001",
