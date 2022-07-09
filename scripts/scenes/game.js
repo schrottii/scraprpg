@@ -299,7 +299,7 @@ scenes.game = () => {
 
 
     let actionButton = controls.image({
-        anchor: [0.8, 0.8], sizeOffset: [64, 64],
+        anchor: [0.75, 0.8], sizeOffset: [96, 96],
         alpha: 255,
         source: "actionbutton",
         onClick(args) {
@@ -1110,8 +1110,9 @@ scenes.game = () => {
         },
         controls: [
             ...walkPad, autoSaveText, ...mapDisplay, actionButton,
-            mapDisplayStats1, mapDisplayStats2, poisonBlack, nightEffect,
-            mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents
+            mapDisplayStats1, mapDisplayStats2,
+            mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents,
+            poisonBlack, nightEffect,
         ],
     }
 }
