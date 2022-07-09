@@ -196,6 +196,22 @@ maps["test"] = {
                 maps.test.tiles["041"].sprite = "uv_house_door";
             }
         },
+        "CHP": {
+            sprite: "checkpoint",
+            occupied: false,
+            action: () => {
+                saveGame();
+                addAnimator(function (t) {
+                    autoSaveText.alpha = t / 10;
+                    if (t > 2500) {
+                        autoSaveTime = 0;
+                        autoSaveText.alpha = 0;
+                        return true;
+                    }
+                    return false;
+                })
+            }
+        },
 
         // Do not remove this } here. Make sure there's a } right above this too
     },
@@ -257,6 +273,11 @@ maps["test"] = {
     ],
     mapbg2: [
         "---",
+        "---",
+        "---",
+        "---",
+        "---",
+        "--- CHP",
     ],
     mapfg: [
         "--- --- --- 001 002 ---",

@@ -99,6 +99,11 @@ function removeItem(name, amount = 1) {
     }
 }
 
+let autoSaveText = controls.label({
+    anchor: [.025, .98], offset: [12, -12],
+    fontSize: 16, text: "Game saved!", alpha: 0,
+});
+
 scenes.game = () => {
     
     let head = 0;
@@ -144,10 +149,6 @@ scenes.game = () => {
     }));
 
 
-    let autoSaveText = controls.label({
-        anchor: [.025, .98], offset: [12, -12],
-        fontSize: 16, text: "Game saved!", alpha: 0,
-    });
 
 
     let nightEffect = controls.image({
@@ -310,6 +311,11 @@ scenes.game = () => {
                         getTile(map, game.position[0], game.position[1] + 1).action();
                     }
                 }
+                if (getTile(map, game.position[0], game.position[1] + 1, 2) != undefined) {
+                    if (getTile(map, game.position[0], game.position[1] + 1, 2).action != undefined) {
+                        getTile(map, game.position[0], game.position[1] + 1, 2).action();
+                    }
+                }
                 for (i in activenpcs) {
                     if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] + 1) {
                         inDialogue = true;
@@ -324,6 +330,11 @@ scenes.game = () => {
                 if (getTile(map, game.position[0] - 1, game.position[1]) != undefined) {
                     if (getTile(map, game.position[0] - 1, game.position[1]).action != undefined) {
                         getTile(map, game.position[0] - 1, game.position[1]).action();
+                    }
+                }
+                if (getTile(map, game.position[0] - 1, game.position[1], 2) != undefined) {
+                    if (getTile(map, game.position[0] - 1, game.position[1], 2).action != undefined) {
+                        getTile(map, game.position[0] - 1, game.position[1], 2).action();
                     }
                 }
                 for (i in activenpcs) {
@@ -342,6 +353,11 @@ scenes.game = () => {
                         getTile(map, game.position[0] + 1, game.position[1]).action();
                     }
                 }
+                if (getTile(map, game.position[0] + 1, game.position[1], 2) != undefined) {
+                    if (getTile(map, game.position[0] + 1, game.position[1], 2).action != undefined) {
+                        getTile(map, game.position[0] + 1, game.position[1], 2).action();
+                    }
+                }
                 for (i in activenpcs) {
                     if (activenpcs[i].position[0] == game.position[0] + 1 && activenpcs[i].position[1] == game.position[1]) {
                         inDialogue = true;
@@ -356,6 +372,11 @@ scenes.game = () => {
                 if (getTile(map, game.position[0], game.position[1] - 1) != undefined) {
                     if (getTile(map, game.position[0], game.position[1] - 1).action != undefined) {
                         getTile(map, game.position[0], game.position[1] - 1).action();
+                    }
+                }
+                if (getTile(map, game.position[0], game.position[1] - 1, 2) != undefined) {
+                    if (getTile(map, game.position[0], game.position[1] - 1, 2).action != undefined) {
+                        getTile(map, game.position[0], game.position[1] - 1, 2).action();
                     }
                 }
                 for (i in activenpcs) {
@@ -883,8 +904,10 @@ scenes.game = () => {
                     head = 3;
                     direction = "up";
 
+                    actionButton.source = "actionbutton"
                     if (getTile(map, game.position[0], game.position[1] - 1) != undefined) if (getTile(map, game.position[0], game.position[1] - 1).action != undefined) actionButton.source = "actionbutton_active"
-                    else actionButton.source = "actionbutton"
+                    else if (getTile(map, game.position[0], game.position[1] - 1) != undefined, 2) if (getTile(map, game.position[0], game.position[1] - 1).action != undefined, 2) actionButton.source = "actionbutton_active"
+
                     for (i in activenpcs) {
                         activenpcs[i].talk = false;
                         if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] - 1) {
@@ -901,8 +924,10 @@ scenes.game = () => {
                         ActionsOnMove();
                         tryTeleport(map, game.position[0], game.position[1]);
 
+                        actionButton.source = "actionbutton"
                         if (getTile(map, game.position[0], game.position[1] - 1) != undefined) if (getTile(map, game.position[0], game.position[1] - 1).action != undefined) actionButton.source = "actionbutton_active"
-                        else actionButton.source = "actionbutton"
+                        else if (getTile(map, game.position[0], game.position[1] - 1) != undefined, 2) if (getTile(map, game.position[0], game.position[1] - 1).action != undefined, 2) actionButton.source = "actionbutton_active"
+
                         for (i in activenpcs) {
                             if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] - 1) actionButton.source = "actionbutton_active";
                         }
@@ -911,8 +936,10 @@ scenes.game = () => {
                     head = 0;
                     direction = "down";
 
+                    actionButton.source = "actionbutton"
                     if (getTile(map, game.position[0], game.position[1] + 1) != undefined) if (getTile(map, game.position[0], game.position[1] + 1).action != undefined) actionButton.source = "actionbutton_active"
-                    else actionButton.source = "actionbutton"
+                    else if (getTile(map, game.position[0], game.position[1] + 1, 2) != undefined) if (getTile(map, game.position[0], game.position[1] + 1).action != undefined, 2) actionButton.source = "actionbutton_active"
+
                     for (i in activenpcs) {
                         activenpcs[i].talk = false;
                         if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] + 1) {
@@ -927,8 +954,10 @@ scenes.game = () => {
                         game.position[1]++;
                         ActionsOnMove();
                         tryTeleport(map, game.position[0], game.position[1]);
+                        actionButton.source = "actionbutton"
                         if (getTile(map, game.position[0], game.position[1] + 1) != undefined) if (getTile(map, game.position[0], game.position[1] + 1).action != undefined) actionButton.source = "actionbutton_active"
-                        else actionButton.source = "actionbutton"
+                        else if (getTile(map, game.position[0], game.position[1] + 1, 2) != undefined) if (getTile(map, game.position[0], game.position[1] + 1).action != undefined, 2) actionButton.source = "actionbutton_active"
+
                         for (i in activenpcs) {
                             if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] + 1) actionButton.source = "actionbutton_active";
                         }
@@ -937,8 +966,10 @@ scenes.game = () => {
                     head = 1;
                     direction = "left";
 
+                    actionButton.source = "actionbutton"
                     if (getTile(map, game.position[0] - 1, game.position[1]) != undefined) if (getTile(map, game.position[0] - 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
-                    else actionButton.source = "actionbutton"
+                    else if (getTile(map, game.position[0] - 1, game.position[1], 2) != undefined) if (getTile(map, game.position[0] - 1, game.position[1], 2).action != undefined) actionButton.source = "actionbutton_active"
+
                     for (i in activenpcs) {
                         activenpcs[i].talk = false;
                         if (activenpcs[i].position[0] == game.position[0] - 1 && activenpcs[i].position[1] == game.position[1]) {
@@ -954,8 +985,10 @@ scenes.game = () => {
                         ActionsOnMove();
                         tryTeleport(map, game.position[0], game.position[1]);
 
+                        actionButton.source = "actionbutton"
                         if (getTile(map, game.position[0] - 1, game.position[1]) != undefined) if (getTile(map, game.position[0] - 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
-                        else actionButton.source = "actionbutton"
+                        else if (getTile(map, game.position[0] - 1, game.position[1], 2) != undefined) if (getTile(map, game.position[0] - 1, game.position[1], 2).action != undefined) actionButton.source = "actionbutton_active"
+
                         for (i in activenpcs) {
                             if (activenpcs[i].position[0] == game.position[0] - 1 && activenpcs[i].position[1] == game.position[1]) actionButton.source = "actionbutton_active";
                         }
@@ -964,8 +997,10 @@ scenes.game = () => {
                     head = 2;
                     direction = "right";
 
+                    actionButton.source = "actionbutton"
                     if (getTile(map, game.position[0] + 1, game.position[1]) != undefined) if (getTile(map, game.position[0] + 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
-                    else actionButton.source = "actionbutton"
+                    if (getTile(map, game.position[0] + 1, game.position[1], 2) != undefined) if (getTile(map, game.position[0] + 1, game.position[1], 2).action != undefined) actionButton.source = "actionbutton_active"
+
                     for (i in activenpcs) {
                         activenpcs[i].talk = false;
                         if (activenpcs[i].position[0] == game.position[0] + 1 && activenpcs[i].position[1] == game.position[1]) {
@@ -981,8 +1016,9 @@ scenes.game = () => {
                         ActionsOnMove();
                         tryTeleport(map, game.position[0], game.position[1]);
 
+                        actionButton.source = "actionbutton"
                         if (getTile(map, game.position[0] + 1, game.position[1]) != undefined) if (getTile(map, game.position[0] + 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
-                        else actionButton.source = "actionbutton"
+                        if (getTile(map, game.position[0] + 1, game.position[1], 2) != undefined) if (getTile(map, game.position[0] + 1, game.position[1], 2).action != undefined) actionButton.source = "actionbutton_active"
                         for (i in activenpcs) {
                             if (activenpcs[i].position[0] == game.position[0] + 1 && activenpcs[i].position[1] == game.position[1]) actionButton.source = "actionbutton_active";
                         }
