@@ -197,7 +197,9 @@ maps["test"] = {
         "livingbarrelmap" : 10,
     },
     items: [
-        [8, 0, "brickyleaf", 1, true]
+        [8, 0, "brickyleaf", 1, true],
+        [8, 22, "scroll", 2, true],
+        [8, 23, "scroll", 1, true],
     ],
     maxEnemies: 8,
     map: [

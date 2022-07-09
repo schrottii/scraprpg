@@ -146,6 +146,7 @@ let images = {
 
     "items/brickyleaf": "data/images/items/brickyleaf.png",
     "items/potion": "data/images/items/potion.png",
+    "items/scroll": "data/images/paper.png",
 };
 
 var scenes = {

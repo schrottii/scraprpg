@@ -561,11 +561,14 @@ scenes.fight = () => {
                 fightActions[(i * 4)].item = items[inventory[i]];
                 if (game.inventory[items[inventory[i]].name] > 1) fightActions[(i * 4) + 2].text = items[inventory[i]]().name + " x" + game.inventory[items[inventory[i]].name];
                 else fightActions[(i * 4) + 2].text = items[inventory[i]]().name;
+                if (items[inventory[i]]().story) fightActions[(i * 4) + 2].fill = "darkgray";
+                else fightActions[(i * 4) + 2].fill = "white";
                 fightActions[(i * 4) + 3].source = "items/" + items[inventory[i]]().source;
                 fightActions[(i * 4) + 3].alpha = 255;
             }
             else {
                 fightActions[(i * 4) + 2].text = "---";
+                fightActions[(i * 4) + 2].fill = "white";
             }
         }
 
@@ -785,13 +788,16 @@ scenes.fight = () => {
                 onClick(args) {
                     if (this.alpha == 255) {
                         if (positions[selectedAlly[0]][selectedAlly[1]].action == false && game.inventory[this.item.name] > 0) {
-                            positions[selectedAlly[0]][selectedAlly[1]].action = ["item", this.item.name, selectedAlly[0], selectedAlly[1]];
-                            removeItem(this.item.name, 1);
-                            hideFightActions();
-                            fightaction = "none";
-                            positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "items/" + this.item().source;
-                            hideFightButtons();
-                            hideFightActions();
+                            if (this.item().story == false) {
+                                positions[selectedAlly[0]][selectedAlly[1]].action = ["item", this.item.name, selectedAlly[0], selectedAlly[1]];
+                                removeItem(this.item.name, 1);
+
+
+                                fightaction = "none";
+                                positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "items/" + this.item().source;
+                                hideFightButtons();
+                                hideFightActions();
+                            }
                         }
                     }
                 }

@@ -79,7 +79,17 @@ function addItem(name, amount = 1) {
     if (game.inventory[name] == undefined) {
         game.inventory[name] = 0;
     }
-    game.inventory[name] += amount;
+    if (game.inventory[name] >= items[name]().max) {
+        return false;
+    }
+    if (game.inventory[name] + amount < items[name]().max) {
+        game.inventory[name] += amount;
+        return true;
+    }
+    else {
+        game.inventory[name] = items[name]().max;
+        return false;
+    }
 }
 
 function removeItem(name, amount = 1) {
@@ -557,8 +567,7 @@ scenes.game = () => {
             game.position[1] == map.items[i][1]) {
             // Collision!
 
-            addItem(map.items[i][2], map.items[i][3]);
-            map.items[i][4] = false;
+            map.items[i][4] = !addItem(map.items[i][2], map.items[i][3]);
         }
     }
 

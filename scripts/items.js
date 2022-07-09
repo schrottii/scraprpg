@@ -5,6 +5,7 @@ let items = {
             name: "none",
             shopcost: 200,
             max: 99,
+            story: false,
             effect: () => {
                 addWrenches(0);
             },
@@ -34,6 +35,20 @@ let items = {
             effect: () => {
                 args.player.HP += 50;
                 if (args.player.HP > args.player.maxHP) args.player.HP = args.player.maxHP;
+            },
+
+            ...args || {},
+        }
+    },
+    scroll(args) {
+        return {
+            source: "scroll",
+            name: "Scroll of Truth",
+            shopcost: 999999,
+            max: 1,
+            story: true,
+            effect: () => {
+                alert("This... should not happen.");
             },
 
             ...args || {},
