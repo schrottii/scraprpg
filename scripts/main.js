@@ -230,7 +230,7 @@ function loop() {
     ctx.globalAlpha = 1;
 
     // Draw FPS
-    ctx.font = "12px NotoSans, sans-serif";
+    ctx.font = "12px DePixelKlein, sans-serif";
     ctx.fillStyle = "white";
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
