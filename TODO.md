@@ -1,7 +1,6 @@
 ##TODO:
 
 - Common tiles
-- Battle numbers
 - Proper battle fighting animations
 - Proper victory scene
 - Proper defeat scene

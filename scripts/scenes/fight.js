@@ -16,6 +16,7 @@ scenes.fight = () => {
     var winScreen = [];
     var actionDisplay = [];
     var actionText = [];
+    var battleNumbers = [];
 
     var positionControls = [];
     var epositionControls = [];
@@ -35,7 +36,7 @@ scenes.fight = () => {
         "be logged here!",
     ];
 
-    function checkAllDead() {
+    function checkAllDead(checkonly=false) {
         let alive = 0;
         for (j = 0; j < 3; j++) {
             for (i = 0; i < 3; i++) {
@@ -45,6 +46,7 @@ scenes.fight = () => {
             }
         }
         if (alive == 0) { // All dead :)
+            if (checkonly == true) return true;
             win = true;
 
             // Get rid of acid effect
@@ -236,6 +238,7 @@ scenes.fight = () => {
                     else if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].acc - epositions[pos1][pos2].eva > (Math.random() * 100)) {
                         let Damage = calculateDamage(1, selectedAlly[0], selectedAlly[1], pos1, pos2);
                         epositions[pos1][pos2].HP -= Damage; // Deal damage
+                        battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, Damage, epositionControls[pos1 + (pos2 * 3)].offset);
 
                         playSound("damage");
                         postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " attacks " + epositions[pos1][pos2].name + " and deals " + Damage + " damage!");
@@ -336,6 +339,7 @@ scenes.fight = () => {
                 let HealthBefore = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP;
                 game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP -= Damage;
                 epositions[pos[0]][pos[1]].action = false;
+                battleNumber(positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor, Damage, positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].offset);
 
                 playSound("damage");
                 postLog(epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " and deals " + Damage + " damage!");
@@ -778,6 +782,39 @@ scenes.fight = () => {
         alpha: 255,
     });
 
+    for (i = 0; i < 3; i++) {
+        battleNumbers.push(controls.label({
+            anchor: [5, 5], offset: [0, 0],
+            fontSize: 24, fill: "white", align: "center", outline: "black", outlineSize: 3,
+            text: "-999999999999999999999",
+            alpha: 0,
+        }));
+    }
+
+    function battleNumber(pos, amount, offset = [0, 0]) {
+        if (battleNumbers[0].alpha == 0) bn = 0;
+        else if (battleNumbers[1].alpha == 0) bn = 1;
+        else bn = 2;
+        battleNumbers[bn].anchor[0] = pos[0];
+        battleNumbers[bn].anchor[1] = pos[1];
+        battleNumbers[bn].offset[0] = offset[0];
+        battleNumbers[bn].offset[1] = offset[1];
+        battleNumbers[bn].text = "-" + amount;
+        battleNumbers[bn].alpha = 255;
+        addAnimator(function (t) {
+            if (t < 500) {
+                battleNumbers[bn].anchor[1] = pos[1] - (t / 10000);
+            }
+            if (t > 499) {
+                battleNumbers[bn].anchor[1] = pos[1] - 0.05 + (Math.min(t-500, 500) / 10000);
+            }
+            if (t > 1199) {
+                battleNumbers[bn].alpha = 0;
+                return true;
+            }
+        })
+    }
+
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 6; i++) {
             fightActions.push(controls.rect({
@@ -940,7 +977,9 @@ scenes.fight = () => {
         anchor: [0.7, 0.6], sizeAnchor: [0.075, 0.05],
         text: "Continue",
         onClick(args) {
-            setScene(scenes.game());
+            if (checkAllDead(true)) {
+                setScene(scenes.game());
+            }
         },
         alpha: 0,
     }));
@@ -1483,7 +1522,7 @@ scenes.fight = () => {
             ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
             ...fightStats, ...actionDisplay, ...winScreen,
-            ...positionControls, ...epositionControls, ...positionGrid,
+            ...positionControls, ...epositionControls, ...positionGrid, ...battleNumbers,
         ],
     }
 };
