@@ -107,7 +107,7 @@ let controls = {
                 ctx.textAlign = this.align;
                 ctx.textBaseline = this.baseline;
                 if (isLs() == true) {
-                    ctx.font = (this.fontSize / 2) + "px NotoSans, sans-serif";
+                    ctx.font = (this.fontSize / 2) + "px DePixelKlein, sans-serif";
                     if (this.outline != "none") {
                         ctx.strokeStyle = this.outline;
                         ctx.lineWidth = this.outlineSize;
@@ -120,7 +120,7 @@ let controls = {
                         this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height);
                 }
                 else {
-                    ctx.font = this.fontSize + "px NotoSans, sans-serif";
+                    ctx.font = this.fontSize + "px DePixel, sans-serif";
                     if (this.outline != "none") {
                         ctx.strokeStyle = this.outline;
                         ctx.lineWidth = this.outlineSize;
@@ -165,8 +165,9 @@ let controls = {
                 ctx.fillStyle = this.fillBottom;
                 ctx.fillRect(x, y + h / 2, w, h / 2);
 
-                if (isLs() == false) ctx.font = this.fontSize + "px NotoSans, sans-serif";
-                if (isLs() == true) ctx.font = (this.fontSize / 2) + "px NotoSans, sans-serif";
+                if (isLs() == false) ctx.font = this.fontSize + "px DePixelKlein, sans-serif";
+                if (isLs() == true) ctx.font = (this.fontSize / 2) + "px DePixelKlein
+, sans-serif";
                 ctx.fillStyle = this.fillText;
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
