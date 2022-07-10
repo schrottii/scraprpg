@@ -122,7 +122,7 @@ scenes.title = () => {
             onClick(args) {
                 if (mode == 0) {
                     saveNR = a;
-                    playSound("ok");
+                    playSound("titletransition");
                     stopMusic();
                     loadGame(a);
                     loadSave(a);
