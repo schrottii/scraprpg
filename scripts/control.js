@@ -120,7 +120,7 @@ let controls = {
                         this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height);
                 }
                 else {
-                    ctx.font = this.fontSize + "px DePixel, sans-serif";
+                    ctx.font = this.fontSize + "px DePixelKlein, sans-serif";
                     if (this.outline != "none") {
                         ctx.strokeStyle = this.outline;
                         ctx.lineWidth = this.outlineSize;
