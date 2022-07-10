@@ -166,8 +166,7 @@ let controls = {
                 ctx.fillRect(x, y + h / 2, w, h / 2);
 
                 if (isLs() == false) ctx.font = this.fontSize + "px DePixelKlein, sans-serif";
-                if (isLs() == true) ctx.font = (this.fontSize / 2) + "px DePixelKlein
-, sans-serif";
+                if (isLs() == true) ctx.font = (this.fontSize / 2) + "px DePixelKlein, sans-serif";
                 ctx.fillStyle = this.fillText;
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
