@@ -530,15 +530,16 @@ scenes.game = () => {
     function check_EnemyCollision(i) {
         if (game.position[0] == enemies[i].position[0] &&
             game.position[1] == enemies[i].position[1] &&
-            enemies[i].map == game.map) {
+            enemies[i].map == game.map && canMove == true) {
             // Fight !!!
+            canMve = false;
             clearCurrentEnemies();
 
             // It automatically grabs the enemies that can appear in the fight
             // based on what is defined in the enemies dict of the map enemy
             // change in map_enemies.js
             while (currentEnemies.length < 1) {
-                for (k = 0; k < 5; k++) {
+                for (k = 0; k < 8; k++) {
                     for (j in enemies[i].enemies) {
                         if (enemies[i].enemies[j] > (Math.random() * 100)) {
                             createEnemy(j);
