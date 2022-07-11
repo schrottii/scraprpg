@@ -15,6 +15,7 @@ let items = {
     },
     brickyleaf(args) {
         return {
+            ...items.default(),
             source: "brickyleaf",
             name: "Bricky Leaf",
             shopcost: 500,
@@ -28,6 +29,7 @@ let items = {
     },
     potion(args) {
         return {
+            ...items.default(),
             source: "potion",
             name: "Small Potion",
             shopcost: 250,
@@ -35,6 +37,9 @@ let items = {
             effect: () => {
                 args.player.HP += 50;
                 if (args.player.HP > args.player.maxHP) args.player.HP = args.player.maxHP;
+                if (args.anchor != undefined) {
+                    battleNumber(args.anchor, 50, 0, args.offset);
+                }
             },
 
             ...args || {},
@@ -42,6 +47,7 @@ let items = {
     },
     scroll(args) {
         return {
+            ...items.default(),
             source: "scroll",
             name: "Scroll of Truth",
             shopcost: 999999,

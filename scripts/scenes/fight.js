@@ -1,3 +1,42 @@
+var battleNumbers = [];
+
+function battleNumber(pos, amount, type, offset = [0, 0]) {
+    // Type 0 is HP, 1 is EP
+    if (battleNumbers[0].alpha == 0) bn = 0;
+    else if (battleNumbers[1].alpha == 0) bn = 1;
+    else bn = 2;
+    battleNumbers[bn].alpha = 255;
+    battleNumbers[bn].anchor[0] = pos[0];
+    battleNumbers[bn].anchor[1] = pos[1];
+    battleNumbers[bn].offset[0] = offset[0];
+    battleNumbers[bn].offset[1] = offset[1];
+    battleNumbers[bn].text = amount;
+
+    if (type == 0 && amount < 0) battleNumbers[bn].fill = "white";
+    if (type == 0 && amount > 0) battleNumbers[bn].fill = "green";
+    if (type == 1 && amount < 0) battleNumbers[bn].fill = "yellow";
+    if (type == 1 && amount > 0) battleNumbers[bn].fill = "pink";
+
+    addAnimator(function (t) {
+        if (t < 400) {
+            battleNumbers[bn].anchor[1] = pos[1] - (t / 10000);
+        }
+        if (t > 399 && t < 800) {
+            battleNumbers[bn].anchor[1] = pos[1] - 0.04 + (Math.min(t - 400, 400) / 10000);
+        }
+        if (t > 799 && t < 900) {
+            battleNumbers[bn].anchor[1] = pos[1] - (Math.min(t - 800, 800) / 10000);
+        }
+        if (t > 899 && t < 1000) {
+            battleNumbers[bn].anchor[1] = pos[1] - 0.01 + (Math.min(t - 900, 900) / 10000);
+        }
+        if (t > 999) {
+            battleNumbers[bn].alpha = 0;
+            return true;
+        }
+    })
+}
+
 scenes.fight = () => {
 
     var fightaction = "none";
@@ -16,7 +55,6 @@ scenes.fight = () => {
     var winScreen = [];
     var actionDisplay = [];
     var actionText = [];
-    var battleNumbers = [];
 
     var positionControls = [];
     var epositionControls = [];
@@ -238,7 +276,7 @@ scenes.fight = () => {
                     else if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].acc - epositions[pos1][pos2].eva > (Math.random() * 100)) {
                         let Damage = calculateDamage(1, selectedAlly[0], selectedAlly[1], pos1, pos2);
                         epositions[pos1][pos2].HP -= Damage; // Deal damage
-                        battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, Damage, epositionControls[pos1 + (pos2 * 3)].offset);
+                        battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, Damage *(-1), 0, epositionControls[pos1 + (pos2 * 3)].offset);
 
                         playSound("damage");
                         postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " attacks " + epositions[pos1][pos2].name + " and deals " + Damage + " damage!");
@@ -276,11 +314,11 @@ scenes.fight = () => {
                 executeActions();
                 break;
             case "item":
-                items[whoAGI.action[1]]({ player: game.characters[positions[whoAGI.action[2]][whoAGI.action[3]].occupied] }).effect();
+                items[whoAGI.action[1]]({ player: game.characters[positions[whoAGI.action[2]][whoAGI.action[3]].occupied], anchor: positionControls[whoAGI.action[2] + (whoAGI.action[3] * 3)].anchor, offset: positionControls[pos[0] + (pos[1] * 3)].offset }).effect();
                 positions[pos[0]][pos[1]].action = false;
                 executeActions();
                 break;
-
+            
         }
     }
 
@@ -339,7 +377,7 @@ scenes.fight = () => {
                 let HealthBefore = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP;
                 game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP -= Damage;
                 epositions[pos[0]][pos[1]].action = false;
-                battleNumber(positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor, Damage, positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].offset);
+                battleNumber(positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor, Damage * (-1), 0, positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].offset);
 
                 playSound("damage");
                 postLog(epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " and deals " + Damage + " damage!");
@@ -786,34 +824,12 @@ scenes.fight = () => {
         battleNumbers.push(controls.label({
             anchor: [5, 5], offset: [0, 0],
             fontSize: 24, fill: "white", align: "center", outline: "black", outlineSize: 3,
-            text: "-999999999999999999999",
+            text: "",
             alpha: 0,
         }));
     }
 
-    function battleNumber(pos, amount, offset = [0, 0]) {
-        if (battleNumbers[0].alpha == 0) bn = 0;
-        else if (battleNumbers[1].alpha == 0) bn = 1;
-        else bn = 2;
-        battleNumbers[bn].anchor[0] = pos[0];
-        battleNumbers[bn].anchor[1] = pos[1];
-        battleNumbers[bn].offset[0] = offset[0];
-        battleNumbers[bn].offset[1] = offset[1];
-        battleNumbers[bn].text = "-" + amount;
-        battleNumbers[bn].alpha = 255;
-        addAnimator(function (t) {
-            if (t < 500) {
-                battleNumbers[bn].anchor[1] = pos[1] - (t / 10000);
-            }
-            if (t > 499) {
-                battleNumbers[bn].anchor[1] = pos[1] - 0.05 + (Math.min(t-500, 500) / 10000);
-            }
-            if (t > 1199) {
-                battleNumbers[bn].alpha = 0;
-                return true;
-            }
-        })
-    }
+    
 
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 6; i++) {
@@ -825,7 +841,7 @@ scenes.fight = () => {
                 onClick(args) {
                     if (this.alpha == 255) {
                         if (positions[selectedAlly[0]][selectedAlly[1]].action == false && game.inventory[this.item.name] > 0) {
-                            if (this.item().story == false) {
+                            if (this.item().story != true) {
                                 positions[selectedAlly[0]][selectedAlly[1]].action = ["item", this.item.name, selectedAlly[0], selectedAlly[1]];
                                 removeItem(this.item.name, 1);
 
