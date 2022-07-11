@@ -779,7 +779,7 @@ scenes.fight = () => {
                             fleeLoss.alpha = 0;
                             fleeIcon.alpha = 0;
                             setScene(scenes.game());
-                        }, 4000);
+                        }, 2000);
                     }
                 }
             }))

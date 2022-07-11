@@ -114,6 +114,8 @@ scenes.game = () => {
     var enemies = [];
     var activenpcs = [];
 
+    var menuSettings = [];
+
     let walkPad = [];
     walkPad.push(controls.image({ // Up
         anchor: [.1, .75], offset: [0, 0], sizeOffset: [40, 40],
@@ -418,22 +420,8 @@ scenes.game = () => {
                 }
                 if (this.offset[0] == -70 && canMove == true) {
                     if (this.alpha == 255) {
-                        for (i = 0; i < mapDisplay.length; i++) {
-                            mapDisplay[i].alpha = 0;
-                        }
-                        mapDisplayStats1.alpha = 0;
-                        mapDisplayStats2.alpha = 0;
-                        mapDisplayLevel1.alpha = 0;
-                        mapDisplayLevel2.alpha = 0;
-                    }
-                    else {
-                        for (i = 0; i < mapDisplay.length; i++) {
-                            mapDisplay[i].alpha = 255;
-                        }
-                        mapDisplayStats1.alpha = 255;
-                        mapDisplayStats2.alpha = 255;
-                        mapDisplayLevel1.alpha = 255;
-                        mapDisplayLevel2.alpha = 255;
+                        hideMapDisplay();
+                        showMenuSettings();
                     }
                 }
             }
@@ -447,7 +435,112 @@ scenes.game = () => {
             source: ["paper", "inventory", "gear"][i],
         }));
     }
-    
+
+    function hideMapDisplay() {
+        for (i = 0; i < mapDisplay.length; i++) {
+            mapDisplay[i].alpha = 0;
+        }
+        mapDisplayStats1.alpha = 0;
+        mapDisplayStats2.alpha = 0;
+        mapDisplayLevel1.alpha = 0;
+        mapDisplayLevel2.alpha = 0;
+    }
+
+    function showMapDisplay() {
+        for (i = 0; i < mapDisplay.length; i++) {
+            mapDisplay[i].alpha = 255;
+        }
+        mapDisplayStats1.alpha = 255;
+        mapDisplayStats2.alpha = 255;
+        mapDisplayLevel1.alpha = 255;
+        mapDisplayLevel2.alpha = 255;
+    }
+
+    function hideMenuSettings() {
+        canMove = true;
+        for (i = 0; i < menuSettings.length; i++) {
+            menuSettings[i].alpha = 0;
+        }
+    }
+
+    function showMenuSettings() {
+        canMove = false;
+        for (i = 0; i < menuSettings.length; i++) {
+            menuSettings[i].alpha = 255;
+        }
+    }
+
+    // BOTTOM RIGHT MENU STUFF
+
+    // Settings
+
+    let settingsSaveText = controls.label({
+        anchor: [.04, .98], offset: [12, -12],
+        fontSize: 16, text: "Settings saved!", alpha: 0,
+    });
+
+    menuSettings.push(controls.rect({
+        anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
+        fill: "#B58542", alpha: 0,
+    }));
+
+    menuSettings.push(controls.label({
+        anchor: [0.5, 0.08],
+        align: "center", fontSize: 32, fill: "black",
+        text: "Settings", alpha: 0,
+    }));
+
+    menuSettings.push(controls.button({
+        anchor: [0.1, 0.25], sizeAnchor: [0.3, 0.1],
+        text: "General", alpha: 0,
+        onClick(args) {
+
+        }
+    }));
+    menuSettings.push(controls.button({
+        anchor: [0.1, 0.375], sizeAnchor: [0.3, 0.1],
+        text: "Graphics", alpha: 0,
+        onClick(args) {
+
+        }
+    }));
+    menuSettings.push(controls.button({
+        anchor: [0.1, 0.5], sizeAnchor: [0.3, 0.1],
+        text: "Game", alpha: 0,
+        onClick(args) {
+
+        }
+    }));
+    menuSettings.push(controls.button({
+        anchor: [0.1, 0.625], sizeAnchor: [0.3, 0.1],
+        text: "Ed Sheeran", alpha: 0,
+        onClick(args) {
+
+        }
+    }));
+    menuSettings.push(controls.button({
+        anchor: [0.2, 0.85], sizeAnchor: [0.1, 0.075],
+        text: "Back", alpha: 0,
+        onClick(args) {
+            showMapDisplay();
+            hideMenuSettings();
+        }
+    }));
+    menuSettings.push(controls.button({
+        anchor: [0.7, 0.85], sizeAnchor: [0.1, 0.075],
+        text: "Save Changes", alpha: 0,
+        onClick(args) {
+            saveSettings();
+            addAnimator(function (t) {
+                settingsSaveText.alpha = t / 10;
+                if (t > 2500) {
+                    settingsSaveText.alpha = 0;
+                    return true;
+                }
+                return false;
+            })
+        }
+    }));
 
     // Function used to grab tiles
     function getTile(map, x, y, l = 1) {
@@ -532,7 +625,7 @@ scenes.game = () => {
             game.position[1] == enemies[i].position[1] &&
             enemies[i].map == game.map && canMove == true) {
             // Fight !!!
-            canMve = false;
+            canMove = false;
             clearCurrentEnemies();
 
             // It automatically grabs the enemies that can appear in the fight
@@ -910,7 +1003,7 @@ scenes.game = () => {
 
                     actionButton.source = "actionbutton"
                     if (getTile(map, game.position[0], game.position[1] - 1) != undefined) if (getTile(map, game.position[0], game.position[1] - 1).action != undefined) actionButton.source = "actionbutton_active"
-                    else if (getTile(map, game.position[0], game.position[1] - 1) != undefined, 2) if (getTile(map, game.position[0], game.position[1] - 1).action != undefined, 2) actionButton.source = "actionbutton_active"
+                    else if (getTile(map, game.position[0], game.position[1] - 1, 2) != undefined) if (getTile(map, game.position[0], game.position[1] - 1, 2).action != undefined) actionButton.source = "actionbutton_active"
 
                     for (i in activenpcs) {
                         activenpcs[i].talk = false;
@@ -930,7 +1023,7 @@ scenes.game = () => {
 
                         actionButton.source = "actionbutton"
                         if (getTile(map, game.position[0], game.position[1] - 1) != undefined) if (getTile(map, game.position[0], game.position[1] - 1).action != undefined) actionButton.source = "actionbutton_active"
-                        else if (getTile(map, game.position[0], game.position[1] - 1) != undefined, 2) if (getTile(map, game.position[0], game.position[1] - 1).action != undefined, 2) actionButton.source = "actionbutton_active"
+                        else if (getTile(map, game.position[0], game.position[1] - 1, 2) != undefined) if (getTile(map, game.position[0], game.position[1] - 1, 2).action != undefined) actionButton.source = "actionbutton_active"
 
                         for (i in activenpcs) {
                             if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] - 1) actionButton.source = "actionbutton_active";
@@ -1149,10 +1242,11 @@ scenes.game = () => {
             mapDisplayStats2.text = "HP: " + getPlayer(2 + overWorldStatsScroll).HP + "/" + getPlayer(2 + overWorldStatsScroll).maxHP + "   EP: " + getPlayer(2 + overWorldStatsScroll).EP + "/" + getPlayer(2 + overWorldStatsScroll).maxEP;
         },
         controls: [
-            ...walkPad, autoSaveText, ...mapDisplay, actionButton,
+            ...walkPad, ...mapDisplay, actionButton,
             mapDisplayStats1, mapDisplayStats2,
             mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents,
-            poisonBlack, nightEffect,
+            ...menuSettings,
+            poisonBlack, nightEffect, autoSaveText, settingsSaveText,
         ],
     }
 }
