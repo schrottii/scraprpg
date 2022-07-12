@@ -117,6 +117,7 @@ scenes.game = () => {
     var menuSettings = [];
     var menuItems = [];
     var menuItemsImages = [];
+    var menuItemsAmounts = [];
 
     let walkPad = [];
     walkPad.push(controls.image({ // Up
@@ -483,7 +484,14 @@ scenes.game = () => {
         for (i = 0; i < menuItemsImages.length; i++) {
             if (Object.keys(game.inventory)[i] != undefined) {
                 menuItemsImages[i].source = "items/" + items[Object.keys(game.inventory)[i]]().source;
+                menuItemsImages[i].item = Object.keys(game.inventory)[i];
                 menuItemsImages[i].alpha = 255;
+            }
+        }
+        for (i = 0; i < menuItemsAmounts.length; i++) {
+            if (Object.keys(game.inventory)[i] != undefined) {
+                menuItemsAmounts[i].text = "x" + game.inventory[Object.keys(game.inventory)[i]];
+                menuItemsAmounts[i].alpha = 255;
             }
         }
     }
@@ -578,15 +586,31 @@ scenes.game = () => {
         for (i = 0; i < 8; i++) {
             menuItems.push(controls.button({
                 anchor: [0.1 + (i * 0.1), 0.2 + (j * 0.2)], sizeAnchor: [0.075, 0.15],
-                text: "", alpha: 0,
+                text: "", alpha: 0, nr: i + (j*8),
+                onClick(args) {
+                    let imageNumber = this.nr;
+                    let item = menuItemsImages[imageNumber].item;
+                    if (items[item] != undefined) {
+                        if (items[item]().story != true) {
+                            if (game.inventory[item] > 0) {
+                                items[item]({ player: game.characters.bleu }).effect();
+                                removeItem(item, 1);
+                                showMenuItems();
+                            }
+                        }
+                    }
+                }
             }));
-        }
-    }
-    for (j = 0; j < 2; j++) {
-        for (i = 0; i < 8; i++) {
+            
             menuItemsImages.push(controls.image({
                 anchor: [0.1 + (i * 0.1), 0.2 + (j * 0.2)], sizeAnchor: [0.075, 0.15],
-                source: "gear", alpha: 0,
+                source: "gear", alpha: 0, item: "",
+            }));
+
+            menuItemsAmounts.push(controls.label({
+                anchor: [0.1375 + (i * 0.1), 0.375 + (j * 0.2)],
+                align: "center", fontSize: 16, fill: "black",
+                text: "x0", alpha: 0,
             }));
         }
     }
@@ -1311,7 +1335,7 @@ scenes.game = () => {
             mapDisplayStats1, mapDisplayStats2,
             mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents,
             poisonBlack, nightEffect,
-            ...menuSettings, ...menuItems, ...menuItemsImages,
+            ...menuSettings, ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             autoSaveText, settingsSaveText,
         ],
     }
