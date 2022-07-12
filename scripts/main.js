@@ -150,7 +150,7 @@ function onCanvasClick(e) {
         }
         else {
             offsetX = con.offset[0] / 2 + con.anchor[0] * mainCanvas.width;
-            offsetY = con.offset[1] / 2+ con.anchor[1] * mainCanvas.height;
+            offsetY = con.offset[1] / 2 + con.anchor[1] * mainCanvas.height;
             sizeX = con.sizeOffset[0] / 2 + con.sizeAnchor[0] * mainCanvas.width;
             sizeY = con.sizeOffset[1] / 2 + con.sizeAnchor[1] * mainCanvas.height;
         }

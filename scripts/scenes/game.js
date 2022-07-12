@@ -115,6 +115,9 @@ scenes.game = () => {
     var activenpcs = [];
 
     var menuSettings = [];
+    var settingsCategory = "none";
+    var menuSettingsGraphics = [];
+    var menuSettingsAudio = [];
     var menuItems = [];
     var menuItemsImages = [];
     var menuItemsAmounts = [];
@@ -458,12 +461,48 @@ scenes.game = () => {
         for (i = 0; i < menuSettings.length; i++) {
             menuSettings[i].alpha = 0;
         }
+        for (i = 0; i < menuSettingsAudio.length; i++) {
+            menuSettingsAudio[i].alpha = 0;
+        }
+        for (i = 0; i < menuSettingsGraphics.length; i++) {
+            menuSettingsGraphics[i].alpha = 0;
+        }
     }
 
     function showMenuSettings() {
         canMove = false;
+        menuSettingsAudio[0].text = "Music Volume: " + Math.round(settings.musicVolume * 100) + "%";
+        menuSettingsAudio[3].text = "Sound Volume: " + Math.round(settings.soundVolume * 100) + "%";
+
         for (i = 0; i < menuSettings.length; i++) {
             menuSettings[i].alpha = 255;
+        }
+        if (settingsCategory == "audio") {
+            for (i = 0; i < menuSettingsAudio.length; i++) {
+                menuSettingsAudio[i].alpha = 255;
+            }
+        }
+        else {
+            for (i = 0; i < menuSettingsAudio.length; i++) {
+                menuSettingsAudio[i].alpha = 0;
+            }
+        }
+
+        if (settingsCategory == "graphics") {
+            if (settings.grid == true) {
+                menuSettingsGraphics[0].text = "Grid: ON";
+            }
+            else {
+                menuSettingsGraphics[0].text = "Grid: OFF";
+            }
+            for (i = 0; i < menuSettingsGraphics.length; i++) {
+                menuSettingsGraphics[i].alpha = 255;
+            }
+        }
+        else {
+            for (i = 0; i < menuSettingsGraphics.length; i++) {
+                menuSettingsGraphics[i].alpha = 0;
+            }
         }
     }
 
@@ -572,7 +611,8 @@ scenes.game = () => {
         text: "General", alpha: 0,
         onClick(args) {
             if (this.alpha == 255) {
-
+                settingsCategory = "general";
+                showMenuSettings();
             }
         }
     }));
@@ -581,16 +621,18 @@ scenes.game = () => {
         text: "Graphics", alpha: 0,
         onClick(args) {
             if (this.alpha == 255) {
-
+                settingsCategory = "graphics";
+                showMenuSettings();
             }
         }
     }));
     menuSettings.push(controls.button({
         anchor: [0.1, 0.5], sizeAnchor: [0.3, 0.1],
-        text: "Game", alpha: 0,
+        text: "Controls", alpha: 0,
         onClick(args) {
             if (this.alpha == 255) {
-
+                settingsCategory = "controls";
+                showMenuSettings();
             }
         }
     }));
@@ -599,7 +641,8 @@ scenes.game = () => {
         text: "Audio", alpha: 0,
         onClick(args) {
             if (this.alpha == 255) {
-
+                settingsCategory = "audio";
+                showMenuSettings();
             }
         }
     }));
@@ -630,6 +673,87 @@ scenes.game = () => {
             }
         }
     }));
+
+    // Graphics
+
+    menuSettingsGraphics.push(controls.button({
+        anchor: [0.5, 0.25], sizeAnchor: [0.2, 0.1],
+        text: "Grid: ON", alpha: 0,
+        onClick(args) {
+            if (settings.grid == true) {
+                settings.grid = false;
+            }
+            else {
+                settings.grid = true;
+            }
+            showMenuSettings();
+        }
+    }));
+
+    // Audio
+
+    menuSettingsAudio.push(controls.button({
+        anchor: [0.5, 0.25], sizeAnchor: [0.2, 0.1],
+        text: "Music Volume: 50%", alpha: 0,
+    }));
+    menuSettingsAudio.push(controls.button({
+        anchor: [0.45, 0.25], sizeAnchor: [0.04, 0.1],
+        text: "-", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 255) {
+                if (settings.musicVolume > 0.01) {
+                    settings.musicVolume = settings.musicVolume - 0.05;
+                    if (settings.musicVolume < 0) settings.musicVolume = 0;
+                    musicPlayer.volume = settings.musicVolume;
+                    showMenuSettings(); //Update
+                }
+            }
+        }
+    }));
+    menuSettingsAudio.push(controls.button({
+        anchor: [0.71, 0.25], sizeAnchor: [0.04, 0.1],
+        text: "+", alpha: 0,
+        onClick(args) {
+            if (settings.musicVolume < 0.99) {
+                settings.musicVolume = settings.musicVolume + 0.05;
+                if (settings.musicVolume > 1) settings.musicVolume = 1;
+                musicPlayer.volume = settings.musicVolume;
+                showMenuSettings(); //Update
+            }
+        }
+    }));
+
+    menuSettingsAudio.push(controls.button({
+        anchor: [0.5, 0.375], sizeAnchor: [0.2, 0.1],
+        text: "Sound Volume: 50%", alpha: 0,
+    }));
+    menuSettingsAudio.push(controls.button({
+        anchor: [0.45, 0.375], sizeAnchor: [0.04, 0.1],
+        text: "-", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 255) {
+                if (settings.soundVolume > 0.01) {
+                    settings.soundVolume = settings.soundVolume - 0.05;
+                    if (settings.soundVolume < 0) settings.soundVolume = 0;
+                    soundPlayer.volume = settings.soundVolume;
+                    showMenuSettings(); //Update
+                }
+            }
+        }
+    }));
+    menuSettingsAudio.push(controls.button({
+        anchor: [0.71, 0.375], sizeAnchor: [0.04, 0.1],
+        text: "+", alpha: 0,
+        onClick(args) {
+            if (settings.soundVolume < 0.99) {
+                settings.soundVolume = settings.soundVolume + 0.05;
+                if (settings.soundVolume > 1) settings.soundVolume = 1;
+                soundPlayer.volume = settings.soundVolume;
+                showMenuSettings(); //Update
+            }
+        }
+    }));
+
 
 
     // Items
@@ -1410,7 +1534,7 @@ scenes.game = () => {
             mapDisplayStats1, mapDisplayStats2,
             mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents,
             poisonBlack, nightEffect,
-            ...menuSettings, ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
+            ...menuSettings, ...menuSettingsAudio, ...menuSettingsGraphics, ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             autoSaveText, settingsSaveText,
         ],
     }
