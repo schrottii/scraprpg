@@ -835,16 +835,36 @@ scenes.game = () => {
         if (y < 0) return undefined;
         if (l == 1) {
             if (map.map[y] != undefined) {
-                return map.tiles[map.map[y][x * 4] + map.map[y][(x * 4) + 1] + map.map[y][(x * 4) + 2]];
+                let thetile = map.map[y][x * 4] + map.map[y][(x * 4) + 1] + map.map[y][(x * 4) + 2];
+                if (map.tiles[thetile] == undefined) return commontiles[thetile];
+                return map.tiles[thetile];
+            }
+            else {
+                console.log("ERROR: TILE NOT FOUND BG " + map.map[y]);
+                return map.tiles["999"];
             }
         }
         if (l == 2) {
             if (map.mapbg2[y] != undefined) {
-                return map.tiles[map.mapbg2[y][x * 4] + map.mapbg2[y][(x * 4) + 1] + map.mapbg2[y][(x * 4) + 2]];
+                let thetile = map.mapbg2[y][x * 4] + map.mapbg2[y][(x * 4) + 1] + map.mapbg2[y][(x * 4) + 2];
+                if (map.tiles[thetile] == undefined) return commontiles[thetile];
+                return map.tiles[thetile];
+            }
+            else {
+                console.log("ERROR: TILE NOT FOUND BG2 " + map.mapbg2[y]);
+                return map.tiles["999"];
             }
         }
         if (l == 3) {
-            return map.tiles[map.mapfg[y][x * 4] + map.mapfg[y][(x * 4) + 1] + map.mapfg[y][(x * 4) + 2]];
+            if (map.mapfg[y] != undefined) {
+                let thetile = map.mapfg[y][x * 4] + map.mapfg[y][(x * 4) + 1] + map.mapfg[y][(x * 4) + 2];
+                if (map.tiles[thetile] == undefined) return commontiles[thetile];
+                return map.tiles[thetile];
+            }
+            else {
+                console.log("ERROR: TILE NOT FOUND FG " + map.mapfg[y]);
+                return map.tiles["999"];
+            }
         }
     }
 

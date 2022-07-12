@@ -1,6 +1,5 @@
 ##TODO:
 
-- Common tiles
 - Proper battle fighting animations
 - Proper victory scene
 - Proper defeat scene
@@ -24,6 +23,5 @@ Most equipment can be upgraded to No Parcels with enough Bricks, up to +10.
 - Promotion (and Evolution Tree) system
 - Mastery Tokens
 - INT (Magic hit rate), WIS (Magic damage/heal),
-LUK (Crit, item drop, wrench/brick modif.), DEX (hit rate)
-- Persistent area music [Done :}   ]
+LUK (Crit, item drop, wrench/brick modif.)
 - Visual overlay effects (Rain, fog, dust, etc.)
