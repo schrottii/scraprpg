@@ -122,7 +122,7 @@ function playMusic(name) {
     musicPlayer.play();
 }
 
-function stopMusic(name) {
+function stopMusic() {
     musicPlayer.pause();
 }
 

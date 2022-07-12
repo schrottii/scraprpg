@@ -902,6 +902,7 @@ scenes.game = () => {
             // Set map and pos
             game.map = themap.teleport[0];
             loadNPCs();
+            loadAreaMusic();
             game.position[0] = themap.teleport[1];
             game.position[1] = themap.teleport[2];
             playSound("teleport");
@@ -1051,7 +1052,16 @@ scenes.game = () => {
             }
         }
     }
+
+    function loadAreaMusic() {
+        stopMusic();
+        let map = maps[game.map];
+        if (map.music == undefined) return false;
+        playMusic(map.music);
+    }
+
     loadNPCs();
+    loadAreaMusic();
 
     return {
         preRender(ctx, delta) {
