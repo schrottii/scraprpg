@@ -157,6 +157,7 @@ var scenes = {
 
 var audio = {
     "bgm/title": "data/bgm/Title_OST.mp3",
+    "bgm/placeholder": "data/bgm/field03.mp3",
 
     "titletransition": "data/sounds/Title_screen_transition.mp3",
     "ok": "data/sounds/sound_ok.wav",
