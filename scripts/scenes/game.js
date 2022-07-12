@@ -115,6 +115,8 @@ scenes.game = () => {
     var activenpcs = [];
 
     var menuSettings = [];
+    var menuItems = [];
+    var menuItemsImages = [];
 
     let walkPad = [];
     walkPad.push(controls.image({ // Up
@@ -408,15 +410,8 @@ scenes.game = () => {
                     console.log(enemies);
                 }
                 if (this.offset[0] == -145 && canMove == true) {
-                    if (zoom == 2) {
-                        zoom = 3;
-                    }
-                    else if (zoom == 3) {
-                        zoom = 1;
-                    }
-                    else if (zoom == 1) {
-                        zoom = 2;
-                    }
+                    hideMapDisplay();
+                    showMenuItems();
                 }
                 if (this.offset[0] == -70 && canMove == true) {
                     if (this.alpha == 255) {
@@ -470,6 +465,29 @@ scenes.game = () => {
         }
     }
 
+    function hideMenuItems() {
+        canMove = true;
+        for (i = 0; i < menuItems.length; i++) {
+            menuItems[i].alpha = 0;
+        }
+        for (i = 0; i < menuItemsImages.length; i++) {
+            menuItemsImages[i].alpha = 0;
+        }
+    }
+
+    function showMenuItems() {
+        canMove = false;
+        for (i = 0; i < menuItems.length; i++) {
+            menuItems[i].alpha = 255;
+        }
+        for (i = 0; i < menuItemsImages.length; i++) {
+            if (Object.keys(game.inventory)[i] != undefined) {
+                menuItemsImages[i].source = "items/" + items[Object.keys(game.inventory)[i]]().source;
+                menuItemsImages[i].alpha = 255;
+            }
+        }
+    }
+
     // BOTTOM RIGHT MENU STUFF
 
     // Settings
@@ -485,8 +503,8 @@ scenes.game = () => {
     }));
 
     menuSettings.push(controls.label({
-        anchor: [0.5, 0.08],
-        align: "center", fontSize: 32, fill: "black",
+        anchor: [0.5, 0.1],
+        align: "center", fontSize: 48, fill: "black",
         text: "Settings", alpha: 0,
     }));
 
@@ -513,7 +531,7 @@ scenes.game = () => {
     }));
     menuSettings.push(controls.button({
         anchor: [0.1, 0.625], sizeAnchor: [0.3, 0.1],
-        text: "Ed Sheeran", alpha: 0,
+        text: "Audio", alpha: 0,
         onClick(args) {
 
         }
@@ -539,6 +557,53 @@ scenes.game = () => {
                 }
                 return false;
             })
+        }
+    }));
+
+
+    // Items
+
+    menuItems.push(controls.rect({
+        anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
+        fill: "#B58542", alpha: 0,
+    }));
+
+    menuItems.push(controls.label({
+        anchor: [0.5, 0.1],
+        align: "center", fontSize: 48, fill: "black",
+        text: "Items case", alpha: 0,
+    }));
+
+    for (j = 0; j < 2; j++) {
+        for (i = 0; i < 8; i++) {
+            menuItems.push(controls.button({
+                anchor: [0.1 + (i * 0.1), 0.2 + (j * 0.2)], sizeAnchor: [0.075, 0.15],
+                text: "", alpha: 0,
+            }));
+        }
+    }
+    for (j = 0; j < 2; j++) {
+        for (i = 0; i < 8; i++) {
+            menuItemsImages.push(controls.image({
+                anchor: [0.1 + (i * 0.1), 0.2 + (j * 0.2)], sizeAnchor: [0.075, 0.15],
+                source: "gear", alpha: 0,
+            }));
+        }
+    }
+
+    menuItems.push(controls.button({
+        anchor: [0.2, 0.85], sizeAnchor: [0.1, 0.075],
+        text: "Back", alpha: 0,
+        onClick(args) {
+            showMapDisplay();
+            hideMenuItems();
+        }
+    }));
+    menuItems.push(controls.button({
+        anchor: [0.7, 0.85], sizeAnchor: [0.1, 0.075],
+        text: "Sort by", alpha: 0,
+        onClick(args) {
+            alert("Please don't ;-;");
         }
     }));
 
@@ -1245,8 +1310,9 @@ scenes.game = () => {
             ...walkPad, ...mapDisplay, actionButton,
             mapDisplayStats1, mapDisplayStats2,
             mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents,
-            ...menuSettings,
-            poisonBlack, nightEffect, autoSaveText, settingsSaveText,
+            poisonBlack, nightEffect,
+            ...menuSettings, ...menuItems, ...menuItemsImages,
+            autoSaveText, settingsSaveText,
         ],
     }
 }
