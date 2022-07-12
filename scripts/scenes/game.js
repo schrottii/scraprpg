@@ -839,10 +839,6 @@ scenes.game = () => {
                 if (map.tiles[thetile] == undefined) return commontiles[thetile];
                 return map.tiles[thetile];
             }
-            else {
-                console.log("ERROR: TILE NOT FOUND BG " + map.map[y]);
-                return map.tiles["999"];
-            }
         }
         if (l == 2) {
             if (map.mapbg2[y] != undefined) {
@@ -850,20 +846,12 @@ scenes.game = () => {
                 if (map.tiles[thetile] == undefined) return commontiles[thetile];
                 return map.tiles[thetile];
             }
-            else {
-                console.log("ERROR: TILE NOT FOUND BG2 " + map.mapbg2[y]);
-                return map.tiles["999"];
-            }
         }
         if (l == 3) {
             if (map.mapfg[y] != undefined) {
                 let thetile = map.mapfg[y][x * 4] + map.mapfg[y][(x * 4) + 1] + map.mapfg[y][(x * 4) + 2];
                 if (map.tiles[thetile] == undefined) return commontiles[thetile];
                 return map.tiles[thetile];
-            }
-            else {
-                console.log("ERROR: TILE NOT FOUND FG " + map.mapfg[y]);
-                return map.tiles["999"];
             }
         }
     }
@@ -919,10 +907,11 @@ scenes.game = () => {
     function tryTeleport(map, x, y) {
         if (isTeleport(map, x, y)) {
             let themap = getTile(map, x, y);
+            let previousmap = game.map;
             // Set map and pos
             game.map = themap.teleport[0];
             loadNPCs();
-            loadAreaMusic();
+            loadAreaMusic(previousmap);
             game.position[0] = themap.teleport[1];
             game.position[1] = themap.teleport[2];
             playSound("teleport");
@@ -1073,11 +1062,19 @@ scenes.game = () => {
         }
     }
 
-    function loadAreaMusic() {
-        stopMusic();
+    function loadAreaMusic(prev = "none") {
         let map = maps[game.map];
-        if (map.music == undefined) return false;
-        playMusic(map.music);
+        console.log(prev, game.map);
+        if (maps[prev] != undefined) {
+            if (maps[prev].music != map.music) {
+                stopMusic();
+                if (map.music == undefined) return false;
+                playMusic(map.music);
+            }
+        }
+        else {
+            stopMusic();
+        }
     }
 
     loadNPCs();
