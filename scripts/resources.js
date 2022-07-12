@@ -164,7 +164,7 @@ var audio = {
     "cancel": "data/sounds/sound_cancel.wav",
     "keyitem": "data/sounds/important_item.wav",
     "damage": "data/sounds/damage.wav",
-    "teleport": "data/sounds/Teleport_sound.ogg",
+    "teleport": "data/sounds/move area.wav",
 };
 
 var maps = {
