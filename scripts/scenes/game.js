@@ -474,6 +474,9 @@ scenes.game = () => {
         for (i = 0; i < menuItemsImages.length; i++) {
             menuItemsImages[i].alpha = 0;
         }
+        for (i = 0; i < menuItemsAmounts.length; i++) {
+            menuItemsAmounts[i].alpha = 0;
+        }
     }
 
     function showMenuItems() {
@@ -487,11 +490,19 @@ scenes.game = () => {
                 menuItemsImages[i].item = Object.keys(game.inventory)[i];
                 menuItemsImages[i].alpha = 255;
             }
+            else {
+                menuItemsImages[i].item = undefined;
+                menuItemsImages[i].alpha = 0;
+            }
         }
         for (i = 0; i < menuItemsAmounts.length; i++) {
             if (Object.keys(game.inventory)[i] != undefined) {
                 menuItemsAmounts[i].text = "x" + game.inventory[Object.keys(game.inventory)[i]];
                 menuItemsAmounts[i].alpha = 255;
+            }
+            else {
+                menuItemsAmounts[i].text = "";
+                menuItemsAmounts[i].alpha = 0;
             }
         }
     }
@@ -520,51 +531,63 @@ scenes.game = () => {
         anchor: [0.1, 0.25], sizeAnchor: [0.3, 0.1],
         text: "General", alpha: 0,
         onClick(args) {
+            if (this.alpha == 255) {
 
+            }
         }
     }));
     menuSettings.push(controls.button({
         anchor: [0.1, 0.375], sizeAnchor: [0.3, 0.1],
         text: "Graphics", alpha: 0,
         onClick(args) {
+            if (this.alpha == 255) {
 
+            }
         }
     }));
     menuSettings.push(controls.button({
         anchor: [0.1, 0.5], sizeAnchor: [0.3, 0.1],
         text: "Game", alpha: 0,
         onClick(args) {
+            if (this.alpha == 255) {
 
+            }
         }
     }));
     menuSettings.push(controls.button({
         anchor: [0.1, 0.625], sizeAnchor: [0.3, 0.1],
         text: "Audio", alpha: 0,
         onClick(args) {
+            if (this.alpha == 255) {
 
+            }
         }
     }));
     menuSettings.push(controls.button({
         anchor: [0.2, 0.85], sizeAnchor: [0.1, 0.075],
         text: "Back", alpha: 0,
         onClick(args) {
-            showMapDisplay();
-            hideMenuSettings();
+            if (this.alpha == 255) {
+                showMapDisplay();
+                hideMenuSettings();
+            }
         }
     }));
     menuSettings.push(controls.button({
         anchor: [0.7, 0.85], sizeAnchor: [0.1, 0.075],
         text: "Save Changes", alpha: 0,
         onClick(args) {
-            saveSettings();
-            addAnimator(function (t) {
-                settingsSaveText.alpha = t / 10;
-                if (t > 2500) {
-                    settingsSaveText.alpha = 0;
-                    return true;
-                }
-                return false;
-            })
+            if (this.alpha == 255) {
+                saveSettings();
+                addAnimator(function (t) {
+                    settingsSaveText.alpha = t / 10;
+                    if (t > 2500) {
+                        settingsSaveText.alpha = 0;
+                        return true;
+                    }
+                    return false;
+                })
+            }
         }
     }));
 
@@ -588,14 +611,16 @@ scenes.game = () => {
                 anchor: [0.1 + (i * 0.1), 0.2 + (j * 0.2)], sizeAnchor: [0.075, 0.15],
                 text: "", alpha: 0, nr: i + (j*8),
                 onClick(args) {
-                    let imageNumber = this.nr;
-                    let item = menuItemsImages[imageNumber].item;
-                    if (items[item] != undefined) {
-                        if (items[item]().story != true) {
-                            if (game.inventory[item] > 0) {
-                                items[item]({ player: game.characters.bleu }).effect();
-                                removeItem(item, 1);
-                                showMenuItems();
+                    if (this.alpha == 255) {
+                        let imageNumber = this.nr;
+                        let item = menuItemsImages[imageNumber].item;
+                        if (items[item] != undefined) {
+                            if (items[item]().story != true) {
+                                if (game.inventory[item] > 0) {
+                                    items[item]({ player: game.characters.bleu }).effect();
+                                    removeItem(item, 1);
+                                    showMenuItems();
+                                }
                             }
                         }
                     }
@@ -619,15 +644,19 @@ scenes.game = () => {
         anchor: [0.2, 0.85], sizeAnchor: [0.1, 0.075],
         text: "Back", alpha: 0,
         onClick(args) {
-            showMapDisplay();
-            hideMenuItems();
+            if (this.alpha == 255) {
+                showMapDisplay();
+                hideMenuItems();
+            }
         }
     }));
     menuItems.push(controls.button({
         anchor: [0.7, 0.85], sizeAnchor: [0.1, 0.075],
         text: "Sort by", alpha: 0,
         onClick(args) {
-            alert("Please don't ;-;");
+            if (this.alpha == 255) {
+                alert("Please don't ;-;");
+            }
         }
     }));
 
