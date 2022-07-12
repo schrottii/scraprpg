@@ -118,6 +118,7 @@ scenes.game = () => {
     var menuItems = [];
     var menuItemsImages = [];
     var menuItemsAmounts = [];
+    var menuItemsStoryOnly = false;
 
     let walkPad = [];
     walkPad.push(controls.image({ // Up
@@ -412,7 +413,7 @@ scenes.game = () => {
                 }
                 if (this.offset[0] == -145 && canMove == true) {
                     hideMapDisplay();
-                    showMenuItems();
+                    showMenuItems(menuItemsStoryOnly);
                 }
                 if (this.offset[0] == -70 && canMove == true) {
                     if (this.alpha == 255) {
@@ -479,30 +480,69 @@ scenes.game = () => {
         }
     }
 
-    function showMenuItems() {
+    function showMenuItems(storyonly = false) {
         canMove = false;
+        let j = 0;
+
+        if (storyonly == false) menuItems[1].text = "Items Case";
+        if (storyonly == true) menuItems[1].text = "Story Items";
+
         for (i = 0; i < menuItems.length; i++) {
             menuItems[i].alpha = 255;
         }
         for (i = 0; i < menuItemsImages.length; i++) {
-            if (Object.keys(game.inventory)[i] != undefined) {
-                menuItemsImages[i].source = "items/" + items[Object.keys(game.inventory)[i]]().source;
-                menuItemsImages[i].item = Object.keys(game.inventory)[i];
-                menuItemsImages[i].alpha = 255;
-            }
-            else {
-                menuItemsImages[i].item = undefined;
-                menuItemsImages[i].alpha = 0;
+            if (menuItemsImages[i + j] != undefined) {
+                if (Object.keys(game.inventory)[i] != undefined) {
+                    if (storyonly == false && items[Object.keys(game.inventory)[i]]().story == false) {
+                        menuItemsImages[i + j].source = "items/" + items[Object.keys(game.inventory)[i]]().source;
+                        menuItemsImages[i + j].item = Object.keys(game.inventory)[i];
+                        menuItemsImages[i + j].alpha = 255;
+                    }
+                    else {
+                        if (storyonly == true && items[Object.keys(game.inventory)[i]]().story == true) {
+                            menuItemsImages[i + j].source = "items/" + items[Object.keys(game.inventory)[i]]().source;
+                            menuItemsImages[i + j].item = undefined; // can't use it
+                            menuItemsImages[i + j].alpha = 255;
+                        }
+                        else {
+                            menuItemsImages[i + j].item = undefined;
+                            menuItemsImages[i + j].alpha = 0;
+                            j -= 1;
+                        }
+                    }
+                }
+                else {
+                    menuItemsImages[i + j].item = undefined;
+                    menuItemsImages[i + j].alpha = 0;
+                    j -= 1;
+                }
             }
         }
+        j = 0;
         for (i = 0; i < menuItemsAmounts.length; i++) {
-            if (Object.keys(game.inventory)[i] != undefined) {
-                menuItemsAmounts[i].text = "x" + game.inventory[Object.keys(game.inventory)[i]];
-                menuItemsAmounts[i].alpha = 255;
-            }
-            else {
-                menuItemsAmounts[i].text = "";
-                menuItemsAmounts[i].alpha = 0;
+            if (menuItemsAmounts[i + j] != undefined) {
+                if (Object.keys(game.inventory)[i] != undefined) {
+                    if (storyonly == false && items[Object.keys(game.inventory)[i]]().story == false) {
+                        menuItemsAmounts[i + j].text = "x" + game.inventory[Object.keys(game.inventory)[i]];
+                        menuItemsAmounts[i + j].alpha = 255;
+                    }
+                    else { 
+                        if (storyonly == true && items[Object.keys(game.inventory)[i]]().story == true) {
+                            menuItemsAmounts[i + j].text = "x" + game.inventory[Object.keys(game.inventory)[i]];
+                            menuItemsAmounts[i + j].alpha = 255;
+                        }
+                        else {
+                            menuItemsAmounts[i + j].text = "";
+                            menuItemsAmounts[i + j].alpha = 0;
+                            j -= 1;
+                        }
+                    }
+                }
+                else {
+                    menuItemsAmounts[i + j].text = "";
+                    menuItemsAmounts[i + j].alpha = 0;
+                    j -= 1;
+                }
             }
         }
     }
@@ -619,7 +659,7 @@ scenes.game = () => {
                                 if (game.inventory[item] > 0) {
                                     items[item]({ player: game.characters.bleu }).effect();
                                     removeItem(item, 1);
-                                    showMenuItems();
+                                    showMenuItems(menuItemsStoryOnly);
                                 }
                             }
                         }
@@ -655,7 +695,13 @@ scenes.game = () => {
         text: "Sort by", alpha: 0,
         onClick(args) {
             if (this.alpha == 255) {
-                alert("Please don't ;-;");
+                if (menuItemsStoryOnly == false) {
+                    menuItemsStoryOnly = true;
+                }
+                else {
+                    menuItemsStoryOnly = false;
+                }
+                showMenuItems(menuItemsStoryOnly);
             }
         }
     }));
