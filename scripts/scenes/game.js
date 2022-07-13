@@ -1086,8 +1086,8 @@ scenes.game = () => {
             let width = window.innerWidth / scale;
             let map = maps[game.map];
 
-            // Auto Save & Auto Save Text (ft. Last Christmas)
-            if (autoSaveTime > 9999) {
+            // Auto Save & Auto Save Text
+            if (autoSaveTime > 14999) {
                 // Animation
                 addAnimator(function (t) {
                     autoSaveText.alpha = t / 10;
@@ -1099,7 +1099,7 @@ scenes.game = () => {
                     return false;
                 })
                 // Saving
-                saveGame();
+                saveGame(true);
                 autoSaveTime = -3; // To prevent saving multiple times!
             }
 

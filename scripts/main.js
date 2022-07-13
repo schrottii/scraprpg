@@ -283,9 +283,10 @@ function load(x, altx) {
     return x !== undefined ? x : altx;
 }
 
-function saveGame() {
+function saveGame(auto = false) {
     let saveCopy = JSON.parse(JSON.stringify(game));
-    localStorage.setItem("SRPG" + saveNR, JSON.stringify(saveCopy));
+    if (!auto) localStorage.setItem("SRPG" + saveNR, JSON.stringify(saveCopy));
+    else localStorage.setItem("SRPG3", JSON.stringify(saveCopy));
 }
 
 function saveSettings() {

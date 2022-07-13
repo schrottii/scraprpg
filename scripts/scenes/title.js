@@ -35,15 +35,15 @@ scenes.title = () => {
     function loadSave(id) {
         fadeOverlay.clickthrough = false;
         addAnimator(function (t) {
-            for (let a = 0; a < 3; a++) {
+            for (let a = 0; a < 4; a++) {
                 if (a == id) {
                     saveButtons[a].offset[1] = (-160 + 130 * a) * Math.max(1 - t / 600, 0) ** 2 - 60;
                     saveImages[a].offset[1] = (-160 + 130 * a) * Math.max(1 - t / 600, 0) ** 2 - 60;
                 } else {
                     saveButtons[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
-                    saveButtons[a].anchor[1] = .5 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
+                    saveButtons[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
                     saveImages[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
-                    saveImages[a].anchor[1] = .5 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
+                    saveImages[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
                 }
             }
             //musicPlayer.volume = 0.5 * Math.max(1 - t / 4000, 0) ** 2;
@@ -63,12 +63,12 @@ scenes.title = () => {
     function loadOptions() {
         fadeOverlay.clickthrough = true;
         addAnimator(function (t) {
-            for (let a = 0; a < 3; a++) {
+            for (let a = 0; a < 4; a++) {
                 id = a;
                 saveButtons[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
-                saveButtons[a].anchor[1] = .5 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
+                saveButtons[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
                 saveImages[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
-                saveImages[a].anchor[1] = .5 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
+                saveImages[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
             }
 
             for (i in options) {
@@ -84,12 +84,12 @@ scenes.title = () => {
     function hideOptions() {
         fadeOverlay.clickthrough = true;
         addAnimator(function (t) {
-            for (let a = 0; a < 3; a++) {
+            for (let a = 0; a < 4; a++) {
                 id = a;
                 saveButtons[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - (1000-t) / 600, 0) ** 2);
-                saveButtons[a].anchor[1] = .5 + (a > id ? 1 : -1) * ((1 - Math.max(1 - (1000 - t) / 600, 0)) ** 2);
+                saveButtons[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - (1000 - t) / 600, 0)) ** 2);
                 saveImages[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - (1000 - t) / 600, 0) ** 2);
-                saveImages[a].anchor[1] = .5 + (a > id ? 1 : -1) * ((1 - Math.max(1 - (1000 - t) / 600, 0)) ** 2);
+                saveImages[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - (1000 - t) / 600, 0)) ** 2);
             }
 
             for (i in options) {
@@ -115,9 +115,9 @@ scenes.title = () => {
     let saveImages = [];
     let mode = 0;
 
-    for (let a = 0; a < 3; a++) {
+    for (let a = 0; a < 4; a++) {
         saveButtons.push(controls.button({
-            anchor: [1.2, .5], offset: [-30, -220 + 130 * a], sizeAnchor: [.5, 0], sizeOffset: [120, 120], clickthrough: false,
+            anchor: [1.2, .3], offset: [-30, -220 + 130 * a], sizeAnchor: [.5, 0], sizeOffset: [120, 120], clickthrough: false,
             text: "Undefined",
             onClick(args) {
                 if (mode == 0) {
@@ -136,7 +136,7 @@ scenes.title = () => {
         }))
 
         saveImages.push(controls.image({
-            anchor: [1.2, .5], offset: [-30, -220 + 130 * a], sizeAnchor: [0, 0], sizeOffset: [60, 60],
+            anchor: [1.2, .3], offset: [-30, -220 + 130 * a], sizeAnchor: [0, 0], sizeOffset: [60, 60],
             source: "saveimage" + Math.ceil(Math.random() * 5),
             onClick(args) { //Change the image when clicked
                 saveNR = a;
@@ -315,7 +315,7 @@ scenes.title = () => {
             }
 
 
-            for (let a = 0; a < 3; a++) {
+            for (let a = 0; a < 4; a++) {
                 var tempsaveNR = a;
                 if (localStorage.getItem("SRPG" + tempsaveNR) != undefined && localStorage.getItem("SRPG" + tempsaveNR) != "null") { // It exists
                     try {
@@ -325,7 +325,8 @@ scenes.title = () => {
                         saveGame();
                         var thisSave = JSON.parse(localStorage.getItem("SRPG" + tempsaveNR));
                     }
-                    saveButtons[a].text = "Save " + tempsaveNR + "\n Lvl: " + thisSave.characters.bleu.level;
+                    if (a == 3) saveButtons[a].text = "Auto " + "\n Lvl: " + thisSave.characters.bleu.level;
+                    else saveButtons[a].text = "Save " + tempsaveNR + "\n Lvl: " + thisSave.characters.bleu.level;
 
                     if (thisSave.pfp != undefined) {
                         saveImages[a].source = thisSave.pfp;
@@ -387,10 +388,12 @@ scenes.title = () => {
                         saveButtons[0].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4);
                         saveButtons[1].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 850) / 800, 1), 0)) ** 4);
                         saveButtons[2].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
+                        if (localStorage.getItem("SRPG3") != undefined) saveButtons[3].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
 
                         saveImages[0].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4);
                         saveImages[1].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 850) / 800, 1), 0)) ** 4);
                         saveImages[2].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
+                        if (localStorage.getItem("SRPG3") != undefined) saveImages[3].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
 
                         deleteButton.anchor[0] = -.8 + (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
                         optionButton.anchor[0] = -.2 + (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4);
