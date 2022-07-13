@@ -597,7 +597,12 @@ scenes.game = () => {
 
     menuSettings.push(controls.rect({
         anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
-        fill: "#B58542", alpha: 0,
+        fill: "#B58543", alpha: 0,
+    }));
+
+    menuSettings.push(controls.rect({
+        anchor: [0.075, 0.075], sizeAnchor: [0.85, 0.85],
+        fill: "#D49F53", alpha: 0,
     }));
 
     menuSettings.push(controls.label({
@@ -760,7 +765,12 @@ scenes.game = () => {
 
     menuItems.push(controls.rect({
         anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
-        fill: "#B58542", alpha: 0,
+        fill: "#B58543", alpha: 0,
+    }));
+
+    menuItems.push(controls.rect({
+        anchor: [0.075, 0.075], sizeAnchor: [0.85, 0.85],
+        fill: "#D49F53", alpha: 0,
     }));
 
     menuItems.push(controls.label({

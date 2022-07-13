@@ -140,8 +140,8 @@ let controls = {
         return {
             ...controls.base(),
             text: "Sample Text",
-            fillTop: "#d49f52",
-            fillBottom: "#b58542",
+            fillTop: "#FFAE3B", //d49f52
+            fillBottom: "#D18822", //b58542
             fillText: "black",
             fontSize: 30,
             render(ctx) {
