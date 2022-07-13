@@ -546,6 +546,7 @@ scenes.fight = () => {
     }
 
     function hideFightButtons() {
+        if (fightButtons[0].offset[1] == -500) return false;
         addAnimator(function (t) {
             for (i = 0; i < fightButtons.length; i++) {
                 fightButtons[i].offset[1] = -t;
@@ -700,6 +701,7 @@ scenes.fight = () => {
                 onClick(args) {
                     if (this.alpha == 255 && fightaction == "active") {
                         fightaction = "attack2";
+                        hideFightButtons();
                     }
                 }
             }))
@@ -713,6 +715,7 @@ scenes.fight = () => {
                     if (this.alpha == 255 && fightaction == "active") {
                         showFightActions();
                         showItems();
+                        hideFightButtons();
                     }
                 }
             }))
@@ -757,6 +760,7 @@ scenes.fight = () => {
                 onClick(args) {
                     if (this.alpha == 255 && fightaction == "active") {
                         fightaction = "switch";
+                        hideFightButtons();
                     }
                 }
             }))
