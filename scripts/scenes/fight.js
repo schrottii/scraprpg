@@ -397,8 +397,7 @@ scenes.fight = () => {
                 let which = 5 + (skip * amountStats);
                 if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP > 0) {
                     fightStats[which].alpha = 255;
-                    let HealthAfter = HealthBefore - Damage;
-                    let Leftend = 0.1960 * (getPlayer(1 + skip).HP / getPlayer(1 + skip).maxHP);
+                    let Leftend = 0.1960 * (Math.max(getPlayer(1 + skip).HP, 0) / getPlayer(1 + skip).maxHP);
                     let Length = (0.1960 * (HealthBefore / getPlayer(1 + skip).maxHP))-Leftend;
                     fightStats[which].anchor[0] = 0.242 + Leftend;
                     fightStats[which].sizeAnchor[0] = Length;
@@ -415,6 +414,7 @@ scenes.fight = () => {
                 }
 
                 if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP < 1) {
+                    game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP = 0;
                     fightStats[which].alpha = 0;
                     postLog(epositions[pos[0]][pos[1]].name + " killed " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + "!");
                     positions[selectedAlly[0]][selectedAlly[1]].isOccupied = false;
