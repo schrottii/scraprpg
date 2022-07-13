@@ -606,18 +606,18 @@ scenes.game = () => {
     }));
 
     menuSettings.push(controls.rect({
-        anchor: [0.425, 0.05], sizeAnchor: [0.03, 0.9],
+        anchor: [0.375, 0.05], sizeAnchor: [0.02, 0.9],
         fill: "#B58543", alpha: 0,
     }));
 
     menuSettings.push(controls.label({
-        anchor: [0.5, 0.1],
+        anchor: [0.225, 0.1],
         align: "center", fontSize: 48, fill: "black",
         text: "Settings", alpha: 0,
     }));
 
     menuSettings.push(controls.button({
-        anchor: [0.1, 0.25], sizeAnchor: [0.3, 0.1],
+        anchor: [0.1, 0.25], sizeAnchor: [0.25, 0.1],
         text: "General", alpha: 0,
         onClick(args) {
             if (this.alpha == 255) {
@@ -627,7 +627,7 @@ scenes.game = () => {
         }
     }));
     menuSettings.push(controls.button({
-        anchor: [0.1, 0.375], sizeAnchor: [0.3, 0.1],
+        anchor: [0.1, 0.375], sizeAnchor: [0.25, 0.1],
         text: "Graphics", alpha: 0,
         onClick(args) {
             if (this.alpha == 255) {
@@ -637,7 +637,7 @@ scenes.game = () => {
         }
     }));
     menuSettings.push(controls.button({
-        anchor: [0.1, 0.5], sizeAnchor: [0.3, 0.1],
+        anchor: [0.1, 0.5], sizeAnchor: [0.25, 0.1],
         text: "Controls", alpha: 0,
         onClick(args) {
             if (this.alpha == 255) {
@@ -647,7 +647,7 @@ scenes.game = () => {
         }
     }));
     menuSettings.push(controls.button({
-        anchor: [0.1, 0.625], sizeAnchor: [0.3, 0.1],
+        anchor: [0.1, 0.625], sizeAnchor: [0.25, 0.1],
         text: "Audio", alpha: 0,
         onClick(args) {
             if (this.alpha == 255) {
@@ -657,7 +657,7 @@ scenes.game = () => {
         }
     }));
     menuSettings.push(controls.button({
-        anchor: [0.2, 0.85], sizeAnchor: [0.1, 0.075],
+        anchor: [0.175, 0.85], sizeAnchor: [0.1, 0.075],
         text: "Back", alpha: 0,
         onClick(args) {
             if (this.alpha == 255) {
@@ -667,7 +667,7 @@ scenes.game = () => {
         }
     }));
     menuSettings.push(controls.button({
-        anchor: [0.7, 0.85], sizeAnchor: [0.1, 0.075],
+        anchor: [0.675, 0.85], sizeAnchor: [0.1, 0.075],
         text: "Save Changes", alpha: 0,
         onClick(args) {
             if (this.alpha == 255) {
@@ -820,7 +820,7 @@ scenes.game = () => {
     }
 
     menuItems.push(controls.button({
-        anchor: [0.2, 0.85], sizeAnchor: [0.1, 0.075],
+        anchor: [0.175, 0.85], sizeAnchor: [0.1, 0.075],
         text: "Back", alpha: 0,
         onClick(args) {
             if (this.alpha == 255) {
@@ -830,7 +830,7 @@ scenes.game = () => {
         }
     }));
     menuItems.push(controls.button({
-        anchor: [0.7, 0.85], sizeAnchor: [0.1, 0.075],
+        anchor: [0.675, 0.85], sizeAnchor: [0.1, 0.075],
         text: "Sort by", alpha: 0,
         onClick(args) {
             if (this.alpha == 255) {
