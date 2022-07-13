@@ -1066,6 +1066,8 @@ scenes.game = () => {
         }
         else {
             stopMusic();
+            if (map.music == undefined) return false;
+            playMusic(map.music);
         }
     }
 

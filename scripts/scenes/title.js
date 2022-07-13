@@ -328,7 +328,7 @@ scenes.title = () => {
                         var thisSave = JSON.parse(localStorage.getItem("SRPG" + tempsaveNR));
                     }
                     if (a == 3) saveButtons[a].text = "Auto " + "\n Lvl: " + thisSave.characters.bleu.level;
-                    else saveButtons[a].text = "Save " + tempsaveNR + "\n Lvl: " + thisSave.characters.bleu.level;
+                    else saveButtons[a].text = "Save " + (tempsaveNR + 1) + "\n Lvl: " + thisSave.characters.bleu.level;
 
                     if (thisSave.pfp != undefined) {
                         saveImages[a].source = thisSave.pfp;
