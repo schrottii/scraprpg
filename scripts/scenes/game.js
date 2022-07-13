@@ -605,6 +605,11 @@ scenes.game = () => {
         fill: "#D49F53", alpha: 0,
     }));
 
+    menuSettings.push(controls.rect({
+        anchor: [0.425, 0.05], sizeAnchor: [0.03, 0.9],
+        fill: "#B58543", alpha: 0,
+    }));
+
     menuSettings.push(controls.label({
         anchor: [0.5, 0.1],
         align: "center", fontSize: 48, fill: "black",
