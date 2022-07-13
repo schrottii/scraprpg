@@ -155,6 +155,8 @@ scenes.title = () => {
         }))    
     }
 
+    saveButtons[3].fillTop = "#54d4ff";
+    saveButtons[3].fillBottom = "#4fa1bc";
 
     let deleteButton = controls.button({
         anchor: [-.8, .5], offset: [0, 170], sizeOffset: [150, 50],
