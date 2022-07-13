@@ -4,7 +4,6 @@
 - Proper victory scene
 - Proper defeat scene
 - Non-Game-Over defeat 
-- Proper battle transition
 - Black fade effect during area enter
 - Overworld quests
 - Startup introduction

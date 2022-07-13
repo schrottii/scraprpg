@@ -954,29 +954,7 @@ scenes.game = () => {
                 }
             }
 
-            let offsetx = 20;
-            let offsety = 1;
-            image_animation(images.tokenattack, [[71, 78, 51, 52, offsetx, offsety, 5, 5],
-                [166, 76, 62, 65, offsetx, offsety, 6.2, 6.2],
-                [266, 65, 89, 64, offsetx, offsety, 8.6, 9.2],
-                [396, 66, 118, 116, offsetx, offsety, 11.6, 11.4],
-                [38, 197, 103, 95, offsetx, offsety, 10, 9.2],
-                [178, 190, 136, 129, offsetx, offsety, 13.3, 12.6],
-                [346, 196, 172, 157, offsetx, offsety, 16.8, 15.4],
-                [546, 189, 191, 152, offsetx, offsety, 18.7, 14.9],
-                [768, 217, 240, 95, offsetx, offsety, 23.7, 9.1],
-                [51, 394, 261, 47, offsetx, offsety, 25.8, 4.4],
-                [378, 374, 257, 107, offsetx, offsety, 25.3, 10.3],
-                [700, 338, 263, 169, offsetx, offsety, 26, 10.7],
-                [64, 500, 275, 196, offsetx, offsety, 27.2, 19.4],
-                [366, 496, 315, 204, offsetx, offsety, 31.1, 20.1],
-                [717, 527, 305, 202, offsetx, offsety, 30.2, 19.9],
-                [48, 750, 322, 219, offsetx, offsety, 32.0, 21.7],
-                [370, 750, 335, 226, offsetx, offsety, 33.3, 22.3],
-                [698, 747, 371, 240, offsetx, offsety, 36.8, 23.8],
-                [7, 1015, 89, 64, offsetx, offsety, 37.2, 20.4],
-                [377, 1077, 350, 163, offsetx, offsety, 34.7, 16.0],
-                [759, 1138, 281, 110, offsetx, offsety, 27.9, 10.7]]);
+            image_animation(images.tokenattack, 4, 5, 100);
 
             let previouszoom = zoom;
             setTimeout(() => { zoom = 1.5; }, 250);
@@ -1079,7 +1057,6 @@ scenes.game = () => {
 
     function loadAreaMusic(prev = "none") {
         let map = maps[game.map];
-        console.log(prev, game.map);
         if (maps[prev] != undefined) {
             if (maps[prev].music != map.music) {
                 stopMusic();

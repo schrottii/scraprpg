@@ -13,7 +13,7 @@ let images = {
     arrowright: "data/images/arrowright.png",
     cutscene_fade: "data/images/cutscene_fade.png",
     placeholder: "data/images/cutscene_map.png",
-    tokenattack: "data/images/tokenattack.png",
+    tokenattack: "data/images/battle_transition_clean_1.png",
     actions: "data/images/actions.png",
     techniques: "data/images/techniques.png",
     switch: "data/images/switch.png",

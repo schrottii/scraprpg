@@ -173,20 +173,11 @@ var animationspeed = 100;
 let scale = window.innerHeight / 16;
 let width = window.innerWidth / scale;
 
-function image_animation(image, pos, speed=100) {
+function image_animation(image, columns, rows, speed=100) {
     animationtime = 0;
-    animation = [image, pos];
+    animation = [image, columns-1, rows-1];
     animationspeed = speed;
     canMove = false;
-    for (i = 0; i < animation.length; i++) {
-            if (animation[1][i][6] != undefined) {
-                animation[1][i][6] = width;
-            }
-            if (animation[1][i][7] != undefined) {
-                animation[1][i][7] = height;
-            }
-
-    }
 }
 
 function getPlayer(character = 1) {
@@ -243,8 +234,10 @@ function loop() {
 
     if (animationtime > -1) {
         let i = Math.floor(animationtime / animationspeed);
-        if (animation[1][i] != undefined) {
-            ctx.drawImage(animation[0], animation[1][i][0], animation[1][i][1], animation[1][i][2], animation[1][i][3], width * animation[1][i][4], Math.max(0,scale * animation[1][i][5]), width * animation[1][i][6], scale * animation[1][i][7]);
+        let j = Math.floor(i / animation[2]);
+        i = i % animation[2];
+        if (j <= animation[2]) {
+            ctx.drawImage(animation[0], 123 * i, 83 * j, 123, 83, 0, 0, width * scale, height);
             animationtime += delta;
         }
         else {
