@@ -57,6 +57,7 @@ let game = {
 }
 
 let settings = {
+    autosave: false,
     grid: true,
     musicVolume: 0.5,
     soundVolume: 0.5

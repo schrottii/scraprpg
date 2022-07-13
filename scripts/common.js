@@ -145,7 +145,6 @@ var commontiles = {
                     addAnimator(function (t) {
                         autoSaveText.alpha = t / 10;
                         if (t > 2500) {
-                            autoSaveTime = 0;
                             autoSaveText.alpha = 0;
                             return true;
                         }

@@ -228,8 +228,10 @@ function loop() {
     ctx.fillText((1000 / delta).toFixed(0) + "fps " + delta + "ms  | w: " + width + "  scale: " + scale + "   h: " + height + " mob: " + isMobile() + " ls: " + isLs(), 2, 12);
 
     // Auto Save
-    if (autoSaveTime > -1) {
-        autoSaveTime += delta;
+    if (settings != undefined) {
+        if (settings.autosave == true) {
+            autoSaveTime += delta;
+        }
     }
 
     if (animationtime > -1) {

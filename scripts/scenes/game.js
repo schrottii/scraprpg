@@ -116,6 +116,7 @@ scenes.game = () => {
 
     var menuSettings = [];
     var settingsCategory = "none";
+    var menuSettingsGameplay = [];
     var menuSettingsGraphics = [];
     var menuSettingsAudio = [];
     var menuItems = [];
@@ -461,11 +462,14 @@ scenes.game = () => {
         for (i = 0; i < menuSettings.length; i++) {
             menuSettings[i].alpha = 0;
         }
-        for (i = 0; i < menuSettingsAudio.length; i++) {
-            menuSettingsAudio[i].alpha = 0;
+        for (i = 0; i < menuSettingsGameplay.length; i++) {
+            menuSettingsGameplay[i].alpha = 0;
         }
         for (i = 0; i < menuSettingsGraphics.length; i++) {
             menuSettingsGraphics[i].alpha = 0;
+        }
+        for (i = 0; i < menuSettingsAudio.length; i++) {
+            menuSettingsAudio[i].alpha = 0;
         }
     }
 
@@ -477,17 +481,22 @@ scenes.game = () => {
         for (i = 0; i < menuSettings.length; i++) {
             menuSettings[i].alpha = 255;
         }
-        if (settingsCategory == "audio") {
-            for (i = 0; i < menuSettingsAudio.length; i++) {
-                menuSettingsAudio[i].alpha = 255;
+        if (settingsCategory == "gameplay") {
+            if (settings.autosave == true) {
+                menuSettingsGameplay[0].text = "Autosave: ON";
+            }
+            else {
+                menuSettingsGameplay[0].text = "Autosave: OFF";
+            }
+            for (i = 0; i < menuSettingsGameplay.length; i++) {
+                menuSettingsGameplay[i].alpha = 255;
             }
         }
         else {
-            for (i = 0; i < menuSettingsAudio.length; i++) {
-                menuSettingsAudio[i].alpha = 0;
+            for (i = 0; i < menuSettingsGameplay.length; i++) {
+                menuSettingsGameplay[i].alpha = 0;
             }
         }
-
         if (settingsCategory == "graphics") {
             if (settings.grid == true) {
                 menuSettingsGraphics[0].text = "Grid: ON";
@@ -502,6 +511,16 @@ scenes.game = () => {
         else {
             for (i = 0; i < menuSettingsGraphics.length; i++) {
                 menuSettingsGraphics[i].alpha = 0;
+            }
+        }
+        if (settingsCategory == "audio") {
+            for (i = 0; i < menuSettingsAudio.length; i++) {
+                menuSettingsAudio[i].alpha = 255;
+            }
+        }
+        else {
+            for (i = 0; i < menuSettingsAudio.length; i++) {
+                menuSettingsAudio[i].alpha = 0;
             }
         }
     }
@@ -523,8 +542,8 @@ scenes.game = () => {
         canMove = false;
         let j = 0;
 
-        if (storyonly == false) menuItems[1].text = "Items Case";
-        if (storyonly == true) menuItems[1].text = "Story Items";
+        if (storyonly == false) menuItems[2].text = "Items Case";
+        if (storyonly == true) menuItems[2].text = "Story Items";
 
         for (i = 0; i < menuItems.length; i++) {
             menuItems[i].alpha = 255;
@@ -618,10 +637,10 @@ scenes.game = () => {
 
     menuSettings.push(controls.button({
         anchor: [0.1, 0.25], sizeAnchor: [0.25, 0.1],
-        text: "General", alpha: 0,
+        text: "Gameplay", alpha: 0,
         onClick(args) {
             if (this.alpha == 255) {
-                settingsCategory = "general";
+                settingsCategory = "gameplay";
                 showMenuSettings();
             }
         }
@@ -681,6 +700,22 @@ scenes.game = () => {
                     return false;
                 })
             }
+        }
+    }));
+
+    // Gameplay
+
+    menuSettingsGameplay.push(controls.button({
+        anchor: [0.5, 0.25], sizeAnchor: [0.2, 0.1],
+        text: "Autosave: ON", alpha: 0,
+        onClick(args) {
+            if (settings.autosave == true) {
+                settings.autosave = false;
+            }
+            else {
+                settings.autosave = true;
+            }
+            showMenuSettings();
         }
     }));
 
@@ -781,7 +816,7 @@ scenes.game = () => {
     menuItems.push(controls.label({
         anchor: [0.5, 0.1],
         align: "center", fontSize: 48, fill: "black",
-        text: "Items case", alpha: 0,
+        text: "Items Case", alpha: 0,
     }));
 
     for (j = 0; j < 2; j++) {
@@ -1555,7 +1590,7 @@ scenes.game = () => {
             mapDisplayStats1, mapDisplayStats2,
             mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents,
             poisonBlack, nightEffect,
-            ...menuSettings, ...menuSettingsAudio, ...menuSettingsGraphics, ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
+            ...menuSettings, ...menuSettingsGameplay, ...menuSettingsAudio, ...menuSettingsGraphics, ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             autoSaveText, settingsSaveText,
         ],
     }
