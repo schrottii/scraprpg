@@ -5,6 +5,7 @@ var positions;
 
 function battleNumber(pos, amount, type, offset = [0, 0]) {
     // Type 0 is HP, 1 is EP
+    let bn;
     if (battleNumbers[0].alpha == 0) bn = 0;
     else if (battleNumbers[1].alpha == 0) bn = 1;
     else bn = 2;
@@ -15,27 +16,35 @@ function battleNumber(pos, amount, type, offset = [0, 0]) {
     battleNumbers[bn].offset[1] = offset[1];
     battleNumbers[bn].text = amount;
 
+    // Arbitrary variables
+    let bounceHeight = 0.4;
+    let timeOffset = 0;
+
     if (type == 0 && amount < 0) battleNumbers[bn].fill = "white";
     if (type == 0 && amount > 0) battleNumbers[bn].fill = "green";
     if (type == 1 && amount < 0) battleNumbers[bn].fill = "yellow";
     if (type == 1 && amount > 0) battleNumbers[bn].fill = "pink";
 
     addAnimator(function (t) {
-        if (t < 400) {
-            battleNumbers[bn].anchor[1] = pos[1] - (t / 10000);
-        }
-        if (t > 399 && t < 800) {
-            battleNumbers[bn].anchor[1] = pos[1] - 0.04 + (Math.min(t - 400, 400) / 10000);
-        }
-        if (t > 799 && t < 900) {
-            battleNumbers[bn].anchor[1] = pos[1] - (Math.min(t - 800, 800) / 10000);
-        }
-        if (t > 899 && t < 1000) {
-            battleNumbers[bn].anchor[1] = pos[1] - 0.01 + (Math.min(t - 900, 900) / 10000);
-        }
-        if (t > 999) {
-            battleNumbers[bn].alpha = 0;
-            return true;
+        if (bounceHeight > 0.001) {
+            while (bounceHeight > 0.00001) {
+                let rt = t / 1000 - timeOffset;
+                let ofs = (rt * bounceHeight - rt * rt) * 1;
+                if (ofs < 0) {
+                    timeOffset += bounceHeight;
+                    bounceHeight = bounceHeight / 2;
+                    console.log(t, timeOffset);
+                    continue;
+                }
+                battleNumbers[bn].anchor[1] = pos[1] - ofs;
+                break;
+            }
+        } else {
+            battleNumbers[bn].anchor[1] = pos[1];
+            let rt = t / 1000 - timeOffset;
+            console.log(rt);
+            battleNumbers[bn].alpha = (1 - Math.pow(rt / .25, 2));
+            return battleNumbers[bn].alpha < 0;
         }
     })
 }
@@ -364,6 +373,7 @@ scenes.fight = () => {
                         }
                     }
                     else {
+                        battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, "Miss...", 0, epositionControls[pos1 + (pos2 * 3)].offset);
                         postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " missed!");
                     }
                     executeActions();
