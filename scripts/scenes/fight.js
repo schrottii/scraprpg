@@ -1,4 +1,7 @@
 var battleNumbers = [];
+var fightStats = [];
+const amountStats = 14;
+var positions;
 
 function battleNumber(pos, amount, type, offset = [0, 0]) {
     // Type 0 is HP, 1 is EP
@@ -37,6 +40,51 @@ function battleNumber(pos, amount, type, offset = [0, 0]) {
     })
 }
 
+function updateBar(charName, HealthBefore) {
+    let whichChar = characters.indexOf(charName);
+    let which = 5 + (whichChar * amountStats);
+    if (game.characters[charName].HP > 0) {
+        fightStats[which].alpha = 255;
+        let Leftend = 0.1960 * (Math.max(getPlayer(1 + whichChar).HP, 0) / getPlayer(1 + whichChar).maxHP);
+        let Length = (0.1960 * (HealthBefore / getPlayer(1 + whichChar).maxHP)) - Leftend;
+
+
+        if (Length >= 0) {
+            if (getPlayer(1 + whichChar).HP > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (getPlayer(1 + whichChar).HP / getPlayer(1 + whichChar).maxHP);
+            fightStats[which].anchor[0] = 0.242 + Leftend;
+            fightStats[which].sizeAnchor[0] = Length;
+            addAnimator(function (t) {
+                if (t > 400) {
+                    fightStats[which].sizeAnchor[0] = Length * Math.max(0.01, (1 - (Math.min((t - 399) * 0.01, 1))));
+                }
+
+                if (t > 1400) {
+                    fightStats[which].alpha = 0;
+                    return true;
+                }
+            });
+        }
+        else {
+            Leftend = 0.1960 * (HealthBefore / getPlayer(1 + whichChar).maxHP);
+            Length = (0.1960 * (getPlayer(1 + whichChar).HP / HealthBefore)) - Leftend;
+            fightStats[which].anchor[0] = 0.242 + Leftend;
+            fightStats[which].sizeAnchor[0] = 0.00001;
+            console.log(Length, Leftend);
+            addAnimator(function (t) {
+                fightStats[which].sizeAnchor[0] = Length * Math.max(0.01, ((Math.min(t * 0.01, 0.5))));
+                
+                if (t > 1400) {
+                    fightStats[which].anchor[0] = 0.242 + Leftend;
+                    if (getPlayer(1 + whichChar).HP > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (getPlayer(1 + whichChar).HP / getPlayer(1 + whichChar).maxHP);
+                    fightStats[which].alpha = 0;
+                    return true;
+                }
+            });
+        }
+    }
+}
+
+
 scenes.fight = () => {
 
     var fightaction = "none";
@@ -46,7 +94,6 @@ scenes.fight = () => {
     var fightButtons = [];
     var fightActions = [];
 
-    var fightStats = [];
 
     var fightLogComponents = [];
     var enemyListComponents = [];
@@ -65,7 +112,6 @@ scenes.fight = () => {
 
     var win = false;
 
-    const amountStats = 14;
 
     var fightlog = [
         "",
@@ -402,32 +448,7 @@ scenes.fight = () => {
                 }
 
                 // Bar animation! (Cowboy moment)
-                let skip = 0; //No idea what else to call this
-
-                for (i = 0; i < game.chars.length; i++) {
-                    if (game.chars.length > i+1) if (positions[selectedAlly[0]][selectedAlly[1]].occupied == game.chars[i+1].toLowerCase()) {
-                        skip = i+1;
-                    }
-                }
-
-                let which = 5 + (skip * amountStats);
-                if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP > 0) {
-                    fightStats[which].alpha = 255;
-                    let Leftend = 0.1960 * (Math.max(getPlayer(1 + skip).HP, 0) / getPlayer(1 + skip).maxHP);
-                    let Length = (0.1960 * (HealthBefore / getPlayer(1 + skip).maxHP))-Leftend;
-                    fightStats[which].anchor[0] = 0.242 + Leftend;
-                    fightStats[which].sizeAnchor[0] = Length;
-                    addAnimator(function (t) {
-                        if (t > 400) {
-                            fightStats[which].sizeAnchor[0] = Length * Math.max(0.01, (1 - (Math.min((t - 399) * 0.01, 1))));
-                        }
-
-                        if (t > 1400) {
-                            fightStats[which].alpha = 0;
-                            return true;
-                        }
-                    });
-                }
+                updateBar(positions[selectedAlly[0]][selectedAlly[1]].occupied, HealthBefore);
 
                 if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP < 1) {
                     game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP = 0;
@@ -546,6 +567,7 @@ scenes.fight = () => {
             });
         }
     }
+
 
     function showFightButtons() {
         addAnimator(function (t) {
@@ -1071,7 +1093,7 @@ scenes.fight = () => {
 
     // This huge var stores the 3x3 positions and everything about their current state
     // usage example: positions[1][1].occupied (that's the middle middle tile)
-    var positions =
+    positions =
         [
             [
                 {
@@ -1390,18 +1412,6 @@ scenes.fight = () => {
             }
         }
 
-        // When the fight starts. How many chars do we have? Who exists? Show/Hide/Gray out stats
-        for (i = 0; i < game.chars.length; i++) {
-            fightStats[amountStats * i].alpha = 255;
-            fightStats[1 + amountStats * i].alpha = 255;
-            fightStats[4 + amountStats * i].fill = "rgb(20, 204, 20)";
-            fightStats[8 + amountStats * i].fill = "rgb(205, 0, 205)";
-            fightStats[10 + amountStats * i].alpha = 255;
-            fightStats[11 + amountStats * i].alpha = 255;
-            fightStats[12 + amountStats * i].alpha = 255;
-            if (game.characters[characters[i]].element != undefined) fightStats[12 + amountStats * i].source = game.characters[characters[i]].element;
-        }
-
         // Mobile resizing
         if (isMobile()) {
             for (j = 0; j < 3; j++) {
@@ -1473,6 +1483,19 @@ scenes.fight = () => {
             
     }
 
+    // When the fight starts. How many chars do we have? Who exists? Show/Hide/Gray out stats
+    for (i = 0; i < game.chars.length; i++) {
+        fightStats[amountStats * i].alpha = 255;
+        fightStats[1 + amountStats * i].alpha = 255;
+        fightStats[4 + amountStats * i].fill = "rgb(20, 204, 20)";
+        if (getPlayer(1 + i).HP > 0) fightStats[4 + amountStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(1 + i).HP / getPlayer(1 + i).maxHP);
+        fightStats[8 + amountStats * i].fill = "rgb(205, 0, 205)";
+        fightStats[10 + amountStats * i].alpha = 255;
+        fightStats[11 + amountStats * i].alpha = 255;
+        fightStats[12 + amountStats * i].alpha = 255;
+        if (game.characters[characters[i]].element != undefined) fightStats[12 + amountStats * i].source = game.characters[characters[i]].element;
+    }
+
     for (i in game.characters) {
         if (game.chars.includes(game.characters[i].name.toLowerCase())) {
             if (game.characters[i].pos != undefined) {
@@ -1504,7 +1527,6 @@ scenes.fight = () => {
             for (i = 0; i < game.chars.length; i++) {
                 fightStats[amountStats * i].text = "Lvl. " + getPlayer(i + 1).level;
                 fightStats[1 + amountStats * i].source = getPlayer(i + 1).name.toLowerCase();
-                if (getPlayer(i + 1).HP > 0) fightStats[4 + amountStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(i + 1).HP / getPlayer(i + 1).maxHP);
                 if (getPlayer(i + 1).EP > 0) fightStats[8 + amountStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(i + 1).EP / getPlayer(i + 1).maxEP);
                 fightStats[10 + amountStats * i].text = getPlayer(i + 1).HP + "/" + getPlayer(i + 1).maxHP;
                 fightStats[11 + amountStats * i].text = getPlayer(i + 1).EP + "/" + getPlayer(i + 1).maxEP;

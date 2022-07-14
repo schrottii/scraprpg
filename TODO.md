@@ -1,8 +1,9 @@
 ##TODO:
+21 Things left to do:
 
 - Proper battle fighting animations
-- Proper victory scene
-- Proper defeat scene
+- Proper victory
+- Proper defeat
 - Non-Game-Over defeat 
 - Black fade effect during area enter
 - Overworld quests
@@ -10,6 +11,7 @@
 - Mastery Techs
 - Duo Mastery Techs
 - Multiple dialogue types
+- Switch to different sprites
 
 - Bricks (999,999 cap)
 - Animated UI (what exactly?)

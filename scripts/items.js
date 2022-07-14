@@ -35,10 +35,12 @@ let items = {
             shopcost: 250,
             max: 99,
             effect: () => {
+                let HealthBefore = args.player.HP
                 args.player.HP += 50;
                 if (args.player.HP > args.player.maxHP) args.player.HP = args.player.maxHP;
                 if (args.anchor != undefined) {
                     battleNumber(args.anchor, 50, 0, args.offset);
+                    updateBar(args.player.name.toLowerCase(), HealthBefore);
                 }
             },
 
