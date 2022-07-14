@@ -413,7 +413,6 @@ scenes.game = () => {
                     enemies.push(mapenemies.itsalivemap({
                         position: [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)], map: game.map,
                     }));
-                    console.log(enemies);
                 }
                 if (this.offset[0] == -145 && canMove == true) {
                     hideMapDisplay();

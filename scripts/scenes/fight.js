@@ -100,6 +100,7 @@ scenes.fight = () => {
     var fightaction = "none";
     var turn = 1;
     var put = 0; //positions update time
+    var itemPage = 0;
 
     var fightButtons = [];
     var fightActions = [];
@@ -469,8 +470,6 @@ scenes.fight = () => {
                 // Bar animation! (Cowboy moment)
                 updateBar(positions[fpos1][fpos2].occupied, HealthBefore);
                 if (game.characters[positions[fpos1][fpos2].occupied].HP < 1) {
-                    console.log(game.characters[positions[fpos1][fpos2].occupied]);
-                    console.log(fpos1, fpos2);
                     game.characters[positions[fpos1][fpos2].occupied].HP = 0;
                     postLog(epositions[pos[0]][pos[1]].name + " killed " + game.characters[positions[fpos1][fpos2].occupied].name + "!");
                     positions[fpos1][fpos2].isOccupied = false;
@@ -650,20 +649,21 @@ scenes.fight = () => {
     }
 
     function showItems() {
-    let inventory = Object.keys(game.inventory);
-        for (i = 0; i < fightActions.length; i++) {
+    let itemOffset = itemPage * 12
+        let inventory = Object.keys(game.inventory);
+        for (i = 0; i < ((fightActions.length / 4) - 9); i++) {
             fightActions[(i * 4) + 3].alpha = 0;
-            if (inventory[i] == undefined) {
+            if (inventory[i + itemOffset] == undefined) {
                 fightActions[(i * 4) + 2].text = "---";
-                break;
+                continue;
             }
-            if (game.inventory[items[inventory[i]].name] > 0) {
-                fightActions[(i * 4)].item = items[inventory[i]];
-                if (game.inventory[items[inventory[i]].name] > 1) fightActions[(i * 4) + 2].text = items[inventory[i]]().name + " x" + game.inventory[items[inventory[i]].name];
-                else fightActions[(i * 4) + 2].text = items[inventory[i]]().name;
-                if (items[inventory[i]]().story) fightActions[(i * 4) + 2].fill = "darkgray";
+            if (game.inventory[items[inventory[i + itemOffset]].name] > 0) {
+                fightActions[(i * 4)].item = items[inventory[i + itemOffset]];
+                if (game.inventory[items[inventory[i + itemOffset]].name] > 1) fightActions[(i * 4) + 2].text = items[inventory[i + itemOffset]]().name + " x" + game.inventory[items[inventory[i + itemOffset]].name];
+                else fightActions[(i * 4) + 2].text = items[inventory[i + itemOffset]]().name;
+                if (items[inventory[i + itemOffset]]().story) fightActions[(i * 4) + 2].fill = "darkgray";
                 else fightActions[(i * 4) + 2].fill = "white";
-                fightActions[(i * 4) + 3].source = "items/" + items[inventory[i]]().source;
+                fightActions[(i * 4) + 3].source = "items/" + items[inventory[i + itemOffset]]().source;
                 fightActions[(i * 4) + 3].alpha = 255;
             }
             else {
@@ -938,7 +938,7 @@ scenes.fight = () => {
         }
     }
     fightActions.push(controls.rect({
-        anchor: [0.67, 0], sizeAnchor: [0.17, 0.0375], offset: [0, -500],
+        anchor: [0.67, 0.1875], sizeAnchor: [0.17, 0.0375], offset: [0, -500],
         fill: "rgb(38, 52, 38)",
         alpha: 255,
         item: "",
@@ -950,16 +950,67 @@ scenes.fight = () => {
         }
     }));
     fightActions.push(controls.rect({
+        anchor: [0.6725, 0.19], sizeAnchor: [0.165, 0.0325], offset: [0, -500],
+        fill: "rgb(42, 87, 44)",
+        alpha: 255,
+    }))
+    fightActions.push(controls.label({
+        anchor: [0.755, 0.2075], offset: [-24, -500],
+        text: "Back",
+        fontSize: 16, fill: "white", align: "center",
+        alpha: 255,
+    }))
+
+
+    fightActions.push(controls.rect({
+        anchor: [0.67, 0.0], sizeAnchor: [0.17, 0.0375], offset: [0, -500],
+        fill: "rgb(38, 52, 38)",
+        alpha: 255,
+        item: "",
+        onClick(args) {
+            if (this.alpha == 255 && itemPage > 0) {
+                itemPage -= 1;
+                showItems();
+            }
+        }
+    }));
+    fightActions.push(controls.rect({
         anchor: [0.6725, 0.0025], sizeAnchor: [0.165, 0.0325], offset: [0, -500],
         fill: "rgb(42, 87, 44)",
         alpha: 255,
     }))
     fightActions.push(controls.label({
         anchor: [0.755, 0.025], offset: [-24, -500],
-        text: "Back",
+        text: "Previous",
         fontSize: 16, fill: "white", align: "center",
         alpha: 255,
     }))
+
+
+    fightActions.push(controls.rect({
+        anchor: [0.67, 0.0375], sizeAnchor: [0.17, 0.0375], offset: [0, -500],
+        fill: "rgb(38, 52, 38)",
+        alpha: 255,
+        item: "",
+        onClick(args) {
+            if (this.alpha == 255) {
+                itemPage += 1;
+                showItems();
+            }
+        }
+    }));
+    fightActions.push(controls.rect({
+        anchor: [0.6725, 0.04], sizeAnchor: [0.165, 0.0325], offset: [0, -500],
+        fill: "rgb(42, 87, 44)",
+        alpha: 255,
+    }))
+    fightActions.push(controls.label({
+        anchor: [0.755, 0.0625], offset: [-24, -500],
+        text: "Next",
+        fontSize: 16, fill: "white", align: "center",
+        alpha: 255,
+    }))
+
 
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 3; i++) {
