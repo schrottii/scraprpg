@@ -44,12 +44,12 @@ function updateBar(charName, HealthBefore) {
     let whichChar = characters.indexOf(charName);
     let which = 5 + (whichChar * amountStats);
     if (game.characters[charName].HP > 0) {
-        fightStats[which].alpha = 255;
         let Leftend = 0.1960 * (Math.max(getPlayer(1 + whichChar).HP, 0) / getPlayer(1 + whichChar).maxHP);
         let Length = (0.1960 * (HealthBefore / getPlayer(1 + whichChar).maxHP)) - Leftend;
 
-
-        if (Length >= 0) {
+        if (Length == 0) return false;
+        fightStats[which].alpha = 255;
+        if (Length > 0) {
             if (getPlayer(1 + whichChar).HP > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (getPlayer(1 + whichChar).HP / getPlayer(1 + whichChar).maxHP);
             fightStats[which].anchor[0] = 0.242 + Leftend;
             fightStats[which].sizeAnchor[0] = Length;
@@ -60,6 +60,10 @@ function updateBar(charName, HealthBefore) {
 
                 if (t > 1400) {
                     fightStats[which].alpha = 0;
+                    if (charName.HP < 1) {
+                        fightStats[which - 1].alpha = 0;
+                        fightStats[which].alpha = 0;
+                    }
                     return true;
                 }
             });
@@ -69,7 +73,6 @@ function updateBar(charName, HealthBefore) {
             Length = (0.1960 * (getPlayer(1 + whichChar).HP / HealthBefore)) - Leftend;
             fightStats[which].anchor[0] = 0.242 + Leftend;
             fightStats[which].sizeAnchor[0] = 0.00001;
-            console.log(Length, Leftend);
             addAnimator(function (t) {
                 fightStats[which].sizeAnchor[0] = Length * Math.max(0.01, ((Math.min(t * 0.01, 0.5))));
                 
@@ -185,6 +188,8 @@ scenes.fight = () => {
             }
         }
         if (aliveallies == 0) { // All dead :)
+            alert("DEAD");
+            alert("Remind me to add a proper death screen");
             setScene(scenes.title());
         }
     }
@@ -318,7 +323,7 @@ scenes.fight = () => {
                 let pos2 = positions[pos[0]][pos[1]].action[4];
                 selectedAlly = [positions[pos[0]][pos[1]].action[1], positions[pos[0]][pos[1]].action[2]];
                 fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
-                attackAnimation(selectedAlly[0], selectedAlly[1], pos1, pos2, () => {
+                attackAnimation(selectedAlly[0], selectedAlly[1], pos1, pos2, (fpos1, fpos2, pos1, pos2) => {
                     if (epositions[pos1][pos2].isOccupied == false) {
                         let exists = 0;
                         for (j = 0; j < 3; j++) {
@@ -338,15 +343,15 @@ scenes.fight = () => {
                         }
                         
                     }
-                    if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].acc - epositions[pos1][pos2].eva > (Math.random() * 100)) {
-                        let Damage = calculateDamage(1, selectedAlly[0], selectedAlly[1], pos1, pos2);
+                    if (game.characters[positions[fpos1][fpos2].occupied].acc - epositions[pos1][pos2].eva > (Math.random() * 100)) {
+                        let Damage = calculateDamage(1, fpos1, fpos2, pos1, pos2);
                         epositions[pos1][pos2].HP -= Damage; // Deal damage
                         battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, Damage *(-1), 0, epositionControls[pos1 + (pos2 * 3)].offset);
 
                         playSound("damage");
-                        postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " attacks " + epositions[pos1][pos2].name + " and deals " + Damage + " damage!");
-                        if (getElementDamage(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].element, epositions[pos1][pos2].element) != 1){
-                            postLog("Element boost: x" + getElementDamage(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].element, epositions[pos1][pos2].element) + "!");
+                        postLog(game.characters[positions[fpos1][fpos2].occupied].name + " attacks " + epositions[pos1][pos2].name + " and deals " + Damage + " damage!");
+                        if (getElementDamage(game.characters[positions[fpos1][fpos2].occupied].element, epositions[pos1][pos2].element) != 1){
+                            postLog("Element boost: x" + getElementDamage(game.characters[positions[fpos1][fpos2].occupied].element, epositions[pos1][pos2].element) + "!");
                         }
 
                         if (epositions[pos1][pos2].HP < 1) { // Is dead?
@@ -356,9 +361,9 @@ scenes.fight = () => {
                             enemyAmounts[pos1 + (pos2 * 3)] = "";
 
                             let Experience = epositions[pos1][pos2].strength;
-                            game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EXP += Experience;
+                            game.characters[positions[fpos1][fpos2].occupied].EXP += Experience;
 
-                            postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " killed " + epositions[pos1][pos2].name + " and earned " + Experience + " EXP!");
+                            postLog(game.characters[positions[fpos1][fpos2].occupied].name + " killed " + epositions[pos1][pos2].name + " and earned " + Experience + " EXP!");
                             checkLevelUps();
                             checkAllDead();
                         }
@@ -436,28 +441,28 @@ scenes.fight = () => {
         }
 
         // Ok, ok, now we know who (whoAGI) is first (highestAGI), so now do something
-        attackAnimation(selectedAlly[0], selectedAlly[1], pos[0], pos[1], () => {
+        attackAnimation(selectedAlly[0], selectedAlly[1], pos[0], pos[1], (fpos1, fpos2, pos) => {
             let Damage = calculateDamage(2, pos[0], pos[1], selectedAlly[0], selectedAlly[1]);
-            if (positions[selectedAlly[0]][selectedAlly[1]].isOccupied != false) {
-                let HealthBefore = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP;
-                game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP -= Damage;
+            if (positions[fpos1][fpos2].isOccupied != false) {
+                let HealthBefore = game.characters[positions[fpos1][fpos2].occupied].HP;
+                game.characters[positions[fpos1][fpos2].occupied].HP -= Damage;
                 epositions[pos[0]][pos[1]].action = false;
-                battleNumber(positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor, Damage * (-1), 0, positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].offset);
+                battleNumber(positionControls[fpos1 + (fpos2 * 3)].anchor, Damage * (-1), 0, positionControls[fpos1 + (fpos2 * 3)].offset);
 
                 playSound("damage");
-                postLog(epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " and deals " + Damage + " damage!");
-                if (getElementDamage(epositions[pos[0]][pos[1]].element, game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].element) != 1) {
-                    postLog("Element boost: x" + getElementDamage(epositions[pos[0]][pos[1]].element, game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].element) + "!");
+                postLog(epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[fpos1][fpos2].occupied].name + " and deals " + Damage + " damage!");
+                if (getElementDamage(epositions[pos[0]][pos[1]].element, game.characters[positions[fpos1][fpos2].occupied].element) != 1) {
+                    postLog("Element boost: x" + getElementDamage(epositions[pos[0]][pos[1]].element, game.characters[positions[fpos1][fpos2].occupied].element) + "!");
                 }
 
                 // Bar animation! (Cowboy moment)
-                updateBar(positions[selectedAlly[0]][selectedAlly[1]].occupied, HealthBefore);
-
-                if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP < 1) {
-                    game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP = 0;
-                    fightStats[which].alpha = 0;
-                    postLog(epositions[pos[0]][pos[1]].name + " killed " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + "!");
-                    positions[selectedAlly[0]][selectedAlly[1]].isOccupied = false;
+                updateBar(positions[fpos1][fpos2].occupied, HealthBefore);
+                if (game.characters[positions[fpos1][fpos2].occupied].HP < 1) {
+                    console.log(game.characters[positions[fpos1][fpos2].occupied]);
+                    console.log(fpos1, fpos2);
+                    game.characters[positions[fpos1][fpos2].occupied].HP = 0;
+                    postLog(epositions[pos[0]][pos[1]].name + " killed " + game.characters[positions[fpos1][fpos2].occupied].name + "!");
+                    positions[fpos1][fpos2].isOccupied = false;
                     checkAllDead();
                 }
             }
@@ -502,7 +507,7 @@ scenes.fight = () => {
             }
 
             if (getPlayer(i + 1).HP < 1) {
-                //fightStats[which].alpha = 0;
+                fightStats[5 + (i * amountStats)].alpha = 0;
                 postLog(getPlayer(i + 1).name + " died!");
                 positions[getPlayer(i + 1).pos[0]][getPlayer(i + 1).pos[1]].isOccupied = false;
                 checkAllDead();
@@ -515,7 +520,7 @@ scenes.fight = () => {
     function switchPositions() {
         // important variable here: switchThose
         // [0] is pos of which one to switch, [1] of where to switch to
-        game.characters[positions[switchThose[0][0]][switchThose[0][1]].occupied].pos = [switchThose[1][0], switchThose[1][1]];
+        game.characters[positions[switchThose[0][0]][switchThose[0][1]].occupied].pos = [switchThose[1][1], switchThose[1][0]];
 
         // Switch them and adjust isOccupied
         let cache123 = positions[switchThose[1][0]][switchThose[1][1]].occupied;
@@ -548,7 +553,7 @@ scenes.fight = () => {
 
                     positionControls[fpos1 + (fpos2 * 3)].anchor[0] = 0.025;
 
-                    onFinish();
+                    onFinish(fpos1, fpos2, pos1, pos2);
                     return true;
                 }
                 return false;
@@ -563,7 +568,7 @@ scenes.fight = () => {
 
                     epositionControls[pos1 + (pos2 * 3)].anchor[0] = 0.975;
 
-                    onFinish();
+                    onFinish(fpos1, fpos2, [pos1, pos2]);
                     return true;
                 }
                 return false;
