@@ -33,7 +33,6 @@ function battleNumber(pos, amount, type, offset = [0, 0]) {
                 if (ofs < 0) {
                     timeOffset += bounceHeight;
                     bounceHeight = bounceHeight / 2;
-                    console.log(t, timeOffset);
                     continue;
                 }
                 battleNumbers[bn].anchor[1] = pos[1] - ofs;
@@ -42,7 +41,6 @@ function battleNumber(pos, amount, type, offset = [0, 0]) {
         } else {
             battleNumbers[bn].anchor[1] = pos[1];
             let rt = t / 1000 - timeOffset;
-            console.log(rt);
             battleNumbers[bn].alpha = (1 - Math.pow(rt / .25, 2));
             return battleNumbers[bn].alpha < 0;
         }
@@ -147,6 +145,9 @@ scenes.fight = () => {
 
             stopMusic();
             playSound("victory");
+
+            positions = [];
+            fightStats = [];
 
             // Get rid of acid effect
             for (i = 0; i < game.chars.length; i++) {
@@ -839,6 +840,8 @@ scenes.fight = () => {
                             fleeLoss.alpha = 0;
                             fleeIcon.alpha = 0;
                             setScene(scenes.game());
+                            positions = [];
+                            fightStats = [];
                         }, 2000);
                     }
                 }
