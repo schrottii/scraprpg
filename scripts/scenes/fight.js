@@ -133,6 +133,9 @@ scenes.fight = () => {
             if (checkonly == true) return true;
             win = true;
 
+            stopMusic();
+            playSound("victory");
+
             // Get rid of acid effect
             for (i = 0; i < game.chars.length; i++) {
                 if (getPlayer(i + 1).effect[0] == "acid") {

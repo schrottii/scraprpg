@@ -997,7 +997,7 @@ scenes.game = () => {
             setTimeout(() => { zoom = 2.5; }, 750);
             setTimeout(() => { zoom = 3; }, 1000);
             setTimeout(() => { zoom = 4; }, 1250);
-            setTimeout(() => { setScene(scenes.fight()); }, 2000);
+            setTimeout(() => { playMusic("bgm/fight"); setScene(scenes.fight()); }, 2000);
             setTimeout(() => { zoom = previouszoom; }, 2200);
         }
     }

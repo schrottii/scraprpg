@@ -158,6 +158,7 @@ var scenes = {
 var audio = {
     "bgm/title": "data/bgm/Title_OST.mp3",
     "bgm/placeholder": "data/bgm/field03.mp3",
+    "bgm/fight": "data/bgm/theme05_.mp3",
 
     "titletransition": "data/sounds/Title_screen_transition.mp3",
     "ok": "data/sounds/sound_ok.wav",
@@ -166,6 +167,7 @@ var audio = {
     "keyitem": "data/sounds/important_item.wav",
     "damage": "data/sounds/damage.wav",
     "teleport": "data/sounds/move area.wav",
+    "victory": "data/sounds/jingle03.mp3",
 };
 
 var maps = {

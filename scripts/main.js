@@ -57,6 +57,7 @@ function init() {
                         }
                     }
 
+                    playMusic("bgm/fight");
                     setScene(scenes.fight());
                 }
             }),
