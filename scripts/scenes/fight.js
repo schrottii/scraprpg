@@ -603,7 +603,7 @@ scenes.fight = () => {
     }
 
     function hideFightButtons() {
-        if (fightButtons[0].offset[1] == -500) return false;
+        if (fightButtons[0].offset[1] != 0) return false;
         addAnimator(function (t) {
             for (i = 0; i < fightButtons.length; i++) {
                 fightButtons[i].offset[1] = -t;
@@ -635,7 +635,7 @@ scenes.fight = () => {
     }
 
     function hideFightActions() {
-        if (fightActions[0].offset[1] == -500) return false;
+        if (fightActions[0].offset[1] != 0) return false;
         addAnimator(function (t) {
             for (i = 0; i < fightActions.length; i++) {
                 fightActions[i].offset[1] = -t;
@@ -937,7 +937,29 @@ scenes.fight = () => {
 
         }
     }
-
+    fightActions.push(controls.rect({
+        anchor: [0.67, 0], sizeAnchor: [0.17, 0.0375], offset: [0, -500],
+        fill: "rgb(38, 52, 38)",
+        alpha: 255,
+        item: "",
+        onClick(args) {
+            if (this.alpha == 255) {
+                hideFightActions();
+                showFightButtons();
+            }
+        }
+    }));
+    fightActions.push(controls.rect({
+        anchor: [0.6725, 0.0025], sizeAnchor: [0.165, 0.0325], offset: [0, -500],
+        fill: "rgb(42, 87, 44)",
+        alpha: 255,
+    }))
+    fightActions.push(controls.label({
+        anchor: [0.755, 0.025], offset: [-24, -500],
+        text: "Back",
+        fontSize: 16, fill: "white", align: "center",
+        alpha: 255,
+    }))
 
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 3; i++) {
