@@ -318,7 +318,7 @@ scenes.fight = () => {
                 let pos2 = positions[pos[0]][pos[1]].action[4];
                 selectedAlly = [positions[pos[0]][pos[1]].action[1], positions[pos[0]][pos[1]].action[2]];
                 fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
-                attackAnimation(pos1, pos2, () => {
+                attackAnimation(selectedAlly[0], selectedAlly[1], pos1, pos2, () => {
                     if (epositions[pos1][pos2].isOccupied == false) {
                         let exists = 0;
                         for (j = 0; j < 3; j++) {
@@ -436,7 +436,7 @@ scenes.fight = () => {
         }
 
         // Ok, ok, now we know who (whoAGI) is first (highestAGI), so now do something
-        attackAnimation(pos[0], pos[1], () => {
+        attackAnimation(selectedAlly[0], selectedAlly[1], pos[0], pos[1], () => {
             let Damage = calculateDamage(2, pos[0], pos[1], selectedAlly[0], selectedAlly[1]);
             if (positions[selectedAlly[0]][selectedAlly[1]].isOccupied != false) {
                 let HealthBefore = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].HP;
@@ -537,16 +537,16 @@ scenes.fight = () => {
         switchThose = [[0, 0], [0, 0]];
     }
 
-    function attackAnimation(pos1, pos2, onFinish, enemy = false) {
+    function attackAnimation(fpos1, fpos2, pos1, pos2, onFinish, enemy = false) {
         if (enemy == false) {
             addAnimator(function (t) {
-                positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor[0] = 0.025 + (0.0005 * t);
+                positionControls[fpos1 + (fpos2 * 3)].anchor[0] = 0.025 + (0.0005 * t);
 
-                if (positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor[0] + (positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].offset[0] / 1000) >
+                if (positionControls[fpos1 + (fpos2 * 3)].anchor[0] + (positionControls[fpos1 + (fpos2 * 3)].offset[0] / 1000) >
                     epositionControls[pos1 + (pos2 * 3)].anchor[0] + (epositionControls[pos1 + (pos2 * 3)].offset[0] / 1000)
                     || epositions[pos1][pos2].HP < 1) {
 
-                    positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor[0] = 0.025;
+                    positionControls[fpos1 + (fpos2 * 3)].anchor[0] = 0.025;
 
                     onFinish();
                     return true;
@@ -559,7 +559,7 @@ scenes.fight = () => {
                 epositionControls[pos1 + (pos2 * 3)].anchor[0] = 0.975 - (0.0005 * t);
 
                 if (epositionControls[pos1 + (pos2 * 3)].anchor[0] + (epositionControls[pos1 + (pos2 * 3)].offset[0] / 1000) <
-                    positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].anchor[0] + (positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].offset[0] / 1000)) {
+                    positionControls[fpos1 + (fpos2 * 3)].anchor[0] + (positionControls[fpos1 + (fpos2 * 3)].offset[0] / 1000)) {
 
                     epositionControls[pos1 + (pos2 * 3)].anchor[0] = 0.975;
 
