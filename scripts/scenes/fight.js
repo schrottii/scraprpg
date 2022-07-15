@@ -147,9 +147,6 @@ scenes.fight = () => {
             stopMusic();
             playSound("victory");
 
-            positions = [];
-            fightStats = [];
-
             // Get rid of acid effect
             for (i = 0; i < game.chars.length; i++) {
                 if (getPlayer(i + 1).effect[0] == "acid") {
@@ -334,7 +331,7 @@ scenes.fight = () => {
                 let pos2 = positions[pos[0]][pos[1]].action[4];
                 selectedAlly = [positions[pos[0]][pos[1]].action[1], positions[pos[0]][pos[1]].action[2]];
                 fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
-                attackAnimation(selectedAlly[0], selectedAlly[1], pos1, pos2, (fpos1, fpos2, pos1, pos2) => {
+                prepareAttackAnimation(selectedAlly[0], selectedAlly[1], pos1, pos2, (fpos1, fpos2, pos1, pos2) => {
                     if (epositions[pos1][pos2].isOccupied == false) {
                         let exists = 0;
                         for (j = 0; j < 3; j++) {
@@ -453,7 +450,7 @@ scenes.fight = () => {
         }
 
         // Ok, ok, now we know who (whoAGI) is first (highestAGI), so now do something
-        attackAnimation(selectedAlly[0], selectedAlly[1], pos[0], pos[1], (fpos1, fpos2, pos) => {
+        prepareAttackAnimation(selectedAlly[0], selectedAlly[1], pos[0], pos[1], (fpos1, fpos2, pos) => {
             let Damage = calculateDamage(2, pos[0], pos[1], selectedAlly[0], selectedAlly[1]);
             if (positions[fpos1][fpos2].isOccupied != false) {
                 let HealthBefore = game.characters[positions[fpos1][fpos2].occupied].HP;
@@ -552,20 +549,44 @@ scenes.fight = () => {
         switchThose = [[0, 0], [0, 0]];
     }
 
-    function attackAnimation(fpos1, fpos2, pos1, pos2, onFinish, enemy = false) {
+    function prepareAttackAnimation(fpos1, fpos2, pos1, pos2, onFinish, enemy = false) {
+        let goalX = epositionControls[pos1 + (pos2 * 3)].anchor[0];
+        let ownX = positionControls[fpos1 + (fpos2 * 3)].anchor[0];
+        let goalX2 = epositionControls[pos1 + (pos2 * 3)].offset[0];
+        let ownX2 = positionControls[fpos1 + (fpos2 * 3)].offset[0];
+
+        let goalY = epositionControls[pos1 + (pos2 * 3)].anchor[1];
+        let ownY = positionControls[fpos1 + (fpos2 * 3)].anchor[1];
+        let goalY2 = epositionControls[pos1 + (pos2 * 3)].offset[1];
+        let ownY2 = positionControls[fpos1 + (fpos2 * 3)].offset[1];
+
+
+        attackAnimation(fpos1, fpos2, pos1, pos2, [ownX, ownX2, ownY, ownY2], [goalX, goalX2, goalY, goalY2], onFinish, enemy)
+    }
+
+    function attackAnimation(fpos1, fpos2, pos1, pos2, own, goal, onFinish, enemy) {
+        let al = 800;
         if (enemy == false) {
+            positionControls[fpos1 + (fpos2 * 3)].offset[0] = own[1];
+            positionControls[fpos1 + (fpos2 * 3)].offset[1] = own[3];
             addAnimator(function (t) {
-                positionControls[fpos1 + (fpos2 * 3)].anchor[0] = 0.025 + (0.0005 * t);
-
-                if (positionControls[fpos1 + (fpos2 * 3)].anchor[0] + (positionControls[fpos1 + (fpos2 * 3)].offset[0] / 1000) >
-                    epositionControls[pos1 + (pos2 * 3)].anchor[0] + (epositionControls[pos1 + (pos2 * 3)].offset[0] / 1000)
-                    || epositions[pos1][pos2].HP < 1) {
-
-                    positionControls[fpos1 + (fpos2 * 3)].anchor[0] = 0.025;
-
+                positionControls[fpos1 + (fpos2 * 3)].anchor[0] = own[0] + ((goal[0] / al) * Math.min(al, t));
+                if (t > 200 && t < 399 && own[3] != 0) {
+                    positionControls[fpos1 + (fpos2 * 3)].offset[1] = own[3] * (1 - ((t - 200)) / 200);
+                    positionControls[fpos1 + (fpos2 * 3)].offset[0] = own[1] * (1 - ((t - 200)) / 200);
+                }
+                if (t > 400 && t < 599 && goal[3] != 0) {
+                    positionControls[fpos1 + (fpos2 * 3)].offset[1] = goal[3] * (0 + ((t - 400)) / 200);
+                    positionControls[fpos1 + (fpos2 * 3)].offset[0] = goal[1] * (0 + ((t - 400)) / 200);
+                }
+                if (t > 1200) {
+                    positionControls[fpos1 + (fpos2 * 3)].anchor[0] = own[0];
+                    positionControls[fpos1 + (fpos2 * 3)].offset[0] = own[1];
+                    positionControls[fpos1 + (fpos2 * 3)].offset[1] = own[3];
                     onFinish(fpos1, fpos2, pos1, pos2);
                     return true;
                 }
+                
                 return false;
             });
         }
@@ -655,6 +676,7 @@ scenes.fight = () => {
             fightActions[(i * 4) + 3].alpha = 0;
             if (inventory[i + itemOffset] == undefined) {
                 fightActions[(i * 4) + 2].text = "---";
+                fightActions[(i * 4) + 2].fill = "white";
                 continue;
             }
             if (game.inventory[items[inventory[i + itemOffset]].name] > 0) {
@@ -1131,6 +1153,9 @@ scenes.fight = () => {
         onClick(args) {
             if (checkAllDead(true)) {
                 setScene(scenes.game());
+
+                positions = [];
+                fightStats = [];
             }
         },
         alpha: 0,
@@ -1511,9 +1536,9 @@ scenes.fight = () => {
             for (j = 0; j < 3; j++) {
                 for (i = 0; i < 3; i++) {
                     positionControls[i + (j * 3)].sizeOffset = [48, 48];
-                    positionControls[i + (j * 3)].offset = [56 * i, 72 * j];
+                    //positionControls[i + (j * 3)].offset = [56 * i, 72 * j];
                     epositionControls[i + (j * 3)].sizeOffset = [48, 48];
-                    epositionControls[i + (j * 3)].offset = [-(48 + (56 * i)), 72 * j];
+                    //epositionControls[i + (j * 3)].offset = [-(48 + (56 * i)), 72 * j];
                     if (positionGrid[i + (j * 3)].source == "grid" || positionGrid[i + (j * 3)].source == "hasaction" || positionGrid[i + (j * 3)].source == "selected") {
                         positionGrid[i + (j * 3)].sizeOffset = [48, 48];
                         positionGrid[i + (j * 3)].offset = [56 * i, 72 * j];
@@ -1539,9 +1564,9 @@ scenes.fight = () => {
             for (j = 0; j < 3; j++) {
                 for (i = 0; i < 3; i++) {
                     positionControls[i + (j * 3)].sizeOffset = [64, 64];
-                    positionControls[i + (j * 3)].offset = [72 * i, 72 * j];
+                    //positionControls[i + (j * 3)].offset = [72 * i, 72 * j];
                     epositionControls[i + (j * 3)].sizeOffset = [64, 64];
-                    epositionControls[i + (j * 3)].offset = [-(72 + (72 * i)), 72 * j]
+                    //epositionControls[i + (j * 3)].offset = [-(72 + (72 * i)), 72 * j]
                     if (positionGrid[i + (j * 3)].source == "grid" || positionGrid[i + (j * 3)].source == "hasaction" || positionGrid[i + (j * 3)].source == "selected") {
                         positionGrid[i + (j * 3)].sizeOffset = [64, 64];
                         positionGrid[i + (j * 3)].offset = [72 * i, 72 * j];
