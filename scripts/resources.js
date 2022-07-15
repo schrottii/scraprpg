@@ -168,6 +168,7 @@ var audio = {
     "damage": "data/sounds/damage.wav",
     "teleport": "data/sounds/move area.wav",
     "victory": "data/sounds/jingle03.mp3",
+    "miss": "data/sounds/miss.ogg",
 };
 
 var maps = {

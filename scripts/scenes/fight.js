@@ -378,6 +378,7 @@ scenes.fight = () => {
                     }
                     else {
                         battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, "Miss...", 0, epositionControls[pos1 + (pos2 * 3)].offset);
+                        playSound("miss");
                         postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " missed!");
                     }
                     executeActions();
@@ -862,8 +863,10 @@ scenes.fight = () => {
                             fleeLoss.alpha = 0;
                             fleeIcon.alpha = 0;
                             setScene(scenes.game());
-                            positions = [];
-                            fightStats = [];
+                            setTimeout(() => {
+                                positions = [];
+                                fightStats = [];
+                            }, 500);
                         }, 2000);
                     }
                 }
