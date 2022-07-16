@@ -224,14 +224,18 @@ scenes.fight = () => {
             }
         }
         let runTime = 0;
+        let runLaps = 0;
         addAnimator(function (t) {
             for (i = 0; i < positionControls.length; i++) {
                 if (positionControls[i].source != "gear") positionControls[i].anchor[0] = positionControls[i].defanchor + (t / 1000);
                 if (positionControls[i].source != "gear") positionControls[i].snip[0] = Math.floor(runTime) * 32;
             }
 
-            runTime += (t / 250);
-            if (runTime >= 2) runTime = 0;
+            runTime += ((t - runLaps) / 250);
+            if (runTime >= 2) {
+                runTime = 0;
+                runLaps = t;
+            }
             if (t > 1000) {
 
                 let EXPforAll = 2;
@@ -963,15 +967,46 @@ scenes.fight = () => {
                         fleeIcon.alpha = 255;
                         hideFightButtons();
                         hideFightActions();
-                        setTimeout(() => {
-                            fleeLoss.alpha = 0;
-                            fleeIcon.alpha = 0;
-                            setScene(scenes.game());
-                            setTimeout(() => {
-                                positions = [];
-                                fightStats = [];
-                            }, 500);
-                        }, 2000);
+
+                        let runTime = 0;
+                        let runLaps = 0;
+                        for (i = 0; i < positionControls.length; i++) {
+                            if (positionControls[i].source != "gear") positionControls[i].defoffset[0] = positionControls[i].offset[0];
+                            if (positionControls[i].source != "gear") positionControls[i].snip[1] = 32;
+                        }
+
+                        addAnimator(function (t) {
+                            for (i = 0; i < positionControls.length; i++) {
+                                if (positionControls[i].source != "gear") positionControls[i].offset[0] = positionControls[i].defoffset - (t/4);
+                                if (positionControls[i].source != "gear") positionControls[i].anchor[0] = Math.min((2000 - t) / 80000, 0.025);
+                                if (positionControls[i].source != "gear") positionControls[i].snip[0] = Math.floor(runTime) * 32;
+                            }
+
+                            runTime += ((t - runLaps) / 250);
+                            if (runTime >= 2) {
+                                runTime = 0;
+                                runLaps = t;
+                            }
+                            if (t > 2000) {
+                                for (i = 0; i < positionControls.length; i++) {
+                                    if (positionControls[i].source != "gear") positionControls[i].offset[0] = -500;
+                                    if (positionControls[i].source != "gear") positionControls[i].anchor[0] = 0;
+                                }
+                                fleeLoss.alpha = 0;
+                                fleeIcon.alpha = 0;
+                                setScene(scenes.game());
+
+                                delete runTime;
+                                delete runLaps;
+
+                                setTimeout(() => {
+                                    positions = [];
+                                    fightStats = [];
+                                }, 500);
+                                return true;
+                            }
+                            return false;
+                        });
                     }
                 }
             }))
@@ -1762,6 +1797,7 @@ scenes.fight = () => {
     }
 
     let runTime = 0;
+    let runLaps = 0;
     addAnimator(function (t) {
         for (i = 0; i < positionControls.length; i++) {
             if (positionControls[i].source != "gear") positionControls[i].offset[0] = positionControls[i].defoffset - (1000 - t);
@@ -1769,8 +1805,12 @@ scenes.fight = () => {
             if (positionControls[i].source != "gear") positionControls[i].snip[0] = Math.floor(runTime) * 32;
         }
 
-        runTime += (t / 250);
-        if (runTime >= 2) runTime = 0;
+        runTime += ((t - runLaps) / 250);
+        if (runTime >= 2) {
+            runTime = 0;
+            runLaps = t;
+        }
+        console.log(runTime);
         if (t > 1000) {
             for (i = 0; i < positionControls.length; i++) {
                 if (positionControls[i].source != "gear") positionControls[i].offset[0] = positionControls[i].defoffset;
@@ -1781,6 +1821,7 @@ scenes.fight = () => {
         return false;
     });
     delete runTime;
+    delete runLaps;
 
     return {
         // Pre-render function
