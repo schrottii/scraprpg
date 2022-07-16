@@ -117,6 +117,7 @@ scenes.fight = () => {
     var positionControls = [];
     var epositionControls = [];
     var positionGrid = [];
+    var attackAnimationObjects = [];
 
     var switchThose = [[0, 0], [0, 0]];
     var selectedAlly = [0, 0];
@@ -622,11 +623,24 @@ scenes.fight = () => {
 
     function attackAnimation(fpos1, fpos2, pos1, pos2, own, goal, onFinish, enemy) {
         let al = 800;
+
         if (enemy == false) {
             positionControls[fpos1 + (fpos2 * 3)].offset[0] = own[1];
             positionControls[fpos1 + (fpos2 * 3)].offset[1] = own[3];
+
+            goal[1] -= 160;
+
+            attackAnimationObjects[fpos1 + (fpos2 * 3)].anchor = positionControls[fpos1 + (fpos2 * 3)].anchor;
+            attackAnimationObjects[fpos1 + (fpos2 * 3)].offset = [positionControls[fpos1 + (fpos2 * 3)].offset[0] + 72, positionControls[fpos1 + (fpos2 * 3)].offset[1]];
+            attackAnimationObjects[fpos1 + (fpos2 * 3)].alpha = 255;
+            attackAnimationObjects[fpos1 + (fpos2 * 3)].source = "attackani0";
+
             addAnimator(function (t) {
                 positionControls[fpos1 + (fpos2 * 3)].anchor[0] = own[0] + ((goal[0] / al) * Math.min(al, t));
+
+                attackAnimationObjects[fpos1 + (fpos2 * 3)].anchor = positionControls[fpos1 + (fpos2 * 3)].anchor;
+                attackAnimationObjects[fpos1 + (fpos2 * 3)].offset = [positionControls[fpos1 + (fpos2 * 3)].offset[0] + 72, positionControls[fpos1 + (fpos2 * 3)].offset[1]];
+
                 if (t > 200 && t < 399 && own[3] != 0) {
                     positionControls[fpos1 + (fpos2 * 3)].offset[1] = own[3] * (1 - ((t - 200)) / 200);
                     positionControls[fpos1 + (fpos2 * 3)].offset[0] = own[1] * (1 - ((t - 200)) / 200);
@@ -635,10 +649,17 @@ scenes.fight = () => {
                     positionControls[fpos1 + (fpos2 * 3)].offset[1] = goal[3] * (0 + ((t - 400)) / 200);
                     positionControls[fpos1 + (fpos2 * 3)].offset[0] = goal[1] * (0 + ((t - 400)) / 200);
                 }
+                if (t > 1000 && t < 1099) {
+                    attackAnimationObjects[fpos1 + (fpos2 * 3)].source = "attackani1";
+                }
+                if (t > 1100 && t < 1199) {
+                    attackAnimationObjects[fpos1 + (fpos2 * 3)].source = "attackani2";
+                }
                 if (t > 1200) {
                     positionControls[fpos1 + (fpos2 * 3)].anchor[0] = own[0];
                     positionControls[fpos1 + (fpos2 * 3)].offset[0] = own[1];
                     positionControls[fpos1 + (fpos2 * 3)].offset[1] = own[3];
+                    attackAnimationObjects[fpos1 + (fpos2 * 3)].alpha = 0;
                     onFinish(fpos1, fpos2, pos1, pos2);
                     return true;
                 }
@@ -1423,7 +1444,14 @@ scenes.fight = () => {
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].element = enemyTypes[currentEnemies[i][0]].element;
         }
     }
-
+    for (i = 0; i < 9; i++) {
+        attackAnimationObjects.push(controls.image({
+            anchor: [0, 0], offset: [0, 0], sizeOffset: [32, 32],
+            source: "attackani0",
+            alpha: 0,
+        }))
+    }
+    
     // Friendly pos (left)
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
@@ -1766,7 +1794,7 @@ scenes.fight = () => {
             ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
             ...fightStats, ...actionDisplay, ...winScreen,
-            ...positionControls, ...epositionControls, ...positionGrid, ...battleNumbers,
+            ...positionControls, ...epositionControls, ...positionGrid, ...attackAnimationObjects, ...battleNumbers,
         ],
     }
 };
