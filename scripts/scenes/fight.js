@@ -176,8 +176,8 @@ scenes.fight = () => {
 
                     if (amount > 1) {
                         addAnimator(function (t) {
-                            controlled.aniTime += ((t - controlled.aniTime2) / 500);
-                            if (controlled.aniTime >= controlled.amount - 1) {
+                            controlled.aniTime = ((t - controlled.aniTime2) / 500);
+                            if (controlled.aniTime >= controlled.amount) {
                                 controlled.aniTime = 0;
                                 controlled.aniTime2 = t;
                             }
@@ -677,10 +677,10 @@ scenes.fight = () => {
                     positionControls[fpos1 + (fpos2 * 3)].offset[1] = goal[3] * (0 + ((t - 400)) / 200);
                     positionControls[fpos1 + (fpos2 * 3)].offset[0] = goal[1] * (0 + ((t - 400)) / 200);
                 }
-                if (t > 1000 && t < 1099) {
+                if (t > 1000 && t < 1049 || t > 1100 && t < 1149) {
                     attackAnimationObjects[fpos1 + (fpos2 * 3)].source = "attackani1";
                 }
-                if (t > 1100 && t < 1199) {
+                if (t > 1050 && t < 1099 || t > 1150 && t < 1199) {
                     attackAnimationObjects[fpos1 + (fpos2 * 3)].source = "attackani2";
                 }
                 if (t > 1200) {
