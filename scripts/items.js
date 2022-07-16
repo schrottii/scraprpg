@@ -47,6 +47,20 @@ let items = {
             ...args || {},
         }
     },
+    peppytincture(args) {
+        return {
+            ...items.default(),
+            source: "peppytincture",
+            name: "Peppy Tincture",
+            shopcost: 2000,
+            max: 99,
+            effect: () => {
+                args.player.effect = ["none", 0];
+            },
+
+            ...args || {},
+        }
+    },
     scroll(args) {
         return {
             ...items.default(),
