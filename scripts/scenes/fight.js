@@ -156,6 +156,7 @@ scenes.fight = () => {
 
             let EXPforAll = 2;
             let wrenchGain = 100;
+            let brickGain = 0;
             for (j = 0; j < 3; j++) {
                 for (i = 0; i < 3; i++) {
                     if (epositions[i][j].strength != undefined) EXPforAll += epositions[i][j].strength / 3;
@@ -173,13 +174,14 @@ scenes.fight = () => {
 
             addWrenches(wrenchGain);
             winScreen[2].text = "+" + wrenchGain + " wrenches!";
+            winScreen[3].text = "+" + brickGain + " bricks!";
 
             for (i = 0; i < game.chars.length; i++) {
                 getPlayer(1 + i).EXP += EXPforAll;
             }
                 
             for (i = 0; i < game.chars.length; i++) {
-                winScreen[3 + i].text = getPlayer(i + 1).name + "  + " + EXPforAll + "XP!     " + getPlayer(i + 1).EXP + "/25";
+                winScreen[4 + i].text = getPlayer(i + 1).name + "  + " + EXPforAll + "XP!     " + getPlayer(i + 1).EXP + "/25";
             }
             for (i = 0; i < winScreen.length; i++) {
                 winScreen[i].alpha = 255;
@@ -1137,8 +1139,14 @@ scenes.fight = () => {
         alpha: 0,
     }));
     winScreen.push(controls.label({
-        anchor: [0.62, 0.4 + (0.025 * i)],
+        anchor: [0.62, 0.4],
         text: "wrenches",
+        fontSize: 20, fill: "black", align: "left",
+        alpha: 0,
+    }));
+    winScreen.push(controls.label({
+        anchor: [0.62, 0.425],
+        text: "bricks",
         fontSize: 20, fill: "black", align: "left",
         alpha: 0,
     }));

@@ -270,6 +270,18 @@ function addWrenches(amount = 0) {
     }
 }
 
+function addBricks(amount = 0) {
+    // only from boss fights and enemies from the "Scorched Planet"(Scrap Planet after Platinschrott Volcano eruption)
+    if (game.bricks != undefined) {
+        if (game.bricks < 999999) {
+            game.bricks += amount;
+        }
+        else {
+            game.bricks = 999999;
+        }
+    }
+}
+
 // I copied these almost 1:1 from legacy.
 // Got a problem with that? Huh?
 
@@ -342,6 +354,7 @@ function loadGame() {
         saveCopy.characters.gau.effect = ["none", 0];
         if (saveCopy.time == undefined) saveCopy.time = 0;
         if (saveCopy.wrenches == undefined) saveCopy.wrenches = 0;
+        if (saveCopy.bricks == undefined) saveCopy.bricks = 0;
         if (saveCopy.inventory == undefined) saveCopy.inventory = {"brickyleaf" : 5, "potion" : 3};
 
         game = saveCopy;

@@ -13,7 +13,6 @@
 - Multiple dialogue types
 - Switch to different sprites
 
-- Bricks (999,999 cap)
 - Animated UI (what exactly?)
 - Equipment system:
 Weapon slots (LHand/RHand), Armor slots (Head/Body/Bottom/Hand), and accessory slots (Hand/Neck/Head).
