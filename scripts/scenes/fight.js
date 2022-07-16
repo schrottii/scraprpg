@@ -111,6 +111,7 @@ scenes.fight = () => {
     var enemyAmounts = ["", "", "", "", "", "", "", "", ""];
     var fightOverview = [];
     var winScreen = [];
+    var fleeWrenches = [];
     var actionDisplay = [];
     var actionText = [];
 
@@ -970,6 +971,8 @@ scenes.fight = () => {
 
                         let runTime = 0;
                         let runLaps = 0;
+                        let wrenchTime = 0;
+                        let wrenchi = 0;
                         for (i = 0; i < positionControls.length; i++) {
                             if (positionControls[i].source != "gear") positionControls[i].defoffset[0] = positionControls[i].offset[0];
                             if (positionControls[i].source != "gear") positionControls[i].snip[1] = 32;
@@ -987,6 +990,33 @@ scenes.fight = () => {
                                 runTime = 0;
                                 runLaps = t;
                             }
+
+                            wrenchTime += t - runLaps;
+                            if (wrenchTime > 49) {
+                                wrenchTime = 0;
+                                wrenchi += 1;
+                                if (wrenchi < 50) {
+                                    let where = 0;
+                                    while (where == 0) {
+                                        for (i = 0; i < positionControls.length; i++) {
+                                            if (positionControls[i].source != "gear") if (Math.random() > 0.7) where = i;
+                                        }
+                                    }
+                                    fleeWrenches[wrenchi].anchor[0] = positionControls[where].anchor[0] + 0;
+                                    fleeWrenches[wrenchi].anchor[1] = positionControls[where].anchor[1] + (Math.random()/10);
+                                    fleeWrenches[wrenchi].offset[0] = positionControls[where].offset[0] * 2;
+                                    fleeWrenches[wrenchi].offset[1] = positionControls[where].offset[1] + 0;
+                                    console.log(fleeWrenches[wrenchi].anchor, fleeWrenches[wrenchi].offset);
+                                    fleeWrenches[wrenchi].alpha = 255;
+                                }
+                            }
+
+                            for (i = 0; i < fleeWrenches.length; i++) {
+                                fleeWrenches[i].offset[0] += 8;
+                                fleeWrenches[i].offset[1] += 1;
+                                if (fleeWrenches[i].offset[0] > 400) fleeWrenches[i].alpha = 0;
+                            }
+
                             if (t > 2000) {
                                 for (i = 0; i < positionControls.length; i++) {
                                     if (positionControls[i].source != "gear") positionControls[i].offset[0] = -500;
@@ -1029,6 +1059,13 @@ scenes.fight = () => {
         
     }
 
+    for (i = 0; i < 50; i++) {
+        fleeWrenches.push(controls.image({
+            anchor: [0.5, 0.5], offset: [10, 10], sizeOffset: [32, 32],
+            source: "wrench",
+            alpha: 0,
+        }));
+    }
 
     for (i = 0; i < 3; i++) {
         actionDisplay.push(controls.label({
@@ -1810,7 +1847,6 @@ scenes.fight = () => {
             runTime = 0;
             runLaps = t;
         }
-        console.log(runTime);
         if (t > 1000) {
             for (i = 0; i < positionControls.length; i++) {
                 if (positionControls[i].source != "gear") positionControls[i].offset[0] = positionControls[i].defoffset;
@@ -1880,12 +1916,11 @@ scenes.fight = () => {
         // Controls
         controls: [
             // Load all the nice stuff
-            //...fightBgRects,
             ...fightButtons, ...fightActions, turnDisplay, fleeLoss, fleeIcon,
             ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
             ...fightStats, ...actionDisplay, ...winScreen,
-            ...positionControls, ...epositionControls, ...positionGrid, ...attackAnimationObjects, ...battleNumbers,
+            ...positionControls, ...epositionControls, ...positionGrid, ...attackAnimationObjects, ...battleNumbers, ...fleeWrenches,
         ],
     }
 };
