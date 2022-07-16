@@ -1,5 +1,5 @@
 ##TODO:
-21 Things left to do:
+20 Things left to do:
 
 - Proper battle fighting animations
 - Proper victory

@@ -173,19 +173,32 @@ scenes.fight = () => {
             wrenchGain = Math.ceil(wrenchGain);
 
             addWrenches(wrenchGain);
-            winScreen[2].text = "+" + wrenchGain + " wrenches!";
-            winScreen[3].text = "+" + brickGain + " bricks!";
+            winScreen[3].text = "+" + wrenchGain + " wrenches!";
+            winScreen[4].text = "+" + brickGain + " bricks!";
 
             for (i = 0; i < game.chars.length; i++) {
                 getPlayer(1 + i).EXP += EXPforAll;
             }
                 
             for (i = 0; i < game.chars.length; i++) {
-                winScreen[4 + i].text = getPlayer(i + 1).name + "  + " + EXPforAll + "XP!     " + getPlayer(i + 1).EXP + "/25";
+                winScreen[5 + i].text = getPlayer(i + 1).name + "  + " + EXPforAll + "XP!     " + getPlayer(i + 1).EXP + "/25";
             }
             for (i = 0; i < winScreen.length; i++) {
+                winScreen[i].offset[1] = -1000;
                 winScreen[i].alpha = 255;
             }
+            addAnimator(function (t) {
+                for (i = 0; i < winScreen.length; i++) {
+                    winScreen[i].offset[1] = Math.min(-1000 + t, 0);
+                }
+                if (t > 1000) {
+                    for (i = 0; i < winScreen.length; i++) {
+                        winScreen[i].offset[1] = 0;
+                    }
+                    return true;
+                }
+                return false;
+            })
             checkLevelUps();
         }
 
@@ -1128,38 +1141,43 @@ scenes.fight = () => {
 
     // Win Screen
     winScreen.push(controls.rect({
-        anchor: [0.2, 0.3], sizeAnchor: [0.6, 0.4],
+        anchor: [0.2, 0.3], sizeAnchor: [0.6, 0.4], offset: [0, -1000],
         fill: "rgb(181, 133, 66)",
         alpha: 0,
     }));
+    winScreen.push(controls.rect({
+        anchor: [0.21, 0.31], sizeAnchor: [0.58, 0.38], offset: [0, -1000],
+        fill: "rgb(201, 163, 96)",
+        alpha: 0,
+    }));
     winScreen.push(controls.label({
-        anchor: [0.5, 0.32],
+        anchor: [0.5, 0.33], offset: [0, -1000],
         text: "Victory!",
-        fontSize: 28, fill: "black", align: "center",
+        fontSize: 36, fill: "black", align: "center",
         alpha: 0,
     }));
     winScreen.push(controls.label({
-        anchor: [0.62, 0.4],
+        anchor: [0.62, 0.4], offset: [0, -1000],
         text: "wrenches",
-        fontSize: 20, fill: "black", align: "left",
+        fontSize: 24, fill: "black", align: "left",
         alpha: 0,
     }));
     winScreen.push(controls.label({
-        anchor: [0.62, 0.425],
+        anchor: [0.62, 0.43], offset: [0, -1000],
         text: "bricks",
-        fontSize: 20, fill: "black", align: "left",
+        fontSize: 24, fill: "black", align: "left",
         alpha: 0,
     }));
     for (i = 0; i < game.chars.length; i++) {
         winScreen.push(controls.label({
-            anchor: [0.22, 0.4 + (0.025 * i)],
+            anchor: [0.22, 0.4 + (0.03 * i)], offset: [0, -1000],
             text: "Nobody +0 XP",
-            fontSize: 20, fill: "black", align: "left",
+            fontSize: 24, fill: "black", align: "left",
             alpha: 0,
         }));
     }
     winScreen.push(controls.button({
-        anchor: [0.7, 0.6], sizeAnchor: [0.075, 0.05],
+        anchor: [0.7, 0.6], sizeAnchor: [0.075, 0.05], offset: [0, -1000],
         text: "Continue",
         onClick(args) {
             if (checkAllDead(true)) {
