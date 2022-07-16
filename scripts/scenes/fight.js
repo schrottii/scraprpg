@@ -1147,7 +1147,7 @@ scenes.fight = () => {
     }));
     winScreen.push(controls.rect({
         anchor: [0.21, 0.31], sizeAnchor: [0.58, 0.38], offset: [0, -1000],
-        fill: "rgb(201, 163, 96)",
+        fill: "rgb(212, 159, 82)",
         alpha: 0,
     }));
     winScreen.push(controls.label({
