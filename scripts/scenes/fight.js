@@ -183,10 +183,11 @@ scenes.fight = () => {
                             }
 
                             controlled.snip[0] = controlled.defsnip + (32 * Math.max(0, Math.floor(controlled.aniTime)));
-                            if (positions == []) {
+                            if (controlled.aniTime2 > 2999) {
                                 delete controlled.aniTime;
                                 delete controlled.aniTime2;
                                 delete controlled.defsnip;
+                                victoryScreen();
                                 return true;
                             }
                             return false;
@@ -194,53 +195,7 @@ scenes.fight = () => {
                     }
                 }
             }
-
-            let EXPforAll = 2;
-            let wrenchGain = 100;
-            let brickGain = 0;
-            for (j = 0; j < 3; j++) {
-                for (i = 0; i < 3; i++) {
-                    if (epositions[i][j].strength != undefined) EXPforAll += epositions[i][j].strength / 3;
-                    if (epositions[i][j].maxHP != undefined) EXPforAll += epositions[i][j].maxHP / 14;
-                }
-            }
-            for (j = 0; j < 3; j++) {
-                for (i = 0; i < 3; i++) {
-                    if (epositions[i][j].strength != undefined) wrenchGain += epositions[i][j].strength * 16;
-                    if (epositions[i][j].maxHP != undefined) wrenchGain += epositions[i][j].maxHP / 3;
-                }
-            }
-            EXPforAll = Math.ceil(EXPforAll);
-            wrenchGain = Math.ceil(wrenchGain);
-
-            addWrenches(wrenchGain);
-            winScreen[3].text = "+" + wrenchGain + " wrenches!";
-            winScreen[4].text = "+" + brickGain + " bricks!";
-
-            for (i = 0; i < game.chars.length; i++) {
-                getPlayer(1 + i).EXP += EXPforAll;
-            }
-                
-            for (i = 0; i < game.chars.length; i++) {
-                winScreen[5 + i].text = getPlayer(i + 1).name + "  + " + EXPforAll + "XP!     " + getPlayer(i + 1).EXP + "/25";
-            }
-            for (i = 0; i < winScreen.length; i++) {
-                winScreen[i].offset[1] = -1000;
-                winScreen[i].alpha = 255;
-            }
-            addAnimator(function (t) {
-                for (i = 0; i < winScreen.length; i++) {
-                    winScreen[i].offset[1] = Math.min(-1000 + t, 0);
-                }
-                if (t > 1000) {
-                    for (i = 0; i < winScreen.length; i++) {
-                        winScreen[i].offset[1] = 0;
-                    }
-                    return true;
-                }
-                return false;
-            })
-            checkLevelUps();
+            
         }
 
         let aliveallies = 0;
@@ -256,6 +211,79 @@ scenes.fight = () => {
             alert("Remind me to add a proper death screen");
             setScene(scenes.title());
         }
+    }
+
+    function victoryScreen() {
+        for (j = 0; j < 3; j++) {
+            for (i = 0; i < 3; i++) {
+                if (positionControls[i + (j * 3)].source != "gear") {
+                    positionControls[i + (j * 3)].defanchor = positionControls[i].anchor[0];
+                    positionControls[i + (j * 3)].source = positions[i][j].occupied;
+                    positionControls[i + (j * 3)].snip = [0, 64, 32, 32];
+                }
+            }
+        }
+        let runTime = 0;
+        addAnimator(function (t) {
+            for (i = 0; i < positionControls.length; i++) {
+                if (positionControls[i].source != "gear") positionControls[i].anchor[0] = positionControls[i].defanchor + (t / 1000);
+                if (positionControls[i].source != "gear") positionControls[i].snip[0] = Math.floor(runTime) * 32;
+
+                runTime += (t/250);
+                if (runTime >= 2) runTime = 0;
+            }
+            if (t > 1000) {
+
+                let EXPforAll = 2;
+                let wrenchGain = 100;
+                let brickGain = 0;
+                for (j = 0; j < 3; j++) {
+                    for (i = 0; i < 3; i++) {
+                        if (epositions[i][j].strength != undefined) EXPforAll += epositions[i][j].strength / 3;
+                        if (epositions[i][j].maxHP != undefined) EXPforAll += epositions[i][j].maxHP / 14;
+                    }
+                }
+                for (j = 0; j < 3; j++) {
+                    for (i = 0; i < 3; i++) {
+                        if (epositions[i][j].strength != undefined) wrenchGain += epositions[i][j].strength * 16;
+                        if (epositions[i][j].maxHP != undefined) wrenchGain += epositions[i][j].maxHP / 3;
+                    }
+                }
+                EXPforAll = Math.ceil(EXPforAll);
+                wrenchGain = Math.ceil(wrenchGain);
+
+                addWrenches(wrenchGain);
+                winScreen[3].text = "+" + wrenchGain + " wrenches!";
+                winScreen[4].text = "+" + brickGain + " bricks!";
+
+                for (i = 0; i < game.chars.length; i++) {
+                    getPlayer(1 + i).EXP += EXPforAll;
+                }
+
+                for (i = 0; i < game.chars.length; i++) {
+                    winScreen[5 + i].text = getPlayer(i + 1).name + "  + " + EXPforAll + "XP!     " + getPlayer(i + 1).EXP + "/25";
+                }
+                for (i = 0; i < winScreen.length; i++) {
+                    winScreen[i].offset[1] = -1000;
+                    winScreen[i].alpha = 255;
+                }
+                addAnimator(function (t) {
+                    for (i = 0; i < winScreen.length; i++) {
+                        winScreen[i].offset[1] = Math.min(-1000 + t, 0);
+                    }
+                    if (t > 1000) {
+                        for (i = 0; i < winScreen.length; i++) {
+                            winScreen[i].offset[1] = 0;
+                        }
+                        return true;
+                    }
+                    return false;
+                })
+                checkLevelUps();
+                return true;
+            }
+            return false;
+        })
     }
 
     function checkAllAction() {
