@@ -177,7 +177,7 @@ scenes.fight = () => {
                     if (amount > 1) {
                         addAnimator(function (t) {
                             controlled.aniTime += ((t - controlled.aniTime2) / 500);
-                            if (controlled.aniTime >= controlled.amount) {
+                            if (controlled.aniTime >= controlled.amount - 1) {
                                 controlled.aniTime = 0;
                                 controlled.aniTime2 = t;
                             }
@@ -228,10 +228,10 @@ scenes.fight = () => {
             for (i = 0; i < positionControls.length; i++) {
                 if (positionControls[i].source != "gear") positionControls[i].anchor[0] = positionControls[i].defanchor + (t / 1000);
                 if (positionControls[i].source != "gear") positionControls[i].snip[0] = Math.floor(runTime) * 32;
-
-                runTime += (t/250);
-                if (runTime >= 2) runTime = 0;
             }
+
+            runTime += (t / 250);
+            if (runTime >= 2) runTime = 0;
             if (t > 1000) {
 
                 let EXPforAll = 2;
@@ -1484,7 +1484,8 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             positionControls.push(controls.image({
-                anchor: [0.025, 0.45], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
+                anchor: [0.0 /* 0.025 */, 0.45], offset: [-256, 72 * j], sizeOffset: [64, 64],
+                defoffset: 72 * i,
                 source: "gear",
                 alpha: 255,
                 snip: [0, 64, 32, 32],
@@ -1759,6 +1760,27 @@ scenes.fight = () => {
             }
         }
     }
+
+    let runTime = 0;
+    addAnimator(function (t) {
+        for (i = 0; i < positionControls.length; i++) {
+            if (positionControls[i].source != "gear") positionControls[i].offset[0] = positionControls[i].defoffset - (1000 - t);
+            if (positionControls[i].source != "gear") positionControls[i].anchor[0] = Math.min(t / 40000, 0.025);
+            if (positionControls[i].source != "gear") positionControls[i].snip[0] = Math.floor(runTime) * 32;
+        }
+
+        runTime += (t / 250);
+        if (runTime >= 2) runTime = 0;
+        if (t > 1000) {
+            for (i = 0; i < positionControls.length; i++) {
+                if (positionControls[i].source != "gear") positionControls[i].offset[0] = positionControls[i].defoffset;
+                if (positionControls[i].source != "gear") positionControls[i].anchor[0] = 0.025;
+            }
+            return true;
+        }
+        return false;
+    });
+    delete runTime;
 
     return {
         // Pre-render function
