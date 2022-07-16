@@ -175,7 +175,7 @@ scenes.fight = () => {
 
                     if (amount > 1) {
                         addAnimator(function (t) {
-                            controlled.aniTime += ((t - controlled.aniTime2) / 125);
+                            controlled.aniTime += ((t - controlled.aniTime2) / 500);
                             if (controlled.aniTime >= controlled.amount) {
                                 controlled.aniTime = 0;
                                 controlled.aniTime2 = t;
