@@ -34,9 +34,12 @@ let images = {
     actionbutton: "data/images/actionbutton_inactive.png",
     actionbutton_active: "data/images/actionbutton_active.png",
 
+    // to be removed
     bleu_win: "data/images/BleuW.png",
     corelle_win: "data/images/CorelleW.png",
     gau_win: "data/images/CorelleW.png",
+
+    bleu_ani: "data/images/Bleu_Sprite_Sheet_Other.jpg",
 
     bleu_dead: "data/images/BleuDead.png",
     corelle_dead: "data/images/CorelleDead.png",

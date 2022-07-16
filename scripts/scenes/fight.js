@@ -147,10 +147,50 @@ scenes.fight = () => {
             stopMusic();
             playSound("victory");
 
-            // Get rid of acid effect
             for (i = 0; i < game.chars.length; i++) {
+                // Get rid of acid effect
                 if (getPlayer(i + 1).effect[0] == "acid") {
                     getPlayer(i + 1).effect = ["none", 0];
+                }
+
+                // Victory Animation
+                let chr = 0;
+                for (j = 0; j < 3; j++) {
+                    for (k = 0; k < 3; k++) {
+                        if (positions[k][j].occupied == game.chars[i]) chr = k + (j * 3);
+                    }
+                }
+                let ret = emotionAnimation(game.chars[i], "victory");
+                if (ret != false) {
+                    let file = ret[0];
+                    let snip = ret[1];
+                    let amount = ret[2];
+                    let controlled = positionControls[chr];
+                    controlled.source = file;
+                    controlled.snip = snip;
+                    controlled.defsnip = snip[0];
+                    controlled.amount = amount;
+                    controlled.aniTime = 0;
+                    controlled.aniTime2 = 0;
+
+                    if (amount > 1) {
+                        addAnimator(function (t) {
+                            controlled.aniTime += ((t - controlled.aniTime2) / 125);
+                            if (controlled.aniTime >= controlled.amount) {
+                                controlled.aniTime = 0;
+                                controlled.aniTime2 = t;
+                            }
+
+                            controlled.snip[0] = controlled.defsnip + (32 * Math.max(0, Math.floor(controlled.aniTime)));
+                            if (positions == []) {
+                                delete controlled.aniTime;
+                                delete controlled.aniTime2;
+                                delete controlled.defsnip;
+                                return true;
+                            }
+                            return false;
+                        })
+                    }
                 }
             }
 
@@ -1487,8 +1527,6 @@ scenes.fight = () => {
                 if (positions[i]) {
                     if (positions[i][j].isOccupied == true) {
                         if (win == true) {
-                            positionControls[i + (j * 3)].source = positions[i][j].occupied + "_win";
-                            positionControls[i + (j * 3)].snip = [0, 0, 32, 32];
                         }
                         else {
                             positionControls[i + (j * 3)].source = positions[i][j].occupied;

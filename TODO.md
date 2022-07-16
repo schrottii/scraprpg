@@ -1,5 +1,5 @@
 ##TODO:
-20 Things left to do:
+19 Things left to do:
 
 - Proper battle fighting animations
 - Proper victory
@@ -11,7 +11,6 @@
 - Mastery Techs
 - Duo Mastery Techs
 - Multiple dialogue types
-- Switch to different sprites
 
 - Animated UI (what exactly?)
 - Equipment system:

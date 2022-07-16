@@ -75,6 +75,38 @@ function getEmotion(emotion) { //How do you spell portrait?
     }
 }
 
+function emotionAnimation(char, emotion) { // Epic rhyme
+    // This function returns, well, emotion animation pics (laughing, victory, etc.)
+    let file = char + "_ani";
+    if (images[file] == undefined) return false;
+    let snip = [];
+    let size = 32;
+    let amount = 1;
+    switch (emotion) {
+        case "disappointed":
+            snip = [0, 0, size, size];
+            break;
+        case "love":
+            snip = [size, 0, size, size];
+            break;
+        case "crying":
+            snip = [size * 2, 0, size, size];
+            break;
+        case "laugh":
+            snip = [0, size, size, size];
+            amount = 2;
+            break;
+        case "victory":
+            snip = [size * 2, size, size, size];
+            amount = 2;
+            break;
+        case "anger":
+            snip = [size * 4, size, size, size];
+            break;
+    }
+    return [file, snip, amount];
+}
+
 function addItem(name, amount = 1) {
     if (game.inventory[name] == undefined) {
         game.inventory[name] = 0;
