@@ -6,6 +6,7 @@ let items = {
             shopcost: 200,
             max: 99,
             story: false,
+            self: false,
             effect: () => {
                 addWrenches(0);
             },

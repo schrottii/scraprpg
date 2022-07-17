@@ -125,6 +125,8 @@ scenes.fight = () => {
 
     var win = false;
 
+    var selectedItem;
+
 
     var fightlog = [
         "",
@@ -483,7 +485,7 @@ scenes.fight = () => {
                 executeActions();
                 break;
             case "item":
-                items[whoAGI.action[1]]({ player: game.characters[positions[whoAGI.action[2]][whoAGI.action[3]].occupied], anchor: positionControls[whoAGI.action[2] + (whoAGI.action[3] * 3)].anchor, offset: positionControls[pos[0] + (pos[1] * 3)].offset }).effect();
+                items[whoAGI.action[1]]({ user: game.characters[positions[whoAGI.action[2]][whoAGI.action[3]].occupied], player: game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied], anchor: positionControls[whoAGI.action[2] + (whoAGI.action[3] * 3)].anchor, offset: positionControls[pos[0] + (pos[1] * 3)].offset }).effect();
                 positions[pos[0]][pos[1]].action = false;
                 executeActions();
                 break;
@@ -1106,14 +1108,21 @@ scenes.fight = () => {
                     if (this.alpha == 255) {
                         if (positions[selectedAlly[0]][selectedAlly[1]].action == false && game.inventory[this.item.name] > 0) {
                             if (this.item().story != true) {
-                                positions[selectedAlly[0]][selectedAlly[1]].action = ["item", this.item.name, selectedAlly[0], selectedAlly[1]];
-                                removeItem(this.item.name, 1);
-
-
-                                fightaction = "none";
-                                positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "items/" + this.item().source;
-                                hideFightButtons();
-                                hideFightActions();
+                                if (this.item().self != true) {
+                                    fightaction = "item";
+                                    selectedItem = this.item;
+                                    hideFightButtons();
+                                    hideFightActions();
+                                }
+                                else {
+                                    selectedItem = this.item;
+                                    positions[selectedAlly[0]][selectedAlly[1]].action = ["item", selectedItem.name, selectedAlly[0], selectedAlly[1], selectedAlly[0], selectedAlly[1]];
+                                    removeItem(selectedItem.name, 1);
+                                    fightaction = "none";
+                                    positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "items/" + selectedItem().source;
+                                    hideFightButtons();
+                                    hideFightActions();
+                                }
                             }
                         }
                     }
@@ -1572,7 +1581,12 @@ scenes.fight = () => {
                         showFightButtons();
                     }
 
-
+                    if (fightaction == "item") {
+                        positions[selectedAlly[0]][selectedAlly[1]].action = ["item", selectedItem.name, selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
+                        removeItem(selectedItem.name, 1);
+                        fightaction = "none";
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "items/" + selectedItem().source;
+                    }
 
                     if (fightaction == "switch") {
                         if (switchThose[0][0] != [this.pos1] || switchThose[0][1] != [this.pos2]) {
