@@ -230,7 +230,7 @@ scenes.fight = () => {
         let runLaps = 0;
         addAnimator(function (t) {
             for (i = 0; i < positionControls.length; i++) {
-                if (positionControls[i].source != "gear") positionControls[i].anchor[0] = positionControls[i].defanchor + (t / 1000);
+                if (positionControls[i].source != "gear") positionControls[i].anchor[0] = positionControls[i].defanchor + (t / 2000);
                 if (positionControls[i].source != "gear") positionControls[i].snip[0] = Math.floor(runTime) * 32;
             }
 
@@ -239,7 +239,7 @@ scenes.fight = () => {
                 runTime = 0;
                 runLaps = t;
             }
-            if (t > 1000) {
+            if (t > 2000) {
 
                 let EXPforAll = 2;
                 let wrenchGain = 100;
@@ -666,7 +666,7 @@ scenes.fight = () => {
             goal[1] -= 160;
 
             attackAnimationObjects[fpos1 + (fpos2 * 3)].anchor = positionControls[fpos1 + (fpos2 * 3)].anchor;
-            attackAnimationObjects[fpos1 + (fpos2 * 3)].offset = [positionControls[fpos1 + (fpos2 * 3)].offset[0] + 72, positionControls[fpos1 + (fpos2 * 3)].offset[1]];
+            attackAnimationObjects[fpos1 + (fpos2 * 3)].offset = [positionControls[fpos1 + (fpos2 * 3)].offset[0] + 56, positionControls[fpos1 + (fpos2 * 3)].offset[1]];
             attackAnimationObjects[fpos1 + (fpos2 * 3)].alpha = 255;
             attackAnimationObjects[fpos1 + (fpos2 * 3)].source = "attackani0";
 
@@ -674,7 +674,7 @@ scenes.fight = () => {
                 positionControls[fpos1 + (fpos2 * 3)].anchor[0] = own[0] + ((goal[0] / al) * Math.min(al, t));
 
                 attackAnimationObjects[fpos1 + (fpos2 * 3)].anchor = positionControls[fpos1 + (fpos2 * 3)].anchor;
-                attackAnimationObjects[fpos1 + (fpos2 * 3)].offset = [positionControls[fpos1 + (fpos2 * 3)].offset[0] + 72, positionControls[fpos1 + (fpos2 * 3)].offset[1]];
+                attackAnimationObjects[fpos1 + (fpos2 * 3)].offset = [positionControls[fpos1 + (fpos2 * 3)].offset[0] + 56, positionControls[fpos1 + (fpos2 * 3)].offset[1]];
 
                 if (t > 200 && t < 399 && own[3] != 0) {
                     positionControls[fpos1 + (fpos2 * 3)].offset[1] = own[3] * (1 - ((t - 200)) / 200);
@@ -1555,7 +1555,7 @@ scenes.fight = () => {
     }
     for (i = 0; i < 9; i++) {
         attackAnimationObjects.push(controls.image({
-            anchor: [0, 0], offset: [0, 0], sizeOffset: [32, 32],
+            anchor: [0, 0], offset: [0, 0], sizeOffset: [48, 48],
             source: "attackani0",
             alpha: 0,
         }))
