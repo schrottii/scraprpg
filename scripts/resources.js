@@ -29,6 +29,9 @@ let images = {
     attackani0: "data/images/attackani0.png",
     attackani1: "data/images/attackani1.png",
     attackani2: "data/images/attackani2.png",
+    eattackani0: "data/images/eattackani0.png",
+    eattackani1: "data/images/eattackani1.png",
+    eattackani2: "data/images/eattackani2.png",
 
     bleu: "data/images/Map_Bleu.png",
     corelle: "data/images/Map_Corelle.png",

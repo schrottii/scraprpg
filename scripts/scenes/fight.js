@@ -475,7 +475,7 @@ scenes.fight = () => {
                         postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " missed!");
                     }
                     executeActions();
-                });
+                }, false);
                 positions[pos[0]][pos[1]].action = false;
                 break;
             case "heal":
@@ -643,29 +643,27 @@ scenes.fight = () => {
         switchThose = [[0, 0], [0, 0]];
     }
 
-    function prepareAttackAnimation(fpos1, fpos2, pos1, pos2, onFinish, enemy = false) {
+    function prepareAttackAnimation(fpos1, fpos2, pos1, pos2, onFinish, enemy) {
         let goalX = epositionControls[pos1 + (pos2 * 3)].anchor[0];
         let ownX = positionControls[fpos1 + (fpos2 * 3)].anchor[0];
         let goalX2 = epositionControls[pos1 + (pos2 * 3)].offset[0];
-        let ownX2 = positionControls[fpos1 + (fpos2 * 3)].offset[0];
+        let ownX2 = positionControls[fpos1 + (fpos2 * 3)].defoffset;
 
         let goalY = epositionControls[pos1 + (pos2 * 3)].anchor[1];
         let ownY = positionControls[fpos1 + (fpos2 * 3)].anchor[1];
         let goalY2 = epositionControls[pos1 + (pos2 * 3)].offset[1];
         let ownY2 = positionControls[fpos1 + (fpos2 * 3)].offset[1];
 
-
         attackAnimation(fpos1, fpos2, pos1, pos2, [ownX, ownX2, ownY, ownY2], [goalX, goalX2, goalY, goalY2], onFinish, enemy)
     }
 
     function attackAnimation(fpos1, fpos2, pos1, pos2, own, goal, onFinish, enemy) {
         let al = 800;
-
         if (enemy == false) {
             positionControls[fpos1 + (fpos2 * 3)].offset[0] = own[1];
             positionControls[fpos1 + (fpos2 * 3)].offset[1] = own[3];
 
-            goal[1] -= 160;
+            goal[1] -= 232;
 
             attackAnimationObjects[fpos1 + (fpos2 * 3)].anchor = positionControls[fpos1 + (fpos2 * 3)].anchor;
             attackAnimationObjects[fpos1 + (fpos2 * 3)].offset = [positionControls[fpos1 + (fpos2 * 3)].offset[0] + 56, positionControls[fpos1 + (fpos2 * 3)].offset[1]];
@@ -700,22 +698,52 @@ scenes.fight = () => {
                     onFinish(fpos1, fpos2, pos1, pos2);
                     return true;
                 }
-                
+
                 return false;
             });
         }
         else {
+            epositionControls[pos1 + (pos2 * 3)].offset[0] = goal[1];
+            epositionControls[pos1 + (pos2 * 3)].offset[1] = goal[3];
+            own[1] += 160;
+
+            attackAnimationObjects[9 + pos1 + (pos2 * 3)].anchor[0] = epositionControls[pos1 + (pos2 * 3)].anchor[0] + 0;
+            attackAnimationObjects[9 + pos1 + (pos2 * 3)].anchor[1] = epositionControls[pos1 + (pos2 * 3)].anchor[1] + 0;
+            attackAnimationObjects[9 + pos1 + (pos2 * 3)].offset = [epositionControls[pos1 + (pos2 * 3)].offset[0] - 72, epositionControls[pos1 + (pos2 * 3)].offset[1]];
+            attackAnimationObjects[9 + pos1 + (pos2 * 3)].alpha = 255;
+            attackAnimationObjects[9 + pos1 + (pos2 * 3)].source = "eattackani0";
+
             addAnimator(function (t) {
-                epositionControls[pos1 + (pos2 * 3)].anchor[0] = 0.975 - (0.0005 * t);
+                epositionControls[pos1 + (pos2 * 3)].anchor[0] = own[0] + Math.max(0, ((goal[0] / al) * (al - Math.min(al, t))));
 
-                if (epositionControls[pos1 + (pos2 * 3)].anchor[0] + (epositionControls[pos1 + (pos2 * 3)].offset[0] / 1000) <
-                    positionControls[fpos1 + (fpos2 * 3)].anchor[0] + (positionControls[fpos1 + (fpos2 * 3)].offset[0] / 1000)) {
+                attackAnimationObjects[9 + pos1 + (pos2 * 3)].anchor[0] = epositionControls[pos1 + (pos2 * 3)].anchor[0] + 0;
+                attackAnimationObjects[9 + pos1 + (pos2 * 3)].anchor[1] = epositionControls[pos1 + (pos2 * 3)].anchor[1] + 0;
+                attackAnimationObjects[9 + pos1 + (pos2 * 3)].offset = [epositionControls[pos1 + (pos2 * 3)].offset[0] - 72, epositionControls[pos1 + (pos2 * 3)].offset[1]];
 
-                    epositionControls[pos1 + (pos2 * 3)].anchor[0] = 0.975;
-
+                attackAnimationObjects[9 + pos1 + (pos2 * 3)].alpha = 255;
+                if (t > 200 && t < 399 && goal[3] != 0) {
+                    epositionControls[pos1 + (pos2 * 3)].offset[1] = goal[3] * (1 - ((t - 200)) / 200);
+                    epositionControls[pos1 + (pos2 * 3)].offset[0] = goal[1] * (1 - ((t - 200)) / 200);
+                }
+                if (t > 400 && t < 599 && own[3] != 0) {
+                    epositionControls[pos1 + (pos2 * 3)].offset[1] = own[3] * (0 + ((t - 400)) / 200);
+                    epositionControls[pos1 + (pos2 * 3)].offset[0] = own[1] * (0 + ((t - 400)) / 200);
+                }
+                if (t > 1000 && t < 1049 || t > 1100 && t < 1149) {
+                    attackAnimationObjects[9 + pos1 + (pos2 * 3)].source = "eattackani1";
+                }
+                if (t > 1050 && t < 1099 || t > 1150 && t < 1199) {
+                    attackAnimationObjects[9 + pos1 + (pos2 * 3)].source = "eattackani2";
+                }
+                if (t > 1200) {
+                    epositionControls[pos1 + (pos2 * 3)].anchor[0] = goal[0];
+                    epositionControls[pos1 + (pos2 * 3)].offset[0] = goal[1];
+                    epositionControls[pos1 + (pos2 * 3)].offset[1] = goal[3];
+                    attackAnimationObjects[9 + pos1 + (pos2 * 3)].alpha = 0;
                     onFinish(fpos1, fpos2, [pos1, pos2]);
                     return true;
                 }
+
                 return false;
             });
         }
@@ -1555,7 +1583,7 @@ scenes.fight = () => {
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].element = enemyTypes[currentEnemies[i][0]].element;
         }
     }
-    for (i = 0; i < 9; i++) {
+    for (i = 0; i < 18; i++) {
         attackAnimationObjects.push(controls.image({
             anchor: [0, 0], offset: [0, 0], sizeOffset: [48, 48],
             source: "attackani0",
