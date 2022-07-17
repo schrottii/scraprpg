@@ -33,6 +33,7 @@ let images = {
     bleu: "data/images/Map_Bleu.png",
     corelle: "data/images/Map_Corelle.png",
     gau: "data/images/Map_Gau.png",
+    skro: "data/images/Map_Skro.png",
 
     actionbutton: "data/images/actionbutton_inactive.png",
     actionbutton_active: "data/images/actionbutton_active.png",

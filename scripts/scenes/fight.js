@@ -443,6 +443,9 @@ scenes.fight = () => {
                     }
                     if (game.characters[positions[fpos1][fpos2].occupied].acc - epositions[pos1][pos2].eva > (Math.random() * 100)) {
                         let Damage = calculateDamage(1, fpos1, fpos2, pos1, pos2);
+                        if (positions[fpos1][fpos2].occupied == "skro") {
+                            Damage = 690;
+                        }
                         epositions[pos1][pos2].HP -= Damage; // Deal damage
                         battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, Damage *(-1), 0, epositionControls[pos1 + (pos2 * 3)].offset);
 

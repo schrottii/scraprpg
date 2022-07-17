@@ -9,7 +9,7 @@ var dialogueEmotion = "neutral";
 var overWorldStatsScroll = 0;
 
 // This is ALL protagonists in the game. Not only the ones you have equipped right now.
-const characters = ["bleu", "corelle", "gau"];
+const characters = ["bleu", "corelle", "gau", "skro"];
 
 // Function used to create enemies
 function createEnemy(type) {
@@ -1556,7 +1556,7 @@ scenes.game = () => {
             else if (isDusk()) nightEffect.snip = [8, 0, 8, 8];
             else if (isNight()) nightEffect.snip = [16, 0, 8, 8];
 
-            ctx.drawImage(images[game.chars[0]], 32 * Math.floor(walkTime), 32 * head, 32, 32,
+            ctx.drawImage(images[game.chars[3]], 32 * Math.floor(walkTime), 32 * head, 32, 32,
                 scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5) ),
                 scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zoom * scale, zoom * scale)
             ctx.imageSmoothingEnabled = true;

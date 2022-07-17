@@ -2,7 +2,7 @@ let game = {
     pfp: 1,
     map: "test",
     position: [4, 4],
-    chars: ["bleu", "corelle", "gau"], // MAX 6!!!
+    chars: ["bleu", "corelle", "gau", "skro"], // MAX 6!!!
     time: 0,
     wrenches: 0,
     bricks: 0,
@@ -53,6 +53,21 @@ let game = {
             element: "physical",
             effect: ["none", 0],
             pos: [2, 2],
+        },
+        skro: {
+            name: "Skro",
+            level: 1,
+            EXP: 0,
+            EP: 8,
+            maxEP: 2,
+            maxHP: 8,
+            HP: 16,
+            strength: 690,
+            agi: 5,
+            acc: 60,
+            element: "physical",
+            effect: ["none", 0],
+            pos: [0, 1],
         }
     }
 }

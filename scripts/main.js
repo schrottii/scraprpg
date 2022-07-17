@@ -343,7 +343,9 @@ function loadGame() {
             }
         }
         if (saveCopy.chars == undefined) saveCopy.chars = [saveCopy.char1, saveCopy.char2];
+        if (saveCopy.characters.skro == undefined) saveCopy.characters.skro = game.characters.skro;
         if (saveCopy.chars.length == 2) saveCopy.chars.push("gau");
+        if (saveCopy.chars.length == 3) saveCopy.chars.push("skro");
         if (saveCopy.characters.bleu.pos == undefined) {
             saveCopy.characters.bleu.pos = [0, 0];
             saveCopy.characters.corelle.pos = [0, 1];
@@ -352,6 +354,7 @@ function loadGame() {
         saveCopy.characters.bleu.effect = ["none", 0];
         saveCopy.characters.corelle.effect = ["none", 0];
         saveCopy.characters.gau.effect = ["none", 0];
+        saveCopy.characters.skro.effect = ["none", 0];
         if (saveCopy.time == undefined) saveCopy.time = 0;
         if (saveCopy.wrenches == undefined) saveCopy.wrenches = 0;
         if (saveCopy.bricks == undefined) saveCopy.bricks = 0;
