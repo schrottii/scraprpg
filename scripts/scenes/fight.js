@@ -240,7 +240,6 @@ scenes.fight = () => {
                 runLaps = t;
             }
             if (t > 2000) {
-
                 let EXPforAll = 2;
                 let wrenchGain = 100;
                 let brickGain = 0;

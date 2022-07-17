@@ -43,6 +43,7 @@ let images = {
     gau_win: "data/images/CorelleW.png",
 
     bleu_ani: "data/images/Bleu_Sprite_Sheet_Other.png",
+    corelle_ani: "data/images/Corelle_Sprite_Sheet_Other.png",
 
     bleu_dead: "data/images/BleuDead.png",
     corelle_dead: "data/images/CorelleDead.png",
