@@ -50,6 +50,8 @@ function battleNumber(pos, amount, type, offset = [0, 0]) {
 function updateBar(charName, HealthBefore) {
     let whichChar = characters.indexOf(charName);
     let which = 5 + (whichChar * amountStats);
+    let row = Math.ceil((whichChar + 1) / 3); // 1 or 2
+
     if (game.characters[charName].HP > 0) {
         let Leftend = 0.1960 * (Math.max(getPlayer(1 + whichChar).HP, 0) / getPlayer(1 + whichChar).maxHP);
         let Length = (0.1960 * (HealthBefore / getPlayer(1 + whichChar).maxHP)) - Leftend;
@@ -58,7 +60,7 @@ function updateBar(charName, HealthBefore) {
         fightStats[which].alpha = 255;
         if (Length > 0) {
             if (getPlayer(1 + whichChar).HP > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (getPlayer(1 + whichChar).HP / getPlayer(1 + whichChar).maxHP);
-            fightStats[which].anchor[0] = 0.242 + Leftend;
+            fightStats[which].anchor[0] = 0.242 + Leftend + (0.35 * (row-1));
             fightStats[which].sizeAnchor[0] = Length;
             addAnimator(function (t) {
                 if (t > 400) {
@@ -1038,7 +1040,6 @@ scenes.fight = () => {
                                     fleeWrenches[wrenchi].anchor[1] = positionControls[where].anchor[1] + (Math.random()/10);
                                     fleeWrenches[wrenchi].offset[0] = positionControls[where].offset[0] * 2;
                                     fleeWrenches[wrenchi].offset[1] = positionControls[where].offset[1] + 0;
-                                    console.log(fleeWrenches[wrenchi].anchor, fleeWrenches[wrenchi].offset);
                                     fleeWrenches[wrenchi].alpha = 255;
                                 }
                             }
@@ -1711,6 +1712,7 @@ scenes.fight = () => {
                             if (game.characters[positions[i][j].occupied].HP < 1 || positions[i][j].isOccupied == false) {
                                 positionControls[i + (j * 3)].source = positions[i][j].occupied + "_dead";
                                 positionControls[i + (j * 3)].snip = [0, 0, 32, 32];
+                                fightStats[4 + (game.chars.indexOf(positions[i][j].occupied)) * amountStats].alpha = 0;
                             }
                             else {
                                 positionControls[i + (j * 3)].source = "gear";
