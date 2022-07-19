@@ -1860,6 +1860,17 @@ scenes.fight = () => {
     for (i in game.characters) {
         if (game.chars.includes(game.characters[i].name.toLowerCase())) {
             if (game.characters[i].pos != undefined) {
+                let duplicate = false;
+                for (j in game.characters) {
+                    if (game.characters[i].pos[0] == game.characters[j].pos[0] && game.characters[i].pos[1] == game.characters[j].pos[1] && i != j) duplicate = true;
+                }
+                while (duplicate == true) {
+                    game.characters[i].pos = [Math.floor(3 * Math.random()), Math.floor(3 * Math.random())];
+                    duplicate = false;
+                    for (j in game.characters) {
+                        if (game.characters[i].pos[0] == game.characters[j].pos[0] && game.characters[i].pos[1] == game.characters[j].pos[1] && i != j) duplicate = true;
+                    }
+                }
                 positions[game.characters[i].pos[0]][game.characters[i].pos[1]].occupied = game.characters[i].name.toLowerCase();
                 positions[game.characters[i].pos[0]][game.characters[i].pos[1]].isOccupied = true;
             }
@@ -1878,6 +1889,7 @@ scenes.fight = () => {
             }
         }
     }
+
 
     let runTime = 0;
     let runLaps = 0;
