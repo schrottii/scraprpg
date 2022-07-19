@@ -182,7 +182,7 @@ function image_animation(image, columns, rows, speed=100) {
 }
 
 function getPlayer(character = 1) {
-    if (character > 3) character = 1;
+    if (character > characters.length) character = 1;
     return game.characters[game.chars[character - 1]];
 }
 
@@ -358,7 +358,11 @@ function loadGame() {
         if (saveCopy.time == undefined) saveCopy.time = 0;
         if (saveCopy.wrenches == undefined) saveCopy.wrenches = 0;
         if (saveCopy.bricks == undefined) saveCopy.bricks = 0;
-        if (saveCopy.inventory == undefined) saveCopy.inventory = {"brickyleaf" : 5, "potion" : 3};
+        if (saveCopy.inventory == undefined) saveCopy.inventory = { "brickyleaf": 5, "potion": 3 };
+        if (saveCopy.characters.skro.maxHP == 8) {
+            saveCopy.characters.skro.maxEP = 8;
+            saveCopy.characters.skro.maxHP = 16;
+        }
 
         game = saveCopy;
     }
