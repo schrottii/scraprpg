@@ -154,7 +154,7 @@ scenes.fight = () => {
             stopMusic();
             playSound("victory");
 
-            setTimeout(victoryScreen(), 3000);
+            setTimeout(() => { victoryScreen() }, 3000);
 
             for (i = 0; i < game.chars.length; i++) {
                 // Get rid of acid effect
@@ -436,61 +436,63 @@ scenes.fight = () => {
                 let pos2 = positions[pos[0]][pos[1]].action[4];
                 selectedAlly = [positions[pos[0]][pos[1]].action[1], positions[pos[0]][pos[1]].action[2]];
                 fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
-                prepareAttackAnimation(selectedAlly[0], selectedAlly[1], pos1, pos2, (fpos1, fpos2, pos1, pos2) => {
-                    if (epositions[pos1][pos2].isOccupied == false) {
-                        let exists = 0;
-                        for (j = 0; j < 3; j++) {
-                            for (i = 0; i < 3; i++) {
-                                if (epositions[i][j].isOccupied == true && exists == 0) {
-                                    exists = 1
-                                    pos1 = i;
-                                    pos2 = j;
-                                    break;
+                if (win == false) {
+                    prepareAttackAnimation(selectedAlly[0], selectedAlly[1], pos1, pos2, (fpos1, fpos2, pos1, pos2) => {
+                        if (epositions[pos1][pos2].isOccupied == false) {
+                            let exists = 0;
+                            for (j = 0; j < 3; j++) {
+                                for (i = 0; i < 3; i++) {
+                                    if (epositions[i][j].isOccupied == true && exists == 0) {
+                                        exists = 1
+                                        pos1 = i;
+                                        pos2 = j;
+                                        break;
+                                    }
                                 }
                             }
-                        }
-                        if (exists == 0) {
-                            positions[pos[0]][pos[1]].action = false;
-                            executeActions();
-                            return false;
-                        }
-                        
-                    }
-                    if (game.characters[positions[fpos1][fpos2].occupied].acc - epositions[pos1][pos2].eva > (Math.random() * 100)) {
-                        let Damage = calculateDamage(1, fpos1, fpos2, pos1, pos2);
-                        if (positions[fpos1][fpos2].occupied == "skro") {
-                            Damage = 690;
-                        }
-                        epositions[pos1][pos2].HP -= Damage; // Deal damage
-                        battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, Damage *(-1), 0, epositionControls[pos1 + (pos2 * 3)].offset);
+                            if (exists == 0) {
+                                positions[pos[0]][pos[1]].action = false;
+                                executeActions();
+                                return false;
+                            }
 
-                        playSound("damage");
-                        postLog(game.characters[positions[fpos1][fpos2].occupied].name + " attacks " + epositions[pos1][pos2].name + " and deals " + Damage + " damage!");
-                        if (getElementDamage(getStat(positions[fpos1][fpos2].occupied, "element"), epositions[pos1][pos2].element) != 1){
-                            postLog("Element boost: x" + getElementDamage(getStat(positions[fpos1][fpos2].occupied, "element"), epositions[pos1][pos2].element) + "!");
                         }
+                        if (game.characters[positions[fpos1][fpos2].occupied].acc - epositions[pos1][pos2].eva > (Math.random() * 100)) {
+                            let Damage = calculateDamage(1, fpos1, fpos2, pos1, pos2);
+                            if (positions[fpos1][fpos2].occupied == "skro") {
+                                Damage = 690;
+                            }
+                            epositions[pos1][pos2].HP -= Damage; // Deal damage
+                            battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, Damage * (-1), 0, epositionControls[pos1 + (pos2 * 3)].offset);
 
-                        if (epositions[pos1][pos2].HP < 1) { // Is dead?
-                            epositions[pos1][pos2].isOccupied = false;
-                            epositions[pos1][pos2].occupied = false;
-                            epositions[pos1][pos2].action = false;
-                            enemyAmounts[pos1 + (pos2 * 3)] = "";
+                            playSound("damage");
+                            postLog(game.characters[positions[fpos1][fpos2].occupied].name + " attacks " + epositions[pos1][pos2].name + " and deals " + Damage + " damage!");
+                            if (getElementDamage(getStat(positions[fpos1][fpos2].occupied, "element"), epositions[pos1][pos2].element) != 1) {
+                                postLog("Element boost: x" + getElementDamage(getStat(positions[fpos1][fpos2].occupied, "element"), epositions[pos1][pos2].element) + "!");
+                            }
 
-                            let Experience = epositions[pos1][pos2].strength;
-                            game.characters[positions[fpos1][fpos2].occupied].EXP += Experience;
+                            if (epositions[pos1][pos2].HP < 1) { // Is dead?
+                                epositions[pos1][pos2].isOccupied = false;
+                                epositions[pos1][pos2].occupied = false;
+                                epositions[pos1][pos2].action = false;
+                                enemyAmounts[pos1 + (pos2 * 3)] = "";
 
-                            postLog(game.characters[positions[fpos1][fpos2].occupied].name + " killed " + epositions[pos1][pos2].name + " and earned " + Experience + " EXP!");
-                            checkLevelUps();
-                            checkAllDead();
+                                let Experience = epositions[pos1][pos2].strength;
+                                game.characters[positions[fpos1][fpos2].occupied].EXP += Experience;
+
+                                postLog(game.characters[positions[fpos1][fpos2].occupied].name + " killed " + epositions[pos1][pos2].name + " and earned " + Experience + " EXP!");
+                                checkLevelUps();
+                                checkAllDead();
+                            }
                         }
-                    }
-                    else {
-                        battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, "Miss...", 0, epositionControls[pos1 + (pos2 * 3)].offset);
-                        playSound("miss");
-                        postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " missed!");
-                    }
-                    executeActions();
-                }, false);
+                        else {
+                            battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, "Miss...", 0, epositionControls[pos1 + (pos2 * 3)].offset);
+                            playSound("miss");
+                            postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " missed!");
+                        }
+                        executeActions();
+                    }, false);
+                }
                 positions[pos[0]][pos[1]].action = false;
                 break;
             case "heal":
