@@ -1485,6 +1485,13 @@ scenes.fight = () => {
         }));
     }
 
+    function getHPFill(char) {
+        if (getPlayer(char + 1).HP < 1) return "red";
+        else if (getPlayer(char + 1).HP > (getPlayer(char + 1).maxHP / 4)) return "white";
+        else if (getPlayer(char + 1).HP > (getPlayer(char + 1).maxHP / 8)) return "yellow";
+        return "orange";
+    }
+
     // POSITIONS
     // Positions
 
@@ -1987,6 +1994,7 @@ scenes.fight = () => {
                 fightStats[1 + amountStats * i].source = getPlayer(i + 1).name.toLowerCase();
                 if (getPlayer(i + 1).EP > 0) fightStats[8 + amountStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(i + 1).EP / getPlayer(i + 1).maxEP);
                 fightStats[10 + amountStats * i].text = getPlayer(i + 1).HP + "/" + getPlayer(i + 1).maxHP;
+                fightStats[10 + amountStats * i].fill = getHPFill(i);
                 fightStats[11 + amountStats * i].text = getPlayer(i + 1).EP + "/" + getPlayer(i + 1).maxEP;
 
                 if (getPlayer(i + 1).effect[0] != "none") fightStats[13 + amountStats * i].alpha = 255;
