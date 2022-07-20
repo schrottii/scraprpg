@@ -332,12 +332,19 @@ scenes.fight = () => {
                 * (1.33 - (0.33 * enpos1))
                 * getElementDamage(getStat(positions[pos1][pos2].occupied, "element"), epositions[enpos1][enpos2].element));
         }
-            
+
         if (type == 2) { // Evil men
             return Math.round(epositions[pos1][pos2].strength
                 * (1.33 - (0.33 * pos1))
                 * (0.67 + (0.33 * enpos1))
                 * getElementDamage(epositions[pos1][pos2].element, getStat(positions[enpos1][enpos2].occupied, "element").element));
+        }
+
+        if (type == 3) { // My own men
+            return Math.round(game.characters[positions[pos1][pos2].occupied].strength
+                * (1.33 - (0.33 * pos1))
+                * (0.67 + (0.33 * enpos1))
+                * getElementDamage(positions[pos1][pos2].element, getStat(positions[enpos1][enpos2].occupied, "element").element));
         }
     }
 
@@ -494,6 +501,31 @@ scenes.fight = () => {
                     }, false);
                 }
                 positions[pos[0]][pos[1]].action = false;
+                break;
+            case "sattack":
+                selectedAlly = [whoAGI.action[1], whoAGI.action[2]];
+
+                let HealthBefore = game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].HP;
+                let Damage = calculateDamage(3, whoAGI.action[1], whoAGI.action[2], whoAGI.action[3], whoAGI.action[4]);
+
+                game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].HP -= Damage;
+
+                battleNumber(positionControls[whoAGI.action[3] + (whoAGI.action[4] * 3)].anchor, Damage * (-1), 0, positionControls[whoAGI.action[3] + (whoAGI.action[4] * 3)].offset);
+
+                playSound("damage");
+                postLog(positions[whoAGI.action[1]][whoAGI.action[2]].name + " attacks " + game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].name + " and deals " + Damage + " damage!");
+
+                // Bar animation! (Cowboy moment)
+                updateBar(positions[whoAGI.action[3]][whoAGI.action[4]].occupied, HealthBefore);
+                if (game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].HP < 1) {
+                    game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].HP = 0;
+                    postLog(epositions[whoAGI.action[1]][whoAGI.action[2]].name + " killed " + game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].name + "!");
+                    positions[whoAGI.action[3]][whoAGI.action[4]].isOccupied = false;
+                    checkAllDead();
+                }
+
+                positions[pos[0]][pos[1]].action = false;
+                executeActions();
                 break;
             case "heal":
                 selectedAlly = [whoAGI.action[1], whoAGI.action[2]];
@@ -1626,6 +1658,17 @@ scenes.fight = () => {
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
                         fightaction = "active";
                         showFightButtons();
+                    }
+
+                    // Attack teammate
+                    if (fightaction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
+                        positions[selectedAlly[0]][selectedAlly[1]].action = ["sattack", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
+
+                        fightaction = "none";
+                        hideFightButtons();
+                        hideFightActions();
+
                     }
 
                     if (fightaction == "item") {
