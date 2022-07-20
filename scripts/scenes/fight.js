@@ -153,6 +153,7 @@ scenes.fight = () => {
             stopMusic();
             playSound("victory");
 
+            setTimeout(victoryScreen(), 3000);
             for (i = 0; i < game.chars.length; i++) {
                 // Get rid of acid effect
                 if (getPlayer(i + 1).effect[0] == "acid") {
@@ -161,42 +162,48 @@ scenes.fight = () => {
 
                 // Victory Animation
                 let chr = 0;
+                let exc = [];
                 for (j = 0; j < 3; j++) {
                     for (k = 0; k < 3; k++) {
-                        if (positions[k][j].occupied == game.chars[i]) chr = k + (j * 3);
+                        if (positions[k][j].occupied == game.chars[i]) {
+                            chr = k + (j * 3);
+                            exc = [k, j];
+                        }
                     }
                 }
-                let ret = emotionAnimation(game.chars[i], "victory");
-                if (ret != false) {
-                    let file = ret[0];
-                    let snip = ret[1];
-                    let amount = ret[2];
-                    let controlled = positionControls[chr];
-                    controlled.source = file;
-                    controlled.snip = snip;
-                    controlled.defsnip = snip[0];
-                    controlled.amount = amount;
-                    controlled.aniTime = 0;
-                    controlled.aniTime2 = 0;
 
-                    if (amount > 1) {
-                        addAnimator(function (t) {
-                            controlled.aniTime = ((t - controlled.aniTime2) / 500);
-                            if (controlled.aniTime >= controlled.amount) {
-                                controlled.aniTime = 0;
-                                controlled.aniTime2 = t;
-                            }
+                if (game.characters[positions[exc[0]][exc[1]].occupied].HP > 0) { // Dead? No animation! We will let you bleed out there hahaha
+                    let ret = emotionAnimation(game.chars[i], "victory");
+                    if (ret != false) {
+                        let file = ret[0];
+                        let snip = ret[1];
+                        let amount = ret[2];
+                        let controlled = positionControls[chr];
+                        controlled.source = file;
+                        controlled.snip = snip;
+                        controlled.defsnip = snip[0];
+                        controlled.amount = amount;
+                        controlled.aniTime = 0;
+                        controlled.aniTime2 = 0;
 
-                            controlled.snip[0] = controlled.defsnip + (32 * Math.max(0, Math.floor(controlled.aniTime)));
-                            if (controlled.aniTime2 > 2999) {
-                                delete controlled.aniTime;
-                                delete controlled.aniTime2;
-                                delete controlled.defsnip;
-                                victoryScreen();
-                                return true;
-                            }
-                            return false;
-                        })
+                        if (amount > 1) {
+                            addAnimator(function (t) {
+                                controlled.aniTime = ((t - controlled.aniTime2) / 500);
+                                if (controlled.aniTime >= controlled.amount) {
+                                    controlled.aniTime = 0;
+                                    controlled.aniTime2 = t;
+                                }
+
+                                controlled.snip[0] = controlled.defsnip + (32 * Math.max(0, Math.floor(controlled.aniTime)));
+                                if (controlled.aniTime2 > 2999) {
+                                    delete controlled.aniTime;
+                                    delete controlled.aniTime2;
+                                    delete controlled.defsnip;
+                                    return true;
+                                }
+                                return false;
+                            })
+                        }
                     }
                 }
             }
@@ -232,8 +239,12 @@ scenes.fight = () => {
         let runLaps = 0;
         addAnimator(function (t) {
             for (i = 0; i < positionControls.length; i++) {
-                if (positionControls[i].source != "gear") positionControls[i].anchor[0] = positionControls[i].defanchor + (t / 2000);
-                if (positionControls[i].source != "gear") positionControls[i].snip[0] = Math.floor(runTime) * 32;
+                if (positionControls[i].source != "gear") {
+                    if (game.characters[positions[positionControls[i].pos1][positionControls[i].pos2].occupied].HP > 0) {
+                        positionControls[i].anchor[0] = positionControls[i].defanchor + (t / 2000);
+                        positionControls[i].snip[0] = Math.floor(runTime) * 32;
+                    }
+                }
             }
 
             runTime += ((t - runLaps) / 250);
@@ -1014,9 +1025,11 @@ scenes.fight = () => {
 
                         addAnimator(function (t) {
                             for (i = 0; i < positionControls.length; i++) {
-                                if (positionControls[i].source != "gear") positionControls[i].offset[0] = positionControls[i].defoffset - (t/4);
-                                if (positionControls[i].source != "gear") positionControls[i].anchor[0] = Math.min((2000 - t) / 80000, 0.025);
-                                if (positionControls[i].source != "gear") positionControls[i].snip[0] = Math.floor(runTime) * 32;
+                                if (positionControls[i].source != "gear" && game.characters[positions[positionControls[i].pos1][positionControls[i].pos2].occupied].HP > 0) {
+                                    positionControls[i].offset[0] = positionControls[i].defoffset - (t / 4);
+                                    positionControls[i].anchor[0] = Math.min((2000 - t) / 80000, 0.025);
+                                    positionControls[i].snip[0] = Math.floor(runTime) * 32;
+                                }
                             }
 
                             runTime += ((t - runLaps) / 250);
