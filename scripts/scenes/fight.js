@@ -519,7 +519,7 @@ scenes.fight = () => {
                 updateBar(positions[whoAGI.action[3]][whoAGI.action[4]].occupied, HealthBefore);
                 if (game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].HP < 1) {
                     game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].HP = 0;
-                    postLog(epositions[whoAGI.action[1]][whoAGI.action[2]].name + " killed " + game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].name + "!");
+                    postLog(positions[whoAGI.action[1]][whoAGI.action[2]].name + " killed " + game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].name + "!");
                     positions[whoAGI.action[3]][whoAGI.action[4]].isOccupied = false;
                     checkAllDead();
                 }

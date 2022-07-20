@@ -48,6 +48,7 @@ let images = {
 
     bleu_ani: "data/images/Bleu_Sprite_Sheet_Other.png",
     corelle_ani: "data/images/Corelle_Sprite_Sheet_Other.png",
+    skro_ani: "data/images/Skro_Sprite_Sheet_Other.png",
 
     bleu_dead: "data/images/BleuDead.png",
     corelle_dead: "data/images/CorelleDead.png",
@@ -68,6 +69,8 @@ let images = {
 
     Portraits_Bleu: "data/images/Portraits_Bleu.png",
     Portraits_Corelle: "data/images/Portraits_Corelle.png",
+    Portraits_Gau: "data/images/Portraits_Gau.png",
+    Portraits_Skro: "data/images/Portraits_Skro.png",
 
     fire: "data/images/elements/fire_element.png",
     earth: "data/images/elements/earth_element.png",

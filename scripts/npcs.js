@@ -59,11 +59,31 @@ let npcs = {
             skin: "bleu",
             dialogues: {
                 1: [["Hii I'm Blue", "Portraits_Bleu", "happy", "Blue"],
-                    ["No I'm not Bleu! I'm not you! I'm Blue!", "Portraits_Bleu", "angry", "Blue"],
-                    ["Hey man, I think you're me.", "Portraits_Bleu", "neutral", "Bleu"],
-                    ["I'm a greek emo. I hate you!!!", "Portraits_Bleu", "sad", "Blue"],
-                    ["Why are you blue like me that can't be you're a clone", "Portraits_Bleu", "sad", "Blue"],
-                    ["Idiots.", "Portraits_Corelle", "neutral", "The girl"]],
+                ["No I'm not Bleu! I'm not you! I'm Blue!", "Portraits_Bleu", "angry", "Blue"],
+                ["Hey man, I think you're me.", "Portraits_Bleu", "neutral", "Bleu"],
+                ["I'm a greek emo. I hate you!!!", "Portraits_Bleu", "sad", "Blue"],
+                ["Why are you blue like me that can't be you're a clone", "Portraits_Bleu", "sad", "Blue"],
+                ["Idiots.", "Portraits_Corelle", "neutral", "The girl"]],
+            },
+            movement: 1,
+            ...args || {},
+
+        }
+    },
+    evilskro(args) {
+        return {
+            ...npcs.default(),
+            position: [17, 1],
+            map: "test",
+            skin: "skro",
+            dialogues: {
+                1: [["I am friendly Skro.", "Portraits_Skro", "sad", "Skro"],
+                    ["NO! I am evil Skro!!!", "Portraits_Skro", "angry", "Skro"],
+                    ["Guys, I think he is evil!", "Portraits_Gau", "happy", "Gau"],
+                    ["Skro? More like oh no", "Portraits_Corelle", "neutral", "Corelle"],
+                    ["Good Night.", "Portraits_Skro", "angry", "oh no", () => {
+                        game.time = 18000;
+                    }]],
             },
             movement: 1,
             ...args || {},
