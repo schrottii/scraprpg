@@ -590,7 +590,6 @@ scenes.fight = () => {
 
     function endOfTurnEvents() {
         for (i = 0; i < game.chars.length; i++) {
-
             if (getPlayer(i + 1).effect[0] == "acid") {
                 getPlayer(i + 1).HP -= Math.ceil(getPlayer(i + 1).maxHP / 15);
                 postLog(getPlayer(i + 1).name + " took " + Math.ceil(getPlayer(i + 1).maxHP / 20) + " damage from acid!")
@@ -624,7 +623,7 @@ scenes.fight = () => {
                 }
             }
 
-            if (getPlayer(i + 1).HP < 1) {
+            if (getPlayer(i + 1).HP < 1 && positions[getPlayer(i + 1).pos[0]][getPlayer(i + 1).pos[1]].isOccupied == true) {
                 fightStats[5 + (i * amountStats)].alpha = 0;
                 postLog(getPlayer(i + 1).name + " died!");
                 positions[getPlayer(i + 1).pos[0]][getPlayer(i + 1).pos[1]].isOccupied = false;
@@ -1637,7 +1636,6 @@ scenes.fight = () => {
                     }
 
                     if (fightaction == "switch") {
-                        console.log(this.pos1, this.pos2, switchThose);
                         if (switchThose[0][0] != [this.pos1] || switchThose[0][1] != [this.pos2]) {
                             switchThose[0] = selectedAlly;
                             switchThose[1] = [this.pos1, this.pos2];

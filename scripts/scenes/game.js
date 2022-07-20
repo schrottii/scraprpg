@@ -328,91 +328,93 @@ scenes.game = () => {
         alpha: 255,
         source: "actionbutton",
         onClick(args) {
-            let map = maps[game.map];
-            if (head == 0) { // Down
-                if (getTile(map, game.position[0], game.position[1] + 1) != undefined) {
-                    if (getTile(map, game.position[0], game.position[1] + 1).action != undefined) {
-                        getTile(map, game.position[0], game.position[1] + 1).action();
+            if (dialogueProgress == 0) {
+                let map = maps[game.map];
+                if (head == 0) { // Down
+                    if (getTile(map, game.position[0], game.position[1] + 1) != undefined) {
+                        if (getTile(map, game.position[0], game.position[1] + 1).action != undefined) {
+                            getTile(map, game.position[0], game.position[1] + 1).action();
+                        }
+                    }
+                    if (getTile(map, game.position[0], game.position[1] + 1, 2) != undefined) {
+                        if (getTile(map, game.position[0], game.position[1] + 1, 2).action != undefined) {
+                            getTile(map, game.position[0], game.position[1] + 1, 2).action();
+                        }
+                    }
+                    for (i in activenpcs) {
+                        if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] + 1) {
+                            inDialogue = true;
+                            currentDialogue = activenpcs[i].dialogues[1];
+                            dialogueProgress = 0;
+                            dialogueEmotion = currentDialogue[dialogueProgress][1];
+                            canMove = false;
+                        }
                     }
                 }
-                if (getTile(map, game.position[0], game.position[1] + 1, 2) != undefined) {
-                    if (getTile(map, game.position[0], game.position[1] + 1, 2).action != undefined) {
-                        getTile(map, game.position[0], game.position[1] + 1, 2).action();
+                else if (head == 1) { // Left
+                    if (getTile(map, game.position[0] - 1, game.position[1]) != undefined) {
+                        if (getTile(map, game.position[0] - 1, game.position[1]).action != undefined) {
+                            getTile(map, game.position[0] - 1, game.position[1]).action();
+                        }
+                    }
+                    if (getTile(map, game.position[0] - 1, game.position[1], 2) != undefined) {
+                        if (getTile(map, game.position[0] - 1, game.position[1], 2).action != undefined) {
+                            getTile(map, game.position[0] - 1, game.position[1], 2).action();
+                        }
+                    }
+                    for (i in activenpcs) {
+                        if (activenpcs[i].position[0] == game.position[0] - 1 && activenpcs[i].position[1] == game.position[1]) {
+                            inDialogue = true;
+                            currentDialogue = activenpcs[i].dialogues[1];
+                            dialogueProgress = 0;
+                            dialogueEmotion = currentDialogue[dialogueProgress][1];
+                            canMove = false;
+                        }
                     }
                 }
-                for (i in activenpcs) {
-                    if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] + 1) {
-                        inDialogue = true;
-                        currentDialogue = activenpcs[i].dialogues[1];
-                        dialogueProgress = 0;
-                        dialogueEmotion = currentDialogue[dialogueProgress][1];
-                        canMove = false;
+                else if (head == 2) { // Right
+                    if (getTile(map, game.position[0] + 1, game.position[1]) != undefined) {
+                        if (getTile(map, game.position[0] + 1, game.position[1]).action != undefined) {
+                            getTile(map, game.position[0] + 1, game.position[1]).action();
+                        }
+                    }
+                    if (getTile(map, game.position[0] + 1, game.position[1], 2) != undefined) {
+                        if (getTile(map, game.position[0] + 1, game.position[1], 2).action != undefined) {
+                            getTile(map, game.position[0] + 1, game.position[1], 2).action();
+                        }
+                    }
+                    for (i in activenpcs) {
+                        if (activenpcs[i].position[0] == game.position[0] + 1 && activenpcs[i].position[1] == game.position[1]) {
+                            inDialogue = true;
+                            currentDialogue = activenpcs[i].dialogues[1];
+                            dialogueProgress = 0;
+                            dialogueEmotion = currentDialogue[dialogueProgress][1];
+                            canMove = false;
+                        }
+                    }
+                }
+                else if (head == 3) { // Up
+                    if (getTile(map, game.position[0], game.position[1] - 1) != undefined) {
+                        if (getTile(map, game.position[0], game.position[1] - 1).action != undefined) {
+                            getTile(map, game.position[0], game.position[1] - 1).action();
+                        }
+                    }
+                    if (getTile(map, game.position[0], game.position[1] - 1, 2) != undefined) {
+                        if (getTile(map, game.position[0], game.position[1] - 1, 2).action != undefined) {
+                            getTile(map, game.position[0], game.position[1] - 1, 2).action();
+                        }
+                    }
+                    for (i in activenpcs) {
+                        if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] - 1) {
+                            inDialogue = true;
+                            currentDialogue = activenpcs[i].dialogues[1];
+                            dialogueProgress = 0;
+                            dialogueEmotion = currentDialogue[dialogueProgress][1];
+                            canMove = false;
+                        }
                     }
                 }
             }
-            else if (head == 1) { // Left
-                if (getTile(map, game.position[0] - 1, game.position[1]) != undefined) {
-                    if (getTile(map, game.position[0] - 1, game.position[1]).action != undefined) {
-                        getTile(map, game.position[0] - 1, game.position[1]).action();
-                    }
-                }
-                if (getTile(map, game.position[0] - 1, game.position[1], 2) != undefined) {
-                    if (getTile(map, game.position[0] - 1, game.position[1], 2).action != undefined) {
-                        getTile(map, game.position[0] - 1, game.position[1], 2).action();
-                    }
-                }
-                for (i in activenpcs) {
-                    if (activenpcs[i].position[0] == game.position[0] - 1 && activenpcs[i].position[1] == game.position[1]) {
-                        inDialogue = true;
-                        currentDialogue = activenpcs[i].dialogues[1];
-                        dialogueProgress = 0;
-                        dialogueEmotion = currentDialogue[dialogueProgress][1];
-                        canMove = false;
-                    }
-                }
-            }
-            else if (head == 2) { // Right
-                if (getTile(map, game.position[0] + 1, game.position[1]) != undefined) {
-                    if (getTile(map, game.position[0] + 1, game.position[1]).action != undefined) {
-                        getTile(map, game.position[0] + 1, game.position[1]).action();
-                    }
-                }
-                if (getTile(map, game.position[0] + 1, game.position[1], 2) != undefined) {
-                    if (getTile(map, game.position[0] + 1, game.position[1], 2).action != undefined) {
-                        getTile(map, game.position[0] + 1, game.position[1], 2).action();
-                    }
-                }
-                for (i in activenpcs) {
-                    if (activenpcs[i].position[0] == game.position[0] + 1 && activenpcs[i].position[1] == game.position[1]) {
-                        inDialogue = true;
-                        currentDialogue = activenpcs[i].dialogues[1];
-                        dialogueProgress = 0;
-                        dialogueEmotion = currentDialogue[dialogueProgress][1];
-                        canMove = false;
-                    }
-                }
-            }
-            else if (head == 3) { // Up
-                if (getTile(map, game.position[0], game.position[1] - 1) != undefined) {
-                    if (getTile(map, game.position[0], game.position[1] - 1).action != undefined) {
-                        getTile(map, game.position[0], game.position[1] - 1).action();
-                    }
-                }
-                if (getTile(map, game.position[0], game.position[1] - 1, 2) != undefined) {
-                    if (getTile(map, game.position[0], game.position[1] - 1, 2).action != undefined) {
-                        getTile(map, game.position[0], game.position[1] - 1, 2).action();
-                    }
-                }
-                for (i in activenpcs) {
-                    if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] - 1) {
-                        inDialogue = true;
-                        currentDialogue = activenpcs[i].dialogues[1];
-                        dialogueProgress = 0;
-                        dialogueEmotion = currentDialogue[dialogueProgress][1];
-                        canMove = false;
-                    }
-                }
-            }   
         }
     });
 
