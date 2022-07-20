@@ -65,6 +65,7 @@ let images = {
     stronghelter: "data/images/Map_Corelle.png",
     itsalive: "data/images/Map_ItsAlive.png",
     livingbarrel: "data/images/Map_LivingBarrel.png",
+    nottoofresh: "data/images/NotTooFreshEnemy.png",
 
 
     Portraits_Bleu: "data/images/Portraits_Bleu.png",

@@ -64,5 +64,18 @@ let mapenemies = {
             ...args || {},
 
         }
-    }
+    },
+    ntf(args) {
+        return {
+            ...mapenemies.default(),
+            skin: "nottoofresh",
+            enemies: {
+                "nottoofresh": 90,
+                "itsalive": 40
+            },
+            walkingSpeed: 0.24,
+            ...args || {},
+
+        }
+    },
 };

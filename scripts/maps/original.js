@@ -53,7 +53,7 @@ maps["original"] = {
     },
     spawns: {
         "default": 10,
-        "itsalivemap": 2
+        "ntf": 2
     },
     maxEnemies: 8,
     music: "bgm/placeholder",

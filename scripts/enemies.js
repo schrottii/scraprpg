@@ -21,20 +21,29 @@ let enemyTypes = {
 
     "itsalive": {
         name: "It's Alive",
-        HP: 30,
+        HP: 20,
         strength: 2,
         eva: 30,
         agi: 10,
-        element: "air",
+        element: "wind",
     },
 
     "livingbarrel": {
         name: "Living Barrel",
-        HP: 10,
+        HP: 20,
         strength: 6,
         eva: 10,
         agi: 23,
         element: "dark",
+    },
+
+    "nottoofresh": {
+        name: "Not Too Fresh",
+        HP: 40,
+        strength: 11,
+        eva: 30,
+        agi: 80,
+        element: "wind",
     },
 }
 

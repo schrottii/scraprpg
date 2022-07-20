@@ -72,7 +72,8 @@ maps["test"] = {
     spawns: {
         "default": 10,
         "itsalivemap": 2,
-        "livingbarrelmap" : 10,
+        "livingbarrelmap": 10,
+        "ntf": 1,
     },
     items: [
         [8, 0, "brickyleaf", 1, true],
