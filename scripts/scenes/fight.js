@@ -1635,6 +1635,7 @@ scenes.fight = () => {
                     }
 
                     if (fightaction == "switch") {
+                        console.log(this.pos1, this.pos2, switchThose);
                         if (switchThose[0][0] != [this.pos1] || switchThose[0][1] != [this.pos2]) {
                             switchThose[0] = selectedAlly;
                             switchThose[1] = [this.pos1, this.pos2];
@@ -1910,8 +1911,8 @@ scenes.fight = () => {
     let runLaps = 0;
     addAnimator(function (t) {
         for (i = 0; i < positionControls.length; i++) {
-            if (positionControls[i].source != "gear") positionControls[i].offset[0] = positionControls[i].defoffset - (1000 - t);
-            if (positionControls[i].source != "gear") positionControls[i].anchor[0] = Math.min(t / 40000, 0.025);
+            positionControls[i].offset[0] = positionControls[i].defoffset - (1000 - t);
+            positionControls[i].anchor[0] = Math.min(t / 40000, 0.025);
             if (positionControls[i].source != "gear") positionControls[i].snip[0] = Math.floor(runTime) * 32;
         }
 
@@ -1922,8 +1923,8 @@ scenes.fight = () => {
         }
         if (t > 1000) {
             for (i = 0; i < positionControls.length; i++) {
-                if (positionControls[i].source != "gear") positionControls[i].offset[0] = positionControls[i].defoffset;
-                if (positionControls[i].source != "gear") positionControls[i].anchor[0] = 0.025;
+                positionControls[i].offset[0] = positionControls[i].defoffset;
+                positionControls[i].anchor[0] = 0.025;
             }
             return true;
         }
