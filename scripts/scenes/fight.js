@@ -137,6 +137,7 @@ scenes.fight = () => {
         "be logged here!",
     ];
 
+
     function checkAllDead(checkonly=false) {
         let alive = 0;
         for (j = 0; j < 3; j++) {
@@ -154,6 +155,7 @@ scenes.fight = () => {
             playSound("victory");
 
             setTimeout(victoryScreen(), 3000);
+
             for (i = 0; i < game.chars.length; i++) {
                 // Get rid of acid effect
                 if (getPlayer(i + 1).effect[0] == "acid") {
@@ -328,14 +330,14 @@ scenes.fight = () => {
             return Math.round(game.characters[positions[pos1][pos2].occupied].strength
                 * (0.67 + (0.33 * pos1))
                 * (1.33 - (0.33 * enpos1))
-                * getElementDamage(game.characters[positions[pos1][pos2].occupied].element, epositions[enpos1][enpos2].element));
+                * getElementDamage(getStat(positions[pos1][pos2].occupied, "element"), epositions[enpos1][enpos2].element));
         }
             
         if (type == 2) { // Evil men
             return Math.round(epositions[pos1][pos2].strength
                 * (1.33 - (0.33 * pos1))
                 * (0.67 + (0.33 * enpos1))
-                * getElementDamage(epositions[pos1][pos2].element, game.characters[positions[enpos1][enpos2].occupied].element));
+                * getElementDamage(epositions[pos1][pos2].element, getStat(positions[enpos1][enpos2].occupied, "element").element));
         }
     }
 
@@ -464,8 +466,8 @@ scenes.fight = () => {
 
                         playSound("damage");
                         postLog(game.characters[positions[fpos1][fpos2].occupied].name + " attacks " + epositions[pos1][pos2].name + " and deals " + Damage + " damage!");
-                        if (getElementDamage(game.characters[positions[fpos1][fpos2].occupied].element, epositions[pos1][pos2].element) != 1){
-                            postLog("Element boost: x" + getElementDamage(game.characters[positions[fpos1][fpos2].occupied].element, epositions[pos1][pos2].element) + "!");
+                        if (getElementDamage(getStat(positions[fpos1][fpos2].occupied, "element"), epositions[pos1][pos2].element) != 1){
+                            postLog("Element boost: x" + getElementDamage(getStat(positions[fpos1][fpos2].occupied, "element"), epositions[pos1][pos2].element) + "!");
                         }
 
                         if (epositions[pos1][pos2].HP < 1) { // Is dead?
@@ -567,7 +569,7 @@ scenes.fight = () => {
 
                 playSound("damage");
                 postLog(epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[fpos1][fpos2].occupied].name + " and deals " + Damage + " damage!");
-                if (getElementDamage(epositions[pos[0]][pos[1]].element, game.characters[positions[fpos1][fpos2].occupied].element) != 1) {
+                if (getElementDamage(epositions[pos[0]][pos[1]].element, getStat(positions[fpos1][fpos2].occupied, "element")) != 1) {
                     postLog("Element boost: x" + getElementDamage(epositions[pos[0]][pos[1]].element, game.characters[positions[fpos1][fpos2].occupied].element) + "!");
                 }
 
@@ -1867,7 +1869,7 @@ scenes.fight = () => {
         fightStats[10 + amountStats * i].alpha = 255;
         fightStats[11 + amountStats * i].alpha = 255;
         fightStats[12 + amountStats * i].alpha = 255;
-        if (game.characters[characters[i]].element != undefined) fightStats[12 + amountStats * i].source = game.characters[characters[i]].element;
+        if (getStat(characters[i], "element") != undefined) fightStats[12 + amountStats * i].source = getStat(characters[i], "element");
     }
 
     for (i in game.characters) {

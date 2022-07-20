@@ -8,9 +8,6 @@ var dialogueProgress = 0;
 var dialogueEmotion = "neutral";
 var overWorldStatsScroll = 0;
 
-// This is ALL protagonists in the game. Not only the ones you have equipped right now.
-const characters = ["bleu", "corelle", "gau", "skro"];
-
 // Function used to create enemies
 function createEnemy(type) {
     if (currentEnemies.length < 9) {
@@ -23,32 +20,17 @@ function clearCurrentEnemies() {
 }
 
 function checkLevelUps() {
-    if (game.characters.bleu.EXP > 24) {
-        game.characters.bleu.EXP -= 25;
-        game.characters.bleu.level += 1;
+    for (i in game.chars) {
+        let I = game.chars[i];
+        while (game.characters[I].EXP > 24) {
+            game.characters[I].EXP -= 25;
+            game.characters[I].level += 1;
 
-        game.characters.bleu.strength = 3 + game.characters.bleu.level;
-        game.characters.bleu.maxHP = 18 + (game.characters.bleu.level*2);
+            game.characters[I].strength = 3 + game.characters[I].level;
+            game.characters[I].maxHP = 18 + (game.characters[I].level * 2);
 
-        game.characters.bleu.HP = game.characters.bleu.maxHP;
-    }
-    if (game.characters.corelle.EXP > 24) {
-        game.characters.corelle.EXP -= 25;
-        game.characters.corelle.level += 1;
-
-        game.characters.corelle.strength = 2 + game.characters.corelle.level;
-        game.characters.corelle.maxHP = 14 + (game.characters.corelle.level * 2);
-
-        game.characters.corelle.HP = game.characters.corelle.maxHP;
-    }
-    if (game.characters.gau.EXP > 24) {
-        game.characters.gau.EXP -= 25;
-        game.characters.gau.level += 1;
-
-        game.characters.gau.strength = 6 + game.characters.gau.level;
-        game.characters.gau.maxHP = 8 + (game.characters.gau.level * 2);
-
-        game.characters.gau.HP = game.characters.gau.maxHP;
+            game.characters[I].HP = game.characters[I].maxHP;
+        }
     }
 }
 
