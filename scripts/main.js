@@ -4,6 +4,8 @@ function init() {
     window.addEventListener("keydown", (e) => currentKeys[e.key.toLowerCase()] = true);
     window.addEventListener("keyup", (e) => currentKeys[e.key.toLowerCase()] = false);
 
+    let cancel = false;
+
     setScene({
         controls: [
             controls.label({
@@ -16,6 +18,7 @@ function init() {
                 align: "right", baseline: "alphabetic", fontSize: 16, fill: "#7f7f7f",
                 text: "",
             }),
+    /*
             controls.button({
                 anchor: [.5, .5], offset: [-100, -55], sizeOffset: [200, 50],
                 clickthrough: true, fontSize: 16, alpha: 0,
@@ -35,11 +38,13 @@ function init() {
                     setScene(scenes.title());
                 }
             }),
+            */
             controls.button({
-                anchor: [.5, .5], offset: [-100, 65], sizeOffset: [200, 50],
-                clickthrough: true, fontSize: 16, alpha: 0,
+                anchor: [.9, .9], sizeOffset: [50, 25],
+                clickthrough: false, fontSize: 16, alpha: 0,
                 text: "Dev Mode",
                 onClick() {
+                    cancel = true;
                     musicPlayer.muted = true;
                     soundPlayer.muted = true;
                     stopMusic();
@@ -61,10 +66,23 @@ function init() {
                     setScene(scenes.fight());
                 }
             }),
+    
         ],
     });
     loadAllResources();
     loop();
+
+
+    image_animation(images.schrottgamesanimation, 4, 5, 100);
+    setTimeout(() => {
+        if (!cancel) image_animation(images.tttanimation, 4, 5, 100)
+    }, 3000);
+    setTimeout(() => {
+        if (!cancel) {
+            musicPlayer.loop = true;
+            setScene(scenes.title());
+        }
+    }, 5500);
 }
 
 var currentKeys = {};

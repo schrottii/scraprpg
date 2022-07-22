@@ -13,7 +13,6 @@ let images = {
     arrowright: "data/images/arrowright.png",
     cutscene_fade: "data/images/cutscene_fade.png",
     placeholder: "data/images/cutscene_map.png",
-    tokenattack: "data/images/battle_transition_clean_1.png",
     actions: "data/images/actions.png",
     techniques: "data/images/techniques.png",
     switch: "data/images/switch.png",
@@ -33,6 +32,10 @@ let images = {
     eattackani1: "data/images/eattackani1.png",
     eattackani2: "data/images/eattackani2.png",
 
+    tokenattack: "data/images/battle_transition_clean_1.png",
+    schrottgamesanimation: "data/images/sganimation.png",
+    tttanimation: "data/images/Toast_Tech_Team_Animation.png",
+    
     bleu: "data/images/Map_Bleu.png",
     corelle: "data/images/Map_Corelle.png",
     gau: "data/images/Map_Gau.png",
@@ -240,8 +243,8 @@ function loadAllResources() {
             scene.controls[1].text = "audio/" + snd + " " + resLoad + "/" + resCount;
             if (resLoad == resCount) {
                 scene.controls[0].text = "Everything good to go!";
-                scene.controls[2].clickthrough = scene.controls[3].clickthrough = scene.controls[4].clickthrough = false;
-                scene.controls[2].alpha = scene.controls[3].alpha = scene.controls[4].alpha = 1;
+                //scene.controls[2].clickthrough = scene.controls[3].clickthrough = scene.controls[4].clickthrough = false;
+                scene.controls[2].alpha = 1;
             }
         }
         audio[snd] = aud;
