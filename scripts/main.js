@@ -48,7 +48,7 @@ function init() {
             */
             controls.button({
                 anchor: [.9, .9], sizeOffset: [50, 25],
-                clickthrough: false, fontSize: 16, alpha: 0,
+                clickthrough: false, fontSize: 16, alpha: 1,
                 text: "Dev Mode",
                 onClick() {
                     cancel = true;

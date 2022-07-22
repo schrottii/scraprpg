@@ -151,8 +151,8 @@ scenes.fight = () => {
             if (checkonly == true) return true;
             win = true;
 
-            stopMusic();
-            playSound("victory");
+            
+            setTimeout(() => { stopMusic(); playSound("victory"); }, 250);
 
             setTimeout(() => { victoryScreen() }, 3000);
 
@@ -604,7 +604,7 @@ scenes.fight = () => {
                 playSound("damage");
                 postLog(epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[fpos1][fpos2].occupied].name + " and deals " + Damage + " damage!");
                 if (getElementDamage(epositions[pos[0]][pos[1]].element, getStat(positions[fpos1][fpos2].occupied, "element")) != 1) {
-                    postLog("Element boost: x" + getElementDamage(epositions[pos[0]][pos[1]].element, getStat(positions[fpos1][fpos2].occupied) + "!");
+                    postLog("Element boost: x" + getElementDamage(epositions[pos[0]][pos[1]].element, getStat(positions[fpos1][fpos2].occupied)) + "!");
                 }
 
                 // Bar animation! (Cowboy moment)
