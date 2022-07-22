@@ -31,6 +31,7 @@ function init() {
                 clickthrough: true, fontSize: 16, alpha: 0,
                 text: "Start with Sound",
                 onClick() {
+                    playSound("buttonClickSound");
                     musicPlayer.loop = true;
                     setScene(scenes.title());
                 }
@@ -40,6 +41,7 @@ function init() {
                 clickthrough: true, fontSize: 16, alpha: 0,
                 text: "Start Muted",
                 onClick() {
+                    playSound("buttonClickSound");
                     musicPlayer.muted = true;
                     soundPlayer.muted = true;
                     setScene(scenes.title());

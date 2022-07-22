@@ -120,6 +120,7 @@ scenes.title = () => {
             anchor: [1.2, .3], offset: [0, -220 + 130 * a], sizeAnchor: [.5, 0], sizeOffset: [120, 120], clickthrough: false,
             text: "Undefined",
             onClick(args) {
+                playSound("buttonClickSound");
                 if (mode == 0) {
                     saveNR = a;
                     playSound("titletransition");
@@ -162,6 +163,7 @@ scenes.title = () => {
         anchor: [-.8, .5], offset: [0, 170], sizeOffset: [150, 50],
         fontSize: 16, text: "Delete",
         onClick(args) {
+            playSound("buttonClickSound");
             if (mode == 1) {
                 mode = 0;
             }
@@ -179,6 +181,7 @@ scenes.title = () => {
         anchor: [-.2, .5], offset: [-150, 170], sizeOffset: [150, 50],
         fontSize: 16, text: "Options",
         onClick(args) {
+            playSound("buttonClickSound");
             if (mode == 2) {
                 mode = 0;
                 saveSettings();
@@ -198,6 +201,7 @@ scenes.title = () => {
         anchor: [-.8, .1], offset: [0, 170], sizeOffset: [150, 50],
         fontSize: 16, text: "Grid: ON",
         onClick(args) {
+            playSound("buttonClickSound");
             if (settings.grid == true) {
                 settings.grid = false;
             }
@@ -216,6 +220,7 @@ scenes.title = () => {
         anchor: [-.8, .1], offset: [-30, 240], sizeOffset: [25, 50],
         fontSize: 16, text: "-",
         onClick(args) {
+            playSound("buttonClickSound");
             if (settings.musicVolume > 0.01) {
                 settings.musicVolume = settings.musicVolume - 0.05;
                 if (settings.musicVolume < 0) settings.musicVolume = 0;
@@ -227,6 +232,7 @@ scenes.title = () => {
         anchor: [-.8, .1], offset: [155, 240], sizeOffset: [25, 50],
         fontSize: 16, text: "+",
         onClick(args) {
+            playSound("buttonClickSound");
             if (settings.musicVolume < 0.99) {
                 settings.musicVolume = settings.musicVolume + 0.05;
                 if (settings.musicVolume > 1) settings.musicVolume = 1;
@@ -246,6 +252,7 @@ scenes.title = () => {
         anchor: [-.8, .1], offset: [220, 240], sizeOffset: [25, 50],
         fontSize: 16, text: "-",
         onClick(args) {
+            playSound("buttonClickSound");
             if (settings.soundVolume > 0.01) {
                 settings.soundVolume = settings.soundVolume - 0.05;
                 if (settings.soundVolume < 0) settings.soundVolume = 0;
@@ -257,6 +264,7 @@ scenes.title = () => {
         anchor: [-.8, .1], offset: [405, 240], sizeOffset: [25, 50],
         fontSize: 16, text: "+",
         onClick(args) {
+            playSound("buttonClickSound");
             if (settings.soundVolume < 0.99) {
                 settings.soundVolume = settings.soundVolume + 0.05;
                 if (settings.soundVolume > 1) settings.soundVolume = 1;

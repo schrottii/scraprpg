@@ -51,6 +51,7 @@ let images = {
 
     bleu_ani: "data/images/Bleu_Sprite_Sheet_Other.png",
     corelle_ani: "data/images/Corelle_Sprite_Sheet_Other.png",
+    gau_ani: "data/images/Gau_Sprite_Sheet_Other.png",
     skro_ani: "data/images/Skro_Sprite_Sheet_Other.png",
 
     bleu_dead: "data/images/BleuDead.png",
@@ -181,7 +182,7 @@ var audio = {
     "bgm/fight": "data/bgm/theme05_.mp3",
 
     "titletransition": "data/sounds/Title_screen_transition.mp3",
-    "ok": "data/sounds/sound_ok.wav",
+    "buttonClickSound": "data/sounds/sound_ok.wav",
     "no": "data/sounds/sound_no.wav",
     "cancel": "data/sounds/sound_cancel.wav",
     "keyitem": "data/sounds/important_item.wav",
@@ -189,6 +190,7 @@ var audio = {
     "teleport": "data/sounds/move area.wav",
     "victory": "data/sounds/jingle03.mp3",
     "miss": "data/sounds/miss.ogg",
+    "encounter": "data/sounds/enc_sound.ogg",
 };
 
 var maps = {

@@ -425,6 +425,7 @@ scenes.game = () => {
             alpha: 1,
             text: "",
             onClick(args) {
+                playSound("buttonClickSound");
                 if (this.offset[0] == -220 && canMove == true) {
                     enemies.push(mapenemies.itsalivemap({
                         position: [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)], map: game.map,
@@ -655,6 +656,7 @@ scenes.game = () => {
         text: "Gameplay", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                playSound("buttonClickSound");
                 settingsCategory = "gameplay";
                 showMenuSettings();
             }
@@ -665,6 +667,7 @@ scenes.game = () => {
         text: "Graphics", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                playSound("buttonClickSound");
                 settingsCategory = "graphics";
                 showMenuSettings();
             }
@@ -675,6 +678,7 @@ scenes.game = () => {
         text: "Controls", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                playSound("buttonClickSound");
                 settingsCategory = "controls";
                 showMenuSettings();
             }
@@ -685,6 +689,7 @@ scenes.game = () => {
         text: "Audio", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                playSound("buttonClickSound");
                 settingsCategory = "audio";
                 showMenuSettings();
             }
@@ -695,6 +700,7 @@ scenes.game = () => {
         text: "Back", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                playSound("buttonClickSound");
                 showMapDisplay();
                 hideMenuSettings();
             }
@@ -707,6 +713,7 @@ scenes.game = () => {
             if (this.alpha == 1) {
                 saveSettings();
                 addAnimator(function (t) {
+                    playSound("buttonClickSound");
                     settingsSaveText.alpha = t / 10;
                     if (t > 2500) {
                         settingsSaveText.alpha = 0;
@@ -724,6 +731,7 @@ scenes.game = () => {
         anchor: [0.5, 0.25], sizeAnchor: [0.2, 0.1],
         text: "Autosave: ON", alpha: 0,
         onClick(args) {
+            playSound("buttonClickSound");
             if (settings.autosave == true) {
                 settings.autosave = false;
             }
@@ -740,6 +748,7 @@ scenes.game = () => {
         anchor: [0.5, 0.25], sizeAnchor: [0.2, 0.1],
         text: "Grid: ON", alpha: 0,
         onClick(args) {
+            playSound("buttonClickSound");
             if (settings.grid == true) {
                 settings.grid = false;
             }
@@ -761,6 +770,7 @@ scenes.game = () => {
         text: "-", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                playSound("buttonClickSound");
                 if (settings.musicVolume > 0.01) {
                     settings.musicVolume = settings.musicVolume - 0.05;
                     if (settings.musicVolume < 0) settings.musicVolume = 0;
@@ -774,6 +784,7 @@ scenes.game = () => {
         anchor: [0.71, 0.25], sizeAnchor: [0.04, 0.1],
         text: "+", alpha: 0,
         onClick(args) {
+            playSound("buttonClickSound");
             if (settings.musicVolume < 0.99) {
                 settings.musicVolume = settings.musicVolume + 0.05;
                 if (settings.musicVolume > 1) settings.musicVolume = 1;
@@ -792,6 +803,7 @@ scenes.game = () => {
         text: "-", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                playSound("buttonClickSound");
                 if (settings.soundVolume > 0.01) {
                     settings.soundVolume = settings.soundVolume - 0.05;
                     if (settings.soundVolume < 0) settings.soundVolume = 0;
@@ -805,6 +817,7 @@ scenes.game = () => {
         anchor: [0.71, 0.375], sizeAnchor: [0.04, 0.1],
         text: "+", alpha: 0,
         onClick(args) {
+            playSound("buttonClickSound");
             if (settings.soundVolume < 0.99) {
                 settings.soundVolume = settings.soundVolume + 0.05;
                 if (settings.soundVolume > 1) settings.soundVolume = 1;
@@ -841,6 +854,7 @@ scenes.game = () => {
                 text: "", alpha: 0, nr: i + (j*8),
                 onClick(args) {
                     if (this.alpha == 1) {
+                        playSound("buttonClickSound");
                         let imageNumber = this.nr;
                         let item = menuItemsImages[imageNumber].item;
                         if (items[item] != undefined) {
@@ -874,6 +888,7 @@ scenes.game = () => {
         text: "Back", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                playSound("buttonClickSound");
                 showMapDisplay();
                 hideMenuItems();
             }
@@ -884,6 +899,7 @@ scenes.game = () => {
         text: "Sort by", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                playSound("buttonClickSound");
                 if (menuItemsStoryOnly == false) {
                     menuItemsStoryOnly = true;
                 }
@@ -1004,6 +1020,7 @@ scenes.game = () => {
                 }
             }
 
+            playSound("encounter");
             image_animation(images.tokenattack, 4, 5, 100);
 
             let previouszoom = zoom;

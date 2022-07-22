@@ -190,7 +190,7 @@ scenes.fight = () => {
 
                         if (amount > 1) {
                             addAnimator(function (t) {
-                                controlled.aniTime = ((t - controlled.aniTime2) / 500);
+                                controlled.aniTime = ((t - controlled.aniTime2) / 306);
                                 if (controlled.aniTime >= controlled.amount) {
                                     controlled.aniTime = 0;
                                     controlled.aniTime2 = t;
@@ -1429,6 +1429,7 @@ scenes.fight = () => {
         anchor: [0.7, 0.6], sizeAnchor: [0.075, 0.05], offset: [0, -1000],
         text: "Continue",
         onClick(args) {
+            playSound("buttonClickSound");
             if (checkAllDead(true)) {
                 setScene(scenes.game());
 
