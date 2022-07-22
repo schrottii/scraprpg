@@ -177,7 +177,7 @@ scenes.game = () => {
 
     let nightEffect = controls.image({
         anchor: [0, 0], sizeAnchor: [1, 1], snip: [0, 0, 8, 8],
-        source: "nighteffect", alpha: 255,
+        source: "nighteffect", alpha: 1,
     });
 
         // Alright, alright, we need comments, so let me comment this
@@ -201,38 +201,38 @@ scenes.game = () => {
     // Names, stats, etc.
     mapDisplay.push(controls.label({
         anchor: [.99, .68], offset: [-200, 20],
-        alpha: 255,
+        alpha: 1,
         align: "left", fontSize: 18, fill: "#000000",
         text: getPlayer().name,
     }));
     let mapDisplayStats1 = controls.label({
         anchor: [.99, .705], offset: [-200, 20],
-        alpha: 255,
+        alpha: 1,
         align: "left", fontSize: 14, fill: "green",
         text: "HP: " + getPlayer().HP + "/" + getPlayer().maxHP + "   EP: " + getPlayer().EP + "/" + getPlayer().maxEP,
     });
     let mapDisplayLevel1 = controls.label({
         anchor: [.99, .73], offset: [-200, 20],
-        alpha: 255,
+        alpha: 1,
         align: "left", fontSize: 14, fill: "yellow",
         text: "Level: " + getPlayer().level,
     }); 
 
     mapDisplay.push(controls.label({
         anchor: [.99, .76], offset: [-200, 20],
-        alpha: 255,
+        alpha: 1,
         align: "left", fontSize: 18, fill: "#000000",
         text: getPlayer(2).name,
     }));
     let mapDisplayStats2 = controls.label({
         anchor: [.99, .785], offset: [-200, 20],
-        alpha: 255,
+        alpha: 1,
         align: "left", fontSize: 14, fill: "green",
         text: "HP: " + getPlayer(2).HP + "/" + getPlayer(2).maxHP + "   EP: " + getPlayer(2).EP + "/" + getPlayer(2).maxEP,
     });
     let mapDisplayLevel2 = controls.label({
         anchor: [.99, .81], offset: [-200, 20],
-        alpha: 255,
+        alpha: 1,
         align: "left", fontSize: 14, fill: "yellow",
         text: "Level: " + getPlayer(2).level,
     });
@@ -246,7 +246,7 @@ scenes.game = () => {
             mapDisplay[1].text = getPlayer(1 + overWorldStatsScroll).name;
             mapDisplay[2].text = getPlayer(2 + overWorldStatsScroll).name;
         },
-        alpha: 255,
+        alpha: 1,
     }));
 
     mapDisplay.push(controls.image({
@@ -258,7 +258,7 @@ scenes.game = () => {
             mapDisplay[1].text = getPlayer(1 + overWorldStatsScroll).name;
             mapDisplay[2].text = getPlayer(2 + overWorldStatsScroll).name;
         },
-        alpha: 255,
+        alpha: 1,
     }));
 
 
@@ -268,7 +268,7 @@ scenes.game = () => {
         clickthrough: false,
         fill: "#B58542",
         onClick(args) {
-            if (this.alpha == 255) {
+            if (this.alpha == 1) {
                 dialogueProgress += 1;
                 if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
                     inDialogue = false;
@@ -325,7 +325,7 @@ scenes.game = () => {
 
     let actionButton = controls.image({
         anchor: [0.75, 0.8], sizeOffset: [96, 96],
-        alpha: 255,
+        alpha: 1,
         source: "actionbutton",
         onClick(args) {
             if (dialogueProgress == 0) {
@@ -422,7 +422,7 @@ scenes.game = () => {
     for (i = 0; i < 3; i++) {
         mapDisplay.push(controls.button({
             anchor: [.9925, .875], offset: [-220 + (i * 75), 0], sizeOffset: [75, 75],
-            alpha: 255,
+            alpha: 1,
             text: "",
             onClick(args) {
                 if (this.offset[0] == -220 && canMove == true) {
@@ -435,7 +435,7 @@ scenes.game = () => {
                     showMenuItems(menuItemsStoryOnly);
                 }
                 if (this.offset[0] == -70 && canMove == true) {
-                    if (this.alpha == 255) {
+                    if (this.alpha == 1) {
                         hideMapDisplay();
                         showMenuSettings();
                     }
@@ -447,7 +447,7 @@ scenes.game = () => {
     for (i = 0; i < 3; i++) {
         mapDisplay.push(controls.image({
             anchor: [.9925, .875], offset: [-220 + (i * 75), 0], sizeOffset: [75, 75],
-            alpha: 255,
+            alpha: 1,
             source: ["paper", "inventory", "gear"][i],
         }));
     }
@@ -464,12 +464,12 @@ scenes.game = () => {
 
     function showMapDisplay() {
         for (i = 0; i < mapDisplay.length; i++) {
-            mapDisplay[i].alpha = 255;
+            mapDisplay[i].alpha = 1;
         }
-        mapDisplayStats1.alpha = 255;
-        mapDisplayStats2.alpha = 255;
-        mapDisplayLevel1.alpha = 255;
-        mapDisplayLevel2.alpha = 255;
+        mapDisplayStats1.alpha = 1;
+        mapDisplayStats2.alpha = 1;
+        mapDisplayLevel1.alpha = 1;
+        mapDisplayLevel2.alpha = 1;
     }
 
     function hideMenuSettings() {
@@ -494,7 +494,7 @@ scenes.game = () => {
         menuSettingsAudio[3].text = "Sound Volume: " + Math.round(settings.soundVolume * 100) + "%";
 
         for (i = 0; i < menuSettings.length; i++) {
-            menuSettings[i].alpha = 255;
+            menuSettings[i].alpha = 1;
         }
         if (settingsCategory == "gameplay") {
             if (settings.autosave == true) {
@@ -504,7 +504,7 @@ scenes.game = () => {
                 menuSettingsGameplay[0].text = "Autosave: OFF";
             }
             for (i = 0; i < menuSettingsGameplay.length; i++) {
-                menuSettingsGameplay[i].alpha = 255;
+                menuSettingsGameplay[i].alpha = 1;
             }
         }
         else {
@@ -520,7 +520,7 @@ scenes.game = () => {
                 menuSettingsGraphics[0].text = "Grid: OFF";
             }
             for (i = 0; i < menuSettingsGraphics.length; i++) {
-                menuSettingsGraphics[i].alpha = 255;
+                menuSettingsGraphics[i].alpha = 1;
             }
         }
         else {
@@ -530,7 +530,7 @@ scenes.game = () => {
         }
         if (settingsCategory == "audio") {
             for (i = 0; i < menuSettingsAudio.length; i++) {
-                menuSettingsAudio[i].alpha = 255;
+                menuSettingsAudio[i].alpha = 1;
             }
         }
         else {
@@ -561,7 +561,7 @@ scenes.game = () => {
         if (storyonly == true) menuItems[2].text = "Story Items";
 
         for (i = 0; i < menuItems.length; i++) {
-            menuItems[i].alpha = 255;
+            menuItems[i].alpha = 1;
         }
         for (i = 0; i < menuItemsImages.length; i++) {
             if (menuItemsImages[i + j] != undefined) {
@@ -569,13 +569,13 @@ scenes.game = () => {
                     if (storyonly == false && items[Object.keys(game.inventory)[i]]().story == false) {
                         menuItemsImages[i + j].source = "items/" + items[Object.keys(game.inventory)[i]]().source;
                         menuItemsImages[i + j].item = Object.keys(game.inventory)[i];
-                        menuItemsImages[i + j].alpha = 255;
+                        menuItemsImages[i + j].alpha = 1;
                     }
                     else {
                         if (storyonly == true && items[Object.keys(game.inventory)[i]]().story == true) {
                             menuItemsImages[i + j].source = "items/" + items[Object.keys(game.inventory)[i]]().source;
                             menuItemsImages[i + j].item = undefined; // can't use it
-                            menuItemsImages[i + j].alpha = 255;
+                            menuItemsImages[i + j].alpha = 1;
                         }
                         else {
                             menuItemsImages[i + j].item = undefined;
@@ -597,12 +597,12 @@ scenes.game = () => {
                 if (Object.keys(game.inventory)[i] != undefined) {
                     if (storyonly == false && items[Object.keys(game.inventory)[i]]().story == false) {
                         menuItemsAmounts[i + j].text = "x" + game.inventory[Object.keys(game.inventory)[i]];
-                        menuItemsAmounts[i + j].alpha = 255;
+                        menuItemsAmounts[i + j].alpha = 1;
                     }
                     else { 
                         if (storyonly == true && items[Object.keys(game.inventory)[i]]().story == true) {
                             menuItemsAmounts[i + j].text = "x" + game.inventory[Object.keys(game.inventory)[i]];
-                            menuItemsAmounts[i + j].alpha = 255;
+                            menuItemsAmounts[i + j].alpha = 1;
                         }
                         else {
                             menuItemsAmounts[i + j].text = "";
@@ -654,7 +654,7 @@ scenes.game = () => {
         anchor: [0.1, 0.25], sizeAnchor: [0.25, 0.1],
         text: "Gameplay", alpha: 0,
         onClick(args) {
-            if (this.alpha == 255) {
+            if (this.alpha == 1) {
                 settingsCategory = "gameplay";
                 showMenuSettings();
             }
@@ -664,7 +664,7 @@ scenes.game = () => {
         anchor: [0.1, 0.375], sizeAnchor: [0.25, 0.1],
         text: "Graphics", alpha: 0,
         onClick(args) {
-            if (this.alpha == 255) {
+            if (this.alpha == 1) {
                 settingsCategory = "graphics";
                 showMenuSettings();
             }
@@ -674,7 +674,7 @@ scenes.game = () => {
         anchor: [0.1, 0.5], sizeAnchor: [0.25, 0.1],
         text: "Controls", alpha: 0,
         onClick(args) {
-            if (this.alpha == 255) {
+            if (this.alpha == 1) {
                 settingsCategory = "controls";
                 showMenuSettings();
             }
@@ -684,7 +684,7 @@ scenes.game = () => {
         anchor: [0.1, 0.625], sizeAnchor: [0.25, 0.1],
         text: "Audio", alpha: 0,
         onClick(args) {
-            if (this.alpha == 255) {
+            if (this.alpha == 1) {
                 settingsCategory = "audio";
                 showMenuSettings();
             }
@@ -694,7 +694,7 @@ scenes.game = () => {
         anchor: [0.175, 0.85], sizeAnchor: [0.1, 0.075],
         text: "Back", alpha: 0,
         onClick(args) {
-            if (this.alpha == 255) {
+            if (this.alpha == 1) {
                 showMapDisplay();
                 hideMenuSettings();
             }
@@ -704,7 +704,7 @@ scenes.game = () => {
         anchor: [0.675, 0.85], sizeAnchor: [0.1, 0.075],
         text: "Save Changes", alpha: 0,
         onClick(args) {
-            if (this.alpha == 255) {
+            if (this.alpha == 1) {
                 saveSettings();
                 addAnimator(function (t) {
                     settingsSaveText.alpha = t / 10;
@@ -760,7 +760,7 @@ scenes.game = () => {
         anchor: [0.45, 0.25], sizeAnchor: [0.04, 0.1],
         text: "-", alpha: 0,
         onClick(args) {
-            if (this.alpha == 255) {
+            if (this.alpha == 1) {
                 if (settings.musicVolume > 0.01) {
                     settings.musicVolume = settings.musicVolume - 0.05;
                     if (settings.musicVolume < 0) settings.musicVolume = 0;
@@ -791,7 +791,7 @@ scenes.game = () => {
         anchor: [0.45, 0.375], sizeAnchor: [0.04, 0.1],
         text: "-", alpha: 0,
         onClick(args) {
-            if (this.alpha == 255) {
+            if (this.alpha == 1) {
                 if (settings.soundVolume > 0.01) {
                     settings.soundVolume = settings.soundVolume - 0.05;
                     if (settings.soundVolume < 0) settings.soundVolume = 0;
@@ -840,7 +840,7 @@ scenes.game = () => {
                 anchor: [0.1 + (i * 0.1), 0.2 + (j * 0.2)], sizeAnchor: [0.075, 0.15],
                 text: "", alpha: 0, nr: i + (j*8),
                 onClick(args) {
-                    if (this.alpha == 255) {
+                    if (this.alpha == 1) {
                         let imageNumber = this.nr;
                         let item = menuItemsImages[imageNumber].item;
                         if (items[item] != undefined) {
@@ -873,7 +873,7 @@ scenes.game = () => {
         anchor: [0.175, 0.85], sizeAnchor: [0.1, 0.075],
         text: "Back", alpha: 0,
         onClick(args) {
-            if (this.alpha == 255) {
+            if (this.alpha == 1) {
                 showMapDisplay();
                 hideMenuItems();
             }
@@ -883,7 +883,7 @@ scenes.game = () => {
         anchor: [0.675, 0.85], sizeAnchor: [0.1, 0.075],
         text: "Sort by", alpha: 0,
         onClick(args) {
-            if (this.alpha == 255) {
+            if (this.alpha == 1) {
                 if (menuItemsStoryOnly == false) {
                     menuItemsStoryOnly = true;
                 }
@@ -1045,7 +1045,7 @@ scenes.game = () => {
         for (i = 0; i < game.chars.length; i++) {
             if (getPlayer(i + 1).effect[0] == "poison") {
                 getPlayer(i + 1).HP -= 1;
-                poisonBlack.alpha = 255;
+                poisonBlack.alpha = 1;
                 poisonBlack.fill = "black";
                 addAnimator(function (t){
                     poisonBlack.fill = "rgb(" + (0 + (t/3)) + "," + (0 + (t/3)) + "," + (0 + (t/3)) + ")";
@@ -1558,7 +1558,7 @@ scenes.game = () => {
 
             if (inDialogue == true) {
                 for (i = 0; i < dialogueComponents.length; i++) {
-                    dialogueComponents[i].alpha = 255;
+                    dialogueComponents[i].alpha = 1;
                 }
                 if (map.dialogues != undefined) {
                     if (typeof (currentDialogue[dialogueProgress][0]) == "string") dialogueComponents[6].text = currentDialogue[dialogueProgress][0];

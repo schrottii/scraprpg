@@ -10,7 +10,7 @@ let npcs = {
         return {
             position: [8, 8],
             map: "test",
-            alpha: 255,
+            alpha: 1,
             head: 0,
             skin: "evil",
             kofs: [0, 0, 0],

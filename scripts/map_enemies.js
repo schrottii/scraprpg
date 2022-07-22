@@ -6,7 +6,7 @@ let mapenemies = {
         return {
             position: [6, 6],
             map: "",
-            alpha: 255,
+            alpha: 1,
             head: 0,
             skin: "evil",
             kofs: [0, 0, 0],
@@ -42,6 +42,7 @@ let mapenemies = {
         return {
             ...mapenemies.default(),
             skin: "itsalive",
+            alpha: 0.3,
             enemies: {
                 "weakhelter": 20,
                 "itsalive": 60

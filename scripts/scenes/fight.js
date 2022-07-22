@@ -9,7 +9,7 @@ function battleNumber(pos, amount, type, offset = [0, 0]) {
     if (battleNumbers[0].alpha == 0) bn = 0;
     else if (battleNumbers[1].alpha == 0) bn = 1;
     else bn = 2;
-    battleNumbers[bn].alpha = 255;
+    battleNumbers[bn].alpha = 1;
     battleNumbers[bn].anchor[0] = pos[0];
     battleNumbers[bn].anchor[1] = pos[1];
     battleNumbers[bn].offset[0] = offset[0];
@@ -57,7 +57,7 @@ function updateBar(charName, HealthBefore) {
         let Length = (0.1960 * (HealthBefore / getPlayer(1 + whichChar).maxHP)) - Leftend;
 
         if (Length == 0) return false;
-        fightStats[which].alpha = 255;
+        fightStats[which].alpha = 1;
         if (Length > 0) {
             if (getPlayer(1 + whichChar).HP > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (getPlayer(1 + whichChar).HP / getPlayer(1 + whichChar).maxHP);
             fightStats[which].anchor[0] = 0.242 + Leftend + (0.35 * (row-1));
@@ -286,7 +286,7 @@ scenes.fight = () => {
                 }
                 for (i = 0; i < winScreen.length; i++) {
                     winScreen[i].offset[1] = -1000;
-                    winScreen[i].alpha = 255;
+                    winScreen[i].alpha = 1;
                 }
                 addAnimator(function (t) {
                     for (i = 0; i < winScreen.length; i++) {
@@ -715,7 +715,7 @@ scenes.fight = () => {
 
             attackAnimationObjects[fpos1 + (fpos2 * 3)].anchor = positionControls[fpos1 + (fpos2 * 3)].anchor;
             attackAnimationObjects[fpos1 + (fpos2 * 3)].offset = [positionControls[fpos1 + (fpos2 * 3)].offset[0] + 56, positionControls[fpos1 + (fpos2 * 3)].offset[1]];
-            attackAnimationObjects[fpos1 + (fpos2 * 3)].alpha = 255;
+            attackAnimationObjects[fpos1 + (fpos2 * 3)].alpha = 1;
             attackAnimationObjects[fpos1 + (fpos2 * 3)].source = "attackani0";
 
             addAnimator(function (t) {
@@ -758,7 +758,7 @@ scenes.fight = () => {
             attackAnimationObjects[9 + pos1 + (pos2 * 3)].anchor[0] = epositionControls[pos1 + (pos2 * 3)].anchor[0] + 0;
             attackAnimationObjects[9 + pos1 + (pos2 * 3)].anchor[1] = epositionControls[pos1 + (pos2 * 3)].anchor[1] + 0;
             attackAnimationObjects[9 + pos1 + (pos2 * 3)].offset = [epositionControls[pos1 + (pos2 * 3)].offset[0] - 72, epositionControls[pos1 + (pos2 * 3)].offset[1]];
-            attackAnimationObjects[9 + pos1 + (pos2 * 3)].alpha = 255;
+            attackAnimationObjects[9 + pos1 + (pos2 * 3)].alpha = 1;
             attackAnimationObjects[9 + pos1 + (pos2 * 3)].source = "eattackani0";
 
             addAnimator(function (t) {
@@ -768,7 +768,7 @@ scenes.fight = () => {
                 attackAnimationObjects[9 + pos1 + (pos2 * 3)].anchor[1] = epositionControls[pos1 + (pos2 * 3)].anchor[1] + 0;
                 attackAnimationObjects[9 + pos1 + (pos2 * 3)].offset = [epositionControls[pos1 + (pos2 * 3)].offset[0] - 72, epositionControls[pos1 + (pos2 * 3)].offset[1]];
 
-                attackAnimationObjects[9 + pos1 + (pos2 * 3)].alpha = 255;
+                attackAnimationObjects[9 + pos1 + (pos2 * 3)].alpha = 1;
                 if (t > 200 && t < 399 && goal[3] != 0) {
                     epositionControls[pos1 + (pos2 * 3)].offset[1] = goal[3] * (1 - ((t - 200)) / 200);
                     epositionControls[pos1 + (pos2 * 3)].offset[0] = goal[1] * (1 - ((t - 200)) / 200);
@@ -876,7 +876,7 @@ scenes.fight = () => {
                 if (items[inventory[i + itemOffset]]().story) fightActions[(i * 4) + 2].fill = "darkgray";
                 else fightActions[(i * 4) + 2].fill = "white";
                 fightActions[(i * 4) + 3].source = "items/" + items[inventory[i + itemOffset]]().source;
-                fightActions[(i * 4) + 3].alpha = 255;
+                fightActions[(i * 4) + 3].alpha = 1;
             }
             else {
                 fightActions[(i * 4) + 2].text = "---";
@@ -966,9 +966,9 @@ scenes.fight = () => {
             fightButtons.push(controls.rect({
                 anchor: [0.00, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
-                alpha: 255,
+                alpha: 1,
                 onClick(args) {
-                    if (this.alpha == 255 && fightaction == "active") {
+                    if (this.alpha == 1 && fightaction == "active") {
                         fightaction = "attack2";
                         hideFightButtons();
                     }
@@ -979,9 +979,9 @@ scenes.fight = () => {
             fightButtons.push(controls.rect({
                 anchor: [0.00, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
-                alpha: 255,
+                alpha: 1,
                 onClick(args) {
-                    if (this.alpha == 255 && fightaction == "active") {
+                    if (this.alpha == 1 && fightaction == "active") {
                         showFightActions();
                         showItems();
                         hideFightButtons();
@@ -993,9 +993,9 @@ scenes.fight = () => {
             fightButtons.push(controls.rect({
                 anchor: [0.00, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
-                alpha: 255,
+                alpha: 1,
                 onClick(args) {
-                    if (this.alpha == 255 && fightaction == "active") {
+                    if (this.alpha == 1 && fightaction == "active") {
                         if (Math.random() < 0.5) {
                             getPlayer(i + 1).effect = ["acid", 3];
                         }
@@ -1013,9 +1013,9 @@ scenes.fight = () => {
             fightButtons.push(controls.rect({
                 anchor: [0.00, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
-                alpha: 255,
+                alpha: 1,
                 onClick(args) {
-                    if (this.alpha == 255) {
+                    if (this.alpha == 1) {
                         postLog(prompt("Put what?"));
                     }
                 }
@@ -1025,9 +1025,9 @@ scenes.fight = () => {
             fightButtons.push(controls.rect({
                 anchor: [0.00, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
-                alpha: 255,
+                alpha: 1,
                 onClick(args) {
-                    if (this.alpha == 255 && fightaction == "active") {
+                    if (this.alpha == 1 && fightaction == "active") {
                         fightaction = "switch";
                         hideFightButtons();
                     }
@@ -1038,14 +1038,14 @@ scenes.fight = () => {
             fightButtons.push(controls.rect({
                 anchor: [0.00, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
-                alpha: 255,
+                alpha: 1,
                 onClick(args) {
-                    if (this.alpha == 255 && fightaction == "active") {
+                    if (this.alpha == 1 && fightaction == "active") {
                         let loss = Math.round(50 + (game.wrenches / 100)) * (-1);
                         addWrenches(loss);
                         fleeLoss.text = loss + "!";
-                        fleeLoss.alpha = 255;
-                        fleeIcon.alpha = 255;
+                        fleeLoss.alpha = 1;
+                        fleeIcon.alpha = 1;
                         hideFightButtons();
                         hideFightActions();
 
@@ -1088,7 +1088,7 @@ scenes.fight = () => {
                                     fleeWrenches[wrenchi].anchor[1] = positionControls[where].anchor[1] + (Math.random()/10);
                                     fleeWrenches[wrenchi].offset[0] = positionControls[where].offset[0] * 2;
                                     fleeWrenches[wrenchi].offset[1] = positionControls[where].offset[1] + 0;
-                                    fleeWrenches[wrenchi].alpha = 255;
+                                    fleeWrenches[wrenchi].alpha = 1;
                                 }
                             }
 
@@ -1129,13 +1129,13 @@ scenes.fight = () => {
         fightButtons.push(controls.rect({
             anchor: [0.0025, 0.0025 + (i * 0.035)], sizeAnchor: [0.145, 0.03], offset: [0, -500],
             fill: "rgb(221, 155, 79)",
-            alpha: 255,
+            alpha: 1,
         }))
         fightButtons.push(controls.label({
             anchor: [0.145, 0.02 + (i * 0.035)], offset: [0, -500],
             text: ["Normal Actions", "Item Inventory", "Magic", "Mastery Techniques", "Macro", "Flee"][i],
             fontSize: 16, fill: "black", align: "right", 
-            alpha: 255,
+            alpha: 1,
         }))
         
     }
@@ -1153,7 +1153,7 @@ scenes.fight = () => {
             anchor: [0.175, 0.07 + (0.03 * i)],
             fontSize: 24, fill: "rgb(125, 255, 0)", align: "left", outline: "darkgreen", outlineSize: 8,
             text: actionText[Math.max(0, actionText.length - 3 + i)],
-            alpha: 255,
+            alpha: 1,
         }));
     }
 
@@ -1162,7 +1162,7 @@ scenes.fight = () => {
         anchor: [0.95, 0.07],
         fontSize: 36, fill: "blue", align: "right", outline: "black", outlineSize: 8,
         text: "Turn 1",
-        alpha: 255,
+        alpha: 1,
     });
 
     for (i = 0; i < 3; i++) {
@@ -1181,10 +1181,10 @@ scenes.fight = () => {
             fightActions.push(controls.rect({
                 anchor: [0.33 + (j * 0.17), 0 + (i * 0.0375)], sizeAnchor: [0.17, 0.0375], offset: [0, -500],
                 fill: "rgb(38, 52, 38)",
-                alpha: 255,
+                alpha: 1,
                 item: "",
                 onClick(args) {
-                    if (this.alpha == 255) {
+                    if (this.alpha == 1) {
                         if (positions[selectedAlly[0]][selectedAlly[1]].action == false && game.inventory[this.item.name] > 0) {
                             if (this.item().story != true) {
                                 if (this.item().self != true) {
@@ -1210,13 +1210,13 @@ scenes.fight = () => {
             fightActions.push(controls.rect({
                 anchor: [0.3325 + (j * 0.17), 0.0025 + (i * 0.0375)], sizeAnchor: [0.165, 0.0325], offset: [0, -500],
                 fill: "rgb(42, 87, 44)",
-                alpha: 255,
+                alpha: 1,
             }))
             fightActions.push(controls.label({
                 anchor: [0.48 + (j * 0.17), 0.025 + (i * 0.0375)], offset: [-24, -500],
                 text: "---",
                 fontSize: 16, fill: "white", align: "right",
-                alpha: 255,
+                alpha: 1,
             }))
             fightActions.push(controls.image({
                 anchor: [0.48 + (j * 0.17), 0.025 + (i * 0.0375)], sizeOffset: [32, 32], offset: [0, -520],
@@ -1229,10 +1229,10 @@ scenes.fight = () => {
     fightActions.push(controls.rect({
         anchor: [0.67, 0.1875], sizeAnchor: [0.17, 0.0375], offset: [0, -500],
         fill: "rgb(38, 52, 38)",
-        alpha: 255,
+        alpha: 1,
         item: "",
         onClick(args) {
-            if (this.alpha == 255) {
+            if (this.alpha == 1) {
                 hideFightActions();
                 showFightButtons();
             }
@@ -1241,23 +1241,23 @@ scenes.fight = () => {
     fightActions.push(controls.rect({
         anchor: [0.6725, 0.19], sizeAnchor: [0.165, 0.0325], offset: [0, -500],
         fill: "rgb(42, 87, 44)",
-        alpha: 255,
+        alpha: 1,
     }))
     fightActions.push(controls.label({
         anchor: [0.755, 0.2075], offset: [-24, -500],
         text: "Back",
         fontSize: 16, fill: "white", align: "center",
-        alpha: 255,
+        alpha: 1,
     }))
 
 
     fightActions.push(controls.rect({
         anchor: [0.67, 0.0], sizeAnchor: [0.17, 0.0375], offset: [0, -500],
         fill: "rgb(38, 52, 38)",
-        alpha: 255,
+        alpha: 1,
         item: "",
         onClick(args) {
-            if (this.alpha == 255 && itemPage > 0) {
+            if (this.alpha == 1 && itemPage > 0) {
                 itemPage -= 1;
                 showItems();
             }
@@ -1266,23 +1266,23 @@ scenes.fight = () => {
     fightActions.push(controls.rect({
         anchor: [0.6725, 0.0025], sizeAnchor: [0.165, 0.0325], offset: [0, -500],
         fill: "rgb(42, 87, 44)",
-        alpha: 255,
+        alpha: 1,
     }))
     fightActions.push(controls.label({
         anchor: [0.755, 0.025], offset: [-24, -500],
         text: "Previous",
         fontSize: 16, fill: "white", align: "center",
-        alpha: 255,
+        alpha: 1,
     }))
 
 
     fightActions.push(controls.rect({
         anchor: [0.67, 0.0375], sizeAnchor: [0.17, 0.0375], offset: [0, -500],
         fill: "rgb(38, 52, 38)",
-        alpha: 255,
+        alpha: 1,
         item: "",
         onClick(args) {
-            if (this.alpha == 255) {
+            if (this.alpha == 1) {
                 itemPage += 1;
                 showItems();
             }
@@ -1291,13 +1291,13 @@ scenes.fight = () => {
     fightActions.push(controls.rect({
         anchor: [0.6725, 0.04], sizeAnchor: [0.165, 0.0325], offset: [0, -500],
         fill: "rgb(42, 87, 44)",
-        alpha: 255,
+        alpha: 1,
     }))
     fightActions.push(controls.label({
         anchor: [0.755, 0.0625], offset: [-24, -500],
         text: "Next",
         fontSize: 16, fill: "white", align: "center",
-        alpha: 255,
+        alpha: 1,
     }))
 
 
@@ -1319,17 +1319,17 @@ scenes.fight = () => {
             fightStats.push(controls.rect({
                 anchor: [0.24 + (j * 0.35), 0.78 + (i * 0.075)], sizeAnchor: [0.2, 0.025],
                 fill: "rgb(63, 127, 63)",
-                alpha: 255
+                alpha: 1
             }))
             fightStats.push(controls.rect({ // The bg behind the bar
                 anchor: [0.242 + (j * 0.35), 0.782 + (i * 0.075)], sizeAnchor: [0.1960, 0.0210],
                 fill: "rgb(5, 51, 5)",
-                alpha: 255
+                alpha: 1
             }))
             fightStats.push(controls.rect({
                 anchor: [0.242 + (j * 0.35), 0.782 + (i * 0.075)], sizeAnchor: [0.1960, 0.0210],
                 fill: "rgb(128, 128, 128)",
-                alpha: 255
+                alpha: 1
             }))
             fightStats.push(controls.rect({ // Loss
                 anchor: [0.242 + (j * 0.35), 0.782 + (i * 0.075)], sizeAnchor: [0.1960, 0.0210],
@@ -1341,17 +1341,17 @@ scenes.fight = () => {
             fightStats.push(controls.rect({
                 anchor: [0.24 + (j * 0.35), 0.81 + (i * 0.075)], sizeAnchor: [0.2, 0.025],
                 fill: "rgb(30, 109, 30)",
-                alpha: 255
+                alpha: 1
             }))
             fightStats.push(controls.rect({ // The bg behind the bar
                 anchor: [0.242 + (j * 0.35), 0.812 + (i * 0.075)], sizeAnchor: [0.1960, 0.0210],
                 fill: "rgb(51, 0, 51)",
-                alpha: 255
+                alpha: 1
             }))
             fightStats.push(controls.rect({
                 anchor: [0.242 + (j * 0.35), 0.812 + (i * 0.075)], sizeAnchor: [0.1960, 0.0210],
                 fill: "rgb(85, 85, 85)",
-                alpha: 255
+                alpha: 1
             }))
             fightStats.push(controls.rect({ // Loss
                 anchor: [0.242 + (j * 0.35), 0.812 + (i * 0.075)], sizeAnchor: [0.1960, 0.0210],
@@ -1444,13 +1444,13 @@ scenes.fight = () => {
     fightLogComponents.push(controls.rect({
         anchor: [0, 0.775], sizeAnchor: [0.15, 0.225],
         fill: "rgb(191, 137, 69)",
-        alpha: 255,
+        alpha: 1,
     }));
 
     fightLogComponents.push(controls.rect({
         anchor: [0.005, 0.78], sizeAnchor: [0.14, 0.215],
         fill: "rgb(221, 155, 79)",
-        alpha: 255,
+        alpha: 1,
     }));
 
     for (i = 0; i < 12; i++) {
@@ -1458,7 +1458,7 @@ scenes.fight = () => {
             anchor: [0.01, 0.8 + (i*0.016)], offset: [2, 0],
             fontSize: 16, fill: "rgb(0, 0, 0)", align: "left",
             text: fightlog[Math.max(0, fightlog.length - 12 + i)],
-            alpha: 255,
+            alpha: 1,
         }));
     }
 
@@ -1467,13 +1467,13 @@ scenes.fight = () => {
     enemyListComponents.push(controls.rect({
         anchor: [0.85, 0.775], sizeAnchor: [0.15, 0.225],
         fill: "rgb(191, 137, 69)",
-        alpha: 255,
+        alpha: 1,
     }));
 
     enemyListComponents.push(controls.rect({
         anchor: [0.855, 0.78], sizeAnchor: [0.14, 0.215],
         fill: "rgb(221, 155, 79)",
-        alpha: 255,
+        alpha: 1,
     }));
     
     for (i = 0; i < 9; i++) {
@@ -1481,7 +1481,7 @@ scenes.fight = () => {
             anchor: [0.86, 0.816 + (i * 0.016)], offset: [2, 0],
             fontSize: 16, fill: "rgb(0, 0, 0)", align: "left",
             text: "ERROR" + i,
-            alpha: 255,
+            alpha: 1,
         }));
     }
 
@@ -1654,7 +1654,7 @@ scenes.fight = () => {
                 anchor: [0.0 /* 0.025 */, 0.45], offset: [-256, 72 * j], sizeOffset: [64, 64],
                 defoffset: 72 * i,
                 source: "gear",
-                alpha: 255,
+                alpha: 1,
                 snip: [0, 64, 32, 32],
                 pos1: i,
                 pos2: j,
@@ -1717,7 +1717,7 @@ scenes.fight = () => {
             epositionControls.push(controls.image({
                 anchor: [0.975, 0.45], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
                 source: "gear",
-                alpha: 255,
+                alpha: 1,
                 snip: [0, 32, 32, 32],
                 pos1: i,
                 pos2: j,
@@ -1747,7 +1747,7 @@ scenes.fight = () => {
             positionGrid.push(controls.image({
                 anchor: [0.025, 0.45], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
                 source: "grid",
-                alpha: 255,
+                alpha: 1,
             }));
         }
     }
@@ -1756,7 +1756,7 @@ scenes.fight = () => {
             positionGrid.push(controls.image({
                 anchor: [0.975, 0.45], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
                 source: "grid",
-                alpha: 255,
+                alpha: 1,
             }));
         }
     }
@@ -1771,7 +1771,7 @@ scenes.fight = () => {
                         else {
                             positionControls[i + (j * 3)].source = positions[i][j].occupied;
                         }
-                        positionControls[i + (j * 3)].alpha = 255;
+                        positionControls[i + (j * 3)].alpha = 1;
                     }
                     else {
                         if (positions[i][j].occupied != undefined && positions[i][j].occupied != false) {
@@ -1800,7 +1800,7 @@ scenes.fight = () => {
                 if (epositions[i]) {
                     if (epositions[i][j].isOccupied == true) {
                         epositionControls[i + (j * 3)].source = epositions[i][j].occupied;
-                        epositionControls[i + (j * 3)].alpha = 255;
+                        epositionControls[i + (j * 3)].alpha = 1;
 
                         // I hate this code here
                         let doWeHaveThisOneDoWe = 0;
@@ -1912,14 +1912,14 @@ scenes.fight = () => {
 
     // When the fight starts. How many chars do we have? Who exists? Show/Hide/Gray out stats
     for (i = 0; i < game.chars.length; i++) {
-        fightStats[amountStats * i].alpha = 255;
-        fightStats[1 + amountStats * i].alpha = 255;
+        fightStats[amountStats * i].alpha = 1;
+        fightStats[1 + amountStats * i].alpha = 1;
         fightStats[4 + amountStats * i].fill = "rgb(20, 204, 20)";
         if (getPlayer(1 + i).HP > 0) fightStats[4 + amountStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(1 + i).HP / getPlayer(1 + i).maxHP);
         fightStats[8 + amountStats * i].fill = "rgb(205, 0, 205)";
-        fightStats[10 + amountStats * i].alpha = 255;
-        fightStats[11 + amountStats * i].alpha = 255;
-        fightStats[12 + amountStats * i].alpha = 255;
+        fightStats[10 + amountStats * i].alpha = 1;
+        fightStats[11 + amountStats * i].alpha = 1;
+        fightStats[12 + amountStats * i].alpha = 1;
         if (getStat(characters[i], "element") != undefined) fightStats[12 + amountStats * i].source = getStat(characters[i], "element");
     }
 
@@ -1997,7 +1997,7 @@ scenes.fight = () => {
                 fightStats[10 + amountStats * i].fill = getHPFill(i);
                 fightStats[11 + amountStats * i].text = getPlayer(i + 1).EP + "/" + getPlayer(i + 1).maxEP;
 
-                if (getPlayer(i + 1).effect[0] != "none") fightStats[13 + amountStats * i].alpha = 255;
+                if (getPlayer(i + 1).effect[0] != "none") fightStats[13 + amountStats * i].alpha = 1;
                 if (getPlayer(i + 1).effect[0] != "none") fightStats[13 + amountStats * i].source = getPlayer(i + 1).effect[0];
                 if (getPlayer(i + 1).effect[0] == "none") fightStats[13 + amountStats * i].alpha = 0;
             }
@@ -2013,13 +2013,13 @@ scenes.fight = () => {
             // Grid thing
             if (settings.grid == true) {
                 for (i in positionGrid) {
-                    positionGrid[i].alpha = 255;
+                    positionGrid[i].alpha = 1;
                 }
             }
             else {
                 for (i in positionGrid) {
                     if (positionGrid[i].source != "grid") {
-                        positionGrid[i].alpha = 255;
+                        positionGrid[i].alpha = 1;
                     }
                     else {
                         positionGrid[i].alpha = 0;

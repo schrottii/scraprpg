@@ -219,7 +219,6 @@ function loop() {
     // Tick time
     delta = Date.now() - time;
     time = Date.now();
-
     // Resize the canvas
     mainCanvas.style.width = (mainCanvas.width = window.innerWidth) + "px";
     mainCanvas.style.height = (mainCanvas.height = window.innerHeight) + "px";
@@ -228,16 +227,22 @@ function loop() {
     scale = height / 16;
     width = window.innerWidth / scale;
 
+    // Finally, after 200 --years-- commits, this part is documented (by Schrottii)
+    // this sets ctx to the canvas, just the usual stuff
     let ctx = mainCanvas.getContext("2d");
     ctx.globalAlpha = 1;
+    // pre-render the canvas
     scene.preRender(ctx, delta);
+    // Load every element that exists (Buttons, labels, images, everything)
     for (let control of scene.controls) {
-        if (control.alpha > 0) {
+        if (control.alpha > 0) { // If their alpha is above 0, "draw" them, with their alpha value
+            // Alpha 1 = Max (100% opacity)
+            // Alpha 0.1 = Barely visible              Alpha 0 = Invisible
+            // Alpha 255 (or anything above 1 really) does not work anymore!
             ctx.globalAlpha = control.alpha;
             control.render(ctx);
         }
     }
-    ctx.globalAlpha = 1;
 
     // Draw FPS
     ctx.font = "12px DePixelKlein, sans-serif";
