@@ -1543,7 +1543,7 @@ scenes.game = () => {
             ctx.drawImage(images[game.chars[3]], 32 * Math.floor(walkTime), 32 * head, 32, 32,
                 scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5) ),
                 scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zoom * scale, zoom * scale)
-            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingEnabled = false;
 
 
             for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {

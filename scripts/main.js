@@ -230,6 +230,8 @@ function loop() {
     // Finally, after 200 --years-- commits, this part is documented (by Schrottii)
     // this sets ctx to the canvas, just the usual stuff
     let ctx = mainCanvas.getContext("2d");
+
+    ctx.imageSmoothingEnabled = false;
     ctx.globalAlpha = 1;
     // pre-render the canvas
     scene.preRender(ctx, delta);
