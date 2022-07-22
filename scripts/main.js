@@ -5,9 +5,15 @@ function init() {
     window.addEventListener("keyup", (e) => currentKeys[e.key.toLowerCase()] = false);
 
     let cancel = false;
+    let tokenStay = controls.image({
+        anchor: [0, 0], sizeAnchor: [1, 1],
+        source: "tttanimation", snip: [123, 415, 123, 83],
+        alpha: 0,
+    });
 
     setScene({
         controls: [
+            tokenStay,
             controls.label({
                 anchor: [.02, .98], offset: [5, -12],
                 align: "left", baseline: "alphabetic", fontSize: 16,
@@ -18,6 +24,7 @@ function init() {
                 align: "right", baseline: "alphabetic", fontSize: 16, fill: "#7f7f7f",
                 text: "",
             }),
+            
     /*
             controls.button({
                 anchor: [.5, .5], offset: [-100, -55], sizeOffset: [200, 50],
@@ -76,7 +83,19 @@ function init() {
     image_animation(images.schrottgamesanimation, 4, 5, 100);
     setTimeout(() => {
         if (!cancel) image_animation(images.tttanimation, 4, 5, 100)
-    }, 3000);
+    }, 2500);
+    setTimeout(() => {
+        tokenStay.alpha = 1;
+        addAnimator(function (t) {
+            tokenStay.alpha = 1 - Math.max(0, ((t / 500) - 1));
+
+            if (t > 999) {
+                tokenStay.alpha = 0;
+                return true;
+            }
+            return false;
+        })
+    }, 4500);
     setTimeout(() => {
         if (!cancel) {
             musicPlayer.loop = true;
