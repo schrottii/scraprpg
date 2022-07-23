@@ -80,6 +80,7 @@ let npcs = {
                 1: [["I am friendly Skro.", "Portraits_Skro", "sad", "Skro"],
                     ["NO! I am evil Skro!!!", "Portraits_Skro", "angry", "Skro"],
                     ["Guys, I think he is evil!", "Portraits_Gau", "happy", "Gau"],
+                    ["Spam is not allowed!", "Portraits_Gau", "angry", "Gau"],
                     ["Skro? More like oh no", "Portraits_Corelle", "neutral", "Corelle"],
                     ["Good Night.", "Portraits_Skro", "angry", "oh no", () => {
                         game.time = 18000;

@@ -328,92 +328,36 @@ scenes.game = () => {
         alpha: 1,
         source: "actionbutton",
         onClick(args) {
+            // Look at how amazingly optimized this is now YAY (xo & yo, more like that's awesome yo)
+            let xo = 0;
+            let yo = 0;
+            if (head == 0) yo = 1; // Down
+            if (head == 1) xo = -1; // Left
+            if (head == 2) xo = 1; // Right
+            if (head == 3) yo = -1; // Up
+
             if (dialogueProgress == 0) {
                 let map = maps[game.map];
-                if (head == 0) { // Down
-                    if (getTile(map, game.position[0], game.position[1] + 1) != undefined) {
-                        if (getTile(map, game.position[0], game.position[1] + 1).action != undefined) {
-                            getTile(map, game.position[0], game.position[1] + 1).action();
-                        }
-                    }
-                    if (getTile(map, game.position[0], game.position[1] + 1, 2) != undefined) {
-                        if (getTile(map, game.position[0], game.position[1] + 1, 2).action != undefined) {
-                            getTile(map, game.position[0], game.position[1] + 1, 2).action();
-                        }
-                    }
-                    for (i in activenpcs) {
-                        if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] + 1) {
-                            inDialogue = true;
-                            currentDialogue = activenpcs[i].dialogues[1];
-                            dialogueProgress = 0;
-                            dialogueEmotion = currentDialogue[dialogueProgress][1];
-                            canMove = false;
-                        }
+                if (getTile(map, game.position[0] + xo, game.position[1] + yo) != undefined) {
+                    if (getTile(map, game.position[0] + xo, game.position[1] + yo).action != undefined) {
+                        getTile(map, game.position[0] + xo, game.position[1] + yo).action();
                     }
                 }
-                else if (head == 1) { // Left
-                    if (getTile(map, game.position[0] - 1, game.position[1]) != undefined) {
-                        if (getTile(map, game.position[0] - 1, game.position[1]).action != undefined) {
-                            getTile(map, game.position[0] - 1, game.position[1]).action();
-                        }
-                    }
-                    if (getTile(map, game.position[0] - 1, game.position[1], 2) != undefined) {
-                        if (getTile(map, game.position[0] - 1, game.position[1], 2).action != undefined) {
-                            getTile(map, game.position[0] - 1, game.position[1], 2).action();
-                        }
-                    }
-                    for (i in activenpcs) {
-                        if (activenpcs[i].position[0] == game.position[0] - 1 && activenpcs[i].position[1] == game.position[1]) {
-                            inDialogue = true;
-                            currentDialogue = activenpcs[i].dialogues[1];
-                            dialogueProgress = 0;
-                            dialogueEmotion = currentDialogue[dialogueProgress][1];
-                            canMove = false;
-                        }
+                if (getTile(map, game.position[0] + xo, game.position[1] + yo, 2) != undefined) {
+                    if (getTile(map, game.position[0] + xo, game.position[1] + yo, 2).action != undefined) {
+                        getTile(map, game.position[0] + xo, game.position[1] + yo, 2).action();
                     }
                 }
-                else if (head == 2) { // Right
-                    if (getTile(map, game.position[0] + 1, game.position[1]) != undefined) {
-                        if (getTile(map, game.position[0] + 1, game.position[1]).action != undefined) {
-                            getTile(map, game.position[0] + 1, game.position[1]).action();
-                        }
-                    }
-                    if (getTile(map, game.position[0] + 1, game.position[1], 2) != undefined) {
-                        if (getTile(map, game.position[0] + 1, game.position[1], 2).action != undefined) {
-                            getTile(map, game.position[0] + 1, game.position[1], 2).action();
-                        }
-                    }
-                    for (i in activenpcs) {
-                        if (activenpcs[i].position[0] == game.position[0] + 1 && activenpcs[i].position[1] == game.position[1]) {
-                            inDialogue = true;
-                            currentDialogue = activenpcs[i].dialogues[1];
-                            dialogueProgress = 0;
-                            dialogueEmotion = currentDialogue[dialogueProgress][1];
-                            canMove = false;
-                        }
+                for (i in activenpcs) {
+                    if (activenpcs[i].position[0] == game.position[0] + xo && activenpcs[i].position[1] == game.position[1] + yo) {
+                        inDialogue = true;
+                        currentDialogue = activenpcs[i].dialogues[1];
+                        dialogueProgress = 0;
+                        dialogueEmotion = currentDialogue[dialogueProgress][1];
+                        canMove = false;
                     }
                 }
-                else if (head == 3) { // Up
-                    if (getTile(map, game.position[0], game.position[1] - 1) != undefined) {
-                        if (getTile(map, game.position[0], game.position[1] - 1).action != undefined) {
-                            getTile(map, game.position[0], game.position[1] - 1).action();
-                        }
-                    }
-                    if (getTile(map, game.position[0], game.position[1] - 1, 2) != undefined) {
-                        if (getTile(map, game.position[0], game.position[1] - 1, 2).action != undefined) {
-                            getTile(map, game.position[0], game.position[1] - 1, 2).action();
-                        }
-                    }
-                    for (i in activenpcs) {
-                        if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] - 1) {
-                            inDialogue = true;
-                            currentDialogue = activenpcs[i].dialogues[1];
-                            dialogueProgress = 0;
-                            dialogueEmotion = currentDialogue[dialogueProgress][1];
-                            canMove = false;
-                        }
-                    }
-                }
+
             }
         }
     });
@@ -1234,54 +1178,25 @@ scenes.game = () => {
                         if (activenpcs[i].pathProgress > activenpcs[i].path.length) {
                             activenpcs[i].pathProgress = 0;
                         }
-                        if (activenpcs[i].path[activenpcs[i].pathProgress] == 0) { // Down
-                            if (map.map[activenpcs[i].position[1]] != undefined) {
-                                if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0] + 1] != undefined) {
-                                    if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] + 1) != undefined) {
-                                        if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] + 1).occupied != true) {
-                                            activenpcs[i].position[1] += 1;
-                                            activenpcs[i].head = 0;
-                                            activenpcs[i].kofs = [0, 1, 1];
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (activenpcs[i].path[activenpcs[i].pathProgress] == 1) { // Left
-                            if (map.map[activenpcs[i].position[1]] != undefined) {
-                                if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0]] != undefined) {
-                                    if (getTile(map, activenpcs[i].position[0] - 1, activenpcs[i].position[1]) != undefined) {
-                                        if (getTile(map, activenpcs[i].position[0] - 1, activenpcs[i].position[1]).occupied != true) {
-                                            activenpcs[i].position[0] -= 1;
-                                            activenpcs[i].head = 1;
-                                            activenpcs[i].kofs = [-1, 0, 1];
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (activenpcs[i].path[activenpcs[i].pathProgress] == 2) { // Right
-                            if (map.map[activenpcs[i].position[1]] != undefined) {
-                                if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0]] != undefined) {
-                                    if (getTile(map, activenpcs[i].position[0] + 1, activenpcs[i].position[1]) != undefined) {
-                                        if (getTile(map, activenpcs[i].position[0] + 1, activenpcs[i].position[1]).occupied != true) {
-                                            activenpcs[i].position[0] += 1;
-                                            activenpcs[i].head = 2;
-                                            activenpcs[i].kofs = [1, 0, 1];
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (activenpcs[i].path[activenpcs[i].pathProgress] == 3) { // Up
-                            if (map.map[activenpcs[i].position[1]] != undefined) {
-                                if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0] - 1] != undefined) {
-                                    if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] - 1) != undefined) {
-                                        if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] - 1).occupied != true) {
-                                            activenpcs[i].position[1] -= 1;
-                                            activenpcs[i].head = 3;
-                                            activenpcs[i].kofs = [0, -1, 1];
-                                        }
+
+                        // Look at how amazingly optimized this is now YAY (xo & yo, more like that's awesome yo)
+                        let xo = 0;
+                        let yo = 0;
+                        if (activenpcs[i].path[activenpcs[i].pathProgress] == 0) yo = 1; // Down
+                        if (activenpcs[i].path[activenpcs[i].pathProgress] == 1) xo = -1; // Left
+                        if (activenpcs[i].path[activenpcs[i].pathProgress] == 2) xo = 1; // Right
+                        if (activenpcs[i].path[activenpcs[i].pathProgress] == 3) yo = -1; // Up
+
+
+                        if (map.map[activenpcs[i].position[1]] != undefined) {
+                            if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0] + xo] != undefined) {
+                                if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo) != undefined) {
+                                    if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo).occupied != true) {
+                                        activenpcs[i].position[0] += xo;
+                                        activenpcs[i].position[1] += yo;
+                                        if (activenpcs[i].path[activenpcs[i].pathProgress] != undefined) activenpcs[i].head = activenpcs[i].path[activenpcs[i].pathProgress];
+                                        else activenpcs[i].head = activenpcs[i].path[activenpcs[i].pathProgress - 1];
+                                        activenpcs[i].kofs = [xo, yo, 1];
                                     }
                                 }
                             }
