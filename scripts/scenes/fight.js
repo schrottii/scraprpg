@@ -311,6 +311,8 @@ scenes.fight = () => {
     }
 
     function deathScreen() {
+        stopMusic();
+
         addAnimator(function (t) {
             gameOverScreen[0].alpha = 0 + (t / 2000);
             if (t > 1999) {
@@ -334,6 +336,8 @@ scenes.fight = () => {
         }, 4000);
 
         setTimeout(() => {
+            playSound("gameover");
+
             // Arbitrary variables
             let bounceHeight = 0.8;
             let timeOffset = 0
@@ -1604,7 +1608,7 @@ scenes.fight = () => {
 
     gameOverScreen2.push(controls.button({
         anchor: [0.1, 0.6], sizeAnchor: [0.3, 0.2],
-        text: "Load Save",
+        text: "Load Save", fontSize: 48,
         alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -1616,7 +1620,7 @@ scenes.fight = () => {
 
     gameOverScreen2.push(controls.button({
         anchor: [0.6, 0.6], sizeAnchor: [0.3, 0.2],
-        text: "Title Screen",
+        text: "Title Screen", fontSize: 48,
         alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {

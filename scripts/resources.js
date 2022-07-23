@@ -191,6 +191,7 @@ var audio = {
     "victory": "data/sounds/jingle03.mp3",
     "miss": "data/sounds/miss.ogg",
     "encounter": "data/sounds/enc_sound.ogg",
+    "gameover": "data/sounds/fall_land.wav",
 };
 
 var maps = {
