@@ -11,7 +11,7 @@ var overWorldStatsScroll = 0;
 // Function used to create enemies
 function createEnemy(type) {
     if (currentEnemies.length < 9) {
-        currentEnemies.push([type, Math.ceil(Math.random() * 2), Math.ceil(Math.random() * 2)]);
+        currentEnemies.push([type, Math.floor(Math.random() * 3), Math.floor(Math.random() * 3)]);
     }
 }
 

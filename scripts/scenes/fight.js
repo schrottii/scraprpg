@@ -325,6 +325,24 @@ scenes.fight = () => {
         return false;
     }
 
+    function canReach(length, type, pos) {
+        // Is it long enough?
+        // Length = 1, 2 or 3
+
+        if (type == "enemy") { // Player attacks enemy
+            // Keep in mind epos are swapped - 2 is left and not right
+            if (pos[0] == 2 && length > 0) return true;
+
+            let inFrontOfMe = 0;
+            for (i = 2; i > pos[0]; i--) {
+                if (epositions[i][pos[1]].isOccupied == true) inFrontOfMe += 1;
+            }
+
+            if (length > inFrontOfMe) return true;
+            return false;
+        }
+    }
+
     function calculateDamage(type, pos1, pos2, enpos1, enpos2) {
         if (type == 1) { // Allies
             return Math.round(game.characters[positions[pos1][pos2].occupied].strength
@@ -449,8 +467,8 @@ scenes.fight = () => {
                             let exists = 0;
                             for (j = 0; j < 3; j++) {
                                 for (i = 0; i < 3; i++) {
-                                    if (epositions[i][j].isOccupied == true && exists == 0) {
-                                        exists = 1
+                                    if (epositions[i][j].isOccupied == true && exists == 0 && canReach(getStat(positions[fpos1][fpos2].occupied, "length"), "enemy", [pos1, pos2] )) {
+                                        exists = 1;
                                         pos1 = i;
                                         pos2 = j;
                                         break;
@@ -458,7 +476,7 @@ scenes.fight = () => {
                                 }
                             }
                             if (exists == 0) {
-                                positions[pos[0]][pos[1]].action = false;
+                                positions[pos1][pos2].action = false;
                                 executeActions();
                                 return false;
                             }
@@ -707,6 +725,7 @@ scenes.fight = () => {
 
     function attackAnimation(fpos1, fpos2, pos1, pos2, own, goal, onFinish, enemy) {
         let al = 800;
+
         if (enemy == false) {
             positionControls[fpos1 + (fpos2 * 3)].offset[0] = own[1];
             positionControls[fpos1 + (fpos2 * 3)].offset[1] = own[3];
@@ -724,11 +743,11 @@ scenes.fight = () => {
                 attackAnimationObjects[fpos1 + (fpos2 * 3)].anchor = positionControls[fpos1 + (fpos2 * 3)].anchor;
                 attackAnimationObjects[fpos1 + (fpos2 * 3)].offset = [positionControls[fpos1 + (fpos2 * 3)].offset[0] + 56, positionControls[fpos1 + (fpos2 * 3)].offset[1]];
 
-                if (t > 200 && t < 399 && own[3] != 0) {
+                if (t > 200 && t < 399) {
                     positionControls[fpos1 + (fpos2 * 3)].offset[1] = own[3] * (1 - ((t - 200)) / 200);
                     positionControls[fpos1 + (fpos2 * 3)].offset[0] = own[1] * (1 - ((t - 200)) / 200);
                 }
-                if (t > 400 && t < 599 && goal[3] != 0) {
+                if (t > 400 && t < 599) {
                     positionControls[fpos1 + (fpos2 * 3)].offset[1] = goal[3] * (0 + ((t - 400)) / 200);
                     positionControls[fpos1 + (fpos2 * 3)].offset[0] = goal[1] * (0 + ((t - 400)) / 200);
                 }
@@ -769,11 +788,11 @@ scenes.fight = () => {
                 attackAnimationObjects[9 + pos1 + (pos2 * 3)].offset = [epositionControls[pos1 + (pos2 * 3)].offset[0] - 72, epositionControls[pos1 + (pos2 * 3)].offset[1]];
 
                 attackAnimationObjects[9 + pos1 + (pos2 * 3)].alpha = 1;
-                if (t > 200 && t < 399 && goal[3] != 0) {
+                if (t > 200 && t < 399) {
                     epositionControls[pos1 + (pos2 * 3)].offset[1] = goal[3] * (1 - ((t - 200)) / 200);
                     epositionControls[pos1 + (pos2 * 3)].offset[0] = goal[1] * (1 - ((t - 200)) / 200);
                 }
-                if (t > 400 && t < 599 && own[3] != 0) {
+                if (t > 400 && t < 599) {
                     epositionControls[pos1 + (pos2 * 3)].offset[1] = own[3] * (0 + ((t - 400)) / 200);
                     epositionControls[pos1 + (pos2 * 3)].offset[0] = own[1] * (0 + ((t - 400)) / 200);
                 }
@@ -1728,7 +1747,7 @@ scenes.fight = () => {
                     // but add fighting here at some point
                     // THAT POINT IS NOW! Idiot
 
-                    if (fightaction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
+                    if (fightaction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(positions[selectedAlly[0]][selectedAlly[1]].occupied, "length"), "enemy", [this.pos1, this.pos2])) {
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                         positions[selectedAlly[0]][selectedAlly[1]].action = ["attack", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
 

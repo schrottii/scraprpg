@@ -14,6 +14,7 @@ const cStats = {
         agi: 15,
         acc: 90,
         element: "water",
+        length: 1,
     },
     corelle: {
         name: "Corelle",
@@ -23,6 +24,7 @@ const cStats = {
         agi: 20,
         acc: 85,
         element: "fire",
+        length: 1,
     },
     gau: {
         name: "Gau",
@@ -32,6 +34,7 @@ const cStats = {
         agi: 12,
         acc: 85,
         element: "physical",
+        length: 1,
     },
     skro: {
         name: "Skro",
@@ -41,6 +44,7 @@ const cStats = {
         agi: 5,
         acc: 90,
         element: "physical",
+        length: 3,
     }
 }
 
