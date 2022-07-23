@@ -77,4 +77,24 @@ let items = {
             ...args || {},
         }
     },
+    superswamp(args) {
+        return {
+            ...items.default(),
+            source: "superswamp",
+            name: "Super Swamp",
+            shopcost: 1000,
+            max: 99,
+            effect: () => {
+                let HealthBefore = args.player.HP
+                args.player.HP -= 999;
+                if (args.player.HP > args.player.maxHP) args.player.HP = args.player.maxHP;
+                if (args.anchor != undefined) {
+                    battleNumber(args.anchor, 999, 0, args.offset);
+                    updateBar(args.player.name.toLowerCase(), HealthBefore);
+                }
+            },
+
+            ...args || {},
+        }
+    },
 }

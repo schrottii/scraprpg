@@ -664,7 +664,13 @@ scenes.fight = () => {
                 break;
             case "item":
                 items[whoAGI.action[1]]({ user: game.characters[positions[whoAGI.action[2]][whoAGI.action[3]].occupied], player: game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied], anchor: positionControls[whoAGI.action[2] + (whoAGI.action[3] * 3)].anchor, offset: positionControls[pos[0] + (pos[1] * 3)].offset }).effect();
-                positions[pos[0]][pos[1]].action = false;
+                if (game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].HP < 1) {
+                    game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].HP = 0;
+                    postLog(positions[whoAGI.action[2]][whoAGI.action[3]].name + " killed " + game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].name + "!");
+                    positions[whoAGI.action[4]][whoAGI.action[5]].isOccupied = false;
+                    checkAllDead();
+                }
+                positions[whoAGI.action[2]][whoAGI.action[3]].action = false;
                 executeActions();
                 break;
             

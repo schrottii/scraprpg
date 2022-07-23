@@ -168,6 +168,7 @@ let images = {
     "items/potion": "data/images/items/potion.png",
     "items/scroll": "data/images/paper.png",
     "items/peppytincture": "data/images/items/peppy.png",
+    "items/superswamp": "data/images/items/superswamp.png",
 };
 
 var scenes = {

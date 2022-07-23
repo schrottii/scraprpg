@@ -81,6 +81,7 @@ maps["test"] = {
         [8, 23, "scroll", 1, true],
         [24, 20, "potion", 1, true],
         [23, 20, "peppytincture", 1, true],
+        [23, 19, "superswamp", 1, true],
     ],
     maxEnemies: 8,
     music: "bgm/placeholder",
