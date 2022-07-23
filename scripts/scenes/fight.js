@@ -113,6 +113,8 @@ scenes.fight = () => {
     var enemyAmounts = ["", "", "", "", "", "", "", "", ""];
     var fightOverview = [];
     var winScreen = [];
+    var gameOverScreen = [];
+    var gameOverScreen2 = [];
     var fleeWrenches = [];
     var actionDisplay = [];
     var actionText = [];
@@ -126,6 +128,7 @@ scenes.fight = () => {
     var selectedAlly = [0, 0];
 
     var win = false;
+    var lost = false;
 
     var selectedItem;
 
@@ -138,7 +141,8 @@ scenes.fight = () => {
     ];
 
 
-    function checkAllDead(checkonly=false) {
+    function checkAllDead(checkonly = false) {
+        if (lost) return false;
         let alive = 0;
         for (j = 0; j < 3; j++) {
             for (i = 0; i < 3; i++) {
@@ -221,9 +225,8 @@ scenes.fight = () => {
             }
         }
         if (aliveallies == 0) { // All dead :)
-            alert("DEAD");
-            alert("Remind me to add a proper death screen");
-            setScene(scenes.title());
+            lost = true;
+            deathScreen();
         }
     }
 
@@ -306,6 +309,108 @@ scenes.fight = () => {
             return false;
         })
     }
+
+    function deathScreen() {
+        addAnimator(function (t) {
+            gameOverScreen[0].alpha = 0 + (t / 2000);
+            if (t > 1999) {
+                gameOverScreen[0].alpha = 1;
+                return true;
+            }
+            return false;
+        });
+
+        setTimeout(() => {
+            gameOverScreen[1].alpha = 1;
+
+            addAnimator(function (t) {
+                gameOverScreen[1].offset[1] = -1000 + t;
+                if (t > 999) {
+                    gameOverScreen[1].offset[1] = 0;
+                    return true;
+                }
+                return false;
+            });
+        }, 4000);
+
+        setTimeout(() => {
+            // Arbitrary variables
+            let bounceHeight = 0.8;
+            let timeOffset = 0
+
+            addAnimator(function (t) {
+                if (bounceHeight > 0.001) {
+                    while (bounceHeight > 0.00001) {
+                        let rt = t / 1000 - timeOffset;
+                        let ofs = (rt * bounceHeight - rt * rt) * 1;
+                        if (ofs < 0) {
+                            timeOffset += bounceHeight;
+                            bounceHeight = bounceHeight / 2;
+                            continue;
+                        }
+                        gameOverScreen[1].anchor[1] = 0.2 - ofs;
+                        break;
+                    }
+                } else {
+                    gameOverScreen[1].anchor[1] = 0.2;
+                    return true;
+                }
+            });
+        }, 5000);
+
+        setTimeout(() => {
+            gameOverScreen[2].alpha = 1;
+
+            addAnimator(function (t) {
+                gameOverScreen[2].offset[1] = 1000 - t;
+                if (t > 999) {
+                    gameOverScreen[2].offset[1] = 0;
+                    return true;
+                }
+                return false;
+            });
+        }, 6500);
+
+        // Second part
+
+        setTimeout(() => {
+            addAnimator(function (t) {
+                gameOverScreen2[0].alpha = 0 + (t / 2000);
+                if (t > 1999) {
+                    gameOverScreen2[0].alpha = 1;
+                    return true;
+                }
+                return false;
+            });
+        }, 8000);
+
+        setTimeout(() => {
+            addAnimator(function (t) {
+                gameOverScreen2[1].alpha = 0 + (t / 1000);
+                gameOverScreen2[2].alpha = 0 + (t / 1000);
+                if (t > 999) {
+                    gameOverScreen2[1].alpha = 1;
+                    gameOverScreen2[2].alpha = 1;
+                    return true;
+                }
+                return false;
+            });
+        }, 9750);
+
+        setTimeout(() => {
+            addAnimator(function (t) {
+                gameOverScreen2[3].alpha = 0 + (t / 1000);
+                gameOverScreen2[4].alpha = 0 + (t / 1000);
+                if (t > 999) {
+                    gameOverScreen2[3].alpha = 1;
+                    gameOverScreen2[4].alpha = 1;
+                    return true;
+                }
+                return false;
+            });
+        }, 10500);
+    }
+    
 
     function checkAllAction() {
         let active = 0;
@@ -515,7 +620,7 @@ scenes.fight = () => {
                             playSound("miss");
                             postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " missed!");
                         }
-                        executeActions();
+                        if(!lost) executeActions();
                     }, false);
                 }
                 positions[pos[0]][pos[1]].action = false;
@@ -543,7 +648,7 @@ scenes.fight = () => {
                 }
 
                 positions[pos[0]][pos[1]].action = false;
-                executeActions();
+                if (!lost) executeActions();
                 break;
             case "heal":
                 selectedAlly = [whoAGI.action[1], whoAGI.action[2]];
@@ -564,6 +669,7 @@ scenes.fight = () => {
 
 
     function enemiesTurn() {
+        if (lost) return false;
         let highestAGI = 0;
         let whoAGI;
         let pos = [];
@@ -634,7 +740,7 @@ scenes.fight = () => {
                     checkAllDead();
                 }
             }
-            enemiesTurn();
+            if (!lost) enemiesTurn();
         }, true); // very important true,bob
     }
 
@@ -1459,6 +1565,66 @@ scenes.fight = () => {
         alpha: 0,
     }));
 
+    // Game Over Screen
+    gameOverScreen.push(controls.rect({
+        anchor: [0.0, 0.0], sizeAnchor: [1, 1], offset: [0, 0],
+        fill: "rgb(0, 0, 0)",
+        alpha: 0,
+    }));
+    gameOverScreen.push(controls.image({
+        anchor: [0.3, 0.2], sizeAnchor: [0.4, 0.15], offset: [0, -1000],
+        source: "gameover",
+        alpha: 0,
+    }));
+    gameOverScreen.push(controls.label({
+        anchor: [0.5, 0.45], sizeAnchor: [0.4, 0.15], offset: [0, 1000],
+        text: "Try again, mate.",
+        fontSize: 60, fill: "red", align: "center",
+        outline: "white", outlineSize: 20,
+        alpha: 0,
+    }));
+
+    gameOverScreen2.push(controls.rect({
+        anchor: [0.0, 0.0], sizeAnchor: [1, 1],
+        fill: "rgb(0, 0, 0)",
+        alpha: 0,
+    }));
+    gameOverScreen2.push(controls.label({
+        anchor: [0.5, 0.3],
+        text: "Load the last save point?",
+        fontSize: 32, fill: "white", align: "center",
+        alpha: 0,
+    }));
+    gameOverScreen2.push(controls.label({
+        anchor: [0.5, 0.3], offset: [0, 40],
+        text: "(Everything will be set back to that point.)",
+        fontSize: 32, fill: "white", align: "center",
+        alpha: 0,
+    }));
+
+    gameOverScreen2.push(controls.button({
+        anchor: [0.1, 0.6], sizeAnchor: [0.3, 0.2],
+        text: "Load Save",
+        alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                loadGame();
+                setScene(scenes.game());
+            }
+        }
+    }));
+
+    gameOverScreen2.push(controls.button({
+        anchor: [0.6, 0.6], sizeAnchor: [0.3, 0.2],
+        text: "Title Screen",
+        alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                setScene(scenes.title());
+            }
+        }
+    }));
+    
     // Battle Log (Bottom Left)
 
     fightLogComponents.push(controls.rect({
@@ -2064,8 +2230,8 @@ scenes.fight = () => {
             ...fightButtons, ...fightActions, turnDisplay, fleeLoss, fleeIcon,
             ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
-            ...fightStats, ...actionDisplay, ...winScreen,
-            ...positionControls, ...epositionControls, ...positionGrid, ...attackAnimationObjects, ...battleNumbers, ...fleeWrenches,
+            ...fightStats, ...actionDisplay, ...winScreen, ...gameOverScreen,
+            ...positionControls, ...epositionControls, ...positionGrid, ...attackAnimationObjects, ...battleNumbers, ...fleeWrenches, ...gameOverScreen2,
         ],
     }
 };

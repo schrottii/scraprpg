@@ -17,7 +17,7 @@ let images = {
     techniques: "data/images/techniques.png",
     switch: "data/images/switch.png",
     flee: "data/images/flee.png",
-    gameover: "data/images/gameover.png",
+    gameover: "data/images/GAME_OVER.png",
     selected: "data/images/selected.png",
     grid: "data/images/gridempty.png",
     evil: "data/images/Map_Evil.png",
