@@ -855,6 +855,11 @@ scenes.game = () => {
         }
     }));
 
+    let areaTeleportFade = controls.rect({
+        anchor: [0, 0], sizeAnchor: [1, 1],
+        fill: "black", alpha: 0
+    })
+
     // Function used to grab tiles
     function getTile(map, x, y, l = 1) {
         if (y < 0) return undefined;
@@ -931,15 +936,38 @@ scenes.game = () => {
 
     function tryTeleport(map, x, y) {
         if (isTeleport(map, x, y)) {
-            let themap = getTile(map, x, y);
-            let previousmap = game.map;
-            // Set map and pos
-            game.map = themap.teleport[0];
-            loadNPCs();
-            loadAreaMusic(previousmap);
-            game.position[0] = themap.teleport[1];
-            game.position[1] = themap.teleport[2];
-            playSound("teleport");
+            canMove = false;
+            addAnimator(function (t) { // Area enter effect part 1
+                areaTeleportFade.alpha = 0 + (t / 1000);
+                if (t > 999) {
+                    areaTeleportFade.alpha = 1;
+                    return true;
+                }
+                return false;
+            });
+
+            setTimeout(() => {
+                addAnimator(function (t) { // part 2
+                    areaTeleportFade.alpha = 1 - (t / 1000);
+                    if (t > 999) {
+                        areaTeleportFade.alpha = 0;
+                        canMove = true;
+                        return true;
+                    }
+                    return false;
+                });
+
+                let themap = getTile(map, x, y);
+                let previousmap = game.map;
+                // Set map and pos
+                game.map = themap.teleport[0];
+
+                loadNPCs();
+                loadAreaMusic(previousmap);
+                game.position[0] = themap.teleport[1];
+                game.position[1] = themap.teleport[2];
+                playSound("teleport");
+            }, 1500);
         }
     }
 
@@ -1538,7 +1566,7 @@ scenes.game = () => {
             mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents,
             poisonBlack, nightEffect,
             ...menuSettings, ...menuSettingsGameplay, ...menuSettingsAudio, ...menuSettingsGraphics, ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
-            autoSaveText, settingsSaveText,
+            autoSaveText, settingsSaveText, areaTeleportFade
         ],
     }
 }

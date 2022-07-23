@@ -3,7 +3,6 @@
 
 - Proper victory
 - Non-Game-Over defeat 
-- Black fade effect during area enter
 - Overworld quests
 - Startup introduction
 - Mastery Techs
