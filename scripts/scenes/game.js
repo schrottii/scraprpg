@@ -862,15 +862,15 @@ scenes.game = () => {
     })
 
     areaNameBox.push(controls.rect({
-        anchor: [0.4, 0.3], sizeAnchor: [0.4, 0.2],
+        anchor: [0.3, 0.2], sizeAnchor: [0.4, 0.2],
         fill: "purple", alpha: 0
     }))
     areaNameBox.push(controls.rect({
-        anchor: [0.4, 0.3], sizeAnchor: [0.4, 0.2], sizeOffset: [-16, -16], offset: [8, 8],
+        anchor: [0.3, 0.2], sizeAnchor: [0.4, 0.2], sizeOffset: [-16, -16], offset: [8, 8],
         fill: "lightblue", alpha: 0
     }))
     areaNameBox.push(controls.label({
-        anchor: [0.6, 0.4], offset: [0, -16],
+        anchor: [0.5, 0.3],
         align: "center", fontSize: 32, fill: "black",
         text: "AREA UNDEFINED", alpha: 0,
     }))
