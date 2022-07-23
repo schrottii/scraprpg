@@ -137,6 +137,7 @@ scenes.game = () => {
     var menuItemsImages = [];
     var menuItemsAmounts = [];
     var menuItemsStoryOnly = false;
+    var areaNameBox = [];
 
     let walkPad = [];
     walkPad.push(controls.image({ // Up
@@ -860,6 +861,20 @@ scenes.game = () => {
         fill: "black", alpha: 0
     })
 
+    areaNameBox.push(controls.rect({
+        anchor: [0.4, 0.3], sizeAnchor: [0.4, 0.2],
+        fill: "purple", alpha: 0
+    }))
+    areaNameBox.push(controls.rect({
+        anchor: [0.4, 0.3], sizeAnchor: [0.4, 0.2], sizeOffset: [-16, -16], offset: [8, 8],
+        fill: "lightblue", alpha: 0
+    }))
+    areaNameBox.push(controls.label({
+        anchor: [0.6, 0.4], offset: [0, -16],
+        align: "center", fontSize: 32, fill: "black",
+        text: "AREA UNDEFINED", alpha: 0,
+    }))
+
     // Function used to grab tiles
     function getTile(map, x, y, l = 1) {
         if (y < 0) return undefined;
@@ -936,10 +951,16 @@ scenes.game = () => {
 
     function tryTeleport(map, x, y) {
         if (isTeleport(map, x, y)) {
+            let themap = getTile(map, x, y);
+            let previousmap = game.map;
+            // Set map and pos
+            let nmapname = maps[themap.teleport[0]].name;
+
             canMove = false;
+            playSound("teleport");
             addAnimator(function (t) { // Area enter effect part 1
-                areaTeleportFade.alpha = 0 + (t / 1000);
-                if (t > 999) {
+                areaTeleportFade.alpha = 0 + (t / 500);
+                if (t > 499) {
                     areaTeleportFade.alpha = 1;
                     return true;
                 }
@@ -947,9 +968,33 @@ scenes.game = () => {
             });
 
             setTimeout(() => {
+                if (nmapname != undefined) { // The box stuff. Only if the map has a name
+                    areaNameBox[2].text = nmapname;
+                    for (i in areaNameBox) {
+                        areaNameBox[i].alpha = 1;
+                    }
+
+                    setTimeout(() => { // Box disappear
+                        addAnimator(function (t) {
+                            for (i in areaNameBox) {
+                                areaNameBox[i].alpha = 1 - (t / 500);
+                            }
+                            if (t > 499) {
+                                for (i in areaNameBox) {
+                                    areaNameBox[i].alpha = 0;
+                                }
+                                return true;
+                            }
+                            return false;
+                        });
+                    }, 1000);
+
+                }
+
+
                 addAnimator(function (t) { // part 2
-                    areaTeleportFade.alpha = 1 - (t / 1000);
-                    if (t > 999) {
+                    areaTeleportFade.alpha = 1 - (t / 500);
+                    if (t > 499) {
                         areaTeleportFade.alpha = 0;
                         canMove = true;
                         return true;
@@ -957,17 +1002,12 @@ scenes.game = () => {
                     return false;
                 });
 
-                let themap = getTile(map, x, y);
-                let previousmap = game.map;
-                // Set map and pos
                 game.map = themap.teleport[0];
-
                 loadNPCs();
                 loadAreaMusic(previousmap);
                 game.position[0] = themap.teleport[1];
                 game.position[1] = themap.teleport[2];
-                playSound("teleport");
-            }, 1500);
+            }, 1000);
         }
     }
 
@@ -1566,7 +1606,7 @@ scenes.game = () => {
             mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents,
             poisonBlack, nightEffect,
             ...menuSettings, ...menuSettingsGameplay, ...menuSettingsAudio, ...menuSettingsGraphics, ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
-            autoSaveText, settingsSaveText, areaTeleportFade
+            autoSaveText, settingsSaveText, ...areaNameBox, areaTeleportFade
         ],
     }
 }

@@ -84,6 +84,7 @@ maps["test"] = {
         [23, 19, "superswamp", 1, true],
     ],
     maxEnemies: 8,
+    name: "Schrotttroll's playground",
     music: "bgm/placeholder",
     map: [
         "001 001 001 001 001 001 001 000 000 000 001 001 001 001 001 001 001 001",

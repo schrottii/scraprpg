@@ -1,5 +1,5 @@
 ##TODO:
-16 Things left to do:
+15 Things left to do:
 
 - Proper victory
 - Non-Game-Over defeat 
