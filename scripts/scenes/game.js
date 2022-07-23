@@ -1098,7 +1098,7 @@ scenes.game = () => {
                         if (mapenemies[possibleSpawns]().time == "night" && !isNight()) return false;
                     }
                         enemies.push(mapenemies[possibleSpawns]({
-                            position: [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)], map: game.map,
+                            position: [Math.floor(Math.random() * maps[game.map].map[0].length), Math.floor(Math.random() * maps[game.map].map.length)], map: game.map,
                         }));
                     }
             }
@@ -1336,17 +1336,24 @@ scenes.game = () => {
 
                         // Respawn if on ocean or occupied
                         if (map.map[enemies[i].position[1]] != undefined) {
-                            if (getTile(map, enemies[i].position[0], enemies[i].position[1]) == undefined) {
-                                enemies[i].position = [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)];
+                            if (getTile(map, enemies[i].position[0], enemies[i].position[1]) == undefined) { // Undefined
+                                enemies[i].alpha = 0;
+                                enemies[i].position = [Math.floor(Math.random() * maps[game.map].map[0].length), Math.floor(Math.random() * maps[game.map].map.length)];
                             }
                             else {
-                                if (getTile(map, enemies[i].position[0], enemies[i].position[1]).occupied == true) {
-                                    enemies[i].position = [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)];
+                                if (getTile(map, enemies[i].position[0], enemies[i].position[1]).occupied == true) { // occupied
+                                    enemies[i].alpha = 0;
+                                    enemies[i].position = [Math.floor(Math.random() * maps[game.map].map[0].length), Math.floor(Math.random() * maps[game.map].map.length)];
+                                }
+                                else {
+                                    enemies[i].alpha = 0;
+                                    enemies[i].alpha = enemies[i].opacity;
                                 }
                             }
                         }
-                        else {
-                            enemies[i].position = [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)];
+                        else { // Undefined
+                            enemies[i].alpha = 0;
+                            enemies[i].position = [Math.floor(Math.random() * maps[game.map].map[0].length), Math.floor(Math.random() * maps[game.map].map.length)];
                         }
 
                         // Don't put this in a for loop. lol

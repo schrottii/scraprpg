@@ -6,7 +6,8 @@ let mapenemies = {
         return {
             position: [6, 6],
             map: "",
-            alpha: 1,
+            alpha: 0,
+            opacity: 1,
             head: 0,
             skin: "evil",
             kofs: [0, 0, 0],
@@ -33,6 +34,7 @@ let mapenemies = {
                         (zoom * scale) * (tileY + kofs[1] * kofs[2] - this.kofs[1] * this.kofs[2] - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7),
                         zoom * scale, zoom * scale)
                 }
+                ctx.globalAlpha = 1;
             },
 
             ...args || {},
@@ -42,7 +44,7 @@ let mapenemies = {
         return {
             ...mapenemies.default(),
             skin: "itsalive",
-            alpha: 0.3,
+            opacity: 0.3,
             enemies: {
                 "weakhelter": 20,
                 "itsalive": 60
