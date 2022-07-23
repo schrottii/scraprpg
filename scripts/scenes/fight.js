@@ -2,6 +2,7 @@ var battleNumbers = [];
 var fightStats = [];
 const amountStats = 14;
 var positions;
+var defeatType = "default";
 
 function battleNumber(pos, amount, type, offset = [0, 0]) {
     // Type 0 is HP, 1 is EP
@@ -226,7 +227,26 @@ scenes.fight = () => {
         }
         if (aliveallies == 0) { // All dead :)
             lost = true;
-            deathScreen();
+            if (defeatType == "default") {
+                deathScreen();
+            }
+            if (defeatType == "nogameover") {
+                // Same as beginning of deathScreen
+                stopMusic();
+
+                addAnimator(function (t) {
+                    gameOverScreen[0].alpha = 0 + Math.min(1, (t / 2000));
+                    if (t > 3999) {
+                        for (i in game.characters) {
+                            game.characters[i].HP = 1;
+                        }
+                        setScene(scenes.game());
+                        gameOverScreen[0].alpha = 0;
+                        return true;
+                    }
+                    return false;
+                });
+            }
         }
     }
 

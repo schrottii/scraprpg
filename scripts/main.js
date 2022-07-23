@@ -72,6 +72,7 @@ function init() {
                     }
 
                     playMusic("bgm/fight");
+                    defeatType = "nogameover";
                     setScene(scenes.fight());
                 }
             }),

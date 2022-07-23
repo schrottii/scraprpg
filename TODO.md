@@ -1,8 +1,7 @@
 ##TODO:
-15 Things left to do:
+14 Things left to do:
 
 - Proper victory
-- Non-Game-Over defeat 
 - Overworld quests
 - Startup introduction
 - Mastery Techs

@@ -1034,6 +1034,7 @@ scenes.game = () => {
 
             playSound("encounter");
             image_animation(images.tokenattack, 4, 5, 100);
+            defeatType = "default";
 
             let previouszoom = zoom;
             setTimeout(() => { zoom = 1.5; }, 250);
