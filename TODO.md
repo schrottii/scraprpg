@@ -1,9 +1,7 @@
 ##TODO:
-18 Things left to do:
+16 Things left to do:
 
-- Proper battle fighting animations
 - Proper victory
-- Proper defeat
 - Non-Game-Over defeat 
 - Black fade effect during area enter
 - Overworld quests

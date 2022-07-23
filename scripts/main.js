@@ -158,8 +158,10 @@ function isNight() {
 }
 
 function playMusic(name) {
-    musicPlayer.src = audio[name].src;
-    musicPlayer.play();
+    if (musicPlayer.volume > 0 && musicPlayer.volume < 1) {
+        musicPlayer.src = audio[name].src;
+        musicPlayer.play();
+    }
 }
 
 function stopMusic() {
@@ -167,8 +169,10 @@ function stopMusic() {
 }
 
 function playSound(name) {
-    soundPlayer.src = audio[name].src;
-    soundPlayer.play();
+    if (soundPlayer.volume > 0 && soundPlayer.volume < 1) {
+        soundPlayer.src = audio[name].src;
+        soundPlayer.play();
+    }
 }
 
 function onCanvasClick(e) {
