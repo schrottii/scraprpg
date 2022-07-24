@@ -139,7 +139,7 @@ scenes.game = () => {
     var menuItemsStoryOnly = false;
     var areaNameBox = [];
 
-    let walkPad = [];
+    /* let walkPad = [];
     walkPad.push(controls.image({ // Up
         anchor: [.1, .75], offset: [0, 0], sizeOffset: [40, 40],
         fontSize: 16, source: "arrowup",
@@ -171,9 +171,12 @@ scenes.game = () => {
         onClick(args) {
             pad = "right";
         }
-    }));
+    })); */
 
-
+    let padActive = false;
+    let padAlpha = 0;
+    let padPosition = [0, 0];
+    let padThumbPosition = [0, 0];
 
 
     let nightEffect = controls.image({
@@ -1177,7 +1180,7 @@ scenes.game = () => {
                 autoSaveTime = -3; // To prevent saving multiple times!
             }
 
-            // Check if it's time for enemies to mové
+            // Check if it's time for enemies to movï¿½
             if (canMove == true) {
                 for (i = 0; i < activenpcs.length; i++) {
                     activenpcs[i].movementTime += delta;
@@ -1563,6 +1566,65 @@ scenes.game = () => {
                 }
             }
 
+            // Joystick
+
+            if (pointerActive && canMove) {
+                if (padActive) {
+                    padThumbPosition = pointerPos;
+                    let offset = [padThumbPosition[0] - padPosition[0], padThumbPosition[1] - padPosition[1]]
+                    let dist = Math.sqrt(offset[0] ** 2 + offset[1] ** 2);
+                    if (dist > 60) {
+                        if (Math.abs(offset[0]) > Math.abs(offset[1])) {
+                            pad = offset[0] > 0 ? "right" : "left";
+                        } else {
+                            pad = offset[1] > 0 ? "down" : "up";
+                        }
+                    }
+                    if (dist > 120) {
+                        padPosition = [
+                            padPosition[0] + offset[0] / dist * (dist - 120),
+                            padPosition[1] + offset[1] / dist * (dist - 120),
+                        ]
+                    }
+                } else {
+                    padPosition = padThumbPosition = pointerPos;
+                }
+                padAlpha = Math.min(padAlpha + delta * .01, 1);
+                padActive = true;
+            } else {
+                let lerp = 1 - (0.98 ** delta);
+                padThumbPosition = [
+                    padThumbPosition[0] + (padPosition[0] - padThumbPosition[0]) * lerp,
+                    padThumbPosition[1] + (padPosition[1] - padThumbPosition[1]) * lerp,
+                ]
+                padAlpha = Math.max(padAlpha - delta * .005, 0);
+                padActive = false;
+            }
+
+            ctx.globalAlpha = padAlpha;
+            ctx.beginPath();
+            ctx.arc(padPosition[0], padPosition[1], 120, 0, Math.PI * 2);
+            ctx.fillStyle = "#000000af";
+            ctx.fill();
+            if (pad) {
+                let ang = { up: -0.75, right: -0.25, down: 0.25, left: 0.75 }[pad]
+                ctx.beginPath();
+                ctx.arc(padPosition[0], padPosition[1], 120, Math.PI * ang, Math.PI * (ang + .5));
+                ctx.arc(padPosition[0], padPosition[1], 60, Math.PI * (ang + .5), Math.PI * ang, true);
+                ctx.fillStyle = "#ffffff1f";
+                ctx.fill();
+            }
+
+            ctx.globalAlpha = padAlpha * 2;
+            ctx.beginPath();
+            ctx.arc(padThumbPosition[0], padThumbPosition[1], 52, 0, Math.PI * 2);
+            ctx.fillStyle = "#ffae38";
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(padThumbPosition[0], padThumbPosition[1], 50, 0, Math.PI * 2);
+            ctx.fillStyle = "#d18822";
+            ctx.fill();
+
 
             if (inDialogue == true) {
                 for (i = 0; i < dialogueComponents.length; i++) {
@@ -1609,7 +1671,7 @@ scenes.game = () => {
             mapDisplayStats2.text = "HP: " + getPlayer(2 + overWorldStatsScroll).HP + "/" + getPlayer(2 + overWorldStatsScroll).maxHP + "   EP: " + getPlayer(2 + overWorldStatsScroll).EP + "/" + getPlayer(2 + overWorldStatsScroll).maxEP;
         },
         controls: [
-            ...walkPad, ...mapDisplay, actionButton,
+            /*...walkPad,*/ ...mapDisplay, actionButton,
             mapDisplayStats1, mapDisplayStats2,
             mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents,
             poisonBlack, nightEffect,

@@ -1,6 +1,8 @@
 function init() {
     // Button detection
-    mainCanvas.addEventListener("mouseup", onCanvasClick);
+    mainCanvas.addEventListener("pointerdown", onCanvasPointerDown);
+    mainCanvas.addEventListener("pointermove", onCanvasPointerMove);
+    mainCanvas.addEventListener("pointerup", onCanvasPointerUp);
     window.addEventListener("keydown", (e) => currentKeys[e.key.toLowerCase()] = true);
     window.addEventListener("keyup", (e) => currentKeys[e.key.toLowerCase()] = false);
 
@@ -59,21 +61,7 @@ function init() {
                     stopMusic();
                     loadGame(0);
                     loadSettings();
-
-                    while (currentEnemies.length < 1) {
-                        for (i = 0; i < 8; i++) {
-                            if (Math.random() > 0.6) {
-                                createEnemy("weakhelter");
-                            }
-                            if (Math.random() > 0.9) {
-                                createEnemy("stronghelter");
-                            }
-                        }
-                    }
-
-                    playMusic("bgm/fight");
-                    defeatType = "nogameover";
-                    setScene(scenes.fight());
+                    setScene(scenes.game());
                 }
             }),
     
@@ -176,12 +164,24 @@ function playSound(name) {
     }
 }
 
-function onCanvasClick(e) {
+let pointerActive = false;
+let pointerPos = [0, 0];
+
+function onCanvasPointerDown(e) {
+    pointerActive = true;
+    pointerPos = [e.clientX, e.clientY];
+}
+
+function onCanvasPointerMove(e) {
+    pointerPos = [e.clientX, e.clientY];
+}
+
+function onCanvasPointerUp(e) {
+    pointerActive = false;
+    pointerPos = [e.clientX, e.clientY];
     for (let a = scene.controls.length - 1; a >= 0; a--) {
         let con = scene.controls[a];
         if (con == undefined) return;
-        let mouseX = e.clientX;
-        let mouseY = e.clientY;
         //console.log("   X: " + mouseX + " Y: " + mouseY);
 
         // offset - Get the position where the element starts. size - How big. Combine them to define the clickable area!
@@ -201,8 +201,8 @@ function onCanvasClick(e) {
         }
 
             if (!scene.controls[a].clickthrough && scene.controls[a].onClick &&
-                mouseX >= offsetX && mouseX < offsetX + sizeX &&
-                mouseY >= offsetY && mouseY < offsetY + sizeY &&
+                pointerPos[0] >= offsetX && pointerPos[0] < offsetX + sizeX &&
+                pointerPos[1] >= offsetY && pointerPos[1] < offsetY + sizeY &&
                 scene.controls[a].onClick()) return;
     }
 }
