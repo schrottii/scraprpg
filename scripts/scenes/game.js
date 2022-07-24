@@ -1573,17 +1573,17 @@ scenes.game = () => {
                     padThumbPosition = pointerPos;
                     let offset = [padThumbPosition[0] - padPosition[0], padThumbPosition[1] - padPosition[1]]
                     let dist = Math.sqrt(offset[0] ** 2 + offset[1] ** 2);
-                    if (dist > 60) {
+                    if (dist > scale * 1.5 && !kofs[2]) {
                         if (Math.abs(offset[0]) > Math.abs(offset[1])) {
                             pad = offset[0] > 0 ? "right" : "left";
                         } else {
                             pad = offset[1] > 0 ? "down" : "up";
                         }
                     }
-                    if (dist > 120) {
+                    if (dist > scale * 2.5) {
                         padPosition = [
-                            padPosition[0] + offset[0] / dist * (dist - 120),
-                            padPosition[1] + offset[1] / dist * (dist - 120),
+                            padPosition[0] + offset[0] / dist * (dist - scale * 2.5),
+                            padPosition[1] + offset[1] / dist * (dist - scale * 2.5),
                         ]
                     }
                 } else {
@@ -1603,25 +1603,25 @@ scenes.game = () => {
 
             ctx.globalAlpha = padAlpha;
             ctx.beginPath();
-            ctx.arc(padPosition[0], padPosition[1], 120, 0, Math.PI * 2);
+            ctx.arc(padPosition[0], padPosition[1], scale * 2.5, 0, Math.PI * 2);
             ctx.fillStyle = "#000000af";
             ctx.fill();
-            if (pad) {
-                let ang = { up: -0.75, right: -0.25, down: 0.25, left: 0.75 }[pad]
+            if (pad || kofs[2]) {
+                let ang = { up: -0.75, right: -0.25, down: 0.25, left: 0.75 }[direction]
                 ctx.beginPath();
-                ctx.arc(padPosition[0], padPosition[1], 120, Math.PI * ang, Math.PI * (ang + .5));
-                ctx.arc(padPosition[0], padPosition[1], 60, Math.PI * (ang + .5), Math.PI * ang, true);
+                ctx.arc(padPosition[0], padPosition[1], scale * 2.5, Math.PI * ang, Math.PI * (ang + .5));
+                ctx.arc(padPosition[0], padPosition[1], scale * 1, Math.PI * (ang + .5), Math.PI * ang, true);
                 ctx.fillStyle = "#ffffff1f";
                 ctx.fill();
             }
 
             ctx.globalAlpha = padAlpha * 2;
             ctx.beginPath();
-            ctx.arc(padThumbPosition[0], padThumbPosition[1], 52, 0, Math.PI * 2);
+            ctx.arc(padThumbPosition[0], padThumbPosition[1], scale + 2, 0, Math.PI * 2);
             ctx.fillStyle = "#ffae38";
             ctx.fill();
             ctx.beginPath();
-            ctx.arc(padThumbPosition[0], padThumbPosition[1], 50, 0, Math.PI * 2);
+            ctx.arc(padThumbPosition[0], padThumbPosition[1], scale, 0, Math.PI * 2);
             ctx.fillStyle = "#d18822";
             ctx.fill();
 
