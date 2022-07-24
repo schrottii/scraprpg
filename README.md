@@ -4,8 +4,8 @@ A *Scrap Clicker* RPG fan game in early development. **THIS GAME IS NOT AN IDLE 
 DecastarWasNeverACoder (More known as *Decastar*) was the first person to think of such concept of a *Scrap Clicker*-based role-playing game in February of 2021. At November of 2021, *Salveeny* (Also known as *Barduzzi* by the majority) and DecastarWasNeverACoder eventually brainstormed to create the game from conception. About a week later, *Frank Neurhein* would make his debut in the development scene as the primary programmer, marking the birth of the game's GitHub repository.
 ## Programming Staff
 - **Frank Neurhein (Schrottii)**
-Lead Programmer, Main Game Developer, Lead Graphic Designer
-- **dudcat0507**
+Lead Programmer, Main Game Developer, Idea Planner, Graphic Designer, Composer, Story Writer
+- **ducdat0507**
 Programmer
 ### Staff of All Trades
 These are mainly the bosses of things other than programming and releasing the game.
