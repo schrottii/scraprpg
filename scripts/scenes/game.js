@@ -197,6 +197,10 @@ scenes.game = () => {
         anchor: [0, 0], sizeAnchor: [1, 1], snip: [0, 0, 8, 8],
         source: "nighteffect", alpha: 1,
     });
+    let weatherEffect = controls.image({
+        anchor: [0, 0], sizeAnchor: [1, 1],
+        source: "vignette", alpha: 0,
+    });
 
         // Alright, alright, we need comments, so let me comment this
         // This is for the map's display. In the BOTTOM RIGHT. No idea what else to call it.
@@ -1264,6 +1268,7 @@ scenes.game = () => {
 
             // Weather
             if (weather == "rain") {
+                weatherEffect.alpha = 1;
                 spawnRaindrop();
                 spawnRaindrop();
                 for (i in weatherControls) {
@@ -1282,6 +1287,7 @@ scenes.game = () => {
                 }
             }
             else if (weather == "none") {
+                weatherEffect.alpha = 0;
                 if (Math.random() > 0.9995) {
                     weather = "rain";
                 }
@@ -1781,7 +1787,7 @@ scenes.game = () => {
             /*...walkPad,*/ ...mapDisplay, actionButton,
             mapDisplayStats1, mapDisplayStats2,
             mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents,
-            poisonBlack, nightEffect, ...weatherControls,
+            poisonBlack, nightEffect, weatherEffect, ...weatherControls,
             ...menuSettings, ...menuSettingsGameplay, ...menuSettingsAudio, ...menuSettingsGraphics, ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             autoSaveText, settingsSaveText, ...areaNameBox, areaTeleportFade
         ],
