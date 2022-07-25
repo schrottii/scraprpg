@@ -1069,9 +1069,9 @@ scenes.game = () => {
                 addAnimator(function (t) {
                     zoom = 1 + (t / 500);
                     if (t > 1799) {
-                        areaTeleportFade.alpha = 0 + Math.min(((t - 1800) / 400), 1);
+                        areaTeleportFade.alpha = 0 + Math.min(((Math.min(t - 1800, 400)) / 400), 1);
                     }
-                    if (t > 2199) {
+                    if (t > 2499) {
                         startFight();
                         
                         zoom = previouszoom;
