@@ -59,6 +59,7 @@ function updateBar(charName, HealthBefore) {
 
         if (Length == 0) return false;
         fightStats[which].alpha = 1;
+        fightStats[which - 1].alpha = 1;
         if (Length > 0) {
             if (getPlayer(1 + whichChar).HP > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (getPlayer(1 + whichChar).HP / getPlayer(1 + whichChar).maxHP);
             fightStats[which].anchor[0] = 0.242 + Leftend + (0.35 * (row-1));
@@ -81,8 +82,10 @@ function updateBar(charName, HealthBefore) {
         else {
             Leftend = 0.1960 * (HealthBefore / getPlayer(1 + whichChar).maxHP);
             Length = (0.1960 * (getPlayer(1 + whichChar).HP / HealthBefore)) - Leftend;
-            fightStats[which].anchor[0] = 0.242 + Leftend;
+            fightStats[which].anchor[0] = 0.242 + Leftend + (0.35 * (row-1));;
             fightStats[which].sizeAnchor[0] = 0.00001;
+
+            fightStats[which - 1].alpha = 1;
             addAnimator(function (t) {
                 fightStats[which].sizeAnchor[0] = Length * Math.max(0.01, ((Math.min(t * 0.01, 0.5))));
                 
