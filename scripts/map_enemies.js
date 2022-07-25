@@ -12,6 +12,7 @@ let mapenemies = {
             skin: "evil",
             kofs: [0, 0, 0],
             time: "both",
+            spawntime: 0,
             enemies: {
                 "weakhelter": 60,
                 "stronghelter": 10,
@@ -26,15 +27,30 @@ let mapenemies = {
                 let tileY = this.position[1];
 
                 let xAdjust = game.position[0] - width / 2 + 0.5;
-                if (game.map == this.map) {
-                    this.kofs[2] = Math.max(this.kofs[2] - delta / 166, 0);
-                    ctx.drawImage(images[this.skin],
-                        32 * Math.floor(walkTime), 32 * this.head, 32, 32,
-                        ((zoom * scale) * (tileX + kofs[0] * kofs[2] - this.kofs[0] * this.kofs[2] - xAdjust)) - ((zoom - 1) * scale * (width / 2)),
-                        (zoom * scale) * (tileY + kofs[1] * kofs[2] - this.kofs[1] * this.kofs[2] - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7),
-                        zoom * scale, zoom * scale)
+                this.kofs[2] = Math.max(this.kofs[2] - delta / 166, 0);
+
+                let posX = ((zoom * scale) * (tileX + kofs[0] * kofs[2] - this.kofs[0] * this.kofs[2] - xAdjust)) - ((zoom - 1) * scale * (width / 2));
+                let posY = (zoom * scale) * (tileY + kofs[1] * kofs[2] - this.kofs[1] * this.kofs[2] - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7);
+
+                if (this.spawntime > 599) {
+                    if (game.map == this.map) {
+                        ctx.drawImage(images[this.skin],
+                            32 * Math.floor(walkTime), 32 * this.head, 32, 32,
+                            posX, posY,
+                            zoom * scale, zoom * scale)
+                    }
                 }
                 ctx.globalAlpha = 1;
+                if (this.spawntime < 900) {
+                    this.spawntime += delta;
+                    if (this.spawntime > 599) {
+                        ctx.drawImage(images.spawn, 64, 0, 32, 32, posX, posY, zoom * scale, zoom * scale);
+                    }
+                    else if (this.spawntime > 299) {
+                        ctx.drawImage(images.spawn, 32, 0, 32, 32, posX, posY, zoom * scale, zoom * scale);
+                    }
+                    else ctx.drawImage(images.spawn, 0, 0, 32, 32, posX, posY, zoom * scale, zoom * scale);
+                }
             },
 
             ...args || {},

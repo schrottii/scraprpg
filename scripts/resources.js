@@ -31,6 +31,7 @@ let images = {
     eattackani0: "data/images/eattackani0.png",
     eattackani1: "data/images/eattackani1.png",
     rain: "data/images/rain.png",
+    spawn: "data/images/spawn_default.png",
 
     eattackani2: "data/images/eattackani2.png",
 
