@@ -57,7 +57,7 @@ function init() {
                 onClick() {
                     cancel = true;
                     musicPlayer.muted = true;
-                    soundPlayer.muted = true;
+                    //soundPlayer.muted = true;
                     stopMusic();
                     saveNR = 3;
                     loadGame();

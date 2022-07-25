@@ -91,7 +91,7 @@ function updateBar(charName, HealthBefore) {
                 
                 if (t > 1400) {
                     fightStats[which].anchor[0] = 0.242 + Leftend;
-                    if (getPlayer(1 + whichChar).HP > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (getPlayer(1 + whichChar).HP / getStat(i + 1, "maxHP"));
+                    if (getPlayer(1 + whichChar).HP > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (getPlayer(1 + whichChar).HP / getStat(1 + whichChar, "maxHP"));
                     fightStats[which].alpha = 0;
                     return true;
                 }

@@ -198,6 +198,7 @@ var audio = {
     "miss": "data/sounds/miss.ogg",
     "encounter": "data/sounds/enc_sound.ogg",
     "gameover": "data/sounds/fall_land.wav",
+    "heal": "data/sounds/heal.wav",
 };
 
 var maps = {

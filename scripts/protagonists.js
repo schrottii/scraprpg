@@ -50,6 +50,10 @@ const cStats = {
 
 function getStat(prot, stat) {
     if (typeof (prot) == "number") prot = characters[prot - 1]; // 1 = Bleu, etc. - like getPlayer()
+    if (cStats[prot] == undefined) { // Pretty cool debug script. Error? Where! (It would normally not show where)
+        console.trace();
+        console.log([prot, stat]);
+    }
     if (stat == "strength") return Math.round(cStats[prot][stat] * (1.07 * game.characters[prot].level));
     if (stat == "maxHP") return Math.round(cStats[prot][stat] * (1.1 * game.characters[prot].level));
     // to do: EP
