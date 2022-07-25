@@ -1986,6 +1986,7 @@ scenes.fight = () => {
                         }
                         else {
                             positionControls[i + (j * 3)].source = positions[i][j].occupied;
+                            positionControls[i + (j * 3)].snip = [0, 64, 32, 32];
                         }
                         positionControls[i + (j * 3)].alpha = 1;
                     }

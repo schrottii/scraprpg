@@ -169,6 +169,7 @@ let images = {
     "items/scroll": "data/images/paper.png",
     "items/peppytincture": "data/images/items/peppy.png",
     "items/superswamp": "data/images/items/superswamp.png",
+    "items/revive": "data/images/items/perfectangle.png",
 };
 
 var scenes = {

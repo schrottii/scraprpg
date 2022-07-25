@@ -36,7 +36,7 @@ let items = {
             shopcost: 250,
             max: 99,
             effect: () => {
-                let HealthBefore = args.player.HP
+                let HealthBefore = args.player.HP;
                 if (args.player.HP > 0)  args.player.HP += 50;
                 if (args.player.HP > args.player.maxHP) args.player.HP = args.player.maxHP;
                 if (args.anchor != undefined) {
@@ -85,11 +85,34 @@ let items = {
             shopcost: 1000,
             max: 99,
             effect: () => {
-                let HealthBefore = args.player.HP
+                let HealthBefore = args.player.HP;
                 args.player.HP -= 999;
                 if (args.player.HP > args.player.maxHP) args.player.HP = args.player.maxHP;
                 if (args.anchor != undefined) {
                     battleNumber(args.anchor, 999, 0, args.offset);
+                    updateBar(args.player.name.toLowerCase(), HealthBefore);
+                }
+            },
+
+            ...args || {},
+        }
+    },
+    revive(args) {
+        return {
+            ...items.default(),
+            source: "revive",
+            name: "Revive Item",
+            shopcost: 2500,
+            max: 99,
+            effect: () => {
+                let HealthBefore = args.player.HP
+                let amount = Math.ceil(args.player.maxHP / 4);
+                if (args.player.HP < 1) args.player.HP = amount;
+                if (args.player != undefined) {
+                    positions[args.player.pos[0]][args.player.pos[1]].isOccupied = true;
+                }
+                if (args.anchor != undefined) {
+                    battleNumber(args.anchor, amount, 0, args.offset);
                     updateBar(args.player.name.toLowerCase(), HealthBefore);
                 }
             },

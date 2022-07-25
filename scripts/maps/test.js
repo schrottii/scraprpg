@@ -82,6 +82,7 @@ maps["test"] = {
         [24, 20, "potion", 1, true],
         [23, 20, "peppytincture", 1, true],
         [23, 19, "superswamp", 1, true],
+        [22, 19, "revive", 5, true],
     ],
     maxEnemies: 8,
     name: "Schrotttroll's playground",
