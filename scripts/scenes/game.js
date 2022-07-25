@@ -38,7 +38,6 @@ function checkLevelUps() {
             game.characters[I].EXP -= 25;
             game.characters[I].level += 1;
 
-            game.characters[I].strength = 3 + game.characters[I].level;
             game.characters[I].maxHP = 18 + (game.characters[I].level * 2);
 
             game.characters[I].HP = game.characters[I].maxHP;

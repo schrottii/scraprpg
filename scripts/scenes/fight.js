@@ -477,7 +477,7 @@ scenes.fight = () => {
 
     function calculateDamage(type, pos1, pos2, enpos1, enpos2) {
         if (type == 1) { // Allies
-            return Math.round(game.characters[positions[pos1][pos2].occupied].strength
+            return Math.round(getStat(positions[pos1][pos2].occupied, "strength")
                 * (0.67 + (0.33 * pos1))
                 * (1.33 - (0.33 * enpos1))
                 * getElementDamage(getStat(positions[pos1][pos2].occupied, "element"), epositions[enpos1][enpos2].element));
@@ -491,7 +491,7 @@ scenes.fight = () => {
         }
 
         if (type == 3) { // My own men
-            return Math.round(game.characters[positions[pos1][pos2].occupied].strength
+            return Math.round(getStat(positions[pos1][pos2].occupied, "strength")
                 * (1.33 - (0.33 * pos1))
                 * (0.67 + (0.33 * enpos1))
                 * getElementDamage(positions[pos1][pos2].element, getStat(positions[enpos1][enpos2].occupied, "element").element));
@@ -680,7 +680,7 @@ scenes.fight = () => {
             case "heal":
                 selectedAlly = [whoAGI.action[1], whoAGI.action[2]];
 
-                game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].HP += game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].strength;
+                game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].HP += getStat(positions[selectedAlly[0]][selectedAlly[1]].occupied, "strength");
                 
                 positions[pos[0]][pos[1]].action = false;
                 executeActions();

@@ -49,5 +49,6 @@ const cStats = {
 }
 
 function getStat(prot, stat) {
+    if (stat == "strength") return Math.round(cStats[prot][stat] * (1.1 * game.characters[prot].level));
     return cStats[prot][stat];
 }
