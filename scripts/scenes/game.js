@@ -679,14 +679,16 @@ scenes.game = () => {
         anchor: [0.5, 0.25], sizeAnchor: [0.2, 0.1],
         text: "Autosave: ON", alpha: 0,
         onClick(args) {
-            playSound("buttonClickSound");
-            if (settings.autosave == true) {
-                settings.autosave = false;
+            if (this.alpha == 1) {
+                playSound("buttonClickSound");
+                if (settings.autosave == true) {
+                    settings.autosave = false;
+                }
+                else {
+                    settings.autosave = true;
+                }
+                showMenuSettings();
             }
-            else {
-                settings.autosave = true;
-            }
-            showMenuSettings();
         }
     }));
 
@@ -696,14 +698,16 @@ scenes.game = () => {
         anchor: [0.5, 0.25], sizeAnchor: [0.2, 0.1],
         text: "Grid: ON", alpha: 0,
         onClick(args) {
-            playSound("buttonClickSound");
-            if (settings.grid == true) {
-                settings.grid = false;
+            if (this.alpha == 1) {
+                playSound("buttonClickSound");
+                if (settings.grid == true) {
+                    settings.grid = false;
+                }
+                else {
+                    settings.grid = true;
+                }
+                showMenuSettings();
             }
-            else {
-                settings.grid = true;
-            }
-            showMenuSettings();
         }
     }));
 
@@ -732,12 +736,14 @@ scenes.game = () => {
         anchor: [0.71, 0.25], sizeAnchor: [0.04, 0.1],
         text: "+", alpha: 0,
         onClick(args) {
-            playSound("buttonClickSound");
-            if (settings.musicVolume < 0.99) {
-                settings.musicVolume = settings.musicVolume + 0.05;
-                if (settings.musicVolume > 1) settings.musicVolume = 1;
-                musicPlayer.volume = settings.musicVolume;
-                showMenuSettings(); //Update
+            if (this.alpha == 1) {
+                playSound("buttonClickSound");
+                if (settings.musicVolume < 0.99) {
+                    settings.musicVolume = settings.musicVolume + 0.05;
+                    if (settings.musicVolume > 1) settings.musicVolume = 1;
+                    musicPlayer.volume = settings.musicVolume;
+                    showMenuSettings(); //Update
+                }
             }
         }
     }));
@@ -765,12 +771,14 @@ scenes.game = () => {
         anchor: [0.71, 0.375], sizeAnchor: [0.04, 0.1],
         text: "+", alpha: 0,
         onClick(args) {
-            playSound("buttonClickSound");
-            if (settings.soundVolume < 0.99) {
-                settings.soundVolume = settings.soundVolume + 0.05;
-                if (settings.soundVolume > 1) settings.soundVolume = 1;
-                soundPlayer.volume = settings.soundVolume;
-                showMenuSettings(); //Update
+            if (this.alpha == 1) {
+                playSound("buttonClickSound");
+                if (settings.soundVolume < 0.99) {
+                    settings.soundVolume = settings.soundVolume + 0.05;
+                    if (settings.soundVolume > 1) settings.soundVolume = 1;
+                    soundPlayer.volume = settings.soundVolume;
+                    showMenuSettings(); //Update
+                }
             }
         }
     }));
@@ -961,6 +969,7 @@ scenes.game = () => {
 
             canMove = false;
             playSound("teleport");
+            areaTeleportFade.fill = "black";
             addAnimator(function (t) { // Area enter effect part 1
                 areaTeleportFade.alpha = 0 + (t / 500);
                 if (t > 499) {
@@ -1039,14 +1048,24 @@ scenes.game = () => {
             image_animation(images.tokenattack, 4, 5, 100);
             defeatType = "default";
 
+            areaTeleportFade.fill = "white";
+            areaTeleportFade.alpha = 0;
+
             let previouszoom = zoom;
-            setTimeout(() => { zoom = 1.5; }, 250);
-            setTimeout(() => { zoom = 2; }, 500);
-            setTimeout(() => { zoom = 2.5; }, 750);
-            setTimeout(() => { zoom = 3; }, 1000);
-            setTimeout(() => { zoom = 4; }, 1250);
-            setTimeout(() => { playMusic("bgm/fight"); setScene(scenes.fight()); }, 2000);
-            setTimeout(() => { zoom = previouszoom; }, 2200);
+                addAnimator(function (t) {
+                    zoom = 1 + (t / 500);
+                    if (t > 1799) {
+                        areaTeleportFade.alpha = 0 + Math.min(((t - 1800) / 400), 1);
+                    }
+                    if (t > 2199) {
+                        playMusic("bgm/fight");
+                        setScene(scenes.fight());
+                        zoom = previouszoom;
+                        return true;
+                    }
+                    return false;
+                });
+            
         }
     }
 
