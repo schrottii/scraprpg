@@ -54,14 +54,14 @@ function updateBar(charName, HealthBefore) {
     let row = Math.ceil((whichChar + 1) / 3); // 1 or 2
 
     if (game.characters[charName].HP > 0) {
-        let Leftend = 0.1960 * (Math.max(getPlayer(1 + whichChar).HP, 0) / getPlayer(1 + whichChar).maxHP);
-        let Length = (0.1960 * (HealthBefore / getPlayer(1 + whichChar).maxHP)) - Leftend;
+        let Leftend = 0.1960 * (Math.max(getPlayer(1 + whichChar).HP, 0) / getStat(1 + whichChar, "maxHP"));
+        let Length = (0.1960 * (HealthBefore / getStat(1 + whichChar, "maxHP"))) - Leftend;
 
         if (Length == 0) return false;
         fightStats[which].alpha = 1;
         fightStats[which - 1].alpha = 1;
         if (Length > 0) {
-            if (getPlayer(1 + whichChar).HP > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (getPlayer(1 + whichChar).HP / getPlayer(1 + whichChar).maxHP);
+            if (getPlayer(1 + whichChar).HP > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (getPlayer(1 + whichChar).HP / getStat(1 + whichChar, "maxHP"));
             fightStats[which].anchor[0] = 0.242 + Leftend + (0.35 * (row-1));
             fightStats[which].sizeAnchor[0] = Length;
             addAnimator(function (t) {
@@ -80,7 +80,7 @@ function updateBar(charName, HealthBefore) {
             });
         }
         else {
-            Leftend = 0.1960 * (HealthBefore / getPlayer(1 + whichChar).maxHP);
+            Leftend = 0.1960 * (HealthBefore / getStat(1 + whichChar, "maxHP"));
             Length = (0.1960 * (getPlayer(1 + whichChar).HP / HealthBefore)) - Leftend;
             fightStats[which].anchor[0] = 0.242 + Leftend + (0.35 * (row-1));;
             fightStats[which].sizeAnchor[0] = 0.00001;
@@ -91,7 +91,7 @@ function updateBar(charName, HealthBefore) {
                 
                 if (t > 1400) {
                     fightStats[which].anchor[0] = 0.242 + Leftend;
-                    if (getPlayer(1 + whichChar).HP > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (getPlayer(1 + whichChar).HP / getPlayer(1 + whichChar).maxHP);
+                    if (getPlayer(1 + whichChar).HP > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (getPlayer(1 + whichChar).HP / getStat(i + 1, "maxHP"));
                     fightStats[which].alpha = 0;
                     return true;
                 }
@@ -780,8 +780,8 @@ scenes.fight = () => {
     function endOfTurnEvents() {
         for (i = 0; i < game.chars.length; i++) {
             if (getPlayer(i + 1).effect[0] == "acid") {
-                getPlayer(i + 1).HP -= Math.ceil(getPlayer(i + 1).maxHP / 15);
-                postLog(getPlayer(i + 1).name + " took " + Math.ceil(getPlayer(i + 1).maxHP / 20) + " damage from acid!")
+                getPlayer(i + 1).HP -= Math.ceil(getStat(i + 1, "maxHP") / 15);
+                postLog(getPlayer(i + 1).name + " took " + Math.ceil(getStat(i + 1, "maxHP") / 20) + " damage from acid!")
 
                 getPlayer(i + 1).effect[1] -= 1;
                 if (getPlayer(i + 1).effect[1] < 1) {
@@ -791,8 +791,8 @@ scenes.fight = () => {
             }
 
             if (getPlayer(i + 1).effect[0] == "poison") {
-                getPlayer(i + 1).HP -= Math.ceil(getPlayer(i + 1).maxHP / 15);
-                postLog(getPlayer(i + 1).name + " took " + Math.ceil(getPlayer(i + 1).maxHP / 20) + " damage from poison!")
+                getPlayer(i + 1).HP -= Math.ceil(getStat(i + 1, "maxHP") / 15);
+                postLog(getPlayer(i + 1).name + " took " + Math.ceil(getStat(i + 1, "maxHP") / 20) + " damage from poison!")
 
                 getPlayer(i + 1).effect[1] -= 1;
                 if (getPlayer(i + 1).effect[1] < 1) {
@@ -802,8 +802,8 @@ scenes.fight = () => {
             }
 
             if (getPlayer(i + 1).effect[0] == "burn") {
-                getPlayer(i + 1).HP -= Math.ceil(getPlayer(i + 1).maxHP / 10);
-                postLog(getPlayer(i + 1).name + " burns and took " + Math.ceil(getPlayer(i + 1).maxHP / 10) + " damage!")
+                getPlayer(i + 1).HP -= Math.ceil(getStat(i + 1, "maxHP") / 10);
+                postLog(getPlayer(i + 1).name + " burns and took " + Math.ceil(getStat(i + 1, "maxHP") / 10) + " damage!")
 
                 getPlayer(i + 1).effect[1] -= 1;
                 if (getPlayer(i + 1).effect[1] < 1) {
@@ -1706,8 +1706,8 @@ scenes.fight = () => {
 
     function getHPFill(char) {
         if (getPlayer(char + 1).HP < 1) return "red";
-        else if (getPlayer(char + 1).HP > (getPlayer(char + 1).maxHP / 4)) return "white";
-        else if (getPlayer(char + 1).HP > (getPlayer(char + 1).maxHP / 8)) return "yellow";
+        else if (getPlayer(char + 1).HP > (getStat(char + 1, "maxHP") / 4)) return "white";
+        else if (getPlayer(char + 1).HP > (getStat(char + 1, "maxHP") / 8)) return "yellow";
         return "orange";
     }
 
@@ -2135,7 +2135,7 @@ scenes.fight = () => {
         fightStats[amountStats * i].alpha = 1;
         fightStats[1 + amountStats * i].alpha = 1;
         fightStats[4 + amountStats * i].fill = "rgb(20, 204, 20)";
-        if (getPlayer(1 + i).HP > 0) fightStats[4 + amountStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(1 + i).HP / getPlayer(1 + i).maxHP);
+        if (getPlayer(1 + i).HP > 0) fightStats[4 + amountStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(1 + i).HP / getStat(i + 1, "maxHP"));
         fightStats[8 + amountStats * i].fill = "rgb(205, 0, 205)";
         fightStats[10 + amountStats * i].alpha = 1;
         fightStats[11 + amountStats * i].alpha = 1;
@@ -2213,7 +2213,7 @@ scenes.fight = () => {
                 fightStats[amountStats * i].text = "Lvl. " + getPlayer(i + 1).level;
                 fightStats[1 + amountStats * i].source = getPlayer(i + 1).name.toLowerCase();
                 if (getPlayer(i + 1).EP > 0) fightStats[8 + amountStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(i + 1).EP / getPlayer(i + 1).maxEP);
-                fightStats[10 + amountStats * i].text = getPlayer(i + 1).HP + "/" + getPlayer(i + 1).maxHP;
+                fightStats[10 + amountStats * i].text = getPlayer(i + 1).HP + "/" + getStat(i + 1, "maxHP");
                 fightStats[10 + amountStats * i].fill = getHPFill(i);
                 fightStats[11 + amountStats * i].text = getPlayer(i + 1).EP + "/" + getPlayer(i + 1).maxEP;
 

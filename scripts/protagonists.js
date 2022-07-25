@@ -49,6 +49,11 @@ const cStats = {
 }
 
 function getStat(prot, stat) {
-    if (stat == "strength") return Math.round(cStats[prot][stat] * (1.1 * game.characters[prot].level));
+    if (typeof (prot) == "number") prot = characters[prot - 1]; // 1 = Bleu, etc. - like getPlayer()
+    if (stat == "strength") return Math.round(cStats[prot][stat] * (1.07 * game.characters[prot].level));
+    if (stat == "maxHP") return Math.round(cStats[prot][stat] * (1.1 * game.characters[prot].level));
+    // to do: EP
+    // to do: agi
+    // to do: acc
     return cStats[prot][stat];
 }

@@ -38,9 +38,7 @@ function checkLevelUps() {
             game.characters[I].EXP -= 25;
             game.characters[I].level += 1;
 
-            game.characters[I].maxHP = 18 + (game.characters[I].level * 2);
-
-            game.characters[I].HP = game.characters[I].maxHP;
+            game.characters[I].HP = getStat(I, "maxHP");
         }
     }
 }
@@ -226,7 +224,7 @@ scenes.game = () => {
         anchor: [.99, .705], offset: [-200, 20],
         alpha: 1,
         align: "left", fontSize: 14, fill: "green",
-        text: "HP: " + getPlayer().HP + "/" + getPlayer().maxHP + "   EP: " + getPlayer().EP + "/" + getPlayer().maxEP,
+        text: "HP: " + getPlayer().HP + "/" + getStat(1, "maxHP") + "   EP: " + getPlayer().EP + "/" + getPlayer().maxEP,
     });
     let mapDisplayLevel1 = controls.label({
         anchor: [.99, .73], offset: [-200, 20],
@@ -245,7 +243,7 @@ scenes.game = () => {
         anchor: [.99, .785], offset: [-200, 20],
         alpha: 1,
         align: "left", fontSize: 14, fill: "green",
-        text: "HP: " + getPlayer(2).HP + "/" + getPlayer(2).maxHP + "   EP: " + getPlayer(2).EP + "/" + getPlayer(2).maxEP,
+        text: "HP: " + getPlayer(2).HP + "/" + getStat(2, "maxHP") + "   EP: " + getPlayer(2).EP + "/" + getPlayer(2).maxEP,
     });
     let mapDisplayLevel2 = controls.label({
         anchor: [.99, .81], offset: [-200, 20],
@@ -1724,9 +1722,9 @@ scenes.game = () => {
             // I think this method is inefficient, but I was not able to find a better one.
             // I searched and tried several things for hours.
             mapDisplayLevel1.text = "Level: " + getPlayer(1 + overWorldStatsScroll).level + "  EXP: " + getPlayer(1 + overWorldStatsScroll).EXP + "/25";
-            mapDisplayStats1.text = "HP: " + getPlayer(1 + overWorldStatsScroll).HP + "/" + getPlayer(1 + overWorldStatsScroll).maxHP + "   EP: " + getPlayer(1 + overWorldStatsScroll).EP + "/" + getPlayer(1 + overWorldStatsScroll).maxEP;
+            mapDisplayStats1.text = "HP: " + getPlayer(1 + overWorldStatsScroll).HP + "/" + getStat(1 + overWorldStatsScroll, "maxHP") + "   EP: " + getPlayer(1 + overWorldStatsScroll).EP + "/" + getPlayer(1 + overWorldStatsScroll).maxEP;
             mapDisplayLevel2.text = "Level: " + getPlayer(2 + overWorldStatsScroll).level + "  EXP: " + getPlayer(2 + overWorldStatsScroll).EXP + "/25";
-            mapDisplayStats2.text = "HP: " + getPlayer(2 + overWorldStatsScroll).HP + "/" + getPlayer(2 + overWorldStatsScroll).maxHP + "   EP: " + getPlayer(2 + overWorldStatsScroll).EP + "/" + getPlayer(2 + overWorldStatsScroll).maxEP;
+            mapDisplayStats2.text = "HP: " + getPlayer(2 + overWorldStatsScroll).HP + "/" + getStat(2 + overWorldStatsScroll, "maxHP") + "   EP: " + getPlayer(2 + overWorldStatsScroll).EP + "/" + getPlayer(2 + overWorldStatsScroll).maxEP;
         },
         controls: [
             /*...walkPad,*/ ...mapDisplay, actionButton,

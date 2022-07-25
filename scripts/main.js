@@ -59,7 +59,8 @@ function init() {
                     musicPlayer.muted = true;
                     soundPlayer.muted = true;
                     stopMusic();
-                    loadGame(0);
+                    saveNR = 3;
+                    loadGame();
                     loadSettings();
                     setScene(scenes.game());
                 }
@@ -411,10 +412,6 @@ function loadGame() {
         if (saveCopy.wrenches == undefined) saveCopy.wrenches = 0;
         if (saveCopy.bricks == undefined) saveCopy.bricks = 0;
         if (saveCopy.inventory == undefined) saveCopy.inventory = { "brickyleaf": 5, "potion": 3 };
-        if (saveCopy.characters.skro.maxHP == 8) {
-            saveCopy.characters.skro.maxEP = 8;
-            saveCopy.characters.skro.maxHP = 16;
-        }
 
         game = saveCopy;
     }

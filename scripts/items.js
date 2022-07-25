@@ -38,7 +38,7 @@ let items = {
             effect: () => {
                 let HealthBefore = args.player.HP;
                 if (args.player.HP > 0)  args.player.HP += 50;
-                if (args.player.HP > args.player.maxHP) args.player.HP = args.player.maxHP;
+                if (args.player.HP > getStat(args.player, "maxHP")) args.player.HP = getStat(args.player, "maxHP");
                 if (args.anchor != undefined) {
                     battleNumber(args.anchor, 50, 0, args.offset);
                     updateBar(args.player.name.toLowerCase(), HealthBefore);
@@ -87,7 +87,7 @@ let items = {
             effect: () => {
                 let HealthBefore = args.player.HP;
                 args.player.HP -= 999;
-                if (args.player.HP > args.player.maxHP) args.player.HP = args.player.maxHP;
+                if (args.player.HP > getStat(args.player, "maxHP")) args.player.HP = getStat(args.player, "maxHP");
                 if (args.anchor != undefined) {
                     battleNumber(args.anchor, 999, 0, args.offset);
                     updateBar(args.player.name.toLowerCase(), HealthBefore);
@@ -106,7 +106,7 @@ let items = {
             max: 99,
             effect: () => {
                 let HealthBefore = args.player.HP
-                let amount = Math.ceil(args.player.maxHP / 4);
+                let amount = Math.ceil(getStat(args.player, "maxHP") / 4);
                 if (args.player.HP < 1) args.player.HP = amount;
                 if (args.player != undefined) {
                     positions[args.player.pos[0]][args.player.pos[1]].isOccupied = true;
