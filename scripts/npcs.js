@@ -82,6 +82,7 @@ let npcs = {
                     ["Guys, I think he is evil!", "Portraits_Gau", "happy", "Gau"],
                     ["Spam is not allowed!", "Portraits_Gau", "angry", "Gau"],
                     ["Skro? More like oh no", "Portraits_Corelle", "neutral", "Corelle"],
+                    ["Good Night.", "Portraits_Skro", "angry", "oh no"],
                     ["Good Night.", "Portraits_Skro", "angry", "oh no", () => {
                         startFight("nogameover", [["itsalive", 2, 0], ["itsalive", 2, 1], ["itsalive", 2, 2], ["nottoofresh", 0, 1]]);
                     }]],

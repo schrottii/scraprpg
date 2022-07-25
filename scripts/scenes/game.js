@@ -151,6 +151,8 @@ scenes.game = () => {
     var menuItemsStoryOnly = false;
     var areaNameBox = [];
 
+    var tokenRunning = false;
+
     /* let walkPad = [];
     walkPad.push(controls.image({ // Up
         anchor: [.1, .75], offset: [0, 0], sizeOffset: [40, 40],
@@ -1038,9 +1040,10 @@ scenes.game = () => {
     function check_EnemyCollision(i) {
         if (game.position[0] == enemies[i].position[0] &&
             game.position[1] == enemies[i].position[1] &&
-            enemies[i].map == game.map && canMove == true) {
+            enemies[i].map == game.map && canMove == true && tokenRunning == false) {
             // Fight !!!
             canMove = false;
+            tokenRunning = true;
             clearCurrentEnemies();
 
             // It automatically grabs the enemies that can appear in the fight
@@ -1073,6 +1076,7 @@ scenes.game = () => {
                         startFight();
                         
                         zoom = previouszoom;
+                        tokenRunning = false;
                         return true;
                     }
                     return false;
@@ -1107,17 +1111,23 @@ scenes.game = () => {
 
         // Poison
         for (i = 0; i < game.chars.length; i++) {
-            if (getPlayer(i + 1).effect[0] == "poison") {
+            if (getPlayer(i + 1).effect[0] == "poison" && getPlayer(i + 1).HP > 0) {
                 getPlayer(i + 1).HP -= 1;
-                poisonBlack.alpha = 1;
-                poisonBlack.fill = "black";
-                addAnimator(function (t){
-                    poisonBlack.fill = "rgb(" + (0 + (t/3)) + "," + (0 + (t/3)) + "," + (0 + (t/3)) + ")";
-                    if (t > 200) {
-                        poisonBlack.alpha = 0;
-                        return true;
-                    }
-                })
+                if (poisonBlack.alpha == 0) {
+                    poisonBlack.alpha = 1;
+                    poisonBlack.fill = "black";
+                    addAnimator(function (t) {
+                        poisonBlack.fill = "rgb(" + (0 + (t / 3)) + "," + (0 + (t / 3)) + "," + (0 + (t / 3)) + ")";
+                        if (t > 400) {
+                            poisonBlack.fill = "black";
+                            poisonBlack.alpha = 0.1;
+                        }
+                        if (t > 700) {
+                            poisonBlack.alpha = 0;
+                            return true;
+                        }
+                    })
+                }
             }
         }
 
