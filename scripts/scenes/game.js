@@ -15,6 +15,18 @@ function createEnemy(type) {
     }
 }
 
+function startFight(type = "default", enemies = "default") {
+    defeatType = type;
+
+    if (enemies != "default") {
+        clearCurrentEnemies();
+        currentEnemies = enemies;
+    }
+
+    playMusic("bgm/fight");
+    setScene(scenes.fight());
+}
+
 function clearCurrentEnemies() {
     currentEnemies = [];
 }
@@ -1058,8 +1070,8 @@ scenes.game = () => {
                         areaTeleportFade.alpha = 0 + Math.min(((t - 1800) / 400), 1);
                     }
                     if (t > 2199) {
-                        playMusic("bgm/fight");
-                        setScene(scenes.fight());
+                        startFight();
+                        
                         zoom = previouszoom;
                         return true;
                     }
