@@ -407,6 +407,7 @@ function loadGame() {
         saveCopy.characters.gau.effect = ["none", 0];
         saveCopy.characters.skro.effect = ["none", 0];
         if (saveCopy.time == undefined) saveCopy.time = 0;
+        if (saveCopy.leader == undefined) saveCopy.leader = "bleu";
         if (saveCopy.wrenches == undefined) saveCopy.wrenches = 0;
         if (saveCopy.bricks == undefined) saveCopy.bricks = 0;
         if (saveCopy.inventory == undefined) saveCopy.inventory = { "brickyleaf": 5, "potion": 3 };

@@ -342,7 +342,7 @@ scenes.game = () => {
 
 
     let actionButton = controls.image({
-        anchor: [0.75, 0.8], sizeOffset: [96, 96],
+        anchor: [0.65, 0.8], sizeOffset: [128, 128],
         alpha: 1,
         source: "actionbutton",
         onClick(args) {
@@ -1131,6 +1131,24 @@ scenes.game = () => {
             }
         }
 
+        // Leader dead?
+        if (game.characters[game.leader].HP < 1) {
+            let highest = 0;
+            let who = "";
+            for (i in game.characters) {
+                if (game.characters[i].HP > highest) {
+                    highest = game.characters[i].HP;
+                    who = game.characters[i].name.toLowerCase();
+                }
+            }
+            if (highest == 0 || who == "") {
+                setScene(scenes.title());
+            }
+            else {
+                game.leader = who;
+            }
+        }
+
         // Spawn enemies (sometimes)
         if (enemiesOnThisMap < maxEnemies) {
             for (possibleSpawns in map.spawns) {
@@ -1592,7 +1610,7 @@ scenes.game = () => {
             else if (isDusk()) nightEffect.snip = [8, 0, 8, 8];
             else if (isNight()) nightEffect.snip = [16, 0, 8, 8];
 
-            ctx.drawImage(images[game.chars[3]], 32 * Math.floor(walkTime), 32 * head, 32, 32,
+            ctx.drawImage(images[game.leader], 32 * Math.floor(walkTime), 32 * head, 32, 32,
                 scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5) ),
                 scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zoom * scale, zoom * scale)
             ctx.imageSmoothingEnabled = false;

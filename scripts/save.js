@@ -3,6 +3,7 @@ let game = {
     map: "test",
     position: [4, 4],
     chars: ["bleu", "corelle", "gau", "skro"], // MAX 6!!!
+    leader: "bleu",
     time: 0,
     wrenches: 0,
     bricks: 0,
