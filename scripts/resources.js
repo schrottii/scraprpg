@@ -30,6 +30,8 @@ let images = {
     attackani2: "data/images/attackani2.png",
     eattackani0: "data/images/eattackani0.png",
     eattackani1: "data/images/eattackani1.png",
+    rain: "data/images/rain.png",
+
     eattackani2: "data/images/eattackani2.png",
 
     tokenattack: "data/images/battle_transition_clean_1.png",

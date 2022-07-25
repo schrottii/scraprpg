@@ -148,6 +148,9 @@ scenes.game = () => {
     var menuItemsStoryOnly = false;
     var areaNameBox = [];
 
+    var weather = "rain" // Blame It On The Weather
+    var weatherControls = [];
+
     var tokenRunning = false;
 
     /* let walkPad = [];
@@ -1194,6 +1197,29 @@ scenes.game = () => {
         }
     }
 
+    
+
+    function spawnRaindrop() {
+        let thisOne = 99;
+        for (i in weatherControls) {
+            if (weatherControls[i].alpha == 0) {
+                thisOne = i;
+                break;
+            }
+        }
+        if (thisOne != 99) {
+            weatherControls[thisOne].anchor = [Math.random(), -0.2];
+            weatherControls[thisOne].alpha = 1;
+        }
+    }
+
+    for (i = 0; i < 75; i++) {
+        weatherControls.push(controls.image({
+            anchor: [Math.random(), -0.2], sizeAnchor: [0, 0], sizeOffset: [64, 64],
+            source: "rain", alpha: 0,
+        }))
+    }
+
     function loadAreaMusic(prev = "none") {
         let map = maps[game.map];
         if (maps[prev] != undefined) {
@@ -1234,6 +1260,31 @@ scenes.game = () => {
                 // Saving
                 saveGame(true);
                 autoSaveTime = -3; // To prevent saving multiple times!
+            }
+
+            // Weather
+            if (weather == "rain") {
+                spawnRaindrop();
+                spawnRaindrop();
+                for (i in weatherControls) {
+                    if (weatherControls[i].alpha == 1) {
+                        weatherControls[i].anchor[1] += 0.002 * delta;
+                        if (weatherControls[i].anchor[1] > 1.1) weatherControls[i].alpha = 0;
+                    }
+                }
+                if (Math.random() > 0.9995) {
+                    for (i in weatherControls) {
+                        if (weatherControls[i].alpha == 1) {
+                            weatherControls[i].alpha = 0;
+                        }
+                    }
+                    weather = "none";
+                }
+            }
+            else if (weather == "none") {
+                if (Math.random() > 0.9995) {
+                    weather = "rain";
+                }
             }
 
             // Check if it's time for enemies to mov�
@@ -1730,7 +1781,7 @@ scenes.game = () => {
             /*...walkPad,*/ ...mapDisplay, actionButton,
             mapDisplayStats1, mapDisplayStats2,
             mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents,
-            poisonBlack, nightEffect,
+            poisonBlack, nightEffect, ...weatherControls,
             ...menuSettings, ...menuSettingsGameplay, ...menuSettingsAudio, ...menuSettingsGraphics, ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             autoSaveText, settingsSaveText, ...areaNameBox, areaTeleportFade
         ],
