@@ -1,0 +1,20 @@
+##TODO:
+13 Things left to do:
+
+- Proper victory
+- Overworld quests
+- Startup introduction
+- Mastery Techs
+- Duo Mastery Techs
+- Multiple dialogue types
+
+- Animated UI (what exactly?)
+- Equipment system:
+Weapon slots (LHand/RHand), Armor slots (Head/Body/Bottom/Hand), and accessory slots (Hand/Neck/Head).
+Most equipment can be upgraded to No Parcels with enough Bricks, up to +10.
+
+- Cutscene mode (Overworld)
+- Cutscene mode (Battle)
+- Promotion (and Evolution Tree) system
+- Mastery Tokens
+- Visual overlay effects (Rain, fog, dust, etc.)
