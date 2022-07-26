@@ -1719,7 +1719,7 @@ scenes.fight = () => {
 
     for (i = 0; i < 12; i++) {
         fightLogComponents.push(controls.label({
-            anchor: [0.01, 0.8 + (i*0.016)], offset: [2, 0],
+            anchor: [0.01, 0.79], offset: [2, (16 * i)],
             fontSize: 16, fill: "rgb(0, 0, 0)", align: "left",
             text: fightlog[Math.max(0, fightlog.length - 12 + i)],
             alpha: 1,
@@ -1742,7 +1742,7 @@ scenes.fight = () => {
     
     for (i = 0; i < 9; i++) {
         enemyListComponents.push(controls.label({
-            anchor: [0.86, 0.816 + (i * 0.016)], offset: [2, 0],
+            anchor: [0.86, 0.79], offset: [2, (16 * i)],
             fontSize: 16, fill: "rgb(0, 0, 0)", align: "left",
             text: "ERROR" + i,
             alpha: 1,
@@ -2257,7 +2257,12 @@ scenes.fight = () => {
             // Update the stats stuff at the bottom
             for (i = 0; i < game.chars.length; i++) {
                 fightStats[amountStats * i].text = "Lvl. " + getPlayer(i + 1).level;
-                fightStats[1 + amountStats * i].source = getPlayer(i + 1).name.toLowerCase();
+                if (getPlayer(i + 1).HP > 0) {
+                    fightStats[1 + amountStats * i].source = getPlayer(i + 1).name.toLowerCase();
+                }
+                else {
+                    fightStats[1 + amountStats * i].source = getPlayer(i + 1).name.toLowerCase() + "_dead";
+                }
                 if (getPlayer(i + 1).EP > 0) fightStats[8 + amountStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(i + 1).EP / getPlayer(i + 1).maxEP);
                 fightStats[10 + amountStats * i].text = getPlayer(i + 1).HP + "/" + getStat(i + 1, "maxHP");
                 fightStats[10 + amountStats * i].fill = getHPFill(i);
