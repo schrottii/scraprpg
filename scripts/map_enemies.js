@@ -41,7 +41,7 @@ let mapenemies = {
                     }
                 }
                 ctx.globalAlpha = 1;
-                if (this.spawntime < 900) {
+                if (this.spawntime < 900 && this.alpha != 0) {
                     this.spawntime += delta;
                     if (this.spawntime > 599) {
                         ctx.drawImage(images.spawn, 64, 0, 32, 32, posX, posY, zoom * scale, zoom * scale);

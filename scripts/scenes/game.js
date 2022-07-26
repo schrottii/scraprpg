@@ -1437,63 +1437,65 @@ scenes.game = () => {
                     enemies[i].movementTime += delta;
                     if (enemies[i].movementTime > enemies[i].walkingSpeed * 1000) {
                         enemies[i].movementTime = 0;
-                        // Random moving
-                        if (Math.random() > 0.40) { // Down
-                            if (map.map[enemies[i].position[1]] != undefined) {
-                                if (map.map[enemies[i].position[1]][enemies[i].position[0] + 1] != undefined) {
-                                    if (getTile(map, enemies[i].position[0], enemies[i].position[1] + 1) != undefined) {
-                                        if (getTile(map, enemies[i].position[0], enemies[i].position[1] + 1).occupied != true) {
-                                            enemies[i].position[1] += 1;
-                                            enemies[i].head = 0;
-                                            enemies[i].kofs = [0, 1, 1];
+
+                        if (enemies[i].spawntime > 899) {
+                            // Random moving
+                            if (Math.random() > 0.40) { // Down
+                                if (map.map[enemies[i].position[1]] != undefined) {
+                                    if (map.map[enemies[i].position[1]][enemies[i].position[0] + 1] != undefined) {
+                                        if (getTile(map, enemies[i].position[0], enemies[i].position[1] + 1) != undefined) {
+                                            if (getTile(map, enemies[i].position[0], enemies[i].position[1] + 1).occupied != true) {
+                                                enemies[i].position[1] += 1;
+                                                enemies[i].head = 0;
+                                                enemies[i].kofs = [0, 1, 1];
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            else if (Math.random() > 0.40) { // Left
+                                if (map.map[enemies[i].position[1]] != undefined) {
+                                    if (map.map[enemies[i].position[1]][enemies[i].position[0]] != undefined) {
+                                        if (getTile(map, enemies[i].position[0] - 1, enemies[i].position[1]) != undefined) {
+                                            if (getTile(map, enemies[i].position[0] - 1, enemies[i].position[1]).occupied != true) {
+                                                enemies[i].position[0] -= 1;
+                                                enemies[i].head = 1;
+                                                enemies[i].kofs = [-1, 0, 1];
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            else if (Math.random() > 0.40) { // Right
+                                if (map.map[enemies[i].position[1]] != undefined) {
+                                    if (map.map[enemies[i].position[1]][enemies[i].position[0]] != undefined) {
+                                        if (getTile(map, enemies[i].position[0] + 1, enemies[i].position[1]) != undefined) {
+                                            if (getTile(map, enemies[i].position[0] + 1, enemies[i].position[1]).occupied != true) {
+                                                enemies[i].position[0] += 1;
+                                                enemies[i].head = 2;
+                                                enemies[i].kofs = [1, 0, 1];
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            else if (Math.random() > 0.40) { // Up
+                                if (map.map[enemies[i].position[1]] != undefined) {
+                                    if (map.map[enemies[i].position[1]][enemies[i].position[0] - 1] != undefined) {
+                                        if (getTile(map, enemies[i].position[0], enemies[i].position[1] - 1) != undefined) {
+                                            if (getTile(map, enemies[i].position[0], enemies[i].position[1] - 1).occupied != true) {
+                                                enemies[i].position[1] -= 1;
+                                                enemies[i].head = 3;
+                                                enemies[i].kofs = [0, -1, 1];
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-
-                        else if (Math.random() > 0.40) { // Left
-                            if (map.map[enemies[i].position[1]] != undefined) {
-                                if (map.map[enemies[i].position[1]][enemies[i].position[0]] != undefined) {
-                                    if (getTile(map, enemies[i].position[0] - 1, enemies[i].position[1]) != undefined) {
-                                        if (getTile(map, enemies[i].position[0] - 1, enemies[i].position[1]).occupied != true) {
-                                            enemies[i].position[0] -= 1;
-                                            enemies[i].head = 1;
-                                            enemies[i].kofs = [-1, 0, 1];
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        else if (Math.random() > 0.40) { // Right
-                            if (map.map[enemies[i].position[1]] != undefined) {
-                                if (map.map[enemies[i].position[1]][enemies[i].position[0]] != undefined) {
-                                    if (getTile(map, enemies[i].position[0] + 1, enemies[i].position[1]) != undefined) {
-                                        if (getTile(map, enemies[i].position[0] + 1, enemies[i].position[1]).occupied != true) {
-                                            enemies[i].position[0] += 1;
-                                            enemies[i].head = 2;
-                                            enemies[i].kofs = [1, 0, 1];
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        else if (Math.random() > 0.40) { // Up
-                            if (map.map[enemies[i].position[1]] != undefined) {
-                                if (map.map[enemies[i].position[1]][enemies[i].position[0] - 1] != undefined) {
-                                    if (getTile(map, enemies[i].position[0], enemies[i].position[1] - 1) != undefined) {
-                                        if (getTile(map, enemies[i].position[0], enemies[i].position[1] - 1).occupied != true) {
-                                            enemies[i].position[1] -= 1;
-                                            enemies[i].head = 3;
-                                            enemies[i].kofs = [0, -1, 1];
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
                         // Respawn if on ocean or occupied
                         if (map.map[enemies[i].position[1]] != undefined) {
                             if (getTile(map, enemies[i].position[0], enemies[i].position[1]) == undefined) { // Undefined
@@ -1506,7 +1508,6 @@ scenes.game = () => {
                                     enemies[i].position = [Math.floor(Math.random() * maps[game.map].map[0].length), Math.floor(Math.random() * maps[game.map].map.length)];
                                 }
                                 else {
-                                    enemies[i].alpha = 0;
                                     enemies[i].alpha = enemies[i].opacity;
                                 }
                             }
