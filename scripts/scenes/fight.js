@@ -488,25 +488,42 @@ scenes.fight = () => {
     }
 
     function calculateDamage(type, pos1, pos2, enpos1, enpos2) {
+        let isCritical = false;
+        let critBonus = 1;
+        if (type == 1 || type == 3) {
+            if (getStat(positions[pos1][pos2].occupied, "luk") > Math.random() * 100) {
+                // Critical hit!
+                isCritical = true;
+                critBonus = 3;
+            }
+        }
         if (type == 1) { // Allies
-            return Math.round(getStat(positions[pos1][pos2].occupied, "strength")
+            return [isCritical, Math.round(getStat(positions[pos1][pos2].occupied, "strength")
                 * (0.67 + (0.33 * pos1))
                 * (1.33 - (0.33 * enpos1))
-                * getElementDamage(getStat(positions[pos1][pos2].occupied, "element"), epositions[enpos1][enpos2].element));
+                * getElementDamage(getStat(positions[pos1][pos2].occupied, "element"), epositions[enpos1][enpos2].element))
+                * critBonus];
         }
 
         if (type == 2) { // Evil men
-            return Math.round(epositions[pos1][pos2].strength
+            if (epositions[pos1][pos2].luk > Math.random() * 100) {
+                // Critical hit!
+                isCritical = true;
+                critBonus = 3;
+            }
+            return [isCritical, Math.round(epositions[pos1][pos2].strength
                 * (1.33 - (0.33 * pos1))
                 * (0.67 + (0.33 * enpos1))
-                * getElementDamage(epositions[pos1][pos2].element, getStat(positions[enpos1][enpos2].occupied, "element").element));
+                * getElementDamage(epositions[pos1][pos2].element, getStat(positions[enpos1][enpos2].occupied, "element").element))
+                * critBonus];
         }
 
         if (type == 3) { // My own men
-            return Math.round(getStat(positions[pos1][pos2].occupied, "strength")
+            return [isCritical, Math.round(getStat(positions[pos1][pos2].occupied, "strength")
                 * (1.33 - (0.33 * pos1))
                 * (0.67 + (0.33 * enpos1))
-                * getElementDamage(positions[pos1][pos2].element, getStat(positions[enpos1][enpos2].occupied, "element").element));
+                * getElementDamage(positions[pos1][pos2].element, getStat(positions[enpos1][enpos2].occupied, "element").element))
+                * critBonus];
         }
     }
 
@@ -627,7 +644,8 @@ scenes.fight = () => {
 
                         }
                         if (game.characters[positions[fpos1][fpos2].occupied].acc - epositions[pos1][pos2].eva > (Math.random() * 100)) {
-                            let Damage = calculateDamage(1, fpos1, fpos2, pos1, pos2);
+                            let Damage = calculateDamage(1, fpos1, fpos2, pos1, pos2)[1];
+                            let isCritical = calculateDamage(1, fpos1, fpos2, pos1, pos2)[0];
                             if (positions[fpos1][fpos2].occupied == "skro") {
                                 Damage = 690;
                             }
@@ -668,7 +686,8 @@ scenes.fight = () => {
                 selectedAlly = [whoAGI.action[1], whoAGI.action[2]];
 
                 let HealthBefore = game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].HP;
-                let Damage = calculateDamage(3, whoAGI.action[1], whoAGI.action[2], whoAGI.action[3], whoAGI.action[4]);
+                let Damage = calculateDamage(3, whoAGI.action[1], whoAGI.action[2], whoAGI.action[3], whoAGI.action[4])[1];
+                let isCritical = calculateDamage(3, whoAGI.action[1], whoAGI.action[2], whoAGI.action[3], whoAGI.action[4])[0];
 
                 game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].HP -= Damage;
 
@@ -763,7 +782,8 @@ scenes.fight = () => {
 
         // Ok, ok, now we know who (whoAGI) is first (highestAGI), so now do something
         prepareAttackAnimation(selectedAlly[0], selectedAlly[1], pos[0], pos[1], (fpos1, fpos2, pos) => {
-            let Damage = calculateDamage(2, pos[0], pos[1], selectedAlly[0], selectedAlly[1]);
+            let Damage = calculateDamage(2, pos[0], pos[1], selectedAlly[0], selectedAlly[1])[1];
+            let isCritical = calculateDamage(2, pos[0], pos[1], selectedAlly[0], selectedAlly[1])[0];
             if (positions[fpos1][fpos2].isOccupied != false) {
                 let HealthBefore = game.characters[positions[fpos1][fpos2].occupied].HP;
                 game.characters[positions[fpos1][fpos2].occupied].HP -= Damage;
@@ -1867,6 +1887,7 @@ scenes.fight = () => {
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].strength = enemyTypes[currentEnemies[i][0]].strength;
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].eva = enemyTypes[currentEnemies[i][0]].eva;
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].agi = enemyTypes[currentEnemies[i][0]].agi;
+            epositions[currentEnemies[i][1]][currentEnemies[i][2]].luk = enemyTypes[currentEnemies[i][0]].luk;
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].element = enemyTypes[currentEnemies[i][0]].element;
         }
     }

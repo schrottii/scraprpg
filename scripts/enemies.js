@@ -7,6 +7,7 @@ let enemyTypes = {
         strength: 2,
         eva: 0,
         agi: 30,
+        luk: 3,
         element: "light",
     },
 
@@ -16,6 +17,7 @@ let enemyTypes = {
         strength: 2,
         eva: 0,
         agi: 25,
+        luk: 3,
         element: "physical",
     },
 
@@ -25,6 +27,7 @@ let enemyTypes = {
         strength: 2,
         eva: 30,
         agi: 10,
+        luk: 3,
         element: "wind",
     },
 
@@ -34,6 +37,7 @@ let enemyTypes = {
         strength: 6,
         eva: 10,
         agi: 23,
+        luk: 30,
         element: "dark",
     },
 
@@ -43,6 +47,7 @@ let enemyTypes = {
         strength: 11,
         eva: 30,
         agi: 80,
+        luk: 20,
         element: "wind",
     },
 }
