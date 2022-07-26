@@ -653,7 +653,9 @@ scenes.fight = () => {
                             epositions[pos1][pos2].HP -= Damage; // Deal damage
                             battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, Damage * (-1), 0, epositionControls[pos1 + (pos2 * 3)].offset, isCritical);
 
-                            playSound("damage");
+                            if (!isCritical) playSound("damage");
+                            else playSound("critdamage");
+
                             postLog(game.characters[positions[fpos1][fpos2].occupied].name + " attacks " + epositions[pos1][pos2].name + " and deals " + Damage + " damage!");
                             if (getElementDamage(getStat(positions[fpos1][fpos2].occupied, "element"), epositions[pos1][pos2].element) != 1) {
                                 postLog("Element boost: x" + getElementDamage(getStat(positions[fpos1][fpos2].occupied, "element"), epositions[pos1][pos2].element) + "!");
@@ -694,7 +696,9 @@ scenes.fight = () => {
 
                 battleNumber(positionControls[whoAGI.action[3] + (whoAGI.action[4] * 3)].anchor, Damage * (-1), 0, positionControls[whoAGI.action[3] + (whoAGI.action[4] * 3)].offset, isCritical);
 
-                playSound("damage");
+                if (!isCritical) playSound("damage");
+                else playSound("critdamage");
+
                 postLog(positions[whoAGI.action[1]][whoAGI.action[2]].name + " attacks " + game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].name + " and deals " + Damage + " damage!");
 
                 // Bar animation! (Cowboy moment)
@@ -791,7 +795,9 @@ scenes.fight = () => {
                 epositions[pos[0]][pos[1]].action = false;
                 battleNumber(positionControls[fpos1 + (fpos2 * 3)].anchor, Damage * (-1), 0, positionControls[fpos1 + (fpos2 * 3)].offset, isCritical);
 
-                playSound("damage");
+                if (!isCritical) playSound("damage");
+                else playSound("critdamage");
+
                 postLog(epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[fpos1][fpos2].occupied].name + " and deals " + Damage + " damage!");
                 if (getElementDamage(epositions[pos[0]][pos[1]].element, getStat(positions[fpos1][fpos2].occupied, "element")) != 1) {
                     postLog("Element boost: x" + getElementDamage(epositions[pos[0]][pos[1]].element, getStat(positions[fpos1][fpos2].occupied)) + "!");
@@ -1339,7 +1345,7 @@ scenes.fight = () => {
         }));
     }
 
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < 4; i++) {
         actionDisplay.push(controls.label({
             anchor: [0.175, 0.07 + (0.03 * i)],
             fontSize: 24, fill: "rgb(125, 255, 0)", align: "left", outline: "darkgreen", outlineSize: 8,
@@ -2156,7 +2162,7 @@ scenes.fight = () => {
         if (fightaction == "attack1") postAction("What <category> will " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " use?");
         if (fightaction == "attack2") postAction("Choose a target.");
         if (fightaction == "macro") postAction("What predetermined set ot actions will " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " use?");
-        while (actionText.length < 3) {
+        while (actionText.length < 4) {
             actionText.push("");
         }
 
@@ -2260,7 +2266,7 @@ scenes.fight = () => {
             for (i = 0; i < 12; i++) {
                 fightLogComponents[2 + i].text = fightlog[Math.max(0, fightlog.length - 12 + i)];
             }
-            for (i = 0; i < 3; i++) {
+            for (i = 0; i < 4; i++) {
                 actionDisplay[i].text = actionText[i];
             }
 

@@ -193,6 +193,7 @@ var audio = {
     "cancel": "data/sounds/sound_cancel.wav",
     "keyitem": "data/sounds/important_item.wav",
     "damage": "data/sounds/damage.wav",
+    "critdamage": "data/sounds/critical_damage.wav",
     "teleport": "data/sounds/move area.wav",
     "victory": "data/sounds/jingle03.mp3",
     "miss": "data/sounds/miss.ogg",
