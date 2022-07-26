@@ -15,7 +15,7 @@ function battleNumber(pos, amount, type, offset = [0, 0], crit = false) {
     battleNumbers[bn].anchor[1] = pos[1];
     battleNumbers[bn].offset[0] = offset[0];
     battleNumbers[bn].offset[1] = offset[1];
-    if (crit) battleNumbers[bn].text = amount + "!!!";
+    if (crit) battleNumbers[bn].text = amount + "!".repeat(amount.toString().length - 1);
     else battleNumbers[bn].text = amount;
 
     // Arbitrary variables
