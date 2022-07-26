@@ -57,7 +57,12 @@ function init() {
                 onClick() {
                     cancel = true;
                     musicPlayer.muted = true;
-                    //soundPlayer.muted = true;
+                    soundPlayer.muted = false;
+
+                    loadSettings();
+                    soundPlayer.volume = settings.soundVolume;
+                    playSound("titletransition");
+
                     stopMusic();
                     saveNR = 3;
                     loadGame();
