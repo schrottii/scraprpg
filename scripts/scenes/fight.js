@@ -4,7 +4,7 @@ const amountStats = 14;
 var positions;
 var defeatType = "default"; // default or nogameover
 
-function battleNumber(pos, amount, type, offset = [0, 0]) {
+function battleNumber(pos, amount, type, offset = [0, 0], crit = false) {
     // Type 0 is HP, 1 is EP
     let bn;
     if (battleNumbers[0].alpha == 0) bn = 0;
@@ -15,7 +15,8 @@ function battleNumber(pos, amount, type, offset = [0, 0]) {
     battleNumbers[bn].anchor[1] = pos[1];
     battleNumbers[bn].offset[0] = offset[0];
     battleNumbers[bn].offset[1] = offset[1];
-    battleNumbers[bn].text = amount;
+    if (crit) battleNumbers[bn].text = amount + "!!!";
+    else battleNumbers[bn].text = amount;
 
     // Arbitrary variables
     let bounceHeight = 0.4;
@@ -650,7 +651,7 @@ scenes.fight = () => {
                                 Damage = 690;
                             }
                             epositions[pos1][pos2].HP -= Damage; // Deal damage
-                            battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, Damage * (-1), 0, epositionControls[pos1 + (pos2 * 3)].offset);
+                            battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, Damage * (-1), 0, epositionControls[pos1 + (pos2 * 3)].offset, isCritical);
 
                             playSound("damage");
                             postLog(game.characters[positions[fpos1][fpos2].occupied].name + " attacks " + epositions[pos1][pos2].name + " and deals " + Damage + " damage!");
@@ -691,7 +692,7 @@ scenes.fight = () => {
 
                 game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].HP -= Damage;
 
-                battleNumber(positionControls[whoAGI.action[3] + (whoAGI.action[4] * 3)].anchor, Damage * (-1), 0, positionControls[whoAGI.action[3] + (whoAGI.action[4] * 3)].offset);
+                battleNumber(positionControls[whoAGI.action[3] + (whoAGI.action[4] * 3)].anchor, Damage * (-1), 0, positionControls[whoAGI.action[3] + (whoAGI.action[4] * 3)].offset, isCritical);
 
                 playSound("damage");
                 postLog(positions[whoAGI.action[1]][whoAGI.action[2]].name + " attacks " + game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].name + " and deals " + Damage + " damage!");
@@ -788,7 +789,7 @@ scenes.fight = () => {
                 let HealthBefore = game.characters[positions[fpos1][fpos2].occupied].HP;
                 game.characters[positions[fpos1][fpos2].occupied].HP -= Damage;
                 epositions[pos[0]][pos[1]].action = false;
-                battleNumber(positionControls[fpos1 + (fpos2 * 3)].anchor, Damage * (-1), 0, positionControls[fpos1 + (fpos2 * 3)].offset);
+                battleNumber(positionControls[fpos1 + (fpos2 * 3)].anchor, Damage * (-1), 0, positionControls[fpos1 + (fpos2 * 3)].offset, isCritical);
 
                 playSound("damage");
                 postLog(epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[fpos1][fpos2].occupied].name + " and deals " + Damage + " damage!");
