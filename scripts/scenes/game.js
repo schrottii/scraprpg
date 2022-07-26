@@ -192,9 +192,9 @@ scenes.game = () => {
     let padThumbPosition = [0, 0];
 
 
-    let nightEffect = controls.image({
-        anchor: [0, 0], sizeAnchor: [1, 1], snip: [0, 0, 8, 8],
-        source: "nighteffect", alpha: 1,
+    let nightEffect = controls.rect({
+        anchor: [0, 0], sizeAnchor: [1, 1],
+        alpha: 1,
     });
     let weatherEffect = controls.image({
         anchor: [0, 0], sizeAnchor: [1, 1],
@@ -1286,6 +1286,29 @@ scenes.game = () => {
                 }
             }
 
+
+            if (map.weather == "none" || map.weather == undefined) {
+                nightEffect.alpha = 0.35;
+                if (isNoon()) nightEffect.alpha = 0;
+                else if (isDusk()) nightEffect.fill = "#ff8c1a";
+                else if (isNight()) nightEffect.fill = "#481365";
+                else if (isDawn()) nightEffect.fill = "#d92200";
+            }
+            if (map.weather == "rain") {
+                nightEffect.alpha = 0.5;
+                if (isNoon()) nightEffect.fill = "#cccccc";
+                else if (isDusk()) nightEffect.fill = "#bf854c";
+                else if (isNight()) nightEffect.fill = "#37293f";
+                else if (isDawn()) nightEffect.fill = "#894337";
+            }
+            if (map.weather == "fog") {
+                nightEffect.alpha = 0.6;
+                if (isNoon()) nightEffect.fill = "#b2b2b2";
+                else if (isDusk()) nightEffect.fill = "#998572";
+                else if (isNight()) nightEffect.fill = "#221c26";
+                else if (isDawn()) nightEffect.fill = "#4c4241";
+            }
+
             // Check if it's time for enemies to mov�
             if (canMove == true) {
                 for (i = 0; i < activenpcs.length; i++) {
@@ -1652,11 +1675,6 @@ scenes.game = () => {
                 }
             }
 
-            if (isDawn()) nightEffect.snip = [24, 0, 8, 8];
-            else if (isNoon()) nightEffect.snip = [0, 0, 8, 8];
-            else if (isDusk()) nightEffect.snip = [8, 0, 8, 8];
-            else if (isNight()) nightEffect.snip = [16, 0, 8, 8];
-
             ctx.drawImage(images[game.leader], 32 * Math.floor(walkTime), 32 * head, 32, 32,
                 scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5) ),
                 scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zoom * scale, zoom * scale)
@@ -1780,7 +1798,7 @@ scenes.game = () => {
             /*...walkPad,*/ ...mapDisplay, actionButton,
             mapDisplayStats1, mapDisplayStats2,
             mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents,
-            ...weatherControls, poisonBlack, nightEffect, weatherEffect,
+            ...weatherControls, poisonBlack, nightEffect, //weatherEffect,
             ...menuSettings, ...menuSettingsGameplay, ...menuSettingsAudio, ...menuSettingsGraphics, ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             autoSaveText, settingsSaveText, ...areaNameBox, areaTeleportFade
         ],
