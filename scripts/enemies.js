@@ -8,7 +8,7 @@ let enemyTypes = {
         eva: 0,
         agi: 30,
         luk: 3,
-        element: "light",
+        element: "physical",
     },
 
     "stronghelter": {
@@ -24,8 +24,8 @@ let enemyTypes = {
     "itsalive": {
         name: "It's Alive",
         HP: 20,
-        strength: 2,
-        eva: 30,
+        strength: 3,
+        eva: 20,
         agi: 10,
         luk: 3,
         element: "wind",
@@ -34,8 +34,8 @@ let enemyTypes = {
     "livingbarrel": {
         name: "Living Barrel",
         HP: 20,
-        strength: 6,
-        eva: 10,
+        strength: 8,
+        eva: 5,
         agi: 23,
         luk: 30,
         element: "dark",
@@ -45,7 +45,7 @@ let enemyTypes = {
         name: "Not Too Fresh",
         HP: 40,
         strength: 11,
-        eva: 30,
+        eva: 20,
         agi: 80,
         luk: 20,
         element: "wind",

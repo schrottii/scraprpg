@@ -49,7 +49,7 @@ const cStats = {
         name: "Skro",
         maxEP: 8,
         maxHP: 16,
-        strength: 690,
+        strength: 12,
         agi: 5,
         acc: 90,
         int: 10,

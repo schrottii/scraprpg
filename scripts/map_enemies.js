@@ -60,7 +60,7 @@ let mapenemies = {
         return {
             ...mapenemies.default(),
             skin: "itsalive",
-            opacity: 0.3,
+            opacity: 0.6,
             enemies: {
                 "weakhelter": 20,
                 "itsalive": 60
