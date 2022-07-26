@@ -318,11 +318,12 @@ scenes.fight = () => {
                 winScreen[4].text = "+" + brickGain + " bricks!";
 
                 for (i = 0; i < game.chars.length; i++) {
-                    getPlayer(1 + i).EXP += EXPforAll;
+                    if (getPlayer(1 + i).HP > 0) getPlayer(1 + i).EXP += EXPforAll;
                 }
 
                 for (i = 0; i < game.chars.length; i++) {
-                    winScreen[5 + i].text = getPlayer(i + 1).name + "  + " + EXPforAll + "XP!     " + getPlayer(i + 1).EXP + "/25";
+                    if (getPlayer(1 + i).HP > 0) winScreen[5 + i].text = getPlayer(i + 1).name + "  +" + EXPforAll + "XP!       " + getPlayer(i + 1).EXP + "/25";
+                    else winScreen[5 + i].text = getPlayer(i + 1).name + "  +0 XP! (Dead)  " + getPlayer(i + 1).EXP + "/25";
                 }
                 for (i = 0; i < winScreen.length; i++) {
                     winScreen[i].offset[1] = -1000;
@@ -624,13 +625,13 @@ scenes.fight = () => {
                 let pos2 = positions[pos[0]][pos[1]].action[4];
                 selectedAlly = [positions[pos[0]][pos[1]].action[1], positions[pos[0]][pos[1]].action[2]];
                 fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
-                if (win == false) {
+                if (win == false && game.characters[positions[pos[0]][pos[1]].occupied].HP > 0) {
                     prepareAttackAnimation(selectedAlly[0], selectedAlly[1], pos1, pos2, (fpos1, fpos2, pos1, pos2) => {
                         if (epositions[pos1][pos2].isOccupied == false) {
                             let exists = 0;
                             for (j = 0; j < 3; j++) {
                                 for (i = 0; i < 3; i++) {
-                                    if (epositions[i][j].isOccupied == true && exists == 0 && canReach(getStat(positions[fpos1][fpos2].occupied, "length"), "enemy", [pos1, pos2] )) {
+                                    if (epositions[i][j].isOccupied == true && exists == 0 && canReach(getStat(positions[fpos1][fpos2].occupied, "length"), "enemy", [pos1, pos2])) {
                                         exists = 1;
                                         pos1 = i;
                                         pos2 = j;
@@ -679,8 +680,13 @@ scenes.fight = () => {
                             playSound("miss");
                             postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " missed!");
                         }
-                        if(!lost) executeActions();
+                        if (!lost) executeActions();
                     }, false);
+                }
+                else if (!lost) {
+                    positions[pos[0]][pos[1]].action = false;
+                    executeActions();
+                    break;
                 }
                 positions[pos[0]][pos[1]].action = false;
                 break;
@@ -731,7 +737,6 @@ scenes.fight = () => {
                 positions[whoAGI.action[2]][whoAGI.action[3]].action = false;
                 executeActions();
                 break;
-            
         }
     }
 

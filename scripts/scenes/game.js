@@ -909,6 +909,8 @@ scenes.game = () => {
 
     // Weather time thing
     function setNightEffet(color, al = 1) {
+        let transitionDuration = 4000; // Roughly how long it lasts. 1000 = 1 sec
+
         if (color == "none") {
             nightEffect.alpha = 0;
             nightEffect2.alpha = 0;
@@ -920,10 +922,10 @@ scenes.game = () => {
             nightEffect.alpha = 0;
 
             addAnimator(function (t) {
-                nightEffect.alpha = 0 + t / 1000;
-                nightEffect2.alpha = al - t / 1000;
+                nightEffect.alpha = 0 + t / transitionDuration;
+                nightEffect2.alpha = al - t / transitionDuration;
 
-                if (t > (al*1000) - 1) {
+                if (t > (al * transitionDuration) - 1) {
                     nightEffect2.alpha = 0;
                     nightEffect.alpha = al;
                     return true;
