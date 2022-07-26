@@ -13,7 +13,7 @@ These are mainly the bosses of things other than programming and releasing the g
 - **Barduzzi (*Salveeny* in GitHub)**
 Discord Server Owner, Idea Planner, Graphic Designer
 - **Decastar**
-[Father of ScrapRPG](https://youtube.com/playlist?list=PLl18EjlJraJi3R_jBT266QQ8-smWw0GMn), Lead Graphic Designer, Lead Composer, Lead Story Writer
+[Father of ScrapRPG](https://youtube.com/playlist?list=PLl18EjlJraJi3R_jBT266QQ8-smWw0GMn), Lead Idea Planner, Lead Graphic Designer, Lead Composer, Lead Story Writer
 - **Daem S. (TheKingofTrash)**
 Graphic Designer, Story Writer, Game Tester
 - **zedorekuXD**
