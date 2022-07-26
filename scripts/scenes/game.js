@@ -148,7 +148,6 @@ scenes.game = () => {
     var menuItemsStoryOnly = false;
     var areaNameBox = [];
 
-    var weather = "rain" // Blame It On The Weather
     var weatherControls = [];
 
     var tokenRunning = false;
@@ -1033,6 +1032,11 @@ scenes.game = () => {
                 });
 
                 game.map = themap.teleport[0];
+                if (game.map.weather != "rain") {
+                    for (i in weatherControls) {
+                        weatherControls[i].alpha = 0;
+                    }
+                }
                 loadNPCs();
                 loadAreaMusic(previousmap);
                 game.position[0] = themap.teleport[1];
@@ -1267,29 +1271,18 @@ scenes.game = () => {
             }
 
             // Weather
-            if (weather == "rain") {
-                weatherEffect.alpha = 1;
-                spawnRaindrop();
-                spawnRaindrop();
-                for (i in weatherControls) {
-                    if (weatherControls[i].alpha == 1) {
-                        weatherControls[i].anchor[1] += 0.002 * delta;
-                        if (weatherControls[i].anchor[1] > 1.1) weatherControls[i].alpha = 0;
-                    }
-                }
-                if (Math.random() > 0.9995) {
+            if (map.weather != undefined) {
+                if (map.weather == "rain") {
+                    weatherEffect.alpha = 1;
+                    spawnRaindrop();
+                    spawnRaindrop();
                     for (i in weatherControls) {
                         if (weatherControls[i].alpha == 1) {
-                            weatherControls[i].alpha = 0;
+                            if (map.weatherStrength != undefined) weatherControls[i].anchor[1] += 0.002 * delta * map.weatherStrength;
+                            else weatherControls[i].anchor[1] += 0.002 * delta;
+                            if (weatherControls[i].anchor[1] > 1.1) weatherControls[i].alpha = 0;
                         }
                     }
-                    weather = "none";
-                }
-            }
-            else if (weather == "none") {
-                weatherEffect.alpha = 0;
-                if (Math.random() > 0.9995) {
-                    weather = "rain";
                 }
             }
 
