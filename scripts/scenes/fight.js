@@ -554,7 +554,7 @@ scenes.fight = () => {
     }
 
     function postAction(text) {
-        let maxLength = 24;
+        let maxLength = 16;
         let tempText = "";
         let superTempText = "";
 
@@ -2152,10 +2152,10 @@ scenes.fight = () => {
 
         actionText = [];
         if (fightaction == "none") postAction("Select a character before assigning a command.");
-        if (fightaction == "active") postAction("What will you assign for <character>?");
-        if (fightaction == "attack1") postAction("What <category> will <character> use?");
+        if (fightaction == "active") postAction("What will you assign for " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + "?");
+        if (fightaction == "attack1") postAction("What <category> will " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " use?");
         if (fightaction == "attack2") postAction("Choose a target.");
-        if (fightaction == "macro") postAction("What predetermined set ot actions will <character> use?");
+        if (fightaction == "macro") postAction("What predetermined set ot actions will " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " use?");
         while (actionText.length < 3) {
             actionText.push("");
         }
