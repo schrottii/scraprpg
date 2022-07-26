@@ -13,6 +13,9 @@ const cStats = {
         strength: 4,
         agi: 15,
         acc: 90,
+        int: 10,
+        wis: 10,
+        luk: 15,
         element: "water",
         length: 1,
     },
@@ -23,6 +26,9 @@ const cStats = {
         strength: 3,
         agi: 20,
         acc: 85,
+        int: 20,
+        wis: 30,
+        luk: 7,
         element: "fire",
         length: 1,
     },
@@ -33,6 +39,9 @@ const cStats = {
         strength: 7,
         agi: 12,
         acc: 85,
+        int: 5,
+        wis: 5,
+        luk: 10,
         element: "physical",
         length: 1,
     },
@@ -43,6 +52,9 @@ const cStats = {
         strength: 690,
         agi: 5,
         acc: 90,
+        int: 10,
+        wis: 10,
+        luk: 10,
         element: "physical",
         length: 3,
     }
@@ -59,5 +71,8 @@ function getStat(prot, stat) {
     // to do: EP
     // to do: agi
     // to do: acc
+    // to do: int
+    // to do: wis
+    // to do: luk
     return cStats[prot][stat];
 }

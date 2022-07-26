@@ -1,5 +1,5 @@
 ##TODO:
-14 Things left to do:
+13 Things left to do:
 
 - Proper victory
 - Overworld quests
@@ -17,6 +17,4 @@ Most equipment can be upgraded to No Parcels with enough Bricks, up to +10.
 - Cutscene mode (Battle)
 - Promotion (and Evolution Tree) system
 - Mastery Tokens
-- INT (Magic hit rate), WIS (Magic damage/heal),
-LUK (Crit, item drop, wrench/brick modif.)
 - Visual overlay effects (Rain, fog, dust, etc.)

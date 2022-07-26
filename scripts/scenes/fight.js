@@ -283,7 +283,10 @@ scenes.fight = () => {
             if (t > 2000) {
                 let EXPforAll = 2;
                 let wrenchGain = 100;
-                let brickGain = 0;
+                let wrenchLUK = 1;
+                let brickGain = 10;
+                let brickLUK = 1;
+
                 for (j = 0; j < 3; j++) {
                     for (i = 0; i < 3; i++) {
                         if (epositions[i][j].strength != undefined) EXPforAll += epositions[i][j].strength / 3;
@@ -296,10 +299,19 @@ scenes.fight = () => {
                         if (epositions[i][j].maxHP != undefined) wrenchGain += epositions[i][j].maxHP / 3;
                     }
                 }
+                for (i in game.characters) {
+                    wrenchLUK += Math.pow(2.2, getStat(game.characters[i].name.toLowerCase(), "luk"));
+                    brickLUK += getStat(game.characters[i].name.toLowerCase(), "luk");
+                }
+                wrenchGain = wrenchGain * Math.ceil(wrenchLUK);
+                brickGain = brickGain * Math.ceil(brickLUK);
+
                 EXPforAll = Math.ceil(EXPforAll);
                 wrenchGain = Math.ceil(wrenchGain);
 
                 addWrenches(wrenchGain);
+                addBricks(brickGain);
+
                 winScreen[3].text = "+" + wrenchGain + " wrenches!";
                 winScreen[4].text = "+" + brickGain + " bricks!";
 
