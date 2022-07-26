@@ -245,6 +245,7 @@ scenes.fight = () => {
                             game.characters[i].HP = 1;
                         }
                         setScene(scenes.game());
+                        fightStats = [];
                         gameOverScreen[0].alpha = 0;
                         return true;
                     }
@@ -1680,6 +1681,7 @@ scenes.fight = () => {
             if (this.alpha == 1) {
                 loadGame();
                 setScene(scenes.game());
+                fightStats = [];
             }
         }
     }));
@@ -1691,6 +1693,7 @@ scenes.fight = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 setScene(scenes.title());
+                fightStats = [];
             }
         }
     }));
