@@ -1237,7 +1237,7 @@ scenes.game = () => {
         }
     }
 
-    
+
 
     function spawnRaindrop() {
         let thisOne = 99;
@@ -1248,8 +1248,26 @@ scenes.game = () => {
             }
         }
         if (thisOne != 99) {
+            weatherControls[thisOne].source = "rain";
+            weatherControls[thisOne].sizeOffset = [64, 64];
             weatherControls[thisOne].anchor = [Math.random(), -0.2];
             weatherControls[thisOne].alpha = 1;
+        }
+    }
+
+    function spawnFogcloud() {
+        let thisOne = 99;
+        for (i in weatherControls) {
+            if (weatherControls[i].alpha == 0) {
+                thisOne = i;
+                break;
+            }
+        }
+        if (thisOne != 99) {
+            weatherControls[thisOne].source = "fog";
+            weatherControls[thisOne].sizeOffset = [92, 92];
+            weatherControls[thisOne].anchor = [-0.2, Math.random()];
+            weatherControls[thisOne].alpha = 0.75;
         }
     }
 
@@ -1305,14 +1323,23 @@ scenes.game = () => {
             // Weather
             if (map.weather != undefined) {
                 if (map.weather == "rain") {
-                    weatherEffect.alpha = 1;
                     spawnRaindrop();
                     spawnRaindrop();
                     for (i in weatherControls) {
-                        if (weatherControls[i].alpha == 1) {
+                        if (weatherControls[i].alpha > 0) {
                             if (map.weatherStrength != undefined) weatherControls[i].anchor[1] += 0.002 * delta * map.weatherStrength;
                             else weatherControls[i].anchor[1] += 0.002 * delta;
                             if (weatherControls[i].anchor[1] > 1.1) weatherControls[i].alpha = 0;
+                        }
+                    }
+                }
+                if (map.weather == "fog") {
+                    if(Math.random() > 0.6) spawnFogcloud();
+                    for (i in weatherControls) {
+                        if (weatherControls[i].alpha > 0) {
+                            if (map.weatherStrength != undefined) weatherControls[i].anchor[0] += 0.0005 * delta * map.weatherStrength;
+                            else weatherControls[i].anchor[0] += 0.0005 * delta;
+                            if (weatherControls[i].anchor[0] > 1.1) weatherControls[i].alpha = 0;
                         }
                     }
                 }
