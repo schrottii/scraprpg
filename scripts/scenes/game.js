@@ -194,7 +194,11 @@ scenes.game = () => {
 
     let nightEffect = controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 1],
-        alpha: 1,
+        alpha: 0, fill: "white",
+    });
+    let nightEffect2 = controls.rect({
+        anchor: [0, 0], sizeAnchor: [1, 1],
+        alpha: 0, fill: "white",
     });
     let weatherEffect = controls.image({
         anchor: [0, 0], sizeAnchor: [1, 1],
@@ -903,6 +907,32 @@ scenes.game = () => {
         text: "AREA UNDEFINED", alpha: 0,
     }))
 
+    // Weather time thing
+    function setNightEffet(color, al = 1) {
+        if (color == "none") {
+            nightEffect.alpha = 0;
+            nightEffect2.alpha = 0;
+        }
+        else if (nightEffect.fill != color) {
+            nightEffect2.fill = nightEffect.fill;
+            nightEffect.fill = color;
+            nightEffect2.alpha = al;
+            nightEffect.alpha = 0;
+
+            addAnimator(function (t) {
+                nightEffect.alpha = 0 + t / 1000;
+                nightEffect2.alpha = al - t / 1000;
+
+                if (t > (al*1000) - 1) {
+                    nightEffect2.alpha = 0;
+                    nightEffect.alpha = al;
+                    return true;
+                }
+                return false;
+            });
+        }
+    }
+
     // Function used to grab tiles
     function getTile(map, x, y, l = 1) {
         if (y < 0) return undefined;
@@ -1288,25 +1318,22 @@ scenes.game = () => {
 
 
             if (map.weather == "none" || map.weather == undefined) {
-                nightEffect.alpha = 0.35;
-                if (isNoon()) nightEffect.alpha = 0;
-                else if (isDusk()) nightEffect.fill = "#ff8c1a";
-                else if (isNight()) nightEffect.fill = "#481365";
-                else if (isDawn()) nightEffect.fill = "#d92200";
+                if (isNoon()) setNightEffet("none", 0.35);
+                else if (isDusk()) setNightEffet("#ff8c1a", 0.35);
+                else if (isNight()) setNightEffet("#481365", 0.35);
+                else if (isDawn()) setNightEffet("#d92200", 0.35);
             }
             if (map.weather == "rain") {
-                nightEffect.alpha = 0.5;
-                if (isNoon()) nightEffect.fill = "#cccccc";
-                else if (isDusk()) nightEffect.fill = "#bf854c";
-                else if (isNight()) nightEffect.fill = "#37293f";
-                else if (isDawn()) nightEffect.fill = "#894337";
+                if (isNoon()) setNightEffet("#cccccc", 0.5);
+                else if (isDusk()) setNightEffet("#bf854c", 0.5);
+                else if (isNight()) setNightEffet("#37293f", 0.5);
+                else if (isDawn()) setNightEffet("#894337", 0.5);
             }
             if (map.weather == "fog") {
-                nightEffect.alpha = 0.6;
-                if (isNoon()) nightEffect.fill = "#b2b2b2";
-                else if (isDusk()) nightEffect.fill = "#998572";
-                else if (isNight()) nightEffect.fill = "#221c26";
-                else if (isDawn()) nightEffect.fill = "#4c4241";
+                if (isNoon()) setNightEffet("#b2b2b2", 0.6);
+                else if (isDusk()) setNightEffet("#998572", 0.6);
+                else if (isNight()) setNightEffet("#221c26", 0.6);
+                else if (isDawn()) setNightEffet("#4c4241", 0.6);
             }
 
             // Check if it's time for enemies to mov�
@@ -1798,7 +1825,7 @@ scenes.game = () => {
             /*...walkPad,*/ ...mapDisplay, actionButton,
             mapDisplayStats1, mapDisplayStats2,
             mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents,
-            ...weatherControls, poisonBlack, nightEffect, //weatherEffect,
+            ...weatherControls, poisonBlack, nightEffect, nightEffect2, //weatherEffect,
             ...menuSettings, ...menuSettingsGameplay, ...menuSettingsAudio, ...menuSettingsGraphics, ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             autoSaveText, settingsSaveText, ...areaNameBox, areaTeleportFade
         ],
