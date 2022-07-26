@@ -5,7 +5,7 @@ On November 2018, *Frank Neurhein* would make the [very first concept of the gam
 DecastarWasNeverACoder (More known as *Decastar*) was the second person to think of such concept of a *Scrap Clicker*-based role-playing game in February of 2021. At November of 2021, *Salveeny* (Also known as *Barduzzi* by the majority) and DecastarWasNeverACoder eventually brainstormed to create the game from conception. About a week later, *Frank Neurhein* would make his debut in the development scene as the primary programmer, marking the birth of the game's GitHub repository.
 ## Programming Staff
 - **Frank Neurhein (Schrottii)**
-Lead Programmer, Main Game Developer, Idea Planner, Graphic Designer, Composer, Story Writer
+Lead Programmer, Main Game Developer, Lead Idea Planner, Graphic Designer, Composer, Story Writer
 - **ducdat0507**
 Programmer, Composer
 ### Staff of All Trades
@@ -13,7 +13,7 @@ These are mainly the bosses of things other than programming and releasing the g
 - **Barduzzi (*Salveeny* in GitHub)**
 Discord Server Owner, Idea Planner, Graphic Designer
 - **Decastar**
-[Father of ScrapRPG](https://youtube.com/playlist?list=PLl18EjlJraJi3R_jBT266QQ8-smWw0GMn), Lead Idea Planner, Lead Graphic Designer, Lead Composer, Lead Story Writer
+[Father of ScrapRPG](https://youtube.com/playlist?list=PLl18EjlJraJi3R_jBT266QQ8-smWw0GMn), Idea Planner, Lead Graphic Designer, Lead Composer, Lead Story Writer
 - **Daem S. (TheKingofTrash)**
 Graphic Designer, Story Writer, Game Tester
 - **zedorekuXD**
