@@ -149,6 +149,7 @@ scenes.game = () => {
     var areaNameBox = [];
 
     var weatherControls = [];
+    var fogopa = 2;
 
     var tokenRunning = false;
 
@@ -908,8 +909,18 @@ scenes.game = () => {
     }))
 
     // Weather time thing
-    function setNightEffet(color, al = 1) {
+    function setNightEffet(color, al = 1, type = "none") {
         let transitionDuration = 4000; // Roughly how long it lasts. 1000 = 1 sec
+        let fogOpacityChangeIntensity = 10; // How much the opacity during fog changes. Higher number = less
+        // Speed in preRender
+
+        if (type == "fog") {
+            if (fogopa >= 1) al += (fogopa - 1) / fogOpacityChangeIntensity;
+            else al -= ((fogopa) / fogOpacityChangeIntensity) - (1 / fogOpacityChangeIntensity);
+            if (al > 1) al = 1;
+            if (al <= 0) al = 0.01;
+            nightEffect.alpha = al;
+        }
 
         if (color == "none") {
             nightEffect.alpha = 0;
@@ -1264,14 +1275,15 @@ scenes.game = () => {
             }
         }
         if (thisOne != 99) {
-            weatherControls[thisOne].source = "fog";
+            if (Math.random() > 0.49) weatherControls[thisOne].source = "fog";
+            else weatherControls[thisOne].source = "fog2";
             weatherControls[thisOne].sizeOffset = [92, 92];
             weatherControls[thisOne].anchor = [-0.2, Math.random()];
             weatherControls[thisOne].alpha = 0.75;
         }
     }
 
-    for (i = 0; i < 75; i++) {
+    for (i = 0; i < 100; i++) {
         weatherControls.push(controls.image({
             anchor: [Math.random(), -0.2], sizeAnchor: [0, 0], sizeOffset: [64, 64],
             source: "rain", alpha: 0,
@@ -1334,11 +1346,13 @@ scenes.game = () => {
                     }
                 }
                 if (map.weather == "fog") {
-                    if(Math.random() > 0.6) spawnFogcloud();
+                    if (Math.random() > 0.92) spawnFogcloud();
+                    fogopa -= 0.0003 * delta; // Adjust how quickly the fog opacity changes here! Lower = slower
+                    if (fogopa < 0) fogopa = 2;
                     for (i in weatherControls) {
                         if (weatherControls[i].alpha > 0) {
-                            if (map.weatherStrength != undefined) weatherControls[i].anchor[0] += 0.0005 * delta * map.weatherStrength;
-                            else weatherControls[i].anchor[0] += 0.0005 * delta;
+                            if (map.weatherStrength != undefined) weatherControls[i].anchor[0] += 0.0001 * delta * map.weatherStrength;
+                            else weatherControls[i].anchor[0] += 0.0001 * delta;
                             if (weatherControls[i].anchor[0] > 1.1) weatherControls[i].alpha = 0;
                         }
                     }
@@ -1359,10 +1373,10 @@ scenes.game = () => {
                 else if (isDawn()) setNightEffet("#894337", 0.5);
             }
             if (map.weather == "fog") {
-                if (isNoon()) setNightEffet("#b2b2b2", 0.6);
-                else if (isDusk()) setNightEffet("#998572", 0.6);
-                else if (isNight()) setNightEffet("#221c26", 0.6);
-                else if (isDawn()) setNightEffet("#4c4241", 0.6);
+                if (isNoon()) setNightEffet("#b2b2b2", 0.6, "fog");
+                else if (isDusk()) setNightEffet("#998572", 0.6, "fog");
+                else if (isNight()) setNightEffet("#221c26", 0.6, "fog");
+                else if (isDawn()) setNightEffet("#4c4241", 0.6, "fog");
             }
 
             // Check if it's time for enemies to mov�
