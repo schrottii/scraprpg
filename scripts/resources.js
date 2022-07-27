@@ -188,6 +188,7 @@ var audio = {
     "bgm/title": "data/bgm/Title_OST.mp3",
     "bgm/placeholder": "data/bgm/field03.mp3",
     "bgm/fight": "data/bgm/theme05_.mp3",
+    "bgm/boss": "data/bgm/boss07.mp3", // Placeholders :(
 
     "titletransition": "data/sounds/Title_screen_transition.mp3",
     "buttonClickSound": "data/sounds/sound_ok.wav",

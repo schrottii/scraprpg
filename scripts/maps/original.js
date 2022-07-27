@@ -57,6 +57,8 @@ maps["original"] = {
     },
     maxEnemies: 8,
     music: "bgm/placeholder",
+    weather: "rain",
+    weatherStrength: 1,
     map: [
         "000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000",
         "000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000",

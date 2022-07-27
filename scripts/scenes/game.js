@@ -23,7 +23,8 @@ function startFight(type = "default", enemies = "default") {
         currentEnemies = enemies;
     }
 
-    playMusic("bgm/fight");
+    if (type == "nogameover") playMusic("bgm/boss");
+    else playMusic("bgm/fight");
     setScene(scenes.fight());
 }
 
@@ -1277,7 +1278,7 @@ scenes.game = () => {
         if (thisOne != 99) {
             if (Math.random() > 0.49) weatherControls[thisOne].source = "fog";
             else weatherControls[thisOne].source = "fog2";
-            weatherControls[thisOne].sizeOffset = [92, 92];
+            weatherControls[thisOne].sizeOffset = [128, 64];
             weatherControls[thisOne].anchor = [-0.2, Math.random()];
             weatherControls[thisOne].alpha = 0.75;
         }
