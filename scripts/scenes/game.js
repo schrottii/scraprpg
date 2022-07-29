@@ -1121,10 +1121,13 @@ scenes.game = () => {
             let previouszoom = zoom;
                 addAnimator(function (t) {
                     zoom = 1 + (t / 500);
-                    if (t > 1799) {
+                    if (t > 1799 && t < 2500) {
                         areaTeleportFade.alpha = 0 + Math.min(((Math.min(t - 1800, 400)) / 400), 1);
                     }
-                    if (t > 2499) {
+                    if (t > 2499 && t < 2755) {
+                        areaTeleportFade.fill = "rgb(" + (255 - (t - 2500)) + "," + (255 - (t - 2500)) + "," + (255 - (t - 2500)) + ")";
+                    }
+                    if (t > 2999) {
                         startFight();
                         
                         zoom = previouszoom;

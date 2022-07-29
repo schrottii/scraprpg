@@ -737,6 +737,11 @@ scenes.fight = () => {
                 positions[whoAGI.action[2]][whoAGI.action[3]].action = false;
                 executeActions();
                 break;
+            case "flee":
+                console.log(whoAGI.action[1], whoAGI.action[2]);
+                fleeAnimation(whoAGI.action[1], whoAGI.action[2]);
+                setTimeout(() => executeActions(), 2500);
+                break;
         }
     }
 
@@ -1242,83 +1247,10 @@ scenes.fight = () => {
                 alpha: 1,
                 onClick(args) {
                     if (this.alpha == 1 && fightaction == "active") {
-                        let loss = Math.round(50 + (game.wrenches / 100)) * (-1);
-                        addWrenches(loss);
-                        fleeLoss.text = loss + "!";
-                        fleeLoss.alpha = 1;
-                        fleeIcon.alpha = 1;
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
+                        positions[selectedAlly[0]][selectedAlly[1]].action = ["flee", selectedAlly[0], selectedAlly[1], getStat(positions[selectedAlly[0]][selectedAlly[1]].occupied, "AGI")];
+                        fightaction = "none";
                         hideFightButtons();
-                        hideFightActions();
-
-                        let runTime = 0;
-                        let runLaps = 0;
-                        let wrenchTime = 0;
-                        let wrenchi = 0;
-                        for (i = 0; i < positionControls.length; i++) {
-                            if (positionControls[i].source != "gear") positionControls[i].defoffset[0] = positionControls[i].offset[0];
-                            if (positionControls[i].source != "gear") positionControls[i].snip[1] = 32;
-                        }
-
-                        addAnimator(function (t) {
-                            for (i = 0; i < positionControls.length; i++) {
-                                if (positionControls[i].source != "gear" && game.characters[positions[positionControls[i].pos1][positionControls[i].pos2].occupied].HP > 0) {
-                                    positionControls[i].offset[0] = positionControls[i].defoffset - (t / 4);
-                                    positionControls[i].anchor[0] = Math.min((2000 - t) / 80000, 0.025);
-                                    positionControls[i].snip[0] = Math.floor(runTime) * 32;
-                                }
-                            }
-
-                            runTime += ((t - runLaps) / 250);
-                            if (runTime >= 2) {
-                                runTime = 0;
-                                runLaps = t;
-                            }
-
-                            wrenchTime += t - runLaps;
-                            if (wrenchTime > 49) {
-                                wrenchTime = 0;
-                                wrenchi += 1;
-                                if (wrenchi < 50) {
-                                    let where = 0;
-                                    while (where == 0) {
-                                        for (i = 0; i < positionControls.length; i++) {
-                                            if (positionControls[i].source != "gear") if (Math.random() > 0.7) where = i;
-                                        }
-                                    }
-                                    fleeWrenches[wrenchi].anchor[0] = positionControls[where].anchor[0] + 0;
-                                    fleeWrenches[wrenchi].anchor[1] = positionControls[where].anchor[1] + (Math.random()/10);
-                                    fleeWrenches[wrenchi].offset[0] = positionControls[where].offset[0] * 2;
-                                    fleeWrenches[wrenchi].offset[1] = positionControls[where].offset[1] + 0;
-                                    fleeWrenches[wrenchi].alpha = 1;
-                                }
-                            }
-
-                            for (i = 0; i < fleeWrenches.length; i++) {
-                                fleeWrenches[i].offset[0] += 8;
-                                fleeWrenches[i].offset[1] += 1;
-                                if (fleeWrenches[i].offset[0] > 400) fleeWrenches[i].alpha = 0;
-                            }
-
-                            if (t > 2000) {
-                                for (i = 0; i < positionControls.length; i++) {
-                                    if (positionControls[i].source != "gear") positionControls[i].offset[0] = -500;
-                                    if (positionControls[i].source != "gear") positionControls[i].anchor[0] = 0;
-                                }
-                                fleeLoss.alpha = 0;
-                                fleeIcon.alpha = 0;
-                                setScene(scenes.game());
-
-                                delete runTime;
-                                delete runLaps;
-
-                                setTimeout(() => {
-                                    positions = [];
-                                    fightStats = [];
-                                }, 500);
-                                return true;
-                            }
-                            return false;
-                        });
                     }
                 }
             }))
@@ -1356,6 +1288,99 @@ scenes.fight = () => {
             text: actionText[Math.max(0, actionText.length - 3 + i)],
             alpha: 1,
         }));
+    }
+
+    function fleeAnimation(x, y) {
+        let p = x + (y * 3);
+
+        positions[x][y].action = false;
+
+        let peopleLeft = 0;
+        for (j = 0; j < 3; j++) {
+            for (i = 0; i < 3; i++) {
+                if(positions[i][j].isOccupied == true) peopleLeft += 1;
+            }
+        }
+        peopleLeft -= 1; // you
+
+        if (peopleLeft == 0) {
+            let loss = Math.round(50 + (game.wrenches / 100)) * (-1);
+            addWrenches(loss);
+            fleeLoss.text = loss + "!";
+            fleeLoss.alpha = 1;
+            fleeIcon.alpha = 1;
+        }
+
+        hideFightButtons();
+        hideFightActions();
+
+        let runTime = 0;
+        let runLaps = 0;
+        let wrenchTime = 0;
+        let wrenchi = 0;
+        if (positionControls[p].source != "gear") positionControls[p].defoffset[0] = positionControls[p].offset[0];
+        if (positionControls[p].source != "gear") positionControls[p].snip[1] = 32;
+
+        addAnimator(function (t) {
+           if (positionControls[p].source != "gear") {
+               positionControls[p].offset[0] = positionControls[p].defoffset - (t / 4);
+               positionControls[p].anchor[0] = Math.min((2000 - t) / 80000, 0.025);
+               positionControls[p].snip[0] = Math.floor(runTime) * 32;
+            }
+            
+
+            runTime += ((t - runLaps) / 250);
+            if (runTime >= 2) {
+                runTime = 0;
+                runLaps = t;
+            }
+
+            wrenchTime += t - runLaps;
+            if (wrenchTime > 49) {
+                wrenchTime = 0;
+                wrenchi += 1;
+                if (wrenchi < 50) {
+                    fleeWrenches[wrenchi].anchor[0] = positionControls[p].anchor[0] + 0;
+                    fleeWrenches[wrenchi].anchor[1] = positionControls[p].anchor[1] + (Math.random() / 10);
+                    fleeWrenches[wrenchi].offset[0] = positionControls[p].offset[0] * 2;
+                    fleeWrenches[wrenchi].offset[1] = positionControls[p].offset[1] + 0;
+                    fleeWrenches[wrenchi].alpha = 1;
+                }
+            }
+
+            for (i = 0; i < fleeWrenches.length; i++) {
+                fleeWrenches[i].offset[0] += 8;
+                fleeWrenches[i].offset[1] += 1;
+                if (fleeWrenches[i].offset[0] > 400) fleeWrenches[i].alpha = 0;
+            }
+
+            if (t > 2000) {
+                if (positionControls[p].source != "gear") positionControls[p].offset[0] = -500;
+                if (positionControls[p].source != "gear") positionControls[p].anchor[0] = 0;
+
+                positions[x][y].isOccupied = false;
+                positions[x][y].occupied = false;
+                delete runTime;
+                delete runLaps;
+
+                for (i = 0; i < fleeWrenches.length; i++) {
+                    fleeWrenches[i].alpha = 0;
+                }
+
+                if (peopleLeft == 0) {
+                    fleeLoss.alpha = 0;
+                    fleeIcon.alpha = 0;
+                    setScene(scenes.game());
+                    setTimeout(() => {
+                        positions = [];
+                        fightStats = [];
+                    }, 500);
+                }
+
+                return true;
+            }
+            return false;
+        });
     }
 
     // finally a non array
