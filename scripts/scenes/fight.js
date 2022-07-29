@@ -581,6 +581,7 @@ scenes.fight = () => {
     }
 
     function executeActions() {
+        if (positions == undefined) return;
             let highestAGI = 0;
             let whoAGI;
             let pos = [];
@@ -738,7 +739,6 @@ scenes.fight = () => {
                 executeActions();
                 break;
             case "flee":
-                console.log(whoAGI.action[1], whoAGI.action[2]);
                 fleeAnimation(whoAGI.action[1], whoAGI.action[2]);
                 setTimeout(() => executeActions(), 2500);
                 break;
@@ -1294,6 +1294,10 @@ scenes.fight = () => {
         let p = x + (y * 3);
 
         positions[x][y].action = false;
+        if ((getStat(positions[x][y].occupied, "agi") / 200) < Math.random()) {
+            battleNumber(positionControls[p].anchor, "Failed!", 0, positionControls[p].offset);
+            return false;
+        }
 
         let peopleLeft = 0;
         for (j = 0; j < 3; j++) {
