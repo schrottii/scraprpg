@@ -22,6 +22,7 @@ let images = {
     grid: "data/images/gridempty.png",
     evil: "data/images/Map_Evil.png",
     selected: "data/images/selected.png",
+    fleeing: "data/images/fleeing.png",
     hasaction: "data/images/done.png",
     talk: "data/images/talk.png",
     nighteffect: "data/images/timeeffects.png",

@@ -1247,7 +1247,7 @@ scenes.fight = () => {
                 alpha: 1,
                 onClick(args) {
                     if (this.alpha == 1 && fightaction == "active") {
-                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "fleeing";
                         positions[selectedAlly[0]][selectedAlly[1]].action = ["flee", selectedAlly[0], selectedAlly[1], getStat(positions[selectedAlly[0]][selectedAlly[1]].occupied, "AGI")];
                         fightaction = "none";
                         hideFightButtons();
