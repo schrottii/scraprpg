@@ -315,8 +315,9 @@ scenes.fight = () => {
                 addWrenches(wrenchGain);
                 addBricks(brickGain);
 
-                winScreen[2].text = "+" + wrenchGain + " wrenches!";
-                winScreen[3].text = "+" + brickGain + " bricks!";
+                winScreen[3].text = "You got " + EXPforAll + " XP!";
+                winScreen[6].text = "+" + wrenchGain;
+                winScreen[8].text = "+" + brickGain;
 
                 for (i = 0; i < game.chars.length; i++) {
                     if (getPlayer(1 + i).HP > 0) getPlayer(1 + i).EXP += EXPforAll;
@@ -330,28 +331,28 @@ scenes.fight = () => {
                         winStats[1 + (i * a)].fill = "#707001";
                         winStats[5 + (i * a)].source = getPlayer(i + 1).name.toLowerCase();
                         winStats[4 + (i * a)].text = "Lvl. " + getPlayer(i + 1).level;
-                        winStats[6 + (i * a)].text = getPlayer(i + 1).name + "  +" + EXPforAll + "XP!       " + getPlayer(i + 1).EXP + "/25";
                     }
                     else {
                         winStats[0 + (i * a)].fill = "#aeaeae";
                         winStats[1 + (i * a)].fill = "#636363";
                         winStats[5 + (i * a)].source = getPlayer(i + 1).name.toLowerCase() + "_dead";
-                        winStats[6 + (i * a)].text = getPlayer(i + 1).name + "  +0 XP! (Dead)  " + getPlayer(i + 1).EXP + "/25";
                     }
-                    winStats[2 + (i * a)].sizeAnchor[0] = Math.min(0.592, 0.592 * (getPlayer(1 + i).EXP / 25)/*getStat(i + 1, "maxHP")*/);
+                    winStats[6 + (i * a)].text = getPlayer(i + 1).EXP + "/25";
+                    winStats[2 + (i * a)].sizeAnchor[0] = Math.min(0.588, 0.592 * (getPlayer(1 + i).EXP / 25)/*getStat(i + 1, "maxHP")*/);
                 }
-                winScreen[0].alpha = 0;
                 for (i = 1; i < winScreen.length; i++) {
                     winScreen[i].offset[1] = -1000;
                     winScreen[i].alpha = 1;
                 }
                 for (i = 0; i < winStats.length; i++) {
                     winStats[i].offset[0] = -2000;
-                    if (i % a != 3) winStats[i].alpha = 1;
+                    if (i % a != 3 && winStats[i].source != "gear") winStats[i].alpha = 1;
                 }
 
+                winScreen[0].alpha = 0;
+                winStats[0].offset[0] = 0;
                 addAnimator(function (t) {
-                    winScreen[0].alpha = Math.min(0 + (t/2000), 0.4);
+                    winScreen[0].alpha = Math.min(0 + (t / 1000), 0.8);
                     for (i = 1; i < winScreen.length; i++) {
                         winScreen[i].offset[1] = Math.min(-1000 + t, 0);
                     }
@@ -1656,29 +1657,17 @@ scenes.fight = () => {
     }));*/
     winScreen.push(controls.rect({ // Lovely bg thing
         anchor: [0, 0], sizeAnchor: [1, 1], offset: [0, -1000],
-        fill: "rgb(60, 60, 60)",
+        fill: "rgb(45, 45, 45)",
         alpha: 0,
     }));
     winScreen.push(controls.label({
-        anchor: [0.8, 0.1], offset: [0, -1000],
+        anchor: [0.825, 0.1], offset: [0, -1000],
         text: "Victory!",
         fontSize: 48, fill: "yellow", align: "center", outline: "orange", outlineSize: 12,
         alpha: 0,
     }));
-    winScreen.push(controls.label({
-        anchor: [0.62, 0.4], offset: [0, -1000],
-        text: "wrenches",
-        fontSize: 24, fill: "black", align: "left",
-        alpha: 0,
-    }));
-    winScreen.push(controls.label({
-        anchor: [0.62, 0.43], offset: [0, -1000],
-        text: "bricks",
-        fontSize: 24, fill: "black", align: "left",
-        alpha: 0,
-    }));
     winScreen.push(controls.button({ // "Next" button
-        anchor: [0.7, 0.6], sizeAnchor: [0.075, 0.05], offset: [0, -1000],
+        anchor: [0.725, 0.85], sizeAnchor: [0.2, 0.1], offset: [0, -1000],
         text: "Next",
         onClick(args) {
             playSound("buttonClickSound");
@@ -1689,6 +1678,53 @@ scenes.fight = () => {
                 fightStats = [];
             }
         },
+        alpha: 0,
+    }));
+
+    winScreen.push(controls.label({
+        anchor: [0.825, 0.2], offset: [0, -1000],
+        text: "You got!",
+        fontSize: 24, fill: "white", align: "center",
+        alpha: 0,
+    }));
+    winScreen.push(controls.label({
+        anchor: [0.825, 0.225], offset: [0, -1000],
+        text: "(Divided for characters!)",
+        fontSize: 24, fill: "white", align: "center",
+        alpha: 0,
+    }));
+    winScreen.push(controls.label({
+        anchor: [0.825, 0.3], offset: [0, -1000],
+        text: "Gained",
+        fontSize: 24, fill: "white", align: "center",
+        alpha: 0,
+    }));
+    winScreen.push(controls.label({
+        anchor: [0.86, 0.4], offset: [0, -1000],
+        text: "0",
+        fontSize: 36, fill: "yellow", align: "right", outline: "orange", outlineSize: 12,
+        alpha: 0,
+    }));
+    winScreen.push(controls.label({
+        anchor: [0.825, 0.45], offset: [0, -1000],
+        text: "and",
+        fontSize: 24, fill: "white", align: "center",
+        alpha: 0,
+    }));
+    winScreen.push(controls.label({
+        anchor: [0.86, 0.5], offset: [0, -1000],
+        text: "0",
+        fontSize: 36, fill: "yellow", align: "right", outline: "orange", outlineSize: 12,
+        alpha: 0,
+    }));
+    winScreen.push(controls.image({
+        anchor: [0.86, 0.375], offset: [32, -1000], sizeOffset: [64, 64],
+        source: "wrench",
+        alpha: 0,
+    }));
+    winScreen.push(controls.image({
+        anchor: [0.86, 0.475], offset: [32, -1000], sizeOffset: [64, 64],
+        source: "brick",
         alpha: 0,
     }));
 
@@ -1705,7 +1741,7 @@ scenes.fight = () => {
             alpha: 0
         }))
         winStats.push(controls.rect({
-            anchor: [0.052, 0.102 + (i * 0.15)], sizeAnchor: [0.588, 0.0210], offset: [-2000, 0],
+            anchor: [0.052, 0.102 + (i * 0.15)], sizeAnchor: [0.001, 0.0210], offset: [-2000, 0],
             fill: "#ffff18",
             alpha: 0
         }))
@@ -1716,21 +1752,21 @@ scenes.fight = () => {
         }))
 
         winStats.push(controls.label({
-            anchor: [0.16, 0.1 + (i * 0.15)], offset: [-2000, -12],
+            anchor: [0.16, 0.1 + (i * 0.15)], offset: [-2000, -16],
             text: "Lvl. 1",
-            fontSize: 24, fill: "rgb(0, 255, 0)", align: "left", outline: "black", outlineSize: 6,
+            fontSize: 32, fill: "rgb(0, 255, 0)", align: "left", outline: "black", outlineSize: 6,
             alpha: 0
         }))
         winStats.push(controls.image({
             anchor: [0.1, 0.1 + (i * 0.15)], sizeOffset: [64, 64], snip: [0, 0, 32, 32], offset: [-2000, -48],
-            source: "bleu",
+            source: "gear", // stays gear if no char. = invis
             alpha: 0
         }))
 
         winStats.push(controls.label({
-            anchor: [0.22, 0.4 + (0.03 * i)], offset: [0, -1000],
-            text: "Nobody +0 XP",
-            fontSize: 24, fill: "black", align: "left",
+            anchor: [0.64, 0.1 + (i * 0.15)], offset: [-2000, 0],
+            text: "0/25",
+            fontSize: 32, fill: "white", align: "right",
             alpha: 0,
         }));
     }
@@ -2128,8 +2164,10 @@ scenes.fight = () => {
                         if (win == true) {
                         }
                         else {
+                            if (positionControls[i + (j * 3)].source == positions[i][j].occupied + "_dead") {
+                                positionControls[i + (j * 3)].snip = [0, 64, 32, 32];
+                            }
                             positionControls[i + (j * 3)].source = positions[i][j].occupied;
-                            if (positionControls[i + (j * 3)].snip == [0, 0, 32, 32]) positionControls[i + (j * 3)].snip = [0, 64, 32, 32];
                         }
                         positionControls[i + (j * 3)].alpha = 1;
                     }
@@ -2409,8 +2447,8 @@ scenes.fight = () => {
             ...fightButtons, ...fightActions, turnDisplay, fleeLoss, fleeIcon,
             ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
-            ...fightStats, ...actionDisplay, ...winScreen, ...winStats, ...gameOverScreen,
-            ...positionControls, ...epositionControls, ...positionGrid, ...attackAnimationObjects, ...battleNumbers, ...fleeWrenches, ...gameOverScreen2,
+            ...fightStats, ...actionDisplay, ...gameOverScreen,
+            ...positionControls, ...epositionControls, ...positionGrid, ...attackAnimationObjects, ...battleNumbers, ...winScreen, ...winStats, ...fleeWrenches, ...gameOverScreen2,
         ],
     }
 };

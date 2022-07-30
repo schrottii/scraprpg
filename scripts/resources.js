@@ -3,6 +3,7 @@ let images = {
     paper: "data/images/paper.png",
     inventory: "data/images/inventory.png",
     wrench: "data/images/wrench.png",
+    brick: "data/images/brick.png",
     mainmenu_bg: "data/images/mainmenu_bg.png",
     fight_bg: "data/images/fight_bg2.png",
     gameicon: "data/images/gameicon.png",
