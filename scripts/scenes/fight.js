@@ -277,6 +277,20 @@ scenes.fight = () => {
                     }
                 }
             }
+            for (i = 0; i < fightStats.length; i++) {
+                fightStats[i].offset[1] = t / 4;
+            }
+            turnDisplay.offset[1] = 0 - (t / 4);
+            for (i = 0; i < actionDisplay.length; i++) {
+                actionDisplay[i].offset[1] = 0 - (t / 4);
+            }
+
+            for (i = 0; i < fightLogComponents.length; i++) {
+                fightLogComponents[i].offset[1] = (t / 4) + fightLogComponents[i].baseoffset[1];
+            }
+            for (i = 0; i < enemyListComponents.length; i++) {
+                enemyListComponents[i].offset[1] = (t / 4) + enemyListComponents[i].baseoffset[1];
+            }
 
             runTime += ((t - runLaps) / 250);
             if (runTime >= 2) {
@@ -1836,20 +1850,20 @@ scenes.fight = () => {
     // Battle Log (Bottom Left)
 
     fightLogComponents.push(controls.rect({
-        anchor: [0, 0.775], sizeAnchor: [0.15, 0.225],
+        anchor: [0, 0.775], sizeAnchor: [0.15, 0.225], baseoffset: [0, 0],
         fill: "rgb(191, 137, 69)",
         alpha: 1,
     }));
 
     fightLogComponents.push(controls.rect({
-        anchor: [0.005, 0.78], sizeAnchor: [0.14, 0.215],
+        anchor: [0.005, 0.78], sizeAnchor: [0.14, 0.215], baseoffset: [0, 0],
         fill: "rgb(221, 155, 79)",
         alpha: 1,
     }));
 
     for (i = 0; i < 12; i++) {
         fightLogComponents.push(controls.label({
-            anchor: [0.01, 0.79], offset: [2, (16 * i)],
+            anchor: [0.01, 0.79], offset: [2, (16 * i)], baseoffset: [2, (16 * i)],
             fontSize: 16, fill: "rgb(0, 0, 0)", align: "left",
             text: fightlog[Math.max(0, fightlog.length - 12 + i)],
             alpha: 1,
@@ -1859,20 +1873,20 @@ scenes.fight = () => {
     // Fight Overview (bottom right)
 
     enemyListComponents.push(controls.rect({
-        anchor: [0.85, 0.775], sizeAnchor: [0.15, 0.225],
+        anchor: [0.85, 0.775], sizeAnchor: [0.15, 0.225], baseoffset: [0, 0],
         fill: "rgb(191, 137, 69)",
         alpha: 1,
     }));
 
     enemyListComponents.push(controls.rect({
-        anchor: [0.855, 0.78], sizeAnchor: [0.14, 0.215],
+        anchor: [0.855, 0.78], sizeAnchor: [0.14, 0.215], baseoffset: [0, 0],
         fill: "rgb(221, 155, 79)",
         alpha: 1,
     }));
     
     for (i = 0; i < 9; i++) {
         enemyListComponents.push(controls.label({
-            anchor: [0.86, 0.79], offset: [2, (16 * i)],
+            anchor: [0.86, 0.79], offset: [2, (16 * i)], baseoffset: [2, (16 * i)],
             fontSize: 16, fill: "rgb(0, 0, 0)", align: "left",
             text: "ERROR" + i,
             alpha: 1,
