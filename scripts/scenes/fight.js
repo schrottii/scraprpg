@@ -1334,10 +1334,11 @@ scenes.fight = () => {
 
     function fleeAnimation(x, y) {
         let p = x + (y * 3);
-
-        positions[x][y].action = false;
+        console.log(p);
+        positions[x][y].action[0] = "flee2";
         if ((getStat(positions[x][y].occupied, "agi") / 200) < Math.random()) {
             battleNumber(positionControls[p].anchor, "Failed!", 0, positionControls[p].offset);
+            positions[x][y].action = false;
             return false;
         }
 
@@ -1404,6 +1405,7 @@ scenes.fight = () => {
                 if (positionControls[p].source != "gear") positionControls[p].offset[0] = -500;
                 if (positionControls[p].source != "gear") positionControls[p].anchor[0] = 0;
 
+                positions[x][y].action = false;
                 positions[x][y].isOccupied = false;
                 positions[x][y].occupied = false;
                 delete runTime;
