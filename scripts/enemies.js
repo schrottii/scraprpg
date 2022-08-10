@@ -9,6 +9,7 @@ let enemyTypes = {
         agi: 30,
         luk: 3,
         element: "physical",
+        items: ["potion"],
     },
 
     "stronghelter": {
@@ -19,6 +20,7 @@ let enemyTypes = {
         agi: 25,
         luk: 3,
         element: "physical",
+        items: "none",
     },
 
     "itsalive": {
@@ -29,6 +31,7 @@ let enemyTypes = {
         agi: 10,
         luk: 3,
         element: "wind",
+        items: ["potion"],
     },
 
     "livingbarrel": {
@@ -39,6 +42,7 @@ let enemyTypes = {
         agi: 23,
         luk: 30,
         element: "dark",
+        items: "none",
     },
 
     "nottoofresh": {
@@ -49,6 +53,7 @@ let enemyTypes = {
         agi: 80,
         luk: 20,
         element: "wind",
+        items: "none",
     },
 }
 

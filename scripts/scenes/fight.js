@@ -138,6 +138,8 @@ scenes.fight = () => {
 
     var selectedItem;
 
+    var gainedItems = [];
+
 
     var fightlog = [
         "",
@@ -305,6 +307,10 @@ scenes.fight = () => {
                 let wrenchLUK = 1;
                 let brickGain = 10;
                 let brickLUK = 1;
+
+                for (i in gainedItems) {
+                    addItem(gainedItems[i], 1);
+                }
 
                 for (j = 0; j < 3; j++) {
                     for (i = 0; i < 3; i++) {
@@ -705,10 +711,20 @@ scenes.fight = () => {
                             }
 
                             if (epositions[pos1][pos2].HP < 1) { // Is dead?
+                                // Enemy is dead
                                 epositions[pos1][pos2].isOccupied = false;
                                 epositions[pos1][pos2].occupied = false;
                                 epositions[pos1][pos2].action = false;
                                 enemyAmounts[pos1 + (pos2 * 3)] = "";
+
+                                // Random item
+                                if (epositions[pos1][pos2].items != "none") {
+                                    for (i in epositions[pos1][pos2].items) {
+                                        if (Math.random() > 0.2) { // 80% chance
+                                            gainedItems.push(epositions[pos1][pos2].items[i]);
+                                        }
+                                    }
+                                }
 
                                 let Experience = epositions[pos1][pos2].strength;
                                 game.characters[positions[fpos1][fpos2].occupied].EXP += Experience;
@@ -2050,6 +2066,7 @@ scenes.fight = () => {
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].agi = enemyTypes[currentEnemies[i][0]].agi;
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].luk = enemyTypes[currentEnemies[i][0]].luk;
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].element = enemyTypes[currentEnemies[i][0]].element;
+            epositions[currentEnemies[i][1]][currentEnemies[i][2]].items = enemyTypes[currentEnemies[i][0]].items;
         }
     }
     for (i = 0; i < 18; i++) {
