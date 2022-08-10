@@ -184,6 +184,8 @@ scenes.fight = () => {
                     }
                 }
 
+                if (exc.length == 0) continue;
+
                 if (game.characters[positions[exc[0]][exc[1]].occupied].HP > 0) { // Dead? No animation! We will let you bleed out there hahaha
                     let ret = emotionAnimation(game.chars[i], "victory");
                     if (ret != false) {
@@ -2309,11 +2311,20 @@ scenes.fight = () => {
 
 
         actionText = [];
+
         if (fightaction == "none") postAction("Select a character before assigning a command.");
-        if (fightaction == "active") postAction("What will you assign for " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + "?");
-        if (fightaction == "attack1") postAction("What <category> will " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " use?");
+
+        if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied] != undefined &&
+            fightaction == "active") postAction("What will you assign for " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + "?");
+
+        if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied] != undefined &&
+            fightaction == "attack1") postAction("What <category> will " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " use?");
+
         if (fightaction == "attack2") postAction("Choose a target.");
-        if (fightaction == "macro") postAction("What predetermined set ot actions will " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " use?");
+
+        if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied] != undefined &&
+            fightaction == "macro") postAction("What predetermined set ot actions will " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " use?");
+
         while (actionText.length < 4) {
             actionText.push("");
         }
