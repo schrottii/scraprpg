@@ -37,6 +37,7 @@ let images = {
     fog2: "data/images/fog_cloud2.png",
     spawn: "data/images/spawn_default.png",
     vignette: "data/images/screenvignette.png",
+    nosfegtdsrh: "data/images/WEaresuperior.png",
 
     eattackani2: "data/images/eattackani2.png",
 

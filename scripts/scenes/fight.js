@@ -118,6 +118,7 @@ scenes.fight = () => {
     var enemyAmounts = ["", "", "", "", "", "", "", "", ""];
     var fightOverview = [];
     var winScreen = [];
+    var winScreen2 = [];
     var winStats = [];
     var gameOverScreen = [];
     var gameOverScreen2 = [];
@@ -366,7 +367,7 @@ scenes.fight = () => {
 
                 addAnimator(function (t) {
                     let am = (6 - Math.min((t - 3000) / 100, 5));
-                    console.log(am);
+
                     for (i = 0; i < game.chars.length; i++) {
                         winStats[2 + (i * 7/* a */)].sizeAnchor[0] = 0.01 + (Math.min(0.588, 0.592 * (getPlayer(1 + i).EXP / 25)) / am/*getStat(i + 1, "maxHP")*/);
                         winStats[6 + (i * 7)].text = Math.floor(Math.max(getPlayer(i + 1).preEXP, (getPlayer(i + 1).EXP / am))) + "/25";
@@ -1722,10 +1723,39 @@ scenes.fight = () => {
         onClick(args) {
             playSound("buttonClickSound");
             if (checkAllDead(true)) {
-                setScene(scenes.game());
+                fightaction = "victoryitems";
 
-                positions = [];
-                fightStats = [];
+                for (i in gainedItems) {
+                    winScreen2[2 + (i * 2)].source = "items/" + items[gainedItems[i]]().source;
+                    winScreen2[3 + (i * 2)].text = items[gainedItems[i]]().name;
+                }
+
+
+                for (i in winScreen) {
+                    winScreen[i].alpha = 0;
+                }
+                winScreen[0].alpha = 0.8;
+                for (i in winStats) {
+                    winStats[i].alpha = 0;
+                }
+                for (i in winScreen2) {
+                    if (winScreen2[i].source != "gear" && winScreen2[i].text != "nothing") winScreen2[i].alpha = 1;
+                }
+
+                addAnimator(function (t) {
+                    for (i = 1; i < winScreen2.length; i++) {
+                        winScreen2[i].offset[1] = Math.min(-1000 + t, 0);
+                    }
+                    if (t > 1000) {
+                        for (i = 0; i < winScreen2.length; i++) {
+                            if (winScreen2[i].fontSize == 24) winScreen2[i].offset[1] = 32;
+                            else winScreen2[i].offset[1] = 0;
+                        }
+                        return true;
+                    }
+                    return false;
+                })
+
             }
         },
         alpha: 0,
@@ -1777,7 +1807,12 @@ scenes.fight = () => {
         source: "brick",
         alpha: 0,
     }));
-
+    winScreen.push(controls.image({
+        anchor: [0.65, 0.6], offset: [32, -1000], sizeAnchor: [0.3, 0.25],
+        source: "nosfegtdsrh",
+        alpha: 0,
+    }));
+    
     // Left side of the victory screen
     for (i = 0; i < 6; i++) { // BARZ
         winStats.push(controls.rect({
@@ -1817,6 +1852,46 @@ scenes.fight = () => {
             anchor: [0.64, 0.1 + (i * 0.15)], offset: [-2000, 0],
             text: "0/25",
             fontSize: 32, fill: "white", align: "right",
+            alpha: 0,
+        }));
+    }
+
+    // Items gained
+
+    winScreen2.push(controls.button({ // "Next" button
+        anchor: [0.4, 0.85], sizeAnchor: [0.2, 0.1], offset: [0, 0],
+        text: "Next",
+        onClick(args) {
+            playSound("buttonClickSound");
+            if (checkAllDead(true)) {
+                if (fightaction == "victoryitems") {
+                    setScene(scenes.game());
+
+                    positions = [];
+                    fightStats = [];
+                }
+            }
+        },
+        alpha: 0,
+    }));
+
+    winScreen2.push(controls.label({
+        anchor: [0.1, 0.1], offset: [0, -1000],
+        text: "And you got...",
+        fontSize: 48, fill: "white", align: "left",
+        alpha: 0,
+    }));
+
+    for (i = 0; i < 12; i++) {
+        winScreen2.push(controls.image({
+            anchor: [0.1, 0.15 + (i * 0.075)], offset: [0, -1000], sizeOffset: [64, 64],
+            source: "gear",
+            alpha: 0,
+        }));
+        winScreen2.push(controls.label({
+            anchor: [0.2, 0.15 + (i * 0.075)], offset: [0, -1000],
+            text: "nothing",
+            fontSize: 24, fill: "white", align: "left",
             alpha: 0,
         }));
     }
@@ -2508,7 +2583,7 @@ scenes.fight = () => {
             ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
             ...fightStats, ...actionDisplay, ...gameOverScreen,
-            ...positionControls, ...epositionControls, ...positionGrid, ...attackAnimationObjects, ...battleNumbers, ...winScreen, ...winStats, ...fleeWrenches, ...gameOverScreen2,
+            ...positionControls, ...epositionControls, ...positionGrid, ...attackAnimationObjects, ...battleNumbers, ...winScreen, ...winScreen2, ...winStats, ...fleeWrenches, ...gameOverScreen2,
         ],
     }
 };
