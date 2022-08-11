@@ -342,6 +342,7 @@ scenes.fight = () => {
                 winScreen[8].text = "+" + brickGain;
 
                 for (i = 0; i < game.chars.length; i++) {
+                    getPlayer(1 + i).preEXP = getPlayer(1 + i).EXP;
                     if (getPlayer(1 + i).HP > 0) getPlayer(1 + i).EXP += EXPforAll;
                 }
 
@@ -359,12 +360,27 @@ scenes.fight = () => {
                         winStats[1 + (i * a)].fill = "#636363";
                         winStats[5 + (i * a)].source = getPlayer(i + 1).name.toLowerCase() + "_dead";
                     }
-                    winStats[6 + (i * a)].text = getPlayer(i + 1).EXP + "/25";
-                    winStats[2 + (i * a)].sizeAnchor[0] = Math.min(0.588, 0.592 * (getPlayer(1 + i).EXP / 25)/*getStat(i + 1, "maxHP")*/);
+                    winStats[6 + (i * a)].text = getPlayer(i + 1).preEXP + "/25";
+                    
                 }
+
+                addAnimator(function (t) {
+                    let am = (6 - Math.min((t - 3000) / 100, 5));
+                    console.log(am);
+                    for (i = 0; i < game.chars.length; i++) {
+                        winStats[2 + (i * 7/* a */)].sizeAnchor[0] = 0.01 + (Math.min(0.588, 0.592 * (getPlayer(1 + i).EXP / 25)) / am/*getStat(i + 1, "maxHP")*/);
+                        winStats[6 + (i * 7)].text = Math.floor(Math.max(getPlayer(i + 1).preEXP, (getPlayer(i + 1).EXP / am))) + "/25";
+                    }
+                    if (t > 3599) {
+                        winScreen[2].alpha = 1;
+                        return true;
+                    }
+                    return false;
+                });
+
                 for (i = 1; i < winScreen.length; i++) {
                     winScreen[i].offset[1] = -1000;
-                    winScreen[i].alpha = 1;
+                    if(i != 2) winScreen[i].alpha = 1;
                 }
                 for (i = 0; i < winStats.length; i++) {
                     winStats[i].offset[0] = -2000;
