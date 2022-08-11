@@ -9,7 +9,7 @@ let enemyTypes = {
         agi: 30,
         luk: 3,
         element: "physical",
-        items: ["potion"],
+        items: ["potion", "brickyleaf", "peppytincture", "superswamp"],
     },
 
     "stronghelter": {
