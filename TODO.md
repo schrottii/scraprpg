@@ -1,5 +1,5 @@
 ﻿##TODO:
-9 Things left to do in this phase
+8 Things left to do in this phase
 
 ##Phase 1:
 The developing phase, Schrottii's phase, the essential features of the game
@@ -16,7 +16,6 @@ Most equipment can be upgraded to No Parcels with enough Bricks, up to +10.
 - Cutscene mode (Battle)
 - Promotion (and Evolution Tree) system
 - Mastery Tokens
-- Visual overlay effects (Rain, fog, dust, etc.)
 
 
 

@@ -148,8 +148,9 @@ scenes.game = () => {
     var menuItemsAmounts = [];
     var menuItemsStoryOnly = false;
     var areaNameBox = [];
-
+    
     var weatherControls = [];
+    var dustControls = [];
     var fogopa = 2;
 
     var tokenRunning = false;
@@ -1255,14 +1256,14 @@ scenes.game = () => {
 
 
     function spawnRaindrop() {
-        let thisOne = 99;
+        let thisOne = 499;
         for (i in weatherControls) {
             if (weatherControls[i].alpha == 0) {
                 thisOne = i;
                 break;
             }
         }
-        if (thisOne != 99) {
+        if (thisOne != 499) {
             weatherControls[thisOne].source = "rain";
             weatherControls[thisOne].sizeOffset = [64, 64];
             weatherControls[thisOne].anchor = [Math.random(), -0.2];
@@ -1271,14 +1272,14 @@ scenes.game = () => {
     }
 
     function spawnFogcloud() {
-        let thisOne = 99;
+        let thisOne = 499;
         for (i in weatherControls) {
             if (weatherControls[i].alpha == 0) {
                 thisOne = i;
                 break;
             }
         }
-        if (thisOne != 99) {
+        if (thisOne != 499) {
             if (Math.random() > 0.49) weatherControls[thisOne].source = "fog";
             else weatherControls[thisOne].source = "fog2";
             weatherControls[thisOne].sizeOffset = [128, 64];
@@ -1287,10 +1288,32 @@ scenes.game = () => {
         }
     }
 
+    function spawnDust() {
+        let thisOne = 499;
+        for (i in dustControls) {
+            if (dustControls[i].alpha == 0) {
+                thisOne = i;
+                break;
+            }
+        }
+        if (thisOne != 499) {
+            console.log("spawned");
+            dustControls[thisOne].anchor = [-0.2, Math.random()];
+            dustControls[thisOne].alpha = 1;
+        }
+    }
+
     for (i = 0; i < 100; i++) {
         weatherControls.push(controls.image({
             anchor: [Math.random(), -0.2], sizeAnchor: [0, 0], sizeOffset: [64, 64],
             source: "rain", alpha: 0,
+        }))
+    }
+    for (i = 0; i < 300; i++) {
+        dustControls.push(controls.rect({
+            anchor: [-0.2, Math.random()], sizeOffset: [4, 4],
+            fill: "yellow",
+            alpha: 0,
         }))
     }
 
@@ -1357,7 +1380,28 @@ scenes.game = () => {
                         if (weatherControls[i].alpha > 0) {
                             if (map.weatherStrength != undefined) weatherControls[i].anchor[0] += 0.0001 * delta * map.weatherStrength;
                             else weatherControls[i].anchor[0] += 0.0001 * delta;
+
+                            if (Math.random() > 0.9) { // Down
+                                if (map.weatherStrength != undefined) weatherControls[i].anchor[1] += 0.001 * delta * map.weatherStrength;
+                                else weatherControls[i].anchor[1] += 0.001 * delta;
+                            }
+                            if (Math.random() > 0.9) { // Up
+                                if (map.weatherStrength != undefined) weatherControls[i].anchor[1] -= 0.001 * delta * map.weatherStrength;
+                                else weatherControls[i].anchor[1] -= 0.001 * delta;
+                            }
+
                             if (weatherControls[i].anchor[0] > 1.1) weatherControls[i].alpha = 0;
+                        }
+                    }
+                }
+                if (map.weather == "dust") {
+                    spawnDust();
+                    spawnDust();
+                    for (i in dustControls) {
+                        if (dustControls[i].alpha > 0) {
+                            if (map.weatherStrength != undefined) dustControls[i].anchor[0] += 0.001 * delta * map.weatherStrength;
+                            else dustControls[i].anchor[0] += 0.001 * delta;
+                            if (dustControls[i].anchor[0] > 1.1) dustControls[i].alpha = 0;
                         }
                     }
                 }
@@ -1376,7 +1420,7 @@ scenes.game = () => {
                 else if (isNight()) setNightEffet("#37293f", 0.5);
                 else if (isDawn()) setNightEffet("#894337", 0.5);
             }
-            if (map.weather == "fog") {
+            if (map.weather == "fog" || map.weather == "dust") {
                 if (isNoon()) setNightEffet("#b2b2b2", 0.6, "fog");
                 else if (isDusk()) setNightEffet("#998572", 0.6, "fog");
                 else if (isNight()) setNightEffet("#221c26", 0.6, "fog");
@@ -1873,7 +1917,7 @@ scenes.game = () => {
             /*...walkPad,*/ ...mapDisplay, actionButton,
             mapDisplayStats1, mapDisplayStats2,
             mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents,
-            ...weatherControls, poisonBlack, nightEffect, nightEffect2, //weatherEffect,
+            ...weatherControls, ...dustControls, poisonBlack, nightEffect, nightEffect2, //weatherEffect,
             ...menuSettings, ...menuSettingsGameplay, ...menuSettingsAudio, ...menuSettingsGraphics, ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             autoSaveText, settingsSaveText, ...areaNameBox, areaTeleportFade
         ],
