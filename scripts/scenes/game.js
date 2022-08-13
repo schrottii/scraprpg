@@ -210,13 +210,24 @@ scenes.game = () => {
 
         // Alright, alright, we need comments, so let me comment this
         // This is for the map's display. In the BOTTOM RIGHT. No idea what else to call it.
-        let mapDisplay = [];
+    let mapDisplay = controls.button({
+        anchor: [1, 0], offset: [-96, 0], sizeOffset: [96, 96],
+        alpha: 1,
+        text: "",
+        onClick(args) {
+        }
+    });
+    let mapIcon = controls.image({
+        anchor: [1, 0], offset: [-96, 0], sizeOffset: [96, 96],
+        alpha: 1,
+        source: "inventory",
+    });
 
     // The top bg rect
-    mapDisplay.push(controls.rect({
-        anchor: [.9925, .68], offset: [-220, 0], sizeOffset: [250, 250],
-        fill: "#B58542",
-    }));
+    //mapDisplay.push(controls.rect({
+    //    anchor: [.9925, .68], offset: [-220, 0], sizeOffset: [250, 250],
+    //    fill: "#B58542",
+    //}));
 
 
 
@@ -226,7 +237,8 @@ scenes.game = () => {
         fill: "black",
     }); 
 
-    // Names, stats, etc.
+    // Names, stats, etc
+    /*
     mapDisplay.push(controls.label({
         anchor: [.99, .68], offset: [-200, 20],
         alpha: 1,
@@ -288,7 +300,7 @@ scenes.game = () => {
         },
         alpha: 1,
     }));
-
+    */
 
     let dialogueComponents = []
     dialogueComponents.push(controls.rect({
@@ -352,7 +364,7 @@ scenes.game = () => {
 
 
     let actionButton = controls.image({
-        anchor: [0.65, 0.8], sizeOffset: [128, 128],
+        anchor: [1, 0.8], sizeOffset: [128, 128], offset: [-256, 0],
         alpha: 1,
         source: "actionbutton",
         onClick(args) {
@@ -391,6 +403,7 @@ scenes.game = () => {
     });
 
     // Buttons, then images over them
+    /*
     for (i = 0; i < 3; i++) {
         mapDisplay.push(controls.button({
             anchor: [.9925, .875], offset: [-220 + (i * 75), 0], sizeOffset: [75, 75],
@@ -444,7 +457,7 @@ scenes.game = () => {
         mapDisplayLevel1.alpha = 1;
         mapDisplayLevel2.alpha = 1;
     }
-
+    */
     function hideMenuSettings() {
         canMove = true;
         for (i = 0; i < menuSettings.length; i++) {
@@ -1908,16 +1921,18 @@ scenes.game = () => {
             // Update bottom right texts
             // I think this method is inefficient, but I was not able to find a better one.
             // I searched and tried several things for hours.
-            mapDisplayLevel1.text = "Level: " + getPlayer(1 + overWorldStatsScroll).level + "  EXP: " + getPlayer(1 + overWorldStatsScroll).EXP + "/25";
+            /*mapDisplayLevel1.text = "Level: " + getPlayer(1 + overWorldStatsScroll).level + "  EXP: " + getPlayer(1 + overWorldStatsScroll).EXP + "/25";
             mapDisplayStats1.text = "HP: " + getPlayer(1 + overWorldStatsScroll).HP + "/" + getStat(1 + overWorldStatsScroll, "maxHP") + "   EP: " + getPlayer(1 + overWorldStatsScroll).EP + "/" + getPlayer(1 + overWorldStatsScroll).maxEP;
             mapDisplayLevel2.text = "Level: " + getPlayer(2 + overWorldStatsScroll).level + "  EXP: " + getPlayer(2 + overWorldStatsScroll).EXP + "/25";
             mapDisplayStats2.text = "HP: " + getPlayer(2 + overWorldStatsScroll).HP + "/" + getStat(2 + overWorldStatsScroll, "maxHP") + "   EP: " + getPlayer(2 + overWorldStatsScroll).EP + "/" + getPlayer(2 + overWorldStatsScroll).maxEP;
+        */
         },
         controls: [
-            /*...walkPad,*/ ...mapDisplay, actionButton,
-            mapDisplayStats1, mapDisplayStats2,
-            mapDisplayLevel1, mapDisplayLevel2, ...dialogueComponents,
+            //mapDisplayStats1, mapDisplayStats2,
+            //mapDisplayLevel1, mapDisplayLevel2, 
+            ...dialogueComponents,
             ...weatherControls, ...dustControls, poisonBlack, nightEffect, nightEffect2, //weatherEffect,
+            /*...walkPad,*/ mapDisplay, mapIcon, actionButton,
             ...menuSettings, ...menuSettingsGameplay, ...menuSettingsAudio, ...menuSettingsGraphics, ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             autoSaveText, settingsSaveText, ...areaNameBox, areaTeleportFade
         ],
