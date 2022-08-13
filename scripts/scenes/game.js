@@ -215,6 +215,7 @@ scenes.game = () => {
         alpha: 1,
         text: "",
         onClick(args) {
+            setScene(scenes.inventory());
         }
     });
     let mapIcon = controls.image({
@@ -1090,10 +1091,11 @@ scenes.game = () => {
                 });
 
                 game.map = themap.teleport[0];
-                if (game.map.weather != "rain") {
-                    for (i in weatherControls) {
-                        weatherControls[i].alpha = 0;
-                    }
+                for (i in weatherControls) {
+                    weatherControls[i].alpha = 0;
+                }
+                for (i in dustControls) {
+                    dustControls[i].alpha = 0;
                 }
                 loadNPCs();
                 loadAreaMusic(previousmap);
@@ -1310,7 +1312,6 @@ scenes.game = () => {
             }
         }
         if (thisOne != 499) {
-            console.log("spawned");
             dustControls[thisOne].anchor = [-0.2, Math.random()];
             dustControls[thisOne].alpha = 1;
         }
