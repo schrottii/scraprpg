@@ -10,13 +10,27 @@ function battleNumber(pos, amount, type, offset = [0, 0], crit = false) {
     if (battleNumbers[0].alpha == 0) bn = 0;
     else if (battleNumbers[1].alpha == 0) bn = 1;
     else bn = 2;
-    battleNumbers[bn].alpha = 1;
+
+    let fontToUse = "DePixelKlein";
+    let fontSizeToUse = 24;
+    let n = amount;
+    if (n < 0) n = amount * (-1);
+    
+    if (n > 50 && n < 200) fontToUse = "DePixelBreit";
+    if (n > 199) fontToUse = "DePixelHalbfett";
+
+    if (n > 50 && n < 200) fontSizeToUse = 26;
+    if (n > 199) fontSizeToUse = 28;
+
+    battleNumbers[bn].font = fontToUse;
+    battleNumbers[bn].fontSize = fontSizeToUse;
     battleNumbers[bn].anchor[0] = pos[0];
     battleNumbers[bn].anchor[1] = pos[1];
     battleNumbers[bn].offset[0] = offset[0];
     battleNumbers[bn].offset[1] = offset[1];
     if (crit) battleNumbers[bn].text = amount + "!".repeat(amount.toString().length - 1);
     else battleNumbers[bn].text = amount;
+    battleNumbers[bn].alpha = 1;
 
     // Arbitrary variables
     let bounceHeight = 0.4;
@@ -1475,7 +1489,7 @@ scenes.fight = () => {
     for (i = 0; i < 3; i++) {
         battleNumbers.push(controls.label({
             anchor: [5, 5], offset: [0, 0],
-            fontSize: 24, fill: "white", align: "center", outline: "black", outlineSize: 3,
+            font: "DePixelKlein", fontSize: 24, fill: "white", align: "center", outline: "black", outlineSize: 3,
             text: "",
             alpha: 0,
         }));

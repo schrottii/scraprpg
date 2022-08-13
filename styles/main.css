@@ -2,6 +2,14 @@
     font-family: DePixelKlein;
     src: url("../fonts/DePixelKlein.ttf");
 }
+@font-face {
+    font-family: DePixelHalbfett;
+    src: url("../fonts/DePixelHalbfett.ttf");
+}
+@font-face {
+    font-family: DePixelBreit;
+    src: url("../fonts/DePixelBreit.ttf");
+}
 
 body {
     background: black;

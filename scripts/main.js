@@ -284,6 +284,7 @@ function loop() {
     ctx.fillStyle = "white";
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
+    ctx.globalAlpha = 1; //or else it's a bit transparent
     ctx.fillText((1000 / delta).toFixed(0) + "fps " + delta + "ms  | w: " + width + "  scale: " + scale + "   h: " + height + " mob: " + isMobile() + " ls: " + isLs(), 2, 12);
 
     // Auto Save

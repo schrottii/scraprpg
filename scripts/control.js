@@ -97,6 +97,7 @@ let controls = {
             ...controls.base(),
             text: "Sample Text",
             fill: "white",
+            font: "DePixelKlein",
             fontSize: 30,
             align: "center",
             baseline: "middle",
@@ -107,7 +108,7 @@ let controls = {
                 ctx.textAlign = this.align;
                 ctx.textBaseline = this.baseline;
                 if (isLs() == true) {
-                    ctx.font = (this.fontSize / 2) + "px DePixelKlein, sans-serif";
+                    ctx.font = (this.fontSize / 2) + "px " + this.font + ", sans-serif";
                     if (this.outline != "none") {
                         ctx.strokeStyle = this.outline;
                         ctx.lineWidth = this.outlineSize;
@@ -120,7 +121,7 @@ let controls = {
                         this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height);
                 }
                 else {
-                    ctx.font = this.fontSize + "px DePixelKlein, sans-serif";
+                    ctx.font = this.fontSize + "px " + this.font + ", sans-serif";
                     if (this.outline != "none") {
                         ctx.strokeStyle = this.outline;
                         ctx.lineWidth = this.outlineSize;
@@ -140,6 +141,7 @@ let controls = {
         return {
             ...controls.base(),
             text: "Sample Text",
+            font: "DePixelKlein",
             fillTop: "#FFAE3B", //d49f52
             fillBottom: "#D18822", //b58542
             fillText: "black",
@@ -165,8 +167,8 @@ let controls = {
                 ctx.fillStyle = this.fillBottom;
                 ctx.fillRect(x, y + h / 2, w, h / 2);
 
-                if (isLs() == false) ctx.font = this.fontSize + "px DePixelKlein, sans-serif";
-                if (isLs() == true) ctx.font = (this.fontSize / 2) + "px DePixelKlein, sans-serif";
+                if (isLs() == false) ctx.font = this.fontSize + "px " + this.font + ", sans-serif";
+                if (isLs() == true) ctx.font = (this.fontSize / 2) + "px " + this.font + ", sans-serif";
                 ctx.fillStyle = this.fillText;
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
