@@ -20,7 +20,8 @@ let mapenemies = {
             },
 
             movementTime: 0,
-            walkingSpeed: 0.5,
+            walkingInterval: 0.5, // time between walks
+            walkingSpeed: 1, // how long it takes to walk from one tile to another (in seconds)
 
             render(ctx) {
                 let tileX = this.position[0];
@@ -29,8 +30,8 @@ let mapenemies = {
                 let xAdjust = game.position[0] - width / 2 + 0.5;
                 this.kofs[2] = Math.max(this.kofs[2] - delta / 166, 0);
 
-                let posX = ((zoom * scale) * (tileX + kofs[0] * kofs[2] - this.kofs[0] * this.kofs[2] - xAdjust)) - ((zoom - 1) * scale * (width / 2));
-                let posY = (zoom * scale) * (tileY + kofs[1] * kofs[2] - this.kofs[1] * this.kofs[2] - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7);
+                let posX = ((zoom * scale) * (tileX + kofs[0] * kofs[2] - this.kofs[0] * (this.kofs[2] / this.walkingSpeed) - xAdjust)) - ((zoom - 1) * scale * (width / 2));
+                let posY = (zoom * scale) * (tileY + kofs[1] * kofs[2] - this.kofs[1] * (this.kofs[2] / this.walkingSpeed) - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7);
 
                 if (this.spawntime > 599) {
                     if (game.map == this.map) {
@@ -65,7 +66,7 @@ let mapenemies = {
                 "weakhelter": 20,
                 "itsalive": 60
             },
-            walkingSpeed: 2,
+            walkingInterval: 2,
             ...args || {},
 
         }
@@ -78,7 +79,8 @@ let mapenemies = {
                 "livingbarrel": 70,
                 "itsalive": 30
             },
-            walkingSpeed: 0.12,
+            walkingInterval: 0.12,
+            walkingSpeed: 5,
             time: "night",
             ...args || {},
 
@@ -92,7 +94,8 @@ let mapenemies = {
                 "nottoofresh": 90,
                 "itsalive": 40
             },
-            walkingSpeed: 0.24,
+            walkingInterval: 0.24,
+            walkingSpeed: 0.75,
             ...args || {},
 
         }

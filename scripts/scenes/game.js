@@ -397,8 +397,8 @@ scenes.game = () => {
             text: "",
             onClick(args) {
                 playSound("buttonClickSound");
-                if (this.offset[0] == -220 && canMove == true) {
-                    enemies.push(mapenemies.itsalivemap({
+                if (this.offset[0] == -220 && canMove == true) { // Spawn enemy placeholder
+                    enemies.push(mapenemies.ntf({
                         position: [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)], map: game.map,
                     }));
                 }
@@ -1387,7 +1387,7 @@ scenes.game = () => {
             if (canMove == true) {
                 for (i = 0; i < activenpcs.length; i++) {
                     activenpcs[i].movementTime += delta;
-                    if (activenpcs[i].movement == 1 && activenpcs[i].talk == false && activenpcs[i].movementTime > activenpcs[i].walkingSpeed * 1000) {
+                    if (activenpcs[i].movement == 1 && activenpcs[i].talk == false && activenpcs[i].movementTime > activenpcs[i].walkingInterval * 1000 && !activenpcs[i].kofs[2]) {
                         activenpcs[i].movementTime = 0;
                         // Random moving
                         if (Math.random() > 0.40) { // Down
@@ -1397,7 +1397,7 @@ scenes.game = () => {
                                         if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] + 1).occupied != true) {
                                             activenpcs[i].position[1] += 1;
                                             activenpcs[i].head = 0;
-                                            activenpcs[i].kofs = [0, 1, 1];
+                                            activenpcs[i].kofs = [0, 1, activenpcs[i].walkingSpeed];
                                         }
                                     }
                                 }
@@ -1410,7 +1410,7 @@ scenes.game = () => {
                                         if (getTile(map, activenpcs[i].position[0] - 1, activenpcs[i].position[1]).occupied != true) {
                                             activenpcs[i].position[0] -= 1;
                                             activenpcs[i].head = 1;
-                                            activenpcs[i].kofs = [-1, 0, 1];
+                                            activenpcs[i].kofs = [-1, 0, activenpcs[i].walkingSpeed];
                                         }
                                     }
                                 }
@@ -1425,7 +1425,7 @@ scenes.game = () => {
                                         if (getTile(map, activenpcs[i].position[0] + 1, activenpcs[i].position[1]).occupied != true) {
                                             activenpcs[i].position[0] += 1;
                                             activenpcs[i].head = 2;
-                                            activenpcs[i].kofs = [1, 0, 1];
+                                            activenpcs[i].kofs = [1, 0, activenpcs[i].walkingSpeed];
                                         }
                                     }
                                 }
@@ -1439,7 +1439,7 @@ scenes.game = () => {
                                         if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] - 1).occupied != true) {
                                             activenpcs[i].position[1] -= 1;
                                             activenpcs[i].head = 3;
-                                            activenpcs[i].kofs = [0, -1, 1];
+                                            activenpcs[i].kofs = [0, -1, activenpcs[i].walkingSpeed];
                                         }
                                     }
                                 }
@@ -1448,7 +1448,7 @@ scenes.game = () => {
 
                     }
 
-                    if (activenpcs[i].movement == 2 && activenpcs[i].talk == false && activenpcs[i].movementTime > activenpcs[i].walkingSpeed * 1000) {
+                    if (activenpcs[i].movement == 2 && activenpcs[i].talk == false && activenpcs[i].movementTime > activenpcs[i].walkingInterval * 1000) {
                         activenpcs[i].movementTime = 0;
                         if (activenpcs[i].pathProgress > activenpcs[i].path.length) {
                             activenpcs[i].pathProgress = 0;
@@ -1471,7 +1471,7 @@ scenes.game = () => {
                                         activenpcs[i].position[1] += yo;
                                         if (activenpcs[i].path[activenpcs[i].pathProgress] != undefined) activenpcs[i].head = activenpcs[i].path[activenpcs[i].pathProgress];
                                         else activenpcs[i].head = activenpcs[i].path[activenpcs[i].pathProgress - 1];
-                                        activenpcs[i].kofs = [xo, yo, 1];
+                                        activenpcs[i].kofs = [xo, yo, activenpcs[i].walkingSpeed];
                                     }
                                 }
                             }
@@ -1482,7 +1482,7 @@ scenes.game = () => {
                 }
                 for (i = 0; i < enemies.length; i++) { 
                     enemies[i].movementTime += delta;
-                    if (enemies[i].movementTime > enemies[i].walkingSpeed * 1000) {
+                    if (enemies[i].movementTime > enemies[i].walkingInterval * 1000 && !enemies[i].kofs[2]) {
                         enemies[i].movementTime = 0;
 
                         if (enemies[i].spawntime > 899) {
@@ -1494,7 +1494,7 @@ scenes.game = () => {
                                             if (getTile(map, enemies[i].position[0], enemies[i].position[1] + 1).occupied != true) {
                                                 enemies[i].position[1] += 1;
                                                 enemies[i].head = 0;
-                                                enemies[i].kofs = [0, 1, 1];
+                                                enemies[i].kofs = [0, 1, enemies[i].walkingSpeed];
                                             }
                                         }
                                     }
@@ -1508,7 +1508,7 @@ scenes.game = () => {
                                             if (getTile(map, enemies[i].position[0] - 1, enemies[i].position[1]).occupied != true) {
                                                 enemies[i].position[0] -= 1;
                                                 enemies[i].head = 1;
-                                                enemies[i].kofs = [-1, 0, 1];
+                                                enemies[i].kofs = [-1, 0, enemies[i].walkingSpeed];
                                             }
                                         }
                                     }
@@ -1522,7 +1522,7 @@ scenes.game = () => {
                                             if (getTile(map, enemies[i].position[0] + 1, enemies[i].position[1]).occupied != true) {
                                                 enemies[i].position[0] += 1;
                                                 enemies[i].head = 2;
-                                                enemies[i].kofs = [1, 0, 1];
+                                                enemies[i].kofs = [1, 0, enemies[i].walkingSpeed];
                                             }
                                         }
                                     }
@@ -1536,7 +1536,7 @@ scenes.game = () => {
                                             if (getTile(map, enemies[i].position[0], enemies[i].position[1] - 1).occupied != true) {
                                                 enemies[i].position[1] -= 1;
                                                 enemies[i].head = 3;
-                                                enemies[i].kofs = [0, -1, 1];
+                                                enemies[i].kofs = [0, -1, enemies[i].walkingSpeed];
                                             }
                                         }
                                     }

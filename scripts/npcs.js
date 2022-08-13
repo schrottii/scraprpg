@@ -25,7 +25,8 @@ let npcs = {
             pathProgress: 0,
 
             movementTime: 0,
-            walkingSpeed: 0.5,
+            walkingInterval: 0.5, // time between walks
+            walkingSpeed: 1, // how long it takes to walk from one tile to another (in seconds)
 
             render(ctx) {
                 let tileX = this.position[0];
@@ -36,14 +37,14 @@ let npcs = {
                     this.kofs[2] = Math.max(this.kofs[2] - delta / 166, 0);
                     ctx.drawImage(images[this.skin],
                         32 * Math.floor(walkTime), 32 * this.head, 32, 32,
-                        ((zoom * scale) * (tileX + kofs[0] * kofs[2] - this.kofs[0] * this.kofs[2] - xAdjust)) - ((zoom - 1) * scale * (width / 2)),
-                        (zoom * scale) * (tileY + kofs[1] * kofs[2] - this.kofs[1] * this.kofs[2] - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7),
+                        ((zoom * scale) * (tileX + kofs[0] * kofs[2] - this.kofs[0] * (this.kofs[2] / this.walkingSpeed) - xAdjust)) - ((zoom - 1) * scale * (width / 2)),
+                        (zoom * scale) * (tileY + kofs[1] * kofs[2] - this.kofs[1] * (this.kofs[2] / this.walkingSpeed) - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7),
                         zoom * scale, zoom * scale)
                 }
                 if (this.talk == true) {
                     ctx.drawImage(images.talk,
-                        ((zoom * scale) * (tileX + 1 + kofs[0] * kofs[2] - this.kofs[0] * this.kofs[2] - xAdjust)) - ((zoom - 1) * scale * (width / 2)),
-                        (zoom * scale) * (tileY - 1 + kofs[1] * kofs[2] - this.kofs[1] * this.kofs[2] - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7),
+                        ((zoom * scale) * (tileX + 1 + kofs[0] * kofs[2] - this.kofs[0] * (this.kofs[2] / this.walkingSpeed) - xAdjust)) - ((zoom - 1) * scale * (width / 2)),
+                        (zoom * scale) * (tileY - 1 + kofs[1] * kofs[2] - this.kofs[1] * (this.kofs[2] / this.walkingSpeed) - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7),
                         zoom * scale, zoom * scale)
                 }
             },
