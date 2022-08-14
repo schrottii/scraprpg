@@ -930,6 +930,13 @@ scenes.game = () => {
         let fogOpacityChangeIntensity = 10; // How much the opacity during fog changes. Higher number = less
         // Speed in preRender
 
+        if (type == "instant" || nightEffect.fill == "white") {
+            nightEffect.alpha = 1;
+            nightEffect2.alpha = 0;
+            nightEffect.fill = color;
+            return true;
+        }
+
         if (type == "fog") {
             if (fogopa >= 1) al += (fogopa - 1) / fogOpacityChangeIntensity;
             else al -= ((fogopa) / fogOpacityChangeIntensity) - (1 / fogOpacityChangeIntensity);

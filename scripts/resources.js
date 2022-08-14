@@ -38,6 +38,7 @@ let images = {
     spawn: "data/images/spawn_default.png",
     vignette: "data/images/screenvignette.png",
     nosfegtdsrh: "data/images/WEaresuperior.png",
+    blurry: "data/images/bg.png",
 
     eattackani2: "data/images/eattackani2.png",
 

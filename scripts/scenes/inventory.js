@@ -10,10 +10,11 @@ scenes.inventory = () => {
     let coolDisplays = [];
 
     // Background
-    background.push(controls.rect({
+    background.push(controls.image({
         anchor: [0, 0], sizeAnchor: [1, 1],
         alpha: 1,
-        fill: "brown"
+        source: "blurry"
+        //fill: "brown"
     }));
     background.push(controls.rect({
         anchor: [0.04, 0.04], sizeAnchor: [0.92, 0.92],
