@@ -30,11 +30,13 @@ scenes.inventory = () => {
     // Buttons on the right
     for (i = 0; i < 7; i++) {
         buttons.push(controls.button({
-            anchor: [0.7, 0.075 + (i * 0.125)], sizeAnchor: [0.2, 0.085],
+            anchor: [0.7, 0.075 + (i * 0.125)], sizeAnchor: [0.2, 0.085], id: i,
             alpha: 1,
             text: ["Items", "Magic", "Equipment", "Formation", "Save Manager", "Settings", "Exit Menu"][i],
             onClick(args) {
-                setScene(scenes.game());
+                if (this.id == 4) setScene(scenes.savemanager());
+                if (this.id == 5) setScene(scenes.settings());
+                if (this.id == 6) setScene(scenes.game());
             }
         }));
     }

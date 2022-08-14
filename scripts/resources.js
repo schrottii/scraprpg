@@ -187,6 +187,8 @@ var scenes = {
     game: "scripts/scenes/game.js",
     fight: "scripts/scenes/fight.js",
     inventory: "scripts/scenes/inventory.js",
+    savemanager: "scripts/scenes/savemanager.js",
+    settings: "scripts/scenes/settings.js",
 };
 
 var audio = {

@@ -194,6 +194,7 @@ function onCanvasPointerUp(e) {
         // offset - Get the position where the element starts. size - How big. Combine them to define the clickable area!
 
         let offsetX, offsetY, sizeX, sizeY
+        if (con.offset == undefined) console.trace();
         if (isLs() == false) {
             offsetX = con.offset[0] + con.anchor[0] * mainCanvas.width;
             offsetY = con.offset[1] + con.anchor[1] * mainCanvas.height;
@@ -232,9 +233,9 @@ function image_animation(image, columns, rows, speed=100) {
     canMove = false;
 }
 
-function getPlayer(character = 1) {
+function getPlayer(character = 1, src = game) {
     if (character > characters.length) character = 1;
-    return game.characters[game.chars[character - 1]];
+    return src.characters[game.chars[character - 1]];
 }
 
 function isMobile() {
