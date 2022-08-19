@@ -298,8 +298,8 @@ scenes.game = () => {
     }));
     */
 
-    let dialogueComponents = []
-    dialogueComponents.push(controls.rect({
+    let dialogueNormalComponents = []
+    dialogueNormalComponents.push(controls.rect({
         anchor: [0, 1], offset: [0, -200], sizeAnchor: [1, 0], sizeOffset: [0, 200],
         clickthrough: false,
         fill: "#B58542",
@@ -321,39 +321,44 @@ scenes.game = () => {
         },
         alpha: 0, 
     }));
-    dialogueComponents.push(controls.rect({
+    dialogueNormalComponents.push(controls.rect({
         anchor: [0.01, 1.01], offset: [0, -200], sizeOffset: [136, 136],
         clickthrough: false,
         fill: "#D49F52",
         alpha: 0,
     }));
-    dialogueComponents.push(controls.rect({
+    dialogueNormalComponents.push(controls.rect({
         anchor: [0.01, 1.01], offset: [0, -54], sizeOffset: [128, 32],
         clickthrough: false,
         fill: "#D49F52",
         alpha: 0,
     }));
-    dialogueComponents.push(controls.label({
+    dialogueNormalComponents.push(controls.label({
         anchor: [0.01, 1.01], offset: [64, -34],
         align: "center", fontSize: 20, fill: "black",
         text: "Bleu",
         alpha: 0,
     }));
-    dialogueComponents.push(controls.rect({
+    dialogueNormalComponents.push(controls.rect({
         anchor: [0.01, 1.01], offset: [164, -200], sizeOffset: [0, 178], sizeAnchor: [0.8, 0],
         clickthrough: false,
         fill: "#D49F52",
         alpha: 0,
     }));
-    dialogueComponents.push(controls.image({
+    dialogueNormalComponents.push(controls.image({
         anchor: [0.01, 1.01], offset: [0, -192], sizeOffset: [128, 128], snip: [0, 0, 64, 64],
         source: "Portraits_Bleu",
         alpha: 0,
     }));
-    dialogueComponents.push(controls.label({ // 6
+    dialogueNormalComponents.push(controls.label({ // 6
         anchor: [0, 1], offset: [196, -168],
         align: "left", fontSize: 16, fill: "black",
         text: "...",
+        alpha: 0,
+    }));
+    dialogueNormalComponents.push(controls.image({
+        anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96],
+        source: "star",
         alpha: 0,
     }));
 
@@ -1523,32 +1528,26 @@ scenes.game = () => {
 
 
             if (inDialogue == true) {
-                for (i = 0; i < dialogueComponents.length; i++) {
-                    dialogueComponents[i].alpha = 1;
+                for (i = 0; i < dialogueNormalComponents.length; i++) {
+                    dialogueNormalComponents[i].alpha = 1;
                 }
                 if (map.dialogues != undefined) {
-                    if (typeof (currentDialogue[dialogueProgress][0]) == "string") dialogueComponents[6].text = currentDialogue[dialogueProgress][0];
-                    else dialogueComponents[6].text = currentDialogue[dialogueProgress][0]();
-                    
-                    if (currentDialogue[dialogueProgress][3] != undefined) dialogueComponents[3].text = currentDialogue[dialogueProgress][3];
-                    dialogueEmotion = currentDialogue[dialogueProgress][2];
-                    dialogueComponents[5].source = currentDialogue[dialogueProgress][1];
-                    dialogueComponents[5].snip = getEmotion(dialogueEmotion);
-                }
-                else {
-                    if (typeof (currentDialogue[dialogueProgress][0]) == "string") dialogueComponents[6].text = currentDialogue[dialogueProgress][0];
-                    else dialogueComponents[6].text = currentDialogue[dialogueProgress][0]();
+                    if (typeof (currentDialogue[dialogueProgress][0]) == "string") dialogueNormalComponents[6].text = currentDialogue[dialogueProgress][0];
+                    else dialogueNormalComponents[6].text = currentDialogue[dialogueProgress][0]();
 
-                    if (currentDialogue[dialogueProgress][3] != undefined) dialogueComponents[3].text = currentDialogue[dialogueProgress][3];
+                    if (currentDialogue[dialogueProgress][3] != undefined) dialogueNormalComponents[3].text = currentDialogue[dialogueProgress][3];
                     dialogueEmotion = currentDialogue[dialogueProgress][2];
-                    dialogueComponents[5].source = currentDialogue[dialogueProgress][1];
-                    dialogueComponents[5].snip = getEmotion(dialogueEmotion);
+                    dialogueNormalComponents[5].source = currentDialogue[dialogueProgress][1];
+                    dialogueNormalComponents[5].snip = getEmotion(dialogueEmotion);
+
+                    if (currentDialogue[dialogueProgress + 1] == undefined) dialogueNormalComponents[7].alpha = 0; // Star
+                    actionButton.alpha = 0;
                 }
             }
 
-            else if (dialogueComponents[0].alpha != 0) {
-                for (i = 0; i < dialogueComponents.length; i++) {
-                    dialogueComponents[i].alpha = 0;
+            else if (dialogueNormalComponents[0].alpha != 0) {
+                for (i = 0; i < dialogueNormalComponents.length; i++) {
+                    dialogueNormalComponents[i].alpha = 0;
                 }
             }
 
@@ -1558,7 +1557,7 @@ scenes.game = () => {
             }
         },
         controls: [
-            ...dialogueComponents,
+            ...dialogueNormalComponents,
             ...weatherControls, ...dustControls, poisonBlack, nightEffect, nightEffect2, //weatherEffect,
             /*...walkPad,*/ mapDisplay, mapIcon, actionButton,
             ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
