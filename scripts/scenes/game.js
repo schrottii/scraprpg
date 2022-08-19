@@ -1271,57 +1271,37 @@ scenes.game = () => {
 
                         if (enemies[i].spawntime > 899) {
                             // Random moving
+                            let xo;
+                            let yo;
+                            let headTo;
                             if (Math.random() > 0.40) { // Down
-                                if (map.map[enemies[i].position[1]] != undefined) {
-                                    if (map.map[enemies[i].position[1]][enemies[i].position[0] + 1] != undefined) {
-                                        if (getTile(map, enemies[i].position[0], enemies[i].position[1] + 1) != undefined) {
-                                            if (getTile(map, enemies[i].position[0], enemies[i].position[1] + 1).occupied != true) {
-                                                enemies[i].position[1] += 1;
-                                                enemies[i].head = 0;
-                                                enemies[i].kofs = [0, 1, enemies[i].walkingSpeed];
-                                            }
-                                        }
-                                    }
-                                }
+                                xo = 0;
+                                yo = 1;
+                                headTo = 0;
                             }
-
-                            else if (Math.random() > 0.40) { // Left
-                                if (map.map[enemies[i].position[1]] != undefined) {
-                                    if (map.map[enemies[i].position[1]][enemies[i].position[0]] != undefined) {
-                                        if (getTile(map, enemies[i].position[0] - 1, enemies[i].position[1]) != undefined) {
-                                            if (getTile(map, enemies[i].position[0] - 1, enemies[i].position[1]).occupied != true) {
-                                                enemies[i].position[0] -= 1;
-                                                enemies[i].head = 1;
-                                                enemies[i].kofs = [-1, 0, enemies[i].walkingSpeed];
-                                            }
-                                        }
-                                    }
-                                }
+                            if (Math.random() > 0.40) { // Left
+                                xo = -1;
+                                yo = 0;
+                                headTo = 1;
                             }
-
-                            else if (Math.random() > 0.40) { // Right
-                                if (map.map[enemies[i].position[1]] != undefined) {
-                                    if (map.map[enemies[i].position[1]][enemies[i].position[0]] != undefined) {
-                                        if (getTile(map, enemies[i].position[0] + 1, enemies[i].position[1]) != undefined) {
-                                            if (getTile(map, enemies[i].position[0] + 1, enemies[i].position[1]).occupied != true) {
-                                                enemies[i].position[0] += 1;
-                                                enemies[i].head = 2;
-                                                enemies[i].kofs = [1, 0, enemies[i].walkingSpeed];
-                                            }
-                                        }
-                                    }
-                                }
+                            if (Math.random() > 0.40) { // Right
+                                xo = 1;
+                                yo = 0;
+                                headTo = 2;
                             }
-
-                            else if (Math.random() > 0.40) { // Up
-                                if (map.map[enemies[i].position[1]] != undefined) {
-                                    if (map.map[enemies[i].position[1]][enemies[i].position[0] - 1] != undefined) {
-                                        if (getTile(map, enemies[i].position[0], enemies[i].position[1] - 1) != undefined) {
-                                            if (getTile(map, enemies[i].position[0], enemies[i].position[1] - 1).occupied != true) {
-                                                enemies[i].position[1] -= 1;
-                                                enemies[i].head = 3;
-                                                enemies[i].kofs = [0, -1, enemies[i].walkingSpeed];
-                                            }
+                            if (Math.random() > 0.40) { // Up
+                                xo = 0;
+                                yo = -1;
+                                headTo = 3;
+                            }
+                            if (map.map[enemies[i].position[1] + xo] != undefined && xo != undefined) {
+                                if (map.map[enemies[i].position[1] + xo][enemies[i].position[0] + yo] != undefined) {
+                                    if (getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo) != undefined) {
+                                        if (getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo).occupied != true) {
+                                            enemies[i].position[0] += xo;
+                                            enemies[i].position[1] += yo;
+                                            enemies[i].head = headTo;
+                                            enemies[i].kofs = [xo, yo, enemies[i].walkingSpeed];
                                         }
                                     }
                                 }
@@ -1354,128 +1334,61 @@ scenes.game = () => {
                 }
             }
 
+            // This is literally walking
             if (!kofs[2] && canMove == true) {
+                let xo;
+                let yo;
+
                 if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up")) {
                     head = 3;
                     direction = "up";
-
-                    actionButton.source = "actionbutton"
-                    if (getTile(map, game.position[0], game.position[1] - 1) != undefined) if (getTile(map, game.position[0], game.position[1] - 1).action != undefined) actionButton.source = "actionbutton_active"
-                    else if (getTile(map, game.position[0], game.position[1] - 1, 2) != undefined) if (getTile(map, game.position[0], game.position[1] - 1, 2).action != undefined) actionButton.source = "actionbutton_active"
-
-                    for (i in activenpcs) {
-                        activenpcs[i].talk = false;
-                        if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] - 1) {
-                            actionButton.source = "actionbutton_active";
-                            activenpcs[i].talk = true;
-                        }
-                    }
-
-
-                    if (isWalkable(map, game.position[0], game.position[1] - 1)
-                        && isWalkable(map, game.position[0], game.position[1] - 1, 2)) { //Direction-change-against-wall
-                        kofs = [0, -1, 1];
-                        game.position[1]--;
-                        ActionsOnMove();
-                        tryTeleport(map, game.position[0], game.position[1]);
-
-                        actionButton.source = "actionbutton"
-                        if (getTile(map, game.position[0], game.position[1] - 1) != undefined) if (getTile(map, game.position[0], game.position[1] - 1).action != undefined) actionButton.source = "actionbutton_active"
-                        else if (getTile(map, game.position[0], game.position[1] - 1, 2) != undefined) if (getTile(map, game.position[0], game.position[1] - 1, 2).action != undefined) actionButton.source = "actionbutton_active"
-
-                        for (i in activenpcs) {
-                            if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] - 1) actionButton.source = "actionbutton_active";
-                        }
-                    }
+                    xo = 0;
+                    yo = -1;
                 } else if ((currentKeys["s"] || currentKeys["arrowdown"] || pad == "down")) {
                     head = 0;
                     direction = "down";
-
-                    actionButton.source = "actionbutton"
-                    if (getTile(map, game.position[0], game.position[1] + 1) != undefined) if (getTile(map, game.position[0], game.position[1] + 1).action != undefined) actionButton.source = "actionbutton_active"
-                    else if (getTile(map, game.position[0], game.position[1] + 1, 2) != undefined) if (getTile(map, game.position[0], game.position[1] + 1).action != undefined, 2) actionButton.source = "actionbutton_active"
-
-                    for (i in activenpcs) {
-                        activenpcs[i].talk = false;
-                        if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] + 1) {
-                            actionButton.source = "actionbutton_active";
-                            activenpcs[i].talk = true;
-                        }
-                    }
-
-                    if (isWalkable(map, game.position[0], game.position[1] + 1)
-                        && isWalkable(map, game.position[0], game.position[1] + 1, 2)) { //Direction-change-against-wall
-                        kofs = [0, 1, 1];
-                        game.position[1]++;
-                        ActionsOnMove();
-                        tryTeleport(map, game.position[0], game.position[1]);
-                        actionButton.source = "actionbutton"
-                        if (getTile(map, game.position[0], game.position[1] + 1) != undefined) if (getTile(map, game.position[0], game.position[1] + 1).action != undefined) actionButton.source = "actionbutton_active"
-                        else if (getTile(map, game.position[0], game.position[1] + 1, 2) != undefined) if (getTile(map, game.position[0], game.position[1] + 1).action != undefined, 2) actionButton.source = "actionbutton_active"
-
-                        for (i in activenpcs) {
-                            if (activenpcs[i].position[0] == game.position[0] && activenpcs[i].position[1] == game.position[1] + 1) actionButton.source = "actionbutton_active";
-                        }
-                    }
+                    xo = 0;
+                    yo = 1;
                 } else if ((currentKeys["a"] || currentKeys["arrowleft"] || pad == "left")) {
                     head = 1;
                     direction = "left";
-
-                    actionButton.source = "actionbutton"
-                    if (getTile(map, game.position[0] - 1, game.position[1]) != undefined) if (getTile(map, game.position[0] - 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
-                    else if (getTile(map, game.position[0] - 1, game.position[1], 2) != undefined) if (getTile(map, game.position[0] - 1, game.position[1], 2).action != undefined) actionButton.source = "actionbutton_active"
-
-                    for (i in activenpcs) {
-                        activenpcs[i].talk = false;
-                        if (activenpcs[i].position[0] == game.position[0] - 1 && activenpcs[i].position[1] == game.position[1]) {
-                            actionButton.source = "actionbutton_active";
-                            activenpcs[i].talk = true;
-                        }
-                    }
-
-                    if (isWalkable(map, game.position[0] - 1, game.position[1])
-                        && isWalkable(map, game.position[0] - 1, game.position[1], 2)) { //Direction-change-against-wall
-                        kofs = [-1, 0, 1];
-                        game.position[0]--;
-                        ActionsOnMove();
-                        tryTeleport(map, game.position[0], game.position[1]);
-
-                        actionButton.source = "actionbutton"
-                        if (getTile(map, game.position[0] - 1, game.position[1]) != undefined) if (getTile(map, game.position[0] - 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
-                        else if (getTile(map, game.position[0] - 1, game.position[1], 2) != undefined) if (getTile(map, game.position[0] - 1, game.position[1], 2).action != undefined) actionButton.source = "actionbutton_active"
-
-                        for (i in activenpcs) {
-                            if (activenpcs[i].position[0] == game.position[0] - 1 && activenpcs[i].position[1] == game.position[1]) actionButton.source = "actionbutton_active";
-                        }
-                    }
+                    xo = -1;
+                    yo = 0;
                 } else if ((currentKeys["d"] || currentKeys["arrowright"] || pad == "right")) {
                     head = 2;
                     direction = "right";
-
+                    xo = 1;
+                    yo = 0;
+                }
+                // Optimized code pog
+                if (xo != undefined) {
                     actionButton.source = "actionbutton"
-                    if (getTile(map, game.position[0] + 1, game.position[1]) != undefined) if (getTile(map, game.position[0] + 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
-                    if (getTile(map, game.position[0] + 1, game.position[1], 2) != undefined) if (getTile(map, game.position[0] + 1, game.position[1], 2).action != undefined) actionButton.source = "actionbutton_active"
+                    if (getTile(map, game.position[0] + xo, game.position[1] + yo) != undefined) if (getTile(map, game.position[0] + xo, game.position[1] + yo).action != undefined) actionButton.source = "actionbutton_active"
+                    else if (getTile(map, game.position[0] + xo, game.position[1] + yo, 2) != undefined) if (getTile(map, game.position[0] + xo, game.position[1] + yo, 2).action != undefined) actionButton.source = "actionbutton_active"
 
                     for (i in activenpcs) {
                         activenpcs[i].talk = false;
-                        if (activenpcs[i].position[0] == game.position[0] + 1 && activenpcs[i].position[1] == game.position[1]) {
+                        if (activenpcs[i].position[0] == game.position[0] + xo && activenpcs[i].position[1] == game.position[1] + yo) {
                             actionButton.source = "actionbutton_active";
                             activenpcs[i].talk = true;
                         }
                     }
 
-                    if (isWalkable(map, game.position[0] + 1, game.position[1])
-                        && isWalkable(map, game.position[0] + 1, game.position[1], 2)) { //Direction-change-against-wall
-                        kofs = [1, 0, 1];
-                        game.position[0]++;
+
+                    if (isWalkable(map, game.position[0] + xo, game.position[1] + yo)
+                        && isWalkable(map, game.position[0] + xo, game.position[1] + yo, 2)) { //Direction-change-against-wall
+                        kofs = [xo, yo, 1];
+                        game.position[0] += xo;
+                        game.position[1] += yo;
                         ActionsOnMove();
-                        tryTeleport(map, game.position[0], game.position[1]);
+                        tryTeleport(map, game.position[0] + xo, game.position[1] + yo);
 
                         actionButton.source = "actionbutton"
-                        if (getTile(map, game.position[0] + 1, game.position[1]) != undefined) if (getTile(map, game.position[0] + 1, game.position[1]).action != undefined) actionButton.source = "actionbutton_active"
-                        if (getTile(map, game.position[0] + 1, game.position[1], 2) != undefined) if (getTile(map, game.position[0] + 1, game.position[1], 2).action != undefined) actionButton.source = "actionbutton_active"
+                        if (getTile(map, game.position[0] + xo, game.position[1] + yo) != undefined) if (getTile(map, game.position[0] + xo, game.position[1] + yo).action != undefined) actionButton.source = "actionbutton_active"
+                        else if (getTile(map, game.position[0] + xo, game.position[1] + yo, 2) != undefined) if (getTile(map, game.position[0] + xo, game.position[1] + yo, 2).action != undefined) actionButton.source = "actionbutton_active"
+
                         for (i in activenpcs) {
-                            if (activenpcs[i].position[0] == game.position[0] + 1 && activenpcs[i].position[1] == game.position[1]) actionButton.source = "actionbutton_active";
+                            if (activenpcs[i].position[0] == game.position[0] + xo && activenpcs[i].position[1] == game.position[1] + yo) actionButton.source = "actionbutton_active";
                         }
                     }
                 }
@@ -1643,20 +1556,8 @@ scenes.game = () => {
             if (currentKeys["q"]) {
                 setScene(scenes.title());
             }
-
-
-            // Update bottom right texts
-            // I think this method is inefficient, but I was not able to find a better one.
-            // I searched and tried several things for hours.
-            /*mapDisplayLevel1.text = "Level: " + getPlayer(1 + overWorldStatsScroll).level + "  EXP: " + getPlayer(1 + overWorldStatsScroll).EXP + "/25";
-            mapDisplayStats1.text = "HP: " + getPlayer(1 + overWorldStatsScroll).HP + "/" + getStat(1 + overWorldStatsScroll, "maxHP") + "   EP: " + getPlayer(1 + overWorldStatsScroll).EP + "/" + getPlayer(1 + overWorldStatsScroll).maxEP;
-            mapDisplayLevel2.text = "Level: " + getPlayer(2 + overWorldStatsScroll).level + "  EXP: " + getPlayer(2 + overWorldStatsScroll).EXP + "/25";
-            mapDisplayStats2.text = "HP: " + getPlayer(2 + overWorldStatsScroll).HP + "/" + getStat(2 + overWorldStatsScroll, "maxHP") + "   EP: " + getPlayer(2 + overWorldStatsScroll).EP + "/" + getPlayer(2 + overWorldStatsScroll).maxEP;
-        */
         },
         controls: [
-            //mapDisplayStats1, mapDisplayStats2,
-            //mapDisplayLevel1, mapDisplayLevel2, 
             ...dialogueComponents,
             ...weatherControls, ...dustControls, poisonBlack, nightEffect, nightEffect2, //weatherEffect,
             /*...walkPad,*/ mapDisplay, mapIcon, actionButton,
