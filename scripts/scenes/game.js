@@ -1557,10 +1557,10 @@ scenes.game = () => {
             }
         },
         controls: [
-            ...dialogueNormalComponents,
             ...weatherControls, ...dustControls, poisonBlack, nightEffect, nightEffect2, //weatherEffect,
             /*...walkPad,*/ mapDisplay, mapIcon, actionButton,
             ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
+            ...dialogueNormalComponents,
             autoSaveText, /*settingsSaveText,*/ ...areaNameBox, areaTeleportFade
         ],
     }
