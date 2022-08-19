@@ -1,4 +1,5 @@
 scenes.settings = () => {
+    var background = [];
     var menuSettings = [];
     var settingsCategory = "gameplay";
     var menuSettingsGameplay = [];
@@ -6,35 +7,51 @@ scenes.settings = () => {
     var menuSettingsAudio = [];
 
     // Background
-    let background = controls.image({
+    background.push(controls.image({
         anchor: [0, 0], sizeAnchor: [1, 1],
         alpha: 1,
         source: "blurry"
         //fill: "brown"
-    });
+    }));
     
     let settingsSaveText = controls.label({
         anchor: [.04, .98], offset: [12, -12],
         fontSize: 16, text: "Settings saved!", alpha: 0,
     });
 
-    menuSettings.push(controls.rect({
+
+    background.push(controls.rect({
+        anchor: [0.04, 0.04], sizeAnchor: [0.92, 0.92],
+        alpha: 1,
+        fill: "black"
+    }));
+    background.push(controls.rect({
         anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
-        fill: "#B58543", alpha: 0,
+        alpha: 1,
+        fill: "lightsalmon"
+    }));
+    background.push(controls.button({
+        anchor: [0.9, 0.05], sizeAnchor: [0.05, 0.05],
+        alpha: 1,
+        onClick(args) {
+            setScene(scenes.inventory());
+        },
+        text: ">",
+        fill: "white"
+    }));
+    background.push(controls.rect({
+        anchor: [0.05, 0.1], sizeAnchor: [0.9, 0.01],
+        alpha: 1,
+        fill: "black"
     }));
 
-    menuSettings.push(controls.rect({
-        anchor: [0.075, 0.075], sizeAnchor: [0.85, 0.85],
-        fill: "#D49F53", alpha: 0,
-    }));
-
-    menuSettings.push(controls.rect({
-        anchor: [0.375, 0.05], sizeAnchor: [0.02, 0.9],
-        fill: "#B58543", alpha: 0,
+    background.push(controls.rect({
+        anchor: [0.375, 0.05], sizeAnchor: [0.01, 0.9],
+        fill: "black", alpha: 1,
     }));
 
     menuSettings.push(controls.label({
-        anchor: [0.225, 0.1],
+        anchor: [0.225, 0.1], offset: [0, -24],
         align: "center", fontSize: 48, fill: "black",
         text: "Settings", alpha: 0,
     }));
@@ -284,7 +301,7 @@ scenes.settings = () => {
         },
         // Controls
         controls: [
-            background,
+            ...background,
             ...menuSettings, ...menuSettingsGameplay, ...menuSettingsGraphics, ...menuSettingsAudio, 
             settingsSaveText,
         ],

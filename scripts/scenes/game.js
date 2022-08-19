@@ -1190,56 +1190,40 @@ scenes.game = () => {
                     if (activenpcs[i].movement == 1 && activenpcs[i].talk == false && activenpcs[i].movementTime > activenpcs[i].walkingInterval * 1000 && !activenpcs[i].kofs[2]) {
                         activenpcs[i].movementTime = 0;
                         // Random moving
+                        let xo;
+                        let yo;
+                        let head;
+
                         if (Math.random() > 0.40) { // Down
-                            if (map.map[activenpcs[i].position[1]] != undefined) {
-                                if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0] + 1] != undefined) {
-                                    if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] + 1) != undefined) {
-                                        if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] + 1).occupied != true) {
-                                            activenpcs[i].position[1] += 1;
-                                            activenpcs[i].head = 0;
-                                            activenpcs[i].kofs = [0, 1, activenpcs[i].walkingSpeed];
-                                        }
-                                    }
-                                }
-                            }
+                            xo = 0;
+                            yo = 1;
+                            head = 0;
                         }
                         else if (Math.random() > 0.40) { // Left
-                            if (map.map[activenpcs[i].position[1]] != undefined) {
-                                if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0]] != undefined) {
-                                    if (getTile(map, activenpcs[i].position[0] - 1, activenpcs[i].position[1]) != undefined) {
-                                        if (getTile(map, activenpcs[i].position[0] - 1, activenpcs[i].position[1]).occupied != true) {
-                                            activenpcs[i].position[0] -= 1;
-                                            activenpcs[i].head = 1;
-                                            activenpcs[i].kofs = [-1, 0, activenpcs[i].walkingSpeed];
-                                        }
-                                    }
-                                }
-                            }
+                            xo = -1;
+                            yo = 0;
+                            head = 1;
                         }
-
-
                         else if (Math.random() > 0.40) { // Right
-                            if (map.map[activenpcs[i].position[1]] != undefined) {
-                                if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0]] != undefined) {
-                                    if (getTile(map, activenpcs[i].position[0] + 1, activenpcs[i].position[1]) != undefined) {
-                                        if (getTile(map, activenpcs[i].position[0] + 1, activenpcs[i].position[1]).occupied != true) {
-                                            activenpcs[i].position[0] += 1;
-                                            activenpcs[i].head = 2;
-                                            activenpcs[i].kofs = [1, 0, activenpcs[i].walkingSpeed];
-                                        }
-                                    }
-                                }
-                            }
+                            xo = 1;
+                            yo = 0;
+                            head = 2;
+                        }
+                        else if (Math.random() > 0.40) { // Up
+                            xo = 0;
+                            yo = -1;
+                            head = 3;
                         }
 
-                        else if (Math.random() > 0.40) { // Up
-                            if (map.map[activenpcs[i].position[1]] != undefined) {
-                                if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0] - 1] != undefined) {
-                                    if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] - 1) != undefined) {
-                                        if (getTile(map, activenpcs[i].position[0], activenpcs[i].position[1] - 1).occupied != true) {
-                                            activenpcs[i].position[1] -= 1;
-                                            activenpcs[i].head = 3;
-                                            activenpcs[i].kofs = [0, -1, activenpcs[i].walkingSpeed];
+                        if (xo != undefined) {
+                            if (map.map[activenpcs[i].position[1] + yo] != undefined) {
+                                if (map.map[activenpcs[i].position[1] + yo][activenpcs[i].position[0] + xo] != undefined) {
+                                    if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo) != undefined) {
+                                        if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo).occupied != true) {
+                                            activenpcs[i].position[0] += xo;
+                                            activenpcs[i].position[1] += yo;
+                                            activenpcs[i].head = head;
+                                            activenpcs[i].kofs = [xo, yo, activenpcs[i].walkingSpeed];
                                         }
                                     }
                                 }
