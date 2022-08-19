@@ -2,7 +2,7 @@ let game = {
     pfp: 1,
     map: "test",
     position: [4, 4],
-    chars: ["bleu", "corelle", "gau", "skro"], // MAX 6!!!
+    chars: ["bleu", "corelle", "gau", "skro", "kokitozi"], // MAX 6!!!
     leader: "bleu",
     time: 0,
     wrenches: 0,
@@ -57,6 +57,18 @@ let game = {
             acc: 60,
             effect: ["none", 0],
             pos: [0, 1],
+        },
+        kokitozi: {
+            name: "Kokitozi",
+            level: 1,
+            EXP: 0,
+            EP: 20,
+            maxEP: 20,
+            HP: 8,
+            agi: 36,
+            acc: 90,
+            effect: ["none", 0],
+            pos: [2, 1],
         }
     }
 }

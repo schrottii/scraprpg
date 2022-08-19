@@ -50,6 +50,7 @@ let images = {
     corelle: "data/images/Map_Corelle.png",
     gau: "data/images/Map_Gau.png",
     skro: "data/images/Map_Skro.png",
+    kokitozi: "data/images/Map_Koki.png",
 
     actionbutton: "data/images/actionbutton_inactive.png",
     actionbutton_active: "data/images/actionbutton_active.png",
@@ -63,11 +64,13 @@ let images = {
     corelle_ani: "data/images/Corelle_Sprite_Sheet_Other.png",
     gau_ani: "data/images/Gau_Sprite_Sheet_Other.png",
     skro_ani: "data/images/Skro_Sprite_Sheet_Other.png",
+    kokitozi_ani: "data/images/Skro_Sprite_Sheet_Other.png",
 
     bleu_dead: "data/images/BleuDead.png",
     corelle_dead: "data/images/CorelleDead.png",
     gau_dead: "data/images/GauDead.png",
     skro_dead: "data/images/SkroDead.png",
+    kokitozi_dead: "data/images/SkroDead.png",
 
     saveimage1: "data/images/PFP-1.png",
     saveimage2: "data/images/PFP-2.png",

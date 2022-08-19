@@ -406,15 +406,16 @@ function loadGame() {
         if (saveCopy.characters.skro == undefined) saveCopy.characters.skro = game.characters.skro;
         if (saveCopy.chars.length == 2) saveCopy.chars.push("gau");
         if (saveCopy.chars.length == 3) saveCopy.chars.push("skro");
+        if (saveCopy.chars.length == 4) saveCopy.chars.push("kokitozi");
         if (saveCopy.characters.bleu.pos == undefined) {
             saveCopy.characters.bleu.pos = [0, 0];
             saveCopy.characters.corelle.pos = [0, 1];
             saveCopy.characters.gau.pos = [2, 2];
+            saveCopy.characters.koki.pos = [2, 1];
         }
-        saveCopy.characters.bleu.effect = ["none", 0];
-        saveCopy.characters.corelle.effect = ["none", 0];
-        saveCopy.characters.gau.effect = ["none", 0];
-        saveCopy.characters.skro.effect = ["none", 0];
+        for (i in saveCopy.characters) {
+            saveCopy.characters[i].effect = ["none", 0];
+        }
         if (saveCopy.time == undefined) saveCopy.time = 0;
         if (saveCopy.leader == undefined) saveCopy.leader = "bleu";
         if (saveCopy.wrenches == undefined) saveCopy.wrenches = 0;

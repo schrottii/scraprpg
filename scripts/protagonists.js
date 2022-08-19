@@ -1,5 +1,5 @@
 // This is ALL protagonists in the game. Not only the ones you have equipped right now.
-const characters = ["bleu", "corelle", "gau", "skro"];
+const characters = ["bleu", "corelle", "gau", "skro", "kokitozi"];
 
 
 
@@ -56,6 +56,19 @@ const cStats = {
         wis: 10,
         luk: 10,
         element: "physical",
+        length: 3,
+    },
+    kokitozi: {
+        name: "Kokitozi",
+        maxEP: 20,
+        maxHP: 7,
+        strength: 4,
+        agi: 36,
+        acc: 90,
+        int: 10,
+        wis: 10,
+        luk: 10,
+        element: "dark",
         length: 3,
     }
 }
