@@ -15,7 +15,7 @@ let npcs = {
             skin: "evil",
             kofs: [0, 0, 0],
             dialogues: {
-                1: [["Hello this is a test dialogue", "Portraits_Bleu", "happy"],
+                1: ["normal", ["Hello this is a test dialogue", "Portraits_Bleu", "happy"],
                     ["Second text", "Portraits_Bleu", "neutral"],
                     ["Don't forget to subscribe to my channel", "Portraits_Bleu", "angry"]]
             },
@@ -59,7 +59,7 @@ let npcs = {
             map: "map2",
             skin: "bleu",
             dialogues: {
-                1: [["Hii I'm Blue", "Portraits_Bleu", "happy", "Blue"],
+                1: ["normal", ["Hii I'm Blue", "Portraits_Bleu", "happy", "Blue"],
                 ["No I'm not Bleu! I'm not you! I'm Blue!", "Portraits_Bleu", "angry", "Blue"],
                 ["Hey man, I think you're me.", "Portraits_Bleu", "neutral", "Bleu"],
                 ["I'm a greek emo. I hate you!!!", "Portraits_Bleu", "sad", "Blue"],
@@ -78,7 +78,7 @@ let npcs = {
             map: "test",
             skin: "skro",
             dialogues: {
-                1: [["I am friendly Skro.", "Portraits_Skro", "sad", "Skro"],
+                1: ["normal", ["I am friendly Skro.", "Portraits_Skro", "sad", "Skro"],
                     ["NO! I am evil Skro!!!", "Portraits_Skro", "angry", "Skro"],
                     ["Guys, I think he is evil!", "Portraits_Gau", "happy", "Gau"],
                     ["Spam is not allowed!", "Portraits_Gau", "angry", "Gau"],
@@ -100,7 +100,7 @@ let npcs = {
             map: "test",
             skin: "bleu",
             dialogues: {
-                1: [["Ey", "Portraits_Bleu", "happy", "Bleu"],
+                1: ["normal", ["Ey", "Portraits_Bleu", "happy", "Bleu"],
                     ["Ayo (+1 Potion!)", "Portraits_Bleu", "angry", "Bleu", () => {
                         addItem("potion", 1);
                     }]]

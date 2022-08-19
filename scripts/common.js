@@ -86,7 +86,7 @@ var commontiles = {
                 action: () => {
                     inDialogue = true;
                     currentDialogue = maps["test"].dialogues[2];
-                    dialogueProgress = 0;
+                    dialogueProgress = 1;
                     dialogueEmotion = currentDialogue[dialogueProgress][1];
                     canMove = false;
                 }

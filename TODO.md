@@ -1,11 +1,10 @@
 ﻿##TODO:
-8 Things left to do in this phase
+7 Things left to do in this phase
 
 ##Phase 1:
 The developing phase, Schrottii's phase, the essential features of the game
 
 - Overworld quests
-- Multiple dialogue types
 
 - Animated UI (what exactly?)
 - Equipment system:

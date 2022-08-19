@@ -40,6 +40,7 @@ let images = {
     nosfegtdsrh: "data/images/WEaresuperior.png",
     blurry: "data/images/bg.png",
     star: "data/images/Icon_star.png",
+    narratorbg: "data/images/narratorbg.png",
 
     eattackani2: "data/images/eattackani2.png",
 

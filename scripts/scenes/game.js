@@ -4,7 +4,8 @@ var walkTime = 0;
 var direction = "none";
 var inDialogue = false;
 var currentDialogue;
-var dialogueProgress = 0;
+var dialogueProgress = 1;
+var dialogueType;
 var dialogueEmotion = "neutral";
 var overWorldStatsScroll = 0;
 
@@ -298,7 +299,10 @@ scenes.game = () => {
     }));
     */
 
-    let dialogueNormalComponents = []
+    let dialogueNormalComponents = [];
+    let dialogueInvisComponents = [];
+    let dialogueNarratorComponents = [];
+
     dialogueNormalComponents.push(controls.rect({
         anchor: [0, 1], offset: [0, -200], sizeAnchor: [1, 0], sizeOffset: [0, 200],
         clickthrough: false,
@@ -307,10 +311,11 @@ scenes.game = () => {
             if (this.alpha == 1) {
                 dialogueProgress += 1;
                 if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
+                    // Dialogue end
                     inDialogue = false;
                     currentDialogue = false;
                     dialogueEmotion = "neutral";
-                    dialogueProgress = 0;
+                    dialogueProgress = 1;
                     canMove = true;
                 }
                 else if (currentDialogue[dialogueProgress][4] != undefined) {
@@ -362,7 +367,82 @@ scenes.game = () => {
         alpha: 0,
     }));
 
+    dialogueInvisComponents.push(controls.rect({
+        anchor: [0, 1], offset: [0, -200], sizeAnchor: [1, 0], sizeOffset: [0, 200],
+        clickthrough: false,
+        fill: "#B58542",
+        onClick(args) {
+            if (this.alpha == 1) {
+                dialogueProgress += 1;
+                if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
+                    // Dialogue end
+                    inDialogue = false;
+                    currentDialogue = false;
+                    dialogueEmotion = "neutral";
+                    dialogueProgress = 1;
+                    canMove = true;
+                }
+                else if (currentDialogue[dialogueProgress][4] != undefined) {
+                    currentDialogue[dialogueProgress][4]();
+                }
 
+            }
+        },
+        alpha: 0,
+    }));
+    dialogueInvisComponents.push(controls.rect({
+        anchor: [0.01, 1.01], offset: [0, -200], sizeOffset: [0, 180], sizeAnchor: [0.98, 0],
+        clickthrough: false,
+        fill: "#D49F52",
+        alpha: 0,
+    }));
+    dialogueInvisComponents.push(controls.label({ // 2
+        anchor: [0.02, 1], offset: [0, -168],
+        align: "left", fontSize: 16, fill: "black",
+        text: "...",
+        alpha: 0,
+    }));
+    dialogueInvisComponents.push(controls.image({
+        anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96],
+        source: "star",
+        alpha: 0,
+    }));
+
+
+    dialogueNarratorComponents.push(controls.image({
+        anchor: [0, 0], sizeAnchor: [1, 1],
+        clickthrough: false,
+        source: "narratorbg",
+        onClick(args) {
+            if (this.alpha == 1 || dialogueType == "cinematic") {
+                dialogueProgress += 1;
+                if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
+                    // Dialogue end
+                    inDialogue = false;
+                    currentDialogue = false;
+                    dialogueEmotion = "neutral";
+                    dialogueProgress = 1;
+                    canMove = true;
+                }
+                else if (currentDialogue[dialogueProgress][4] != undefined) {
+                    currentDialogue[dialogueProgress][4]();
+                }
+
+            }
+        },
+        alpha: 0,
+    }));
+    dialogueNarratorComponents.push(controls.label({ // 1
+        anchor: [0.5, 0.5],
+        align: "center", fontSize: 16, fill: "white",
+        text: "...",
+        alpha: 0,
+    }));
+    dialogueNarratorComponents.push(controls.image({
+        anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96],
+        source: "star",
+        alpha: 0,
+    }));
 
     let actionButton = controls.image({
         anchor: [1, 0.8], sizeOffset: [128, 128], offset: [-256, 0],
@@ -377,7 +457,7 @@ scenes.game = () => {
             if (head == 2) xo = 1; // Right
             if (head == 3) yo = -1; // Up
 
-            if (dialogueProgress == 0) {
+            if (inDialogue == false) {
                 let map = maps[game.map];
                 if (getTile(map, game.position[0] + xo, game.position[1] + yo) != undefined) {
                     if (getTile(map, game.position[0] + xo, game.position[1] + yo).action != undefined) {
@@ -391,11 +471,7 @@ scenes.game = () => {
                 }
                 for (i in activenpcs) {
                     if (activenpcs[i].position[0] == game.position[0] + xo && activenpcs[i].position[1] == game.position[1] + yo) {
-                        inDialogue = true;
-                        currentDialogue = activenpcs[i].dialogues[1];
-                        dialogueProgress = 0;
-                        dialogueEmotion = currentDialogue[dialogueProgress][1];
-                        canMove = false;
+                        startDialogue(activenpcs[i].dialogues[1]);
                     }
                 }
 
@@ -996,12 +1072,17 @@ scenes.game = () => {
         }
 
         if (getTile(map, game.position[0], game.position[1]).dialogue != undefined) {
-            inDialogue = true;
-            currentDialogue = map.dialogues[getTile(map, game.position[0], game.position[1]).dialogue];
-            dialogueProgress = 0;
-            dialogueEmotion = currentDialogue[dialogueProgress][1];
-            canMove = false;
+            startDialogue(map.dialogues[getTile(map, game.position[0], game.position[1]).dialogue]);
         }
+    }
+
+    function startDialogue(cd) {
+        inDialogue = true;
+        currentDialogue = cd;
+        dialogueProgress = 1;
+        dialogueEmotion = currentDialogue[dialogueProgress][1];
+        dialogueType = currentDialogue[0];
+        canMove = false;
     }
 
     function loadNPCs() {
@@ -1527,7 +1608,7 @@ scenes.game = () => {
             ctx.fill();
 
 
-            if (inDialogue == true) {
+            if (inDialogue == true && dialogueType == "normal") {
                 for (i = 0; i < dialogueNormalComponents.length; i++) {
                     dialogueNormalComponents[i].alpha = 1;
                 }
@@ -1544,12 +1625,58 @@ scenes.game = () => {
                     actionButton.alpha = 0;
                 }
             }
-
             else if (dialogueNormalComponents[0].alpha != 0) {
                 for (i = 0; i < dialogueNormalComponents.length; i++) {
                     dialogueNormalComponents[i].alpha = 0;
                 }
             }
+            if (inDialogue == true && dialogueType == "invis") {
+                for (i = 0; i < dialogueInvisComponents.length; i++) {
+                    dialogueInvisComponents[i].alpha = 1;
+                }
+                if (map.dialogues != undefined) {
+                    if (typeof (currentDialogue[dialogueProgress][0]) == "string") dialogueInvisComponents[2].text = currentDialogue[dialogueProgress][0];
+                    else dialogueInvisComponents[2].text = currentDialogue[dialogueProgress][0]();
+
+                    if (currentDialogue[dialogueProgress + 1] == undefined) dialogueInvisComponents[3].alpha = 0; // Star
+                    actionButton.alpha = 0;
+                }
+            }
+            else if (dialogueInvisComponents[0].alpha != 0) {
+                for (i = 0; i < dialogueInvisComponents.length; i++) {
+                    dialogueInvisComponents[i].alpha = 0;
+                }
+            }
+            if (inDialogue == true && dialogueType == "narrator") {
+                for (i = 0; i < dialogueNarratorComponents.length; i++) {
+                    dialogueNarratorComponents[i].alpha = 1;
+                }
+                if (map.dialogues != undefined) {
+                    if (typeof (currentDialogue[dialogueProgress][0]) == "string") dialogueNarratorComponents[1].text = currentDialogue[dialogueProgress][0];
+                    else dialogueNarratorComponents[1].text = currentDialogue[dialogueProgress][0]();
+
+                    if (currentDialogue[dialogueProgress + 1] == undefined) dialogueNarratorComponents[2].alpha = 0; // Star
+                    actionButton.alpha = 0;
+                }
+            }
+            else if (inDialogue == true && dialogueType == "cinematic") {
+                dialogueNarratorComponents[1].alpha = 1;
+                dialogueNarratorComponents[2].alpha = 1;
+                if (map.dialogues != undefined) {
+                    if (typeof (currentDialogue[dialogueProgress][0]) == "string") dialogueNarratorComponents[1].text = currentDialogue[dialogueProgress][0];
+                    else dialogueNarratorComponents[1].text = currentDialogue[dialogueProgress][0]();
+
+                    if (currentDialogue[dialogueProgress + 1] == undefined) dialogueNarratorComponents[2].alpha = 0; // Star
+                    actionButton.alpha = 0;
+                }
+            }
+            else if (dialogueNarratorComponents[1].alpha != 0) {
+                for (i = 0; i < dialogueNarratorComponents.length; i++) {
+                    dialogueNarratorComponents[i].alpha = 0;
+                }
+            }
+
+
 
             // ...leave?
             if (currentKeys["q"]) {
@@ -1560,7 +1687,7 @@ scenes.game = () => {
             ...weatherControls, ...dustControls, poisonBlack, nightEffect, nightEffect2, //weatherEffect,
             /*...walkPad,*/ mapDisplay, mapIcon, actionButton,
             ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
-            ...dialogueNormalComponents,
+            ...dialogueNormalComponents, ...dialogueInvisComponents, ...dialogueNarratorComponents,
             autoSaveText, /*settingsSaveText,*/ ...areaNameBox, areaTeleportFade
         ],
     }

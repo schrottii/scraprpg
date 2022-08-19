@@ -166,10 +166,10 @@ maps["test"] = {
         "--- --- --- --- --- --- 034 033",
         ],
     dialogues: {
-        1: [["Hello this is a test dialogue", "Portraits_Bleu", "happy"],
+        1: ["cinematic", ["Hello this is a test dialogue", "Portraits_Bleu", "happy"],
         ["Second text", "Portraits_Bleu", "neutral"],
             ["Don't forget to subscribe to my channel", "Portraits_Bleu", "angry"]],
-        2:  [["Hmm...", "Portraits_Bleu", "neutral"],
+        2: ["normal", ["Hmm...", "Portraits_Bleu", "neutral"],
             [() => { return "It is " + getTime() + "!" }, "Portraits_Bleu", "happy"]],
     }
 }
