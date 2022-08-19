@@ -46,31 +46,26 @@ let images = {
     schrottgamesanimation: "data/images/sganimation.png",
     tttanimation: "data/images/Toast_Tech_Team_Animation.png",
     
-    bleu: "data/images/Map_Bleu.png",
-    corelle: "data/images/Map_Corelle.png",
-    gau: "data/images/Map_Gau.png",
-    skro: "data/images/Map_Skro.png",
-    kokitozi: "data/images/Map_Koki.png",
+    bleu: "data/images/protagonists/map/Map_Bleu.png",
+    corelle: "data/images/protagonists/map/Map_Corelle.png",
+    gau: "data/images/protagonists/map/Map_Gau.png",
+    skro: "data/images/protagonists/map/Map_Skro.png",
+    kokitozi: "data/images/protagonists/map/Map_Koki.png",
 
     actionbutton: "data/images/actionbutton_inactive.png",
     actionbutton_active: "data/images/actionbutton_active.png",
 
-    // to be removed
-    bleu_win: "data/images/BleuW.png",
-    corelle_win: "data/images/CorelleW.png",
-    gau_win: "data/images/CorelleW.png",
+    bleu_ani: "data/images/protagonists/other/Bleu_Sprite_Sheet_Other.png",
+    corelle_ani: "data/images/protagonists/other/Corelle_Sprite_Sheet_Other.png",
+    gau_ani: "data/images/protagonists/other/Gau_Sprite_Sheet_Other.png",
+    skro_ani: "data/images/protagonists/other/Skro_Sprite_Sheet_Other.png",
+    kokitozi_ani: "data/images/protagonists/other/Skro_Sprite_Sheet_Other.png",
 
-    bleu_ani: "data/images/Bleu_Sprite_Sheet_Other.png",
-    corelle_ani: "data/images/Corelle_Sprite_Sheet_Other.png",
-    gau_ani: "data/images/Gau_Sprite_Sheet_Other.png",
-    skro_ani: "data/images/Skro_Sprite_Sheet_Other.png",
-    kokitozi_ani: "data/images/Skro_Sprite_Sheet_Other.png",
-
-    bleu_dead: "data/images/BleuDead.png",
-    corelle_dead: "data/images/CorelleDead.png",
-    gau_dead: "data/images/GauDead.png",
-    skro_dead: "data/images/SkroDead.png",
-    kokitozi_dead: "data/images/SkroDead.png",
+    bleu_dead: "data/images/protagonists/dead/BleuDead.png",
+    corelle_dead: "data/images/protagonists/dead/CorelleDead.png",
+    gau_dead: "data/images/protagonists/dead/GauDead.png",
+    skro_dead: "data/images/protagonists/dead/SkroDead.png",
+    kokitozi_dead: "data/images/protagonists/dead/KokiDead.png",
 
     saveimage1: "data/images/PFP-1.png",
     saveimage2: "data/images/PFP-2.png",
@@ -85,10 +80,10 @@ let images = {
     nottoofresh: "data/images/NotTooFreshEnemy.png",
 
 
-    Portraits_Bleu: "data/images/Portraits_Bleu.png",
-    Portraits_Corelle: "data/images/Portraits_Corelle.png",
-    Portraits_Gau: "data/images/Portraits_Gau.png",
-    Portraits_Skro: "data/images/Portraits_Skro.png",
+    Portraits_Bleu: "data/images/protagonists/portraits/Portraits_Bleu.png",
+    Portraits_Corelle: "data/images/protagonists/portraits/Portraits_Corelle.png",
+    Portraits_Gau: "data/images/protagonists/portraits/Portraits_Gau.png",
+    Portraits_Skro: "data/images/protagonists/portraits/Portraits_Skro.png",
 
     fire: "data/images/elements/fire_element.png",
     earth: "data/images/elements/earth_element.png",

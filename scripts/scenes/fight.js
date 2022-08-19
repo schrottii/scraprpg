@@ -950,7 +950,7 @@ scenes.fight = () => {
             }
 
             if (getPlayer(i + 1).HP < 1 && positions[getPlayer(i + 1).pos[0]][getPlayer(i + 1).pos[1]].isOccupied == true) {
-                fightStats[5 + (i * amountStats)].alpha = 0;
+                fightStats[5 + amountStats * i].alpha = 0;
                 postLog(getPlayer(i + 1).name + " died!");
                 positions[getPlayer(i + 1).pos[0]][getPlayer(i + 1).pos[1]].isOccupied = false;
                 checkAllDead();
@@ -1948,7 +1948,7 @@ scenes.fight = () => {
     }));
 
     gameOverScreen2.push(controls.button({
-        anchor: [0.1, 0.6], sizeAnchor: [0.3, 0.2],
+        anchor: [0.1, 0.6], sizeAnchor: [0.25, 0.1],
         text: "Load Save", fontSize: 48,
         alpha: 0,
         onClick(args) {
@@ -1961,7 +1961,7 @@ scenes.fight = () => {
     }));
 
     gameOverScreen2.push(controls.button({
-        anchor: [0.6, 0.6], sizeAnchor: [0.3, 0.2],
+        anchor: [0.65, 0.6], sizeAnchor: [0.25, 0.1],
         text: "Title Screen", fontSize: 48,
         alpha: 0,
         onClick(args) {
