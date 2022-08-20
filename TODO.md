@@ -5,16 +5,16 @@
 The developing phase, Schrottii's phase, the essential features of the game
 
 - Overworld quests
-
-- Animated UI (what exactly?)
+- More Animated UI
 - Equipment system:
 Weapon slots (LHand/RHand), Armor slots (Head/Body/Bottom/Hand), and accessory slots (Hand/Neck/Head).
 Most equipment can be upgraded to No Parcels with enough Bricks, up to +10.
 
 - Cutscene mode (Overworld)
 - Cutscene mode (Battle)
-- Promotion (and Evolution Tree) system
-- Mastery Tokens
+
+- The remaining scenes (formation, items, etc.)
+- Different attacks, weapons, NTF summon, etc.
 
 
 
@@ -32,6 +32,9 @@ There is still some coding, some new features, but not as much as in phase 1 (Sc
 
 - Mastery Techs
 - Duo Mastery Techs
+- 
+- Promotion (and Evolution Tree) system
+- Mastery Tokens
 
 
 
