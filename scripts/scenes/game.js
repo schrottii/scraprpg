@@ -365,7 +365,7 @@ scenes.game = () => {
         alpha: 0,
     }));
     dialogueNormalComponents.push(controls.image({
-        anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96],
+        anchor: [0.81, 1], sizeOffset: [64, 64], offset: [100, -96],
         source: "star",
         alpha: 0,
     }));

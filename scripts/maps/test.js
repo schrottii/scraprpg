@@ -166,7 +166,7 @@ maps["test"] = {
         "--- --- --- --- --- --- 034 033",
         ],
     dialogues: {
-        1: ["cinematic", ["Hello this is a test dialogue", "Portraits_Bleu", "happy"],
+        1: ["normal", ["Hello this is a test dialogue", "Portraits_Bleu", "happy"],
         ["Second text", "Portraits_Bleu", "neutral"],
             ["Don't forget to subscribe to my channel", "Portraits_Bleu", "angry"]],
         2: ["normal", ["Hmm...", "Portraits_Bleu", "neutral"],
