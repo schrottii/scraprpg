@@ -53,14 +53,17 @@ function getEmotion(emotion) { //How do you spell portrait?
         case "happy":
             return [0, 64, 64, 64];
             break;
-        case "disappointed":
+        case "love":
             return [0, 128, 64, 64];
             break;
-        case "sad":
+        case "disappointed":
             return [0, 192, 64, 64];
             break;
-        case "angry":
+        case "sad":
             return [0, 256, 64, 64];
+            break;
+        case "angry":
+            return [0, 320, 64, 64];
             break;
         default:
             return [0, 0, 64, 64];
