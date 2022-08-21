@@ -1309,10 +1309,15 @@ scenes.game = () => {
                                 if (map.map[activenpcs[i].position[1] + yo][activenpcs[i].position[0] + xo] != undefined) {
                                     if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo) != undefined) {
                                         if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo).occupied != true) {
-                                            activenpcs[i].position[0] += xo;
-                                            activenpcs[i].position[1] += yo;
-                                            activenpcs[i].head = head;
-                                            activenpcs[i].kofs = [xo, yo, activenpcs[i].walkingSpeed];
+                                            if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, 2) == undefined || (map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, 2).occupied != true) {
+                                                if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, 3) == undefined || (map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, 3).occupied != true) {
+                                                    // "all layers" for getTile would be nice - remind me to add it later
+                                                    activenpcs[i].position[0] += xo;
+                                                    activenpcs[i].position[1] += yo;
+                                                    activenpcs[i].head = head;
+                                                    activenpcs[i].kofs = [xo, yo, activenpcs[i].walkingSpeed];
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -1387,10 +1392,14 @@ scenes.game = () => {
                                 if (map.map[enemies[i].position[1] + xo][enemies[i].position[0] + yo] != undefined) {
                                     if (getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo) != undefined) {
                                         if (getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo).occupied != true) {
-                                            enemies[i].position[0] += xo;
-                                            enemies[i].position[1] += yo;
-                                            enemies[i].head = headTo;
-                                            enemies[i].kofs = [xo, yo, enemies[i].walkingSpeed];
+                                            if (getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, 2) == undefined || getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, 2).occupied != true) {
+                                                if (getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, 3) == undefined || getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, 3).occupied != true) {
+                                                    enemies[i].position[0] += xo;
+                                                    enemies[i].position[1] += yo;
+                                                    enemies[i].head = headTo;
+                                                    enemies[i].kofs = [xo, yo, enemies[i].walkingSpeed];
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -1470,7 +1479,7 @@ scenes.game = () => {
                         game.position[0] += xo;
                         game.position[1] += yo;
                         ActionsOnMove();
-                        tryTeleport(map, game.position[0] + xo, game.position[1] + yo);
+                        tryTeleport(map, game.position[0], game.position[1]);
 
                         actionButton.source = "actionbutton"
                         if (getTile(map, game.position[0] + xo, game.position[1] + yo) != undefined) if (getTile(map, game.position[0] + xo, game.position[1] + yo).action != undefined) actionButton.source = "actionbutton_active"
