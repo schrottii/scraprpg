@@ -320,6 +320,7 @@ scenes.game = () => {
                     dialogueEmotion = "neutral";
                     dialogueProgress = 1;
                     canMove = true;
+                    actionButton.alpha = 1;
                 }
                 else if (currentDialogue[dialogueProgress][4] != undefined) {
                     currentDialogue[dialogueProgress][4]();
@@ -384,6 +385,7 @@ scenes.game = () => {
                     dialogueEmotion = "neutral";
                     dialogueProgress = 1;
                     canMove = true;
+                    actionButton.alpha = 1;
                 }
                 else if (currentDialogue[dialogueProgress][4] != undefined) {
                     currentDialogue[dialogueProgress][4]();
@@ -426,6 +428,7 @@ scenes.game = () => {
                     dialogueEmotion = "neutral";
                     dialogueProgress = 1;
                     canMove = true;
+                    actionButton.alpha = 1;
                 }
                 else if (currentDialogue[dialogueProgress][4] != undefined) {
                     currentDialogue[dialogueProgress][4]();
@@ -812,6 +815,29 @@ scenes.game = () => {
                 return map.tiles[thetile];
             }
         }
+    }
+
+    // Function used to figure out if anyone (player, npcs, enemies, Ed Sheeran) is on a tile
+    function creaturesOnTile(map, x, y, player = true) {
+        // Set player to false if you want to ignore the player
+        // This functions returns true if anyone is there - false if nobody is there
+        // do !creaturesOnTile(...) to check if nobody is there
+
+        if (game.position[0] == x && game.position[1] == y && player == true) {
+            return true;
+        }
+        for (cot in enemies) {
+            if (enemies[cot].position[0] == x && enemies[cot].position[1] == y) {
+                return true;
+            }
+        }
+        for (cot in activenpcs) {
+            if (activenpcs[cot].position[0] == x && activenpcs[cot].position[1] == y) {
+                return true;
+            }
+        }
+        // Nobody there
+        return false;
     }
 
     // Function to check if a tile is, well, walkable
@@ -1311,11 +1337,13 @@ scenes.game = () => {
                                         if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo).occupied != true) {
                                             if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, 2) == undefined || (map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, 2).occupied != true) {
                                                 if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, 3) == undefined || (map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, 3).occupied != true) {
-                                                    // "all layers" for getTile would be nice - remind me to add it later
-                                                    activenpcs[i].position[0] += xo;
-                                                    activenpcs[i].position[1] += yo;
-                                                    activenpcs[i].head = head;
-                                                    activenpcs[i].kofs = [xo, yo, activenpcs[i].walkingSpeed];
+                                                    if (!creaturesOnTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo)) {
+                                                        // "all layers" for getTile would be nice - remind me to add it later
+                                                        activenpcs[i].position[0] += xo;
+                                                        activenpcs[i].position[1] += yo;
+                                                        activenpcs[i].head = head;
+                                                        activenpcs[i].kofs = [xo, yo, activenpcs[i].walkingSpeed];
+                                                    }
                                                 }
                                             }
                                         }
@@ -1345,17 +1373,22 @@ scenes.game = () => {
                             if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0] + xo] != undefined) {
                                 if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo) != undefined) {
                                     if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo).occupied != true) {
-                                        activenpcs[i].position[0] += xo;
-                                        activenpcs[i].position[1] += yo;
-                                        if (activenpcs[i].path[activenpcs[i].pathProgress] != undefined) activenpcs[i].head = activenpcs[i].path[activenpcs[i].pathProgress];
-                                        else activenpcs[i].head = activenpcs[i].path[activenpcs[i].pathProgress - 1];
-                                        activenpcs[i].kofs = [xo, yo, activenpcs[i].walkingSpeed];
+                                        if (!creaturesOnTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo) || xo == 0 && yo == 0) {
+                                            activenpcs[i].position[0] += xo;
+                                            activenpcs[i].position[1] += yo;
+                                            activenpcs[i].pathProgress += 1; // only increase it if something happens. lol
+                                            if (activenpcs[i].path[activenpcs[i].pathProgress] != undefined) activenpcs[i].head = activenpcs[i].path[activenpcs[i].pathProgress];
+                                            else activenpcs[i].head = activenpcs[i].path[activenpcs[i].pathProgress - 1];
+                                            activenpcs[i].kofs = [xo, yo, activenpcs[i].walkingSpeed];
+                                        }
+                                    }
+                                    else {
+                                        activenpcs[i].pathProgress += 1; // or when you run against smth
                                     }
                                 }
                             }
                         }
 
-                        activenpcs[i].pathProgress += 1;
                     }
                 }
                 for (i = 0; i < enemies.length; i++) { 
@@ -1394,10 +1427,12 @@ scenes.game = () => {
                                         if (getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo).occupied != true) {
                                             if (getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, 2) == undefined || getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, 2).occupied != true) {
                                                 if (getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, 3) == undefined || getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, 3).occupied != true) {
-                                                    enemies[i].position[0] += xo;
-                                                    enemies[i].position[1] += yo;
-                                                    enemies[i].head = headTo;
-                                                    enemies[i].kofs = [xo, yo, enemies[i].walkingSpeed];
+                                                    if (!creaturesOnTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, false)) {
+                                                        enemies[i].position[0] += xo;
+                                                        enemies[i].position[1] += yo;
+                                                        enemies[i].head = headTo;
+                                                        enemies[i].kofs = [xo, yo, enemies[i].walkingSpeed];
+                                                    }
                                                 }
                                             }
                                         }
