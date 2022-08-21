@@ -15,6 +15,7 @@ scenes.title = () => {
         anchor: [.5, .6], offset: [0, 75],
         fontSize: 16, alpha: 0,
         text: "Click anywhere to continue...",
+        outline: "red", outlineAnchor: 0.001,
     });
     let infoLabel = controls.label({
         anchor: [.02, .98], offset: [5, -12],

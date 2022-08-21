@@ -1735,41 +1735,43 @@ scenes.fight = () => {
         anchor: [0.725, 0.85], sizeAnchor: [0.2, 0.1], offset: [0, -1000],
         text: "Next",
         onClick(args) {
-            playSound("buttonClickSound");
-            if (checkAllDead(true)) {
-                fightaction = "victoryitems";
+            if (this.alpha == 1) {
+                playSound("buttonClickSound");
+                if (checkAllDead(true)) {
+                    fightaction = "victoryitems";
 
-                for (i in gainedItems) {
-                    winScreen2[2 + (i * 2)].source = "items/" + items[gainedItems[i]]().source;
-                    winScreen2[3 + (i * 2)].text = items[gainedItems[i]]().name;
-                }
-
-
-                for (i in winScreen) {
-                    winScreen[i].alpha = 0;
-                }
-                winScreen[0].alpha = 0.8;
-                for (i in winStats) {
-                    winStats[i].alpha = 0;
-                }
-                for (i in winScreen2) {
-                    if (winScreen2[i].source != "gear" && winScreen2[i].text != "nothing") winScreen2[i].alpha = 1;
-                }
-
-                addAnimator(function (t) {
-                    for (i = 1; i < winScreen2.length; i++) {
-                        winScreen2[i].offset[1] = Math.min(-1000 + t, 0);
+                    for (i in gainedItems) {
+                        winScreen2[2 + (i * 2)].source = "items/" + items[gainedItems[i]]().source;
+                        winScreen2[3 + (i * 2)].text = items[gainedItems[i]]().name;
                     }
-                    if (t > 1000) {
-                        for (i = 0; i < winScreen2.length; i++) {
-                            if (winScreen2[i].fontSize == 24) winScreen2[i].offset[1] = 32;
-                            else winScreen2[i].offset[1] = 0;
+
+
+                    for (i in winScreen) {
+                        winScreen[i].alpha = 0;
+                    }
+                    winScreen[0].alpha = 0.8;
+                    for (i in winStats) {
+                        winStats[i].alpha = 0;
+                    }
+                    for (i in winScreen2) {
+                        if (winScreen2[i].source != "gear" && winScreen2[i].text != "nothing") winScreen2[i].alpha = 1;
+                    }
+
+                    addAnimator(function (t) {
+                        for (i = 1; i < winScreen2.length; i++) {
+                            winScreen2[i].offset[1] = Math.min(-1000 + t, 0);
                         }
-                        return true;
-                    }
-                    return false;
-                })
+                        if (t > 1000) {
+                            for (i = 0; i < winScreen2.length; i++) {
+                                if (winScreen2[i].fontSize == 24) winScreen2[i].offset[1] = 32;
+                                else winScreen2[i].offset[1] = 0;
+                            }
+                            return true;
+                        }
+                        return false;
+                    })
 
+                }
             }
         },
         alpha: 0,
@@ -1876,13 +1878,15 @@ scenes.fight = () => {
         anchor: [0.4, 0.85], sizeAnchor: [0.2, 0.1], offset: [0, 0],
         text: "Next",
         onClick(args) {
-            playSound("buttonClickSound");
-            if (checkAllDead(true)) {
-                if (fightaction == "victoryitems") {
-                    setScene(scenes.game());
+            if (this.alpha == 1) {
+                playSound("buttonClickSound");
+                if (checkAllDead(true)) {
+                    if (fightaction == "victoryitems") {
+                        setScene(scenes.game());
 
-                    positions = [];
-                    fightStats = [];
+                        positions = [];
+                        fightStats = [];
+                    }
                 }
             }
         },

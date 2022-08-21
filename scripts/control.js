@@ -9,10 +9,10 @@ let controls = {
 
             alpha: 1,
 
-            render(ctx) {},
+            render(ctx) { },
 
-            onClick(args) {},
-    
+            onClick(args) { },
+
             ...args || {},
         }
     },
@@ -22,36 +22,23 @@ let controls = {
             source: null,
             snip: false,
             render(ctx) {
-                if (isLs() == true) {
-                    let w = this.sizeOffset[0] / 2 + this.sizeAnchor[0] * ctx.canvas.width;
-                    let h = this.sizeOffset[1] / 2+ this.sizeAnchor[1] * ctx.canvas.height;
+                let red = 1;
+                if (isLs() == true) red = 2;
 
-                    if (w > 0 && h > 0 && this.snip != false) ctx.drawImage(images[this.source],
-                        this.snip[0], this.snip[1], this.snip[2], this.snip[3],
-                        this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width,
-                        this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height, w, h);
-                    else if (w > 0 && h > 0) ctx.drawImage(images[this.source],
-                        this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width,
-                        this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height, w, h);
-                    else ctx.drawImage(images[this.source],
-                        this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width,
-                        this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height);
-                }
-                else {
-                    let w = this.sizeOffset[0] + this.sizeAnchor[0] * ctx.canvas.width;
-                    let h = this.sizeOffset[1] + this.sizeAnchor[1] * ctx.canvas.height;
+                let w = this.sizeOffset[0] / red + this.sizeAnchor[0] * ctx.canvas.width;
+                let h = this.sizeOffset[1] / red + this.sizeAnchor[1] * ctx.canvas.height;
 
-                    if (w > 0 && h > 0 && this.snip != false) ctx.drawImage(images[this.source],
-                        this.snip[0], this.snip[1], this.snip[2], this.snip[3],
-                        this.offset[0] + this.anchor[0] * ctx.canvas.width,
-                        this.offset[1] + this.anchor[1] * ctx.canvas.height, w, h);
-                    else if (w > 0 && h > 0) ctx.drawImage(images[this.source],
-                        this.offset[0] + this.anchor[0] * ctx.canvas.width,
-                        this.offset[1] + this.anchor[1] * ctx.canvas.height, w, h);
-                    else ctx.drawImage(images[this.source],
-                        this.offset[0] + this.anchor[0] * ctx.canvas.width,
-                        this.offset[1] + this.anchor[1] * ctx.canvas.height);
-                }
+                if (w > 0 && h > 0 && this.snip != false) ctx.drawImage(images[this.source],
+                    this.snip[0], this.snip[1], this.snip[2], this.snip[3],
+                    this.offset[0] / red + this.anchor[0] * ctx.canvas.width,
+                    this.offset[1] / red + this.anchor[1] * ctx.canvas.height, w, h);
+                else if (w > 0 && h > 0) ctx.drawImage(images[this.source],
+                    this.offset[0] / red + this.anchor[0] * ctx.canvas.width,
+                    this.offset[1] / red + this.anchor[1] * ctx.canvas.height, w, h);
+                else ctx.drawImage(images[this.source],
+                    this.offset[0] / red + this.anchor[0] * ctx.canvas.width,
+                    this.offset[1] / red + this.anchor[1] * ctx.canvas.height);
+
             },
             ...args || {},
         }
@@ -62,32 +49,21 @@ let controls = {
             fill: "#000000",
             render(ctx) {
 
-                if (isLs() == true) {
-                    let w = this.sizeOffset[0] / 2 + this.sizeAnchor[0] * ctx.canvas.width;
-                    let h = this.sizeOffset[1] / 2 + this.sizeAnchor[1] * ctx.canvas.height;
+                let red = 1;
+                if (isLs() == true) red = 2;
 
-                    ctx.fillStyle = this.fill;
+                let w = this.sizeOffset[0] / red + this.sizeAnchor[0] * ctx.canvas.width;
+                let h = this.sizeOffset[1] / red + this.sizeAnchor[1] * ctx.canvas.height;
 
-                    if (w > 0 && h > 0) ctx.fillRect(
-                        this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width,
-                        this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height, w, h);
-                    else ctx.fillRect(
-                        this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width,
-                        this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height);
-                }
-                else {
-                    let w = this.sizeOffset[0] + this.sizeAnchor[0] * ctx.canvas.width;
-                    let h = this.sizeOffset[1] + this.sizeAnchor[1] * ctx.canvas.height;
+                ctx.fillStyle = this.fill;
 
-                    ctx.fillStyle = this.fill;
+                if (w > 0 && h > 0) ctx.fillRect(
+                    this.offset[0] / red + this.anchor[0] * ctx.canvas.width,
+                    this.offset[1] / red + this.anchor[1] * ctx.canvas.height, w, h);
+                else ctx.fillRect(
+                    this.offset[0] / red + this.anchor[0] * ctx.canvas.width,
+                    this.offset[1] / red + this.anchor[1] * ctx.canvas.height);
 
-                    if (w > 0 && h > 0) ctx.fillRect(
-                        this.offset[0] + this.anchor[0] * ctx.canvas.width,
-                        this.offset[1] + this.anchor[1] * ctx.canvas.height, w, h);
-                    else ctx.fillRect(
-                        this.offset[0] + this.anchor[0] * ctx.canvas.width,
-                        this.offset[1] + this.anchor[1] * ctx.canvas.height);
-                }
             },
             ...args || {},
         }
@@ -99,40 +75,40 @@ let controls = {
             fill: "white",
             font: "DePixelKlein",
             fontSize: 30,
+            fontAnchor: false,
             align: "center",
             baseline: "middle",
             outline: "none",
             outlineSize: 0,
+            outlineAnchor: false,
             render(ctx) {
                 ctx.fillStyle = this.fill;
                 ctx.textAlign = this.align;
                 ctx.textBaseline = this.baseline;
-                if (isLs() == true) {
-                    ctx.font = (this.fontSize / 2) + "px " + this.font + ", sans-serif";
-                    if (this.outline != "none") {
-                        ctx.strokeStyle = this.outline;
-                        ctx.lineWidth = this.outlineSize;
-                        ctx.strokeText(this.text,
-                            this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width,
-                            this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height);
-                    }
-                    ctx.fillText(this.text,
-                        this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width,
-                        this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height);
+
+                let red = 1;
+                if (isLs() == true) red = 2;
+
+                // fontSize - size in pixels
+                // fontAnchor - size relative to the screen size, like sizeAnchor for rects, buttons, etc.
+                // fontAnchor is OPTIONAL! If you use it, fontSize will be ignored. If not, fontSize will be used.
+                // Same thing with outlineAnchor.
+
+                if (this.fontAnchor == false) ctx.font = (this.fontSize / red) + "px " + this.font + ", sans-serif";
+                else ctx.font = Math.ceil((this.fontAnchor * ctx.canvas.width) / red) + "px " + this.font + ", sans-serif";
+
+                if (this.outline != "none") {
+                    ctx.strokeStyle = this.outline;
+                    if (this.outlineAnchor == false) ctx.lineWidth = this.outlineSize / red;
+                    else ctx.lineWidth = (this.outlineAnchor * ctx.canvas.width) / red;
+                    ctx.strokeText(this.text,
+                        this.offset[0] / red + this.anchor[0] * ctx.canvas.width,
+                        this.offset[1] / red + this.anchor[1] * ctx.canvas.height);
                 }
-                else {
-                    ctx.font = this.fontSize + "px " + this.font + ", sans-serif";
-                    if (this.outline != "none") {
-                        ctx.strokeStyle = this.outline;
-                        ctx.lineWidth = this.outlineSize;
-                        ctx.strokeText(this.text,
-                            this.offset[0] + this.anchor[0] * ctx.canvas.width,
-                            this.offset[1] + this.anchor[1] * ctx.canvas.height);
-                    }
-                    ctx.fillText(this.text,
-                        this.offset[0] + this.anchor[0] * ctx.canvas.width,
-                        this.offset[1] + this.anchor[1] * ctx.canvas.height);
-                }
+                ctx.fillText(this.text,
+                    this.offset[0] / red + this.anchor[0] * ctx.canvas.width,
+                    this.offset[1] / red + this.anchor[1] * ctx.canvas.height);
+
             },
             ...args || {},
         }
@@ -147,28 +123,23 @@ let controls = {
             fillText: "black",
             fontSize: 30,
             render(ctx) {
-
                 let x, y, w, h;
-                if (isLs() == true) {
-                    x = this.offset[0] / 2 + this.anchor[0] * ctx.canvas.width;
-                    y = this.offset[1] / 2 + this.anchor[1] * ctx.canvas.height;
-                    w = this.sizeOffset[0] / 2 + this.sizeAnchor[0] * ctx.canvas.width;
-                    h = this.sizeOffset[1] / 2 + this.sizeAnchor[1] * ctx.canvas.height;
-                }
-                else {
-                    x = this.offset[0] + this.anchor[0] * ctx.canvas.width;
-                    y = this.offset[1] + this.anchor[1] * ctx.canvas.height;
-                    w = this.sizeOffset[0] + this.sizeAnchor[0] * ctx.canvas.width;
-                    h = this.sizeOffset[1] + this.sizeAnchor[1] * ctx.canvas.height;
-                }
+
+                let red = 1;
+                if (isLs() == true) red = 2;
+
+                x = this.offset[0] / red + this.anchor[0] * ctx.canvas.width;
+                y = this.offset[1] / red + this.anchor[1] * ctx.canvas.height;
+                w = this.sizeOffset[0] / red + this.sizeAnchor[0] * ctx.canvas.width;
+                h = this.sizeOffset[1] / red + this.sizeAnchor[1] * ctx.canvas.height;
+
 
                 ctx.fillStyle = this.fillTop;
                 ctx.fillRect(x, y, w, h / 2 + 0.25);
                 ctx.fillStyle = this.fillBottom;
                 ctx.fillRect(x, y + h / 2, w, h / 2);
 
-                if (isLs() == false) ctx.font = this.fontSize + "px " + this.font + ", sans-serif";
-                if (isLs() == true) ctx.font = (this.fontSize / 2) + "px " + this.font + ", sans-serif";
+                ctx.font = (this.fontSize / red) + "px " + this.font + ", sans-serif";
                 ctx.fillStyle = this.fillText;
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
