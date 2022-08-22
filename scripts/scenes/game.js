@@ -748,7 +748,7 @@ scenes.game = () => {
 
     // Weather time thing
     function setNightEffet(color, al = 1, type = "none") {
-        let transitionDuration = 4000; // Roughly how long it lasts. 1000 = 1 sec
+        let transitionDuration = 30000; // Roughly how long it lasts. 1000 = 1 sec
         let fogOpacityChangeIntensity = 10; // How much the opacity during fog changes. Higher number = less
         // Speed in preRender
 
