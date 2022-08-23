@@ -1252,15 +1252,6 @@ scenes.game = () => {
                             if (map.weatherStrength != undefined) weatherControls[i].anchor[0] += 0.0001 * delta * map.weatherStrength;
                             else weatherControls[i].anchor[0] += 0.0001 * delta;
 
-                            if (Math.random() > 0.9) { // Down
-                                if (map.weatherStrength != undefined) weatherControls[i].anchor[1] += 0.001 * delta * map.weatherStrength;
-                                else weatherControls[i].anchor[1] += 0.001 * delta;
-                            }
-                            if (Math.random() > 0.9) { // Up
-                                if (map.weatherStrength != undefined) weatherControls[i].anchor[1] -= 0.001 * delta * map.weatherStrength;
-                                else weatherControls[i].anchor[1] -= 0.001 * delta;
-                            }
-
                             if (weatherControls[i].anchor[0] > 1.1) weatherControls[i].alpha = 0;
                         }
                     }
@@ -1273,6 +1264,15 @@ scenes.game = () => {
                             if (map.weatherStrength != undefined) dustControls[i].anchor[0] += 0.001 * delta * map.weatherStrength;
                             else dustControls[i].anchor[0] += 0.001 * delta;
                             if (dustControls[i].anchor[0] > 1.1) dustControls[i].alpha = 0;
+
+                            if (Math.random() > 0.9) { // Down
+                                if (map.weatherStrength != undefined) dustControls[i].anchor[1] += 0.001 * delta * map.weatherStrength;
+                                else dustControls[i].anchor[1] += 0.001 * delta;
+                            }
+                            if (Math.random() > 0.9) { // Up
+                                if (map.weatherStrength != undefined) dustControls[i].anchor[1] -= 0.001 * delta * map.weatherStrength;
+                                else dustControls[i].anchor[1] -= 0.001 * delta;
+                            }
                         }
                     }
                 }
