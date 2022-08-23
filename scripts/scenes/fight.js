@@ -1155,7 +1155,7 @@ scenes.fight = () => {
     }
 
     function showItems() {
-    let itemOffset = itemPage * 12
+        let itemOffset = itemPage * 12
         let inventory = Object.keys(game.inventory);
         for (i = 0; i < ((fightActions.length / 4) - 9); i++) {
             fightActions[(i * 4) + 3].alpha = 0;
@@ -1178,7 +1178,6 @@ scenes.fight = () => {
                 fightActions[(i * 4) + 2].fill = "white";
             }
         }
-
     }
 
 

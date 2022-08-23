@@ -79,8 +79,15 @@ function getStat(prot, stat) {
         console.trace();
         console.log([prot, stat]);
     }
-    if (stat == "strength") return Math.round(cStats[prot][stat] * (1.07 * game.characters[prot].level));
-    if (stat == "maxHP") return Math.round(cStats[prot][stat] * (1.1 * game.characters[prot].level));
+
+    // Items (jfc)
+    let itemBonus = 0;
+    for (EQ in game.characters[prot].equipment) {
+        if (game.characters[prot].equipment[EQ] != "none") if (items[game.characters[prot].equipment[EQ]]().stats[stat] != undefined) itemBonus += items[game.characters[prot].equipment[EQ]]().stats[stat];
+    }
+
+    if (stat == "strength") return Math.round(itemBonus + cStats[prot][stat] * (1.07 * game.characters[prot].level));
+    if (stat == "maxHP") return Math.round(itemBonus + cStats[prot][stat] * (1.1 * game.characters[prot].level));
     // to do: EP
     // to do: agi
     // to do: acc

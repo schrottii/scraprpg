@@ -1564,7 +1564,7 @@ scenes.game = () => {
             if (map.items != undefined) {
                 for (let item of map.items) {
                     if (item[4] == true) {
-                        ctx.drawImage(images["items/" + item[2]],
+                        ctx.drawImage(images["items/" + items[item[2]]().source],
                             ((zoom * scale) * (item[0] + kofs[0] * kofs[2] - (game.position[0] - width / 2 + 0.5))) - ((zoom - 1) * scale * (width / 2)),
                             (zoom * scale) * (item[1] + kofs[1] * kofs[2] - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7),
                             zoom * scale, zoom * scale)

@@ -77,7 +77,7 @@ maps["test"] = {
     },
     items: [
         [8, 0, "brickyleaf", 1, true],
-        [8, 22, "scroll", 2, true],
+        [8, 22, "chicagopants", 2, true],
         [8, 23, "scroll", 1, true],
         [24, 20, "potion", 1, true],
         [23, 20, "peppytincture", 1, true],

@@ -21,6 +21,14 @@ let game = {
             acc: 90,
             effect: ["none", 0],
             pos: [0, 0],
+            equipment: {
+                "head" : "none",
+                "body" : "none",
+                "lhand" : "none",
+                "rhand" : "none",
+                "acc1" : "none",
+                "acc2" : "none",
+            }
         },
         corelle: {
             name: "Corelle",
@@ -33,6 +41,14 @@ let game = {
             acc: 80,
             effect: ["none", 0],
             pos: [0, 1],
+            equipment: {
+                "head": "none",
+                "body": "none",
+                "lhand": "none",
+                "rhand": "none",
+                "acc1": "none",
+                "acc2": "none",
+            }
         },
         gau: {
             name: "Gau",
@@ -45,6 +61,14 @@ let game = {
             acc: 80,
             effect: ["none", 0],
             pos: [2, 2],
+            equipment: {
+                "head": "none",
+                "body": "none",
+                "lhand": "none",
+                "rhand": "none",
+                "acc1": "none",
+                "acc2": "none",
+            }
         },
         skro: {
             name: "Skro",
@@ -57,6 +81,14 @@ let game = {
             acc: 60,
             effect: ["none", 0],
             pos: [0, 1],
+            equipment: {
+                "head": "none",
+                "body": "none",
+                "lhand": "none",
+                "rhand": "none",
+                "acc1": "none",
+                "acc2": "none",
+            }
         },
         kokitozi: {
             name: "Kokitozi",
@@ -69,6 +101,14 @@ let game = {
             acc: 90,
             effect: ["none", 0],
             pos: [2, 1],
+            equipment: {
+                "head": "none",
+                "body": "none",
+                "lhand": "none",
+                "rhand": "none",
+                "acc1": "none",
+                "acc2": "none",
+            }
         }
     }
 }

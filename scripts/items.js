@@ -7,6 +7,9 @@ let items = {
             max: 99,
             story: false,
             self: false,
+            type: false, // Equipment:
+            // head, body, lhand, rhand, acc1, acc2
+            stats: "none",
             effect: () => {
                 addWrenches(0);
             },
@@ -119,6 +122,22 @@ let items = {
                     battleNumber(args.anchor, amount, 0, args.offset);
                     updateBar(args.player.name.toLowerCase(), HealthBefore);
                 }
+            },
+
+            ...args || {},
+        }
+    },
+    chicagopants(args) {
+        return {
+            ...items.default(),
+            source: "scroll",
+            name: "Chicago Pants",
+            shopcost: 999999,
+            max: 1,
+            type: "body",
+            stats: {
+                "strength": 7,
+                "maxHP": 4,
             },
 
             ...args || {},

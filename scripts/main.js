@@ -422,6 +422,19 @@ function loadGame() {
         if (saveCopy.bricks == undefined) saveCopy.bricks = 0;
         if (saveCopy.inventory == undefined) saveCopy.inventory = { "brickyleaf": 5, "potion": 3 };
 
+        if (saveCopy.characters.bleu.equipment == undefined) {
+            for (i in saveCopy.characters) {
+                saveCopy.characters[i].equipment = {
+                "head" : "none",
+                "body" : "none",
+                "lhand" : "none",
+                "rhand" : "none",
+                "acc1" : "none",
+                "acc2" : "none",
+                }
+            }
+        }
+
         game = saveCopy;
     }
     else {
