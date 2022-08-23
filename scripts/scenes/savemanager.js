@@ -51,7 +51,6 @@ scenes.savemanager = () => {
                 }
                 if (mode == "load") {
                     saveNR = a;
-                    stopMusic();
                     loadGame(a);
                 }
                 if (mode == "delete") {
@@ -176,7 +175,6 @@ scenes.savemanager = () => {
         text: " ",
         onClick(args) {
             saveNR = 3; // Auto save
-            stopMusic();
             loadGame(3);
         }
     }));
