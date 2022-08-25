@@ -39,13 +39,13 @@ let npcs = {
                         32 * Math.floor(walkTime), 32 * this.head, 32, 32,
                         ((zoom * scale) * (tileX + kofs[0] * kofs[2] - this.kofs[0] * (this.kofs[2] / this.walkingSpeed) - xAdjust)) - ((zoom - 1) * scale * (width / 2)),
                         (zoom * scale) * (tileY + kofs[1] * kofs[2] - this.kofs[1] * (this.kofs[2] / this.walkingSpeed) - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7),
-                        zoom * scale, zoom * scale)
+                        zswm, zswm)
                 }
                 if (this.talk == true) {
                     ctx.drawImage(images.talk,
                         ((zoom * scale) * (tileX + 1 + kofs[0] * kofs[2] - this.kofs[0] * (this.kofs[2] / this.walkingSpeed) - xAdjust)) - ((zoom - 1) * scale * (width / 2)),
                         (zoom * scale) * (tileY - 1 + kofs[1] * kofs[2] - this.kofs[1] * (this.kofs[2] / this.walkingSpeed) - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7),
-                        zoom * scale, zoom * scale)
+                        zswm, zswm)
                 }
             },
 

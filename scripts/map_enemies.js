@@ -38,19 +38,19 @@ let mapenemies = {
                         ctx.drawImage(images[this.skin],
                             32 * Math.floor(walkTime), 32 * this.head, 32, 32,
                             posX, posY,
-                            zoom * scale, zoom * scale)
+                            zswm, zswm)
                     }
                 }
                 ctx.globalAlpha = 1;
                 if (this.spawntime < 900 && this.alpha != 0) {
                     this.spawntime += delta;
                     if (this.spawntime > 599) {
-                        ctx.drawImage(images.spawn, 64, 0, 32, 32, posX, posY, zoom * scale, zoom * scale);
+                        ctx.drawImage(images.spawn, 64, 0, 32, 32, posX, posY, zswm, zswm);
                     }
                     else if (this.spawntime > 299) {
-                        ctx.drawImage(images.spawn, 32, 0, 32, 32, posX, posY, zoom * scale, zoom * scale);
+                        ctx.drawImage(images.spawn, 32, 0, 32, 32, posX, posY, zswm, zswm);
                     }
-                    else ctx.drawImage(images.spawn, 0, 0, 32, 32, posX, posY, zoom * scale, zoom * scale);
+                    else ctx.drawImage(images.spawn, 0, 0, 32, 32, posX, posY, zswm, zswm);
                 }
             },
 

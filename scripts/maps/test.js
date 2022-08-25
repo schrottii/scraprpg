@@ -89,6 +89,7 @@ maps["test"] = {
     music: "bgm/placeholder",
     weather: "dust",
     weatherStrength: 1,
+    worldmode: true,
     map: [
         "001 001 001 001 001 001 001 000 000 000 001 001 001 001 001 001 001 001",
         "001 009 010 011 001 001 001 000 000 000 001 025 025 026 001 001 001 001",

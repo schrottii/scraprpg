@@ -1,4 +1,5 @@
 var zoom = 1;
+var zswm = 1;
 var kofs = [0, 0, 0];
 var walkTime = 0;
 var direction = "none";
@@ -463,16 +464,19 @@ scenes.game = () => {
             if (head == 2) xo = 1; // Right
             if (head == 3) yo = -1; // Up
 
+            let xpos = Math.floor(game.position[0]);
+            let ypos = Math.floor(game.position[1]);
+
             if (inDialogue == false) {
                 let map = maps[game.map];
-                if (getTile(map, game.position[0] + xo, game.position[1] + yo) != undefined) {
-                    if (getTile(map, game.position[0] + xo, game.position[1] + yo).action != undefined) {
-                        getTile(map, game.position[0] + xo, game.position[1] + yo).action();
+                if (getTile(map, xpos + xo, ypos + yo) != undefined) {
+                    if (getTile(map, xpos + xo, ypos + yo).action != undefined) {
+                        getTile(map, xpos + xo, ypos + yo).action();
                     }
                 }
-                if (getTile(map, game.position[0] + xo, game.position[1] + yo, 2) != undefined) {
-                    if (getTile(map, game.position[0] + xo, game.position[1] + yo, 2).action != undefined) {
-                        getTile(map, game.position[0] + xo, game.position[1] + yo, 2).action();
+                if (getTile(map, xpos + xo, ypos + yo, 2) != undefined) {
+                    if (getTile(map, xpos + xo, ypos + yo, 2).action != undefined) {
+                        getTile(map, xpos + xo, ypos + yo, 2).action();
                     }
                 }
                 for (i in activenpcs) {
@@ -794,6 +798,8 @@ scenes.game = () => {
     // Function used to grab tiles
     function getTile(map, x, y, l = 1) {
         if (y < 0) return undefined;
+        x = Math.floor(x);
+        y = Math.floor(y);
         if (l == 1) {
             if (map.map[y] != undefined) {
                 let thetile = map.map[y][x * 4] + map.map[y][(x * 4) + 1] + map.map[y][(x * 4) + 2];
@@ -842,7 +848,7 @@ scenes.game = () => {
 
     // Function to check if a tile is, well, walkable
     // Define if a tile (e. g. water) is walkable in the sprites dict
-    function isWalkable(map, x, y, l=1) {
+    function isWalkable(map, x, y, l = 1) {
         if (map.map[y] && getTile(map, x, y, l)) { //Check if tile exists
             for (i = 0; i < activenpcs.length; i++) {
                 if (activenpcs[i].position[0] == x && activenpcs[i].position[1] == y) return false;
@@ -1470,57 +1476,66 @@ scenes.game = () => {
             if (!kofs[2] && canMove == true) {
                 let xo;
                 let yo;
+                let pass = false;
 
                 if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up")) {
                     head = 3;
                     direction = "up";
                     xo = 0;
                     yo = -1;
+                    if (map.worldmode == true) if (game.position[1] % 1 == 0.5) pass = true;
                 } else if ((currentKeys["s"] || currentKeys["arrowdown"] || pad == "down")) {
                     head = 0;
                     direction = "down";
                     xo = 0;
                     yo = 1;
+                    if (map.worldmode == true) if (game.position[1] % 1 == 0) pass = true;
                 } else if ((currentKeys["a"] || currentKeys["arrowleft"] || pad == "left")) {
                     head = 1;
                     direction = "left";
                     xo = -1;
                     yo = 0;
+                    if (map.worldmode == true) if (game.position[0] % 1 == 0.5) pass = true;
                 } else if ((currentKeys["d"] || currentKeys["arrowright"] || pad == "right")) {
                     head = 2;
                     direction = "right";
                     xo = 1;
                     yo = 0;
+                    if (map.worldmode == true) if (game.position[0] % 1 == 0) pass = true;
                 }
                 // Optimized code pog
                 if (xo != undefined) {
                     actionButton.source = "actionbutton"
-                    if (getTile(map, game.position[0] + xo, game.position[1] + yo) != undefined) if (getTile(map, game.position[0] + xo, game.position[1] + yo).action != undefined) actionButton.source = "actionbutton_active"
-                    else if (getTile(map, game.position[0] + xo, game.position[1] + yo, 2) != undefined) if (getTile(map, game.position[0] + xo, game.position[1] + yo, 2).action != undefined) actionButton.source = "actionbutton_active"
+                    if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo).action != undefined) actionButton.source = "actionbutton_active"
+                    else if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2).action != undefined) actionButton.source = "actionbutton_active"
 
                     for (i in activenpcs) {
                         activenpcs[i].talk = false;
-                        if (activenpcs[i].position[0] == game.position[0] + xo && activenpcs[i].position[1] == game.position[1] + yo) {
+                        if (activenpcs[i].position[0] == Math.floor(game.position[0]) + xo && activenpcs[i].position[1] == Math.floor(game.position[1]) + yo) {
                             actionButton.source = "actionbutton_active";
                             activenpcs[i].talk = true;
                         }
                     }
 
 
-                    if (isWalkable(map, game.position[0] + xo, game.position[1] + yo)
-                        && isWalkable(map, game.position[0] + xo, game.position[1] + yo, 2)) { //Direction-change-against-wall
-                        kofs = [xo, yo, 1];
-                        game.position[0] += xo;
-                        game.position[1] += yo;
+                    if (pass || isWalkable(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo)
+                        && isWalkable(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2)) { //Direction-change-against-wall
+                        let step = 1;
+                        if (map.worldmode == true) step = 0.5;
+
+                        kofs = [xo * step, yo * step, 1];
+                        game.position[0] += xo * step;
+                        game.position[1] += yo * step;
+
                         ActionsOnMove();
-                        tryTeleport(map, game.position[0], game.position[1]);
+                        tryTeleport(map, Math.floor(game.position[0]), Math.floor(game.position[1]));
 
                         actionButton.source = "actionbutton"
-                        if (getTile(map, game.position[0] + xo, game.position[1] + yo) != undefined) if (getTile(map, game.position[0] + xo, game.position[1] + yo).action != undefined) actionButton.source = "actionbutton_active"
-                        else if (getTile(map, game.position[0] + xo, game.position[1] + yo, 2) != undefined) if (getTile(map, game.position[0] + xo, game.position[1] + yo, 2).action != undefined) actionButton.source = "actionbutton_active"
+                        if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo).action != undefined) actionButton.source = "actionbutton_active"
+                        else if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2).action != undefined) actionButton.source = "actionbutton_active"
 
                         for (i in activenpcs) {
-                            if (activenpcs[i].position[0] == game.position[0] + xo && activenpcs[i].position[1] == game.position[1] + yo) actionButton.source = "actionbutton_active";
+                            if (activenpcs[i].position[0] == Math.floor(game.position[0]) + xo && activenpcs[i].position[1] == Math.floor(game.position[1]) + yo) actionButton.source = "actionbutton_active";
                         }
                     }
                 }
@@ -1554,13 +1569,6 @@ scenes.game = () => {
                 }
             }
 
-            for (let enemy of enemies) {
-                if (enemy.alpha > 0) {
-                    ctx.globalAlpha = enemy.alpha;
-                    enemy.render(ctx);
-                }
-            }
-
             if (map.items != undefined) {
                 for (let item of map.items) {
                     if (item[4] == true) {
@@ -1572,6 +1580,14 @@ scenes.game = () => {
                 }
             }
 
+
+            let wm = 1;
+
+            if (map.worldmode == true) {
+                wm = 2;
+            }
+            zswm = (zoom * scale) / wm;
+
             for (i in activenpcs) {
                 if (activenpcs[i].alpha > 0) {
                     ctx.globalAlpha = activenpcs[i].alpha;
@@ -1579,17 +1595,23 @@ scenes.game = () => {
                 }
             }
 
-            ctx.drawImage(images[game.leader], 32 * Math.floor(walkTime), 32 * head, 32, 32,
-                scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5) ),
-                scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zoom * scale, zoom * scale)
-            ctx.imageSmoothingEnabled = false;
+            for (let enemy of enemies) {
+                if (enemy.alpha > 0) {
+                    ctx.globalAlpha = enemy.alpha;
+                    enemy.render(ctx);
+                }
+            }
 
+            ctx.drawImage(images[game.leader], 32 * Math.floor(walkTime), 32 * head, 32, 32,
+                scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5)),
+                scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zswm, zswm)
+            ctx.imageSmoothingEnabled = false;
 
             for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
                 if (map.mapfg[y] && map.mapfg[y][(x * 4) + 2]) {
                     if (map.mapfg[y][(x * 4) + 2] != "-") {
                         ctx.drawImage(images["tiles/" + getTile(map, x, y, 3).sprite],
-                            zoom * scale * (x - ofsX) - ((zoom - 1) * scale * (width / 2)), zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
+                            zoom * scale * (x - ofsX) - ((zoom - 1) * scale * (width / 2)), zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale, zoom * scale);
                     }
                 }
             }

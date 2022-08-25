@@ -76,7 +76,7 @@ let images = {
     saveimage5: "data/images/PFP-5.png",
 
     weakhelter: "data/images/Map_Evil.png",
-    stronghelter: "data/images/Map_Corelle.png",
+    stronghelter: "data/images/protagonists/map/Map_Corelle.png",
     itsalive: "data/images/Map_ItsAlive.png",
     livingbarrel: "data/images/Map_LivingBarrel.png",
     nottoofresh: "data/images/NotTooFreshEnemy.png",
