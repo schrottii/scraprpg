@@ -1186,7 +1186,7 @@ scenes.game = () => {
             source: "rain", alpha: 0,
         }))
     }
-    for (i = 0; i < 300; i++) {
+    for (i = 0; i < 400; i++) {
         dustControls.push(controls.rect({
             anchor: [-0.2, Math.random()], sizeOffset: [4, 4],
             fill: "yellow",
@@ -1262,6 +1262,8 @@ scenes.game = () => {
                     }
                 }
                 if (map.weather == "dust") {
+                    spawnDust();
+                    spawnDust();
                     spawnDust();
                     spawnDust();
                     for (i in dustControls) {
