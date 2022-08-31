@@ -21,7 +21,7 @@ scenes.savemanager = () => {
     background.push(controls.rect({
         anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
         alpha: 1,
-        fill: "lightsalmon"
+        fill: colors.buttontop
     }));
     background.push(controls.button({
         anchor: [0.9, 0.05], sizeAnchor: [0.05, 0.05],

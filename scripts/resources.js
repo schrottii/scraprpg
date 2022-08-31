@@ -221,6 +221,13 @@ var maps = {
     "cave1": "scripts/maps/cave1.js",
 };
 
+var colors = { // We hate british people
+    "buttontop": "#d49f52",
+    "buttonbottom": "#b58542",
+    "buttontoppressed": "#ca6100",
+    "buttonbottompressed": "#8c3500",
+}
+
 var resCount = 0;
 var resLoad = 0;
 
