@@ -6,6 +6,8 @@ scenes.equipment = () => {
     var equipmentChangeDisplay = [];
     var itemPage = 0;
 
+    var characterSelected = "bleu";
+
     // Background
     background.push(controls.image({
         anchor: [0, 0], sizeAnchor: [1, 1],
@@ -75,7 +77,13 @@ scenes.equipment = () => {
                     let inventory = Object.keys(game.inventory);
                     if (items[inventory[this.idx + itemOffset]] != undefined) {
                         let type = items[inventory[this.idx + itemOffset]]().type;
-                        if (type != false) game.characters["bleu"].equipment[type] = items[inventory[this.idx + itemOffset]].name;
+                        if (inventory[this.idx + itemOffset] == game.characters[characterSelected].equipment[items[inventory[this.idx + itemOffset]]().type]) { // Equipped
+                            game.characters[characterSelected].equipment[type] = "none";
+                        }
+                        else {
+                            if (type != false) game.characters[characterSelected].equipment[type] = items[inventory[this.idx + itemOffset]].name;
+                        }
+                        showItems();
                     }
                 }
             }));
@@ -105,6 +113,31 @@ scenes.equipment = () => {
         }));
     }
 
+    background.push(controls.button({
+        anchor: [0.15, 0.15], sizeAnchor: [0.05, 0.05], offset: [0, -24],
+        alpha: 1,
+        onClick(args) {
+            let i = game.chars.indexOf(characterSelected);
+            if (game.chars[i - 1] != undefined) characterSelected = game.chars[i - 1];
+            else characterSelected = game.chars[game.chars.length - 1];
+            showItems();
+        },
+        text: "<",
+        fill: "white"
+    }));
+    background.push(controls.button({
+        anchor: [0.4, 0.15], sizeAnchor: [0.05, 0.05], offset: [0, -24],
+        alpha: 1,
+        onClick(args) {
+            let i = game.chars.indexOf(characterSelected);
+            if (game.chars[i + 1] != undefined) characterSelected = game.chars[i + 1];
+            else characterSelected = "bleu";
+            showItems();
+        },
+        text: ">",
+        fill: "white"
+    }));
+
 
     function showItems() {
         let itemOffset = itemPage * 12
@@ -120,7 +153,9 @@ scenes.equipment = () => {
                 itemsText[i].item = items[inventory[i + itemOffset]];
                 if (game.inventory[items[inventory[i + itemOffset]].name] > 1) itemsText[i].text = items[inventory[i + itemOffset]]().name + " x" + game.inventory[items[inventory[i + itemOffset]].name];
                 else itemsText[i].text = items[inventory[i + itemOffset]]().name;
-                if (items[inventory[i + itemOffset]]().type != false) itemsText[i].fill = "black";
+
+                if (inventory[i + itemOffset] == game.characters[characterSelected].equipment[items[inventory[i + itemOffset]]().type]) itemsText[i].fill = "lightgreen"; // Equipped
+                else if (items[inventory[i + itemOffset]]().type != false) itemsText[i].fill = "black";
                 else itemsText[i].fill = "darkgray";
                 itemsText[i].source = "items/" + items[inventory[i + itemOffset]]().source;
                 itemsText[i].alpha = 1;
@@ -154,18 +189,19 @@ scenes.equipment = () => {
         // Pre-render function
         preRender(ctx, delta) {
             for (i in equipmentDisplay) {
-                if (i == 0) equipmentDisplay[0].text = "Blez";
+                if (i == 0) equipmentDisplay[0].text = game.characters[characterSelected].name;
                 else {
                     let part = ["head", "body", "lhand", "rhand", "acc1", "acc2"][i - 1];
-                    if (game.characters["bleu"].equipment[part] != "none") equipmentDisplay[i].text = ["Head", "Body", "L. Hand", "R. Hand", "Acc. 1", "Acc. 2"][i - 1] + ": " + items[game.characters["bleu"].equipment[part]]().name;
+                    if (game.characters[characterSelected].equipment[part] != "none") equipmentDisplay[i].text = ["Head", "Body", "L. Hand", "R. Hand", "Acc. 1", "Acc. 2"][i - 1] + ": " + items[game.characters[characterSelected].equipment[part]]().name;
+                    else equipmentDisplay[i].text = ["Head", "Body", "L. Hand", "R. Hand", "Acc. 1", "Acc. 2"][i - 1] + ": None";
                 }
             }
             for (i in equipmentChangeDisplay) {
                 let part = ["STR", "DEF", "AGI", "EVA", "CRT", "LUK"][i];
                 let partb = ["strength", "def", "agi", "eva", "crt", "luk"][i];
                 let itemBonus = 0;
-                for (EQ in game.characters["bleu"].equipment) {
-                    if (game.characters["bleu"].equipment[EQ] != "none") if (items[game.characters["bleu"].equipment[EQ]]().stats[partb] != undefined) itemBonus += items[game.characters["bleu"].equipment[EQ]]().stats[partb];
+                for (EQ in game.characters[characterSelected].equipment) {
+                    if (game.characters[characterSelected].equipment[EQ] != "none") if (items[game.characters[characterSelected].equipment[EQ]]().stats[partb] != undefined) itemBonus += items[game.characters[characterSelected].equipment[EQ]]().stats[partb];
                 }
                 equipmentChangeDisplay[i].text = "Total" + part + " changed: " + itemBonus;
             }
