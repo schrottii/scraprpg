@@ -41,6 +41,7 @@ let images = {
     blurry: "data/images/bg.png",
     star: "data/images/Icon_star.png",
     narratorbg: "data/images/narratorbg.png",
+    save: "data/images/save.png",
 
     eattackani2: "data/images/eattackani2.png",
 

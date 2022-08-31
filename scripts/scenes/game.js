@@ -751,13 +751,14 @@ scenes.game = () => {
     }))
 
     // Weather time thing
-    function setNightEffet(color, al = 1, type = "none") {
+    function setNightEffet(color, al = 0.5, type = "none") {
+        //console.log(nightEffect.fill, color, al, type);
         let transitionDuration = 30000; // Roughly how long it lasts. 1000 = 1 sec
         let fogOpacityChangeIntensity = 10; // How much the opacity during fog changes. Higher number = less
         // Speed in preRender
 
         if (type == "instant" || nightEffect.fill == "white") {
-            nightEffect.alpha = 1;
+            nightEffect.alpha = al;
             nightEffect2.alpha = 0;
             nightEffect.fill = color;
             return true;
@@ -1211,6 +1212,22 @@ scenes.game = () => {
 
     loadNPCs();
     loadAreaMusic();
+
+    // Default black fade transition
+    let blackFadeTransition = controls.rect({
+        anchor: [0, 0], sizeAnchor: [1, 1], // (fullscreen)
+        fill: "black",
+        alpha: 1
+    })
+    addAnimator(function (t) {
+        blackFadeTransition.alpha = 1 - (t / 200);
+        if (t > 499) {
+            blackFadeTransition.alpha = 0;
+            return true;
+        }
+        return false;
+    })
+    // black fade transition end
 
     return {
         preRender(ctx, delta) {
@@ -1758,7 +1775,8 @@ scenes.game = () => {
             /*...walkPad,*/ mapDisplay, mapIcon, actionButton,
             ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             ...dialogueNormalComponents, ...dialogueInvisComponents, ...dialogueNarratorComponents,
-            autoSaveText, /*settingsSaveText,*/ ...areaNameBox, areaTeleportFade
+            autoSaveText, /*settingsSaveText,*/ ...areaNameBox, areaTeleportFade,
+            blackFadeTransition
         ],
     }
 }

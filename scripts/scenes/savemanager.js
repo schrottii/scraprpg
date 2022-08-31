@@ -181,7 +181,7 @@ scenes.savemanager = () => {
 
     buttons.push(controls.image({ // Save
         anchor: [0.15, 0.86], sizeOffset: [64, 64], offset: [-32, 0],
-        source: "gear",
+        source: "save",
         alpha: 1,
     }));
     buttons.push(controls.image({ // Load
@@ -199,6 +199,22 @@ scenes.savemanager = () => {
         source: "gear",
         alpha: 1,
     }));
+
+    // Default black fade transition
+    let blackFadeTransition = controls.rect({
+        anchor: [0, 0], sizeAnchor: [1, 1], // (fullscreen)
+        fill: "black",
+        alpha: 1
+    })
+    addAnimator(function (t) {
+        blackFadeTransition.alpha = 1 - (t / 200);
+        if (t > 499) {
+            blackFadeTransition.alpha = 0;
+            return true;
+        }
+        return false;
+    })
+    // black fade transition end
 
     return {
         // Pre-render function
@@ -238,6 +254,7 @@ scenes.savemanager = () => {
         // Controls
         controls: [
             ...background, ...saveButtons, ...saveTexts, ...buttons,
+            blackFadeTransition
         ],
     }
 }
