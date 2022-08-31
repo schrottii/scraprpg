@@ -17,6 +17,22 @@ function createEnemy(type) {
     }
 }
 
+function causeEffect(i, effect, rounds) {
+    // Immune?
+    for (j in getPlayer(i + 1).equipment) {
+        if (getPlayer(i + 1).equipment[j] != "none") {
+            if (items[getPlayer(i + 1).equipment[j]]().stats.immune != undefined) {
+                if (items[getPlayer(i + 1).equipment[j]]().stats.immune == effect) {
+                    return false;
+                }
+            }
+        }
+    }
+
+    // Not immune!
+    getPlayer(i + 1).effect = [effect, rounds];
+}
+
 function startFight(type = "default", enemies = "default") {
     defeatType = type;
 

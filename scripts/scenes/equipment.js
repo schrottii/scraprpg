@@ -4,6 +4,8 @@ scenes.equipment = () => {
     var itemsText = [];
     var equipmentDisplay = [];
     var equipmentChangeDisplay = [];
+    var finalStatsDisplay = [];
+    var immunityDisplay = [];
     var itemPage = 0;
 
     var characterSelected = "bleu";
@@ -84,6 +86,7 @@ scenes.equipment = () => {
                             if (type != false) game.characters[characterSelected].equipment[type] = items[inventory[this.idx + itemOffset]].name;
                         }
                         showItems();
+                        updateImmunities();
                     }
                 }
             }));
@@ -113,6 +116,35 @@ scenes.equipment = () => {
         }));
     }
 
+    finalStatsDisplay.push(controls.label({
+        anchor: [0.56, 0.725],
+        text: "Blez Final Stat Overview:",
+        align: "left", fontSize: 20, fill: "black",
+        alpha: 1
+    }));
+    for (i = 0; i < 6; i++) {
+        finalStatsDisplay.push(controls.label({
+            anchor: [0.56, 0.755 + (0.03 * i)],
+            text: ["STR", "DEF", "AGI", "EVA", "CRT", "LUK"][i] + " - ",
+            align: "left", fontSize: 20, fill: "black",
+            alpha: 1
+        }));
+    }
+    immunityDisplay.push(controls.label({
+        anchor: [0.76, 0.725],
+        text: "Immune to:",
+        align: "left", fontSize: 20, fill: "black",
+        alpha: 1
+    }));
+    for (i = 0; i < 6; i++) {
+        immunityDisplay.push(controls.label({
+            anchor: [0.76, 0.755 + (0.03 * i)],
+            text: "...",
+            align: "left", fontSize: 20, fill: "black",
+            alpha: 1
+        }));
+    }
+
     background.push(controls.button({
         anchor: [0.15, 0.15], sizeAnchor: [0.05, 0.05], offset: [0, -24],
         alpha: 1,
@@ -121,6 +153,7 @@ scenes.equipment = () => {
             if (game.chars[i - 1] != undefined) characterSelected = game.chars[i - 1];
             else characterSelected = game.chars[game.chars.length - 1];
             showItems();
+            updateImmunities();
         },
         text: "<",
         fill: "white"
@@ -133,6 +166,7 @@ scenes.equipment = () => {
             if (game.chars[i + 1] != undefined) characterSelected = game.chars[i + 1];
             else characterSelected = "bleu";
             showItems();
+            updateImmunities();
         },
         text: ">",
         fill: "white"
@@ -167,7 +201,23 @@ scenes.equipment = () => {
         }
     }
 
+    function updateImmunities() {
+        let immunes = [];
+        for (i in game.characters[characterSelected].equipment) {
+            if (game.characters[characterSelected].equipment[i] != "none") {
+                if (items[game.characters[characterSelected].equipment[i]]().stats.immune != undefined) {
+                    immunes.push(items[game.characters[characterSelected].equipment[i]]().stats.immune);
+                }
+            }
+        }
+        for (r = 1; r < 7; r++ ) {
+            if (immunes[r - 1] != undefined) immunityDisplay[r].text = immunes[r - 1];
+            else immunityDisplay[r].text = "...";
+        }
+    }
+
     showItems();
+    updateImmunities();
 
     // Default black fade transition
     let blackFadeTransition = controls.rect({
@@ -203,12 +253,18 @@ scenes.equipment = () => {
                 for (EQ in game.characters[characterSelected].equipment) {
                     if (game.characters[characterSelected].equipment[EQ] != "none") if (items[game.characters[characterSelected].equipment[EQ]]().stats[partb] != undefined) itemBonus += items[game.characters[characterSelected].equipment[EQ]]().stats[partb];
                 }
-                equipmentChangeDisplay[i].text = "Total" + part + " changed: " + itemBonus;
+                equipmentChangeDisplay[i].text = "Total " + part + " changed: " + itemBonus;
+            }
+            for (i in finalStatsDisplay) {
+                let part = ["STR", "DEF", "AGI", "EVA", "CRT", "LUK"][i - 1];
+                let partb = ["strength", "def", "agi", "eva", "crt", "luk"][i - 1];
+                finalStatsDisplay[i].text = part + " - " + getStat(characterSelected, partb);
+                if (i == 0) finalStatsDisplay[0].text = game.characters[characterSelected].name + " Final Stat Overview:";
             }
         },
         // Controls
         controls: [
-            ...background, ...itemsButtons, ...itemsText, ...equipmentDisplay, ...equipmentChangeDisplay,
+            ...background, ...itemsButtons, ...itemsText, ...equipmentDisplay, ...equipmentChangeDisplay, ...finalStatsDisplay, ...immunityDisplay,
             blackFadeTransition
         ],
     }

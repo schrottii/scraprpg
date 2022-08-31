@@ -186,7 +186,7 @@ scenes.fight = () => {
             for (i = 0; i < game.chars.length; i++) {
                 // Get rid of acid effect
                 if (getPlayer(i + 1).effect[0] == "acid") {
-                    getPlayer(i + 1).effect = ["none", 0];
+                    causeEffect(i, "none", 0);
                 }
 
                 // Victory Animation
@@ -1291,13 +1291,13 @@ scenes.fight = () => {
                 onClick(args) {
                     if (this.alpha == 1 && fightaction == "active") {
                         if (Math.random() < 0.5) {
-                            getPlayer(i + 1).effect = ["acid", 3];
+                            causeEffect(i, "acid", 3);
                         }
                         else if (Math.random() < 0.5) {
-                            getPlayer(i + 1).effect = ["poison", 4];
+                            causeEffect(i, "poison", 4);
                         }
                         else {
-                            getPlayer(i + 1).effect = ["burn", 4];
+                            causeEffect(i, "burn", 4);
                         }
                     }
                 }

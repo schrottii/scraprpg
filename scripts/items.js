@@ -25,7 +25,7 @@ let items = {
             shopcost: 500,
             max: 99,
             effect: () => {
-                if (args.player.effect[0] == "poison") args.player.effect = ["none", 0];
+                if (args.player.effect[0] == "poison") causeEffect(i, "none", 0);
                 playSound("heal");
             },
 
@@ -61,7 +61,7 @@ let items = {
             shopcost: 2000,
             max: 99,
             effect: () => {
-                args.player.effect = ["none", 0];
+                causeEffect(args.player, "none", 0);
                 playSound("heal");
             },
 
@@ -138,6 +138,7 @@ let items = {
             stats: {
                 "strength": 7,
                 "maxHP": 4,
+                "immune": ["poison"],
             },
 
             ...args || {},
