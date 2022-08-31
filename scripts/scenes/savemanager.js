@@ -186,17 +186,17 @@ scenes.savemanager = () => {
     }));
     buttons.push(controls.image({ // Load
         anchor: [0.35, 0.86], sizeOffset: [64, 64], offset: [-32, 0],
-        source: "gear",
+        source: "load",
         alpha: 1,
     }));
     buttons.push(controls.image({ // Delete
         anchor: [0.55, 0.86], sizeOffset: [64, 64], offset: [-32, 0],
-        source: "gear",
+        source: "delete",
         alpha: 1,
     }));
     buttons.push(controls.image({ // Auto
         anchor: [0.75, 0.86], sizeOffset: [64, 64], offset: [-32, 0],
-        source: "gear",
+        source: "autosave",
         alpha: 1,
     }));
 

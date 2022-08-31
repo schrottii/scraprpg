@@ -42,6 +42,9 @@ let images = {
     star: "data/images/Icon_star.png",
     narratorbg: "data/images/narratorbg.png",
     save: "data/images/save.png",
+    load: "data/images/load.png",
+    delete: "data/images/delete.png",
+    autosave: "data/images/autosave.png",
 
     eattackani2: "data/images/eattackani2.png",
 
