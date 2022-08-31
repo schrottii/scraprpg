@@ -22,8 +22,10 @@ function causeEffect(i, effect, rounds) {
     for (j in getPlayer(i + 1).equipment) {
         if (getPlayer(i + 1).equipment[j] != "none") {
             if (items[getPlayer(i + 1).equipment[j]]().stats.immune != undefined) {
-                if (items[getPlayer(i + 1).equipment[j]]().stats.immune == effect) {
-                    return false;
+                for (e in items[getPlayer(i + 1).equipment[j]]().stats.immune) {
+                    if (items[getPlayer(i + 1).equipment[j]]().stats.immune[e] == effect) {
+                        return false;
+                    }
                 }
             }
         }

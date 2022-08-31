@@ -138,7 +138,7 @@ let items = {
             stats: {
                 "strength": 7,
                 "maxHP": 4,
-                "immune": ["poison"],
+                "immune": ["poison", "acid", "burn"],
             },
 
             ...args || {},

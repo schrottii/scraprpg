@@ -206,7 +206,9 @@ scenes.equipment = () => {
         for (i in game.characters[characterSelected].equipment) {
             if (game.characters[characterSelected].equipment[i] != "none") {
                 if (items[game.characters[characterSelected].equipment[i]]().stats.immune != undefined) {
-                    immunes.push(items[game.characters[characterSelected].equipment[i]]().stats.immune);
+                    for (e in items[game.characters[characterSelected].equipment[i]]().stats.immune) {
+                    immunes.push(items[game.characters[characterSelected].equipment[i]]().stats.immune[e]);
+                    }
                 }
             }
         }
