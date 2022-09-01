@@ -168,6 +168,7 @@ scenes.game = () => {
     var areaNameBox = [];
     
     var weatherControls = [];
+    var cloudControls = [];
     var dustControls = [];
     var fogopa = 2;
 
@@ -1185,6 +1186,24 @@ scenes.game = () => {
         }
     }
 
+    function spawnDarkcloud() {
+        let thisOne = 499;
+        for (i in cloudControls) {
+            if (cloudControls[i].alpha == 0) {
+                thisOne = i;
+                break;
+            }
+        }
+        if (thisOne != 499) {
+            if (Math.random() > 0.49) cloudControls[thisOne].source = "cloudshadow1";
+            if (Math.random() > 0.49) cloudControls[thisOne].source = "cloudshadow2";
+            else cloudControls[thisOne].source = "cloudshadow3";
+            cloudControls[thisOne].sizeOffset = [128, 64];
+            cloudControls[thisOne].anchor = [0.8 + (0.6 * Math.random()), -0.4 + (0.2 * Math.random())];
+            cloudControls[thisOne].alpha = 0.75;
+        }
+    }
+
     function spawnDust() {
         let thisOne = 499;
         for (i in dustControls) {
@@ -1203,6 +1222,10 @@ scenes.game = () => {
         weatherControls.push(controls.image({
             anchor: [Math.random(), -0.2], sizeAnchor: [0, 0], sizeOffset: [64, 64],
             source: "rain", alpha: 0,
+        }))
+        cloudControls.push(controls.image({
+            anchor: [Math.random(), -0.2], sizeAnchor: [0, 0], sizeOffset: [64, 64],
+            source: "cloudshadow1", alpha: 0,
         }))
     }
     for (i = 0; i < 400; i++) {
@@ -1271,6 +1294,18 @@ scenes.game = () => {
             }
 
             // Weather
+            if (map.worldmode) {
+                if (Math.random() > 0.92) spawnDarkcloud();
+                for (i in cloudControls) {
+                    if (cloudControls[i].alpha > 0) {
+                        cloudControls[i].anchor[0] -= 0.0001 * delta;
+                        cloudControls[i].anchor[1] += 0.0001 * delta;
+
+                        if (cloudControls[i].anchor[0] < 0) cloudControls[i].alpha = 0;
+                    }
+                }
+            }
+
             if (map.weather != undefined) {
                 if (map.weather == "rain") {
                     spawnRaindrop();
@@ -1639,10 +1674,18 @@ scenes.game = () => {
                 }
             }
 
-            ctx.drawImage(images[game.leader], 32 * Math.floor(walkTime), 32 * head, 32, 32,
-                scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5)),
-                scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zswm, zswm)
-            ctx.imageSmoothingEnabled = false;
+            if (map.worldmode != true || images["wm" + game.leader] == undefined) {
+                ctx.drawImage(images[game.leader], 32 * Math.floor(walkTime), 32 * head, 32, 32,
+                    scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5)),
+                    scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zswm, zswm)
+                ctx.imageSmoothingEnabled = false;
+            }
+            else {
+                ctx.drawImage(images["wm" + game.leader], 16 * Math.floor(walkTime), 16 * head, 16, 16,
+                    scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5)),
+                    scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zswm, zswm)
+                ctx.imageSmoothingEnabled = false;
+            }
 
             for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
                 if (map.mapfg[y] && map.mapfg[y][(x * 4) + 2]) {
@@ -1789,7 +1832,7 @@ scenes.game = () => {
             }
         },
         controls: [
-            ...weatherControls, ...dustControls, poisonBlack, nightEffect, nightEffect2, //weatherEffect,
+            ...weatherControls, ...cloudControls, ...dustControls, poisonBlack, nightEffect, nightEffect2, //weatherEffect,
             /*...walkPad,*/ mapDisplay, mapIcon, actionButton,
             ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             ...dialogueNormalComponents, ...dialogueInvisComponents, ...dialogueNarratorComponents,

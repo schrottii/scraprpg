@@ -35,6 +35,9 @@ let images = {
     rain: "data/images/rain.png",
     fog: "data/images/fog_cloud.png",
     fog2: "data/images/fog_cloud2.png",
+    cloudshadow1: "data/images/scloud1.png",
+    cloudshadow2: "data/images/scloud2.png",
+    cloudshadow3: "data/images/scloud3.png",
     spawn: "data/images/spawn_default.png",
     vignette: "data/images/screenvignette.png",
     nosfegtdsrh: "data/images/WEaresuperior.png",
@@ -57,6 +60,9 @@ let images = {
     gau: "data/images/protagonists/map/Map_Gau.png",
     skro: "data/images/protagonists/map/Map_Skro.png",
     kokitozi: "data/images/protagonists/map/Map_Koki.png",
+
+    wmbleu: "data/images/protagonists/worldmode/Worldmode_Bleu.png",
+    wmcorelle: "data/images/protagonists/worldmode/Worldmode_Corelle.png",
 
     actionbutton: "data/images/actionbutton_inactive.png",
     actionbutton_active: "data/images/actionbutton_active.png",

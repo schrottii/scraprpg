@@ -16,9 +16,6 @@ Most equipment can be upgraded to a blacksmith with enough Bricks, up to +10.
 - The remaining scenes (formation, items, etc.)
 - Different attacks, weapons, NTF summon, etc.
 
-- World map mode (all characters/NPCs switch to their 16x16 sheets, and you can move half a tile instead of a whole tile. There's always a cloud shadow effect.)
-
-
 
 ##Phase 1.5
 ???
