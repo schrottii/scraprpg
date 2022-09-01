@@ -919,7 +919,7 @@ scenes.fight = () => {
         for (i = 0; i < game.chars.length; i++) {
             if (getPlayer(i + 1).effect[0] == "acid") {
                 getPlayer(i + 1).HP -= Math.ceil(getStat(i + 1, "maxHP") / 15);
-                postLog(getPlayer(i + 1).name + " took " + Math.ceil(getStat(i + 1, "maxHP") / 20) + " damage from acid!")
+                postLog(getPlayer(i + 1).name + " took " + Math.ceil(getStat(i + 1, "maxHP") / 15) + " damage from acid!")
 
                 getPlayer(i + 1).effect[1] -= 1;
                 if (getPlayer(i + 1).effect[1] < 1) {
@@ -930,7 +930,7 @@ scenes.fight = () => {
 
             if (getPlayer(i + 1).effect[0] == "poison") {
                 getPlayer(i + 1).HP -= Math.ceil(getStat(i + 1, "maxHP") / 15);
-                postLog(getPlayer(i + 1).name + " took " + Math.ceil(getStat(i + 1, "maxHP") / 20) + " damage from poison!")
+                postLog(getPlayer(i + 1).name + " took " + Math.ceil(getStat(i + 1, "maxHP") / 15) + " damage from poison!")
 
                 getPlayer(i + 1).effect[1] -= 1;
                 if (getPlayer(i + 1).effect[1] < 1) {
