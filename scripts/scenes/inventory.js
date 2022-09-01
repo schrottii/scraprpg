@@ -35,6 +35,7 @@ scenes.inventory = () => {
             text: ["Items", "Magic", "Equipment", "Formation", "Save Manager", "Settings", "Exit Menu"][i],
             onClick(args) {
                 if (this.id == 2) setScene(scenes.equipment());
+                if (this.id == 3) setScene(scenes.formation());
                 if (this.id == 4) setScene(scenes.savemanager());
                 if (this.id == 5) setScene(scenes.settings());
                 if (this.id == 6) setScene(scenes.game());

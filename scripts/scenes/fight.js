@@ -2566,7 +2566,7 @@ scenes.fight = () => {
             return false;
         });
     }
-    startCutscene();
+    //startCutscene();
 
     let runTime = 0;
     let runLaps = 0;
