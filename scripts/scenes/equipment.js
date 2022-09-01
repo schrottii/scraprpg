@@ -36,6 +36,11 @@ scenes.equipment = () => {
         text: ">",
         fill: "white"
     }));
+    background.push(controls.rect({
+        anchor: [0.55, 0.1], sizeAnchor: [0.4, 0.6],
+        fill: colors.buttontoppressed,
+        alpha: 1
+    }));
     background.push(controls.rect({ // horizontal 1
         anchor: [0.05, 0.1], sizeAnchor: [0.9, 0.01],
         alpha: 1,

@@ -26,7 +26,7 @@ There is still some coding, some new features, but not as much as in phase 1 (Sc
 
 - Mastery Techs
 - Duo Mastery Techs
-- 
+
 - Promotion (and Evolution Tree) system
 - Mastery Tokens
 
