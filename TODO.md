@@ -1,5 +1,5 @@
 ﻿##TODO:
-7 Things left to do in this phase
+5 Things left to do in this phase
 
 ##Phase 1:
 The developing phase, Schrottii's phase, the essential features of the game
@@ -7,9 +7,6 @@ The developing phase, Schrottii's phase, the essential features of the game
 - Overworld quests
 - More Animated UI
 - Most equipment can be upgraded by a blacksmith with enough Bricks, up to +10.
-
-- Cutscene mode (Overworld)
-- Cutscene mode (Battle)
 
 - The remaining scenes (formation, items, etc.)
 - Different attacks, weapons, NTF summon, etc.

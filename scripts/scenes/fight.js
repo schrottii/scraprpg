@@ -155,6 +155,7 @@ scenes.fight = () => {
 
     var gainedItems = [];
 
+    var cutsceneElements = [];
 
     var fightlog = [
         "",
@@ -2518,6 +2519,54 @@ scenes.fight = () => {
         }
     }
 
+    cutsceneElements.push(controls.rect({
+        anchor: [0, -1], sizeAnchor: [1, 0.15],
+        fill: "black",
+        alpha: 1,
+        clickthrough: true,
+    }));
+    cutsceneElements.push(controls.rect({
+        anchor: [0, 1.85], sizeAnchor: [1, 0.15],
+        fill: "black",
+        alpha: 1,
+        clickthrough: true,
+    }));
+
+    function startCutscene() {
+        canMove = false;
+        fightaction = "eajifjea";
+
+        addAnimator(function (t) {
+            cutsceneElements[0].anchor[1] = -1 + (t / 1000);
+            cutsceneElements[1].anchor[1] = 1.85 - (t / 1000);
+
+            if (t > 999) {
+                cutsceneElements[0].anchor[1] = 0;
+                cutsceneElements[1].anchor[1] = 0.85;
+
+                return true;
+            }
+            return false;
+        });
+    }
+    function endCutscene() {
+        canMove = true;
+        fightaction = "none";
+
+        addAnimator(function (t) {
+            cutsceneElements[0].anchor[1] = 0 - (t / 1000);
+            cutsceneElements[1].anchor[1] = 0.85 + (t / 1000);
+
+            if (t > 999) {
+                cutsceneElements[0].anchor[1] = -1;
+                cutsceneElements[1].anchor[1] = 1.85;
+
+                return true;
+            }
+            return false;
+        });
+    }
+    startCutscene();
 
     let runTime = 0;
     let runLaps = 0;
@@ -2613,6 +2662,7 @@ scenes.fight = () => {
             ...fightOverview,
             ...fightStats, ...actionDisplay, ...gameOverScreen,
             ...positionControls, ...epositionControls, ...positionGrid, ...attackAnimationObjects, ...battleNumbers, ...winScreen, ...winScreen2, ...winStats, ...fleeWrenches, ...gameOverScreen2,
+            ...cutsceneElements
         ],
     }
 };

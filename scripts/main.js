@@ -309,6 +309,7 @@ function loop() {
             animationtime = -1;
         }
     }
+
     game.time += (delta/60);
     if (game.time >= 24000) { // 1000 = 1 hour in-game.
         game.time = 0;

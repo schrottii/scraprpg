@@ -172,6 +172,8 @@ scenes.game = () => {
     var dustControls = [];
     var fogopa = 2;
 
+    var cutsceneElements = [];
+
     var tokenRunning = false;
 
     /* let walkPad = [];
@@ -234,7 +236,9 @@ scenes.game = () => {
         alpha: 1,
         text: "",
         onClick(args) {
-            setScene(scenes.inventory());
+            if (this.alpha == 1 && canMove == true) {
+                setScene(scenes.inventory());
+            }
         }
     });
     let mapIcon = controls.image({
@@ -975,6 +979,9 @@ scenes.game = () => {
                 for (i in dustControls) {
                     dustControls[i].alpha = 0;
                 }
+                for (i in cloudControls) {
+                    cloudControls[i].alpha = 0;
+                }
                 loadNPCs();
                 loadAreaMusic(previousmap);
                 game.position[0] = themap.teleport[1];
@@ -1151,7 +1158,51 @@ scenes.game = () => {
         }
     }
 
+    cutsceneElements.push(controls.rect({
+        anchor: [0, -1], sizeAnchor: [1, 0.15],
+        fill: "black",
+        alpha: 1,
+        clickthrough: true,
+    }));
+    cutsceneElements.push(controls.rect({
+        anchor: [0, 1.85], sizeAnchor: [1, 0.15],
+        fill: "black",
+        alpha: 1,
+        clickthrough: true,
+    }));
 
+    function startCutscene() {
+        canMove = false;
+
+        addAnimator(function (t) {
+            cutsceneElements[0].anchor[1] = -1 + (t / 1000);
+            cutsceneElements[1].anchor[1] = 1.85 - (t / 1000);
+
+            if (t > 999) {
+                cutsceneElements[0].anchor[1] = 0;
+                cutsceneElements[1].anchor[1] = 0.85;
+
+                return true;
+            }
+            return false;
+        });
+    }
+    function endCutscene() {
+        canMove = true;
+
+        addAnimator(function (t) {
+            cutsceneElements[0].anchor[1] = 0 - (t / 1000);
+            cutsceneElements[1].anchor[1] = 0.85 + (t / 1000);
+
+            if (t > 999) {
+                cutsceneElements[0].anchor[1] = -1;
+                cutsceneElements[1].anchor[1] = 1.85;
+
+                return true;
+            }
+            return false;
+        });
+    }
 
     function spawnRaindrop() {
         let thisOne = 499;
@@ -1835,6 +1886,7 @@ scenes.game = () => {
             ...weatherControls, ...cloudControls, ...dustControls, poisonBlack, nightEffect, nightEffect2, //weatherEffect,
             /*...walkPad,*/ mapDisplay, mapIcon, actionButton,
             ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
+            ...cutsceneElements,
             ...dialogueNormalComponents, ...dialogueInvisComponents, ...dialogueNarratorComponents,
             autoSaveText, /*settingsSaveText,*/ ...areaNameBox, areaTeleportFade,
             blackFadeTransition
