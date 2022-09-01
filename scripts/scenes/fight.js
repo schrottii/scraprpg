@@ -1739,9 +1739,21 @@ scenes.fight = () => {
                 if (checkAllDead(true)) {
                     fightaction = "victoryitems";
 
+                    let gain = {};
+
+                    // Do this earlier maybe?
                     for (i in gainedItems) {
-                        winScreen2[2 + (i * 2)].source = "items/" + items[gainedItems[i]]().source;
-                        winScreen2[3 + (i * 2)].text = items[gainedItems[i]]().name;
+                        if (gain[gainedItems[i]] == undefined) gain[gainedItems[i]] = 0;
+                        gain[gainedItems[i]] += 1;
+                    }
+
+                    for (i = 0; i < Object.keys(gain).length; i++) {
+                        let it = Object.keys(gain)[i];
+
+                        if (winScreen2[2 + (i * 2)] != undefined) {
+                            winScreen2[2 + (i * 2)].source = "items/" + items[it]().source;
+                            winScreen2[3 + (i * 2)].text = items[it]().name + " x" + gain[it];
+                        }
                     }
 
 

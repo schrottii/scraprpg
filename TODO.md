@@ -6,17 +6,13 @@ The developing phase, Schrottii's phase, the essential features of the game
 
 - Overworld quests
 - More Animated UI
-- Equipment system:
-Weapon slots (LHand/RHand), Armor slots (Head/Body/Bottom/Hand), and accessory slots (Hand/Neck/Head).
-Most equipment can be upgraded by a blacksmith with enough Bricks, up to +10.
+- Most equipment can be upgraded by a blacksmith with enough Bricks, up to +10.
 
 - Cutscene mode (Overworld)
 - Cutscene mode (Battle)
 
 - The remaining scenes (formation, items, etc.)
 - Different attacks, weapons, NTF summon, etc.
-- Parallax/animated effects for battle backgrounds (and overworld too if possible.)
-- MINOR IDEA: Another fade from battle screen to overworld screen, and a dramatic sequence before battle.
 
 
 ##Phase 1.5
@@ -37,6 +33,8 @@ There is still some coding, some new features, but not as much as in phase 1 (Sc
 - Promotion (and Evolution Tree) system
 - Mastery Tokens
 
+- Parallax/animated effects for battle backgrounds (and overworld too if possible.)
+- and a dramatic sequence before battle.
 
 
 ##Phase 3
