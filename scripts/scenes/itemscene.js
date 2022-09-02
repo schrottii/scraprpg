@@ -1,6 +1,7 @@
 scenes.itemscene = () => {
     var background = [];
     var itemsText = [];
+    var itemsImages = [];
     var itemsButtons = [];
     var theTop = [];
     var storyonly = false;
@@ -134,9 +135,14 @@ scenes.itemscene = () => {
         for (j = 0; j < 8; j++) {
             itemsText.push(controls.label({
                 anchor: [0.2 + (0.2 * i), 0.15 + (0.1 * j)],
-                fill: "black",
-                align: "center", fontSize: 20, fill: "black",
+                text: "---",
+                align: "center", fontSize: 20, fill: "white",
                 alpha: 1
+            }));
+            itemsImages.push(controls.image({
+                anchor: [0.06 + (0.2 * i), 0.15 + (0.1 * j)], sizeOffset: [64, 64], offset: [0, -32],
+                source: "gear",
+                alpha: 0
             }));
         }
     }
@@ -178,6 +184,7 @@ scenes.itemscene = () => {
             if (inventory[i + itemOffset] == undefined) {
                 itemsText[i + j].text = "---";
                 itemsText[i + j].fill = "white";
+                itemsImages[i + j].alpha = 0;
                 continue;
             }
             let item = items[inventory[i + itemOffset]];
@@ -187,12 +194,15 @@ scenes.itemscene = () => {
                 else itemsText[i + j].text = item().name;
 
                 itemsText[i + j].fill = "black";
-                itemsText[i + j].source = "items/" + item().source;
                 itemsText[i + j].alpha = 1;
+
+                itemsImages[i + j].alpha = 1;
+                itemsImages[i + j].source = "items/" + item().source;
             }
             else {
                 itemsText[i + j].text = "---";
                 itemsText[i + j].fill = "white";
+                itemsImages[i + j].alpha = 0;
                 if (item().story != storyonly) j -= 1;
             }
         }
@@ -222,7 +232,7 @@ scenes.itemscene = () => {
         },
         // Controls
         controls: [
-            ...background, ...itemsText, ...itemsButtons, ...theTop,
+            ...background, ...itemsText, ...itemsButtons, ...itemsImages, ...theTop,
             blackFadeTransition
         ],
     }
