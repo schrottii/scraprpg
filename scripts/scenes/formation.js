@@ -4,6 +4,7 @@ scenes.formation = () => {
     var positionGrid = [];
     var positions = [];
     var posInfos = [];
+    var macroControls = [];
     var selectedPos = [8, 8];
 
     // Background
@@ -38,15 +39,64 @@ scenes.formation = () => {
         fill: "black"
     }));
     background.push(controls.rect({
-        anchor: [0.5, 0.15], sizeAnchor: [0.4, 0.75],
+        anchor: [0.4, 0.15], sizeAnchor: [0.5, 0.75],
         alpha: 1,
         fill: "black"
     }));
     background.push(controls.rect({
-        anchor: [0.52, 0.17], sizeAnchor: [0.36, 0.71],
+        anchor: [0.42, 0.17], sizeAnchor: [0.46, 0.71],
         alpha: 1,
         fill: colors.buttontop
     }));
+    background.push(controls.label({
+        anchor: [0.43, 0.19],
+        fontSize: 32, fill: "black", align: "left",
+        text: "Macro Configuration",
+        alpha: 1,
+    }));
+    for (i = 0; i < 4; i++) {
+        background.push(controls.label({
+            anchor: [0.65, 0.69], offset: [0, 24 * i],
+            fontSize: 20, fill: "black", align: "center",
+            text: ["Macro configurations are saved in the character, meaning",
+                "that if you remove and return a character back to the party,",
+                "their Macro configuration won't be reset. If an option is",
+                "unavailable, it will redirect to Defend."][i],
+            alpha: 1,
+        }));
+    }
+
+    for (j = 0; j < 2; j++) {
+        for (i = 0; i < 3; i++) {
+            macroControls.push(controls.button({
+                anchor: [0.435 + (j * 0.225), 0.225 + (0.15 * i)], sizeAnchor: [0.2, 0.1],
+                fontSize: 32, fill: "black", align: "center",
+                text: "Attack",
+                j: j, i: i,
+                onClick(args) {
+                    if (this.alpha == 1 && this.text != "NO CHARACTER") {
+                        switch (this.text) {
+                            case "Attack":
+                                this.text = "Defend"
+                                game.characters[game.chars[this.i + (this.j * 3)]].macro = "defend";
+                                break;
+                            case "Defend":
+                                this.text = "Attack"
+                                game.characters[game.chars[this.i + (this.j * 3)]].macro = "attack";
+                                break;
+                        }
+                    }
+                },
+                alpha: 1,
+            }));
+            macroControls.push(controls.label({
+                anchor: [0.535 + (j * 0.225), 0.2235 + (0.15 * i)],
+                fontSize: 24, fill: "black", align: "center",
+                text: "Blez",
+                alpha: 1,
+            }));
+        }
+    }
 
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
@@ -85,7 +135,6 @@ scenes.formation = () => {
     }
 
     for (i in game.characters) {
-        console.log(i, game.characters[i].pos);
         positions[game.characters[i].pos[0] + 3 * game.characters[i].pos[1]].source = i;
         positions[game.characters[i].pos[0] + 3 * game.characters[i].pos[1]].alpha = 1;
     }
@@ -127,12 +176,21 @@ scenes.formation = () => {
     return {
         // Pre-render function
         preRender(ctx, delta) {
-
+            for (i = 0; i < 6; i++) {
+                if (game.characters[game.chars[i]] != undefined) {
+                    macroControls[1 + i * 2].alpha = 1;
+                    macroControls[1 + i * 2].text = game.characters[game.chars[i]].name;
+                }
+                else {
+                    macroControls[1 + i * 2].alpha = 0;
+                    macroControls[i * 2].text = "NO CHARACTER";
+                }
+            }
         },
         // Controls
         controls: [
             ...background,
-            ...positionGrid, ...positions, ...posInfos,
+            ...positionGrid, ...positions, ...posInfos, ...macroControls,
             blackFadeTransition
         ],
     }

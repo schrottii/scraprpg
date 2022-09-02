@@ -822,6 +822,10 @@ scenes.fight = () => {
                 positions[pos[0]][pos[1]].action = false;
                 executeActions();
                 break;
+            case "defend":
+                positions[pos[0]][pos[1]].action = false;
+                executeActions();
+                break;
             case "item":
                 items[whoAGI.action[1]]({ user: game.characters[positions[whoAGI.action[2]][whoAGI.action[3]].occupied], player: game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied], anchor: positionControls[whoAGI.action[2] + (whoAGI.action[3] * 3)].anchor, offset: positionControls[pos[0] + (pos[1] * 3)].offset }).effect();
                 if (game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].HP < 1) {
@@ -837,6 +841,8 @@ scenes.fight = () => {
                 fleeAnimation(whoAGI.action[1], whoAGI.action[2]);
                 setTimeout(() => executeActions(), 2500);
                 break;
+
+            // Uhhh... we shouldn't be here.
         }
     }
 
