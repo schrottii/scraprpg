@@ -436,6 +436,11 @@ function loadGame() {
             }
         }
 
+        if (saveCopy.characters.bleu.macro == undefined) {
+            for (i in saveCopy.characters) {
+                saveCopy.characters[i].macro = "attack";
+            }
+        }
         game = saveCopy;
     }
     else {

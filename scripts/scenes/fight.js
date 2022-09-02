@@ -670,8 +670,8 @@ scenes.fight = () => {
             for (j = 0; j < 3; j++) {
                 for (i = 0; i < 3; i++) {
                     if (positions[i][j].action != false) { 
-                            if (getStat(game.characters[positions[i][j].occupied], "agi") > highestAGI) {
-                                highestAGI = getStat(game.characters[positions[i][j].occupied], "agi");
+                            if (getStat(positions[i][j].occupied, "agi") > highestAGI) {
+                                highestAGI = getStat(positions[i][j].occupied, "agi");
                                 whoAGI = positions[i][j];
                                 pos = [i, j];
                             }
@@ -679,7 +679,7 @@ scenes.fight = () => {
                 }
             }
 
-            // Stop if there is nobody (when is that?)
+        // Stop if there is nobody (when is that?)
         if (highestAGI == 0) {
             fightaction = "enemiesturn";
 
@@ -694,7 +694,7 @@ scenes.fight = () => {
             return;
         }
 
-            // Ok, ok, now we know who (whoAGI) is first (highestAGI), so now do something
+        // Ok, ok, now we know who (whoAGI) is first (highestAGI), so now do something
         switch (whoAGI.action[0]) {
             case "switch":
                 switchThose = [[whoAGI.action[1], whoAGI.action[2]], [whoAGI.action[3], whoAGI.action[4]]];
@@ -703,8 +703,12 @@ scenes.fight = () => {
                 executeActions();
                 break;
             case "attack":
+                if (positions[pos[0]][pos[1]].action[3] == undefined) positions[pos[0]][pos[1]].action[3] = Math.round(2 * Math.random());
+                if (positions[pos[0]][pos[1]].action[4] == undefined) positions[pos[0]][pos[1]].action[4] = Math.round(2 * Math.random());
+
                 let pos1 = positions[pos[0]][pos[1]].action[3];
                 let pos2 = positions[pos[0]][pos[1]].action[4];
+
                 selectedAlly = [positions[pos[0]][pos[1]].action[1], positions[pos[0]][pos[1]].action[2]];
                 fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
                 if (win == false && game.characters[positions[pos[0]][pos[1]].occupied].HP > 0) {
@@ -1353,7 +1357,10 @@ scenes.fight = () => {
                 alpha: 1,
                 onClick(args) {
                     if (this.alpha == 1 && fightaction == "active") {
-                        fightaction = "switch";
+                        fightaction = "none";
+                        let c = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied];
+                        positions[selectedAlly[0]][selectedAlly[1]].action = [c.macro, selectedAlly[0], selectedAlly[1]];
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                         hideFightButtons();
                     }
                 }

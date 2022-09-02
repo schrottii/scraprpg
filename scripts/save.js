@@ -21,6 +21,7 @@ let game = {
             acc: 90,
             effect: ["none", 0],
             pos: [0, 0],
+            macro: "attack",
             equipment: {
                 "head" : "none",
                 "body" : "none",
@@ -41,6 +42,7 @@ let game = {
             acc: 80,
             effect: ["none", 0],
             pos: [0, 1],
+            macro: "attack",
             equipment: {
                 "head": "none",
                 "body": "none",
@@ -61,6 +63,7 @@ let game = {
             acc: 80,
             effect: ["none", 0],
             pos: [2, 2],
+            macro: "attack",
             equipment: {
                 "head": "none",
                 "body": "none",
@@ -81,6 +84,7 @@ let game = {
             acc: 60,
             effect: ["none", 0],
             pos: [0, 1],
+            macro: "attack",
             equipment: {
                 "head": "none",
                 "body": "none",
@@ -101,6 +105,7 @@ let game = {
             acc: 90,
             effect: ["none", 0],
             pos: [2, 1],
+            macro: "attack",
             equipment: {
                 "head": "none",
                 "body": "none",
