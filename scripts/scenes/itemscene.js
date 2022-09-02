@@ -3,6 +3,7 @@ scenes.itemscene = () => {
     var itemsText = [];
     var itemsButtons = [];
     var theTop = [];
+    var storyonly = false;
 
     var itemPage = 0;
     var characterSelected = "bleu";
@@ -89,13 +90,21 @@ scenes.itemscene = () => {
         anchor: [0.45, 0.05], sizeAnchor: [0.15, 0.05],
         alpha: 0,
         onClick(args) {
-            alert("Not available yet!");
+            if (storyonly == false) {
+                storyonly = true;
+                theTop[5].text = "Key Items";
+            }
+            else if (storyonly == true) {
+                storyonly = false;
+                theTop[5].text = "Story Items";
+            }
+            showItems();
         },
         fill: "black"
     }));
     theTop.push(controls.label({
         anchor: [0.525, 0.075],
-        text: "Key Items",
+        text: "Normal Items",
         align: "center", fontSize: 20, fill: "black",
         alpha: 1,
     }));
@@ -161,25 +170,30 @@ scenes.itemscene = () => {
     function showItems() {
         let itemOffset = itemPage * 32;
         let inventory = Object.keys(game.inventory);
+
+        let j = 0;
+
         for (i = 0; i < itemsButtons.length; i++) {
             itemsText[i].alpha = 1;
             if (inventory[i + itemOffset] == undefined) {
-                itemsText[i].text = "---";
-                itemsText[i].fill = "white";
+                itemsText[i + j].text = "---";
+                itemsText[i + j].fill = "white";
                 continue;
             }
-            if (game.inventory[items[inventory[i + itemOffset]].name] > 0) {
-                itemsText[i].item = inventory[i + itemOffset];
-                if (game.inventory[items[inventory[i + itemOffset]].name] > 1) itemsText[i].text = items[inventory[i + itemOffset]]().name + " x" + game.inventory[items[inventory[i + itemOffset]].name];
-                else itemsText[i].text = items[inventory[i + itemOffset]]().name;
+            let item = items[inventory[i + itemOffset]];
+            if (game.inventory[items[inventory[i + itemOffset]].name] > 0 && ((item().story == false && storyonly == false) || (item().story == true && storyonly == true)) ) {
+                itemsText[i + j].item = inventory[i + itemOffset];
+                if (game.inventory[item.name] > 1) itemsText[i + j].text = item().name + " x" + game.inventory[item.name];
+                else itemsText[i + j].text = item().name;
 
-                itemsText[i].fill = "darkgray";
-                itemsText[i].source = "items/" + items[inventory[i + itemOffset]]().source;
-                itemsText[i].alpha = 1;
+                itemsText[i + j].fill = "black";
+                itemsText[i + j].source = "items/" + item().source;
+                itemsText[i + j].alpha = 1;
             }
             else {
-                itemsText[i].text = "---";
-                itemsText[i].fill = "white";
+                itemsText[i + j].text = "---";
+                itemsText[i + j].fill = "white";
+                if (item().story != storyonly) j -= 1;
             }
         }
     }
