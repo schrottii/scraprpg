@@ -116,15 +116,29 @@ scenes.formation = () => {
                     if (selectedPos[0] == 8 && this.source != "gear") {
                         console.log(this.source);
                         selectedPos = [this.pos1, this.pos2];
+                        switchText.text = "What character should " + game.characters[this.source].name + " switch with?";
+                        switchText.alpha = 1;
                     }
                     else if (selectedPos[0] != 8 && (selectedPos[0] != this.pos1 || selectedPos[1] != this.pos2)) {
+                        let pre = this.source;
+
                         game.characters[positions[selectedPos[0] + 3 * selectedPos[1]].source].pos = [this.pos1, this.pos2];
 
                         this.source = positions[selectedPos[0] + 3 * selectedPos[1]].source
                         this.alpha = 1;
 
-                        positions[selectedPos[0] + 3 * selectedPos[1]].source = "gear";
-                        positions[selectedPos[0] + 3 * selectedPos[1]].alpha = 0;
+                        switchText.alpha = 0;
+
+                        if (pre != "gear") {
+                            positions[selectedPos[0] + 3 * selectedPos[1]].source = pre;
+                            positions[selectedPos[0] + 3 * selectedPos[1]].alpha = 1;
+                            game.characters[positions[this.pos1 + 3 * this.pos2].source].pos = [selectedPos[0], selectedPos[1]];
+
+                        }
+                        else {
+                            positions[selectedPos[0] + 3 * selectedPos[1]].source = "gear";
+                            positions[selectedPos[0] + 3 * selectedPos[1]].alpha = 0;
+                        }
 
                         selectedPos = [8, 8];
                     }
@@ -141,7 +155,7 @@ scenes.formation = () => {
 
     for (i = 0; i < 3; i++) {
         posInfos.push(controls.label({
-            anchor: [0.075, 0.15], offset: [72 + 144 * i, 144 * 3.25],
+            anchor: [0.075, 0.125], offset: [72 + 144 * i, 144 * 3.25],
             fontSize: 32, fill: ["blue", "pink", "red"][i], align: "center",
             text: ["Back", "Mid", "Front"][i],
             alpha: 1,
@@ -150,12 +164,19 @@ scenes.formation = () => {
 
     for (i = 0; i < 3; i++) {
         posInfos.push(controls.label({
-            anchor: [0.075, 0.15], offset: [0, 144 * (3.5 + (i / 4))],
+            anchor: [0.075, 0.125], offset: [0, 144 * (3.5 + (i / 4))],
             fontSize: 32, fill: ["blue", "pink", "red"][i], align: "left",
             text: ["Back: 0.67x STR, 1.33x DEF", "Mid: 1x STR, 1x DEF", "Front: 1.33x STR, 0.67x DEF"][i],
             alpha: 1,
         }));
     }
+
+    let switchText = controls.label({
+        anchor: [0.075, 0.25], offset: [144 + 72, 144 * 3.5],
+        fontSize: 20, fill: "black", align: "center",
+        text: "What character should x switch with?",
+        alpha: 0,
+    });
 
     // Default black fade transition
     let blackFadeTransition = controls.rect({
@@ -190,7 +211,7 @@ scenes.formation = () => {
         // Controls
         controls: [
             ...background,
-            ...positionGrid, ...positions, ...posInfos, ...macroControls,
+            ...positionGrid, ...positions, ...posInfos, ...macroControls, switchText,
             blackFadeTransition
         ],
     }
