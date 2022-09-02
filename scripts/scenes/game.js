@@ -273,7 +273,7 @@ scenes.game = () => {
         anchor: [.99, .705], offset: [-200, 20],
         alpha: 1,
         align: "left", fontSize: 14, fill: "green",
-        text: "HP: " + getPlayer().HP + "/" + getStat(1, "maxHP") + "   EP: " + getPlayer().EP + "/" + getPlayer().maxEP,
+        text: "HP: " + getPlayer().HP + "/" + getStat(1, "maxHP") + "   EP: " + getPlayer().EP + "/" + getStat(getPlayer(), "maxEP"),
     });
     let mapDisplayLevel1 = controls.label({
         anchor: [.99, .73], offset: [-200, 20],
@@ -292,7 +292,7 @@ scenes.game = () => {
         anchor: [.99, .785], offset: [-200, 20],
         alpha: 1,
         align: "left", fontSize: 14, fill: "green",
-        text: "HP: " + getPlayer(2).HP + "/" + getStat(2, "maxHP") + "   EP: " + getPlayer(2).EP + "/" + getPlayer(2).maxEP,
+        text: "HP: " + getPlayer(2).HP + "/" + getStat(2, "maxHP") + "   EP: " + getPlayer(2).EP + "/" + getStat(getPlayer(2), "maxEP"),
     });
     let mapDisplayLevel2 = controls.label({
         anchor: [.99, .81], offset: [-200, 20],

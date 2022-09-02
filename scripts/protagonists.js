@@ -73,6 +73,11 @@ const cStats = {
     }
 }
 
+// This function is used to get current stats of characters
+// Stuff like Max HP, LUK, etc. are calculated based on base stat for the char, level, equipment etc.
+// The game file itself (save.js) should only save non-static non-stats such as pos, effects, current HP, current EP
+// Everything else, name, stats, here
+
 function getStat(prot, stat) {
     if (typeof (prot) == "number") prot = characters[prot - 1]; // 1 = Bleu, etc. - like getPlayer()
     if (cStats[prot] == undefined) { // Pretty cool debug script. Error? Where! (It would normally not show where)
@@ -88,11 +93,11 @@ function getStat(prot, stat) {
 
     if (stat == "strength") return Math.round(itemBonus + cStats[prot][stat] * (1.07 * game.characters[prot].level));
     if (stat == "maxHP") return Math.round(itemBonus + cStats[prot][stat] * (1.1 * game.characters[prot].level));
-    // to do: EP
-    // to do: agi
+    if (stat == "maxEP") return Math.round(itemBonus + cStats[prot][stat] * (1.05 * game.characters[prot].level));
+    if (stat == "agi") return Math.round(itemBonus + cStats[prot][stat] * (1.005 * game.characters[prot].level));
     // to do: acc
     // to do: int
-    // to do: wis
+    if (stat == "wis") return Math.round(itemBonus + cStats[prot][stat] * (1.03 * game.characters[prot].level));
     // to do: luk
     return cStats[prot][stat];
 }

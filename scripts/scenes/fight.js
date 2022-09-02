@@ -669,8 +669,8 @@ scenes.fight = () => {
             for (j = 0; j < 3; j++) {
                 for (i = 0; i < 3; i++) {
                     if (positions[i][j].action != false) { 
-                            if (game.characters[positions[i][j].occupied].agi > highestAGI) {
-                                highestAGI = game.characters[positions[i][j].occupied].agi;
+                            if (getStat(game.characters[positions[i][j].occupied], "agi") > highestAGI) {
+                                highestAGI = getStat(game.characters[positions[i][j].occupied], "agi");
                                 whoAGI = positions[i][j];
                                 pos = [i, j];
                             }
@@ -2608,10 +2608,10 @@ scenes.fight = () => {
                 else {
                     fightStats[1 + amountStats * i].source = getPlayer(i + 1).name.toLowerCase() + "_dead";
                 }
-                if (getPlayer(i + 1).EP > 0) fightStats[8 + amountStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(i + 1).EP / getPlayer(i + 1).maxEP);
+                if (getPlayer(i + 1).EP > 0) fightStats[8 + amountStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(i + 1).EP / getStat(getPlayer(i + 1).name.toLowerCase(), "maxEP"));
                 fightStats[10 + amountStats * i].text = getPlayer(i + 1).HP + "/" + getStat(i + 1, "maxHP");
                 fightStats[10 + amountStats * i].fill = getHPFill(i);
-                fightStats[11 + amountStats * i].text = getPlayer(i + 1).EP + "/" + getPlayer(i + 1).maxEP;
+                fightStats[11 + amountStats * i].text = getPlayer(i + 1).EP + "/" + getStat(getPlayer(i + 1).name.toLowerCase(), "maxEP");
 
                 if (getPlayer(i + 1).effect[0] != "none") fightStats[13 + amountStats * i].alpha = 1;
                 if (getPlayer(i + 1).effect[0] != "none") fightStats[13 + amountStats * i].source = getPlayer(i + 1).effect[0];
