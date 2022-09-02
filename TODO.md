@@ -1,11 +1,10 @@
 ﻿##TODO:
-4 Things left to do in this phase
+3 Things left to do in this phase
 
 ##Phase 1:
 The developing phase, Schrottii's phase, the essential features of the game
 
 - Overworld quests
-- More Animated UI
 - Most equipment can be upgraded by a blacksmith with enough Bricks, up to +10.
 
 - The remaining scenes (items and magic)
@@ -33,6 +32,7 @@ There is still some coding, some new features, but not as much as in phase 1 (Sc
 - and a dramatic sequence before battle.
 
 - Add more of those Attack type things (Defend, Scan, etc.)
+- More Animated UI (what exactly?)
 
 
 ##Phase 3

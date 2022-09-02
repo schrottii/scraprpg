@@ -1,0 +1,215 @@
+scenes.itemscene = () => {
+    var background = [];
+    var itemsText = [];
+    var itemsButtons = [];
+    var theTop = [];
+
+    var itemPage = 0;
+    var characterSelected = "bleu";
+
+    // Background
+    background.push(controls.image({
+        anchor: [0, 0], sizeAnchor: [1, 1],
+        alpha: 1,
+        source: "blurry"
+        //fill: "brown"
+    }));
+    background.push(controls.rect({
+        anchor: [0.04, 0.04], sizeAnchor: [0.92, 0.92],
+        alpha: 1,
+        fill: "black"
+    }));
+    background.push(controls.rect({
+        anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
+        alpha: 1,
+        fill: colors.buttontop
+    }));
+    background.push(controls.button({
+        anchor: [0.9, 0.05], sizeAnchor: [0.05, 0.05],
+        alpha: 1,
+        onClick(args) {
+            setScene(scenes.inventory());
+        },
+        text: ">",
+        fill: "white"
+    }));
+    background.push(controls.rect({ // horizontal 1
+        anchor: [0.05, 0.1], sizeAnchor: [0.9, 0.01],
+        alpha: 1,
+        fill: "black"
+    }));
+    background.push(controls.rect({ // vertical 1
+        anchor: [0.2, 0.05], sizeAnchor: [0.005, 0.05],
+        alpha: 1,
+        fill: "black"
+    }));
+    background.push(controls.rect({ // vertical 2
+        anchor: [0.4, 0.05], sizeAnchor: [0.005, 0.05],
+        alpha: 1,
+        fill: "black"
+    }));
+    background.push(controls.rect({ // vertical 3
+        anchor: [0.6, 0.05], sizeAnchor: [0.005, 0.05],
+        alpha: 1,
+        fill: "black"
+    }));
+
+    // The top
+    theTop.push(controls.rect({
+        anchor: [0.05, 0.05], sizeAnchor: [0.15, 0.05],
+        alpha: 0,
+        onClick(args) {
+            alert("Not available yet!");
+        },
+        fill: "black"
+    }));
+    theTop.push(controls.label({
+        anchor: [0.125, 0.075],
+        text: "Start Cooking",
+        align: "center", fontSize: 20, fill: "black",
+        alpha: 1,
+    }));
+
+    theTop.push(controls.rect({
+        anchor: [0.25, 0.05], sizeAnchor: [0.15, 0.05],
+        alpha: 0,
+        onClick(args) {
+            alert("Not available yet!");
+        },
+        fill: "black"
+    }));
+    theTop.push(controls.label({
+        anchor: [0.325, 0.075],
+        text: "Drop",
+        align: "center", fontSize: 20, fill: "black",
+        alpha: 1,
+    }));
+
+    theTop.push(controls.rect({
+        anchor: [0.45, 0.05], sizeAnchor: [0.15, 0.05],
+        alpha: 0,
+        onClick(args) {
+            alert("Not available yet!");
+        },
+        fill: "black"
+    }));
+    theTop.push(controls.label({
+        anchor: [0.525, 0.075],
+        text: "Key Items",
+        align: "center", fontSize: 20, fill: "black",
+        alpha: 1,
+    }));
+
+    theTop.push(controls.rect({
+        anchor: [0.65, 0.05], sizeAnchor: [0.15, 0.05],
+        alpha: 0,
+        onClick(args) {
+            let i = game.chars.indexOf(characterSelected);
+
+            if (game.chars[i + 1] != undefined) characterSelected = game.chars[i + 1];
+            else characterSelected = game.chars[0];
+
+            theTop[7].text = game.characters[characterSelected].name;
+        },
+        fill: "black"
+    }));
+    theTop.push(controls.label({
+        anchor: [0.725, 0.075],
+        text: "Bleu",
+        align: "center", fontSize: 20, fill: "black",
+        alpha: 1,
+    }));
+
+    // Items n stuff
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 8; j++) {
+            itemsText.push(controls.label({
+                anchor: [0.2 + (0.2 * i), 0.15 + (0.1 * j)],
+                fill: "black",
+                align: "center", fontSize: 20, fill: "black",
+                alpha: 1
+            }));
+        }
+    }
+
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 8; j++) {
+            itemsButtons.push(controls.rect({
+                anchor: [0.2 + (0.2 * i), 0.1 + (0.1 * j)], sizeAnchor: [0.2, 0.1],
+                fill: "black",
+                idx: j + (i * 6),
+                alpha: 0,
+                onClick(args) {
+                    let itemOffset = itemPage * 12;
+                    let item = itemsText[itemOffset + this.idx].item;
+
+                    if (items[item] != undefined) {
+                        if (items[item]().story != true) {
+                            if (game.inventory[item] > 0) {
+                                items[item]({ player: game.characters[characterSelected] }).effect();
+                                removeItem(item, 1);
+                            }
+                        }
+                    }
+                    showItems();
+
+                }
+            }));
+        }
+    }
+
+    function showItems() {
+        let itemOffset = itemPage * 32;
+        let inventory = Object.keys(game.inventory);
+        for (i = 0; i < itemsButtons.length; i++) {
+            itemsText[i].alpha = 1;
+            if (inventory[i + itemOffset] == undefined) {
+                itemsText[i].text = "---";
+                itemsText[i].fill = "white";
+                continue;
+            }
+            if (game.inventory[items[inventory[i + itemOffset]].name] > 0) {
+                itemsText[i].item = inventory[i + itemOffset];
+                if (game.inventory[items[inventory[i + itemOffset]].name] > 1) itemsText[i].text = items[inventory[i + itemOffset]]().name + " x" + game.inventory[items[inventory[i + itemOffset]].name];
+                else itemsText[i].text = items[inventory[i + itemOffset]]().name;
+
+                itemsText[i].fill = "darkgray";
+                itemsText[i].source = "items/" + items[inventory[i + itemOffset]]().source;
+                itemsText[i].alpha = 1;
+            }
+            else {
+                itemsText[i].text = "---";
+                itemsText[i].fill = "white";
+            }
+        }
+    }
+    showItems();
+
+    // Default black fade transition
+    let blackFadeTransition = controls.rect({
+        anchor: [0, 0], sizeAnchor: [1, 1], // (fullscreen)
+        fill: "black",
+        alpha: 1
+    })
+    addAnimator(function (t) {
+        blackFadeTransition.alpha = 1 - (t / 200);
+        if (t > 499) {
+            blackFadeTransition.alpha = 0;
+            return true;
+        }
+        return false;
+    })
+    // black fade transition end
+
+    return {
+        // Pre-render function
+        preRender(ctx, delta) {
+
+        },
+        // Controls
+        controls: [
+            ...background, ...itemsText, ...itemsButtons, ...theTop,
+            blackFadeTransition
+        ],
+    }
+}
