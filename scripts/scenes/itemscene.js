@@ -133,27 +133,18 @@ scenes.itemscene = () => {
     // Items n stuff
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 8; j++) {
-            itemsText.push(controls.label({
-                anchor: [0.2 + (0.2 * i), 0.15 + (0.1 * j)],
-                text: "---",
-                align: "center", fontSize: 20, fill: "white",
-                alpha: 1
-            }));
             itemsImages.push(controls.image({
-                anchor: [0.06 + (0.2 * i), 0.15 + (0.1 * j)], sizeOffset: [64, 64], offset: [0, -32],
+                anchor: [0.06 + (0.2 * i), 0.165 + (0.1 * j)], sizeOffset: [64, 64], offset: [0, -32],
                 source: "gear",
                 alpha: 0
             }));
-        }
-    }
 
-    for (i = 0; i < 4; i++) {
-        for (j = 0; j < 8; j++) {
-            itemsButtons.push(controls.rect({
-                anchor: [0.2 + (0.2 * i), 0.1 + (0.1 * j)], sizeAnchor: [0.2, 0.1],
-                fill: "black",
+            itemsButtons.push(controls.button({
+                anchor: [0.125 + (0.21 * i), 0.125 + (0.1 * j)], sizeAnchor: [0.15, 0.08],
+                text: " ",
                 idx: j + (i * 6),
-                alpha: 0,
+                fillTop: "lightgray", fillBottom: "gray",
+                alpha: 1,
                 onClick(args) {
                     let itemOffset = itemPage * 12;
                     let item = itemsText[itemOffset + this.idx].item;
@@ -180,28 +171,31 @@ scenes.itemscene = () => {
         let j = 0;
 
         for (i = 0; i < itemsButtons.length; i++) {
-            itemsText[i].alpha = 1;
+            itemsButtons[i].alpha = 1;
             if (inventory[i + itemOffset] == undefined) {
-                itemsText[i + j].text = "---";
-                itemsText[i + j].fill = "white";
+                itemsButtons[i + j].text = "---";
+                itemsButtons[i + j].fillTop = "lightgray";
+                itemsButtons[i + j].fillBottom = "gray";
                 itemsImages[i + j].alpha = 0;
                 continue;
             }
             let item = items[inventory[i + itemOffset]];
             if (game.inventory[items[inventory[i + itemOffset]].name] > 0 && ((item().story == false && storyonly == false) || (item().story == true && storyonly == true)) ) {
-                itemsText[i + j].item = inventory[i + itemOffset];
-                if (game.inventory[item.name] > 1) itemsText[i + j].text = item().name + " x" + game.inventory[item.name];
-                else itemsText[i + j].text = item().name;
+                itemsButtons[i + j].item = inventory[i + itemOffset];
+                if (game.inventory[item.name] > 1) itemsButtons[i + j].text = item().name + " x" + game.inventory[item.name];
+                else itemsButtons[i + j].text = item().name;
 
-                itemsText[i + j].fill = "black";
-                itemsText[i + j].alpha = 1;
+                itemsButtons[i + j].fillTop = "#FFAE3B";
+                itemsButtons[i + j].fillBottom = "#D18822";
+                itemsButtons[i + j].alpha = 1;
 
                 itemsImages[i + j].alpha = 1;
                 itemsImages[i + j].source = "items/" + item().source;
             }
             else {
-                itemsText[i + j].text = "---";
-                itemsText[i + j].fill = "white";
+                itemsButtons[i + j].text = "---";
+                itemsButtons[i + j].fillTop = "lightgray";
+                itemsButtons[i + j].fillBottom = "gray";
                 itemsImages[i + j].alpha = 0;
                 if (item().story != storyonly) j -= 1;
             }
@@ -232,7 +226,7 @@ scenes.itemscene = () => {
         },
         // Controls
         controls: [
-            ...background, ...itemsText, ...itemsButtons, ...itemsImages, ...theTop,
+            ...background, ...itemsButtons, ...itemsImages, ...theTop,
             blackFadeTransition
         ],
     }
