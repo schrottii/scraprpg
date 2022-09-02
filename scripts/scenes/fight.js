@@ -124,6 +124,7 @@ scenes.fight = () => {
     var itemPage = 0;
 
     var fightButtons = [];
+    var actionButtons = [];
     var fightActions = [];
 
 
@@ -1094,6 +1095,35 @@ scenes.fight = () => {
     }
 
 
+    function showActionButtons() {
+        addAnimator(function (t) {
+            for (i = 0; i < actionButtons.length; i++) {
+                actionButtons[i].offset[1] = -500 + t;
+            }
+            if (t > 499) {
+                for (i = 0; i < actionButtons.length; i++) {
+                    actionButtons[i].offset[1] = 0;
+                }
+                return true;
+            }
+        })
+    }
+
+    function hideActionButtons() {
+        if (actionButtons[0].offset[1] != 0) return false;
+        addAnimator(function (t) {
+            for (i = 0; i < actionButtons.length; i++) {
+                actionButtons[i].offset[1] = -t;
+            }
+            if (t > 499) {
+                for (i = 0; i < actionButtons.length; i++) {
+                    actionButtons[i].offset[1] = -500;
+                }
+                return true;
+            }
+        })
+    }
+
     function showFightButtons() {
         addAnimator(function (t) {
             for (i = 0; i < fightButtons.length; i++) {
@@ -1264,7 +1294,7 @@ scenes.fight = () => {
                 alpha: 1,
                 onClick(args) {
                     if (this.alpha == 1 && fightaction == "active") {
-                        fightaction = "attack2";
+                        showActionButtons();
                         hideFightButtons();
                     }
                 }
@@ -1360,6 +1390,39 @@ scenes.fight = () => {
             alpha: 1,
         }))
         
+    }
+
+    function normalActionsButton() {
+        //if (i == 0) { // Normal Actions
+        actionButtons.push(controls.rect({
+            anchor: [0.3, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
+            fill: "rgb(191, 137, 69)",
+            alpha: 1,
+            onClick(args) {
+                if (this.alpha == 1 && fightaction == "active") {
+                    fightaction = "attack2";
+                    hideFightButtons();
+                    hideActionButtons();
+                }
+            }
+        }))
+        //}
+    }
+
+    for (i = 0; i < 6; i++) {
+        normalActionsButton(i);
+        actionButtons.push(controls.rect({
+            anchor: [0.3025, 0.0025 + (i * 0.035)], sizeAnchor: [0.145, 0.03], offset: [0, -500],
+            fill: "rgb(221, 155, 79)",
+            alpha: 1,
+        }))
+        actionButtons.push(controls.label({
+            anchor: [0.445, 0.02 + (i * 0.035)], offset: [0, -500],
+            text: ["Attack", "Scan", "Dash", "True Killer Move", "Wow!!!", "Astroturf XV"][i],
+            fontSize: 16, fill: "black", align: "right",
+            alpha: 1,
+        }))
+
     }
 
     for (i = 0; i < 50; i++) {
@@ -2657,7 +2720,7 @@ scenes.fight = () => {
         // Controls
         controls: [
             // Load all the nice stuff
-            ...fightButtons, ...fightActions, turnDisplay, fleeLoss, fleeIcon,
+            ...fightButtons, ...fightActions, ...actionButtons, turnDisplay, fleeLoss, fleeIcon,
             ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
             ...fightStats, ...actionDisplay, ...gameOverScreen,

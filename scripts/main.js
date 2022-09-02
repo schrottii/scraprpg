@@ -68,7 +68,7 @@ function init() {
                     loadGame();
                     loadSettings();
                     createEnemy("weakhelter");
-                    setScene(scenes.game());
+                    setScene(scenes.fight());
                 }
             }),
     
