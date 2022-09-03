@@ -233,8 +233,8 @@ var maps = {
 };
 
 var colors = { // We hate british people
-    "buttontop": "#d49f52",
-    "buttonbottom": "#b58542",
+    "topcolor": "#d49f52",
+    "bottomcolor": "#b58542",
     "buttontop": "#ffae3b",
     "buttonbottom": "#d18822",
     "buttontoppressed": "#ca6100",

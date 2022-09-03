@@ -250,7 +250,7 @@ scenes.game = () => {
     // The top bg rect
     //mapDisplay.push(controls.rect({
     //    anchor: [.9925, .68], offset: [-220, 0], sizeOffset: [250, 250],
-    //    fill: colors.buttonbottom,
+    //    fill: colors.bottomcolor,
     //}));
 
 
@@ -333,7 +333,7 @@ scenes.game = () => {
     dialogueNormalComponents.push(controls.rect({
         anchor: [0, 1], offset: [0, -200], sizeAnchor: [1, 0], sizeOffset: [0, 200],
         clickthrough: false,
-        fill: colors.buttonbottom,
+        fill: colors.bottomcolor,
         onClick(args) {
             if (this.alpha == 1) {
                 dialogueProgress += 1;
@@ -357,13 +357,13 @@ scenes.game = () => {
     dialogueNormalComponents.push(controls.rect({
         anchor: [0.01, 1.01], offset: [0, -200], sizeOffset: [136, 136],
         clickthrough: false,
-        fill: colors.buttontop,
+        fill: colors.topcolor,
         alpha: 0,
     }));
     dialogueNormalComponents.push(controls.rect({
         anchor: [0.01, 1.01], offset: [0, -54], sizeOffset: [128, 32],
         clickthrough: false,
-        fill: colors.buttontop,
+        fill: colors.topcolor,
         alpha: 0,
     }));
     dialogueNormalComponents.push(controls.label({
@@ -375,7 +375,7 @@ scenes.game = () => {
     dialogueNormalComponents.push(controls.rect({
         anchor: [0.01, 1.01], offset: [164, -200], sizeOffset: [0, 178], sizeAnchor: [0.8, 0],
         clickthrough: false,
-        fill: colors.buttontop,
+        fill: colors.topcolor,
         alpha: 0,
     }));
     dialogueNormalComponents.push(controls.image({
@@ -398,7 +398,7 @@ scenes.game = () => {
     dialogueInvisComponents.push(controls.rect({
         anchor: [0, 1], offset: [0, -200], sizeAnchor: [1, 0], sizeOffset: [0, 200],
         clickthrough: false,
-        fill: colors.buttonbottom,
+        fill: colors.bottomcolor,
         onClick(args) {
             if (this.alpha == 1) {
                 dialogueProgress += 1;
@@ -422,7 +422,7 @@ scenes.game = () => {
     dialogueInvisComponents.push(controls.rect({
         anchor: [0.01, 1.01], offset: [0, -200], sizeOffset: [0, 180], sizeAnchor: [0.98, 0],
         clickthrough: false,
-        fill: colors.buttontop,
+        fill: colors.topcolor,
         alpha: 0,
     }));
     dialogueInvisComponents.push(controls.label({ // 2

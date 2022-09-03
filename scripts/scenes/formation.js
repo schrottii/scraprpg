@@ -22,7 +22,7 @@ scenes.formation = () => {
     background.push(controls.rect({
         anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
         alpha: 1,
-        fill: colors.buttontop
+        fill: colors.topcolor
     }));
     background.push(controls.button({
         anchor: [0.9, 0.05], sizeAnchor: [0.05, 0.05],
@@ -46,7 +46,7 @@ scenes.formation = () => {
     background.push(controls.rect({
         anchor: [0.42, 0.17], sizeAnchor: [0.46, 0.71],
         alpha: 1,
-        fill: colors.buttontop
+        fill: colors.topcolor
     }));
     background.push(controls.label({
         anchor: [0.43, 0.19],

@@ -24,7 +24,7 @@ scenes.inventory = () => {
     background.push(controls.rect({
         anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
         alpha: 1,
-        fill: colors.buttontop
+        fill: colors.topcolor
     }));
 
     // Buttons on the right

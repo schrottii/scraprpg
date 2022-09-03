@@ -24,7 +24,7 @@ scenes.itemscene = () => {
     background.push(controls.rect({
         anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
         alpha: 1,
-        fill: colors.buttontop
+        fill: colors.topcolor
     }));
     background.push(controls.button({
         anchor: [0.9, 0.05], sizeAnchor: [0.05, 0.05],
