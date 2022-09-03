@@ -118,8 +118,11 @@ let controls = {
             ...controls.base(),
             text: "Sample Text",
             font: "DePixelKlein",
-            fillTop: "#FFAE3B", //d49f52
-            fillBottom: "#D18822", //b58542
+            fillTop: colors.buttontop,
+            fillBottom: colors.buttonbottom,
+            isPressed: false,
+            pressedTop: colors.buttontoppressed,
+            pressedBottom: colors.buttonbottompressed,
             fillText: "black",
             fontSize: 30,
             render(ctx) {
@@ -133,10 +136,12 @@ let controls = {
                 w = this.sizeOffset[0] / red + this.sizeAnchor[0] * ctx.canvas.width;
                 h = this.sizeOffset[1] / red + this.sizeAnchor[1] * ctx.canvas.height;
 
-
-                ctx.fillStyle = this.fillTop;
+                if(this.isPressed) ctx.fillStyle = this.pressedTop;
+                else ctx.fillStyle = this.fillTop;
                 ctx.fillRect(x, y, w, h / 2 + 0.25);
-                ctx.fillStyle = this.fillBottom;
+
+                if(this.isPressed) ctx.fillStyle = this.pressedBottom;
+                else ctx.fillStyle = this.fillBottom;
                 ctx.fillRect(x, y + h / 2, w, h / 2);
 
                 ctx.font = (this.fontSize / red) + "px " + this.font + ", sans-serif";

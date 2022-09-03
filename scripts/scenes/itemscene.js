@@ -144,6 +144,7 @@ scenes.itemscene = () => {
                 text: " ",
                 idx: j + (i * 6),
                 fillTop: "lightgray", fillBottom: "gray",
+                pressedTop: "darkgray", pressedBottom: "gray",
                 alpha: 1,
                 onClick(args) {
                     let itemOffset = itemPage * 12;
@@ -185,8 +186,10 @@ scenes.itemscene = () => {
                 if (game.inventory[item.name] > 1) itemsButtons[i + j].text = item().name + " x" + game.inventory[item.name];
                 else itemsButtons[i + j].text = item().name;
 
-                itemsButtons[i + j].fillTop = "#FFAE3B";
-                itemsButtons[i + j].fillBottom = "#D18822";
+                itemsButtons[i + j].fillTop = colors.buttontop;
+                itemsButtons[i + j].fillBottom = colors.buttonbottom;
+                itemsButtons[i + j].pressedTop = colors.buttontoppressed;
+                itemsButtons[i + j].pressedBottom = colors.buttonbottompressed;
                 itemsButtons[i + j].alpha = 1;
 
                 itemsImages[i + j].alpha = 1;

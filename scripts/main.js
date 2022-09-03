@@ -177,6 +177,37 @@ let pointerPos = [0, 0];
 function onCanvasPointerDown(e) {
     pointerActive = true;
     pointerPos = [e.clientX, e.clientY];
+    for (let a = scene.controls.length - 1; a >= 0; a--) {
+
+        if (scene.controls[a].fillTop == undefined) continue;
+
+        let con = scene.controls[a];
+        if (con == undefined) return;
+        let offsetX, offsetY, sizeX, sizeY
+        if (con.offset == undefined) console.trace();
+        if (isLs() == false) {
+            offsetX = con.offset[0] + con.anchor[0] * mainCanvas.width;
+            offsetY = con.offset[1] + con.anchor[1] * mainCanvas.height;
+            sizeX = con.sizeOffset[0] + con.sizeAnchor[0] * mainCanvas.width;
+            sizeY = con.sizeOffset[1] + con.sizeAnchor[1] * mainCanvas.height;
+        }
+        else {
+            offsetX = con.offset[0] / 2 + con.anchor[0] * mainCanvas.width;
+            offsetY = con.offset[1] / 2 + con.anchor[1] * mainCanvas.height;
+            sizeX = con.sizeOffset[0] / 2 + con.sizeAnchor[0] * mainCanvas.width;
+            sizeY = con.sizeOffset[1] / 2 + con.sizeAnchor[1] * mainCanvas.height;
+        }
+
+        // Make buttons go pressed color
+        if (!scene.controls[a].clickthrough && scene.controls[a].onClick &&
+            pointerPos[0] >= offsetX && pointerPos[0] < offsetX + sizeX &&
+            pointerPos[1] >= offsetY && pointerPos[1] < offsetY + sizeY) {
+            scene.controls[a].isPressed = true;
+        }
+        else {
+            scene.controls[a].isPressed = false;
+        }
+    }
 }
 
 function onCanvasPointerMove(e) {
@@ -208,10 +239,14 @@ function onCanvasPointerUp(e) {
             sizeY = con.sizeOffset[1] / 2 + con.sizeAnchor[1] * mainCanvas.height;
         }
 
-            if (!scene.controls[a].clickthrough && scene.controls[a].onClick &&
-                pointerPos[0] >= offsetX && pointerPos[0] < offsetX + sizeX &&
-                pointerPos[1] >= offsetY && pointerPos[1] < offsetY + sizeY &&
-                scene.controls[a].onClick()) return;
+        // Makes button go unpressed color after you stop clicking it
+        // Without this you'd have to click somewhere else to "unclick" it
+        if (scene.controls[a].fillTop != undefined) scene.controls[a].isPressed = false;
+
+        if (!scene.controls[a].clickthrough && scene.controls[a].onClick &&
+            pointerPos[0] >= offsetX && pointerPos[0] < offsetX + sizeX &&
+            pointerPos[1] >= offsetY && pointerPos[1] < offsetY + sizeY &&
+        scene.controls[a].onClick()) return;
     }
 }
 
