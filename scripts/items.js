@@ -61,7 +61,7 @@ let items = {
             shopcost: 2000,
             max: 99,
             effect: () => {
-                causeEffect(args.player, "none", 0);
+                causeEffect(game.chars.indexOf(args.player.name.toLowerCase()), "none", 0);
                 playSound("heal");
             },
 
@@ -115,7 +115,7 @@ let items = {
                 let amount = Math.ceil(getStat(args.player.name.toLowerCase(), "maxHP") / 4);
                 if (args.player.HP < 1) args.player.HP = amount;
                 playSound("heal");
-                if (args.player != undefined) {
+                if (args.player != undefined && positions != undefined) {
                     positions[args.player.pos[0]][args.player.pos[1]].isOccupied = true;
                 }
                 if (args.anchor != undefined) {

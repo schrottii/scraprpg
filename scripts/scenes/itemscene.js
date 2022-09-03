@@ -148,7 +148,7 @@ scenes.itemscene = () => {
                 alpha: 1,
                 onClick(args) {
                     let itemOffset = itemPage * 12;
-                    let item = itemsText[itemOffset + this.idx].item;
+                    let item = this.item;
 
                     if (items[item] != undefined) {
                         if (items[item]().story != true) {
