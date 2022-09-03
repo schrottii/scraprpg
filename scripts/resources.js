@@ -198,6 +198,7 @@ var scenes = {
     fight: "scripts/scenes/fight.js",
     inventory: "scripts/scenes/inventory.js",
     itemscene: "scripts/scenes/itemscene.js",
+    magicscene: "scripts/scenes/magicscene.js",
     formation: "scripts/scenes/formation.js",
     equipment: "scripts/scenes/equipment.js",
     savemanager: "scripts/scenes/savemanager.js",

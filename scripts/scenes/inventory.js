@@ -35,6 +35,7 @@ scenes.inventory = () => {
             text: ["Items", "Magic", "Equipment", "Formation", "Save Manager", "Settings", "Exit Menu"][i],
             onClick(args) {
                 if (this.id == 0) setScene(scenes.itemscene());
+                if (this.id == 1) setScene(scenes.magicscene());
                 if (this.id == 2) setScene(scenes.equipment());
                 if (this.id == 3) setScene(scenes.formation());
                 if (this.id == 4) setScene(scenes.savemanager());
@@ -206,7 +207,7 @@ scenes.inventory = () => {
                 else characterBars[2 + (i * 10)].sizeAnchor[0] = 0.00001;
                 characterBars[6 + (i * 10)].fill = "rgb(205, 0, 205)";
 
-                if (getPlayer(1 + i).HP > 0) characterBars[6 + (i * 10)].sizeAnchor[0] = 0.1960 * (getPlayer(1 + i).EP / getStat(getPlayer(1 + i).name.toLowerCase(), "maxEP"));
+                if (getPlayer(1 + i).HP > 0) characterBars[6 + (i * 10)].sizeAnchor[0] = 0.1960 * ((0.00001 + getPlayer(1 + i).EP) / getStat(getPlayer(1 + i).name.toLowerCase(), "maxEP"));
                 else characterBars[6 + (i * 10)].sizeAnchor[0] = 0.00001;
 
                 characterBars[8 + (i * 10)].text = getPlayer(1 + i).HP + "/" + getStat(getPlayer(1 + i).name.toLowerCase(), "maxHP");

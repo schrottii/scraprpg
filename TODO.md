@@ -1,13 +1,11 @@
 ﻿##TODO:
-3 Things left to do in this phase
+2 Things left to do in this phase
 
 ##Phase 1:
 The developing phase, Schrottii's phase, the essential features of the game
 
 - Overworld quests
 - Most equipment can be upgraded by a blacksmith with enough Bricks, up to +10.
-
-- The remaining scenes (items and magic)
 
 
 ##Phase 1.5

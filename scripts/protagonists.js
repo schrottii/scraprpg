@@ -97,7 +97,7 @@ function getStat(prot, stat) {
     if (stat == "agi") return Math.round(itemBonus + cStats[prot][stat] * (1.005 * game.characters[prot].level));
     // to do: acc
     // to do: int
-    if (stat == "wis") return Math.round(itemBonus + cStats[prot][stat] * (1.03 * game.characters[prot].level));
+    if (stat == "wis") return Math.min(999, Math.round(itemBonus + cStats[prot][stat] * Math.pow(Math.log(game.characters[prot].level), 5)));
     // to do: luk
     return cStats[prot][stat];
 }

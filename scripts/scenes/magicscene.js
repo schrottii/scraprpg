@@ -1,0 +1,227 @@
+scenes.magicscene = () => {
+    var background = [];
+    var itemsText = [];
+    var itemsImages = [];
+    var itemsButtons = [];
+    var theTop = [];
+    var storyonly = false;
+
+    var itemPage = 0;
+    var characterSelected = "bleu";
+
+    // Background
+    background.push(controls.image({
+        anchor: [0, 0], sizeAnchor: [1, 1],
+        alpha: 1,
+        source: "blurry"
+        //fill: "brown"
+    }));
+    background.push(controls.rect({
+        anchor: [0.04, 0.04], sizeAnchor: [0.92, 0.92],
+        alpha: 1,
+        fill: "black"
+    }));
+    background.push(controls.rect({
+        anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
+        alpha: 1,
+        fill: colors.topcolor
+    }));
+    background.push(controls.button({
+        anchor: [0.9, 0.05], sizeAnchor: [0.05, 0.05],
+        alpha: 1,
+        onClick(args) {
+            setScene(scenes.inventory());
+        },
+        text: ">",
+        fill: "white"
+    }));
+    background.push(controls.rect({ // horizontal 1
+        anchor: [0.05, 0.1], sizeAnchor: [0.9, 0.01],
+        alpha: 1,
+        fill: "black"
+    }));
+    background.push(controls.rect({ // vertical 1
+        anchor: [0.2, 0.05], sizeAnchor: [0.005, 0.05],
+        alpha: 1,
+        fill: "black"
+    }));
+    background.push(controls.rect({ // vertical 2
+        anchor: [0.4, 0.05], sizeAnchor: [0.005, 0.05],
+        alpha: 1,
+        fill: "black"
+    }));
+    background.push(controls.rect({ // vertical 3
+        anchor: [0.6, 0.05], sizeAnchor: [0.005, 0.05],
+        alpha: 1,
+        fill: "black"
+    }));
+
+    // The top
+    theTop.push(controls.rect({
+        anchor: [0.05, 0.05], sizeAnchor: [0.15, 0.05],
+        alpha: 0,
+        onClick(args) {
+            alert("Not available yet!");
+        },
+        fill: "black"
+    }));
+    theTop.push(controls.label({
+        anchor: [0.125, 0.075],
+        text: "Start Cooking",
+        align: "center", fontSize: 20, fill: "black",
+        alpha: 1,
+    }));
+
+    theTop.push(controls.rect({
+        anchor: [0.25, 0.05], sizeAnchor: [0.15, 0.05],
+        alpha: 0,
+        onClick(args) {
+            alert("Not available yet!");
+        },
+        fill: "black"
+    }));
+    theTop.push(controls.label({
+        anchor: [0.325, 0.075],
+        text: "Drip",
+        align: "center", fontSize: 20, fill: "black",
+        alpha: 1,
+    }));
+
+    theTop.push(controls.rect({
+        anchor: [0.45, 0.05], sizeAnchor: [0.15, 0.05],
+        alpha: 0,
+        fill: "black"
+    }));
+    theTop.push(controls.label({
+        anchor: [0.525, 0.075],
+        text: "Magic",
+        align: "center", fontSize: 20, fill: "black",
+        alpha: 1,
+    }));
+
+    theTop.push(controls.rect({
+        anchor: [0.65, 0.05], sizeAnchor: [0.15, 0.05],
+        alpha: 0,
+        onClick(args) {
+            let i = game.chars.indexOf(characterSelected);
+
+            if (game.chars[i + 1] != undefined) characterSelected = game.chars[i + 1];
+            else characterSelected = game.chars[0];
+
+            theTop[7].text = game.characters[characterSelected].name;
+            showItems();
+        },
+        fill: "black"
+    }));
+    theTop.push(controls.label({
+        anchor: [0.725, 0.075],
+        text: "Bleu",
+        align: "center", fontSize: 20, fill: "black",
+        alpha: 1,
+    }));
+
+    // Items n stuff
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 8; j++) {
+            itemsImages.push(controls.image({
+                anchor: [0.06 + (0.2 * i), 0.165 + (0.1 * j)], sizeOffset: [64, 64], offset: [0, -32],
+                source: "gear",
+                alpha: 0
+            }));
+
+            itemsButtons.push(controls.button({
+                anchor: [0.125 + (0.21 * i), 0.125 + (0.1 * j)], sizeAnchor: [0.15, 0.08],
+                text: " ",
+                idx: j + (i * 6),
+                fillTop: "lightgray", fillBottom: "gray",
+                pressedTop: "darkgray", pressedBottom: "gray",
+                alpha: 1,
+                onClick(args) {
+                    let itemOffset = itemPage * 12;
+                    let item = this.item;
+
+                    if (magic[item] != undefined) {
+                        if (magic[item]().story != true) {
+                            if (game.characters[characterSelected].EP >= magic[item]().cost) {
+                                magic[item]({ player: game.characters[characterSelected] }).effect();
+                                game.characters[characterSelected].EP -= magic[item]().cost;
+                            }
+                        }
+                    }
+                    showItems();
+
+                }
+            }));
+        }
+    }
+
+    function showItems() {
+        let itemOffset = itemPage * 32;
+
+        let inventory = game.characters[characterSelected].magic;
+
+        for (i = 0; i < 32; i++) {
+            itemsButtons[i].alpha = 1;
+            if (inventory[i + itemOffset] == undefined) {
+                itemsButtons[i].text = "---";
+                itemsButtons[i].fillTop = "lightgray";
+                itemsButtons[i].fillBottom = "gray";
+                itemsImages[i].alpha = 0;
+                continue;
+            }
+            let mag = magic[inventory[i + itemOffset]];
+            if (mag().battleonly != true) {
+                itemsButtons[i].item = inventory[i + itemOffset];
+                itemsButtons[i].text = mag().name + " (" + mag().cost + " EP)";
+
+                if (game.characters[characterSelected].EP >= mag().cost) itemsButtons[i].fill = "green";
+                else itemsButtons[i].fill = "gray";
+
+                itemsButtons[i].fillTop = colors.buttontop;
+                itemsButtons[i].fillBottom = colors.buttonbottom;
+                itemsButtons[i].pressedTop = colors.buttontoppressed;
+                itemsButtons[i].pressedBottom = colors.buttonbottompressed;
+                itemsButtons[i].alpha = 1;
+
+                itemsImages[i].alpha = 1;
+                itemsImages[i].source = "items/" + mag().source;
+            }
+            else {
+                itemsButtons[i + j].text = "---";
+                itemsButtons[i + j].fillTop = "lightgray";
+                itemsButtons[i + j].fillBottom = "gray";
+                itemsImages[i + j].alpha = 0;
+                //if (mag().story != storyonly) j -= 1;
+            }
+        }
+    }
+    showItems();
+
+    // Default black fade transition
+    let blackFadeTransition = controls.rect({
+        anchor: [0, 0], sizeAnchor: [1, 1], // (fullscreen)
+        fill: "black",
+        alpha: 1
+    })
+    addAnimator(function (t) {
+        blackFadeTransition.alpha = 1 - (t / 200);
+        if (t > 499) {
+            blackFadeTransition.alpha = 0;
+            return true;
+        }
+        return false;
+    })
+    // black fade transition end
+
+    return {
+        // Pre-render function
+        preRender(ctx, delta) {
+            theTop[3].text = game.characters[characterSelected].EP + "/" + getStat(characterSelected, "maxEP");
+        },
+        // Controls
+        controls: [
+            ...background, ...itemsButtons, ...itemsImages, ...theTop,
+            blackFadeTransition
+        ],
+    }
+}

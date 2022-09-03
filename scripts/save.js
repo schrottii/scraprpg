@@ -29,7 +29,8 @@ let game = {
                 "rhand" : "none",
                 "acc1" : "none",
                 "acc2" : "none",
-            }
+            },
+            magic: [],
         },
         corelle: {
             name: "Corelle",
@@ -50,7 +51,8 @@ let game = {
                 "rhand": "none",
                 "acc1": "none",
                 "acc2": "none",
-            }
+            },
+            magic: [],
         },
         gau: {
             name: "Gau",
@@ -71,7 +73,8 @@ let game = {
                 "rhand": "none",
                 "acc1": "none",
                 "acc2": "none",
-            }
+            },
+            magic: [],
         },
         skro: {
             name: "Skro",
@@ -92,7 +95,8 @@ let game = {
                 "rhand": "none",
                 "acc1": "none",
                 "acc2": "none",
-            }
+            },
+            magic: [],
         },
         kokitozi: {
             name: "Kokitozi",
@@ -113,7 +117,8 @@ let game = {
                 "rhand": "none",
                 "acc1": "none",
                 "acc2": "none",
-            }
+            },
+            magic: [],
         }
     }
 }
