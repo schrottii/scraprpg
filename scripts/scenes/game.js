@@ -17,6 +17,15 @@ function createEnemy(type) {
     }
 }
 
+function startDialogue(cd) {
+    inDialogue = true;
+    currentDialogue = cd;
+    dialogueProgress = 1;
+    dialogueEmotion = currentDialogue[dialogueProgress][1];
+    dialogueType = currentDialogue[0];
+    canMove = false;
+}
+
 function causeEffect(i, effect, rounds) {
     // Immune?
     for (j in getPlayer(i + 1).equipment) {
@@ -337,6 +346,7 @@ scenes.game = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 dialogueProgress += 1;
+                textProgress = -1;
                 if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
                     // Dialogue end
                     inDialogue = false;
@@ -402,6 +412,7 @@ scenes.game = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 dialogueProgress += 1;
+                textProgress = -1;
                 if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
                     // Dialogue end
                     inDialogue = false;
@@ -445,6 +456,7 @@ scenes.game = () => {
         onClick(args) {
             if (this.alpha == 1 || dialogueType == "cinematic") {
                 dialogueProgress += 1;
+                textProgress = -1;
                 if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
                     // Dialogue end
                     inDialogue = false;
@@ -1138,14 +1150,6 @@ scenes.game = () => {
         }
     }
 
-    function startDialogue(cd) {
-        inDialogue = true;
-        currentDialogue = cd;
-        dialogueProgress = 1;
-        dialogueEmotion = currentDialogue[dialogueProgress][1];
-        dialogueType = currentDialogue[0];
-        canMove = false;
-    }
 
     function loadNPCs() {
         activenpcs = [];
@@ -1812,10 +1816,10 @@ scenes.game = () => {
                     dialogueNormalComponents[i].alpha = 1;
                 }
                 if (map.dialogues != undefined) {
-                    if (typeof (currentDialogue[dialogueProgress][0]) == "string") dialogueNormalComponents[6].text = currentDialogue[dialogueProgress][0];
-                    else dialogueNormalComponents[6].text = currentDialogue[dialogueProgress][0]();
+                    if (typeof (currentDialogue[dialogueProgress][0]) == "string") dialogueNormalComponents[6].text = animatedText(currentDialogue[dialogueProgress][0]);
+                    else dialogueNormalComponents[6].text = animatedText(currentDialogue[dialogueProgress][0]());
 
-                    if (currentDialogue[dialogueProgress][3] != undefined) dialogueNormalComponents[3].text = currentDialogue[dialogueProgress][3];
+                    if (currentDialogue[dialogueProgress][3] != undefined) dialogueNormalComponents[3].text = animatedText(currentDialogue[dialogueProgress][3]);
                     dialogueEmotion = currentDialogue[dialogueProgress][2];
                     dialogueNormalComponents[5].source = currentDialogue[dialogueProgress][1];
                     dialogueNormalComponents[5].snip = getEmotion(dialogueEmotion);
@@ -1834,8 +1838,8 @@ scenes.game = () => {
                     dialogueInvisComponents[i].alpha = 1;
                 }
                 if (map.dialogues != undefined) {
-                    if (typeof (currentDialogue[dialogueProgress][0]) == "string") dialogueInvisComponents[2].text = currentDialogue[dialogueProgress][0];
-                    else dialogueInvisComponents[2].text = currentDialogue[dialogueProgress][0]();
+                    if (typeof (currentDialogue[dialogueProgress][0]) == "string") dialogueInvisComponents[2].text = animatedText(currentDialogue[dialogueProgress][0]);
+                    else dialogueInvisComponents[2].text = animatedText(currentDialogue[dialogueProgress][0]());
 
                     if (currentDialogue[dialogueProgress + 1] == undefined) dialogueInvisComponents[3].alpha = 0; // Star
                     actionButton.alpha = 0;
@@ -1851,8 +1855,8 @@ scenes.game = () => {
                     dialogueNarratorComponents[i].alpha = 1;
                 }
                 if (map.dialogues != undefined) {
-                    if (typeof (currentDialogue[dialogueProgress][0]) == "string") dialogueNarratorComponents[1].text = currentDialogue[dialogueProgress][0];
-                    else dialogueNarratorComponents[1].text = currentDialogue[dialogueProgress][0]();
+                    if (typeof (currentDialogue[dialogueProgress][0]) == "string") animatedText(dialogueNarratorComponents[1].text = currentDialogue[dialogueProgress][0]);
+                    else dialogueNarratorComponents[1].text = animatedText(currentDialogue[dialogueProgress][0]());
 
                     if (currentDialogue[dialogueProgress + 1] == undefined) dialogueNarratorComponents[2].alpha = 0; // Star
                     actionButton.alpha = 0;
@@ -1862,8 +1866,8 @@ scenes.game = () => {
                 dialogueNarratorComponents[1].alpha = 1;
                 dialogueNarratorComponents[2].alpha = 1;
                 if (map.dialogues != undefined) {
-                    if (typeof (currentDialogue[dialogueProgress][0]) == "string") dialogueNarratorComponents[1].text = currentDialogue[dialogueProgress][0];
-                    else dialogueNarratorComponents[1].text = currentDialogue[dialogueProgress][0]();
+                    if (typeof (currentDialogue[dialogueProgress][0]) == "string") animatedText(dialogueNarratorComponents[1].text = currentDialogue[dialogueProgress][0]);
+                    else dialogueNarratorComponents[1].text = animatedText(currentDialogue[dialogueProgress][0]());
 
                     if (currentDialogue[dialogueProgress + 1] == undefined) dialogueNarratorComponents[2].alpha = 0; // Star
                     actionButton.alpha = 0;

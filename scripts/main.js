@@ -106,6 +106,8 @@ var currentKeys = {};
 var autoSaveTime = 0;
 var canMove = true;
 
+var textProgress = -1;
+
 //   Day: 6:00 - 17:59 (12 hours)
 //  ----> Dawn: 6:00 - 8:59
 //  ----> Noon: 9:00 - 14:59
@@ -344,6 +346,9 @@ function loop() {
             animationtime = -1;
         }
     }
+    if (textProgress != -1) {
+        textProgress += delta / 1000;
+    }
 
     game.time += (delta/60);
     if (game.time >= 24000) { // 1000 = 1 hour in-game.
@@ -353,6 +358,12 @@ function loop() {
     updateAnimators(delta);
 
     requestAnimationFrame(loop);
+}
+
+function animatedText(text, speed = 16) { // 8, 16, 24
+    if (textProgress == -1) textProgress = 0;
+    let prog = Math.floor(textProgress * speed);
+    return text.slice(0, prog);
 }
 
 function addWrenches(amount = 0) {

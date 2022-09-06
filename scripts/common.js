@@ -84,11 +84,7 @@ var commontiles = {
         sprite: "uv_house_left",
             occupied: true,
                 action: () => {
-                    inDialogue = true;
-                    currentDialogue = maps["test"].dialogues[2];
-                    dialogueProgress = 1;
-                    dialogueEmotion = currentDialogue[dialogueProgress][1];
-                    canMove = false;
+                    startDialogue(maps["test"].dialogues[2]);
                 }
     },
     "030": {
