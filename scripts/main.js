@@ -363,7 +363,7 @@ function loop() {
 function animatedText(text, speed = 16) { // 8, 16, 24
     if (textProgress == -1) textProgress = 0;
     let prog = Math.floor(textProgress * speed);
-    if (currentDialogue[dialogueProgress][4] != undefined && prog < text.length) playSound(currentDialogue[dialogueProgress][4]);
+    if (currentDialogue[dialogueProgress].voice != false && prog < text.length) playSound(currentDialogue[dialogueProgress].voice);
     return text.slice(0, prog);
 }
 

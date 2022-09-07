@@ -5,6 +5,20 @@
 // 1: Move randomly (like a stupid guy)
 // 2: Move in a set pattern (booooring)
 
+function dline(args) {
+    return {
+        text: "ah",
+        portrait: "Portraits_Bleu",
+        emotion: "neutral",
+        name: "Bleu",
+        voice: false,
+        script: false,
+        ...args || {}
+    }
+}
+
+// dline({ text: "", portrait: "Portraits_Bleu", emotion: "", name: "Bleu"})
+
 let npcs = {
     default(args) {
         return {
@@ -59,12 +73,17 @@ let npcs = {
             map: "map2",
             skin: "bleu",
             dialogues: {
-                1: ["normal", ["Hii I'm Blue", "Portraits_Bleu", "happy", "Blue"],
-                ["No I'm not Bleu! I'm not you! I'm Blue!", "Portraits_Bleu", "angry", "Blue"],
-                ["Hey man, I think you're me.", "Portraits_Bleu", "neutral", "Bleu"],
-                ["I'm a greek emo. I hate you!!!", "Portraits_Bleu", "sad", "Blue"],
-                ["Why are you blue like me that can't be you're a clone", "Portraits_Bleu", "sad", "Blue"],
-                ["Idiots.", "Portraits_Corelle", "neutral", "The girl"]],
+                1: {
+                    "type": "normal",
+                    "lines": [
+                        dline({ text: "Hii I'm Blue", portrait: "Portraits_Bleu", emotion: "happy", name: "Blue" }),
+                        dline({ text: "No I'm not Bleu! I'm not you! I'm Blue!", portrait: "Portraits_Bleu", emotion: "angry", name: "Blue" }),
+                        dline({ text: "Hey man, I think you're me.", portrait: "Portraits_Bleu", emotion: "neutral", name: "Bleu" }),
+                        dline({ text: "I'm a greek emo. I hate you!!!", portrait: "Portraits_Bleu", emotion: "sad", name: "Blue" }),
+                        dline({ text: "Why are you blue like me that can't be you're a clone", portrait: "Portraits_Bleu", emotion: "sad", name: "Blue" }),
+                        dline({ text: "Idiots.", portrait: "Portraits_Corelle", emotion: "neutral", name: "The girl" }),
+                    ],
+                }
             },
             movement: 1,
             ...args || {},
@@ -78,15 +97,21 @@ let npcs = {
             map: "test",
             skin: "skro",
             dialogues: {
-                1: ["normal", ["I am friendly Skro.", "Portraits_Skro", "sad", "Skro"],
-                    ["NO! I am evil Skro!!!", "Portraits_Skro", "angry", "Skro"],
-                    ["Guys, I think he is evil!", "Portraits_Gau", "happy", "Gau"],
-                    ["Spam is not allowed!", "Portraits_Gau", "angry", "Gau"],
-                    ["Skro? More like oh no", "Portraits_Corelle", "neutral", "Corelle"],
-                    ["Good Night.", "Portraits_Skro", "love", "oh no"],
-                    ["Good Night.", "Portraits_Skro", "love", "oh no", "male_young", () => {
-                        startFight("nogameover", [["itsalive", 2, 0], ["itsalive", 2, 1], ["itsalive", 2, 2], ["nottoofresh", 0, 1]]);
-                    }]],
+                1: {
+                    "type": "normal",
+                    "lines": [
+                        dline({ text: "I am friendly Skro.", portrait: "Portraits_Skro", emotion: "sad", name: "Skro", voice: "female_young" }),
+                        dline({ text: "NO! I am evil Skro!!!", portrait: "Portraits_Skro", emotion: "angry", name: "Skro" }),
+                        dline({ text: "Guys, I think he is evil!", portrait: "Portraits_Gau", emotion: "happy", name: "Gau" }),
+                        dline({ text: "Spam is not allowed!", portrait: "Portraits_Gau", emotion: "angry", name: "Gau" }),
+                        dline({ text: "Skro? More like oh no", portrait: "Portraits_Corelle", emotion: "neutral", name: "Corelle" }),
+                        dline({ text: "Good Night.", portrait: "Portraits_Skro", emotion: "love", name: "oh no" }),
+                        dline({
+                            text: "Good Night.", portrait: "Portraits_Skro", emotion: "love", name: "oh no", script: () => {
+                                startFight("nogameover", [["itsalive", 2, 0], ["itsalive", 2, 1], ["itsalive", 2, 2], ["nottoofresh", 0, 1]]);
+                            } }),
+                    ],
+                }
             },
             movement: 1,
             ...args || {},

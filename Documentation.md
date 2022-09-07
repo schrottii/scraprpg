@@ -25,6 +25,7 @@ For emotionAnimation(...)   (other sprite)
 | 0, 96      | anger                | 
 
 
+
 ## Emotions
 For getEmotion(...)    (portraits)
 
@@ -45,6 +46,19 @@ For getEmotion(...)    (portraits)
 | Acid       | acid                 | 1/15 of MaxHP damage every round
 | Poison     | poison               | 1/15 of MaxHP damage every round, 1 HP / tile on overworld
 | Fire/Burn  | burn                 | 1/10 of MaxHP damage every round
+
+
+
+## dline (used to create lines for dialogue)
+| Name       | Default              | Description
+|:----------:|:--------------------:|:------------------------------:
+| text       | "ah"                 | The text
+| portrait   | Portraits_Bleu       | Portrait image
+| emotion    | neutral              | Emotion of the portrait (See emotions)
+| name       | Bleu                 | The displayed name (can be unrelated to portrait and emotion)
+| voice      | false (off)          | Voice (optional)
+| script     | false (off)          | Script (optional)
+
 
 
 

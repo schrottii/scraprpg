@@ -167,11 +167,24 @@ maps["test"] = {
         "--- --- --- --- --- --- 034 033",
         ],
     dialogues: {
-        1: ["normal", ["Ski-bi dibby dib yo da dub dub Yo da dub dub Ski - bi dibby dib yo da dub dub Yo da dub dub (I'm the Scatbarrel) Ski - bi dibby dib yo da dub dub Yo da dub dub Ski - bi dibby dib yo da dub dub" +
-"Yo da dub dub Ba - da - ba - da - ba - be bop bop bodda bope Bop ba bodda bope Be bop ba bodda bope Bop ba bodda Ba - da - ba - da - ba - be bop ba bodda bope Bop ba bodda bope Be bop ba bodda bope Bop ba bodda bope", "Portraits_Bleu", "happy", "Bleu", "male_young"],
-            ["I hope this is not copyrighted...", "Portraits_Bleu", "neutral", "Bleu", "male_grown"],
-            ["Don't forget to subscribe to my channel", "Portraits_Bleu", "Bleu", "angry"]],
-        2: ["normal", ["Hmm...", "Portraits_Bleu", "neutral", "Blez", "female_grown"],
-            [() => { return "It is " + getTime() + "!" }, "Portraits_Bleu", "happy", "Bleu", "female_young"]],
+        1: {
+            "type": "normal",
+            "lines": [
+                dline({
+                    text: "Ski-bi dibby dib yo da dub dub Yo da dub dub Ski - bi dibby dib yo da dub dub Yo da dub dub (I'm the Scatbarrel) Ski - bi dibby dib yo da dub dub Yo da dub dub Ski - bi dibby dib yo da dub dub" +
+                        "Yo da dub dub Ba - da - ba - da - ba - be bop bop bodda bope Bop ba bodda bope Be bop ba bodda bope Bop ba bodda Ba - da - ba - da - ba - be bop ba bodda bope Bop ba bodda bope Be bop ba bodda bope Bop ba bodda bope",
+                    portrait: "Portraits_Bleu", emotion: "happy", name: "Bleu", voice: "male_young"
+                }),
+                dline({ text: "I hope this is not copyrighted...", portrait: "Portraits_Bleu", emotion: "neutral", name: "Bleu", voice: "male_grown" }),
+                dline({ text: "Don't forget to subscribe to my channel", portrait: "Portraits_Bleu", emotion: "angry", name: "Bleu" }),
+            ],
+        },
+        2: {
+            "type": "normal",
+            "lines": [
+                dline({ text: "Hmm...", portrait: "Portraits_Bleu", emotion: "neutral", name: "Bleu", voice: "female_grown" }),
+                dline({ text: () => { return "It is " + getTime() + "!" }, portrait: "Portraits_Bleu", emotion: "happy", name: "Bleu", voice: "female_young" }),
+            ],
+        },
     }
 }
