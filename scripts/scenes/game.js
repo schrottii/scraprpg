@@ -356,8 +356,8 @@ scenes.game = () => {
                     canMove = true;
                     actionButton.alpha = 1;
                 }
-                else if (currentDialogue[dialogueProgress][4] != undefined) {
-                    currentDialogue[dialogueProgress][4]();
+                else if (currentDialogue[dialogueProgress][5] != undefined) {
+                    currentDialogue[dialogueProgress][5]();
                 }
 
             }
@@ -1823,6 +1823,8 @@ scenes.game = () => {
                     dialogueEmotion = currentDialogue[dialogueProgress][2];
                     dialogueNormalComponents[5].source = currentDialogue[dialogueProgress][1];
                     dialogueNormalComponents[5].snip = getEmotion(dialogueEmotion);
+
+                    
 
                     if (currentDialogue[dialogueProgress + 1] == undefined) dialogueNormalComponents[7].alpha = 0; // Star
                     actionButton.alpha = 0;

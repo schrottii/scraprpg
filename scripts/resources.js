@@ -224,6 +224,11 @@ var audio = {
     "encounter": "data/sounds/enc_sound.ogg",
     "gameover": "data/sounds/fall_land.wav",
     "heal": "data/sounds/heal.wav",
+
+    "male_young": "data/sounds/voices/dialogue_voice_male_young.ogg",
+    "male_grown": "data/sounds/voices/dialogue_voice_male_grown.ogg",
+    "female_young": "data/sounds/voices/dialogue_voice_female_young.ogg",
+    "female_grown": "data/sounds/voices/dialogue_voice_female_grown.ogg",
 };
 
 var maps = {
