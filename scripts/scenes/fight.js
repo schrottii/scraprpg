@@ -2610,6 +2610,7 @@ scenes.fight = () => {
 
     function startCutscene() {
         canMove = false;
+        cutsceneMode = true;
         fightaction = "eajifjea";
 
         addAnimator(function (t) {
@@ -2627,6 +2628,7 @@ scenes.fight = () => {
     }
     function endCutscene() {
         canMove = true;
+        cutsceneMode = false;
         fightaction = "none";
 
         addAnimator(function (t) {

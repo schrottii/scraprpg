@@ -9,6 +9,7 @@ Name means the thing you have to use in the code
 | Invisible  | invis                | Similiar to normal, but text only. No image, no name.
 | Narrator   | narrator             | Text only, but in the middle of the screen, with a black bg behind it.
 | Cinematic  | cinematic            | Narrator without black text.
+| Cutscene   |                      | Automatically selected during cutscenes!
 
 
 

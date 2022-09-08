@@ -9,6 +9,7 @@ var dialogueProgress = 0;
 var dialogueType;
 var dialogueEmotion = "neutral";
 var overWorldStatsScroll = 0;
+var cutsceneMode = false;
 
 // Function used to create enemies
 function createEnemy(type) {
@@ -338,6 +339,7 @@ scenes.game = () => {
     let dialogueNormalComponents = [];
     let dialogueInvisComponents = [];
     let dialogueNarratorComponents = [];
+    let dialogueCutsceneComponents = [];
 
     dialogueNormalComponents.push(controls.rect({
         anchor: [0, 1], offset: [0, -200], sizeAnchor: [1, 0], sizeOffset: [0, 200],
@@ -481,6 +483,44 @@ scenes.game = () => {
         alpha: 0,
     }));
     dialogueNarratorComponents.push(controls.image({
+        anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96],
+        source: "star",
+        alpha: 0,
+    }));
+
+
+    dialogueCutsceneComponents.push(controls.image({
+        anchor: [0, 0], sizeAnchor: [1, 1],
+        clickthrough: false,
+        source: "narratorbg",
+        onClick(args) {
+            if (this.alpha == 0.01) {
+                dialogueProgress += 1;
+                textProgress = -1;
+                if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
+                    // Dialogue end
+                    inDialogue = false;
+                    currentDialogue = false;
+                    dialogueEmotion = "neutral";
+                    dialogueProgress = 0;
+                    canMove = true;
+                    actionButton.alpha = 1;
+                }
+                else if (currentDialogue[dialogueProgress].script != false) {
+                    currentDialogue[dialogueProgress].script();
+                }
+
+            }
+        },
+        alpha: 0,
+    }));
+    dialogueCutsceneComponents.push(controls.label({ // 1
+        anchor: [0.01, 1], offset: [0, -96],
+        align: "left", fontSize: 16, fill: "white",
+        text: "...",
+        alpha: 0,
+    }));
+    dialogueCutsceneComponents.push(controls.image({
         anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96],
         source: "star",
         alpha: 0,
@@ -1177,6 +1217,8 @@ scenes.game = () => {
 
     function startCutscene() {
         canMove = false;
+        cutsceneMode = true;
+        textProgress = -1;
 
         addAnimator(function (t) {
             cutsceneElements[0].anchor[1] = -1 + (t / 1000);
@@ -1191,8 +1233,10 @@ scenes.game = () => {
             return false;
         });
     }
+    startCutscene();
     function endCutscene() {
         canMove = true;
+        cutsceneMode = false;
 
         addAnimator(function (t) {
             cutsceneElements[0].anchor[1] = 0 - (t / 1000);
@@ -1810,8 +1854,28 @@ scenes.game = () => {
             ctx.fillStyle = "#d18822";
             ctx.fill();
 
+            if (inDialogue == true && cutsceneMode == true) {
+                dialogueCutsceneComponents[0].alpha = 0.01;
+                dialogueCutsceneComponents[1].alpha = 1;
+                dialogueCutsceneComponents[2].alpha = 1;
+                if (typeof (currentDialogue[dialogueProgress].text) == "string") dialogueCutsceneComponents[1].text = animatedText(currentDialogue[dialogueProgress].text);
+                else dialogueCutsceneComponents[1].text = animatedText(currentDialogue[dialogueProgress].text());
 
-            if (inDialogue == true && dialogueType == "normal") {
+                if (currentDialogue[dialogueProgress].script != false) currentDialogue[dialogueProgress].script();
+
+                if (currentDialogue[dialogueProgress + 1] == undefined) dialogueCutsceneComponents[2].alpha = 0; // Star
+                actionButton.alpha = 0;
+
+            }
+            else {
+                if (dialogueCutsceneComponents[1].alpha != 0) {
+                    for (i = 0; i < dialogueCutsceneComponents.length; i++) {
+                        dialogueCutsceneComponents[i].alpha = 0;
+                    }
+                }
+            }
+
+            if (inDialogue == true && dialogueType == "normal" && cutsceneMode == false) {
                 for (i = 0; i < dialogueNormalComponents.length; i++) {
                     dialogueNormalComponents[i].alpha = 1;
                 }
@@ -1823,7 +1887,7 @@ scenes.game = () => {
                 dialogueNormalComponents[5].source = currentDialogue[dialogueProgress].portrait;
                 dialogueNormalComponents[5].snip = getEmotion(dialogueEmotion);
 
-
+                if (currentDialogue[dialogueProgress].script != false) currentDialogue[dialogueProgress].script();
 
                 if (currentDialogue[dialogueProgress + 1] == undefined) dialogueNormalComponents[7].alpha = 0; // Star
                 actionButton.alpha = 0;
@@ -1834,12 +1898,14 @@ scenes.game = () => {
                     dialogueNormalComponents[i].alpha = 0;
                 }
             }
-            if (inDialogue == true && dialogueType == "invis") {
+            if (inDialogue == true && dialogueType == "invis" && cutsceneMode == false) {
                 for (i = 0; i < dialogueInvisComponents.length; i++) {
                     dialogueInvisComponents[i].alpha = 1;
                 }
                 if (typeof (currentDialogue[dialogueProgress].text) == "string") dialogueInvisComponents[2].text = animatedText(currentDialogue[dialogueProgress].text);
                 else dialogueInvisComponents[2].text = animatedText(currentDialogue[dialogueProgress].text());
+
+                if (currentDialogue[dialogueProgress].script != false) currentDialogue[dialogueProgress].script();
 
                 if (currentDialogue[dialogueProgress + 1] == undefined) dialogueInvisComponents[3].alpha = 0; // Star
                 actionButton.alpha = 0;
@@ -1850,7 +1916,7 @@ scenes.game = () => {
                     dialogueInvisComponents[i].alpha = 0;
                 }
             }
-            if (inDialogue == true && dialogueType == "narrator") {
+            if (inDialogue == true && dialogueType == "narrator" && cutsceneMode == false) {
                 for (i = 0; i < dialogueNarratorComponents.length; i++) {
                     dialogueNarratorComponents[i].alpha = 1;
                 }
@@ -1858,15 +1924,19 @@ scenes.game = () => {
                     if (typeof (currentDialogue[dialogueProgress].text) == "string") animatedText(dialogueNarratorComponents[1].text = currentDialogue[dialogueProgress].text);
                     else dialogueNarratorComponents[1].text = animatedText(currentDialogue[dialogueProgress].text());
 
+                    if (currentDialogue[dialogueProgress].script != false) currentDialogue[dialogueProgress].script();
+
                     if (currentDialogue[dialogueProgress + 1] == undefined) dialogueNarratorComponents[2].alpha = 0; // Star
                     actionButton.alpha = 0;
                 }
             }
-            else if (inDialogue == true && dialogueType == "cinematic") {
+            else if (inDialogue == true && dialogueType == "cinematic" && cutsceneMode == false) {
                 dialogueNarratorComponents[1].alpha = 1;
                 dialogueNarratorComponents[2].alpha = 1;
                 if (typeof (currentDialogue[dialogueProgress].text) == "string") animatedText(dialogueNarratorComponents[1].text = currentDialogue[dialogueProgress].text);
                 else dialogueNarratorComponents[1].text = animatedText(currentDialogue[dialogueProgress].text());
+
+                if (currentDialogue[dialogueProgress].script != false) currentDialogue[dialogueProgress].script();
 
                 if (currentDialogue[dialogueProgress + 1] == undefined) dialogueNarratorComponents[2].alpha = 0; // Star
                 actionButton.alpha = 0;
@@ -1890,7 +1960,7 @@ scenes.game = () => {
             /*...walkPad,*/ mapDisplay, mapIcon, actionButton,
             ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             ...cutsceneElements,
-            ...dialogueNormalComponents, ...dialogueInvisComponents, ...dialogueNarratorComponents,
+            ...dialogueNormalComponents, ...dialogueInvisComponents, ...dialogueNarratorComponents, ...dialogueCutsceneComponents,
             autoSaveText, /*settingsSaveText,*/ ...areaNameBox, areaTeleportFade,
             blackFadeTransition
         ],
