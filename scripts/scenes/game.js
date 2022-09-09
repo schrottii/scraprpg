@@ -1314,9 +1314,9 @@ scenes.game = () => {
         if (maps[prev] != undefined) {
             if (maps[prev].music != map.music) {
                 stopMusic();
-                if (map.music == undefined) return false;
-                playMusic(map.music);
             }
+            if (map.music == undefined) return false;
+            playMusic(map.music);
         }
         else {
             if (map.music == undefined) return false;

@@ -266,6 +266,7 @@ scenes.fight = () => {
                         for (i in game.characters) {
                             game.characters[i].HP = 1;
                         }
+                        stopMusic();
                         setScene(scenes.game());
                         fightStats = [];
                         gameOverScreen[0].alpha = 0;
@@ -1457,7 +1458,6 @@ scenes.fight = () => {
 
     function fleeAnimation(x, y) {
         let p = x + (y * 3);
-        console.log(p);
         positions[x][y].action[0] = "flee2";
         if ((getStat(positions[x][y].occupied, "agi") / 200) < Math.random()) {
             battleNumber(positionControls[p].anchor, "Failed!", 0, positionControls[p].offset);
@@ -1541,6 +1541,7 @@ scenes.fight = () => {
                 if (peopleLeft == 0) {
                     fleeLoss.alpha = 0;
                     fleeIcon.alpha = 0;
+                    stopMusic();
                     setScene(scenes.game());
                     setTimeout(() => {
                         positions = [];
@@ -1970,6 +1971,7 @@ scenes.fight = () => {
                 playSound("buttonClickSound");
                 if (checkAllDead(true)) {
                     if (fightaction == "victoryitems") {
+                        stopMusic();
                         setScene(scenes.game());
 
                         positions = [];
@@ -2046,6 +2048,7 @@ scenes.fight = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 loadGame();
+                stopMusic();
                 setScene(scenes.game());
                 fightStats = [];
             }

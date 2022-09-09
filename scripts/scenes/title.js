@@ -121,7 +121,6 @@ scenes.title = () => {
             anchor: [1.2, .3], offset: [0, -220 + 130 * a], sizeAnchor: [.5, 0], sizeOffset: [120, 120], clickthrough: false,
             text: "Undefined",
             onClick(args) {
-                playSound("buttonClickSound");
                 if (mode == 0) {
                     saveNR = a;
                     playSound("titletransition");

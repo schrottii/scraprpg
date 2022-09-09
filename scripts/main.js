@@ -156,8 +156,10 @@ function isNight() {
 }
 
 function playMusic(name) {
-    if (musicPlayer.volume > 0 && musicPlayer.volume < 1 && audio[name].src != musicPlayer.src) {
-        musicPlayer.src = audio[name].src;
+    if (musicPlayer.volume > 0 && musicPlayer.volume <= 1) {
+        if (audio[name].src != musicPlayer.src) {
+            musicPlayer.src = audio[name].src;
+        }
         musicPlayer.play();
     }
 }
@@ -167,7 +169,7 @@ function stopMusic() {
 }
 
 function playSound(name) {
-    if (soundPlayer.volume > 0 && soundPlayer.volume < 1 && (soundPlayer.currentTime > 0.06 || soundPlayer.src == "")) {
+    if (soundPlayer.volume > 0 && soundPlayer.volume <= 1 && (soundPlayer.currentTime > 0.06 || soundPlayer.src == "")) {
         soundPlayer.src = audio[name].src;
         soundPlayer.play();
     }
