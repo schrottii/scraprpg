@@ -1233,7 +1233,7 @@ scenes.game = () => {
             return false;
         });
     }
-    startCutscene();
+    
     function endCutscene() {
         canMove = true;
         cutsceneMode = false;
