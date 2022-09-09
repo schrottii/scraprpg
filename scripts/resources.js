@@ -35,7 +35,7 @@ let images = {
     rain: "data/images/rain.png",
     fog: "data/images/fog_cloud.png",
     fog2: "data/images/fog_cloud2.png",
-    cloudshadow1: "data/images/scloud1.png",
+    cloudshadow1: "data/images/scloud.png",
     cloudshadow2: "data/images/scloud2.png",
     cloudshadow3: "data/images/scloud3.png",
     spawn: "data/images/spawn_default.png",

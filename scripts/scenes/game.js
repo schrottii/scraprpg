@@ -1298,7 +1298,7 @@ scenes.game = () => {
             if (Math.random() > 0.49) cloudControls[thisOne].source = "cloudshadow2";
             else cloudControls[thisOne].source = "cloudshadow3";
             cloudControls[thisOne].sizeOffset = [128, 64];
-            cloudControls[thisOne].anchor = [0.8 + (0.6 * Math.random()), -0.4 + (0.2 * Math.random())];
+            cloudControls[thisOne].anchor = [0.8 + (0.6 * Math.random()), -0.2 + (0.2 * Math.random())];
             cloudControls[thisOne].alpha = 0.75;
         }
     }
@@ -1317,15 +1317,19 @@ scenes.game = () => {
         }
     }
 
+    let shouldCloudControlsBeVisibleAtStart = 0;
+    if (maps[game.map].worldmode == true) shouldCloudControlsBeVisibleAtStart = 0.75;
+
     for (i = 0; i < 100; i++) {
         weatherControls.push(controls.image({
             anchor: [Math.random(), -0.2], sizeAnchor: [0, 0], sizeOffset: [64, 64],
             source: "rain", alpha: 0,
         }))
         cloudControls.push(controls.image({
-            anchor: [Math.random(), -0.2], sizeAnchor: [0, 0], sizeOffset: [64, 64],
-            source: "cloudshadow1", alpha: 0,
+            anchor: [Math.random(), Math.random()], sizeAnchor: [0, 0], sizeOffset: [128, 64],
+            source: "cloudshadow1", alpha: shouldCloudControlsBeVisibleAtStart,
         }))
+        if (i == 40) shouldCloudControlsBeVisibleAtStart = 0;
     }
     for (i = 0; i < 400; i++) {
         dustControls.push(controls.rect({
@@ -1882,7 +1886,7 @@ scenes.game = () => {
                 if (typeof (currentDialogue[dialogueProgress].text) == "string") dialogueNormalComponents[6].text = animatedText(currentDialogue[dialogueProgress].text);
                 else dialogueNormalComponents[6].text = animatedText(currentDialogue[dialogueProgress].text());
 
-                if (currentDialogue[dialogueProgress].name != undefined) dialogueNormalComponents[3].text = animatedText(currentDialogue[dialogueProgress].name);
+                if (currentDialogue[dialogueProgress].name != undefined) dialogueNormalComponents[3].text = currentDialogue[dialogueProgress].name;
                 dialogueEmotion = currentDialogue[dialogueProgress].emotion;
                 dialogueNormalComponents[5].source = currentDialogue[dialogueProgress].portrait;
                 dialogueNormalComponents[5].snip = getEmotion(dialogueEmotion);
