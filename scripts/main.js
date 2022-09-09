@@ -360,7 +360,7 @@ function loop() {
     requestAnimationFrame(loop);
 }
 
-function animatedText(text, speed = 16) { // 8, 16, 24
+function animatedText(text, speed = 20) { // 8, 20, 24
     if (textProgress == -1) textProgress = 0;
     let prog = Math.floor(textProgress * speed);
     if (currentDialogue[dialogueProgress].voice != false && prog < text.length) playSound(currentDialogue[dialogueProgress].voice);

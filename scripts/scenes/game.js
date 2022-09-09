@@ -341,27 +341,39 @@ scenes.game = () => {
     let dialogueNarratorComponents = [];
     let dialogueCutsceneComponents = [];
 
+    function dialogueBox() {
+        let text;
+        if (typeof (currentDialogue[dialogueProgress].text) == "string") text = currentDialogue[dialogueProgress].text;
+        else text = currentDialogue[dialogueProgress].text();
+
+        if ((textProgress * 20) >= text.length) {
+            dialogueProgress += 1;
+            textProgress = -1;
+            if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
+                // Dialogue end
+                inDialogue = false;
+                currentDialogue = false;
+                dialogueEmotion = "neutral";
+                dialogueProgress = 0;
+                canMove = true;
+                actionButton.alpha = 1;
+            }
+            else if (currentDialogue[dialogueProgress].script != false) {
+                currentDialogue[dialogueProgress].script();
+            }
+        }
+        else {
+            textProgress = text.length * 20;
+        }
+    }
+
     dialogueNormalComponents.push(controls.rect({
         anchor: [0, 1], offset: [0, -200], sizeAnchor: [1, 0], sizeOffset: [0, 200],
         clickthrough: false,
         fill: colors.bottomcolor,
         onClick(args) {
             if (this.alpha == 1) {
-                dialogueProgress += 1;
-                textProgress = -1;
-                if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
-                    // Dialogue end
-                    inDialogue = false;
-                    currentDialogue = false;
-                    dialogueEmotion = "neutral";
-                    dialogueProgress = 0;
-                    canMove = true;
-                    actionButton.alpha = 1;
-                }
-                else if (currentDialogue[dialogueProgress].script != false) {
-                    currentDialogue[dialogueProgress].script();
-                }
-
+                dialogueBox();
             }
         },
         alpha: 0, 
@@ -413,21 +425,7 @@ scenes.game = () => {
         fill: colors.bottomcolor,
         onClick(args) {
             if (this.alpha == 1) {
-                dialogueProgress += 1;
-                textProgress = -1;
-                if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
-                    // Dialogue end
-                    inDialogue = false;
-                    currentDialogue = false;
-                    dialogueEmotion = "neutral";
-                    dialogueProgress = 0;
-                    canMove = true;
-                    actionButton.alpha = 1;
-                }
-                else if (currentDialogue[dialogueProgress].script != false) {
-                    currentDialogue[dialogueProgress].script();
-                }
-
+                dialogueBox();
             }
         },
         alpha: 0,
@@ -457,21 +455,7 @@ scenes.game = () => {
         source: "narratorbg",
         onClick(args) {
             if (this.alpha == 1 || dialogueType == "cinematic") {
-                dialogueProgress += 1;
-                textProgress = -1;
-                if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
-                    // Dialogue end
-                    inDialogue = false;
-                    currentDialogue = false;
-                    dialogueEmotion = "neutral";
-                    dialogueProgress = 0;
-                    canMove = true;
-                    actionButton.alpha = 1;
-                }
-                else if (currentDialogue[dialogueProgress].script != false) {
-                    currentDialogue[dialogueProgress].script();
-                }
-
+                dialogueBox();
             }
         },
         alpha: 0,
@@ -495,21 +479,7 @@ scenes.game = () => {
         source: "narratorbg",
         onClick(args) {
             if (this.alpha == 0.01) {
-                dialogueProgress += 1;
-                textProgress = -1;
-                if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
-                    // Dialogue end
-                    inDialogue = false;
-                    currentDialogue = false;
-                    dialogueEmotion = "neutral";
-                    dialogueProgress = 0;
-                    canMove = true;
-                    actionButton.alpha = 1;
-                }
-                else if (currentDialogue[dialogueProgress].script != false) {
-                    currentDialogue[dialogueProgress].script();
-                }
-
+                dialogueBox();
             }
         },
         alpha: 0,
