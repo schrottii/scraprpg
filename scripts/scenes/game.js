@@ -1267,8 +1267,8 @@ scenes.game = () => {
             if (Math.random() > 0.49) cloudControls[thisOne].source = "cloudshadow1";
             if (Math.random() > 0.49) cloudControls[thisOne].source = "cloudshadow2";
             else cloudControls[thisOne].source = "cloudshadow3";
-            cloudControls[thisOne].sizeOffset = [128, 64];
-            cloudControls[thisOne].anchor = [0.8 + (0.6 * Math.random()), -0.2 + (0.2 * Math.random())];
+            cloudControls[thisOne].sizeOffset = [128 * 1.5, 96];
+            cloudControls[thisOne].anchor = [0.4 + (0.8 * Math.random()), -0.2 + (0.2 * Math.random())];
             cloudControls[thisOne].alpha = 0.75;
         }
     }
@@ -1296,7 +1296,7 @@ scenes.game = () => {
             source: "rain", alpha: 0,
         }))
         cloudControls.push(controls.image({
-            anchor: [Math.random(), Math.random()], sizeAnchor: [0, 0], sizeOffset: [128, 64],
+            anchor: [Math.random(), Math.random()], sizeAnchor: [0, 0], sizeOffset: [128 * 1.5, 96],
             source: "cloudshadow1", alpha: shouldCloudControlsBeVisibleAtStart,
         }))
         if (i == 40) shouldCloudControlsBeVisibleAtStart = 0;
@@ -1368,13 +1368,13 @@ scenes.game = () => {
 
             // Weather
             if (map.worldmode) {
-                if (Math.random() > 0.92) spawnDarkcloud();
+                if (Math.random() > 0.96) spawnDarkcloud();
                 for (i in cloudControls) {
                     if (cloudControls[i].alpha > 0) {
                         cloudControls[i].anchor[0] -= 0.0001 * delta;
                         cloudControls[i].anchor[1] += 0.0001 * delta;
 
-                        if (cloudControls[i].anchor[0] < 0) cloudControls[i].alpha = 0;
+                        if (cloudControls[i].anchor[0] < -0.1) cloudControls[i].alpha = 0;
                     }
                 }
             }

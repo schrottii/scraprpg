@@ -6,7 +6,6 @@ The developing phase, Schrottii's phase, the essential features of the game
 
 - Character runs (the sprite runs) when he moves toward the enemy (in battle)
 - More battle sprites (like the character being hit, the character attacking, etc.)
-- Changing the cloud shadow effect thing for world maps (sigh... do I really have to say it here again?)
 - Slightly weaker weather effect overlay (Fog tho :deathgaze:)
 - Dialogue box sliding up (at start) and sliding back down (at end.) This can work the reverse way when the dialogue box is on the top of the screen instead of the bottom.
 - Battle encounter sequence improvements (Music stops, wait a split second and the infamous appearance of the mastery token swinging around while the screen floods to white)
@@ -15,6 +14,7 @@ The developing phase, Schrottii's phase, the essential features of the game
 - Black fade after ending a battle
 - Particles
 - Overworld quests
+- Various enemy sizes in battles
 
 
 ##Phase 1.5
