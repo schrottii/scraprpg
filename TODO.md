@@ -1,5 +1,5 @@
 ﻿##TODO:
-10 Things left to do in this phase
+9 Things left to do in this phase
 
 ##Phase 1:
 The developing phase, Schrottii's phase, the essential features of the game
@@ -10,7 +10,6 @@ The developing phase, Schrottii's phase, the essential features of the game
 - Dialogue box sliding up (at start) and sliding back down (at end.) This can work the reverse way when the dialogue box is on the top of the screen instead of the bottom.
 - Battle encounter sequence improvements (Music stops, wait a split second and the infamous appearance of the mastery token swinging around while the screen floods to white)
 - Intro+loop music system (other music won't use this so those music will still stick with the usual single-loop system that we have today)
-- Battle action delaying (eg. After someone uses a magic or someone attacks (wether it be an enemy or a character,) the battle will wait 2/3 seconds before the next)
 - Black fade after ending a battle
 - Particles
 - Overworld quests

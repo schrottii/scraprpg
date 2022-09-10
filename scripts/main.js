@@ -186,7 +186,7 @@ function playSound(name) {
     while (s < 17) { // If all 16 are occupied, it won't play any sound
         if (soundPlayer["soundPlayer" + s].currentTime >= soundPlayer["soundPlayer" + s].duration || soundPlayer["soundPlayer" + s].src == "") {
             if (soundPlayer["soundPlayer" + s].volume > 0 && soundPlayer["soundPlayer" + s].volume <= 1) {
-                console.log(s);
+                //console.log(s);
                 soundPlayer["soundPlayer" + s].src = audio[name].src;
                 soundPlayer["soundPlayer" + s].play();
                 return true;

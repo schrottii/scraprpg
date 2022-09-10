@@ -158,6 +158,8 @@ scenes.fight = () => {
 
     var cutsceneElements = [];
 
+    const ACTIONDELAY = 2000;
+
     var fightlog = [
         "",
         "Battle has started!",
@@ -701,7 +703,7 @@ scenes.fight = () => {
                 switchThose = [[whoAGI.action[1], whoAGI.action[2]], [whoAGI.action[3], whoAGI.action[4]]];
                 switchPositions();
                 positions[pos[0]][pos[1]].action = false;
-                executeActions();
+                setTimeout(() => executeActions(), ACTIONDELAY);
                 break;
             case "attack":
                 if (positions[pos[0]][pos[1]].action[3] == undefined) positions[pos[0]][pos[1]].action[3] = Math.round(2 * Math.random());
@@ -714,10 +716,11 @@ scenes.fight = () => {
                 fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
                 if (win == false && game.characters[positions[pos[0]][pos[1]].occupied].HP > 0) {
                     prepareAttackAnimation(selectedAlly[0], selectedAlly[1], pos1, pos2, (fpos1, fpos2, pos1, pos2) => {
-                        if (epositions[pos1][pos2].isOccupied == false) {
+                        if (epositions[pos1][pos2].isOccupied == false) { // folso! Oh no
                             let exists = 0;
                             for (j = 0; j < 3; j++) {
                                 for (i = 0; i < 3; i++) {
+                                    console.log(getStat(positions[fpos1][fpos2].occupied, "length"));
                                     if (epositions[i][j].isOccupied == true && exists == 0 && canReach(getStat(positions[fpos1][fpos2].occupied, "length"), "enemy", [pos1, pos2])) {
                                         exists = 1;
                                         pos1 = i;
@@ -727,8 +730,8 @@ scenes.fight = () => {
                                 }
                             }
                             if (exists == 0) {
-                                positions[pos1][pos2].action = false;
-                                executeActions();
+                                positions[fpos1][fpos2].action = false;
+                                setTimeout(() => executeActions(), ACTIONDELAY);
                                 return false;
                             }
 
@@ -740,8 +743,8 @@ scenes.fight = () => {
                             epositions[pos1][pos2].HP -= Damage; // Deal damage
                             battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, Damage * (-1), 0, epositionControls[pos1 + (pos2 * 3)].offset, isCritical);
 
-                            if (!isCritical) playSound("damage");
-                            else playSound("critdamage");
+                            if (isCritical) playSound("critdamage");
+                            else playSound("damage");
 
                             postLog(game.characters[positions[fpos1][fpos2].occupied].name + " attacks " + epositions[pos1][pos2].name + " and deals " + Damage + " damage!");
                             if (getElementDamage(getStat(positions[fpos1][fpos2].occupied, "element"), epositions[pos1][pos2].element) != 1) {
@@ -777,12 +780,12 @@ scenes.fight = () => {
                             playSound("miss");
                             postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " missed!");
                         }
-                        if (!lost) executeActions();
+                        if (!lost) setTimeout(() => executeActions(), ACTIONDELAY);
                     }, false);
                 }
                 else if (!lost) {
                     positions[pos[0]][pos[1]].action = false;
-                    executeActions();
+                    setTimeout(() => executeActions(), ACTIONDELAY);
                     break;
                 }
                 positions[pos[0]][pos[1]].action = false;
@@ -798,8 +801,8 @@ scenes.fight = () => {
 
                 battleNumber(positionControls[whoAGI.action[3] + (whoAGI.action[4] * 3)].anchor, Damage * (-1), 0, positionControls[whoAGI.action[3] + (whoAGI.action[4] * 3)].offset, isCritical);
 
-                if (!isCritical) playSound("damage");
-                else playSound("critdamage");
+                if (isCritical) playSound("critdamage");
+                else playSound("damage");
 
                 postLog(positions[whoAGI.action[1]][whoAGI.action[2]].name + " attacks " + game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].name + " and deals " + Damage + " damage!");
 
@@ -821,11 +824,11 @@ scenes.fight = () => {
                 game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].HP += getStat(positions[selectedAlly[0]][selectedAlly[1]].occupied, "strength");
                 
                 positions[pos[0]][pos[1]].action = false;
-                executeActions();
+                setTimeout(() => executeActions(), ACTIONDELAY);
                 break;
             case "defend":
                 positions[pos[0]][pos[1]].action = false;
-                executeActions();
+                setTimeout(() => executeActions(), ACTIONDELAY);
                 break;
             case "item":
                 items[whoAGI.action[1]]({ user: game.characters[positions[whoAGI.action[2]][whoAGI.action[3]].occupied], player: game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied], anchor: positionControls[whoAGI.action[2] + (whoAGI.action[3] * 3)].anchor, offset: positionControls[pos[0] + (pos[1] * 3)].offset }).effect();
@@ -836,11 +839,11 @@ scenes.fight = () => {
                     checkAllDead();
                 }
                 positions[whoAGI.action[2]][whoAGI.action[3]].action = false;
-                executeActions();
+                setTimeout(() => executeActions(), ACTIONDELAY);
                 break;
             case "flee":
                 fleeAnimation(whoAGI.action[1], whoAGI.action[2]);
-                setTimeout(() => executeActions(), 2500);
+                setTimeout(() => executeActions(), ACTIONDELAY);
                 break;
 
             // Uhhh... we shouldn't be here.
@@ -923,8 +926,8 @@ scenes.fight = () => {
                     checkAllDead();
                 }
             }
-            if (!lost) enemiesTurn();
-        }, true); // very important true,bob
+            if (!lost) setTimeout(() => enemiesTurn(), ACTIONDELAY);
+        }, true); // very important true, bob
     }
 
     function endOfTurnEvents() {
