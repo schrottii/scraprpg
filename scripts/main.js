@@ -168,10 +168,33 @@ function stopMusic() {
     musicPlayer.pause();
 }
 
+// Generate 16 sound channels
+var soundPlayer = {};
+
+for (s = 1; s < 17; s++) {
+    soundPlayer["soundPlayer" + s] = new Audio();
+    let srcSoundPlayer = document.createElement("source");
+    srcSoundPlayer.type = "audio/mpeg";
+    srcSoundPlayer.preload = "auto";
+    srcSoundPlayer.src = audio.no;
+    soundPlayer["soundPlayer" + s].appendChild(srcSoundPlayer);
+}
+
+// play a sound - now supports sound channels!
 function playSound(name) {
-    if (soundPlayer.volume > 0 && soundPlayer.volume <= 1 && (soundPlayer.currentTime > 0.06 || soundPlayer.src == "")) {
-        soundPlayer.src = audio[name].src;
-        soundPlayer.play();
+    let s = 1;
+    while (s < 17) { // If all 16 are occupied, it won't play any sound
+        if (soundPlayer["soundPlayer" + s].currentTime >= soundPlayer["soundPlayer" + s].duration || soundPlayer["soundPlayer" + s].src == "") {
+            if (soundPlayer["soundPlayer" + s].volume > 0 && soundPlayer["soundPlayer" + s].volume <= 1) {
+                console.log(s);
+                soundPlayer["soundPlayer" + s].src = audio[name].src;
+                soundPlayer["soundPlayer" + s].play();
+                return true;
+            }
+        }
+        else { // Channel is occupied. (Angry sound channel sounds)
+            s += 1;
+        }
     }
 }
 

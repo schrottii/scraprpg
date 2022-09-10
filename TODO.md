@@ -1,5 +1,5 @@
 ﻿##TODO:
-11 Things left to do in this phase
+10 Things left to do in this phase
 
 ##Phase 1:
 The developing phase, Schrottii's phase, the essential features of the game
@@ -7,7 +7,6 @@ The developing phase, Schrottii's phase, the essential features of the game
 - Character runs (the sprite runs) when he moves toward the enemy (in battle)
 - More battle sprites (like the character being hit, the character attacking, etc.)
 - Changing the cloud shadow effect thing for world maps (sigh... do I really have to say it here again?)
-- More sound channels (at least 15 will suffice for stuff like magic thingies)
 - Slightly weaker weather effect overlay (Fog tho :deathgaze:)
 - Dialogue box sliding up (at start) and sliding back down (at end.) This can work the reverse way when the dialogue box is on the top of the screen instead of the bottom.
 - Battle encounter sequence improvements (Music stops, wait a split second and the infamous appearance of the mastery token swinging around while the screen floods to white)
