@@ -256,7 +256,7 @@ scenes.title = () => {
             if (settings.soundVolume > 0.01) {
                 settings.soundVolume = settings.soundVolume - 0.05;
                 if (settings.soundVolume < 0) settings.soundVolume = 0;
-                soundPlayer.volume = settings.soundVolume;
+                changeSoundVolume(settings.soundVolume);
             }
         }
     }));
@@ -268,7 +268,7 @@ scenes.title = () => {
             if (settings.soundVolume < 0.99) {
                 settings.soundVolume = settings.soundVolume + 0.05;
                 if (settings.soundVolume > 1) settings.soundVolume = 1;
-                soundPlayer.volume = settings.soundVolume;
+                changeSoundVolume(settings.soundVolume);
             }
         }
     }));
@@ -380,7 +380,7 @@ scenes.title = () => {
                 anchor: [0, 0], sizeAnchor: [1, 1],
                 onClick() {
                     loadSettings();
-                    soundPlayer.volume = settings.soundVolume;
+                    changeSoundVolume(settings.soundVolume);
                     playSound("titletransition");
 
                     musicPlayer.volume = settings.musicVolume;

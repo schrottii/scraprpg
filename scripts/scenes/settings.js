@@ -218,7 +218,7 @@ scenes.settings = () => {
                 if (settings.soundVolume > 0.01) {
                     settings.soundVolume = settings.soundVolume - 0.05;
                     if (settings.soundVolume < 0) settings.soundVolume = 0;
-                    soundPlayer.volume = settings.soundVolume;
+                    changeSoundVolume(settings.soundVolume);
                     showMenuSettings(); //Update
                 }
             }
@@ -233,7 +233,7 @@ scenes.settings = () => {
                 if (settings.soundVolume < 0.99) {
                     settings.soundVolume = settings.soundVolume + 0.05;
                     if (settings.soundVolume > 1) settings.soundVolume = 1;
-                    soundPlayer.volume = settings.soundVolume;
+                    changeSoundVolume(settings.soundVolume);
                     showMenuSettings(); //Update
                 }
             }

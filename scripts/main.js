@@ -60,7 +60,7 @@ function init() {
                     soundPlayer.muted = false;
 
                     loadSettings();
-                    soundPlayer.volume = settings.soundVolume;
+                    changeSoundVolume(settings.soundVolume);
                     playSound("titletransition");
 
                     stopMusic();
@@ -195,6 +195,20 @@ function playSound(name) {
         else { // Channel is occupied. (Angry sound channel sounds)
             s += 1;
         }
+    }
+}
+
+function changeSoundVolume(vol) {
+    if (vol <= 0) {
+        for (s = 1; s < 17; s++) {
+            soundPlayer["soundPlayer" + s].muted = true;
+        }
+        return;
+    }
+    if (vol > 1) return false;
+    for (s = 1; s < 17; s++) {
+        soundPlayer["soundPlayer" + s].muted = false;
+        soundPlayer["soundPlayer" + s].volume = vol;
     }
 }
 
