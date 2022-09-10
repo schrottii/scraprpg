@@ -68,7 +68,10 @@ function init() {
                     loadGame();
                     loadSettings();
                     createEnemy("weakhelter");
-                    setScene(scenes.inventory());
+                    createEnemy("weakhelter");
+                    createEnemy("weakhelter");
+                    createEnemy("weakhelter");
+                    setScene(scenes.fight());
                 }
             }),
     

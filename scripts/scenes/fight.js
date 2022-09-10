@@ -559,6 +559,7 @@ scenes.fight = () => {
     function canReach(length, type, pos) {
         // Is it long enough?
         // Length = 1, 2 or 3
+        // pos is pos of enemy
 
         if (type == "enemy") { // Player attacks enemy
             // Keep in mind epos are swapped - 2 is left and not right
@@ -718,13 +719,12 @@ scenes.fight = () => {
                     prepareAttackAnimation(selectedAlly[0], selectedAlly[1], pos1, pos2, (fpos1, fpos2, pos1, pos2) => {
                         if (epositions[pos1][pos2].isOccupied == false) { // folso! Oh no
                             let exists = 0;
-                            for (j = 0; j < 3; j++) {
-                                for (i = 0; i < 3; i++) {
-                                    console.log(getStat(positions[fpos1][fpos2].occupied, "length"));
-                                    if (epositions[i][j].isOccupied == true && exists == 0 && canReach(getStat(positions[fpos1][fpos2].occupied, "length"), "enemy", [pos1, pos2])) {
+                            for (nj = 0; nj < 3; nj++) {
+                                for (ni = 0; ni < 3; ni++) {
+                                    if (epositions[ni][nj].isOccupied == true && exists == 0 && canReach(getStat(positions[fpos1][fpos2].occupied, "length"), "enemy", [pos1, pos2])) {
                                         exists = 1;
-                                        pos1 = i;
-                                        pos2 = j;
+                                        pos1 = ni;
+                                        pos2 = nj;
                                         break;
                                     }
                                 }
@@ -1035,6 +1035,13 @@ scenes.fight = () => {
                 attackAnimationObjects[fpos1 + (fpos2 * 3)].anchor = positionControls[fpos1 + (fpos2 * 3)].anchor;
                 attackAnimationObjects[fpos1 + (fpos2 * 3)].offset = [positionControls[fpos1 + (fpos2 * 3)].offset[0] + 56, positionControls[fpos1 + (fpos2 * 3)].offset[1]];
 
+                // Super good animated feeeeeeet
+                positionControls[fpos1 + (fpos2 * 3)].snip[0] = Math.floor(runTime) * 32;
+                runTime += ((t % 500) / 250);
+                if (runTime >= 2) {
+                    runTime = 0;
+                }
+
                 if (t > 200 && t < 399) {
                     positionControls[fpos1 + (fpos2 * 3)].offset[1] = own[3] * (1 - ((t - 200)) / 200);
                     positionControls[fpos1 + (fpos2 * 3)].offset[0] = own[1] * (1 - ((t - 200)) / 200);
@@ -1078,6 +1085,13 @@ scenes.fight = () => {
                 attackAnimationObjects[9 + pos1 + (pos2 * 3)].anchor[0] = epositionControls[pos1 + (pos2 * 3)].anchor[0] + 0;
                 attackAnimationObjects[9 + pos1 + (pos2 * 3)].anchor[1] = epositionControls[pos1 + (pos2 * 3)].anchor[1] + 0;
                 attackAnimationObjects[9 + pos1 + (pos2 * 3)].offset = [epositionControls[pos1 + (pos2 * 3)].offset[0] - 72, epositionControls[pos1 + (pos2 * 3)].offset[1]];
+
+                // Super good animated feeeeeeet
+                epositionControls[pos1 + (pos2 * 3)].snip[0] = Math.floor(runTime) * 32;
+                runTime += ((t % 500) / 250);
+                if (runTime >= 2) {
+                    runTime = 0;
+                }
 
                 attackAnimationObjects[9 + pos1 + (pos2 * 3)].alpha = 1;
                 if (t > 200 && t < 399) {

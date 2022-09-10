@@ -1,10 +1,9 @@
 ﻿##TODO:
-9 Things left to do in this phase
+8 Things left to do in this phase
 
 ##Phase 1:
 The developing phase, Schrottii's phase, the essential features of the game
 
-- Character runs (the sprite runs) when he moves toward the enemy (in battle)
 - More battle sprites (like the character being hit, the character attacking, etc.)
 - Slightly weaker weather effect overlay (Fog tho :deathgaze:)
 - Dialogue box sliding up (at start) and sliding back down (at end.) This can work the reverse way when the dialogue box is on the top of the screen instead of the bottom.
