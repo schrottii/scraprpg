@@ -28,6 +28,7 @@ scenes.formation = () => {
         anchor: [0.9, 0.05], sizeAnchor: [0.05, 0.05],
         alpha: 1,
         onClick(args) {
+            playSound("buttonClickSound");
             setScene(scenes.inventory());
         },
         text: ">",
@@ -75,6 +76,7 @@ scenes.formation = () => {
                 j: j, i: i,
                 onClick(args) {
                     if (this.alpha == 1 && this.text != "NO CHARACTER") {
+                        playSound("buttonClickSound");
                         switch (this.text) {
                             case "Attack":
                                 this.text = "Defend"

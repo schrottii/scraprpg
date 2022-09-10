@@ -247,6 +247,7 @@ scenes.game = () => {
         text: "",
         onClick(args) {
             if (this.alpha == 1 && canMove == true) {
+                playSound("buttonClickSound");
                 setScene(scenes.inventory());
             }
         }

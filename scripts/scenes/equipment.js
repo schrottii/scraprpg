@@ -31,6 +31,7 @@ scenes.equipment = () => {
         anchor: [0.9, 0.05], sizeAnchor: [0.05, 0.05],
         alpha: 1,
         onClick(args) {
+            playSound("buttonClickSound");
             setScene(scenes.inventory());
         },
         text: ">",
@@ -154,6 +155,7 @@ scenes.equipment = () => {
         anchor: [0.15, 0.15], sizeAnchor: [0.05, 0.05], offset: [0, -24],
         alpha: 1,
         onClick(args) {
+            playSound("buttonClickSound");
             let i = game.chars.indexOf(characterSelected);
             if (game.chars[i - 1] != undefined) characterSelected = game.chars[i - 1];
             else characterSelected = game.chars[game.chars.length - 1];
@@ -167,6 +169,7 @@ scenes.equipment = () => {
         anchor: [0.4, 0.15], sizeAnchor: [0.05, 0.05], offset: [0, -24],
         alpha: 1,
         onClick(args) {
+            playSound("buttonClickSound");
             let i = game.chars.indexOf(characterSelected);
             if (game.chars[i + 1] != undefined) characterSelected = game.chars[i + 1];
             else characterSelected = "bleu";

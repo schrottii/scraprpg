@@ -27,6 +27,7 @@ scenes.savemanager = () => {
         anchor: [0.9, 0.05], sizeAnchor: [0.05, 0.05],
         alpha: 1,
         onClick(args) {
+            playSound("buttonClickSound");
             setScene(scenes.inventory());
         },
         text: ">",

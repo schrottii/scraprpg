@@ -30,6 +30,7 @@ scenes.itemscene = () => {
         anchor: [0.9, 0.05], sizeAnchor: [0.05, 0.05],
         alpha: 1,
         onClick(args) {
+            playSound("buttonClickSound");
             setScene(scenes.inventory());
         },
         text: ">",
@@ -61,6 +62,7 @@ scenes.itemscene = () => {
         anchor: [0.05, 0.05], sizeAnchor: [0.15, 0.05],
         alpha: 0,
         onClick(args) {
+            playSound("no");
             alert("Not available yet!");
         },
         fill: "black"
@@ -76,6 +78,7 @@ scenes.itemscene = () => {
         anchor: [0.25, 0.05], sizeAnchor: [0.15, 0.05],
         alpha: 0,
         onClick(args) {
+            playSound("no");
             alert("Not available yet!");
         },
         fill: "black"
@@ -91,6 +94,7 @@ scenes.itemscene = () => {
         anchor: [0.45, 0.05], sizeAnchor: [0.15, 0.05],
         alpha: 0,
         onClick(args) {
+            playSound("buttonClickSound");
             if (storyonly == false) {
                 storyonly = true;
                 theTop[5].text = "Key Items";
@@ -114,6 +118,7 @@ scenes.itemscene = () => {
         anchor: [0.65, 0.05], sizeAnchor: [0.15, 0.05],
         alpha: 0,
         onClick(args) {
+            playSound("buttonClickSound");
             let i = game.chars.indexOf(characterSelected);
 
             if (game.chars[i + 1] != undefined) characterSelected = game.chars[i + 1];
@@ -147,19 +152,23 @@ scenes.itemscene = () => {
                 pressedTop: "darkgray", pressedBottom: "gray",
                 alpha: 1,
                 onClick(args) {
-                    let itemOffset = itemPage * 12;
-                    let item = this.item;
+                    if (this.fillTop == "lightgray") {
+                        playSound("no");
+                    }
+                    else {
+                        let itemOffset = itemPage * 12;
+                        let item = this.item;
 
-                    if (items[item] != undefined) {
-                        if (items[item]().story != true) {
-                            if (game.inventory[item] > 0) {
-                                items[item]({ player: game.characters[characterSelected] }).effect();
-                                removeItem(item, 1);
+                        if (items[item] != undefined) {
+                            if (items[item]().story != true) {
+                                if (game.inventory[item] > 0) {
+                                    items[item]({ player: game.characters[characterSelected] }).effect();
+                                    removeItem(item, 1);
+                                }
                             }
                         }
+                        showItems();
                     }
-                    showItems();
-
                 }
             }));
         }
