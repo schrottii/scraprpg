@@ -238,7 +238,7 @@ var maps = {
     "cave1": "scripts/maps/cave1.js",
 };
 
-var colors = { // We hate british people
+var colors = { // colors not colours
     "topcolor": "#d49f52",
     "bottomcolor": "#b58542",
     "buttontop": "#ffae3b",

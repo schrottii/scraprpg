@@ -19,7 +19,7 @@ scenes.inventory = () => {
     background.push(controls.rect({
         anchor: [0.04, 0.04], sizeAnchor: [0.92, 0.92],
         alpha: 1,
-        fill: "black"
+        fill: colors.bottomcolor
     }));
     background.push(controls.rect({
         anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
@@ -80,7 +80,7 @@ scenes.inventory = () => {
 
             characters.push(controls.rect({
                 anchor: [0.05 + (0.3 * i), 0.3 + (0.3 * j)], sizeOffset: [0, 5], sizeAnchor: [0.3, 0],
-                fill: "black",
+                fill: colors.bottomcolor,
                 alpha: 1,
             }));
 
@@ -150,7 +150,7 @@ scenes.inventory = () => {
 
     coolDisplays.push(controls.rect({
         anchor: [0.65, 0.04], sizeAnchor: [0.005, 0.92],
-        fill: "black",
+        fill: colors.bottomcolor,
         alpha: 1
     }))
 
@@ -163,7 +163,7 @@ scenes.inventory = () => {
 
     coolDisplays.push(controls.rect({
         anchor: [0.34, 0.04], sizeAnchor: [0.005, 0.86],
-        fill: "black",
+        fill: colors.bottomcolor,
         alpha: 1
     }))
 
@@ -194,7 +194,14 @@ scenes.inventory = () => {
                 characterNames[1 + i * 2].anchor[0] = characterNames[1 + i * 2].anchorbase + (getPlayer(i + 1).name.length * 0.01);
                 characterNames[i * 2].alpha = 1;
                 characterNames[1 + i * 2].alpha = 1;
-                characterImages[i * 2].source = getPlayer(i + 1).name.toLowerCase();
+
+                if (getPlayer(i + 1).HP > 0) {
+                    characterImages[i * 2].source = getPlayer(i + 1).name.toLowerCase();
+                    //characterImages[i * 2].snip = [0, 0, 32, 32];
+                }
+                else {
+                    characterImages[i * 2].source = getPlayer(i + 1).name.toLowerCase() + "_dead";
+                }
                 characterImages[i * 2].alpha = 1;
                 if (getPlayer(i + 1).effect[0] != "none") {
                     characterImages[1 + i * 2].source = getPlayer(i + 1).effect[0];

@@ -20,7 +20,7 @@ scenes.equipment = () => {
     background.push(controls.rect({
         anchor: [0.04, 0.04], sizeAnchor: [0.92, 0.92],
         alpha: 1,
-        fill: "black"
+        fill: colors.bottomcolor
     }));
     background.push(controls.rect({
         anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
@@ -44,21 +44,21 @@ scenes.equipment = () => {
     background.push(controls.rect({ // horizontal 1
         anchor: [0.05, 0.1], sizeAnchor: [0.9, 0.01],
         alpha: 1,
-        fill: "black"
+        fill: colors.bottomcolor
     }));
     background.push(controls.rect({ // vert middle
         anchor: [0.55, 0.1], sizeAnchor: [0.005, 0.86],
-        fill: "black",
+        fill: colors.bottomcolor,
         alpha: 1
     }));
     background.push(controls.rect({ // horizontal 2
         anchor: [0.05, 0.7], sizeAnchor: [0.9, 0.01],
         alpha: 1,
-        fill: "black"
+        fill: colors.bottomcolor
     }));
     background.push(controls.rect({ // vert items
         anchor: [0.75, 0.1], sizeAnchor: [0.005, 0.6],
-        fill: "black",
+        fill: colors.bottomcolor,
         alpha: 1
     }));
 

@@ -23,7 +23,7 @@ scenes.settings = () => {
     background.push(controls.rect({
         anchor: [0.04, 0.04], sizeAnchor: [0.92, 0.92],
         alpha: 1,
-        fill: "black"
+        fill: colors.bottomcolor
     }));
     background.push(controls.rect({
         anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
@@ -42,12 +42,12 @@ scenes.settings = () => {
     background.push(controls.rect({
         anchor: [0.05, 0.1], sizeAnchor: [0.9, 0.01],
         alpha: 1,
-        fill: "black"
+        fill: colors.bottomcolor
     }));
 
     background.push(controls.rect({
         anchor: [0.375, 0.05], sizeAnchor: [0.01, 0.9],
-        fill: "black", alpha: 1,
+        fill: colors.bottomcolor, alpha: 1,
     }));
 
     menuSettings.push(controls.label({

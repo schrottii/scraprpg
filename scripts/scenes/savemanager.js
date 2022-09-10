@@ -16,7 +16,7 @@ scenes.savemanager = () => {
     background.push(controls.rect({
         anchor: [0.04, 0.04], sizeAnchor: [0.92, 0.92],
         alpha: 1,
-        fill: "black"
+        fill: colors.bottomcolor
     }));
     background.push(controls.rect({
         anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
@@ -35,7 +35,7 @@ scenes.savemanager = () => {
     background.push(controls.rect({
         anchor: [0.05, 0.1], sizeAnchor: [0.9, 0.01],
         alpha: 1,
-        fill: "black"
+        fill: colors.bottomcolor
     }));
 
     // Generate our lovely buttons

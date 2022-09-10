@@ -17,7 +17,7 @@ scenes.formation = () => {
     background.push(controls.rect({
         anchor: [0.04, 0.04], sizeAnchor: [0.92, 0.92],
         alpha: 1,
-        fill: "black"
+        fill: colors.bottomcolor
     }));
     background.push(controls.rect({
         anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
@@ -36,12 +36,12 @@ scenes.formation = () => {
     background.push(controls.rect({
         anchor: [0.05, 0.1], sizeAnchor: [0.9, 0.01],
         alpha: 1,
-        fill: "black"
+        fill: colors.bottomcolor
     }));
     background.push(controls.rect({
         anchor: [0.4, 0.15], sizeAnchor: [0.5, 0.75],
         alpha: 1,
-        fill: "black"
+        fill: colors.bottomcolor
     }));
     background.push(controls.rect({
         anchor: [0.42, 0.17], sizeAnchor: [0.46, 0.71],

@@ -19,7 +19,7 @@ scenes.itemscene = () => {
     background.push(controls.rect({
         anchor: [0.04, 0.04], sizeAnchor: [0.92, 0.92],
         alpha: 1,
-        fill: "black"
+        fill: colors.bottomcolor
     }));
     background.push(controls.rect({
         anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
@@ -38,22 +38,22 @@ scenes.itemscene = () => {
     background.push(controls.rect({ // horizontal 1
         anchor: [0.05, 0.1], sizeAnchor: [0.9, 0.01],
         alpha: 1,
-        fill: "black"
+        fill: colors.bottomcolor
     }));
     background.push(controls.rect({ // vertical 1
         anchor: [0.2, 0.05], sizeAnchor: [0.005, 0.05],
         alpha: 1,
-        fill: "black"
+        fill: colors.bottomcolor
     }));
     background.push(controls.rect({ // vertical 2
         anchor: [0.4, 0.05], sizeAnchor: [0.005, 0.05],
         alpha: 1,
-        fill: "black"
+        fill: colors.bottomcolor
     }));
     background.push(controls.rect({ // vertical 3
         anchor: [0.6, 0.05], sizeAnchor: [0.005, 0.05],
         alpha: 1,
-        fill: "black"
+        fill: colors.bottomcolor
     }));
 
     // The top
