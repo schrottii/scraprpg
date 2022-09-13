@@ -21,9 +21,9 @@ function createEnemy(type) {
 function startDialogue(cd) {
     inDialogue = true;
     currentDialogue = cd.lines;
+    dialogueType = cd.type;
     dialogueProgress = 0;
     dialogueEmotion = currentDialogue[dialogueProgress].portrait;
-    dialogueType = cd.type;
     canMove = false;
 }
 
@@ -352,12 +352,31 @@ scenes.game = () => {
             textProgress = -1;
             if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
                 // Dialogue end
-                inDialogue = false;
                 currentDialogue = false;
                 dialogueEmotion = "neutral";
                 dialogueProgress = 0;
                 canMove = true;
                 actionButton.alpha = 1;
+
+                if (dialogueNormalComponents[0].at == 1) {
+                    dialogueNormalComponents[0].at = 0.4;
+                    addAnimator(function (t) {
+                        for (i in dialogueNormalComponents) {
+                            dialogueNormalComponents[i].offset[1] = dialogueNormalComponents[i].defoff[1] + Math.min(t, 500);
+                        }
+                        if (t > 499) {
+                            for (i in dialogueNormalComponents) {
+                                dialogueNormalComponents[i].at = 0;
+                            }
+                            inDialogue = false;
+                            return true;
+                        }
+                        return false;
+                    });
+                }
+                else {
+                    inDialogue = false;
+                }
             }
             else if (currentDialogue[dialogueProgress].script != false) {
                 currentDialogue[dialogueProgress].script();
@@ -369,7 +388,7 @@ scenes.game = () => {
     }
 
     dialogueNormalComponents.push(controls.rect({
-        anchor: [0, 1], offset: [0, -200], sizeAnchor: [1, 0], sizeOffset: [0, 200],
+        anchor: [0, 1], offset: [0, -200], defoff: [0, -200], sizeAnchor: [1, 0], sizeOffset: [0, 200], at: 0,
         clickthrough: false,
         fill: colors.bottomcolor,
         onClick(args) {
@@ -380,48 +399,48 @@ scenes.game = () => {
         alpha: 0, 
     }));
     dialogueNormalComponents.push(controls.rect({
-        anchor: [0.01, 1.01], offset: [0, -200], sizeOffset: [136, 136],
+        anchor: [0.01, 1.01], offset: [0, -200], defoff: [0, -200], sizeOffset: [136, 136], at: 0,
         clickthrough: false,
         fill: colors.topcolor,
         alpha: 0,
     }));
     dialogueNormalComponents.push(controls.rect({
-        anchor: [0.01, 1.01], offset: [0, -54], sizeOffset: [128, 32],
+        anchor: [0.01, 1.01], offset: [0, -54], defoff: [0, -54], sizeOffset: [128, 32], at: 0,
         clickthrough: false,
         fill: colors.topcolor,
         alpha: 0,
     }));
     dialogueNormalComponents.push(controls.label({
-        anchor: [0.01, 1.01], offset: [64, -34],
+        anchor: [0.01, 1.01], offset: [64, -34], defoff: [64, -34], at: 0,
         align: "center", fontSize: 20, fill: "black",
         text: "Bleu",
         alpha: 0,
     }));
     dialogueNormalComponents.push(controls.rect({
-        anchor: [0.01, 1.01], offset: [164, -200], sizeOffset: [0, 178], sizeAnchor: [0.8, 0],
+        anchor: [0.01, 1.01], offset: [164, -200], defoff: [164, -200], sizeOffset: [0, 178], sizeAnchor: [0.8, 0], at: 0,
         clickthrough: false,
         fill: colors.topcolor,
         alpha: 0,
     }));
     dialogueNormalComponents.push(controls.image({
-        anchor: [0.01, 1.01], offset: [0, -192], sizeOffset: [128, 128], snip: [0, 0, 64, 64],
+        anchor: [0.01, 1.01], offset: [0, -192], defoff: [0, -192], sizeOffset: [128, 128], snip: [0, 0, 64, 64], at: 0,
         source: "Portraits_Bleu",
         alpha: 0,
     }));
     dialogueNormalComponents.push(controls.label({ // 6
-        anchor: [0, 1], offset: [196, -168],
+        anchor: [0, 1], offset: [196, -168], defoff: [196, -168], at: 0,
         align: "left", fontSize: 16, fill: "black",
         text: "...",
         alpha: 0,
     }));
     dialogueNormalComponents.push(controls.image({
-        anchor: [0.81, 1], sizeOffset: [64, 64], offset: [100, -96],
+        anchor: [0.81, 1], sizeOffset: [64, 64], offset: [100, -96], defoff: [100, -96], at: 0,
         source: "star",
         alpha: 0,
     }));
 
     dialogueInvisComponents.push(controls.rect({
-        anchor: [0, 1], offset: [0, -200], sizeAnchor: [1, 0], sizeOffset: [0, 200],
+        anchor: [0, 1], offset: [0, -200], defoff: [0, -200], sizeAnchor: [1, 0], sizeOffset: [0, 200], at: 0,
         clickthrough: false,
         fill: colors.bottomcolor,
         onClick(args) {
@@ -432,19 +451,19 @@ scenes.game = () => {
         alpha: 0,
     }));
     dialogueInvisComponents.push(controls.rect({
-        anchor: [0.01, 1.01], offset: [0, -200], sizeOffset: [0, 180], sizeAnchor: [0.98, 0],
+        anchor: [0.01, 1.01], offset: [0, -200], defoff: [0, -200], sizeOffset: [0, 180], sizeAnchor: [0.98, 0], at: 0,
         clickthrough: false,
         fill: colors.topcolor,
         alpha: 0,
     }));
     dialogueInvisComponents.push(controls.label({ // 2
-        anchor: [0.02, 1], offset: [0, -168],
+        anchor: [0.02, 1], offset: [0, -168], defoff: [0, -168], at: 0,
         align: "left", fontSize: 16, fill: "black",
         text: "...",
         alpha: 0,
     }));
     dialogueInvisComponents.push(controls.image({
-        anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96],
+        anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96], defoff: [0, -96], at: 0,
         source: "star",
         alpha: 0,
     }));
@@ -468,7 +487,7 @@ scenes.game = () => {
         alpha: 0,
     }));
     dialogueNarratorComponents.push(controls.image({
-        anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96],
+        anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96], defoff: [0, -96], at: 0,
         source: "star",
         alpha: 0,
     }));
@@ -486,16 +505,18 @@ scenes.game = () => {
         alpha: 0,
     }));
     dialogueCutsceneComponents.push(controls.label({ // 1
-        anchor: [0.01, 1], offset: [0, -96],
+        anchor: [0.01, 1], offset: [0, -96], defoff: [0, -96], at: 0,
         align: "left", fontSize: 16, fill: "white",
         text: "...",
         alpha: 0,
     }));
     dialogueCutsceneComponents.push(controls.image({
-        anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96],
+        anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96], defoff: [0, -96], at: 0,
         source: "star",
         alpha: 0,
     }));
+
+    // end of the dialogue stuff. lol.
 
     let actionButton = controls.image({
         anchor: [1, 0.8], sizeOffset: [128, 128], offset: [-256, 0],
@@ -1854,19 +1875,39 @@ scenes.game = () => {
                 for (i = 0; i < dialogueNormalComponents.length; i++) {
                     dialogueNormalComponents[i].alpha = 1;
                 }
-                if (typeof (currentDialogue[dialogueProgress].text) == "string") dialogueNormalComponents[6].text = animatedText(currentDialogue[dialogueProgress].text);
-                else dialogueNormalComponents[6].text = animatedText(currentDialogue[dialogueProgress].text());
 
-                if (currentDialogue[dialogueProgress].name != undefined) dialogueNormalComponents[3].text = currentDialogue[dialogueProgress].name;
-                dialogueEmotion = currentDialogue[dialogueProgress].emotion;
-                dialogueNormalComponents[5].source = currentDialogue[dialogueProgress].portrait;
-                dialogueNormalComponents[5].snip = getEmotion(dialogueEmotion);
+                if (dialogueNormalComponents[0].at == 0) {
+                    dialogueNormalComponents[0].at = 0.5;
+                    for (i in dialogueNormalComponents) {
+                        dialogueNormalComponents[i].offset[1] = dialogueNormalComponents[i].defoff[1] + 500;
+                    }
+                    addAnimator(function (t) {
+                        for (i in dialogueNormalComponents) {
+                            dialogueNormalComponents[i].offset[1] = dialogueNormalComponents[i].defoff[1] + 500 - Math.min(t, 500);
+                        }
+                        if (t > 499) {
+                            for (i in dialogueNormalComponents) {
+                                dialogueNormalComponents[i].at = 1;
+                            }
+                            return true;
+                        }
+                        return false;
+                    });
+                }
+                if (dialogueNormalComponents[0].at != 0.4) {
+                    if (typeof (currentDialogue[dialogueProgress].text) == "string") dialogueNormalComponents[6].text = animatedText(currentDialogue[dialogueProgress].text);
+                    else dialogueNormalComponents[6].text = animatedText(currentDialogue[dialogueProgress].text());
 
-                if (currentDialogue[dialogueProgress].script != false) currentDialogue[dialogueProgress].script();
+                    if (currentDialogue[dialogueProgress].name != undefined) dialogueNormalComponents[3].text = currentDialogue[dialogueProgress].name;
+                    dialogueEmotion = currentDialogue[dialogueProgress].emotion;
+                    dialogueNormalComponents[5].source = currentDialogue[dialogueProgress].portrait;
+                    dialogueNormalComponents[5].snip = getEmotion(dialogueEmotion);
 
-                if (currentDialogue[dialogueProgress + 1] == undefined) dialogueNormalComponents[7].alpha = 0; // Star
-                actionButton.alpha = 0;
+                    if (currentDialogue[dialogueProgress].script != false) currentDialogue[dialogueProgress].script();
 
+                    if (currentDialogue[dialogueProgress + 1] == undefined) dialogueNormalComponents[7].alpha = 0; // Star
+                    actionButton.alpha = 0;
+                }
             }
             else if (dialogueNormalComponents[0].alpha != 0) {
                 for (i = 0; i < dialogueNormalComponents.length; i++) {

@@ -173,7 +173,7 @@ maps["test"] = {
                 dline({
                     text: "Ski-bi dibby dib yo da dub dub Yo da dub dub Ski - bi dibby dib yo da dub dub Yo da dub dub (I'm the Scatbarrel) Ski - bi dibby dib yo da dub dub Yo da dub dub Ski - bi dibby dib yo da dub dub" +
                         "Yo da dub dub Ba - da - ba - da - ba - be bop bop bodda bope Bop ba bodda bope Be bop ba bodda bope Bop ba bodda Ba - da - ba - da - ba - be bop ba bodda bope Bop ba bodda bope Be bop ba bodda bope Bop ba bodda bope",
-                    portrait: "Portraits_Bleu", emotion: "happy", name: "Bleu", voice: "male_young", script: () => { cutsceneMode = true; },
+                    portrait: "Portraits_Bleu", emotion: "happy", name: "Bleu", voice: "male_young",
                 }),
                 dline({ text: "I hope this is not copyrighted...", portrait: "Portraits_Bleu", emotion: "neutral", name: "Bleu", voice: "male_grown" }),
                 dline({ text: "Don't forget to subscribe to my channel", portrait: "Portraits_Bleu", emotion: "angry", name: "Bleu", script: () => { cutsceneMode = false; }, }),
