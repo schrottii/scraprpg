@@ -16,7 +16,7 @@ let magic = {
     cuyua(args) {
         return {
             ...magic.default(),
-            source: "brickyleaf",
+            source: "potion",
             name: "Cuyua",
             shopcost: 500,
             effect: () => {
@@ -36,7 +36,7 @@ let magic = {
     cutema(args) {
         return {
             ...magic.default(),
-            source: "brickyleaf",
+            source: "potion",
             name: "Cutema",
             shopcost: 500,
             cost: 4,

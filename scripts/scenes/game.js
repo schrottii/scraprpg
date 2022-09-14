@@ -833,14 +833,17 @@ scenes.game = () => {
         text: "AREA UNDEFINED", alpha: 0,
     }))
 
+    instantEffect = true;
+
     // Weather time thing
-    function setNightEffet(color, al = 0.5, type = "none") {
-        //console.log(nightEffect.fill, color, al, type);
+    function setNightEffect(color, al = 0.5, type = "none") {
+        //console.log(nightEffect.alpha, color, al, type, instantEffect);
         let transitionDuration = 30000; // Roughly how long it lasts. 1000 = 1 sec
         let fogOpacityChangeIntensity = 10; // How much the opacity during fog changes. Higher number = less
         // Speed in preRender
 
-        if (type == "instant" || nightEffect.fill == "white") {
+        if (instantEffect == true) {
+            instantEffect = false;
             nightEffect.alpha = al;
             nightEffect2.alpha = 0;
             nightEffect.fill = color;
@@ -852,12 +855,19 @@ scenes.game = () => {
             else al -= ((fogopa) / fogOpacityChangeIntensity) - (1 / fogOpacityChangeIntensity);
             if (al > 1) al = 1;
             if (al <= 0) al = 0.01;
-            nightEffect.alpha = al;
+            //nightEffect.alpha = al;
         }
 
-        if (color == "none") {
-            nightEffect.alpha = 0;
-            nightEffect2.alpha = 0;
+        if (color == "none" && nightEffect.alpha == 0.35) {
+            addAnimator(function (t) {
+                nightEffect.alpha = al - t / transitionDuration;
+
+                if (t > (al * transitionDuration) - 1) {
+                    nightEffect.alpha = 0;
+                    return true;
+                }
+                return false;
+            });
         }
         else if (nightEffect.fill != color) {
             nightEffect2.fill = nightEffect.fill;
@@ -1044,6 +1054,7 @@ scenes.game = () => {
                 }
                 loadNPCs();
                 loadAreaMusic(previousmap);
+                instantEffect = true;
                 game.position[0] = themap.teleport[1];
                 game.position[1] = themap.teleport[2];
             }, 1000);
@@ -1469,22 +1480,22 @@ scenes.game = () => {
 
 
             if (map.weather == "none" || map.weather == undefined) {
-                if (isNoon()) setNightEffet("none", 0.35);
-                else if (isDusk()) setNightEffet("#ff8c1a", 0.35);
-                else if (isNight()) setNightEffet("#481365", 0.35);
-                else if (isDawn()) setNightEffet("#d92200", 0.35);
+                if (isNoon()) setNightEffect("none", 0.35);
+                else if (isDusk()) setNightEffect("#ff8c1a", 0.35);
+                else if (isNight()) setNightEffect("#481365", 0.35);
+                else if (isDawn()) setNightEffect("#d92200", 0.35);
             }
             if (map.weather == "rain") {
-                if (isNoon()) setNightEffet("#cccccc", 0.5);
-                else if (isDusk()) setNightEffet("#bf854c", 0.5);
-                else if (isNight()) setNightEffet("#37293f", 0.5);
-                else if (isDawn()) setNightEffet("#894337", 0.5);
+                if (isNoon()) setNightEffect("#cccccc", 0.4);
+                else if (isDusk()) setNightEffect("#bf854c", 0.4);
+                else if (isNight()) setNightEffect("#37293f", 0.4);
+                else if (isDawn()) setNightEffect("#894337", 0.4);
             }
             if (map.weather == "fog" || map.weather == "dust") {
-                if (isNoon()) setNightEffet("#b2b2b2", 0.6, "fog");
-                else if (isDusk()) setNightEffet("#998572", 0.6, "fog");
-                else if (isNight()) setNightEffet("#221c26", 0.6, "fog");
-                else if (isDawn()) setNightEffet("#4c4241", 0.6, "fog");
+                if (isNoon()) setNightEffect("#b2b2b2", 0.5, "fog");
+                else if (isDusk()) setNightEffect("#998572", 0.5, "fog");
+                else if (isNight()) setNightEffect("#221c26", 0.5, "fog");
+                else if (isDawn()) setNightEffect("#4c4241", 0.5, "fog");
             }
 
             // Check if it's time for enemies to mov�
