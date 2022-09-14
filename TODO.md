@@ -1,5 +1,5 @@
 ﻿##TODO:
-7 Things left to do in this phase
+6 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
@@ -7,7 +7,6 @@ The developing phase, Schrottii's phase, the essential features of the game
 
 - More battle sprites (like the character being hit, the character attacking, etc.)
 - Slightly weaker weather effect overlay (Fog tho :deathgaze:)
-- Battle encounter sequence improvements (Music stops, wait a split second and the infamous appearance of the mastery token swinging around while the screen floods to white)
 - Intro+loop music system (other music won't use this so those music will still stick with the usual single-loop system that we have today)
 - Particles
 - Overworld quests

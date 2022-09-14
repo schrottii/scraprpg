@@ -1073,13 +1073,14 @@ scenes.game = () => {
             }
 
             playSound("encounter");
-            image_animation(images.tokenattack, 4, 5, 100);
             defeatType = "default";
 
             areaTeleportFade.fill = "white";
             areaTeleportFade.alpha = 0;
-
+            stopMusic();
             let previouszoom = zoom;
+            setTimeout(() => {
+                image_animation(images.tokenattack, 4, 5, 100);
                 addAnimator(function (t) {
                     zoom = 1 + (t / 500);
                     if (t > 1799 && t < 2500) {
@@ -1090,14 +1091,14 @@ scenes.game = () => {
                     }
                     if (t > 2999) {
                         startFight();
-                        
+
                         zoom = previouszoom;
                         tokenRunning = false;
                         return true;
                     }
                     return false;
                 });
-            
+        }, 500);
         }
     }
 
