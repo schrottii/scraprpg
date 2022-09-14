@@ -368,14 +368,30 @@ scenes.game = () => {
                             for (i in dialogueNormalComponents) {
                                 dialogueNormalComponents[i].at = 0;
                             }
-                            inDialogue = false;
+                            if (canMove == true) inDialogue = false;
+                            return true;
+                        }
+                        return false;
+                    });
+                }
+                else if (dialogueInvisComponents[0].at == 1) {
+                    dialogueInvisComponents[0].at = 0.4;
+                    addAnimator(function (t) {
+                        for (i in dialogueInvisComponents) {
+                            dialogueInvisComponents[i].offset[1] = dialogueInvisComponents[i].defoff[1] + Math.min(t, 500);
+                        }
+                        if (t > 499) {
+                            for (i in dialogueInvisComponents) {
+                                dialogueInvisComponents[i].at = 0;
+                            }
+                            if (canMove == true) inDialogue = false;
                             return true;
                         }
                         return false;
                     });
                 }
                 else {
-                    inDialogue = false;
+                    if (canMove == true) inDialogue = false;
                 }
             }
             else if (currentDialogue[dialogueProgress].script != false) {
@@ -1918,14 +1934,33 @@ scenes.game = () => {
                 for (i = 0; i < dialogueInvisComponents.length; i++) {
                     dialogueInvisComponents[i].alpha = 1;
                 }
-                if (typeof (currentDialogue[dialogueProgress].text) == "string") dialogueInvisComponents[2].text = animatedText(currentDialogue[dialogueProgress].text);
-                else dialogueInvisComponents[2].text = animatedText(currentDialogue[dialogueProgress].text());
+                if (dialogueInvisComponents[0].at == 0) {
+                    dialogueInvisComponents[0].at = 0.5;
+                    for (i in dialogueInvisComponents) {
+                        dialogueInvisComponents[i].offset[1] = dialogueInvisComponents[i].defoff[1] + 500;
+                    }
+                    addAnimator(function (t) {
+                        for (i in dialogueInvisComponents) {
+                            dialogueInvisComponents[i].offset[1] = dialogueInvisComponents[i].defoff[1] + 500 - Math.min(t, 500);
+                        }
+                        if (t > 499) {
+                            for (i in dialogueInvisComponents) {
+                                dialogueInvisComponents[i].at = 1;
+                            }
+                            return true;
+                        }
+                        return false;
+                    });
+                }
+                if (dialogueInvisComponents[0].at != 0.4) {
+                    if (typeof (currentDialogue[dialogueProgress].text) == "string") dialogueInvisComponents[2].text = animatedText(currentDialogue[dialogueProgress].text);
+                    else dialogueInvisComponents[2].text = animatedText(currentDialogue[dialogueProgress].text());
 
-                if (currentDialogue[dialogueProgress].script != false) currentDialogue[dialogueProgress].script();
+                    if (currentDialogue[dialogueProgress].script != false) currentDialogue[dialogueProgress].script();
 
-                if (currentDialogue[dialogueProgress + 1] == undefined) dialogueInvisComponents[3].alpha = 0; // Star
-                actionButton.alpha = 0;
-
+                    if (currentDialogue[dialogueProgress + 1] == undefined) dialogueInvisComponents[3].alpha = 0; // Star
+                    actionButton.alpha = 0;
+                }
             }
             else if (dialogueInvisComponents[0].alpha != 0) {
                 for (i = 0; i < dialogueInvisComponents.length; i++) {

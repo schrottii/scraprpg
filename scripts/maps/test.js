@@ -168,7 +168,7 @@ maps["test"] = {
         ],
     dialogues: {
         1: {
-            "type": "normal",
+            "type": "invis",
             "lines": [
                 dline({
                     text: "Ski-bi dibby dib yo da dub dub Yo da dub dub Ski - bi dibby dib yo da dub dub Yo da dub dub (I'm the Scatbarrel) Ski - bi dibby dib yo da dub dub Yo da dub dub Ski - bi dibby dib yo da dub dub" +

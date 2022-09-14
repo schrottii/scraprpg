@@ -1,12 +1,11 @@
 ﻿##TODO:
-8 Things left to do in this phase
+7 Things left to do in this phase
 
 ##Phase 1:
 The developing phase, Schrottii's phase, the essential features of the game
 
 - More battle sprites (like the character being hit, the character attacking, etc.)
 - Slightly weaker weather effect overlay (Fog tho :deathgaze:)
-- Dialogue box sliding up (at start) and sliding back down (at end.) This can work the reverse way when the dialogue box is on the top of the screen instead of the bottom.
 - Battle encounter sequence improvements (Music stops, wait a split second and the infamous appearance of the mastery token swinging around while the screen floods to white)
 - Intro+loop music system (other music won't use this so those music will still stick with the usual single-loop system that we have today)
 - Black fade after ending a battle
