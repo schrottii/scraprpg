@@ -56,7 +56,7 @@ function init() {
                 text: "Dev Mode",
                 onClick() {
                     cancel = true;
-                    musicPlayer.muted = true;
+                    musicPlayer.muted = true; // false?
                     soundPlayer.muted = false;
 
                     loadSettings();
@@ -64,6 +64,8 @@ function init() {
                     playSound("titletransition");
 
                     stopMusic();
+                    //playMusic("bgm/boss", "bgm/placeholder");
+                    //^intro example - remove comment ^ there, add comment to setscene few lines below, set musicplayer muted to false above
                     saveNR = 3;
                     loadGame();
                     loadSettings();
@@ -158,10 +160,17 @@ function isNight() {
     return false;
 }
 
-function playMusic(name) {
+var playAfterIntro = "none";
+
+function playMusic(name, intro = "none") {
     if (musicPlayer.volume > 0 && musicPlayer.volume <= 1) {
         if (audio[name].src != musicPlayer.src) {
-            musicPlayer.src = audio[name].src;
+            if (intro == "none") musicPlayer.src = audio[name].src;
+            else {
+                playAfterIntro = name;
+                musicPlayer.src = audio[intro].src;
+                musicPlayer.loop = false;
+            }
         }
         musicPlayer.play();
     }
@@ -356,6 +365,15 @@ function loop() {
             // Alpha 255 (or anything above 1 really) does not work anymore!
             ctx.globalAlpha = control.alpha;
             control.render(ctx);
+        }
+    }
+
+    if (playAfterIntro != "none") {
+        if (musicPlayer.currentTime >= musicPlayer.duration) {
+            musicPlayer.src = audio[playAfterIntro].src;
+            playAfterIntro = "none";
+            musicPlayer.loop = true;
+            musicPlayer.play();
         }
     }
 
