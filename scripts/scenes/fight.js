@@ -268,9 +268,7 @@ scenes.fight = () => {
                         for (i in game.characters) {
                             game.characters[i].HP = 1;
                         }
-                        stopMusic();
-                        setScene(scenes.game());
-                        fightStats = [];
+                        endFight();
                         gameOverScreen[0].alpha = 0;
                         return true;
                     }
@@ -1558,18 +1556,31 @@ scenes.fight = () => {
                 if (peopleLeft == 0) {
                     fleeLoss.alpha = 0;
                     fleeIcon.alpha = 0;
-                    stopMusic();
-                    setScene(scenes.game());
-                    setTimeout(() => {
-                        positions = [];
-                        fightStats = [];
-                    }, 500);
+
+                    endFight();
                 }
 
                 return true;
             }
             return false;
         });
+    }
+
+    function endFight() {
+        stopMusic();
+        addAnimator(function (t) {
+            blackFadeTransition.alpha = 0 + (t / 200);
+            if (t > 499) {
+                blackFadeTransition.alpha = 0;
+                setScene(scenes.game());
+                setTimeout(() => {
+                    positions = [];
+                    fightStats = [];
+                }, 500);
+                return true;
+            }
+            return false;
+        })
     }
 
     // finally a non array
@@ -1988,11 +1999,7 @@ scenes.fight = () => {
                 playSound("buttonClickSound");
                 if (checkAllDead(true)) {
                     if (fightaction == "victoryitems") {
-                        stopMusic();
-                        setScene(scenes.game());
-
-                        positions = [];
-                        fightStats = [];
+                        endFight();
                     }
                 }
             }
@@ -2065,9 +2072,7 @@ scenes.fight = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 loadGame();
-                stopMusic();
-                setScene(scenes.game());
-                fightStats = [];
+                endFight();
             }
         }
     }));
@@ -2685,12 +2690,29 @@ scenes.fight = () => {
                 positionControls[i].offset[0] = positionControls[i].defoffset;
                 positionControls[i].anchor[0] = 0.025;
             }
+            delete runTime;
+            delete runLaps;
             return true;
         }
         return false;
     });
-    delete runTime;
-    delete runLaps;
+
+    // Default black fade transition
+    let blackFadeTransition = controls.rect({
+        anchor: [0, 0], sizeAnchor: [1, 1], // (fullscreen)
+        fill: "black",
+        alpha: 1
+    })
+    addAnimator(function (t) {
+        blackFadeTransition.alpha = 1 - (t / 200);
+        if (t > 499) {
+            blackFadeTransition.alpha = 0;
+            return true;
+        }
+        return false;
+    })
+    // black fade transition end
+
 
     return {
         // Pre-render function
@@ -2760,7 +2782,7 @@ scenes.fight = () => {
             ...fightOverview,
             ...fightStats, ...actionDisplay, ...gameOverScreen,
             ...positionControls, ...epositionControls, ...positionGrid, ...attackAnimationObjects, ...battleNumbers, ...winScreen, ...winScreen2, ...winStats, ...fleeWrenches, ...gameOverScreen2,
-            ...cutsceneElements
+            ...cutsceneElements, blackFadeTransition,
         ],
     }
 };
