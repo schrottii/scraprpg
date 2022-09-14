@@ -838,6 +838,16 @@ scenes.fight = () => {
                 }
                 positions[whoAGI.action[2]][whoAGI.action[3]].action = false;
                 setTimeout(() => executeActions(), ACTIONDELAY);
+            case "magic":
+                magic[whoAGI.action[1]]({ user: game.characters[positions[whoAGI.action[2]][whoAGI.action[3]].occupied], player: game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied], anchor: positionControls[whoAGI.action[2] + (whoAGI.action[3] * 3)].anchor, offset: positionControls[pos[0] + (pos[1] * 3)].offset }).effect();
+                if (game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].HP < 1) {
+                    game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].HP = 0;
+                    postLog(positions[whoAGI.action[2]][whoAGI.action[3]].name + " killed " + game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].name + "!");
+                    positions[whoAGI.action[4]][whoAGI.action[5]].isOccupied = false;
+                    checkAllDead();
+                }
+                positions[whoAGI.action[2]][whoAGI.action[3]].action = false;
+                setTimeout(() => executeActions(), ACTIONDELAY);
                 break;
             case "flee":
                 fleeAnimation(whoAGI.action[1], whoAGI.action[2]);
@@ -1211,11 +1221,36 @@ scenes.fight = () => {
         })
     }
 
+    function showMagic() {
+        let itemOffset = itemPage * 12
+        let inventory = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].magic;
+        for (i = 0; i < ((fightActions.length / 4) - 9); i++) {
+            fightActions[(i * 4) + 3].alpha = 0;
+            fightActions[(i * 4)].type = "magic";
+            if (Object.keys(inventory)[i + itemOffset] == undefined) {
+                fightActions[(i * 4) + 2].text = "---";
+                fightActions[(i * 4) + 2].fill = "white";
+                continue;
+            }
+            let mag = magic[inventory[i + itemOffset]];
+            // We are in a battle, so it does not matter whether it's battleonly or not ;)
+            fightActions[(i * 4)].item = mag;
+            if (game.inventory[mag().name] > 1) fightActions[(i * 4) + 2].text = mag().name + " x" + inventory[mag];
+            else fightActions[(i * 4) + 2].text = mag().name;
+            if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EP >= mag().cost) fightActions[(i * 4) + 2].fill = "green";
+            else fightActions[(i * 4) + 2].fill = "gray";
+            fightActions[(i * 4) + 3].source = "items/" + mag().source;
+            fightActions[(i * 4) + 3].alpha = 1;
+
+        }
+    }
+
     function showItems() {
         let itemOffset = itemPage * 12
         let inventory = Object.keys(game.inventory);
         for (i = 0; i < ((fightActions.length / 4) - 9); i++) {
             fightActions[(i * 4) + 3].alpha = 0;
+            fightActions[(i * 4)].type = "item";
             if (inventory[i + itemOffset] == undefined) {
                 fightActions[(i * 4) + 2].text = "---";
                 fightActions[(i * 4) + 2].fill = "white";
@@ -1347,15 +1382,9 @@ scenes.fight = () => {
                 alpha: 1,
                 onClick(args) {
                     if (this.alpha == 1 && fightaction == "active") {
-                        if (Math.random() < 0.5) {
-                            causeEffect(i, "acid", 3);
-                        }
-                        else if (Math.random() < 0.5) {
-                            causeEffect(i, "poison", 4);
-                        }
-                        else {
-                            causeEffect(i, "burn", 4);
-                        }
+                        showFightActions();
+                        showMagic();
+                        hideFightButtons();
                     }
                 }
             }))
@@ -1608,26 +1637,36 @@ scenes.fight = () => {
                 anchor: [0.33 + (j * 0.17), 0 + (i * 0.0375)], sizeAnchor: [0.17, 0.0375], offset: [0, -500],
                 fill: "rgb(38, 52, 38)",
                 alpha: 1,
-                item: "",
+                item: "", type: "item",
                 onClick(args) {
                     if (this.alpha == 1) {
-                        if (positions[selectedAlly[0]][selectedAlly[1]].action == false && game.inventory[this.item.name] > 0) {
-                            if (this.item().story != true) {
-                                if (this.item().self != true) {
-                                    fightaction = "item";
-                                    selectedItem = this.item;
-                                    hideFightButtons();
-                                    hideFightActions();
+                        if (this.type == "item") {
+                            if (positions[selectedAlly[0]][selectedAlly[1]].action == false && game.inventory[this.item.name] > 0) {
+                                if (this.item().story != true) {
+                                    if (this.item().self != true) {
+                                        fightaction = "item";
+                                        selectedItem = this.item;
+                                        hideFightButtons();
+                                        hideFightActions();
+                                    }
+                                    else {
+                                        selectedItem = this.item;
+                                        positions[selectedAlly[0]][selectedAlly[1]].action = ["item", selectedItem.name, selectedAlly[0], selectedAlly[1], selectedAlly[0], selectedAlly[1]];
+                                        removeItem(selectedItem.name, 1);
+                                        fightaction = "none";
+                                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "items/" + selectedItem().source;
+                                        hideFightButtons();
+                                        hideFightActions();
+                                    }
                                 }
-                                else {
-                                    selectedItem = this.item;
-                                    positions[selectedAlly[0]][selectedAlly[1]].action = ["item", selectedItem.name, selectedAlly[0], selectedAlly[1], selectedAlly[0], selectedAlly[1]];
-                                    removeItem(selectedItem.name, 1);
-                                    fightaction = "none";
-                                    positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "items/" + selectedItem().source;
-                                    hideFightButtons();
-                                    hideFightActions();
-                                }
+                            }
+                        }
+                        if (this.type == "magic") {
+                            if (positions[selectedAlly[0]][selectedAlly[1]].action == false && game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EP >= this.item().cost) {
+                                fightaction = "magic";
+                                selectedItem = this.item;
+                                hideFightButtons();
+                                hideFightActions();
                             }
                         }
                     }
@@ -2333,6 +2372,13 @@ scenes.fight = () => {
                     if (fightaction == "item") {
                         positions[selectedAlly[0]][selectedAlly[1]].action = ["item", selectedItem.name, selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
                         removeItem(selectedItem.name, 1);
+                        fightaction = "none";
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "items/" + selectedItem().source;
+                    }
+
+                    if (fightaction == "magic") {
+                        positions[selectedAlly[0]][selectedAlly[1]].action = ["magic", selectedItem.name, selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
+                        game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EP -= selectedItem().cost;
                         fightaction = "none";
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "items/" + selectedItem().source;
                     }
