@@ -73,7 +73,7 @@ function init() {
                     createEnemy("weakhelter");
                     createEnemy("weakhelter");
                     createEnemy("weakhelter");
-                    setScene(scenes.settings());
+                    setScene(scenes.inventory());
                 }
             }),
     
@@ -120,9 +120,9 @@ var textProgress = -1;
 //  ----> Dusk: 15:00 - 17:59
 // Night: 18:00 - 5:59 (12 hours)
 
-function getTime() {
-    let hours = Math.floor(game.time / 1000);
-    let minutes = Math.round((game.time % 1000) / 16.667);
+function getTime(ti = game.time, am=16.667, di=1000) {
+    let hours = Math.floor(ti / di);
+    let minutes = Math.floor((ti % di) / am);
     if (minutes == 60) return hours+1 + ":00";
     if (minutes < 10) return hours + ":0" + minutes;
     return hours + ":" + minutes;
@@ -411,6 +411,7 @@ function loop() {
         textProgress += delta / 1000;
     }
 
+    game.playTime += (delta/1000); // 1 = 1 sec
     game.time += (delta/60);
     if (game.time >= 24000) { // 1000 = 1 hour in-game.
         game.time = 0;
@@ -526,6 +527,7 @@ function loadGame() {
             saveCopy.characters[i].effect = ["none", 0];
         }
         if (saveCopy.time == undefined) saveCopy.time = 0;
+        if (saveCopy.playTime == undefined) saveCopy.playTime = 0;
         if (saveCopy.leader == undefined) saveCopy.leader = "bleu";
         if (saveCopy.wrenches == undefined) saveCopy.wrenches = 0;
         if (saveCopy.bricks == undefined) saveCopy.bricks = 0;

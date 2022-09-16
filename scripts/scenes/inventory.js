@@ -158,7 +158,7 @@ scenes.inventory = () => {
     coolDisplays.push(controls.label({
         anchor: [0.02, 0.95],
         fill: "black", align: "left", fontSize: 20,
-        text: "Total time spent in this save: Not enough! :)",
+        text: "Total time spent in this save: 0",
         alpha: 1
     }))
 
@@ -231,6 +231,7 @@ scenes.inventory = () => {
             }
 
             coolDisplays[0].text = getTime();
+            coolDisplays[2].text = "Total time spent in this save: " + getTime(game.playTime, 60, 3600);
         },
         // Controls
         controls: [

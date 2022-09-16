@@ -5,6 +5,7 @@ let game = {
     chars: ["bleu", "corelle", "gau", "skro", "kokitozi"], // MAX 6!!!
     leader: "bleu",
     time: 0,
+    playTime: 0,
     wrenches: 0,
     bricks: 0,
     inventory: {},
