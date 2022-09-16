@@ -838,6 +838,7 @@ scenes.fight = () => {
                 }
                 positions[whoAGI.action[2]][whoAGI.action[3]].action = false;
                 setTimeout(() => executeActions(), ACTIONDELAY);
+                break;
             case "magic":
                 magic[whoAGI.action[1]]({ user: game.characters[positions[whoAGI.action[2]][whoAGI.action[3]].occupied], player: game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied], anchor: positionControls[whoAGI.action[2] + (whoAGI.action[3] * 3)].anchor, offset: positionControls[pos[0] + (pos[1] * 3)].offset }).effect();
                 if (game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].HP < 1) {
@@ -2350,16 +2351,21 @@ scenes.fight = () => {
                 pos1: i,
                 pos2: j,
                 onClick(args) {
-                    // Select character
-                    if (fightaction == "none" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true) {
+                    if (fightaction == "none" && game.characters[this.source].effect[0] == "enraged") {
+                        fightaction = "attack2";
                         selectedAlly = [this.pos1, this.pos2];
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
-                        fightaction = "active";
-                        showFightButtons();
-                    }
 
+                        postLog(game.characters[this.source].name + " is very angry!")
+
+                        game.characters[this.source].effect[1] -= 1;
+                        if (game.characters[this.source].effect[1] < 1) {
+                            game.characters[this.source].effect[0] = "none";
+                            postLog(game.characters[this.source].name + "'s rage is over!")
+                        }
+                    }
                     // Attack teammate
-                    if (fightaction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
+                    else if (fightaction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                         positions[selectedAlly[0]][selectedAlly[1]].action = ["sattack", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
 
@@ -2368,6 +2374,16 @@ scenes.fight = () => {
                         hideFightActions();
 
                     }
+
+
+                    // Select character
+                    if (fightaction == "none" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true) {
+                        selectedAlly = [this.pos1, this.pos2];
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
+                        fightaction = "active";
+                        showFightButtons();
+                    }
+
 
                     if (fightaction == "item") {
                         positions[selectedAlly[0]][selectedAlly[1]].action = ["item", selectedItem.name, selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];

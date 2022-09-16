@@ -47,6 +47,7 @@ For getEmotion(...)    (portraits)
 | Acid       | acid                 | 1/15 of MaxHP damage every round
 | Poison     | poison               | 1/15 of MaxHP damage every round, 1 HP / tile on overworld
 | Fire/Burn  | burn                 | 1/10 of MaxHP damage every round
+| Enraged    | enraged              | Auto-assigns attack
 
 
 

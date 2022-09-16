@@ -91,6 +91,7 @@ let items = {
             shopcost: 1000,
             max: 99,
             effect: () => {
+                /*
                 let HealthBefore = args.player.HP;
                 args.player.HP -= 999;
                 if (args.player.HP > getStat(args.player.name.toLowerCase(), "maxHP")) args.player.HP = getStat(args.player.name.toLowerCase(), "maxHP");
@@ -98,6 +99,8 @@ let items = {
                     battleNumber(args.anchor, 999, 0, args.offset);
                     updateBar(args.player.name.toLowerCase(), HealthBefore);
                 }
+                */
+                causeEffect(game.chars.indexOf(args.player.name.toLowerCase()), "enraged", 3);
             },
 
             ...args || {},

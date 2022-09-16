@@ -111,6 +111,7 @@ let images = {
     acid: "data/images/effects/acid.png",
     poison: "data/images/effects/poison.png",
     burn: "data/images/elements/fire_element.png",
+    enraged: "data/images/effects/berserk_shiny.png",
 
     "tiles/grass1": "data/images/tiles/grass1.png",
     "tiles/grass2": "data/images/tiles/grass2.png",
