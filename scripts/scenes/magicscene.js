@@ -41,16 +41,6 @@ scenes.magicscene = () => {
         alpha: 1,
         fill: colors.bottomcolor
     }));
-    background.push(controls.rect({ // vertical 1
-        anchor: [0.2, 0.05], sizeAnchor: [0.005, 0.05],
-        alpha: 1,
-        fill: colors.bottomcolor
-    }));
-    background.push(controls.rect({ // vertical 2
-        anchor: [0.4, 0.05], sizeAnchor: [0.005, 0.05],
-        alpha: 1,
-        fill: colors.bottomcolor
-    }));
     background.push(controls.rect({ // vertical 3
         anchor: [0.6, 0.05], sizeAnchor: [0.005, 0.05],
         alpha: 1,
@@ -58,47 +48,17 @@ scenes.magicscene = () => {
     }));
 
     // The top
-    theTop.push(controls.rect({
-        anchor: [0.05, 0.05], sizeAnchor: [0.15, 0.05],
-        alpha: 0,
-        onClick(args) {
-            playSound("no");
-            alert("Not available yet!");
-        },
-        fill: "black"
-    }));
     theTop.push(controls.label({
         anchor: [0.125, 0.075],
-        text: "Start Cooking",
-        align: "center", fontSize: 20, fill: "black",
+        text: "EP: ",
+        align: "left", fontSize: 32, fill: "black",
         alpha: 1,
     }));
 
-    theTop.push(controls.rect({
-        anchor: [0.25, 0.05], sizeAnchor: [0.15, 0.05],
-        alpha: 0,
-        onClick(args) {
-            playSound("no");
-            alert("Not available yet!");
-        },
-        fill: "black"
-    }));
-    theTop.push(controls.label({
-        anchor: [0.325, 0.075],
-        text: "Drip",
-        align: "center", fontSize: 20, fill: "black",
-        alpha: 1,
-    }));
-
-    theTop.push(controls.rect({
-        anchor: [0.45, 0.05], sizeAnchor: [0.15, 0.05],
-        alpha: 0,
-        fill: "black"
-    }));
     theTop.push(controls.label({
         anchor: [0.525, 0.075],
-        text: "Magic",
-        align: "center", fontSize: 20, fill: "black",
+        text: "Drip",
+        align: "right", fontSize: 32, fill: "black",
         alpha: 1,
     }));
 
@@ -224,7 +184,7 @@ scenes.magicscene = () => {
     return {
         // Pre-render function
         preRender(ctx, delta) {
-            theTop[3].text = game.characters[characterSelected].EP + "/" + getStat(characterSelected, "maxEP");
+            theTop[1].text = game.characters[characterSelected].EP + "/" + getStat(characterSelected, "maxEP");
         },
         // Controls
         controls: [
