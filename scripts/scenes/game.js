@@ -1317,8 +1317,9 @@ scenes.game = () => {
             if (Math.random() > 0.49) cloudControls[thisOne].source = "cloudshadow1";
             if (Math.random() > 0.49) cloudControls[thisOne].source = "cloudshadow2";
             else cloudControls[thisOne].source = "cloudshadow3";
-            cloudControls[thisOne].sizeOffset = [128 * 1.5, 96];
-            cloudControls[thisOne].anchor = [0.4 + (0.8 * Math.random()), -0.2 + (0.2 * Math.random())];
+            let r = 128 * (1 + Math.random());
+            cloudControls[thisOne].sizeOffset = [r * 2, r];
+            cloudControls[thisOne].anchor = [0.3 + (0.9 * Math.random()), -0.3 + (0.2 * Math.random())];
             cloudControls[thisOne].alpha = 0.75;
         }
     }
@@ -1345,11 +1346,12 @@ scenes.game = () => {
             anchor: [Math.random(), -0.2], sizeAnchor: [0, 0], sizeOffset: [64, 64],
             source: "rain", alpha: 0,
         }))
+        let r = 128 * (1 + Math.random());
         cloudControls.push(controls.image({
-            anchor: [Math.random(), Math.random()], sizeAnchor: [0, 0], sizeOffset: [128 * 1.5, 96],
+            anchor: [Math.random(), Math.random()], sizeAnchor: [0, 0], sizeOffset: [r * 2, r],
             source: "cloudshadow1", alpha: shouldCloudControlsBeVisibleAtStart,
         }))
-        if (i == 40) shouldCloudControlsBeVisibleAtStart = 0;
+        if (i == 10) shouldCloudControlsBeVisibleAtStart = 0;
     }
     for (i = 0; i < 400; i++) {
         dustControls.push(controls.rect({
@@ -1418,11 +1420,11 @@ scenes.game = () => {
 
             // Weather
             if (map.worldmode) {
-                if (Math.random() > 0.96) spawnDarkcloud();
+                if (Math.random() > 0.995) spawnDarkcloud();
                 for (i in cloudControls) {
                     if (cloudControls[i].alpha > 0) {
-                        cloudControls[i].anchor[0] -= 0.0001 * delta;
-                        cloudControls[i].anchor[1] += 0.0001 * delta;
+                        cloudControls[i].anchor[0] -= 0.00002 * delta;
+                        cloudControls[i].anchor[1] += 0.00002 * delta;
 
                         if (cloudControls[i].anchor[0] < -0.1) cloudControls[i].alpha = 0;
                     }

@@ -158,7 +158,7 @@ scenes.fight = () => {
 
     var cutsceneElements = [];
 
-    const ACTIONDELAY = 2000;
+    const ACTIONDELAY = 670;
 
     var fightlog = [
         "",
