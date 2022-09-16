@@ -21,17 +21,17 @@ scenes.settings = () => {
 
 
     background.push(controls.rect({
-        anchor: [0.04, 0.04], sizeAnchor: [0.92, 0.92],
+        anchor: [0, 0], sizeAnchor: [1, 1],
         alpha: 1,
         fill: colors.bottomcolor
     }));
     background.push(controls.rect({
-        anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
+        anchor: [0.01, 0.01], sizeAnchor: [0.98, 0.98],
         alpha: 1,
         fill: colors.topcolor
     }));
     background.push(controls.button({
-        anchor: [0.9, 0.05], sizeAnchor: [0.05, 0.05],
+        anchor: [0.89, 0.01], sizeAnchor: [0.1, 0.1],
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
@@ -41,13 +41,13 @@ scenes.settings = () => {
         fill: "white"
     }));
     background.push(controls.rect({
-        anchor: [0.05, 0.1], sizeAnchor: [0.9, 0.01],
+        anchor: [0.01, 0.1], sizeAnchor: [0.98, 0.01],
         alpha: 1,
         fill: colors.bottomcolor
     }));
 
     background.push(controls.rect({
-        anchor: [0.375, 0.05], sizeAnchor: [0.01, 0.9],
+        anchor: [0.45, 0.01], sizeAnchor: [0.01, 0.98],
         fill: colors.bottomcolor, alpha: 1,
     }));
 
@@ -102,7 +102,7 @@ scenes.settings = () => {
         }
     }));
     menuSettings.push(controls.button({
-        anchor: [0.175, 0.85], sizeAnchor: [0.1, 0.075],
+        anchor: [0.175, 0.9], sizeAnchor: [0.1, 0.075],
         text: "Back", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -113,7 +113,7 @@ scenes.settings = () => {
     }));
     
     menuSettings.push(controls.button({
-        anchor: [0.675, 0.85], sizeAnchor: [0.1, 0.075],
+        anchor: [0.675, 0.9], sizeAnchor: [0.1, 0.075],
         text: "Save Changes", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -134,7 +134,7 @@ scenes.settings = () => {
     // Gameplay
 
     menuSettingsGameplay.push(controls.button({
-        anchor: [0.5, 0.25], sizeAnchor: [0.2, 0.1],
+        anchor: [0.55, 0.25], sizeAnchor: [0.2, 0.1],
         text: "Autosave: ON", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -153,7 +153,7 @@ scenes.settings = () => {
     // Graphics
 
     menuSettingsGraphics.push(controls.button({
-        anchor: [0.5, 0.25], sizeAnchor: [0.2, 0.1],
+        anchor: [0.55, 0.25], sizeAnchor: [0.2, 0.1],
         text: "Grid: ON", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -172,11 +172,11 @@ scenes.settings = () => {
     // Audio
 
     menuSettingsAudio.push(controls.button({
-        anchor: [0.5, 0.25], sizeAnchor: [0.2, 0.1],
+        anchor: [0.55, 0.25], sizeAnchor: [0.2, 0.1],
         text: "Music Volume: 50%", alpha: 0,
     }));
     menuSettingsAudio.push(controls.button({
-        anchor: [0.45, 0.25], sizeAnchor: [0.04, 0.1],
+        anchor: [0.5, 0.25], sizeAnchor: [0.04, 0.1],
         text: "-", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -191,7 +191,7 @@ scenes.settings = () => {
         }
     }));
     menuSettingsAudio.push(controls.button({
-        anchor: [0.71, 0.25], sizeAnchor: [0.04, 0.1],
+        anchor: [0.76, 0.25], sizeAnchor: [0.04, 0.1],
         text: "+", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -207,11 +207,11 @@ scenes.settings = () => {
     }));
 
     menuSettingsAudio.push(controls.button({
-        anchor: [0.5, 0.375], sizeAnchor: [0.2, 0.1],
+        anchor: [0.55, 0.375], sizeAnchor: [0.2, 0.1],
         text: "Sound Volume: 50%", alpha: 0,
     }));
     menuSettingsAudio.push(controls.button({
-        anchor: [0.45, 0.375], sizeAnchor: [0.04, 0.1],
+        anchor: [0.5, 0.375], sizeAnchor: [0.04, 0.1],
         text: "-", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -226,7 +226,7 @@ scenes.settings = () => {
         }
     }));
     menuSettingsAudio.push(controls.button({
-        anchor: [0.71, 0.375], sizeAnchor: [0.04, 0.1],
+        anchor: [0.76, 0.375], sizeAnchor: [0.04, 0.1],
         text: "+", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {

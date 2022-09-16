@@ -17,12 +17,12 @@ scenes.inventory = () => {
         //fill: "brown"
     }));
     background.push(controls.rect({
-        anchor: [0.04, 0.04], sizeAnchor: [0.92, 0.92],
+        anchor: [0, 0], sizeAnchor: [1, 1],
         alpha: 1,
         fill: colors.bottomcolor
     }));
     background.push(controls.rect({
-        anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
+        anchor: [0.01, 0.01], sizeAnchor: [0.98, 0.98],
         alpha: 1,
         fill: colors.topcolor
     }));
@@ -50,7 +50,7 @@ scenes.inventory = () => {
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 3; j++) {
             emptyChars.push(controls.label({
-                anchor: [0.2 + (0.3 * i), 0.15 + (0.3 * j)],
+                anchor: [0.16 + (0.3 * i), 0.15 + (0.3 * j)],
                 align: "center", baseline: "alphabetic", fontSize: 32, fill: "black",
                 text: "No Party Member",
                 alpha: 0,
@@ -80,7 +80,7 @@ scenes.inventory = () => {
             }))
 
             characters.push(controls.rect({
-                anchor: [0.05 + (0.3 * i), 0.3 + (0.3 * j)], sizeOffset: [0, 5], sizeAnchor: [0.3, 0],
+                anchor: [0.01 + (0.3 * i), 0.3 + (0.3 * j)], sizeOffset: [0, 5], sizeAnchor: [0.3, 0],
                 fill: colors.bottomcolor,
                 alpha: 1,
             }));
@@ -143,27 +143,27 @@ scenes.inventory = () => {
     }
 
     coolDisplays.push(controls.label({
-        anchor: [0.6, 0.93],
+        anchor: [0.6, 0.95],
         fill: "black", align: "right", fontSize: 20,
         text: "0",
         alpha: 1
     }))
 
     coolDisplays.push(controls.rect({
-        anchor: [0.65, 0.04], sizeAnchor: [0.005, 0.92],
+        anchor: [0.61, 0.01], sizeAnchor: [0.005, 0.98],
         fill: colors.bottomcolor,
         alpha: 1
     }))
 
     coolDisplays.push(controls.label({
-        anchor: [0.075, 0.93],
+        anchor: [0.02, 0.95],
         fill: "black", align: "left", fontSize: 20,
         text: "Total time spent in this save: Not enough! :)",
         alpha: 1
     }))
 
     coolDisplays.push(controls.rect({
-        anchor: [0.34, 0.04], sizeAnchor: [0.005, 0.86],
+        anchor: [0.305, 0.01], sizeAnchor: [0.005, 0.98],
         fill: colors.bottomcolor,
         alpha: 1
     }))

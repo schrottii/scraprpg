@@ -15,17 +15,17 @@ scenes.formation = () => {
         //fill: "brown"
     }));
     background.push(controls.rect({
-        anchor: [0.04, 0.04], sizeAnchor: [0.92, 0.92],
+        anchor: [0, 0], sizeAnchor: [1, 1],
         alpha: 1,
         fill: colors.bottomcolor
     }));
     background.push(controls.rect({
-        anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
+        anchor: [0.01, 0.01], sizeAnchor: [0.98, 0.98],
         alpha: 1,
         fill: colors.topcolor
     }));
     background.push(controls.button({
-        anchor: [0.9, 0.05], sizeAnchor: [0.05, 0.05],
+        anchor: [0.89, 0.01], sizeAnchor: [0.1, 0.1],
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
@@ -35,29 +35,29 @@ scenes.formation = () => {
         fill: "white"
     }));
     background.push(controls.rect({
-        anchor: [0.05, 0.1], sizeAnchor: [0.9, 0.01],
+        anchor: [0.01, 0.1], sizeAnchor: [0.98, 0.01],
         alpha: 1,
         fill: colors.bottomcolor
     }));
     background.push(controls.rect({
-        anchor: [0.4, 0.15], sizeAnchor: [0.5, 0.75],
+        anchor: [0.48, 0.15], sizeAnchor: [0.5, 0.75],
         alpha: 1,
         fill: colors.bottomcolor
     }));
     background.push(controls.rect({
-        anchor: [0.42, 0.17], sizeAnchor: [0.46, 0.71],
+        anchor: [0.5, 0.17], sizeAnchor: [0.46, 0.71],
         alpha: 1,
         fill: colors.topcolor
     }));
     background.push(controls.label({
-        anchor: [0.43, 0.19],
+        anchor: [0.5, 0.19],
         fontSize: 32, fill: "black", align: "left",
         text: "Macro Configuration",
         alpha: 1,
     }));
     for (i = 0; i < 4; i++) {
         background.push(controls.label({
-            anchor: [0.65, 0.69], offset: [0, 24 * i],
+            anchor: [0.73, 0.69], offset: [0, 24 * i],
             fontSize: 20, fill: "black", align: "center",
             text: ["Macro configurations are saved in the character, meaning",
                 "that if you remove and return a character back to the party,",
@@ -70,7 +70,7 @@ scenes.formation = () => {
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 3; i++) {
             macroControls.push(controls.button({
-                anchor: [0.435 + (j * 0.225), 0.225 + (0.15 * i)], sizeAnchor: [0.2, 0.1],
+                anchor: [0.515 + (j * 0.225), 0.225 + (0.15 * i)], sizeAnchor: [0.2, 0.1],
                 fontSize: 32, fill: "black", align: "center",
                 text: "Attack",
                 j: j, i: i,
@@ -92,7 +92,7 @@ scenes.formation = () => {
                 alpha: 1,
             }));
             macroControls.push(controls.label({
-                anchor: [0.535 + (j * 0.225), 0.2235 + (0.15 * i)],
+                anchor: [0.615 + (j * 0.225), 0.2235 + (0.15 * i)],
                 fontSize: 24, fill: "black", align: "center",
                 text: "Blez",
                 alpha: 1,

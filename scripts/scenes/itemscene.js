@@ -17,17 +17,17 @@ scenes.itemscene = () => {
         //fill: "brown"
     }));
     background.push(controls.rect({
-        anchor: [0.04, 0.04], sizeAnchor: [0.92, 0.92],
+        anchor: [0, 0], sizeAnchor: [1, 1],
         alpha: 1,
         fill: colors.bottomcolor
     }));
     background.push(controls.rect({
-        anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
+        anchor: [0.01, 0.01], sizeAnchor: [0.98, 0.98],
         alpha: 1,
         fill: colors.topcolor
     }));
     background.push(controls.button({
-        anchor: [0.9, 0.05], sizeAnchor: [0.05, 0.05],
+        anchor: [0.89, 0.01], sizeAnchor: [0.1, 0.1],
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
@@ -37,29 +37,29 @@ scenes.itemscene = () => {
         fill: "white"
     }));
     background.push(controls.rect({ // horizontal 1
-        anchor: [0.05, 0.1], sizeAnchor: [0.9, 0.01],
+        anchor: [0.01, 0.1], sizeAnchor: [0.98, 0.01],
         alpha: 1,
         fill: colors.bottomcolor
     }));
     background.push(controls.rect({ // vertical 1
-        anchor: [0.2, 0.05], sizeAnchor: [0.005, 0.05],
+        anchor: [0.2, 0.01], sizeAnchor: [0.005, 0.1],
         alpha: 1,
         fill: colors.bottomcolor
     }));
     background.push(controls.rect({ // vertical 2
-        anchor: [0.4, 0.05], sizeAnchor: [0.005, 0.05],
+        anchor: [0.4, 0.01], sizeAnchor: [0.005, 0.1],
         alpha: 1,
         fill: colors.bottomcolor
     }));
     background.push(controls.rect({ // vertical 3
-        anchor: [0.6, 0.05], sizeAnchor: [0.005, 0.05],
+        anchor: [0.6, 0.01], sizeAnchor: [0.005, 0.1],
         alpha: 1,
         fill: colors.bottomcolor
     }));
 
     // The top
     theTop.push(controls.rect({
-        anchor: [0.05, 0.05], sizeAnchor: [0.15, 0.05],
+        anchor: [0.05, 0.01], sizeAnchor: [0.15, 0.1],
         alpha: 0,
         onClick(args) {
             playSound("no");
@@ -68,14 +68,14 @@ scenes.itemscene = () => {
         fill: "black"
     }));
     theTop.push(controls.label({
-        anchor: [0.125, 0.075],
+        anchor: [0.105, 0.06],
         text: "Start Cooking",
         align: "center", fontSize: 20, fill: "black",
         alpha: 1,
     }));
 
     theTop.push(controls.rect({
-        anchor: [0.25, 0.05], sizeAnchor: [0.15, 0.05],
+        anchor: [0.25, 0.01], sizeAnchor: [0.15, 0.1],
         alpha: 0,
         onClick(args) {
             playSound("no");
@@ -84,14 +84,14 @@ scenes.itemscene = () => {
         fill: "black"
     }));
     theTop.push(controls.label({
-        anchor: [0.325, 0.075],
+        anchor: [0.305, 0.06],
         text: "Drop",
         align: "center", fontSize: 20, fill: "black",
         alpha: 1,
     }));
 
     theTop.push(controls.rect({
-        anchor: [0.45, 0.05], sizeAnchor: [0.15, 0.05],
+        anchor: [0.45, 0.01], sizeAnchor: [0.15, 0.1],
         alpha: 0,
         onClick(args) {
             playSound("buttonClickSound");
@@ -108,14 +108,14 @@ scenes.itemscene = () => {
         fill: "black"
     }));
     theTop.push(controls.label({
-        anchor: [0.525, 0.075],
+        anchor: [0.505, 0.06],
         text: "Normal Items",
         align: "center", fontSize: 20, fill: "black",
         alpha: 1,
     }));
 
     theTop.push(controls.rect({
-        anchor: [0.65, 0.05], sizeAnchor: [0.15, 0.05],
+        anchor: [0.65, 0.01], sizeAnchor: [0.15, 0.1],
         alpha: 0,
         onClick(args) {
             playSound("buttonClickSound");
@@ -129,7 +129,7 @@ scenes.itemscene = () => {
         fill: "black"
     }));
     theTop.push(controls.label({
-        anchor: [0.725, 0.075],
+        anchor: [0.705, 0.06],
         text: "Bleu",
         align: "center", fontSize: 20, fill: "black",
         alpha: 1,
@@ -139,13 +139,13 @@ scenes.itemscene = () => {
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 8; j++) {
             itemsImages.push(controls.image({
-                anchor: [0.06 + (0.2 * i), 0.165 + (0.1 * j)], sizeOffset: [64, 64], offset: [0, -32],
+                anchor: [0.04 + (0.2 * i), 0.205 + (0.1 * j)], sizeOffset: [64, 64], offset: [0, -32],
                 source: "gear",
                 alpha: 0
             }));
 
             itemsButtons.push(controls.button({
-                anchor: [0.125 + (0.21 * i), 0.125 + (0.1 * j)], sizeAnchor: [0.15, 0.08],
+                anchor: [0.105 + (0.21 * i), 0.165 + (0.1 * j)], sizeAnchor: [0.15, 0.08],
                 text: " ",
                 idx: j + (i * 6),
                 fillTop: "lightgray", fillBottom: "gray",

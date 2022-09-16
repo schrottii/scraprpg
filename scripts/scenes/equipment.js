@@ -18,17 +18,17 @@ scenes.equipment = () => {
         //fill: "brown"
     }));
     background.push(controls.rect({
-        anchor: [0.04, 0.04], sizeAnchor: [0.92, 0.92],
+        anchor: [0, 0], sizeAnchor: [1, 1],
         alpha: 1,
         fill: colors.bottomcolor
     }));
     background.push(controls.rect({
-        anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
+        anchor: [0.01, 0.01], sizeAnchor: [0.98, 0.98],
         alpha: 1,
         fill: colors.topcolor
     }));
     background.push(controls.button({
-        anchor: [0.9, 0.05], sizeAnchor: [0.05, 0.05],
+        anchor: [0.89, 0.01], sizeAnchor: [0.1, 0.1],
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
@@ -38,22 +38,22 @@ scenes.equipment = () => {
         fill: "white"
     }));
     background.push(controls.rect({
-        anchor: [0.55, 0.1], sizeAnchor: [0.4, 0.6],
+        anchor: [0.55, 0.1], sizeAnchor: [0.44, 0.6],
         fill: colors.buttontoppressed,
         alpha: 1
     }));
     background.push(controls.rect({ // horizontal 1
-        anchor: [0.05, 0.1], sizeAnchor: [0.9, 0.01],
+        anchor: [0.01, 0.1], sizeAnchor: [0.98, 0.01],
         alpha: 1,
         fill: colors.bottomcolor
     }));
     background.push(controls.rect({ // vert middle
-        anchor: [0.55, 0.1], sizeAnchor: [0.005, 0.86],
+        anchor: [0.55, 0.1], sizeAnchor: [0.005, 0.9],
         fill: colors.bottomcolor,
         alpha: 1
     }));
     background.push(controls.rect({ // horizontal 2
-        anchor: [0.05, 0.7], sizeAnchor: [0.9, 0.01],
+        anchor: [0.01, 0.7], sizeAnchor: [0.98, 0.01],
         alpha: 1,
         fill: colors.bottomcolor
     }));
@@ -100,14 +100,14 @@ scenes.equipment = () => {
     }
 
     equipmentDisplay.push(controls.label({
-        anchor: [0.3, 0.15],
+        anchor: [0.26, 0.15],
         text: "Blez",
         align: "center", fontSize: 32, fill: "black",
         alpha: 1
     }));
     for (i = 0; i < 6; i++) {
         equipmentDisplay.push(controls.label({
-            anchor: [0.06, 0.2 + (0.04 * i)],
+            anchor: [0.02, 0.2 + (0.04 * i)],
             text: ["Head", "Body", "L. Hand", "R. Hand", "Acc. 1", "Acc. 2"][i] + ": None",
             align: "left", fontSize: 20, fill: "black",
             alpha: 1
@@ -115,7 +115,7 @@ scenes.equipment = () => {
     }
     for (i = 0; i < 6; i++) {
         equipmentChangeDisplay.push(controls.label({
-            anchor: [0.06, 0.44 + (0.04 * i)],
+            anchor: [0.02, 0.44 + (0.04 * i)],
             text: "Total " + ["STR", "DEF", "AGI", "EVA", "CRT", "LUK"][i] + " changed: None",
             align: "left", fontSize: 20, fill: "black",
             alpha: 1
@@ -152,7 +152,7 @@ scenes.equipment = () => {
     }
 
     background.push(controls.button({
-        anchor: [0.15, 0.15], sizeAnchor: [0.05, 0.05], offset: [0, -24],
+        anchor: [0.11, 0.15], sizeAnchor: [0.05, 0.05], offset: [0, -24],
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
@@ -166,7 +166,7 @@ scenes.equipment = () => {
         fill: "white"
     }));
     background.push(controls.button({
-        anchor: [0.4, 0.15], sizeAnchor: [0.05, 0.05], offset: [0, -24],
+        anchor: [0.36, 0.15], sizeAnchor: [0.05, 0.05], offset: [0, -24],
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");

@@ -73,7 +73,7 @@ function init() {
                     createEnemy("weakhelter");
                     createEnemy("weakhelter");
                     createEnemy("weakhelter");
-                    setScene(scenes.game());
+                    setScene(scenes.settings());
                 }
             }),
     

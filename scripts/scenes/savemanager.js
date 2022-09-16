@@ -14,17 +14,17 @@ scenes.savemanager = () => {
         //fill: "brown"
     }));
     background.push(controls.rect({
-        anchor: [0.04, 0.04], sizeAnchor: [0.92, 0.92],
+        anchor: [0, 0], sizeAnchor: [1, 1],
         alpha: 1,
         fill: colors.bottomcolor
     }));
     background.push(controls.rect({
-        anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
+        anchor: [0.01, 0.01], sizeAnchor: [0.98, 0.98],
         alpha: 1,
         fill: colors.topcolor
     }));
     background.push(controls.button({
-        anchor: [0.9, 0.05], sizeAnchor: [0.05, 0.05],
+        anchor: [0.89, 0.01], sizeAnchor: [0.1, 0.1],
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
@@ -34,7 +34,7 @@ scenes.savemanager = () => {
         fill: "white"
     }));
     background.push(controls.rect({
-        anchor: [0.05, 0.1], sizeAnchor: [0.9, 0.01],
+        anchor: [0.01, 0.1], sizeAnchor: [0.98, 0.01],
         alpha: 1,
         fill: colors.bottomcolor
     }));
@@ -136,7 +136,7 @@ scenes.savemanager = () => {
 
     // Buttons
     buttons.push(controls.label({
-        anchor: [0.95, 0.925],
+        anchor: [0.95, 0.8975],
         align: "right", fontSize: 32, fill: "black",
         text: "Mode: x",
         alpha: 1,
