@@ -118,6 +118,32 @@ let npcs = {
 
         }
     },
+    cowboy(args) {
+        return {
+            ...npcs.default(),
+            position: [15, 1],
+            map: "test",
+            skin: "skro",
+            dialogues: {
+                1: {
+                    "type": "normal",
+                    "lines": [
+                        dline({ text: "Yeehaw! I'm a cowboy", portrait: "Portraits_Skro", emotion: "happy", name: "Skro" }),
+                        dline({ text: "What? We are not in the Wild West?!", portrait: "Portraits_Skro", emotion: "disappointed", name: "Skro" }),
+                        dline({ text: "Time to change that", portrait: "Portraits_Skro", emotion: "love", name: "Skro", script: () => { filterSepia(50); } }),
+                        dline({ text: "BBQ, horses, tumbleweeds... the usual cowboy stuff.", portrait: "Portraits_Skro", emotion: "happy", name: "Skro" }),
+                        dline({ text: "You're a robot.", portrait: "Portraits_Kokitozi", emotion: "angry", name: "Koki", script: () => { filterGray(50); } }),
+                        dline({ text: "Beep boop.", portrait: "Portraits_Skro", emotion: "neutral", name: "Skro" }),
+                        dline({ text: "I am the S-K-R-O-B-O-T-3 0 0 0 . . .", portrait: "Portraits_Skro", emotion: "love", name: "Skro" }),
+                        dline({ text: "Sigh.", portrait: "Portraits_Kokitozi", emotion: "disappointed", name: "Koki", script: () => { clearFilter(); } }),
+                    ],
+                }
+            },
+            movement: 0,
+            ...args || {},
+
+        }
+    },
     placeholder3(args) {
         return {
             ...npcs.default(),

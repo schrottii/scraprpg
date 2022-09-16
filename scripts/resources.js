@@ -96,6 +96,7 @@ let images = {
     Portraits_Corelle: "data/images/protagonists/portraits/Portraits_Corelle.png",
     Portraits_Gau: "data/images/protagonists/portraits/Portraits_Gau.png",
     Portraits_Skro: "data/images/protagonists/portraits/Portraits_Skro.png",
+    Portraits_Kokitozi: "data/images/protagonists/portraits/Portraits_Kokitozi.png",
 
     fire: "data/images/elements/fire_element.png",
     earth: "data/images/elements/earth_element.png",
