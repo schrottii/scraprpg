@@ -80,6 +80,7 @@ function init() {
         ],
     });
     loadAllResources();
+    defFilter();
     loop();
 
 
