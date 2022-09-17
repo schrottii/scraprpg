@@ -731,7 +731,7 @@ scenes.fight = () => {
                             }
 
                         }
-                        if (game.characters[positions[fpos1][fpos2].occupied].acc - epositions[pos1][pos2].eva > (Math.random() * 100)) {
+                        if (getStat(positions[fpos1][fpos2].occupied, "acc") - epositions[pos1][pos2].eva > (Math.random() * 100)) {
                             let Damage = calculateDamage(1, fpos1, fpos2, pos1, pos2)[1];
                             let isCritical = calculateDamage(1, fpos1, fpos2, pos1, pos2)[0];
 
