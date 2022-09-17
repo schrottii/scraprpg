@@ -29,9 +29,14 @@ let npcs = {
             skin: "evil",
             kofs: [0, 0, 0],
             dialogues: {
-                1: ["normal", ["Hello this is a test dialogue", "Portraits_Bleu", "happy"],
-                    ["Second text", "Portraits_Bleu", "neutral"],
-                    ["Don't forget to subscribe to my channel", "Portraits_Bleu", "angry"]]
+                1: {
+                    "type": "normal",
+                    "lines": [
+                        dline({ text: "Hello this is a test dialogue", portrait: "Portraits_Bleu", emotion: "happy", name: "Bleu" }),
+                        dline({ text: "Second text", portrait: "Portraits_Bleu", emotion: "neutral", name: "Bleu" }),
+                        dline({ text: "Don't forget to subscribe to my channel", portrait: "Portraits_Bleu", emotion: "angry", name: "Bleu" }),
+                    ],
+                }
             },
             movement: 0,
             talk: false,

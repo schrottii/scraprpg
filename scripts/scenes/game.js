@@ -279,6 +279,7 @@ scenes.game = () => {
 
     function dialogueBox() {
         let text;
+        if (currentDialogue[dialogueProgress] == undefined) return false;
         if (typeof (currentDialogue[dialogueProgress].text) == "string") text = currentDialogue[dialogueProgress].text;
         else text = currentDialogue[dialogueProgress].text();
 
@@ -498,7 +499,7 @@ scenes.game = () => {
                     }
                 }
                 for (i in activenpcs) {
-                    if (activenpcs[i].position[0] == game.position[0] + xo && activenpcs[i].position[1] == game.position[1] + yo) {
+                    if (activenpcs[i].position[0] == xpos + xo && activenpcs[i].position[1] == ypos + yo) {
                         startDialogue(activenpcs[i].dialogues[1]);
                     }
                 }
