@@ -272,71 +272,6 @@ scenes.game = () => {
         fill: "black",
     }); 
 
-    // Names, stats, etc
-    /*
-    mapDisplay.push(controls.label({
-        anchor: [.99, .68], offset: [-200, 20],
-        alpha: 1,
-        align: "left", fontSize: 18, fill: "#000000",
-        text: getPlayer().name,
-    }));
-    let mapDisplayStats1 = controls.label({
-        anchor: [.99, .705], offset: [-200, 20],
-        alpha: 1,
-        align: "left", fontSize: 14, fill: "green",
-        text: "HP: " + getPlayer().HP + "/" + getStat(1, "maxHP") + "   EP: " + getPlayer().EP + "/" + getStat(getPlayer(), "maxEP"),
-    });
-    let mapDisplayLevel1 = controls.label({
-        anchor: [.99, .73], offset: [-200, 20],
-        alpha: 1,
-        align: "left", fontSize: 14, fill: "yellow",
-        text: "Level: " + getPlayer().level,
-    }); 
-
-    mapDisplay.push(controls.label({
-        anchor: [.99, .76], offset: [-200, 20],
-        alpha: 1,
-        align: "left", fontSize: 18, fill: "#000000",
-        text: getPlayer(2).name,
-    }));
-    let mapDisplayStats2 = controls.label({
-        anchor: [.99, .785], offset: [-200, 20],
-        alpha: 1,
-        align: "left", fontSize: 14, fill: "green",
-        text: "HP: " + getPlayer(2).HP + "/" + getStat(2, "maxHP") + "   EP: " + getPlayer(2).EP + "/" + getStat(getPlayer(2), "maxEP"),
-    });
-    let mapDisplayLevel2 = controls.label({
-        anchor: [.99, .81], offset: [-200, 20],
-        alpha: 1,
-        align: "left", fontSize: 14, fill: "yellow",
-        text: "Level: " + getPlayer(2).level,
-    });
-
-    mapDisplay.push(controls.image({
-        anchor: [.99, .82], offset: [-200, 20], sizeOffset: [24, 23],
-        source: "arrowup",
-        onClick(args) {
-            overWorldStatsScroll -= 1;
-            if (overWorldStatsScroll < 0) overWorldStatsScroll = 0;
-            mapDisplay[1].text = getPlayer(1 + overWorldStatsScroll).name;
-            mapDisplay[2].text = getPlayer(2 + overWorldStatsScroll).name;
-        },
-        alpha: 1,
-    }));
-
-    mapDisplay.push(controls.image({
-        anchor: [.99, .82], offset: [-174, 20], sizeOffset: [24, 23],
-        source: "arrowdown",
-        onClick(args) {
-            overWorldStatsScroll += 1;
-            if (overWorldStatsScroll > game.chars.length - 2) overWorldStatsScroll = 0;
-            mapDisplay[1].text = getPlayer(1 + overWorldStatsScroll).name;
-            mapDisplay[2].text = getPlayer(2 + overWorldStatsScroll).name;
-        },
-        alpha: 1,
-    }));
-    */
-
     let dialogueNormalComponents = [];
     let dialogueInvisComponents = [];
     let dialogueNarratorComponents = [];
@@ -571,78 +506,6 @@ scenes.game = () => {
             }
         }
     });
-
-    // Buttons, then images over them
-    /*
-    for (i = 0; i < 3; i++) {
-        mapDisplay.push(controls.button({
-            anchor: [.9925, .875], offset: [-220 + (i * 75), 0], sizeOffset: [75, 75],
-            alpha: 1,
-            text: "",
-            onClick(args) {
-                playSound("buttonClickSound");
-                if (this.offset[0] == -220 && canMove == true) { // Spawn enemy placeholder
-                    enemies.push(mapenemies.ntf({
-                        position: [Math.floor(Math.random() * 20), Math.floor(Math.random() * 15)], map: game.map,
-                    }));
-                }
-                if (this.offset[0] == -145 && canMove == true) {
-                    hideMapDisplay();
-                    showMenuItems(menuItemsStoryOnly);
-                }
-                if (this.offset[0] == -70 && canMove == true) {
-                    if (this.alpha == 1) {
-                        hideMapDisplay();
-                        showMenuSettings();
-                    }
-                }
-            }
-        }));
-    }
-
-    for (i = 0; i < 3; i++) {
-        mapDisplay.push(controls.image({
-            anchor: [.9925, .875], offset: [-220 + (i * 75), 0], sizeOffset: [75, 75],
-            alpha: 1,
-            source: ["paper", "inventory", "gear"][i],
-        }));
-    }
-
-    function hideMapDisplay() {
-        for (i = 0; i < mapDisplay.length; i++) {
-            mapDisplay[i].alpha = 0;
-        }
-        mapDisplayStats1.alpha = 0;
-        mapDisplayStats2.alpha = 0;
-        mapDisplayLevel1.alpha = 0;
-        mapDisplayLevel2.alpha = 0;
-    }
-
-    function showMapDisplay() {
-        for (i = 0; i < mapDisplay.length; i++) {
-            mapDisplay[i].alpha = 1;
-        }
-        mapDisplayStats1.alpha = 1;
-        mapDisplayStats2.alpha = 1;
-        mapDisplayLevel1.alpha = 1;
-        mapDisplayLevel2.alpha = 1;
-    }
-    */ /*
-    function hideMenuSettings() {
-        canMove = true;
-        for (i = 0; i < menuSettings.length; i++) {
-            menuSettings[i].alpha = 0;
-        }
-        for (i = 0; i < menuSettingsGameplay.length; i++) {
-            menuSettingsGameplay[i].alpha = 0;
-        }
-        for (i = 0; i < menuSettingsGraphics.length; i++) {
-            menuSettingsGraphics[i].alpha = 0;
-        }
-        for (i = 0; i < menuSettingsAudio.length; i++) {
-            menuSettingsAudio[i].alpha = 0;
-        }
-    } */
 
     function hideMenuItems() {
         canMove = true;
@@ -2019,14 +1882,17 @@ scenes.game = () => {
             if (currentKeys["q"]) {
                 setScene(scenes.title());
             }
+            if (currentKeys["e"]) {
+                setScene(scenes.inventory());
+            }
         },
         controls: [
-            ...weatherControls, ...cloudControls, ...dustControls, poisonBlack, nightEffect, nightEffect2, //weatherEffect,
+            ...weatherControls, ...cloudControls, ...dustControls, poisonBlack, nightEffect, nightEffect2,
             /*...walkPad,*/ mapDisplay, mapIcon, actionButton,
             ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             ...cutsceneElements,
             ...dialogueNormalComponents, ...dialogueInvisComponents, ...dialogueNarratorComponents, ...dialogueCutsceneComponents,
-            autoSaveText, /*settingsSaveText,*/ ...areaNameBox, areaTeleportFade,
+            autoSaveText, ...areaNameBox, areaTeleportFade,
             blackFadeTransition
         ],
     }
