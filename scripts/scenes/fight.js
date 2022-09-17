@@ -188,8 +188,11 @@ scenes.fight = () => {
             setTimeout(() => { victoryScreen() }, 3000);
 
             for (i = 0; i < game.chars.length; i++) {
-                // Get rid of acid effect
-                if (getPlayer(i + 1).effect[0] == "acid") {
+                // Get rid of some effects
+                if (getPlayer(i + 1).effect[0] == "acid" ||
+                    getPlayer(i + 1).effect[0] == "burn" ||
+                    getPlayer(i + 1).effect[0] == "enraged" ||
+                    getPlayer(i + 1).effect[0] == "paralysis") {
                     causeEffect(i, "none", 0);
                 }
 
@@ -852,6 +855,10 @@ scenes.fight = () => {
                 break;
             case "flee":
                 fleeAnimation(whoAGI.action[1], whoAGI.action[2]);
+                setTimeout(() => executeActions(), ACTIONDELAY);
+                break;
+            case "nothing":
+                positions[whoAGI.action[1]][whoAGI.action[2]].action = false;
                 setTimeout(() => executeActions(), ACTIONDELAY);
                 break;
 
@@ -2351,6 +2358,15 @@ scenes.fight = () => {
                 pos1: i,
                 pos2: j,
                 onClick(args) {
+                    if (game.characters[this.source].effect[0] == "paralysis" && positions[this.pos1][this.pos2].action == false) {
+                        positions[this.pos1][this.pos2].action = ["nothing", this.pos1, this.pos2];
+                        postLog(game.characters[this.source].name + " is very paralysed!")
+                        game.characters[this.source].effect[1] -= 1;
+                        if (game.characters[this.source].effect[1] < 1) {
+                            game.characters[this.source].effect[0] = "none";
+                            postLog(game.characters[this.source].name + "'s paralysis is over!")
+                        }
+                    }
                     if (fightaction == "none" && game.characters[this.source].effect[0] == "enraged") {
                         fightaction = "attack2";
                         selectedAlly = [this.pos1, this.pos2];
