@@ -65,7 +65,7 @@ function clearCurrentEnemies() {
 function checkLevelUps() {
     for (i in game.chars) {
         let I = game.chars[i];
-        while (game.characters[I].EXP > 24) {
+        while (game.characters[I].EXP > 24 && game.characters[I].level < 50) {
             game.characters[I].EXP -= 25;
             game.characters[I].level += 1;
 
