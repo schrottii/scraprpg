@@ -146,7 +146,6 @@ scenes.fight = () => {
     var positionGrid = [];
     var attackAnimationObjects = [];
 
-    var switchThose = [[0, 0], [0, 0]];
     var selectedAlly = [0, 0];
 
     var win = false;
@@ -702,12 +701,6 @@ scenes.fight = () => {
 
         // Ok, ok, now we know who (whoAGI) is first (highestAGI), so now do something
         switch (whoAGI.action[0]) {
-            case "switch":
-                switchThose = [[whoAGI.action[1], whoAGI.action[2]], [whoAGI.action[3], whoAGI.action[4]]];
-                switchPositions();
-                positions[pos[0]][pos[1]].action = false;
-                setTimeout(() => executeActions(), ACTIONDELAY);
-                break;
             case "attack":
                 if (positions[pos[0]][pos[1]].action[3] == undefined) positions[pos[0]][pos[1]].action[3] = Math.round(2 * Math.random());
                 if (positions[pos[0]][pos[1]].action[4] == undefined) positions[pos[0]][pos[1]].action[4] = Math.round(2 * Math.random());
@@ -1002,31 +995,6 @@ scenes.fight = () => {
         }
 
 
-    }
-
-    function switchPositions() {
-        // important variable here: switchThose
-        // [0] is pos of which one to switch, [1] of where to switch to
-        game.characters[positions[switchThose[0][0]][switchThose[0][1]].occupied].pos = [switchThose[1][1], switchThose[1][0]];
-
-        // Switch them and adjust isOccupied
-        let cache123 = positions[switchThose[1][0]][switchThose[1][1]].occupied;
-        positions[switchThose[1][0]][switchThose[1][1]].occupied = positions[switchThose[0][0]][switchThose[0][1]].occupied;
-        positions[switchThose[0][0]][switchThose[0][1]].occupied = cache123;
-
-        let cache1234 = positions[switchThose[1][0]][switchThose[1][1]].isOccupied;
-        positions[switchThose[1][0]][switchThose[1][1]].isOccupied = positions[switchThose[0][0]][switchThose[0][1]].isOccupied;
-        positions[switchThose[0][0]][switchThose[0][1]].isOccupied = cache1234;
-
-        positionGrid[switchThose[0][0] + (switchThose[0][1] * 3)].source = "grid";
-        positionGrid[switchThose[1][0] + (switchThose[1][1] * 3)].source = "hasaction";
-
-
-        // Fightlog
-        postLog("Swapped [" + (switchThose[0][0] + 1) + "/" + (switchThose[0][1] + 1) + "] with [" + (switchThose[1][0] + 1) + "/" + (switchThose[1][1] + 1) + "]!");
-
-        // Clear this stuff
-        switchThose = [[0, 0], [0, 0]];
     }
 
     function prepareAttackAnimation(fpos1, fpos2, pos1, pos2, onFinish, enemy) {
@@ -2427,17 +2395,6 @@ scenes.fight = () => {
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "items/" + selectedItem().source;
                     }
 
-                    if (fightaction == "switch") {
-                        if (switchThose[0][0] != [this.pos1] || switchThose[0][1] != [this.pos2]) {
-                            switchThose[0] = selectedAlly;
-                            switchThose[1] = [this.pos1, this.pos2];
-                            positionGrid[switchThose[0][0] + (switchThose[0][1] * 3)].source = "hasaction";
-                            positions[switchThose[0][0]][switchThose[0][1]].action = ["switch", switchThose[0][0], switchThose[0][1], switchThose[1][0], switchThose[1][1]];
-                            fightaction = "none";
-                            hideFightButtons();
-                            hideFightActions();
-                        }
-                    }
                     if (fightaction == "heal1" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true && game.characters[positions[this.pos1][this.pos2].occupied].HP > 0) {
                         selectedAlly = [this.pos1, this.pos2];
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
