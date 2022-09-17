@@ -192,7 +192,8 @@ scenes.fight = () => {
                 if (getPlayer(i + 1).effect[0] == "acid" ||
                     getPlayer(i + 1).effect[0] == "burn" ||
                     getPlayer(i + 1).effect[0] == "enraged" ||
-                    getPlayer(i + 1).effect[0] == "paralysis") {
+                    getPlayer(i + 1).effect[0] == "paralysis" ||
+                    getPlayer(i + 1).effect[0] == "condemned") {
                     causeEffect(i, "none", 0);
                 }
 
@@ -950,39 +951,50 @@ scenes.fight = () => {
         for (i = 0; i < game.chars.length; i++) {
             if (getPlayer(i + 1).effect[0] == "acid") {
                 getPlayer(i + 1).HP -= Math.ceil(getStat(i + 1, "maxHP") / 15);
-                postLog(getPlayer(i + 1).name + " took " + Math.ceil(getStat(i + 1, "maxHP") / 15) + " damage from acid!")
+                postLog(getPlayer(i + 1).name + " took " + Math.ceil(getStat(i + 1, "maxHP") / 15) + " damage from acid!");
 
                 getPlayer(i + 1).effect[1] -= 1;
                 if (getPlayer(i + 1).effect[1] < 1) {
                     getPlayer(i + 1).effect[0] = "none";
-                    postLog(getPlayer(i + 1).name + "'s acid is over!")
+                    postLog(getPlayer(i + 1).name + "'s acid is over!");
                 }
             }
 
             if (getPlayer(i + 1).effect[0] == "poison") {
                 getPlayer(i + 1).HP -= Math.ceil(getStat(i + 1, "maxHP") / 15);
-                postLog(getPlayer(i + 1).name + " took " + Math.ceil(getStat(i + 1, "maxHP") / 15) + " damage from poison!")
+                postLog(getPlayer(i + 1).name + " took " + Math.ceil(getStat(i + 1, "maxHP") / 15) + " damage from poison!");
 
                 getPlayer(i + 1).effect[1] -= 1;
                 if (getPlayer(i + 1).effect[1] < 1) {
                     getPlayer(i + 1).effect[0] = "none";
-                    postLog(getPlayer(i + 1).name + "'s poison is over!")
+                    postLog(getPlayer(i + 1).name + "'s poison is over!");
                 }
             }
 
             if (getPlayer(i + 1).effect[0] == "burn") {
                 getPlayer(i + 1).HP -= Math.ceil(getStat(i + 1, "maxHP") / 10);
-                postLog(getPlayer(i + 1).name + " burns and took " + Math.ceil(getStat(i + 1, "maxHP") / 10) + " damage!")
+                postLog(getPlayer(i + 1).name + " burns and took " + Math.ceil(getStat(i + 1, "maxHP") / 10) + " damage!");
 
                 getPlayer(i + 1).effect[1] -= 1;
                 if (getPlayer(i + 1).effect[1] < 1) {
                     getPlayer(i + 1).effect[0] = "none";
-                    postLog(getPlayer(i + 1).name + "'s burn is over!")
+                    postLog(getPlayer(i + 1).name + "'s burn is over!");
+                }
+            }
+
+            if (getPlayer(i + 1).effect[0] == "condemned") {
+                postLog(getPlayer(i + 1).name + " is condemned!");
+                if (getPlayer(i + 1).effect[1] == 1) postLog(getPlayer(i + 1).name + " is going to die!");
+
+                getPlayer(i + 1).effect[1] -= 1;
+                if (getPlayer(i + 1).effect[1] < 1) {
+                    getPlayer(i + 1).effect[0] = "none";
+                    getPlayer(i + 1).HP = 0;
                 }
             }
 
             if (getPlayer(i + 1).HP < 1 && positions[getPlayer(i + 1).pos[0]][getPlayer(i + 1).pos[1]].isOccupied == true) {
-                fightStats[5 + amountStats * i].alpha = 0;
+                //fightStats[5 + amountStats * i].alpha = 0;
                 postLog(getPlayer(i + 1).name + " died!");
                 positions[getPlayer(i + 1).pos[0]][getPlayer(i + 1).pos[1]].isOccupied = false;
                 checkAllDead();

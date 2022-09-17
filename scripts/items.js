@@ -100,7 +100,7 @@ let items = {
                     updateBar(args.player.name.toLowerCase(), HealthBefore);
                 }
                 */
-                causeEffect(game.chars.indexOf(args.player.name.toLowerCase()), "paralysis", 4);
+                causeEffect(game.chars.indexOf(args.player.name.toLowerCase()), "condemned", 2);
             },
 
             ...args || {},
