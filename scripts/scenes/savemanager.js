@@ -41,9 +41,9 @@ scenes.savemanager = () => {
 
     // Generate our lovely buttons
     for (let a = 0; a < 3; a++) {
-        saveButtons.push(controls.rect({
+        saveButtons.push(controls.button({
             anchor: [0.1, 0.125 + (a * 0.25)], sizeAnchor: [0.8, 0.225],
-            fill: "darkgray",
+            text: "",
             onClick(args) {
                 playSound("buttonClickSound");
                 if (mode == "save") {

@@ -4,6 +4,7 @@ scenes.title = () => {
     let state = "intro";
 
     let particles = [];
+    let saveTexts = [];
 
 
     let gameIcon = controls.image({
@@ -119,7 +120,7 @@ scenes.title = () => {
     for (let a = 0; a < 4; a++) {
         saveButtons.push(controls.button({
             anchor: [1.2, .3], offset: [0, -220 + 130 * a], sizeAnchor: [.5, 0], sizeOffset: [120, 120], clickthrough: false,
-            text: "Undefined",
+            text: " ",
             onClick(args) {
                 if (mode == 0) {
                     saveNR = a;
@@ -135,6 +136,76 @@ scenes.title = () => {
                 }
             }
         }))
+        saveTexts.push(controls.label({
+            anchor: [1.2, 0.1], offset: [72, 130 * a], defanch: 0.2,
+            align: "left", fontSize: 48, fill: "black",
+            text: "Save " + (a + 1),
+            alpha: 1,
+        }));
+        saveTexts.push(controls.label({
+            anchor: [1.2, 0.1], offset: [0, 130 * a], defanch: 0.35,
+            align: "left", fontSize: 32, fill: "black",
+            text: "Chapter I: The Beginning",
+            alpha: 1,
+        }));
+
+        for (i = 0; i < 2; i++) {
+            saveTexts.push(controls.label({
+                anchor: [1.2 + (0.225 * i), 0.145], offset: [0, 130 * a], defanch: 0.12 + (0.2 * i),
+                align: "left", fontSize: 20, fill: "black",
+                text: " ",
+                alpha: 1,
+            }));
+            saveTexts.push(controls.label({
+                anchor: [1.2 + (0.225 * i), 0.175], offset: [0, 130 * a], defanch: 0.12 + (0.2 * i),
+                align: "left", fontSize: 20, fill: "black",
+                text: " ",
+                alpha: 1,
+            }));
+
+            saveTexts.push(controls.label({
+                anchor: [1.2 + (0.225 * i), 0.145], offset: [0, 130 * a], defanch: 0.25 + (0.2 * i),
+                align: "left", fontSize: 20, fill: "black",
+                text: " ",
+                alpha: 1,
+            }));
+            saveTexts.push(controls.label({
+                anchor: [1.2 + (0.225 * i), 0.175], offset: [0, 130 * a], defanch: 0.25 + (0.2 * i),
+                align: "left", fontSize: 20, fill: "black",
+                text: " ",
+                alpha: 1,
+            }));
+        }
+        saveTexts.push(controls.label({
+            anchor: [1.2, 0.175], offset: [0, 130 * a], defanch: 0.75,
+            align: "right", fontSize: 32, fill: "black",
+            text: "24:31:02",
+            alpha: 1,
+        }));
+
+        saveTexts.push(controls.image({
+            anchor: [1.2, 0.145], sizeOffset: [32, 32], offset: [0, -16 + 130 * a], defanch: 0.55,
+            source: "wrench",
+            alpha: 1,
+        }));
+        saveTexts.push(controls.image({
+            anchor: [1.2, 0.175], sizeOffset: [32, 32], offset: [0, -16 + 130 * a], defanch: 0.55,
+            source: "brick",
+            alpha: 1,
+        }));
+
+        saveTexts.push(controls.label({
+            anchor: [1.2, 0.145], offset: [40, 130 * a], defanch: 0.55,
+            align: "left", fontSize: 32, fill: "black",
+            text: "0",
+            alpha: 1,
+        }));
+        saveTexts.push(controls.label({
+            anchor: [1.2, 0.175], offset: [40, 130 * a], defanch: 0.55,
+            align: "left", fontSize: 32, fill: "black",
+            text: "0",
+            alpha: 1,
+        }));
 
         saveImages.push(controls.image({
             anchor: [1.2, .3], offset: [0, -220 + 130 * a], sizeAnchor: [0, 0], sizeOffset: [60, 60],
@@ -335,17 +406,41 @@ scenes.title = () => {
                         saveGame();
                         var thisSave = JSON.parse(localStorage.getItem("SRPG" + tempsaveNR));
                     }
-                    if (a == 3) saveButtons[a].text = "Auto " + "\n Lvl: " + thisSave.characters.bleu.level;
-                    else saveButtons[a].text = "Save " + (tempsaveNR + 1) + "\n Lvl: " + thisSave.characters.bleu.level;
+                    //if (a == 3) saveButtons[a].text = "Auto " + "\n Lvl: " + thisSave.characters.bleu.level;
+                    //else saveButtons[a].text = "Save " + (tempsaveNR + 1) + "\n Lvl: " + thisSave.characters.bleu.level;
 
                     if (thisSave.pfp != undefined) {
                         saveImages[a].source = thisSave.pfp;
                     }
+
+                    saveButtons[a].text = " ";
+
+                    let amount = 15;
+                    for (i = 0; i < amount; i++) {
+                        saveTexts[i + (a * amount)].alpha = 1;
+                    }
+                    saveTexts[2 + (a * amount)].text = getPlayer(1, thisSave).name;
+                    if (thisSave.chars.length > 1) saveTexts[3 + (a * amount)].text = getPlayer(2, thisSave).name;
+                    saveTexts[4 + (a * amount)].text = "Lvl. " + getPlayer(1, thisSave).level;
+                    if (thisSave.chars.length > 1) saveTexts[5 + (a * amount)].text = "Lvl. " + getPlayer(2, thisSave).level;
+                    if (thisSave.chars.length > 2) saveTexts[6 + (a * amount)].text = getPlayer(3, thisSave).name;
+                    if (thisSave.chars.length > 3) saveTexts[7 + (a * amount)].text = getPlayer(4, thisSave).name;
+                    if (thisSave.chars.length > 2) saveTexts[8 + (a * amount)].text = "Lvl. " + getPlayer(3, thisSave).level;
+                    if (thisSave.chars.length > 3) saveTexts[9 + (a * amount)].text = "Lvl. " + getPlayer(4, thisSave).level;
+
+                    saveTexts[10 + (a * amount)].text = getTime(thisSave.playTime, 60, 3600);
+
+                    saveTexts[13 + (a * amount)].text = thisSave.wrenches;
+                    saveTexts[14 + (a * amount)].text = thisSave.bricks;
                     
                     saveImages[a].source = "saveimage" + thisSave.pfp;
                 }
                 else { // Save does not exist :(
                     saveButtons[a].text = "New Game";
+                    let amount = 15;
+                    for (i = 0; i < amount; i++) {
+                        saveTexts[i + (a * amount)].alpha = 0;
+                    }
                 }
             }
 
@@ -400,6 +495,10 @@ scenes.title = () => {
                         saveButtons[2].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
                         if (localStorage.getItem("SRPG3") != undefined) saveButtons[3].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
 
+                        for (i in saveTexts) {
+                            saveTexts[i].anchor[0] = Math.max(saveTexts[i].defanch, 1.2 - (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4));
+                        }
+
                         saveImages[0].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4);
                         saveImages[1].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 850) / 800, 1), 0)) ** 4);
                         saveImages[2].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
@@ -415,7 +514,7 @@ scenes.title = () => {
                     })
                 }
             }),
-            ...saveButtons, ...saveImages, settingsSaveText,
+            ...saveButtons, ...saveImages, ...saveTexts, settingsSaveText,
             deleteButton, optionButton, ...options,
             fadeOverlay
         ],
