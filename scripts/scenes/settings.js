@@ -7,18 +7,10 @@ scenes.settings = () => {
     var menuSettingsAudio = [];
 
     // Background
-    background.push(controls.image({
-        anchor: [0, 0], sizeAnchor: [1, 1],
-        alpha: 1,
-        source: "blurry"
-        //fill: "brown"
-    }));
-    
     let settingsSaveText = controls.label({
         anchor: [.04, .98], offset: [12, -12],
         fontSize: 16, text: "Settings saved!", alpha: 0,
     });
-
 
     background.push(controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 1],
@@ -31,7 +23,7 @@ scenes.settings = () => {
         fill: colors.topcolor
     }));
     background.push(controls.button({
-        anchor: [0.89, 0.01], sizeAnchor: [0.1, 0.1],
+        anchor: [0.89, 0.01], sizeAnchor: [0.1, 0.1], fontSize: 60,
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");

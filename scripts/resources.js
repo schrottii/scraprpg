@@ -41,7 +41,6 @@ let images = {
     spawn: "data/images/spawn_default.png",
     vignette: "data/images/screenvignette.png",
     nosfegtdsrh: "data/images/WEaresuperior.png",
-    blurry: "data/images/bg.png",
     star: "data/images/Icon_star.png",
     narratorbg: "data/images/narratorbg.png",
     save: "data/images/save.png",

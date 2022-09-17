@@ -7,12 +7,6 @@ scenes.savemanager = () => {
     var mode = 0;
 
     // Background
-    background.push(controls.image({
-        anchor: [0, 0], sizeAnchor: [1, 1],
-        alpha: 1,
-        source: "blurry"
-        //fill: "brown"
-    }));
     background.push(controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 1],
         alpha: 1,
@@ -24,7 +18,7 @@ scenes.savemanager = () => {
         fill: colors.topcolor
     }));
     background.push(controls.button({
-        anchor: [0.89, 0.01], sizeAnchor: [0.1, 0.1],
+        anchor: [0.89, 0.01], sizeAnchor: [0.1, 0.1], fontSize: 60,
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
