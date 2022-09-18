@@ -43,6 +43,7 @@ let enemyTypes = {
         luk: 30,
         element: "dark",
         items: "none",
+        size: "2x2",
     },
 
     "nottoofresh": {

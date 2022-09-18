@@ -707,7 +707,6 @@ scenes.fight = () => {
 
                 let pos1 = positions[pos[0]][pos[1]].action[3];
                 let pos2 = positions[pos[0]][pos[1]].action[4];
-
                 selectedAlly = [positions[pos[0]][pos[1]].action[1], positions[pos[0]][pos[1]].action[2]];
                 fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
                 if (win == false && game.characters[positions[pos[0]][pos[1]].occupied].HP > 0) {
@@ -869,7 +868,7 @@ scenes.fight = () => {
         // Look for the fastest man alive
         for (j = 0; j < 3; j++) {
             for (i = 0; i < 3; i++) {
-                if (epositions[i][j].action != false) {
+                if (epositions[i][j].action != false && epositions[i][j].parent == false) {
                     if (epositions[i][j].agi > highestAGI) {
                         highestAGI = epositions[i][j].agi;
                         whoAGI = epositions[i][j];
@@ -2305,17 +2304,17 @@ scenes.fight = () => {
 
     if (currentEnemies.length > 0) {
         for (i = 0; i < currentEnemies.length; i++) {
+            if (currentEnemies[i][0] == "child") continue;
+            epositions[currentEnemies[i][1]][currentEnemies[i][2]] = enemyTypes[currentEnemies[i][0]];
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].isOccupied = true;
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].occupied = currentEnemies[i][0];
-            epositions[currentEnemies[i][1]][currentEnemies[i][2]].name = enemyTypes[currentEnemies[i][0]].name;
-            epositions[currentEnemies[i][1]][currentEnemies[i][2]].maxHP = enemyTypes[currentEnemies[i][0]].HP;
-            epositions[currentEnemies[i][1]][currentEnemies[i][2]].HP = enemyTypes[currentEnemies[i][0]].HP;
-            epositions[currentEnemies[i][1]][currentEnemies[i][2]].strength = enemyTypes[currentEnemies[i][0]].strength;
-            epositions[currentEnemies[i][1]][currentEnemies[i][2]].eva = enemyTypes[currentEnemies[i][0]].eva;
-            epositions[currentEnemies[i][1]][currentEnemies[i][2]].agi = enemyTypes[currentEnemies[i][0]].agi;
-            epositions[currentEnemies[i][1]][currentEnemies[i][2]].luk = enemyTypes[currentEnemies[i][0]].luk;
-            epositions[currentEnemies[i][1]][currentEnemies[i][2]].element = enemyTypes[currentEnemies[i][0]].element;
-            epositions[currentEnemies[i][1]][currentEnemies[i][2]].items = enemyTypes[currentEnemies[i][0]].items;
+            if (currentEnemies[i][3] == "2x2") {
+                epositions[currentEnemies[i][1]][currentEnemies[i][2]].size = currentEnemies[i][3];
+
+                epositions[currentEnemies[i][1] + 1][currentEnemies[i][2]].parent = [currentEnemies[i][1], currentEnemies[i][2]];
+                epositions[currentEnemies[i][1]][currentEnemies[i][2] + 1].parent = [currentEnemies[i][1], currentEnemies[i][2]];
+                epositions[currentEnemies[i][1] + 1][currentEnemies[i][2] + 1].parent = [currentEnemies[i][1], currentEnemies[i][2]];
+            }
         }
     }
     for (i = 0; i < 18; i++) {
@@ -2340,7 +2339,7 @@ scenes.fight = () => {
                 onClick(args) {
                     if (game.characters[this.source].effect[0] == "paralysis" && positions[this.pos1][this.pos2].action == false) {
                         positions[this.pos1][this.pos2].action = ["nothing", this.pos1, this.pos2];
-                        postLog(game.characters[this.source].name + " is very paralysed!")
+                        postLog(game.characters[this.source].name + " is paralysed!")
                         game.characters[this.source].effect[1] -= 1;
                         if (game.characters[this.source].effect[1] < 1) {
                             game.characters[this.source].effect[0] = "none";
@@ -2428,8 +2427,12 @@ scenes.fight = () => {
 
                     if (fightaction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(positions[selectedAlly[0]][selectedAlly[1]].occupied, "length"), "enemy", [this.pos1, this.pos2])) {
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
-                        positions[selectedAlly[0]][selectedAlly[1]].action = ["attack", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
-
+                        if (epositions[this.pos1][this.pos2].parent == undefined) positions[selectedAlly[0]][selectedAlly[1]].action = ["attack", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
+                        else {
+                            let parent = epositions[this.pos1][this.pos2].parent;
+                            console.log(parent);
+                            positions[selectedAlly[0]][selectedAlly[1]].action = ["attack", selectedAlly[0], selectedAlly[1], parent[0], parent[1]];
+                        }
                         fightaction = "none";
                         hideFightButtons();
                         hideFightActions();
@@ -2500,9 +2503,19 @@ scenes.fight = () => {
 
                 // enemies! enemies!
                 if (epositions[i]) {
+                    if (epositions[i][j].parent != undefined) {
+                        epositionControls[i + (j * 3)].alpha = 0;
+                    }
                     if (epositions[i][j].isOccupied == true) {
                         epositionControls[i + (j * 3)].source = epositions[i][j].occupied;
                         epositionControls[i + (j * 3)].alpha = 1;
+
+                        if (epositions[i][j].size == "2x2") {
+                            epositionControls[i + (j * 3)].sizeOffset = [128, 128];
+                        }
+                        else {
+                            epositionControls[i + (j * 3)].sizeOffset = [64, 64];
+                        }
 
                         // I hate this code here
                         let doWeHaveThisOneDoWe = 0;
@@ -2542,7 +2555,7 @@ scenes.fight = () => {
         }
 
         // Mobile resizing
-        if (isMobile()) {
+        /*if (isMobile()) {
             for (j = 0; j < 3; j++) {
                 for (i = 0; i < 3; i++) {
                     positionControls[i + (j * 3)].sizeOffset = [48, 48];
@@ -2595,7 +2608,7 @@ scenes.fight = () => {
                     }
                 }
             }
-        }
+        }*/
 
 
         actionText = [];

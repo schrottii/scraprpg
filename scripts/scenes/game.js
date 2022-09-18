@@ -14,7 +14,30 @@ var cutsceneMode = false;
 // Function used to create enemies
 function createEnemy(type) {
     if (currentEnemies.length < 9) {
-        currentEnemies.push([type, Math.floor(Math.random() * 3), Math.floor(Math.random() * 3)]);
+        let pox = Math.floor(Math.random() * 3);
+        let poy = Math.floor(Math.random() * 3);
+
+        if (enemyTypes[type].size != undefined) if (enemyTypes[type].size == "2x2") {
+            let dup = 0;
+            for (e in currentEnemies) {
+                if (currentEnemies[e][1] == pox || currentEnemies[e][1] == pox + 1 ||
+                    currentEnemies[e][2] == poy || currentEnemies[e][2] == poy + 1 ||
+                    pox == 2 || poy == 2) {
+                    dup += 1;
+                }
+
+            }
+            if (pox == 2 || poy == 2) dup += 1;
+            if (dup == 0) {
+                currentEnemies.push([type, pox, poy, "2x2"]);
+                currentEnemies.push(["child", pox + 1, poy]);
+                currentEnemies.push(["child", pox, poy + 1]);
+                currentEnemies.push(["child", pox + 1, poy + 1]);
+            }
+        }
+        else {
+            currentEnemies.push([type, pox, poy]);
+        }
     }
 }
 

@@ -69,11 +69,14 @@ function init() {
                     saveNR = 3;
                     loadGame();
                     loadSettings();
+                    createEnemy("livingbarrel");
+                    createEnemy("livingbarrel");
+                    createEnemy("weakhelter");
+                    createEnemy("livingbarrel");
+                    createEnemy("livingbarrel");
                     createEnemy("weakhelter");
                     createEnemy("weakhelter");
-                    createEnemy("weakhelter");
-                    createEnemy("weakhelter");
-                    setScene(scenes.inventory());
+                    setScene(scenes.fight());
                 }
             }),
     

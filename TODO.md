@@ -1,5 +1,5 @@
 ﻿##TODO:
-4 Things left to do in this phase
+3 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
@@ -8,7 +8,6 @@ The developing phase, Schrottii's phase, the essential features of the game
 - More battle sprites (like the character being hit, the character attacking, etc.)
 - Particles
 - Overworld quests
-- Various enemy sizes in battles
 
 
 ##Phase 1.5
