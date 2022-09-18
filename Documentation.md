@@ -71,6 +71,7 @@ For getEmotion(...)    (portraits)
 | filterBlur(amount)      | filterBlur(0.5)        | Sets single filter blur (0+, in px, 0 is default)
 | filterGray(amount)      | filterGray(25)         | Sets single filter gray (0 - 100, in %, 0 is default)
 | filterSepia(amount)     | filterSepia(50)        | Sets single filter sepia (0 - 100, in %, 0 is default)
+| filterInverted(amount)  | filterInverted(100)    | Sets single filter inverted (0 - 100, in %, 0 is default)
 | setFilter(name, amount) | setFilter("gray", 100) | Sets one filter then renders, allows for multiple filters. Use clearFilter() to get rid of it
 
 

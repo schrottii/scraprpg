@@ -9,6 +9,7 @@ var filters = {
     "blur": 0,
     "gray": 0,
     "sepia": 0,
+    "invert": 0,
 }
 
 // Enables this - no need to re-run this
@@ -37,6 +38,11 @@ function filterSepia(amount) {
     bod.filter = "sepia(" + amount + "%)";
 }
 
+// sets single filter invert
+function filterInverted(amount) {
+    bod.filter = "invert(" + amount + "%)";
+}
+
 // Sets one filter then renders, allows for multiple
 // use clearFilter to get rid of it
 function setFilter(name, amount) {
@@ -46,6 +52,7 @@ function setFilter(name, amount) {
     if (filters["blur"] != 0) s = s + " blur(" + filters["blur"] + "px)";
     if (filters["gray"] != 0) s = s + " grayscale(" + filters["gray"] + "%)";
     if (filters["sepia"] != 0) s = s + " sepia(" + filters["sepia"] + "%)";
+    if (filters["invert"] != 0) s = s + " invert(" + filters["invert"] + "%)";
     if (s == "") s = "none";
     bod.filter = s;
 }
