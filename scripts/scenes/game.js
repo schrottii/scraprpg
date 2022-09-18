@@ -483,8 +483,13 @@ scenes.game = () => {
             if (head == 2) xo = 1; // Right
             if (head == 3) yo = -1; // Up
 
-            let xpos = Math.floor(game.position[0]);
-            let ypos = Math.floor(game.position[1]);
+            let xpos = game.position[0];
+            let ypos = game.position[1];
+
+            if (maps[game.map].worldmode == true) {
+                xo /= 2;
+                yo /= 2;
+            }
 
             if (inDialogue == false) {
                 let map = maps[game.map];
@@ -807,10 +812,12 @@ scenes.game = () => {
     // Function to check if a tile is, well, walkable
     // Define if a tile (e. g. water) is walkable in the sprites dict
     function isWalkable(map, x, y, l = 1) {
-        if (map.map[y] && getTile(map, x, y, l)) { //Check if tile exists
+        if (map.map[Math.round(y)] && getTile(map, x, y, l)) { //Check if tile exists
             for (i = 0; i < activenpcs.length; i++) {
                 if (activenpcs[i].position[0] == x && activenpcs[i].position[1] == y) return false;
             }
+            x = Math.floor(x);
+            y = Math.floor(y);
             if (getTile(map, x, y, l).occupied != undefined) { //Check if occupied exists
                 if (typeof (getTile(map, x, y, l).occupied) == "object") { // Config exists?
                     if (direction == "up" && getTile(map, x, y, l).occupied.includes("up")) {
@@ -922,6 +929,16 @@ scenes.game = () => {
                 game.position[0] = themap.teleport[1];
                 game.position[1] = themap.teleport[2];
             }, 1000);
+        }
+    }
+
+    function tryTalk(xo, yo) {
+        for (i in activenpcs) {
+            activenpcs[i].talk = false;
+            if (activenpcs[i].position[0] == game.position[0] + xo && activenpcs[i].position[1] == game.position[1] + yo) {
+                actionButton.source = "actionbutton_active";
+                activenpcs[i].talk = true;
+            }
         }
     }
 
@@ -1537,63 +1554,55 @@ scenes.game = () => {
             if (!kofs[2] && canMove == true) {
                 let xo;
                 let yo;
-                let pass = false;
 
                 if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up")) {
                     head = 3;
                     direction = "up";
                     xo = 0;
                     yo = -1;
-                    if (map.worldmode == true) if (game.position[1] % 1 == 0.5) pass = true;
                 } else if ((currentKeys["s"] || currentKeys["arrowdown"] || pad == "down")) {
                     head = 0;
                     direction = "down";
                     xo = 0;
                     yo = 1;
-                    if (map.worldmode == true) if (game.position[1] % 1 == 0) pass = true;
                 } else if ((currentKeys["a"] || currentKeys["arrowleft"] || pad == "left")) {
                     head = 1;
                     direction = "left";
                     xo = -1;
                     yo = 0;
-                    if (map.worldmode == true) if (game.position[0] % 1 == 0.5) pass = true;
                 } else if ((currentKeys["d"] || currentKeys["arrowright"] || pad == "right")) {
                     head = 2;
                     direction = "right";
                     xo = 1;
                     yo = 0;
-                    if (map.worldmode == true) if (game.position[0] % 1 == 0) pass = true;
                 }
                 // Optimized code pog
                 if (xo != undefined) {
-                    actionButton.source = "actionbutton"
+                    if (map.worldmode == true) {
+                        xo /= 2;
+                        yo /= 2;
+                    }
+                    actionButton.source = "actionbutton";
                     if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo).action != undefined) actionButton.source = "actionbutton_active"
                     else if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2).action != undefined) actionButton.source = "actionbutton_active"
 
-                    for (i in activenpcs) {
-                        activenpcs[i].talk = false;
-                        if (activenpcs[i].position[0] == Math.floor(game.position[0]) + xo && activenpcs[i].position[1] == Math.floor(game.position[1]) + yo) {
-                            actionButton.source = "actionbutton_active";
-                            activenpcs[i].talk = true;
-                        }
-                    }
+                    tryTalk(xo, yo);
 
+                    if (isWalkable(map, game.position[0] + xo, game.position[1] + yo)
+                        && isWalkable(map, game.position[0] + xo, game.position[1] + yo, 2)) { //Direction-change-against-wall
 
-                    if (pass || isWalkable(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo)
-                        && isWalkable(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2)) { //Direction-change-against-wall
-                        let step = 1;
-                        if (map.worldmode == true) step = 0.5;
-
-                        kofs = [xo * step, yo * step, 1];
-                        game.position[0] += xo * step;
-                        game.position[1] += yo * step;
+                        kofs = [xo, yo, 1];
+                        game.position[0] += xo;
+                        game.position[1] += yo;
 
                         ActionsOnMove();
                         tryTeleport(map, Math.floor(game.position[0]), Math.floor(game.position[1]));
 
-                        actionButton.source = "actionbutton"
+                        actionButton.source = "actionbutton";
                         if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo).action != undefined) actionButton.source = "actionbutton_active"
                         else if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2).action != undefined) actionButton.source = "actionbutton_active"
+
+                        tryTalk(xo, yo);
 
                         for (i in activenpcs) {
                             if (activenpcs[i].position[0] == Math.floor(game.position[0]) + xo && activenpcs[i].position[1] == Math.floor(game.position[1]) + yo) actionButton.source = "actionbutton_active";
