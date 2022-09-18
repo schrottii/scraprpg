@@ -6,6 +6,7 @@ let controls = {
             sizeOffset: [0, 0],
             sizeAnchor: [0, 0],
             clickthrough: false,
+            blend: false,
 
             alpha: 1,
 
@@ -27,6 +28,9 @@ let controls = {
 
                 let w = this.sizeOffset[0] / red + this.sizeAnchor[0] * ctx.canvas.width;
                 let h = this.sizeOffset[1] / red + this.sizeAnchor[1] * ctx.canvas.height;
+
+                if (this.blend != false) setBlend(this.blend);
+                else clearBlend();
 
                 if (w > 0 && h > 0 && this.snip != false) ctx.drawImage(images[this.source],
                     this.snip[0], this.snip[1], this.snip[2], this.snip[3],
@@ -54,6 +58,9 @@ let controls = {
 
                 let w = this.sizeOffset[0] / red + this.sizeAnchor[0] * ctx.canvas.width;
                 let h = this.sizeOffset[1] / red + this.sizeAnchor[1] * ctx.canvas.height;
+
+                if (this.blend != false) setBlend(this.blend);
+                else clearBlend();
 
                 ctx.fillStyle = this.fill;
 
@@ -97,6 +104,9 @@ let controls = {
                 if (this.fontAnchor == false) ctx.font = (this.fontSize / red) + "px " + this.font + ", sans-serif";
                 else ctx.font = Math.ceil((this.fontAnchor * ctx.canvas.width) / red) + "px " + this.font + ", sans-serif";
 
+                if (this.blend != false) setBlend(this.blend);
+                else clearBlend();
+
                 if (this.outline != "none") {
                     ctx.strokeStyle = this.outline;
                     if (this.outlineAnchor == false) ctx.lineWidth = this.outlineSize / red;
@@ -135,6 +145,9 @@ let controls = {
                 y = this.offset[1] / red + this.anchor[1] * ctx.canvas.height;
                 w = this.sizeOffset[0] / red + this.sizeAnchor[0] * ctx.canvas.width;
                 h = this.sizeOffset[1] / red + this.sizeAnchor[1] * ctx.canvas.height;
+
+                if (this.blend != false) setBlend(this.blend);
+                else clearBlend();
 
                 if(this.isPressed) ctx.fillStyle = this.pressedTop;
                 else ctx.fillStyle = this.fillTop;

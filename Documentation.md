@@ -74,4 +74,15 @@ For getEmotion(...)    (portraits)
 | setFilter(name, amount) | setFilter("gray", 100) | Sets one filter then renders, allows for multiple filters. Use clearFilter() to get rid of it
 
 
+## Blend
+| Name       | Alt. name            | Description
+|:----------:|:--------------------:|:------------------------------:
+| add        | lighter              | Where both shapes overlap the color is determined by adding color values.
+| multiply   | mul                  | The pixels of the top layer are multiplied with the corresponding pixel of the bottom layer. A darker picture is the result.
+| overlap    | source-in            | The new shape is drawn only where both the new shape and the destination canvas overlap. Everything else is made transparent.
+| xor        |                      | Shapes are made transparent where both overlap and drawn normal everywhere else.
+
+
+
+
 |            |                      | 

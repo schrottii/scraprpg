@@ -2332,6 +2332,7 @@ scenes.fight = () => {
                 anchor: [0.0 /* 0.025 */, 0.45], offset: [-256, 72 * j], sizeOffset: [64, 64],
                 defoffset: 72 * i,
                 source: "gear",
+                blend: "multiply",
                 alpha: 1,
                 snip: [0, 64, 32, 32],
                 pos1: i,
@@ -2415,6 +2416,7 @@ scenes.fight = () => {
             epositionControls.push(controls.image({
                 anchor: [0.975, 0.45], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
                 source: "gear",
+                blend: "xor",
                 alpha: 1,
                 snip: [0, 32, 32, 32],
                 pos1: i,

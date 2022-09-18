@@ -70,13 +70,10 @@ function init() {
                     loadGame();
                     loadSettings();
                     createEnemy("livingbarrel");
-                    createEnemy("livingbarrel");
-                    createEnemy("weakhelter");
-                    createEnemy("livingbarrel");
-                    createEnemy("livingbarrel");
                     createEnemy("weakhelter");
                     createEnemy("weakhelter");
-                    setScene(scenes.fight());
+                    createEnemy("weakhelter");
+                    setScene(scenes.game());
                 }
             }),
     
