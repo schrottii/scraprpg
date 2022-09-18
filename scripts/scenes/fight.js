@@ -868,7 +868,7 @@ scenes.fight = () => {
         // Look for the fastest man alive
         for (j = 0; j < 3; j++) {
             for (i = 0; i < 3; i++) {
-                if (epositions[i][j].action != false && epositions[i][j].parent == false) {
+                if (epositions[i][j].action != false && (epositions[i][j].parent == undefined || epositions[i][j].parent != false)) {
                     if (epositions[i][j].agi > highestAGI) {
                         highestAGI = epositions[i][j].agi;
                         whoAGI = epositions[i][j];
@@ -999,7 +999,7 @@ scenes.fight = () => {
     function prepareAttackAnimation(fpos1, fpos2, pos1, pos2, onFinish, enemy) {
         let goalX = epositionControls[pos1 + (pos2 * 3)].anchor[0];
         let ownX = positionControls[fpos1 + (fpos2 * 3)].anchor[0];
-        let goalX2 = epositionControls[pos1 + (pos2 * 3)].offset[0];
+        let goalX2 = epositionControls[pos1 + (pos2 * 3)].offset[0] + epositionControls[pos1 + (pos2 * 3)].bigoff;
         let ownX2 = positionControls[fpos1 + (fpos2 * 3)].defoffset;
 
         let goalY = epositionControls[pos1 + (pos2 * 3)].anchor[1];
@@ -1070,7 +1070,7 @@ scenes.fight = () => {
 
             attackAnimationObjects[9 + pos1 + (pos2 * 3)].anchor[0] = epositionControls[pos1 + (pos2 * 3)].anchor[0] + 0;
             attackAnimationObjects[9 + pos1 + (pos2 * 3)].anchor[1] = epositionControls[pos1 + (pos2 * 3)].anchor[1] + 0;
-            attackAnimationObjects[9 + pos1 + (pos2 * 3)].offset = [epositionControls[pos1 + (pos2 * 3)].offset[0] - 72, epositionControls[pos1 + (pos2 * 3)].offset[1]];
+            attackAnimationObjects[9 + pos1 + (pos2 * 3)].offset = [epositionControls[pos1 + (pos2 * 3)].offset[0] - 72 + epositionControls[pos1 + (pos2 * 3)].bigoff, epositionControls[pos1 + (pos2 * 3)].offset[1]];
             attackAnimationObjects[9 + pos1 + (pos2 * 3)].alpha = 1;
             attackAnimationObjects[9 + pos1 + (pos2 * 3)].source = "eattackani0";
 
@@ -1079,7 +1079,7 @@ scenes.fight = () => {
 
                 attackAnimationObjects[9 + pos1 + (pos2 * 3)].anchor[0] = epositionControls[pos1 + (pos2 * 3)].anchor[0] + 0;
                 attackAnimationObjects[9 + pos1 + (pos2 * 3)].anchor[1] = epositionControls[pos1 + (pos2 * 3)].anchor[1] + 0;
-                attackAnimationObjects[9 + pos1 + (pos2 * 3)].offset = [epositionControls[pos1 + (pos2 * 3)].offset[0] - 72, epositionControls[pos1 + (pos2 * 3)].offset[1]];
+                attackAnimationObjects[9 + pos1 + (pos2 * 3)].offset = [epositionControls[pos1 + (pos2 * 3)].offset[0] - 72 + epositionControls[pos1 + (pos2 * 3)].bigoff, epositionControls[pos1 + (pos2 * 3)].offset[1]];
 
                 // Super good animated feeeeeeet
                 epositionControls[pos1 + (pos2 * 3)].snip[0] = Math.floor(runTime) * 32;
@@ -2414,7 +2414,7 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             epositionControls.push(controls.image({
-                anchor: [0.975, 0.45], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
+                anchor: [0.975, 0.45], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64], bigoff: 0,
                 source: "gear",
                 blend: "xor",
                 alpha: 1,
@@ -2514,9 +2514,17 @@ scenes.fight = () => {
 
                         if (epositions[i][j].size == "2x2") {
                             epositionControls[i + (j * 3)].sizeOffset = [128, 128];
+                            if (epositionControls[i + (j * 3)].bigoff == 0) {
+                                epositionControls[i + (j * 3)].bigoff = -72;
+                                epositionControls[i + (j * 3)].offset = [-(72 + (72 * i)) -72, 72 * j];
+                            }
                         }
                         else {
                             epositionControls[i + (j * 3)].sizeOffset = [64, 64];
+                            if (epositionControls[i + (j * 3)].bigoff == -72) {
+                                epositionControls[i + (j * 3)].bigoff = 0;
+                                epositionControls[i + (j * 3)].offset = [-(72 + (72 * i)), 72 * j];
+                            }
                         }
 
                         // I hate this code here
