@@ -1105,7 +1105,7 @@ scenes.fight = () => {
                 }
                 if (t > 1200) {
                     epositionControls[pos1 + (pos2 * 3)].anchor[0] = goal[0];
-                    epositionControls[pos1 + (pos2 * 3)].offset[0] = goal[1];
+                    epositionControls[pos1 + (pos2 * 3)].offset[0] = goal[1] - epositionControls[pos1 + (pos2 * 3)].bigoff;
                     epositionControls[pos1 + (pos2 * 3)].offset[1] = goal[3];
                     attackAnimationObjects[9 + pos1 + (pos2 * 3)].alpha = 0;
                     onFinish(fpos1, fpos2, [pos1, pos2]);
@@ -2183,13 +2183,13 @@ scenes.fight = () => {
                     action: false,
                 },
                 {
-                    pos: "top middle",
+                    pos: "middle left",
                     isOccupied: false, // bool
                     occupied: false, // who?
                     action: false,
                 },
                 {
-                    pos: "top right",
+                    pos: "bottom left",
                     isOccupied: false, // bool
                     occupied: false, // who?
                     action: false,
@@ -2197,7 +2197,7 @@ scenes.fight = () => {
             ],
             [
                 {
-                    pos: "middle left",
+                    pos: "top middle",
                     isOccupied: false, // bool
                     occupied: false, // who?
                     action: false,
@@ -2209,7 +2209,7 @@ scenes.fight = () => {
                     action: false,
                 },
                 {
-                    pos: "middle right",
+                    pos: "bottom middle",
                     isOccupied: false, // bool
                     occupied: false, // who?
                     action: false,
@@ -2217,13 +2217,13 @@ scenes.fight = () => {
             ],
             [
                 {
-                    pos: "bottom left",
+                    pos: "top right",
                     isOccupied: false, // bool
                     occupied: false, // who?
                     action: false,
                 },
                 {
-                    pos: "bottom middle",
+                    pos: "middle right",
                     isOccupied: false, // bool
                     occupied: false, // who?
                     action: false,
@@ -2248,13 +2248,13 @@ scenes.fight = () => {
                     action: false,
                 },
                 {
-                    pos: "top middle",
+                    pos: "middle left",
                     isOccupied: false, // bool
                     occupied: false, // who?
                     action: false,
                 },
                 {
-                    pos: "top right",
+                    pos: "bottom left",
                     isOccupied: false, // bool
                     occupied: false, // who?
                     action: false,
@@ -2262,7 +2262,7 @@ scenes.fight = () => {
             ],
             [
                 {
-                    pos: "middle left",
+                    pos: "top middle",
                     isOccupied: false, // bool
                     occupied: false, // who?
                     action: false,
@@ -2274,7 +2274,7 @@ scenes.fight = () => {
                     action: false,
                 },
                 {
-                    pos: "middle right",
+                    pos: "bottom middle",
                     isOccupied: false, // bool
                     occupied: false, // who?
                     action: false,
@@ -2282,13 +2282,13 @@ scenes.fight = () => {
             ],
             [
                 {
-                    pos: "bottom left",
+                    pos: "top right",
                     isOccupied: false, // bool
                     occupied: false, // who?
                     action: false,
                 },
                 {
-                    pos: "bottom middle",
+                    pos: "middle right",
                     isOccupied: false, // bool
                     occupied: false, // who?
                     action: false,
@@ -2658,7 +2658,7 @@ scenes.fight = () => {
     }
 
     for (i in game.characters) {
-        if (game.chars.includes(game.characters[i].name.toLowerCase())) {
+        if (game.chars.includes(game.characters[i].name.toLowerCase())) { //only if he is in the party
             if (game.characters[i].pos != undefined) {
                 let duplicate = false;
                 for (j in game.characters) {
