@@ -5,10 +5,16 @@
 ##Phase 1:
 The developing phase, Schrottii's phase, the essential features of the game
 
-- More battle sprites (like the character being hit, the character attacking, etc.)
+- More battle sprites
+  - Attack 
+  - Magic cast 
+  - Item use 
+  - Defend 
+  - Others (either related to MTs or other normal actions.)
 - Particles
-- Overworld quests
-
+- Overworld quests (Side quests, NOT main story objectives)
+- Digital pad rework (Larger, turns invisible when idle, and uses a new set of buttons)
+- MISSING BLACK FADES I CAN'T LIST IN THIS MD FILE!!!1!!1!1 (dies)
 
 ##Phase 1.5
 ???
