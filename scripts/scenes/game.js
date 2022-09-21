@@ -498,6 +498,11 @@ scenes.game = () => {
         alpha: 1,
         source: "actionbutton",
         onClick(args) {
+            testParticle.alpha = 1;
+            testParticle.movable = true;
+            testParticle.movable2 = true;
+            testParticle.p = [];
+            testParticle.dead = false;
             // Look at how amazingly optimized this is now YAY (xo & yo, more like that's awesome yo)
             let xo = 0;
             let yo = 0;
@@ -1283,6 +1288,25 @@ scenes.game = () => {
     loadNPCs();
     loadAreaMusic();
 
+    let testParticle = Particles({
+        anchor: [0.5, 0.5], offset: [10, 10], sizeOffset: [4, 4], //type: "img", source: "spawn",
+        type: "rect", fill: "red",
+        direction: 2, speedOffset: 4, moveRandom: 5,
+        direction2: 3, speedOffset2: 12, acc2: 0.2,
+        spreadOffset: [500, 50], amount: 300, repeatMode: true, alpha: 0,
+        onDeath(args) {
+            testParticle = false;
+        }
+    })
+
+    let fallingLeaves = Particles({
+        anchor: [0, -0.1], spreadAnchor: [1, 0], sizeOffset: [64, 64], spreadOffset: [0, -256],
+        type: "img", source: "items/brickyleaf",
+        direction: 0, speedAnchor: 0.04,
+        direction2: 1, speedOffset2: 10, moveRandom2: 5,
+        repeatMode: true, movable: true, movable2: true, lifespan: 2.5, alpha: 0.7, amount: 8,
+    })
+
     // Default black fade transition
     let blackFadeTransition = controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 1], // (fullscreen)
@@ -1920,13 +1944,13 @@ scenes.game = () => {
             }
         },
         controls: [
-            ...weatherControls, ...cloudControls, ...dustControls, poisonBlack, nightEffect, nightEffect2,
+            ...weatherControls, ...cloudControls, ...dustControls, poisonBlack, nightEffect, nightEffect2, fallingLeaves,
             /*...walkPad,*/ mapDisplay, mapIcon, actionButton,
             ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             ...cutsceneElements,
             ...dialogueNormalComponents, ...dialogueInvisComponents, ...dialogueNarratorComponents, ...dialogueCutsceneComponents,
             autoSaveText, ...areaNameBox, areaTeleportFade,
-            blackFadeTransition
+            blackFadeTransition, testParticle, 
         ],
     }
 }
