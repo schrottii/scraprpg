@@ -1300,11 +1300,11 @@ scenes.game = () => {
     })
 
     let fallingLeaves = Particles({
-        anchor: [0, -0.1], spreadAnchor: [1, 0], sizeOffset: [64, 64], spreadOffset: [0, -256],
+        anchor: [0, -0.1], spreadAnchor: [1, 0], sizeOffset: [64, 64], spreadOffset: [0, -256], sizeOffsetVary: [1.5, 1.5], quadraticVary: true,
         type: "img", source: "items/brickyleaf",
         direction: 0, speedAnchor: 0.04,
         direction2: 1, speedOffset2: 10, moveRandom2: 5,
-        repeatMode: true, movable: true, movable2: true, lifespan: 2.5, alpha: 0.7, amount: 8,
+        repeatMode: false, movable: true, movable2: true, lifespan: 80, alpha: 0.7, amount: 8, spawnTime: 1,
     })
 
     // Default black fade transition

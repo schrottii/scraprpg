@@ -1,5 +1,5 @@
 ﻿##TODO:
-3 Things left to do in this phase
+4 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
@@ -11,7 +11,6 @@ The developing phase, Schrottii's phase, the essential features of the game
   - Item use 
   - Defend 
   - Others (either related to MTs or other normal actions.)
-- Particles
 - Overworld quests (Side quests, NOT main story objectives)
 - Digital pad rework (Larger, turns invisible when idle, and uses a new set of buttons)
 - MISSING BLACK FADES I CAN'T LIST IN THIS MD FILE!!!1!!1!1 (dies)

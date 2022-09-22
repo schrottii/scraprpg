@@ -44,27 +44,52 @@ function Particles(args) {
         spreadOffset: [0, 0],
         sizeAnchorVary: [0, 0],
         sizeOffsetVary: [0, 0],
+        quadraticVary: false,
 
         lifespan: 4,
         life: 0,
+        spawnTime: 0,
+        spawnTimeTick: 0,
         lifeTickIdle: false,
         dead: false,
         repeatMode: false,
+        lifeMode: true,
+
+        alphaChange: 0,
 
         onDeath(args) { },
 
-        render(ctx) {
-            if (this.dead) return false;
-            if (this.p.length == 0) {
-                for (i = 0; i < this.amount; i++) {
-                    this.p.push([[this.anchor[0] + (this.spreadAnchor[0] * Math.random()), this.anchor[1] + (this.spreadAnchor[1] * Math.random())],
-                        [this.offset[0] + (1 + (this.spreadOffset[0] * Math.random())), this.offset[1] + (1 + (this.spreadOffset[1] * Math.random()))],
-                        [this.sizeAnchor[0] * (1 + (this.sizeAnchorVary[0] * Math.random())), this.sizeAnchor[1] * (1 + (this.sizeAnchorVary[1] * Math.random()))],
-                        [this.sizeOffset[0] * (1 + (this.sizeOffsetVary[0] * Math.random())), this.sizeOffset[1] * (1 + (this.sizeOffsetVary[1] * Math.random()))]]);
-                }
+        generate(ctx) {
+            let avary = this.sizeAnchorVary[0] * Math.random();
+            let avary2 = this.sizeAnchorVary[1] * Math.random();
+            let ovary = this.sizeOffsetVary[0] * Math.random();
+            let ovary2 = this.sizeOffsetVary[1] * Math.random();
+
+            if (this.quadraticVary) {
+                avary2 = avary;
+                ovary2 = ovary;
             }
 
-            if (this.life >= this.lifespan && this.lifespan != 0) {
+            this.p.push([[this.anchor[0] + (this.spreadAnchor[0] * Math.random()), this.anchor[1] + (this.spreadAnchor[1] * Math.random())],
+            [this.offset[0] + (1 + (this.spreadOffset[0] * Math.random())), this.offset[1] + (1 + (this.spreadOffset[1] * Math.random()))],
+            [this.sizeAnchor[0] * (1 + avary), this.sizeAnchor[1] * (1 + avary2)],
+            [this.sizeOffset[0] * (1 + ovary), this.sizeOffset[1] * (1 + ovary2)], 0]);
+        },
+
+        render(ctx) {
+            if (this.dead) return false;
+            this.spawnTimeTick += (delta / 1000);
+            if (this.p.length < this.p.amount && this.spawnTime == 0) {
+                for (i = 0; i < this.amount; i++) {
+                    this.generate(ctx);
+                }
+            }
+            else if (this.spawnTimeTick >= this.spawnTime){
+                this.spawnTimeTick = 0;
+                this.generate(ctx);
+            }
+
+            if (this.life >= this.lifespan && this.lifespan != 0 && !this.lifeMode) {
                 if(!this.repeatMode) this.dead = true;
                 this.onDeath(args);
                 if (this.repeatMode) {
@@ -81,7 +106,7 @@ function Particles(args) {
                         this.p.push([[this.anchor[0] + (this.spreadAnchor[0] * Math.random()), this.anchor[1] + (this.spreadAnchor[1] * Math.random())],
                         [this.offset[0] + (1 + (this.spreadOffset[0] * Math.random())), this.offset[1] + (1 + (this.spreadOffset[1] * Math.random()))],
                         [this.sizeAnchor[0] * (1 + (this.sizeAnchorVary[0] * Math.random())), this.sizeAnchor[1] * (1 + (this.sizeAnchorVary[1] * Math.random()))],
-                        [this.sizeOffset[0] * (1 + (this.sizeOffsetVary[0] * Math.random())), this.sizeOffset[1] * (1 + (this.sizeOffsetVary[1] * Math.random()))]]);
+                        [this.sizeOffset[0] * (1 + (this.sizeOffsetVary[0] * Math.random())), this.sizeOffset[1] * (1 + (this.sizeOffsetVary[1] * Math.random()))], 0]);
                     }
                 }
             }
@@ -99,6 +124,18 @@ function Particles(args) {
             if (this.fill != "none") ctx.fillStyle = this.fill;
 
             for (p in this.p) {
+                if (this.p[p][4] >= this.lifespan && this.lifespan != 0 && this.lifeMode) {
+                    this.onDeath(args);
+                    if (this.repeatMode) {
+                        this.life = 0;
+                        this.generate(ctx);
+                    }
+                    this.p.pop(p);
+                    continue;
+                }
+                if (this.lifeTickIdle || this.movable) this.p[p][4] += (delta / 1000);
+
+
                 let w = this.p[p][3][0] / red + this.p[p][2][0] * ctx.canvas.width;
                 let h = this.p[p][3][1] / red + this.p[p][2][1] * ctx.canvas.height;
 

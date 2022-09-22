@@ -115,13 +115,18 @@ For getEmotion(...)    (portraits)
 | spreadOffset  | [0, 0]        | Spread in pixels
 | sizeAnchorVary| [0, 0]        | Randomly increase the screen size of the particles (this is a multi)
 | sizeOffsetVary| [0, 0]        | Randomly increase the pixel size of the particles (this is a multi)
+| quadraticVary | false         | Varied size will be the same for x and y (quadratic)
 |               |               | 
 | lifespan      | 4             | How long the object lives in seconds (0 = never dies)
 | life          | 0             | How many seconds it has lived for
+| spawnTime     | 0             | How many seconds between spawns. 0 = instant. 2 = 1 spawn every 2 seconds.
+| SpawnTimeTick | 0             | Time to next spawn (e. g. 1.6s/2s), can be manipulated or used to spawn the first one immediately by setting it to the same value as spawnTime
 | lifeTickIdle  | false         | If set to true, it can get older (and eventually die) when it does not move
 | dead          | false         | When it's dead, it stops doing stuff. Sad.
 | repeatMode    | false         | 
+| lifeMode      | true          | Ohh, this one's great. When enabled, every particle has an own age and the time of death depends on when it was spawned (see spawnTime). onDeath triggers every time someone dies if this is enabled. If repeatMode is also enabled, a new one will spawn every time one dies because of this. When enabled, all particles die at the same time and onDeath is triggered only once.
 |               |               | 
+| generate(ctx) |               | Creates particle (can surpass amount limit if used)
 | onDeath(args) |               | Function executed on death
 
 
