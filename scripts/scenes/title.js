@@ -137,13 +137,13 @@ scenes.title = () => {
             }
         }))
         saveTexts.push(controls.label({
-            anchor: [1.2, 0.1], offset: [72, 130 * a], defanch: 0.2,
+            anchor: [1.2, 0.3], offset: [72, -200 + 130 * a], defanch: 0.2,
             align: "left", fontSize: 48, fill: "black",
             text: "Save " + (a + 1),
             alpha: 1,
         }));
         saveTexts.push(controls.label({
-            anchor: [1.2, 0.1], offset: [0, 130 * a], defanch: 0.35,
+            anchor: [1.2, 0.3], offset: [0, -200 + 130 * a], defanch: 0.4,
             align: "left", fontSize: 32, fill: "black",
             text: "Chapter I: The Beginning",
             alpha: 1,
@@ -151,57 +151,57 @@ scenes.title = () => {
 
         for (i = 0; i < 2; i++) {
             saveTexts.push(controls.label({
-                anchor: [1.2 + (0.225 * i), 0.145], offset: [0, 130 * a], defanch: 0.12 + (0.2 * i),
+                anchor: [1.2 + (0.225 * i), 0.3], offset: [0, -146 + 130 * a], defanch: 0.12 + (0.2 * i),
                 align: "left", fontSize: 20, fill: "black",
                 text: " ",
                 alpha: 1,
             }));
             saveTexts.push(controls.label({
-                anchor: [1.2 + (0.225 * i), 0.175], offset: [0, 130 * a], defanch: 0.12 + (0.2 * i),
+                anchor: [1.2 + (0.225 * i), 0.3], offset: [0, -120 + 130 * a], defanch: 0.12 + (0.2 * i),
                 align: "left", fontSize: 20, fill: "black",
                 text: " ",
                 alpha: 1,
             }));
 
             saveTexts.push(controls.label({
-                anchor: [1.2 + (0.225 * i), 0.145], offset: [0, 130 * a], defanch: 0.25 + (0.2 * i),
+                anchor: [1.2 + (0.225 * i), 0.3], offset: [0, -146 + 130 * a], defanch: 0.25 + (0.125 * i),
                 align: "left", fontSize: 20, fill: "black",
                 text: " ",
                 alpha: 1,
             }));
             saveTexts.push(controls.label({
-                anchor: [1.2 + (0.225 * i), 0.175], offset: [0, 130 * a], defanch: 0.25 + (0.2 * i),
+                anchor: [1.2 + (0.225 * i), 0.3], offset: [0, -120 + 130 * a], defanch: 0.25 + (0.125 * i),
                 align: "left", fontSize: 20, fill: "black",
                 text: " ",
                 alpha: 1,
             }));
         }
         saveTexts.push(controls.label({
-            anchor: [1.2, 0.175], offset: [0, 130 * a], defanch: 0.75,
+            anchor: [1.2, 0.3], offset: [0, -120 + 130 * a], defanch: 0.775,
             align: "right", fontSize: 32, fill: "black",
             text: "24:31:02",
             alpha: 1,
         }));
 
         saveTexts.push(controls.image({
-            anchor: [1.2, 0.145], sizeOffset: [32, 32], offset: [0, -16 + 130 * a], defanch: 0.55,
+            anchor: [1.2, 0.3], sizeOffset: [32, 32], offset: [0, -160 + 130 * a], defanch: 0.55,
             source: "wrench",
             alpha: 1,
         }));
         saveTexts.push(controls.image({
-            anchor: [1.2, 0.175], sizeOffset: [32, 32], offset: [0, -16 + 130 * a], defanch: 0.55,
+            anchor: [1.2, 0.3], sizeOffset: [32, 32], offset: [0, -136 + 130 * a], defanch: 0.55,
             source: "brick",
             alpha: 1,
         }));
 
         saveTexts.push(controls.label({
-            anchor: [1.2, 0.145], offset: [40, 130 * a], defanch: 0.55,
+            anchor: [1.2, 0.3], offset: [40, -146 + 130 * a], defanch: 0.55,
             align: "left", fontSize: 32, fill: "black",
             text: "0",
             alpha: 1,
         }));
         saveTexts.push(controls.label({
-            anchor: [1.2, 0.175], offset: [40, 130 * a], defanch: 0.55,
+            anchor: [1.2, 0.3], offset: [40, -120 + 130 * a], defanch: 0.55,
             align: "left", fontSize: 32, fill: "black",
             text: "0",
             alpha: 1,
