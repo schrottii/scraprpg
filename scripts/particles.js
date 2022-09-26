@@ -56,8 +56,12 @@ function Particles(args) {
         lifeMode: true,
 
         alphaChange: 0,
+        anchorChange: [0, 0],
+        offsetChange: [0, 0],
 
         onDeath(args) { },
+        onClick(args) { },
+        onParticleClick(args) { },
 
         generate(ctx) {
             let avary = this.sizeAnchorVary[0] * Math.random();
@@ -73,7 +77,7 @@ function Particles(args) {
             this.p.push([[this.anchor[0] + (this.spreadAnchor[0] * Math.random()), this.anchor[1] + (this.spreadAnchor[1] * Math.random())],
             [this.offset[0] + (1 + (this.spreadOffset[0] * Math.random())), this.offset[1] + (1 + (this.spreadOffset[1] * Math.random()))],
             [this.sizeAnchor[0] * (1 + avary), this.sizeAnchor[1] * (1 + avary2)],
-            [this.sizeOffset[0] * (1 + ovary), this.sizeOffset[1] * (1 + ovary2)], 0]);
+            [this.sizeOffset[0] * (1 + ovary), this.sizeOffset[1] * (1 + ovary2)], 0, this.alpha]);
         },
 
         render(ctx) {
@@ -103,10 +107,7 @@ function Particles(args) {
                         if (w < 0 || h < 0) this.p.pop(p);
                     }
                     for (i = 0; i < this.amount; i++) {
-                        this.p.push([[this.anchor[0] + (this.spreadAnchor[0] * Math.random()), this.anchor[1] + (this.spreadAnchor[1] * Math.random())],
-                        [this.offset[0] + (1 + (this.spreadOffset[0] * Math.random())), this.offset[1] + (1 + (this.spreadOffset[1] * Math.random()))],
-                        [this.sizeAnchor[0] * (1 + (this.sizeAnchorVary[0] * Math.random())), this.sizeAnchor[1] * (1 + (this.sizeAnchorVary[1] * Math.random()))],
-                        [this.sizeOffset[0] * (1 + (this.sizeOffsetVary[0] * Math.random())), this.sizeOffset[1] * (1 + (this.sizeOffsetVary[1] * Math.random()))], 0]);
+                        this.generate(ctx);
                     }
                 }
             }
@@ -134,10 +135,6 @@ function Particles(args) {
                     continue;
                 }
                 if (this.lifeTickIdle || this.movable) this.p[p][4] += (delta / 1000);
-
-
-                let w = this.p[p][3][0] / red + this.p[p][2][0] * ctx.canvas.width;
-                let h = this.p[p][3][1] / red + this.p[p][2][1] * ctx.canvas.height;
 
                 // Move
                 if (this.movable) {
@@ -193,6 +190,20 @@ function Particles(args) {
 
                     }
                 }
+
+                if (this.alphaChange != 0) {
+                    this.p[p][5] -= this.alphaChange / delta;
+                    if (this.p[p][5] < 0) this.p[p][5] = 0;
+                    ctx.globalAlpha = this.p[p][5];
+                }
+
+                if (this.anchorChange[0] != 0) this.p[p][2][0] -= Math.max(0, this.anchorChange[0] / delta);
+                if (this.anchorChange[1] != 0) this.p[p][2][1] -= Math.max(0, this.anchorChange[1] / delta);
+                if (this.offsetChange[0] != 0) this.p[p][3][0] -= Math.max(0, this.offsetChange[0] / delta);
+                if (this.offsetChange[1] != 0) this.p[p][3][1] -= Math.max(0, this.offsetChange[1] / delta);
+
+                let w = this.p[p][3][0] / red + this.p[p][2][0] * ctx.canvas.width;
+                let h = this.p[p][3][1] / red + this.p[p][2][1] * ctx.canvas.height;
 
                 // Show me
                 if (this.type == "rect") {

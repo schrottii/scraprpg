@@ -282,28 +282,49 @@ function onCanvasPointerUp(e) {
         // offset - Get the position where the element starts. size - How big. Combine them to define the clickable area!
 
         let offsetX, offsetY, sizeX, sizeY
+        let red = 1;
         if (con.offset == undefined) console.trace();
-        if (isLs() == false) {
-            offsetX = con.offset[0] + con.anchor[0] * mainCanvas.width;
-            offsetY = con.offset[1] + con.anchor[1] * mainCanvas.height;
-            sizeX = con.sizeOffset[0] + con.sizeAnchor[0] * mainCanvas.width;
-            sizeY = con.sizeOffset[1] + con.sizeAnchor[1] * mainCanvas.height;
-        }
-        else {
-            offsetX = con.offset[0] / 2 + con.anchor[0] * mainCanvas.width;
-            offsetY = con.offset[1] / 2 + con.anchor[1] * mainCanvas.height;
-            sizeX = con.sizeOffset[0] / 2 + con.sizeAnchor[0] * mainCanvas.width;
-            sizeY = con.sizeOffset[1] / 2 + con.sizeAnchor[1] * mainCanvas.height;
-        }
+
+        if (isLs()) red = 2;
+
+        offsetX = con.offset[0] / red + con.anchor[0] * mainCanvas.width;
+        offsetY = con.offset[1] / red + con.anchor[1] * mainCanvas.height;
+        sizeX = con.sizeOffset[0] / red + con.sizeAnchor[0] * mainCanvas.width;
+        sizeY = con.sizeOffset[1] / red + con.sizeAnchor[1] * mainCanvas.height;
+        
 
         // Makes button go unpressed color after you stop clicking it
         // Without this you'd have to click somewhere else to "unclick" it
         if (scene.controls[a].fillTop != undefined) scene.controls[a].isPressed = false;
 
+
         if (!scene.controls[a].clickthrough && scene.controls[a].onClick &&
             pointerPos[0] >= offsetX && pointerPos[0] < offsetX + sizeX &&
             pointerPos[1] >= offsetY && pointerPos[1] < offsetY + sizeY &&
-        scene.controls[a].onClick()) return;
+            scene.controls[a].onClick()) {
+            return;
+        }
+        else {
+            if (!scene.controls[a].clickthrough && scene.controls[a].p != undefined && scene.controls[a].p != 0) {
+                for (n in scene.controls[a].p) {
+                    let p = scene.controls[a].p[n];
+                    offsetX = p[1][0] / red + p[0][0] * mainCanvas.width;
+                    offsetY = p[1][1] / red + p[0][1] * mainCanvas.height;
+                    sizeX = p[3][0] / red + p[2][0] * mainCanvas.width;
+                    sizeY = p[3][1] / red + p[2][1] * mainCanvas.height;
+                    if (pointerPos[0] >= offsetX && pointerPos[0] < offsetX + sizeX &&
+                        pointerPos[1] >= offsetY && pointerPos[1] < offsetY + sizeY &&
+                        scene.controls[a].onClick()) {
+                        return;
+                    }
+                    if (pointerPos[0] >= offsetX && pointerPos[0] < offsetX + sizeX &&
+                        pointerPos[1] >= offsetY && pointerPos[1] < offsetY + sizeY &&
+                        scene.controls[a].onParticleClick(n)) {
+                        return;
+                    }
+                }
+            }
+        }
     }
 }
 

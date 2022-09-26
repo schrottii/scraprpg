@@ -126,7 +126,13 @@ For getEmotion(...)    (portraits)
 | repeatMode    | false         | 
 | lifeMode      | true          | Ohh, this one's great. When enabled, every particle has an own age and the time of death depends on when it was spawned (see spawnTime). onDeath triggers every time someone dies if this is enabled. If repeatMode is also enabled, a new one will spawn every time one dies because of this. When enabled, all particles die at the same time and onDeath is triggered only once.
 |               |               | 
+| alphaChange   | 0             | Increase / decrease alpha (opacity) over time
+| anchorChange  | [0, 0]        | Increase / decrease anchor over time
+| offsetChange  | [0, 0]        | Increase / decrease offset over time
+|               |               | 
 | generate(ctx) |               | Creates particle (can surpass amount limit if used)
+| onClick(args) |               | Function executed when any particle is clicked
+| onParticleClick(args) |       | Function executed when a specific particle is clicked (does something for that 1 particle)
 | onDeath(args) |               | Function executed on death
 
 

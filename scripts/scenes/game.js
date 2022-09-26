@@ -1289,13 +1289,19 @@ scenes.game = () => {
     loadAreaMusic();
 
     let testParticle = Particles({
-        anchor: [0.5, 0.5], offset: [10, 10], sizeOffset: [4, 4], //type: "img", source: "spawn",
+        anchor: [0.5, 0.5], offset: [10, 10], sizeOffset: [8, 8], //type: "img", source: "spawn",
         type: "rect", fill: "red",
         direction: 2, speedOffset: 4, moveRandom: 5,
         direction2: 3, speedOffset2: 12, acc2: 0.2,
         spreadOffset: [500, 50], amount: 300, repeatMode: true, alpha: 0,
         onDeath(args) {
             testParticle = false;
+        },
+        onClick(args) {
+            for (p in this.p) {
+                this.p[p][0][1] += 0.1;
+                this.acc2 = 0.2;
+            }
         }
     })
 
@@ -1304,7 +1310,14 @@ scenes.game = () => {
         type: "img", source: "items/brickyleaf",
         direction: 0, speedAnchor: 0.04,
         direction2: 1, speedOffset2: 10, moveRandom2: 5,
-        repeatMode: false, movable: true, movable2: true, lifespan: 80, alpha: 0.7, amount: 8, spawnTime: 1,
+        offsetChange: [3, 3],
+        movable: true, movable2: true, lifespan: 80, alpha: 1, amount: 8, spawnTime: 1, alphaChange: 0.04,
+        onParticleClick(n) {
+            this.p[n][3][0] *= 1.2;
+            this.p[n][3][1] *= 1.2;
+            this.p[n][4] -= 3;
+            this.p[n][5] = 1;
+        }
     })
 
     // Default black fade transition
