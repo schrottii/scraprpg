@@ -72,6 +72,12 @@ let images = {
     skro_ani: "data/images/protagonists/other/Skro_Sprite_Sheet_Other.png",
     kokitozi_ani: "data/images/protagonists/other/Skro_Sprite_Sheet_Other.png",
 
+    bleu_battle: "data/images/protagonists/battle/Bleu_Battle_Sprite_Sheet.png",
+    corelle_battle: "data/images/protagonists/battle/Corelle_Battle_Sprite_Sheet.png",
+    gau_battle: "data/images/protagonists/battle/Gau_Battle_Sprite_Sheet.png",
+    skro_battle: "data/images/protagonists/battle/Skro_Battle_Sprite_Sheet.png",
+    kokitozi_battle: "data/images/protagonists/battle/Skro_Battle_Sprite_Sheet.png",
+
     bleu_dead: "data/images/protagonists/dead/BleuDead.png",
     corelle_dead: "data/images/protagonists/dead/CorelleDead.png",
     gau_dead: "data/images/protagonists/dead/GauDead.png",

@@ -155,6 +155,32 @@ function emotionAnimation(char, emotion) { // Epic rhyme
     return [file, snip, amount];
 }
 
+function battleAnimation(char, emotion) { // Epic rhyme
+    // This function returns, well, emotion animation pics (laughing, victory, etc.)
+    let file = char + "_battle";
+    if (images[file] == undefined) return false;
+    let snip = [];
+    let size = 32;
+    switch (emotion) {
+        case "attack":
+            snip = [0, 0, size, size];
+            break;
+        case "item":
+            snip = [size, 0, size, size];
+            break;
+        case "magic":
+            snip = [size * 2, 0, size, size];
+            break;
+        case "defend":
+            snip = [size * 3, 0, size, size];
+            break;
+        case "other":
+            snip = [size * 4, 0, size, size];
+            break;
+    }
+    return [file, snip];
+}
+
 function addItem(name, amount = 1) {
     if (game.inventory[name] == undefined) {
         game.inventory[name] = 0;

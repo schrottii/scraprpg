@@ -1399,6 +1399,8 @@ scenes.fight = () => {
                         let c = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied];
                         positions[selectedAlly[0]][selectedAlly[1]].action = [c.macro, selectedAlly[0], selectedAlly[1]];
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
+                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source = battleAnimation(c.name.toLowerCase(), "attack")[0];
+                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(c.name.toLowerCase(), "attack")[1];
                         hideFightButtons();
                     }
                 }
@@ -2363,6 +2365,9 @@ scenes.fight = () => {
                     // Attack teammate
                     else if (fightaction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
+                        console.log(positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip);
+                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source, "attack")[1];
+                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source = battleAnimation(positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source, "attack")[0];
                         positions[selectedAlly[0]][selectedAlly[1]].action = ["sattack", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
 
                         fightaction = "none";
@@ -2426,13 +2431,14 @@ scenes.fight = () => {
                     // uhhh... no?F
                     // but add fighting here at some point
                     // THAT POINT IS NOW! Idiot
-
-                    if (fightaction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(positions[selectedAlly[0]][selectedAlly[1]].occupied, "length"), "enemy", [this.pos1, this.pos2])) {
+                    let dude = positions[selectedAlly[0]][selectedAlly[1]].occupied;
+                    if (fightaction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
+                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source = battleAnimation(dude, "attack")[0];
+                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(dude, "attack")[1];
                         if (epositions[this.pos1][this.pos2].parent == undefined) positions[selectedAlly[0]][selectedAlly[1]].action = ["attack", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
                         else {
                             let parent = epositions[this.pos1][this.pos2].parent;
-                            console.log(parent);
                             positions[selectedAlly[0]][selectedAlly[1]].action = ["attack", selectedAlly[0], selectedAlly[1], parent[0], parent[1]];
                         }
                         fightaction = "none";
@@ -2476,7 +2482,7 @@ scenes.fight = () => {
                             if (positionControls[i + (j * 3)].source == positions[i][j].occupied + "_dead") {
                                 positionControls[i + (j * 3)].snip = [0, 64, 32, 32];
                             }
-                            positionControls[i + (j * 3)].source = positions[i][j].occupied;
+                            if (positionGrid[i + (j * 3)].source != "hasaction") positionControls[i + (j * 3)].source = positions[i][j].occupied;
                         }
                         positionControls[i + (j * 3)].alpha = 1;
                     }
