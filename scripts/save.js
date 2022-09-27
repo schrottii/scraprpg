@@ -112,6 +112,7 @@ let game = {
 let settings = {
     autosave: false,
     grid: true,
+    joystick: false,
     musicVolume: 0.5,
     soundVolume: 0.5
 }

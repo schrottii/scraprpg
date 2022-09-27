@@ -236,7 +236,7 @@ function onCanvasPointerDown(e) {
     pointerPos = [e.clientX, e.clientY];
     for (let a = scene.controls.length - 1; a >= 0; a--) {
 
-        if (scene.controls[a].fillTop == undefined) continue;
+        if (scene.controls[a].fillTop == undefined && scene.controls[a].isPressed == undefined) continue;
 
         let con = scene.controls[a];
         if (con == undefined) return;
@@ -256,10 +256,11 @@ function onCanvasPointerDown(e) {
         }
 
         // Make buttons go pressed color
-        if (!scene.controls[a].clickthrough && scene.controls[a].onClick &&
+        if (!scene.controls[a].clickthrough &&
             pointerPos[0] >= offsetX && pointerPos[0] < offsetX + sizeX &&
             pointerPos[1] >= offsetY && pointerPos[1] < offsetY + sizeY) {
             scene.controls[a].isPressed = true;
+            if (scene.controls[a].onDown) scene.controls[a].onDown();
         }
         else {
             scene.controls[a].isPressed = false;

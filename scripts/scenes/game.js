@@ -209,39 +209,73 @@ scenes.game = () => {
 
     var tokenRunning = false;
 
-    /* let walkPad = [];
+    let walkPad = [];
+    let walkPadIdle = 5;
+
     walkPad.push(controls.image({ // Up
-        anchor: [.1, .75], offset: [0, 0], sizeOffset: [40, 40],
+        anchor: [.1, .75], offset: [0, 0], sizeOffset: [64, 64],
         fontSize: 16, source: "arrowup",
-        onClick(args) {
+        isPressed: false,
+        onDown(args) {
+            reviveWalkPad();
             pad = "up";
+        },
+        onClick(args) {
+            pad = "";
         }
     }));
     walkPad.push(controls.image({ // Middle
-        anchor: [.1, .75], offset: [0, 40], sizeOffset: [40, 40],
+        anchor: [.1, .75], offset: [0, 64], sizeOffset: [64, 64],
         fontSize: 16, source: "arrowmiddle",
+        isPressed: false,
+        onDown(args) {
+            reviveWalkPad();
+            pad = "";
+        },
     }));
     walkPad.push(controls.image({ // Down
-        anchor: [.1, .75], offset: [0, 80], sizeOffset: [40, 40],
+        anchor: [.1, .75], offset: [0, 128], sizeOffset: [64, 64],
         fontSize: 16, source: "arrowdown",
-        onClick(args) {
+        isPressed: false,
+        onDown(args) {
+            reviveWalkPad();
             pad = "down";
+        },
+        onClick(args) {
+            pad = "";
         }
     }));
     walkPad.push(controls.image({ // Left
-        anchor: [.1, .75], offset: [-40, 40], sizeOffset: [40, 40],
+        anchor: [.1, .75], offset: [-64, 64], sizeOffset: [64, 64],
         fontSize: 16, source: "arrowleft",
-        onClick(args) {
+        isPressed: false,
+        onDown(args) {
+            reviveWalkPad();
             pad = "left";
+        },
+        onClick(args) {
+            pad = "";
         }
     }));
     walkPad.push(controls.image({ // Right
-        anchor: [.1, .75], offset: [40, 40], sizeOffset: [40, 40],
+        anchor: [.1, .75], offset: [64, 64], sizeOffset: [64, 64],
         fontSize: 16, source: "arrowright",
-        onClick(args) {
+        isPressed: false,
+        onDown(args) {
+            reviveWalkPad();
             pad = "right";
+        },
+        onClick(args) {
+            pad = "";
         }
-    })); */
+    }));
+
+    function reviveWalkPad() {
+        walkPadIdle = 5;
+        for (wp in walkPad) {
+            walkPad[wp].alpha = 1;
+        }
+    }
 
     let padActive = false;
     let padAlpha = 0;
@@ -1614,7 +1648,6 @@ scenes.game = () => {
             if (!kofs[2] && canMove == true) {
                 let xo;
                 let yo;
-
                 if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up")) {
                     head = 3;
                     direction = "up";
@@ -1669,7 +1702,6 @@ scenes.game = () => {
                         }
                     }
                 }
-                pad = "";
             }
             kofs[2] = Math.max(kofs[2] - delta / 166, 0);
             walkTime = (walkTime + delta * (kofs[2] ? 5 : 1) / 1000) % 2;
@@ -1755,63 +1787,88 @@ scenes.game = () => {
             }
 
             // Joystick
-
-            if (pointerActive && canMove) {
-                if (padActive) {
-                    padThumbPosition = pointerPos;
-                    let offset = [padThumbPosition[0] - padPosition[0], padThumbPosition[1] - padPosition[1]]
-                    let dist = Math.sqrt(offset[0] ** 2 + offset[1] ** 2);
-                    if (dist > scale * 1.5 && !kofs[2]) {
-                        if (Math.abs(offset[0]) > Math.abs(offset[1])) {
-                            pad = offset[0] > 0 ? "right" : "left";
-                        } else {
-                            pad = offset[1] > 0 ? "down" : "up";
+            if (settings.joystick) {
+                if (pointerActive && canMove) {
+                    if (padActive) {
+                        padThumbPosition = pointerPos;
+                        let offset = [padThumbPosition[0] - padPosition[0], padThumbPosition[1] - padPosition[1]]
+                        let dist = Math.sqrt(offset[0] ** 2 + offset[1] ** 2);
+                        if (dist > scale * 1.5 && !kofs[2]) {
+                            if (Math.abs(offset[0]) > Math.abs(offset[1])) {
+                                pad = offset[0] > 0 ? "right" : "left";
+                            } else {
+                                pad = offset[1] > 0 ? "down" : "up";
+                            }
                         }
+                        if (dist > scale * 2.5) {
+                            padPosition = [
+                                padPosition[0] + offset[0] / dist * (dist - scale * 2.5),
+                                padPosition[1] + offset[1] / dist * (dist - scale * 2.5),
+                            ]
+                        }
+                    } else {
+                        padPosition = padThumbPosition = pointerPos;
                     }
-                    if (dist > scale * 2.5) {
-                        padPosition = [
-                            padPosition[0] + offset[0] / dist * (dist - scale * 2.5),
-                            padPosition[1] + offset[1] / dist * (dist - scale * 2.5),
-                        ]
-                    }
+                    padAlpha = Math.min(padAlpha + delta * .01, 1);
+                    padActive = true;
                 } else {
-                    padPosition = padThumbPosition = pointerPos;
+                    let lerp = 1 - (0.98 ** delta);
+                    padThumbPosition = [
+                        padThumbPosition[0] + (padPosition[0] - padThumbPosition[0]) * lerp,
+                        padThumbPosition[1] + (padPosition[1] - padThumbPosition[1]) * lerp,
+                    ]
+                    padAlpha = Math.max(padAlpha - delta * .005, 0);
+                    padActive = false;
                 }
-                padAlpha = Math.min(padAlpha + delta * .01, 1);
-                padActive = true;
-            } else {
-                let lerp = 1 - (0.98 ** delta);
-                padThumbPosition = [
-                    padThumbPosition[0] + (padPosition[0] - padThumbPosition[0]) * lerp,
-                    padThumbPosition[1] + (padPosition[1] - padThumbPosition[1]) * lerp,
-                ]
-                padAlpha = Math.max(padAlpha - delta * .005, 0);
-                padActive = false;
-            }
 
-            ctx.globalAlpha = padAlpha;
-            ctx.beginPath();
-            ctx.arc(padPosition[0], padPosition[1], scale * 2.5, 0, Math.PI * 2);
-            ctx.fillStyle = "#000000af";
-            ctx.fill();
-            if (pad || kofs[2]) {
-                let ang = { up: -0.75, right: -0.25, down: 0.25, left: 0.75 }[direction]
+                ctx.globalAlpha = padAlpha;
                 ctx.beginPath();
-                ctx.arc(padPosition[0], padPosition[1], scale * 2.5, Math.PI * ang, Math.PI * (ang + .5));
-                ctx.arc(padPosition[0], padPosition[1], scale * 1, Math.PI * (ang + .5), Math.PI * ang, true);
-                ctx.fillStyle = "#ffffff1f";
+                ctx.arc(padPosition[0], padPosition[1], scale * 2.5, 0, Math.PI * 2);
+                ctx.fillStyle = "#000000af";
                 ctx.fill();
-            }
+                if (pad || kofs[2]) {
+                    let ang = { up: -0.75, right: -0.25, down: 0.25, left: 0.75 }[direction]
+                    ctx.beginPath();
+                    ctx.arc(padPosition[0], padPosition[1], scale * 2.5, Math.PI * ang, Math.PI * (ang + .5));
+                    ctx.arc(padPosition[0], padPosition[1], scale * 1, Math.PI * (ang + .5), Math.PI * ang, true);
+                    ctx.fillStyle = "#ffffff1f";
+                    ctx.fill();
+                }
 
-            ctx.globalAlpha = padAlpha * 2;
-            ctx.beginPath();
-            ctx.arc(padThumbPosition[0], padThumbPosition[1], scale + 2, 0, Math.PI * 2);
-            ctx.fillStyle = "#ffae38";
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(padThumbPosition[0], padThumbPosition[1], scale, 0, Math.PI * 2);
-            ctx.fillStyle = "#d18822";
-            ctx.fill();
+                ctx.globalAlpha = padAlpha * 2;
+                ctx.beginPath();
+                ctx.arc(padThumbPosition[0], padThumbPosition[1], scale + 2, 0, Math.PI * 2);
+                ctx.fillStyle = "#ffae38";
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(padThumbPosition[0], padThumbPosition[1], scale, 0, Math.PI * 2);
+                ctx.fillStyle = "#d18822";
+                ctx.fill();
+
+                if (walkPad[0].alpha == 1) {
+                    for (wp in walkPad) {
+                        walkPad[wp].alpha = 0;
+                    }
+                }
+            }
+            else {
+                walkPadIdle -= delta / 1000;
+                if (walkPadIdle <= 0 && walkPad[0].alpha == 1) {
+                    addAnimator(function (t) {
+                        for (wp in walkPad) {
+                            walkPad[wp].alpha = Math.max(1 - (t * 0.004), 0.01);
+                        }
+                        if (t > 250) return true;
+
+                        return false;
+                    });
+                }
+                if (walkPad[0].alpha == 0) {
+                    for (wp in walkPad) {
+                        walkPad[wp].alpha = 1;
+                    }
+                }
+            }
 
             if (inDialogue == true && cutsceneMode == true) {
                 dialogueCutsceneComponents[0].alpha = 0.01;
@@ -1958,7 +2015,7 @@ scenes.game = () => {
         },
         controls: [
             ...weatherControls, ...cloudControls, ...dustControls, poisonBlack, nightEffect, nightEffect2, fallingLeaves,
-            /*...walkPad,*/ mapDisplay, mapIcon, actionButton,
+            ...walkPad, mapDisplay, mapIcon, actionButton,
             ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             ...cutsceneElements,
             ...dialogueNormalComponents, ...dialogueInvisComponents, ...dialogueNarratorComponents, ...dialogueCutsceneComponents,

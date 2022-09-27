@@ -160,6 +160,22 @@ scenes.settings = () => {
             }
         }
     }));
+    menuSettingsGraphics.push(controls.button({
+        anchor: [0.55, 0.4], sizeAnchor: [0.2, 0.1],
+        text: "Joystick", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                playSound("buttonClickSound");
+                if (settings.joystick == true) {
+                    settings.joystick = false;
+                }
+                else {
+                    settings.joystick = true;
+                }
+                showMenuSettings();
+            }
+        }
+    }));
 
     // Audio
 
@@ -264,6 +280,12 @@ scenes.settings = () => {
             }
             else {
                 menuSettingsGraphics[0].text = "Grid: OFF";
+            }
+            if (settings.joystick == true) {
+                menuSettingsGraphics[1].text = "Joystick";
+            }
+            else {
+                menuSettingsGraphics[1].text = "WalkPad";
             }
             for (i = 0; i < menuSettingsGraphics.length; i++) {
                 menuSettingsGraphics[i].alpha = 1;
