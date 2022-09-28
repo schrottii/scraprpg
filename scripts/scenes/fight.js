@@ -586,7 +586,7 @@ scenes.fight = () => {
                 critBonus = 3;
             }
         }
-        if (type == 1) { // Allies
+        if (type == 1) { // Allies attack evil
             return [isCritical, Math.round(getStat(positions[pos1][pos2].occupied, "strength")
                 * (0.67 + (0.33 * pos1))
                 * (1.33 - (0.33 * enpos1))
@@ -594,7 +594,7 @@ scenes.fight = () => {
                 * critBonus];
         }
 
-        if (type == 2) { // Evil men
+        if (type == 2) { // Evil men attack allies
             if (epositions[pos1][pos2].luk > Math.random() * 100) {
                 // Critical hit!
                 isCritical = true;
@@ -603,11 +603,12 @@ scenes.fight = () => {
             return [isCritical, Math.round(epositions[pos1][pos2].strength
                 * (1.33 - (0.33 * pos1))
                 * (0.67 + (0.33 * enpos1))
+                / positions[enpos1][enpos2].shield
                 * getElementDamage(epositions[pos1][pos2].element, getStat(positions[enpos1][enpos2].occupied, "element").element))
                 * critBonus];
         }
 
-        if (type == 3) { // My own men
+        if (type == 3) { // My own men attack themselves ohe noe
             return [isCritical, Math.round(getStat(positions[pos1][pos2].occupied, "strength")
                 * (1.33 - (0.33 * pos1))
                 * (0.67 + (0.33 * enpos1))
@@ -827,6 +828,7 @@ scenes.fight = () => {
                 setTimeout(() => executeActions(), ACTIONDELAY);
                 break;
             case "defend":
+                positions[pos[0]][pos[1]].shield = 1.5;
                 positions[pos[0]][pos[1]].action = false;
                 setTimeout(() => executeActions(), ACTIONDELAY);
                 break;
@@ -892,6 +894,7 @@ scenes.fight = () => {
 
             for (j = 0; j < 3; j++) {
                 for (i = 0; i < 3; i++) {
+                    positions[i][j].shield = 1;
                     positionGrid[i + (j * 3)].source = "grid";
                 }
             }
@@ -2256,6 +2259,8 @@ scenes.fight = () => {
             ],
         ];
 
+    for (p in positions) positions[p].shield = 1;
+
     // Positions but for enemies. same usage same stuff
     var epositions =
         [
@@ -2633,7 +2638,7 @@ scenes.fight = () => {
                 for (i = 0; i < 3; i++) {
                     positionControls[i + (j * 3)].sizeOffset = [64, 64];
                     //positionControls[i + (j * 3)].offset = [72 * i, 72 * j];
-                    epositionControls[i + (j * 3)].sizeOffset = [64, 64];
+                    //epositionControls[i + (j * 3)].sizeOffset = [64, 64];
                     //epositionControls[i + (j * 3)].offset = [-(72 + (72 * i)), 72 * j]
                     if (positionGrid[i + (j * 3)].source == "grid" || positionGrid[i + (j * 3)].source == "hasaction" || positionGrid[i + (j * 3)].source == "selected") {
                         positionGrid[i + (j * 3)].sizeOffset = [64, 64];
