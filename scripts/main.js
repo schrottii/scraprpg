@@ -240,20 +240,18 @@ function onCanvasPointerDown(e) {
 
         let con = scene.controls[a];
         if (con == undefined) return;
-        let offsetX, offsetY, sizeX, sizeY
-        if (con.offset == undefined) console.trace();
-        if (isLs() == false) {
-            offsetX = con.offset[0] + con.anchor[0] * mainCanvas.width;
-            offsetY = con.offset[1] + con.anchor[1] * mainCanvas.height;
-            sizeX = con.sizeOffset[0] + con.sizeAnchor[0] * mainCanvas.width;
-            sizeY = con.sizeOffset[1] + con.sizeAnchor[1] * mainCanvas.height;
-        }
-        else {
-            offsetX = con.offset[0] / 2 + con.anchor[0] * mainCanvas.width;
-            offsetY = con.offset[1] / 2 + con.anchor[1] * mainCanvas.height;
-            sizeX = con.sizeOffset[0] / 2 + con.sizeAnchor[0] * mainCanvas.width;
-            sizeY = con.sizeOffset[1] / 2 + con.sizeAnchor[1] * mainCanvas.height;
-        }
+        let offsetX, offsetY, sizeX, sizeY;
+        let red = 1;
+        //if (con.offset == undefined) console.trace();
+
+        if (isLs()) red = 2;
+
+        offsetX = con.offset[0] / red + con.anchor[0] * mainCanvas.width;
+        offsetY = con.offset[1] / red + con.anchor[1] * mainCanvas.height;
+        sizeX = con.sizeOffset[0] / red + con.sizeAnchor[0] * mainCanvas.width;
+        sizeY = con.sizeOffset[1] / red + con.sizeAnchor[1] * mainCanvas.height;
+
+
 
         // Make buttons go pressed color
         if (!scene.controls[a].clickthrough &&

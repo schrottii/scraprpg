@@ -687,6 +687,12 @@ scenes.fight = () => {
         // Stop if there is nobody (when is that?)
         if (highestAGI == 0) {
             fightaction = "enemiesturn";
+            for (i in positionControls) {
+                if (positionControls[i].source != "gear") {
+                    positionControls[i].source = positions[positionControls[i].pos1][positionControls[i].pos2].occupied;
+                    positionControls[i].snip = [0, 64, 32, 32];
+                }
+            }
 
             for (j = 0; j < 3; j++) {
                 for (i = 0; i < 3; i++) {
@@ -1439,15 +1445,26 @@ scenes.fight = () => {
         
     }
 
-    function normalActionsButton() {
+    function normalActionsButton(i) {
         //if (i == 0) { // Normal Actions
         actionButtons.push(controls.rect({
             anchor: [0.3, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
             fill: "rgb(191, 137, 69)",
             alpha: 1,
+            i: i,
             onClick(args) {
                 if (this.alpha == 1 && fightaction == "active") {
-                    fightaction = "attack2";
+                    if (this.i != 1) fightaction = "attack2";
+                    else {
+                        positions[selectedAlly[0]][selectedAlly[1]].action = "defend";
+                        fightaction = "none";
+
+                        let dude = positions[selectedAlly[0]][selectedAlly[1]].occupied;
+                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source = battleAnimation(dude, "defend")[0];
+                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(dude, "defend")[1];
+
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
+                    }
                     hideFightButtons();
                     hideActionButtons();
                 }
@@ -1465,7 +1482,7 @@ scenes.fight = () => {
         }))
         actionButtons.push(controls.label({
             anchor: [0.445, 0.02 + (i * 0.035)], offset: [0, -500],
-            text: ["Attack", "Scan", "Dash", "True Killer Move", "Wow!!!", "Astroturf XV"][i],
+            text: ["Attack", "Defend", "Dash", "True Killer Move", "Scan", "Astroturf XV"][i],
             fontSize: 16, fill: "black", align: "right",
             alpha: 1,
         }))
@@ -2340,32 +2357,34 @@ scenes.fight = () => {
                 pos1: i,
                 pos2: j,
                 onClick(args) {
-                    if (game.characters[this.source].effect[0] == "paralysis" && positions[this.pos1][this.pos2].action == false) {
+                    let name = positions[this.pos1][this.pos2].occupied;
+                    if (name == false) return;
+
+                    if (game.characters[name].effect[0] == "paralysis" && positions[this.pos1][this.pos2].action == false) {
                         positions[this.pos1][this.pos2].action = ["nothing", this.pos1, this.pos2];
-                        postLog(game.characters[this.source].name + " is paralysed!")
-                        game.characters[this.source].effect[1] -= 1;
-                        if (game.characters[this.source].effect[1] < 1) {
-                            game.characters[this.source].effect[0] = "none";
-                            postLog(game.characters[this.source].name + "'s paralysis is over!")
+                        postLog(game.characters[name].name + " is paralysed!")
+                        game.characters[name].effect[1] -= 1;
+                        if (game.characters[name].effect[1] < 1) {
+                            game.characters[name].effect[0] = "none";
+                            postLog(game.characters[name].name + "'s paralysis is over!")
                         }
                     }
-                    if (fightaction == "none" && game.characters[this.source].effect[0] == "enraged") {
+                    if (fightaction == "none" && game.characters[name].effect[0] == "enraged") {
                         fightaction = "attack2";
                         selectedAlly = [this.pos1, this.pos2];
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
 
-                        postLog(game.characters[this.source].name + " is very angry!")
+                        postLog(game.characters[name].name + " is very angry!")
 
-                        game.characters[this.source].effect[1] -= 1;
-                        if (game.characters[this.source].effect[1] < 1) {
-                            game.characters[this.source].effect[0] = "none";
-                            postLog(game.characters[this.source].name + "'s rage is over!")
+                        game.characters[name].effect[1] -= 1;
+                        if (game.characters[name].effect[1] < 1) {
+                            game.characters[name].effect[0] = "none";
+                            postLog(game.characters[name].name + "'s rage is over!")
                         }
                     }
                     // Attack teammate
                     else if (fightaction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
-                        console.log(positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip);
                         positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source, "attack")[1];
                         positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source = battleAnimation(positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source, "attack")[0];
                         positions[selectedAlly[0]][selectedAlly[1]].action = ["sattack", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
@@ -2387,16 +2406,26 @@ scenes.fight = () => {
 
 
                     if (fightaction == "item") {
+                        let dude = positions[selectedAlly[0]][selectedAlly[1]].occupied;
+
                         positions[selectedAlly[0]][selectedAlly[1]].action = ["item", selectedItem.name, selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
                         removeItem(selectedItem.name, 1);
                         fightaction = "none";
+
+                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source = battleAnimation(dude, "item")[0];
+                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(dude, "item")[1];
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "items/" + selectedItem().source;
                     }
 
                     if (fightaction == "magic") {
+                        let dude = positions[selectedAlly[0]][selectedAlly[1]].occupied;
+
                         positions[selectedAlly[0]][selectedAlly[1]].action = ["magic", selectedItem.name, selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
                         game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EP -= selectedItem().cost;
                         fightaction = "none";
+
+                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source = battleAnimation(dude, "magic")[0];
+                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(dude, "magic")[1];
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "items/" + selectedItem().source;
                     }
 
@@ -2482,7 +2511,7 @@ scenes.fight = () => {
                             if (positionControls[i + (j * 3)].source == positions[i][j].occupied + "_dead") {
                                 positionControls[i + (j * 3)].snip = [0, 64, 32, 32];
                             }
-                            if (positionGrid[i + (j * 3)].source != "hasaction") positionControls[i + (j * 3)].source = positions[i][j].occupied;
+                            if (positionGrid[i + (j * 3)].source == "grid") positionControls[i + (j * 3)].source = positions[i][j].occupied;
                         }
                         positionControls[i + (j * 3)].alpha = 1;
                     }
@@ -2599,7 +2628,7 @@ scenes.fight = () => {
                 }
             }
         }
-        else {
+        else {*/
             for (j = 0; j < 3; j++) {
                 for (i = 0; i < 3; i++) {
                     positionControls[i + (j * 3)].sizeOffset = [64, 64];
@@ -2624,7 +2653,7 @@ scenes.fight = () => {
                     }
                 }
             }
-        }*/
+        //}
 
 
         actionText = [];

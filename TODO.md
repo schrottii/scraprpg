@@ -6,10 +6,6 @@
 The developing phase, Schrottii's phase, the essential features of the game
 
 - More battle sprites
-  - Attack DONE
-  - Item use 
-  - Magic cast 
-  - Defend 
   - Others (either related to MTs or other normal actions.)
 - Overworld quests (Side quests, NOT main story objectives)
 - MISSING BLACK FADES I CAN'T LIST IN THIS MD FILE!!!1!!1!1 (dies)
