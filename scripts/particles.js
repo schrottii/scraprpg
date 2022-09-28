@@ -229,3 +229,26 @@ function Particles(args) {
         ...args || {},
     }
 }
+
+const commonParticles = {
+    falling: {
+        anchor: [0, -0.1], spreadAnchor: [1, 0], sizeOffset: [64, 64], spreadOffset: [0, -256], sizeOffsetVary: [1.5, 1.5], quadraticVary: true,
+        type: "img", source: "items/brickyleaf",
+        direction: 0, speedAnchor: 0.04,
+        direction2: 1, speedOffset2: 10, moveRandom2: 5,
+        offsetChange: [3, 3],
+        movable: true, movable2: true, lifespan: 80, alpha: 1, amount: 8, spawnTime: 1, alphaChange: 0.04,
+        onParticleClick(n) {
+            this.p[n][3][0] *= 1.2;
+            this.p[n][3][1] *= 1.2;
+            this.p[n][4] -= 3;
+            this.p[n][5] = 1;
+        }
+    }
+}
+
+
+
+function addParticle(type, args = {}) {
+    scene.controls.push(new Particles(Object.assign({}, commonParticles[type], args)));
+}
