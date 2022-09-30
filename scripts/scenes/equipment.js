@@ -271,5 +271,6 @@ scenes.equipment = () => {
             ...background, ...itemsButtons, ...itemsText, ...equipmentDisplay, ...equipmentChangeDisplay, ...finalStatsDisplay, ...immunityDisplay,
             blackFadeTransition
         ],
+        name: "equipment"
     }
 }

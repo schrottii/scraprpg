@@ -253,5 +253,6 @@ scenes.savemanager = () => {
             ...background, ...saveButtons, ...saveTexts, ...buttons,
             blackFadeTransition
         ],
+        name: "saves"
     }
 }

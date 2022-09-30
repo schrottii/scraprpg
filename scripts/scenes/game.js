@@ -1394,14 +1394,17 @@ scenes.game = () => {
     })
 
     // Default black fade transition
+    let tTime = 200;
+    if (previousScene == "main" || previousScene == "title") tTime = 800;
+
     let blackFadeTransition = controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 1], // (fullscreen)
         fill: "black",
         alpha: 1
     })
     addAnimator(function (t) {
-        blackFadeTransition.alpha = 1 - (t / 200);
-        if (t > 499) {
+        blackFadeTransition.alpha = 1 - (t / tTime);
+        if (t > tTime - 1) {
             blackFadeTransition.alpha = 0;
             return true;
         }
@@ -2061,6 +2064,7 @@ scenes.game = () => {
             autoSaveText, ...areaNameBox, areaTeleportFade,
             blackFadeTransition, testParticle, 
         ],
+        name: "game"
     }
 }
 

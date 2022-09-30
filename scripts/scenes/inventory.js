@@ -232,5 +232,6 @@ scenes.inventory = () => {
             ...background, ...buttons, ...characters, ...characterNames, ...characterImages, ...characterBars, ...emptyChars, ...coolDisplays,
             blackFadeTransition
         ],
+        name: "inventory"
     }
 }

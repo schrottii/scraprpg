@@ -210,5 +210,6 @@ scenes.formation = () => {
             ...positionGrid, ...positions, ...posInfos, ...macroControls, switchText,
             blackFadeTransition
         ],
+        name: "formation"
     }
 }

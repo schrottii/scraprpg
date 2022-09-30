@@ -73,8 +73,9 @@ function init() {
                     setScene(scenes.game());
                 }
             }),
-    
+            
         ],
+        name: "main"
     });
     loadAllResources();
     defFilter();

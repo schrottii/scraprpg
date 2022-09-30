@@ -25,5 +25,6 @@ scenes.SCENENAME = () => {
         controls: [
             blackFadeTransition
         ],
+        name: "ex"
     }
 }

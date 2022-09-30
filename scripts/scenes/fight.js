@@ -2894,5 +2894,6 @@ scenes.fight = () => {
             ...positionControls, ...epositionControls, ...positionGrid, ...attackAnimationObjects, ...battleNumbers, ...winScreen, ...winScreen2, ...winStats, ...fleeWrenches, ...gameOverScreen2,
             ...cutsceneElements, blackFadeTransition,
         ],
+        name: "fight"
     }
 };

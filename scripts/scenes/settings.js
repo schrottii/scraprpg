@@ -368,5 +368,6 @@ scenes.settings = () => {
             settingsSaveText,
             blackFadeTransition
         ],
+        name: "settings"
     }
 }

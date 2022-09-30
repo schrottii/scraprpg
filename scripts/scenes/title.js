@@ -518,5 +518,6 @@ scenes.title = () => {
             deleteButton, optionButton, ...options,
             fadeOverlay
         ],
+        name: "title"
     }
 };

@@ -235,5 +235,6 @@ scenes.itemscene = () => {
             ...background, ...itemsButtons, ...itemsImages, ...theTop,
             blackFadeTransition
         ],
+        name: "items"
     }
 }

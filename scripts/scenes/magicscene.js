@@ -185,5 +185,6 @@ scenes.magicscene = () => {
             ...background, ...itemsButtons, ...itemsImages, ...theTop,
             blackFadeTransition
         ],
+        name: "magic"
     }
 }
