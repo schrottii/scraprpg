@@ -51,7 +51,7 @@ function init() {
             }),
             */
             controls.button({
-                anchor: [.9, .9], sizeOffset: [50, 25],
+                anchor: [.9, .8], sizeOffset: [50, 25],
                 clickthrough: false, fontSize: 16, alpha: 1,
                 text: "Dev Mode",
                 onClick() {
@@ -69,8 +69,34 @@ function init() {
                     saveNR = 3;
                     loadGame();
                     loadSettings();
-                    createEnemy("livingbarrel");
                     setScene(scenes.game());
+                }
+            }),
+            controls.button({
+                anchor: [.9, .9], sizeOffset: [50, 25],
+                clickthrough: false, fontSize: 16, alpha: 1,
+                text: "Fight",
+                onClick() {
+                    cancel = true;
+                    musicPlayer.muted = true; // false?
+                    soundPlayer.muted = false;
+
+                    loadSettings();
+                    changeSoundVolume(settings.soundVolume);
+                    playSound("titletransition");
+
+                    stopMusic();
+                    //playMusic("bgm/boss", "bgm/placeholder");
+                    //^intro example - remove comment ^ there, add comment to setscene few lines below, set musicplayer muted to false above
+                    saveNR = 3;
+                    loadGame();
+                    loadSettings();
+                    createEnemy("livingbarrel");
+                    createEnemy("livingbarrel");
+                    createEnemy("weakhelter");
+                    createEnemy("weakhelter");
+                    createEnemy("weakhelter");
+                    setScene(scenes.fight());
                 }
             }),
             

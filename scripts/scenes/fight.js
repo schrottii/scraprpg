@@ -2814,8 +2814,8 @@ scenes.fight = () => {
         alpha: 1
     })
     addAnimator(function (t) {
-        blackFadeTransition.alpha = 1 - (t / 200);
-        if (t > 499) {
+        blackFadeTransition.alpha = 1 - (t / 800);
+        if (t > 799) {
             blackFadeTransition.alpha = 0;
             return true;
         }
