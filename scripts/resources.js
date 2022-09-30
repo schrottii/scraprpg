@@ -47,6 +47,7 @@ let images = {
     load: "data/images/load.png",
     delete: "data/images/delete.png",
     autosave: "data/images/autosave.png",
+    mapbuttons: "data/images/mapbuttons.png",
 
     eattackani2: "data/images/eattackani2.png",
 

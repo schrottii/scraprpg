@@ -253,19 +253,21 @@ scenes.game = () => {
 
     walkPad.push(controls.image({ // Up
         anchor: [.1, .9], offset: [0, -walkPadSize * 3], sizeOffset: [walkPadSize, walkPadSize],
-        fontSize: 16, source: "arrowup",
+        fontSize: 16, source: "mapbuttons", snip: [0, 0, 32, 32],
         isPressed: false,
         onDown(args) {
+            this.snip[0] = 32;
             reviveWalkPad();
             pad = "up";
         },
         onClick(args) {
+            this.snip[0] = 0;
             pad = "";
         }
     }));
     walkPad.push(controls.image({ // Middle
         anchor: [.1, .9], offset: [0, -walkPadSize * 2], sizeOffset: [walkPadSize, walkPadSize],
-        fontSize: 16, source: "arrowmiddle",
+        fontSize: 16, source: "mapbuttons", snip: [64, 0, 32, 32],
         isPressed: false,
         onDown(args) {
             reviveWalkPad();
@@ -274,37 +276,43 @@ scenes.game = () => {
     }));
     walkPad.push(controls.image({ // Down
         anchor: [.1, .9], offset: [0, -walkPadSize], sizeOffset: [walkPadSize, walkPadSize],
-        fontSize: 16, source: "arrowdown",
+        fontSize: 16, source: "mapbuttons", snip: [0, 64, 32, 32],
         isPressed: false,
         onDown(args) {
+            this.snip[0] = 32;
             reviveWalkPad();
             pad = "down";
         },
         onClick(args) {
+            this.snip[0] = 0;
             pad = "";
         }
     }));
     walkPad.push(controls.image({ // Left
         anchor: [.1, .9], offset: [-walkPadSize, -walkPadSize * 2], sizeOffset: [walkPadSize, walkPadSize],
-        fontSize: 16, source: "arrowleft",
+        fontSize: 16, source: "mapbuttons", snip: [0, 96, 32, 32],
         isPressed: false,
         onDown(args) {
+            this.snip[0] = 32;
             reviveWalkPad();
             pad = "left";
         },
         onClick(args) {
+            this.snip[0] = 0;
             pad = "";
         }
     }));
     walkPad.push(controls.image({ // Right
         anchor: [.1, .9], offset: [walkPadSize, -walkPadSize * 2], sizeOffset: [walkPadSize, walkPadSize],
-        fontSize: 16, source: "arrowright",
+        fontSize: 16, source: "mapbuttons", snip: [0, 32, 32, 32],
         isPressed: false,
         onDown(args) {
+            this.snip[0] = 32;
             reviveWalkPad();
             pad = "right";
         },
         onClick(args) {
+            this.snip[0] = 0;
             pad = "";
         }
     }));
@@ -567,10 +575,16 @@ scenes.game = () => {
     // end of the dialogue stuff. lol.
 
     let actionButton = controls.image({
-        anchor: [1, 0.7], sizeOffset: [256, 256], offset: [-312, 0],
+        anchor: [1, 0.8], sizeOffset: [256, 128], offset: [-312, 0],
         alpha: 1,
-        source: "actionbutton",
+        source: "mapbuttons", snip: [64, 96, 64, 32],
+        isPressed: false,
+        onDown(args) {
+            this.snip[1] = 64;
+        },
         onClick(args) {
+            this.snip[1] = 96;
+
             testParticle.alpha = 1;
             testParticle.movable = true;
             testParticle.movable2 = true;
@@ -1037,7 +1051,7 @@ scenes.game = () => {
         for (i in activenpcs) {
             activenpcs[i].talk = false;
             if (activenpcs[i].position[0] == game.position[0] + xo && activenpcs[i].position[1] == game.position[1] + yo) {
-                actionButton.source = "actionbutton_active";
+                actionButton.snip = [64, 32, 64, 32];
                 activenpcs[i].talk = true;
             }
         }
@@ -1717,9 +1731,9 @@ scenes.game = () => {
                         xo /= 2;
                         yo /= 2;
                     }
-                    actionButton.source = "actionbutton";
-                    if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo).action != undefined) actionButton.source = "actionbutton_active"
-                    else if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2).action != undefined) actionButton.source = "actionbutton_active"
+                    actionButton.snip = [64, 96, 64, 32];
+                    if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo).action != undefined) actionButton.snip = [64, 32, 64, 32]
+                    else if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2).action != undefined) actionButton.snip = [64, 32, 64, 32]
 
                     tryTalk(xo, yo);
 
@@ -1733,9 +1747,9 @@ scenes.game = () => {
                         ActionsOnMove();
                         tryTeleport(map, Math.floor(game.position[0]), Math.floor(game.position[1]));
 
-                        actionButton.source = "actionbutton";
-                        if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo).action != undefined) actionButton.source = "actionbutton_active"
-                        else if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2).action != undefined) actionButton.source = "actionbutton_active"
+                        actionButton.snip = [64, 96, 64, 32];
+                        if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo).action != undefined) actionButton.snip = [64, 32, 64, 32]
+                        else if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2).action != undefined) actionButton.snip = [64, 32, 64, 32]
 
                         tryTalk(xo, yo);
 
