@@ -113,6 +113,7 @@ let settings = {
     autosave: false,
     grid: true,
     joystick: false,
+    walkPadSize: 1,
     musicVolume: 0.5,
     soundVolume: 0.5
 }

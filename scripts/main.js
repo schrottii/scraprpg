@@ -70,7 +70,7 @@ function init() {
                     loadGame();
                     loadSettings();
                     createEnemy("livingbarrel");
-                    setScene(scenes.fight());
+                    setScene(scenes.game());
                 }
             }),
     

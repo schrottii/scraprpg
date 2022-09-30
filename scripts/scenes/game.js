@@ -249,8 +249,10 @@ scenes.game = () => {
     let walkPad = [];
     let walkPadIdle = 5;
 
+    let walkPadSize = Math.max(32, 64 * settings.walkPadSize);
+
     walkPad.push(controls.image({ // Up
-        anchor: [.1, .75], offset: [0, 0], sizeOffset: [64, 64],
+        anchor: [.1, .9], offset: [0, -walkPadSize * 3], sizeOffset: [walkPadSize, walkPadSize],
         fontSize: 16, source: "arrowup",
         isPressed: false,
         onDown(args) {
@@ -262,7 +264,7 @@ scenes.game = () => {
         }
     }));
     walkPad.push(controls.image({ // Middle
-        anchor: [.1, .75], offset: [0, 64], sizeOffset: [64, 64],
+        anchor: [.1, .9], offset: [0, -walkPadSize * 2], sizeOffset: [walkPadSize, walkPadSize],
         fontSize: 16, source: "arrowmiddle",
         isPressed: false,
         onDown(args) {
@@ -271,7 +273,7 @@ scenes.game = () => {
         },
     }));
     walkPad.push(controls.image({ // Down
-        anchor: [.1, .75], offset: [0, 128], sizeOffset: [64, 64],
+        anchor: [.1, .9], offset: [0, -walkPadSize], sizeOffset: [walkPadSize, walkPadSize],
         fontSize: 16, source: "arrowdown",
         isPressed: false,
         onDown(args) {
@@ -283,7 +285,7 @@ scenes.game = () => {
         }
     }));
     walkPad.push(controls.image({ // Left
-        anchor: [.1, .75], offset: [-64, 64], sizeOffset: [64, 64],
+        anchor: [.1, .9], offset: [-walkPadSize, -walkPadSize * 2], sizeOffset: [walkPadSize, walkPadSize],
         fontSize: 16, source: "arrowleft",
         isPressed: false,
         onDown(args) {
@@ -295,7 +297,7 @@ scenes.game = () => {
         }
     }));
     walkPad.push(controls.image({ // Right
-        anchor: [.1, .75], offset: [64, 64], sizeOffset: [64, 64],
+        anchor: [.1, .9], offset: [walkPadSize, -walkPadSize * 2], sizeOffset: [walkPadSize, walkPadSize],
         fontSize: 16, source: "arrowright",
         isPressed: false,
         onDown(args) {
@@ -565,7 +567,7 @@ scenes.game = () => {
     // end of the dialogue stuff. lol.
 
     let actionButton = controls.image({
-        anchor: [1, 0.8], sizeOffset: [128, 128], offset: [-256, 0],
+        anchor: [1, 0.7], sizeOffset: [256, 256], offset: [-312, 0],
         alpha: 1,
         source: "actionbutton",
         onClick(args) {

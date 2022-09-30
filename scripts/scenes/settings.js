@@ -177,6 +177,35 @@ scenes.settings = () => {
         }
     }));
 
+    menuSettingsGraphics.push(controls.button({
+        anchor: [0.55, 0.55], sizeAnchor: [0.2, 0.1],
+        text: "WalkPad Size: 32", alpha: 0,
+    }));
+    menuSettingsGraphics.push(controls.button({
+        anchor: [0.5, 0.55], sizeAnchor: [0.04, 0.1],
+        text: "-", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                playSound("buttonClickSound");
+                settings.walkPadSize -= 1;
+                if (settings.walkPadSize < 0) settings.walkPadSize = 2;
+                showMenuSettings(); //Update
+            }
+        }
+    }));
+    menuSettingsGraphics.push(controls.button({
+        anchor: [0.76, 0.55], sizeAnchor: [0.04, 0.1],
+        text: "+", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                playSound("buttonClickSound");
+                settings.walkPadSize += 1;
+                if (settings.walkPadSize > 2) settings.walkPadSize = 0;
+                showMenuSettings(); //Update
+            }
+        }
+    }));
+
     // Audio
 
     menuSettingsAudio.push(controls.button({
@@ -287,6 +316,7 @@ scenes.settings = () => {
             else {
                 menuSettingsGraphics[1].text = "WalkPad";
             }
+            menuSettingsGraphics[2].text = "WalkPad Size: " + Math.max(50, settings.walkPadSize * 100) + "%";
             for (i = 0; i < menuSettingsGraphics.length; i++) {
                 menuSettingsGraphics[i].alpha = 1;
             }
