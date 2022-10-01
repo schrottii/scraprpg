@@ -1033,6 +1033,8 @@ scenes.fight = () => {
             attackAnimationObjects[fpos1 + (fpos2 * 3)].alpha = 1;
             attackAnimationObjects[fpos1 + (fpos2 * 3)].source = "attackani0";
 
+            let runTime = 0;
+
             addAnimator(function (t) {
                 positionControls[fpos1 + (fpos2 * 3)].anchor[0] = own[0] + ((goal[0] / al) * Math.min(al, t));
 
@@ -1082,6 +1084,8 @@ scenes.fight = () => {
             attackAnimationObjects[9 + pos1 + (pos2 * 3)].offset = [epositionControls[pos1 + (pos2 * 3)].offset[0] - 72 + epositionControls[pos1 + (pos2 * 3)].bigoff, epositionControls[pos1 + (pos2 * 3)].offset[1]];
             attackAnimationObjects[9 + pos1 + (pos2 * 3)].alpha = 1;
             attackAnimationObjects[9 + pos1 + (pos2 * 3)].source = "eattackani0";
+
+            let runTime = 0;
 
             addAnimator(function (t) {
                 epositionControls[pos1 + (pos2 * 3)].anchor[0] = own[0] + Math.max(0, ((goal[0] / al) * (al - Math.min(al, t))));
@@ -1606,19 +1610,7 @@ scenes.fight = () => {
 
     function endFight() {
         stopMusic();
-        addAnimator(function (t) {
-            blackFadeTransition.alpha = 0 + (t / 200);
-            if (t > 499) {
-                blackFadeTransition.alpha = 0;
-                setScene(scenes.game());
-                setTimeout(() => {
-                    positions = [];
-                    fightStats = [];
-                }, 500);
-                return true;
-            }
-            return false;
-        })
+        fadeOut(500, true, () => setScene(scenes.game()));
     }
 
     // finally a non array
@@ -2453,7 +2445,8 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             epositionControls.push(controls.image({
-                anchor: [0.975, 0.45], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64], bigoff: 0,
+                anchor: [1.975, 0.45], offset: [500, 72 * j], sizeOffset: [64, 64], bigoff: 0,
+                defoffset: -(72 + (72 * i)),
                 source: "gear",
                 blend: "xor",
                 alpha: 1,
@@ -2761,6 +2754,7 @@ scenes.fight = () => {
             return false;
         });
     }
+
     function endCutscene() {
         canMove = true;
         cutsceneMode = false;
@@ -2779,50 +2773,87 @@ scenes.fight = () => {
             return false;
         });
     }
-    //startCutscene();
 
-    let runTime = 0;
-    let runLaps = 0;
+
+    fadeIn(500, true);
+
+    for (cp in fightStats) {
+        fightStats[cp].offset = [0, 1000];
+    }
+    for (cp in fightLogComponents) {
+        fightLogComponents[cp].bigoff = fightLogComponents[cp].offset[1];
+        fightLogComponents[cp].offset = [0, 1000 + fightLogComponents[cp].bigoff];
+    }
+    for (cp in enemyListComponents) {
+        enemyListComponents[cp].bigoff = enemyListComponents[cp].offset[1];
+        enemyListComponents[cp].offset = [0, 1000 + enemyListComponents[cp].bigoff];
+    }
+    for (cp in actionDisplay) {
+        actionDisplay[cp].offset = [0, -500];
+    }
+    turnDisplay.offset = [0, -500];
+
     addAnimator(function (t) {
-        for (i = 0; i < positionControls.length; i++) {
-            positionControls[i].offset[0] = positionControls[i].defoffset - (1000 - t);
-            positionControls[i].anchor[0] = Math.min(t / 40000, 0.025);
-            if (positionControls[i].source != "gear") positionControls[i].snip[0] = Math.floor(runTime) * 32;
+        for (cp in fightStats) {
+            fightStats[cp].offset[1] = 1000 - t;
         }
+        for (cp in fightLogComponents) {
+            fightLogComponents[cp].offset[1] = (fightLogComponents.bigoff + 1000) - t;
+        }
+        for (cp in enemyListComponents) {
+            enemyListComponents[cp].offset[1] = (enemyListComponents.bigoff + 1000) - t;
+        }
+        for (cp in actionDisplay) {
+            actionDisplay[cp].offset[1] = -500 + (t / 2);
+        }
+        turnDisplay.offset[1] = -500 + (t / 2);
 
-        runTime += ((t - runLaps) / 250);
-        if (runTime >= 2) {
-            runTime = 0;
-            runLaps = t;
-        }
-        if (t > 1000) {
-            for (i = 0; i < positionControls.length; i++) {
-                positionControls[i].offset[0] = positionControls[i].defoffset;
-                positionControls[i].anchor[0] = 0.025;
-            }
-            delete runTime;
-            delete runLaps;
+        if (t > 999) {
+            for (cp in fightStats) fightStats[cp].offset[1] = 0;
+            for (cp in fightLogComponents) fightLogComponents[cp].offset[1] = fightLogComponents[cp].bigoff;
+            for (cp in enemyListComponents) enemyListComponents[cp].offset[1] = enemyListComponents[cp].bigoff;
+            for (cp in actionDisplay) actionDisplay[cp].offset[1] = 0;
+            turnDisplay.offset[1] = 0;
+
+            let runTime = 0;
+            let runLaps = 0;
+            addAnimator(function (t) {
+                for (i = 0; i < positionControls.length; i++) {
+                    positionControls[i].offset[0] = positionControls[i].defoffset - (1000 - t);
+                    positionControls[i].anchor[0] = Math.min(t / 40000, 0.025);
+                    if (positionControls[i].source != "gear") positionControls[i].snip[0] = Math.floor(runTime) * 32;
+                }
+                for (i = 0; i < epositionControls.length; i++) {
+                    epositionControls[i].offset[0] = epositionControls[i].defoffset + (1000 - t);
+                    epositionControls[i].anchor[0] = Math.max(t / 40000, 0.975);
+                    if (epositionControls[i].source != "gear") epositionControls[i].snip[0] = Math.floor(runTime) * 32;
+                }
+
+                runTime += ((t - runLaps) / 250);
+                if (runTime >= 2) {
+                    runTime = 0;
+                    runLaps = t;
+                }
+                if (t > 1000) {
+                    for (i = 0; i < positionControls.length; i++) {
+                        positionControls[i].offset[0] = positionControls[i].defoffset;
+                        positionControls[i].anchor[0] = 0.025;
+                    }
+                    for (i = 0; i < epositionControls.length; i++) {
+                        epositionControls[i].offset[0] = epositionControls[i].defoffset;
+                        epositionControls[i].anchor[0] = 0.975;
+                    }
+                    delete runTime;
+                    delete runLaps;
+                    return true;
+                }
+                return false;
+            });
+
             return true;
         }
         return false;
     });
-
-    // Default black fade transition
-    let blackFadeTransition = controls.rect({
-        anchor: [0, 0], sizeAnchor: [1, 1], // (fullscreen)
-        fill: "black",
-        alpha: 1
-    })
-    addAnimator(function (t) {
-        blackFadeTransition.alpha = 1 - (t / 800);
-        if (t > 799) {
-            blackFadeTransition.alpha = 0;
-            return true;
-        }
-        return false;
-    })
-    // black fade transition end
-
 
     return {
         // Pre-render function
@@ -2892,7 +2923,7 @@ scenes.fight = () => {
             ...fightOverview,
             ...fightStats, ...actionDisplay, ...gameOverScreen,
             ...positionControls, ...epositionControls, ...positionGrid, ...attackAnimationObjects, ...battleNumbers, ...winScreen, ...winScreen2, ...winStats, ...fleeWrenches, ...gameOverScreen2,
-            ...cutsceneElements, blackFadeTransition,
+            ...cutsceneElements,
         ],
         name: "fight"
     }

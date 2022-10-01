@@ -29,13 +29,15 @@ scenes.inventory = () => {
             text: ["Items", "Magic", "Equipment", "Formation", "Save Manager", "Settings", "Exit Menu"][i],
             onClick(args) {
                 playSound("buttonClickSound");
-                if (this.id == 0) setScene(scenes.itemscene());
-                if (this.id == 1) setScene(scenes.magicscene());
-                if (this.id == 2) setScene(scenes.equipment());
-                if (this.id == 3) setScene(scenes.formation());
-                if (this.id == 4) setScene(scenes.savemanager());
-                if (this.id == 5) setScene(scenes.settings());
-                if (this.id == 6) setScene(scenes.game());
+                fadeOut(500, true, () => {
+                    if (this.id == 0) setScene(scenes.itemscene());
+                    if (this.id == 1) setScene(scenes.magicscene());
+                    if (this.id == 2) setScene(scenes.equipment());
+                    if (this.id == 3) setScene(scenes.formation());
+                    if (this.id == 4) setScene(scenes.savemanager());
+                    if (this.id == 5) setScene(scenes.settings());
+                    if (this.id == 6) setScene(scenes.game());
+                });
             }
         }));
     }
@@ -162,21 +164,7 @@ scenes.inventory = () => {
         alpha: 1
     }))
 
-    // Default black fade transition
-    let blackFadeTransition = controls.rect({
-        anchor: [0, 0], sizeAnchor: [1, 1], // (fullscreen)
-        fill: "black",
-        alpha: 1
-    })
-    addAnimator(function (t) {
-        blackFadeTransition.alpha = 1 - (t / 200);
-        if (t > 499) {
-            blackFadeTransition.alpha = 0;
-            return true;
-        }
-        return false;
-    })
-    // black fade transition end
+    fadeIn(500, true);
 
     return {
         // Pre-render function
@@ -230,7 +218,6 @@ scenes.inventory = () => {
         // Controls
         controls: [
             ...background, ...buttons, ...characters, ...characterNames, ...characterImages, ...characterBars, ...emptyChars, ...coolDisplays,
-            blackFadeTransition
         ],
         name: "inventory"
     }

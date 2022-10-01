@@ -1422,24 +1422,10 @@ scenes.game = () => {
         }
     })
 
-    // Default black fade transition
     let tTime = 200;
     if (previousScene == "main" || previousScene == "title") tTime = 800;
 
-    let blackFadeTransition = controls.rect({
-        anchor: [0, 0], sizeAnchor: [1, 1], // (fullscreen)
-        fill: "black",
-        alpha: 1
-    })
-    addAnimator(function (t) {
-        blackFadeTransition.alpha = 1 - (t / tTime);
-        if (t > tTime - 1) {
-            blackFadeTransition.alpha = 0;
-            return true;
-        }
-        return false;
-    })
-    // black fade transition end
+    fadeIn(tTime, true);
 
     return {
         preRender(ctx, delta) {
@@ -2091,7 +2077,7 @@ scenes.game = () => {
             ...cutsceneElements,
             ...dialogueNormalComponents, ...dialogueInvisComponents, ...dialogueNarratorComponents, ...dialogueCutsceneComponents,
             autoSaveText, ...areaNameBox, areaTeleportFade,
-            blackFadeTransition, testParticle, 
+            testParticle, 
         ],
         name: "game"
     }

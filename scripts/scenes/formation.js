@@ -23,7 +23,7 @@ scenes.formation = () => {
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
-            setScene(scenes.inventory());
+            fadeOut(500, true, () => setScene(scenes.inventory()));
         },
         text: ">",
         fill: "white"
@@ -174,21 +174,7 @@ scenes.formation = () => {
         alpha: 0,
     });
 
-    // Default black fade transition
-    let blackFadeTransition = controls.rect({
-        anchor: [0, 0], sizeAnchor: [1, 1], // (fullscreen)
-        fill: "black",
-        alpha: 1
-    })
-    addAnimator(function (t) {
-        blackFadeTransition.alpha = 1 - (t / 200);
-        if (t > 499) {
-            blackFadeTransition.alpha = 0;
-            return true;
-        }
-        return false;
-    })
-    // black fade transition end
+    fadeIn(500, true);
 
     return {
         // Pre-render function
@@ -208,7 +194,7 @@ scenes.formation = () => {
         controls: [
             ...background,
             ...positionGrid, ...positions, ...posInfos, ...macroControls, switchText,
-            blackFadeTransition
+            
         ],
         name: "formation"
     }

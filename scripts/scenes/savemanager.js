@@ -22,7 +22,7 @@ scenes.savemanager = () => {
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
-            setScene(scenes.inventory());
+            fadeOut(500, true, () => setScene(scenes.inventory()));
         },
         text: ">",
         fill: "white"
@@ -195,21 +195,7 @@ scenes.savemanager = () => {
         alpha: 1,
     }));
 
-    // Default black fade transition
-    let blackFadeTransition = controls.rect({
-        anchor: [0, 0], sizeAnchor: [1, 1], // (fullscreen)
-        fill: "black",
-        alpha: 1
-    })
-    addAnimator(function (t) {
-        blackFadeTransition.alpha = 1 - (t / 200);
-        if (t > 499) {
-            blackFadeTransition.alpha = 0;
-            return true;
-        }
-        return false;
-    })
-    // black fade transition end
+    fadeIn(500, true);
 
     return {
         // Pre-render function
@@ -251,7 +237,6 @@ scenes.savemanager = () => {
         // Controls
         controls: [
             ...background, ...saveButtons, ...saveTexts, ...buttons,
-            blackFadeTransition
         ],
         name: "saves"
     }
