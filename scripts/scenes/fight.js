@@ -2766,6 +2766,8 @@ scenes.fight = () => {
 
     fadeIn(500, true);
 
+    let scal = 10;
+
     for (cp in fightStats) {
         fightStats[cp].offset = [0, 1000];
     }
@@ -2796,6 +2798,8 @@ scenes.fight = () => {
             actionDisplay[cp].offset[1] = -500 + (t / 2);
         }
         turnDisplay.offset[1] = -500 + (t / 2);
+
+        scal = Math.max(1, 10 - (t / 75));
 
         if (t > 999) {
             for (cp in fightStats) fightStats[cp].offset[1] = 0;
@@ -2847,6 +2851,8 @@ scenes.fight = () => {
     return {
         // Pre-render function
         preRender(ctx, delta) {
+            ctx.scale(scal, scal);
+
             ctx.drawImage(images.fight_bg, 0, 0, width * scale, height);
 
             // Update the stats stuff at the bottom
