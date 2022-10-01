@@ -27,7 +27,8 @@ scenes.settings = () => {
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
-            fadeOut(500, true, () => setScene(scenes.inventory()));
+            if (previousScene == "inventory") fadeOut(500, true, () => setScene(scenes.inventory()));
+            else fadeOut(750, false, () => setScene(scenes.title()));
         },
         text: ">",
         fill: "white"

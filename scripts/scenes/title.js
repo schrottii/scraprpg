@@ -81,10 +81,8 @@ scenes.title = () => {
                 saveImages[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
             }
 
-            for (i in options) {
-                options[i].anchor[0] = -.8 + (1 - (1 - Math.max(Math.min(t / 800, 1), 0)) ** 4);
-            }
-            if (t > 1000) {
+            if (t > 599) {
+                fadeOut(400, true, () => setScene(scenes.settings()));
                 return true;
             }
             return false;
@@ -257,7 +255,7 @@ scenes.title = () => {
         }
     });
     let optionButton = controls.button({
-        anchor: [-.2, .5], offset: [-150, 170], sizeOffset: [150, 50],
+        anchor: [-.2, .5], offset: [-200, 170], sizeOffset: [150, 50],
         fontSize: 16, text: "Options",
         onClick(args) {
             playSound("buttonClickSound");
@@ -272,85 +270,6 @@ scenes.title = () => {
             }
         }
     });
-
-    // Options
-    let options = [];
-
-    options.push(controls.button({
-        anchor: [-.8, .1], offset: [0, 170], sizeOffset: [150, 50],
-        fontSize: 16, text: "Grid: ON",
-        onClick(args) {
-            playSound("buttonClickSound");
-            if (settings.grid == true) {
-                settings.grid = false;
-            }
-            else {
-                settings.grid = true;
-            }
-        }
-    }));
-    options.push(controls.button({
-        anchor: [-.8, .1], offset: [0, 240], sizeOffset: [150, 50],
-        fontSize: 16, text: "Music Volume: 50%",
-        onClick(args) {
-        }
-    }));
-    options.push(controls.button({
-        anchor: [-.8, .1], offset: [-30, 240], sizeOffset: [25, 50],
-        fontSize: 16, text: "-",
-        onClick(args) {
-            playSound("buttonClickSound");
-            if (settings.musicVolume > 0.01) {
-                settings.musicVolume = settings.musicVolume - 0.05;
-                if (settings.musicVolume < 0) settings.musicVolume = 0;
-                musicPlayer.volume = settings.musicVolume;
-            }
-        }
-    }));
-    options.push(controls.button({
-        anchor: [-.8, .1], offset: [155, 240], sizeOffset: [25, 50],
-        fontSize: 16, text: "+",
-        onClick(args) {
-            playSound("buttonClickSound");
-            if (settings.musicVolume < 0.99) {
-                settings.musicVolume = settings.musicVolume + 0.05;
-                if (settings.musicVolume > 1) settings.musicVolume = 1;
-                musicPlayer.volume = settings.musicVolume;
-            }
-        }
-    }));
-
-
-    options.push(controls.button({
-        anchor: [-.8, .1], offset: [250, 240], sizeOffset: [150, 50],
-        fontSize: 16, text: "Sound Volume: 50%",
-        onClick(args) {
-        }
-    }));
-    options.push(controls.button({
-        anchor: [-.8, .1], offset: [220, 240], sizeOffset: [25, 50],
-        fontSize: 16, text: "-",
-        onClick(args) {
-            playSound("buttonClickSound");
-            if (settings.soundVolume > 0.01) {
-                settings.soundVolume = settings.soundVolume - 0.05;
-                if (settings.soundVolume < 0) settings.soundVolume = 0;
-                changeSoundVolume(settings.soundVolume);
-            }
-        }
-    }));
-    options.push(controls.button({
-        anchor: [-.8, .1], offset: [405, 240], sizeOffset: [25, 50],
-        fontSize: 16, text: "+",
-        onClick(args) {
-            playSound("buttonClickSound");
-            if (settings.soundVolume < 0.99) {
-                settings.soundVolume = settings.soundVolume + 0.05;
-                if (settings.soundVolume > 1) settings.soundVolume = 1;
-                changeSoundVolume(settings.soundVolume);
-            }
-        }
-    }));
 
     let fadeOverlay = controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 1],
@@ -395,10 +314,10 @@ scenes.title = () => {
             }
             for (let a = 0; a < delta; a += 200) {
                 particles.push(
-                    [Math.random() * w * 2 - w, Math.random() * h * 2 - h, delta - a], 
+                    [Math.random() * w * 2 - w, Math.random() * h * 2 - h, delta - a],
                 );
             }
-            
+
             if (state == "title") {
                 contLabel.alpha = (Math.cos(time / 1000) + 3) / 4;
             }
@@ -440,7 +359,7 @@ scenes.title = () => {
 
                     saveTexts[13 + (a * amount)].text = thisSave.wrenches;
                     saveTexts[14 + (a * amount)].text = thisSave.bricks;
-                    
+
                     saveImages[a].source = "saveimage" + thisSave.pfp;
                 }
                 else { // Save does not exist :(
@@ -465,15 +384,7 @@ scenes.title = () => {
                 optionButton.text = "Go Back";
             }
 
-            if (settings.grid == true) {
-                options[0].text = "Grid: ON";
-            }
-            else {
-                options[0].text = "Grid: OFF";
-            }
-            options[1].text = "Music Volume: " + Math.round(settings.musicVolume * 100) + "%";
-            options[4].text = "Sound Volume: " + Math.round(settings.soundVolume * 100) + "%";
-
+            if (previousScene == "settings") hideOptions();
         },
 
         // Controls
@@ -523,7 +434,7 @@ scenes.title = () => {
                 }
             }),
             ...saveButtons, ...saveImages, ...saveTexts, settingsSaveText,
-            deleteButton, optionButton, ...options,
+            deleteButton, optionButton,
             fadeOverlay
         ],
         name: "title"
