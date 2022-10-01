@@ -1914,19 +1914,6 @@ scenes.fight = () => {
                         if (winScreen2[i].source != "gear" && winScreen2[i].text != "nothing") winScreen2[i].alpha = 1;
                     }
 
-                    addAnimator(function (t) {
-                        for (i = 1; i < winScreen2.length; i++) {
-                            winScreen2[i].offset[1] = Math.min(-1000 + t, 0);
-                        }
-                        if (t > 1000) {
-                            for (i = 0; i < winScreen2.length; i++) {
-                                if (winScreen2[i].fontSize == 24) winScreen2[i].offset[1] = 32;
-                                else winScreen2[i].offset[1] = 0;
-                            }
-                            return true;
-                        }
-                        return false;
-                    })
 
                 }
             }
@@ -2048,7 +2035,7 @@ scenes.fight = () => {
     }));
 
     winScreen2.push(controls.label({
-        anchor: [0.1, 0.1], offset: [0, -1000],
+        anchor: [0.1, 0.1],
         text: "And you got...",
         fontSize: 48, fill: "white", align: "left",
         alpha: 0,
@@ -2056,12 +2043,12 @@ scenes.fight = () => {
 
     for (i = 0; i < 12; i++) {
         winScreen2.push(controls.image({
-            anchor: [0.1, 0.15 + (i * 0.075)], offset: [0, -1000], sizeOffset: [64, 64],
+            anchor: [0.1, 0.15 + (i * 0.075)], sizeOffset: [64, 64],
             source: "gear",
             alpha: 0,
         }));
         winScreen2.push(controls.label({
-            anchor: [0.2, 0.15 + (i * 0.075)], offset: [0, -1000],
+            anchor: [0.2, 0.15 + (i * 0.075)], offset: [0, 32],
             text: "nothing",
             fontSize: 24, fill: "white", align: "left",
             alpha: 0,
@@ -2549,6 +2536,7 @@ scenes.fight = () => {
                             epositionControls[i + (j * 3)].sizeOffset = [128, 128];
                             if (epositionControls[i + (j * 3)].bigoff == 0) {
                                 epositionControls[i + (j * 3)].bigoff = -72;
+                                epositionControls[i + (j * 3)].defoffset = -(72 + (72 * i)) - 72;
                                 epositionControls[i + (j * 3)].offset = [-(72 + (72 * i)) -72, 72 * j];
                             }
                         }
@@ -2556,6 +2544,7 @@ scenes.fight = () => {
                             epositionControls[i + (j * 3)].sizeOffset = [64, 64];
                             if (epositionControls[i + (j * 3)].bigoff == -72) {
                                 epositionControls[i + (j * 3)].bigoff = 0;
+                                epositionControls[i + (j * 3)].defoffset = -(72 + (72 * i));
                                 epositionControls[i + (j * 3)].offset = [-(72 + (72 * i)), 72 * j];
                             }
                         }
