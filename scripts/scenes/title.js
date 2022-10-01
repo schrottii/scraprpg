@@ -36,6 +36,10 @@ scenes.title = () => {
 
     function loadSave(id) {
         fadeOverlay.clickthrough = false;
+        for (st = 0; st < saveTexts.length; st++) {
+            saveTexts[st].defoff = saveTexts[st].offset[1] - (130 * (Math.floor(st / 15))) + 240;
+        }
+
         addAnimator(function (t) {
             for (let a = 0; a < 4; a++) {
                 if (a == id) {
@@ -46,6 +50,10 @@ scenes.title = () => {
                     saveButtons[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
                     saveImages[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
                     saveImages[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
+                }
+                for (st = 0 + (15 * a); st < 15 + (15 * a); st++) {
+                    saveTexts[st].anchor[1] = saveButtons[a].anchor[1];
+                    saveTexts[st].offset[1] = saveTexts[st].defoff + saveButtons[a].offset[1];
                 }
             }
             //musicPlayer.volume = 0.5 * Math.max(1 - t / 4000, 0) ** 2;

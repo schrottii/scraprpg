@@ -108,10 +108,10 @@ function init() {
     loop();
 
 
-    image_animation(images.schrottgamesanimation, 4, 5, 100);
+    image_animation(images.schrottgamesanimation, 4, 5, 10);
     setTimeout(() => {
-        if (!cancel) image_animation(images.tttanimation, 4, 5, 100)
-    }, 2500);
+        if (!cancel) image_animation(images.tttanimation, 4, 5, 10)
+    }, 250);
     setTimeout(() => {
         tokenStay.alpha = 1;
         addAnimator(function (t) {
@@ -123,13 +123,13 @@ function init() {
             }
             return false;
         })
-    }, 4500);
+    }, 450);
     setTimeout(() => {
         if (!cancel) {
             musicPlayer.loop = true;
             setScene(scenes.title());
         }
-    }, 5500);
+    }, 550);
 }
 
 var currentKeys = {};
