@@ -225,9 +225,17 @@ scenes.savemanager = () => {
 
                     saveTexts[13 + (a * amount)].text = thisSave.wrenches;
                     saveTexts[14 + (a * amount)].text = thisSave.bricks;
+
+                    for (i = 0; i < amount; i++) {
+                        saveTexts[i + (a * amount)].alpha = 1;
+                    }
                 }
                 else { // Save does not exist :(
-                    saveButtons[a].text = "New Game";
+                    saveButtons[a].text = "Empty";
+                    let amount = 15;
+                    for (i = 0; i < amount; i++) {
+                        saveTexts[i + (a * amount)].alpha = 0;
+                    }
                 }
             }
             if (mode == "save") buttons[0].text = "Mode: Save";
