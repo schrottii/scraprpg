@@ -64,9 +64,6 @@ function fadeOut(dur, keep = true, onFinish = false) {
         if (t >= dur) {
             inFade = false;
             if (onFinish != false) onFinish(); // such as setScene
-            t += 450;
-        }
-        if (t >= dur + 500) {
             if (keep) {
                 setFilter("brightness", 0);
             }
@@ -92,9 +89,6 @@ function fadeIn(dur, keep = true, onFinish = false) {
         if (t >= dur) {
             inFade = false;
             if (onFinish != false) onFinish(); // such as setScene
-            t += 450;
-        }
-        if (t >= dur + 500) {
             if (keep) {
                 setFilter("brightness", 100);
             }

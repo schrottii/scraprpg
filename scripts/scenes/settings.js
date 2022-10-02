@@ -28,7 +28,7 @@ scenes.settings = () => {
         onClick(args) {
             playSound("buttonClickSound");
             if (previousScene == "inventory") fadeOut(500, true, () => setScene(scenes.inventory()));
-            else fadeOut(750, false, () => setScene(scenes.title()));
+            if (previousScene == "title") fadeOut(750, false, () => setScene(scenes.title()));
         },
         text: ">",
         fill: "white"
@@ -100,7 +100,8 @@ scenes.settings = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 playSound("buttonClickSound");
-                setScene(scenes.inventory());
+                if (previousScene == "inventory") fadeOut(500, true, () => setScene(scenes.inventory()));
+                if (previousScene == "title") fadeOut(750, false, () => setScene(scenes.title()));
             }
         }
     }));

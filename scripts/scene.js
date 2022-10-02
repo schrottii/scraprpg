@@ -3,7 +3,8 @@ var previousScene;
 
 
 function setScene(args) {
-    previousScene = args.name;
+    previousScene = scene.name;
+
     scene = {
         preRender: (ctx) => {},
         controls: [],

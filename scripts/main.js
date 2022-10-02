@@ -144,12 +144,17 @@ var textProgress = -1;
 //  ----> Dusk: 15:00 - 17:59
 // Night: 18:00 - 5:59 (12 hours)
 
-function getTime(ti = game.time, am=16.667, di=1000) {
+function getTime(ti = game.time, am=16.667, di=1000, sc=false) {
     let hours = Math.floor(ti / di);
     let minutes = Math.floor((ti % di) / am);
-    if (minutes == 60) return hours+1 + ":00";
-    if (minutes < 10) return hours + ":0" + minutes;
-    return hours + ":" + minutes;
+
+    let seconds = "";
+    if (sc == true) seconds = ":" + Math.floor(ti % 60);
+    if (sc == true && seconds.length == 2) seconds = ":0" + seconds.slice(1, 2);
+
+    if (minutes == 60) return hours + 1 + ":00" + seconds;
+    if (minutes < 10) return hours + ":0" + minutes + seconds;
+    return hours + ":" + minutes + seconds;
 }
 
 function isDay() {

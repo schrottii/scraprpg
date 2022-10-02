@@ -99,10 +99,6 @@ scenes.title = () => {
                 saveImages[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - (1000 - t) / 600, 0) ** 2);
                 saveImages[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - (1000 - t) / 600, 0)) ** 2);
             }
-
-            for (i in options) {
-                options[i].anchor[0] = -.8 + (1 - (1 - Math.max(Math.min((1000 - t) / 800, 1), 0)) ** 4);
-            }
             if (t > 1000) {
                 return true;
             }

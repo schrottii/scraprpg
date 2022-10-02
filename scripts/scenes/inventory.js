@@ -29,14 +29,14 @@ scenes.inventory = () => {
             text: ["Items", "Magic", "Equipment", "Formation", "Save Manager", "Settings", "Exit Menu"][i],
             onClick(args) {
                 playSound("buttonClickSound");
-                fadeOut(500, true, () => {
-                    if (this.id == 0) setScene(scenes.itemscene());
-                    if (this.id == 1) setScene(scenes.magicscene());
-                    if (this.id == 2) setScene(scenes.equipment());
-                    if (this.id == 3) setScene(scenes.formation());
-                    if (this.id == 4) setScene(scenes.savemanager());
-                    if (this.id == 5) setScene(scenes.settings());
-                    if (this.id == 6) setScene(scenes.game());
+                fadeOut(500, true, (id=this.id) => {
+                    if (id == 0) setScene(scenes.itemscene());
+                    if (id == 1) setScene(scenes.magicscene());
+                    if (id == 2) setScene(scenes.equipment());
+                    if (id == 3) setScene(scenes.formation());
+                    if (id == 4) setScene(scenes.savemanager());
+                    if (id == 5) setScene(scenes.settings());
+                    if (id == 6) setScene(scenes.game());
                 });
             }
         }));
@@ -213,7 +213,7 @@ scenes.inventory = () => {
             }
 
             coolDisplays[0].text = getTime();
-            coolDisplays[2].text = "Total time spent in this save: " + getTime(game.playTime, 60, 3600);
+            coolDisplays[2].text = "Total time spent in this save: " + getTime(game.playTime, 60, 3600, true);
         },
         // Controls
         controls: [
