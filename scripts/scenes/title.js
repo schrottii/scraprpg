@@ -353,8 +353,8 @@ scenes.title = () => {
 
                     saveTexts[10 + (a * amount)].text = getTime(thisSave.playTime, 60, 3600);
 
-                    saveTexts[13 + (a * amount)].text = thisSave.wrenches;
-                    saveTexts[14 + (a * amount)].text = thisSave.bricks;
+                    saveTexts[13 + (a * amount)].text = formatNumber(thisSave.wrenches);
+                    saveTexts[14 + (a * amount)].text = formatNumber(thisSave.bricks);
 
                     saveImages[a].source = "saveimage" + thisSave.pfp;
                 }

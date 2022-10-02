@@ -359,8 +359,8 @@ scenes.fight = () => {
                 addBricks(brickGain);
 
                 winScreen[3].text = "You got " + EXPforAll + " XP!";
-                winScreen[6].text = "+" + wrenchGain;
-                winScreen[8].text = "+" + brickGain;
+                winScreen[6].text = "+" + formatNumber(wrenchGain);
+                winScreen[8].text = "+" + formatNumber(brickGain);
 
                 for (i = 0; i < game.chars.length; i++) {
                     getPlayer(1 + i).preEXP = getPlayer(1 + i).EXP;

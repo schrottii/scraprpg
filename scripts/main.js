@@ -190,6 +190,10 @@ function isNight() {
     return false;
 }
 
+function formatNumber(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 var playAfterIntro = "none";
 
 function playMusic(name, intro = "none") {
