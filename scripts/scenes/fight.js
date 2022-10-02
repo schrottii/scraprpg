@@ -1610,7 +1610,7 @@ scenes.fight = () => {
 
     function endFight() {
         stopMusic();
-        fadeOut(500, true, () => setScene(scenes.game()));
+        fadeOut(1000, true, () => setScene(scenes.game()));
     }
 
     // finally a non array

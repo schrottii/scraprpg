@@ -1845,6 +1845,7 @@ scenes.game = () => {
 
             // Joystick
             if (settings.joystick) {
+                pad = "";
                 if (pointerActive && canMove) {
                     if (padActive) {
                         padThumbPosition = pointerPos;
