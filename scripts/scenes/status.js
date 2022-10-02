@@ -52,7 +52,7 @@ scenes.status = (characterSelected="Bleu") => {
     characterName.push(controls.label({
         anchor: [0.05, 0.2], offset: [0, 48],
         align: "left", fontSize: 24, fill: "black",
-        text: "Level 55 Aladdin",
+        text: "Level " + game.characters[characterSelected].level + " Fighter",
         alpha: 1,
     }));
 
