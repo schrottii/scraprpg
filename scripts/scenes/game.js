@@ -367,7 +367,7 @@ scenes.game = () => {
         onClick(args) {
             if (this.alpha == 1 && canMove == true) {
                 playSound("buttonClickSound");
-                setScene(scenes.inventory());
+                fadeOut(500, true, () => setScene(scenes.inventory()));
             }
         }
     });
@@ -813,11 +813,6 @@ scenes.game = () => {
         }
     }));
 
-    let areaTeleportFade = controls.rect({
-        anchor: [0, 0], sizeAnchor: [1, 1],
-        fill: "black", alpha: 0
-    })
-
     areaNameBox.push(controls.rect({
         anchor: [0.3, 0.2], sizeAnchor: [0.4, 0.2],
         fill: "purple", alpha: 0
@@ -998,15 +993,7 @@ scenes.game = () => {
 
             canMove = false;
             playSound("teleport");
-            areaTeleportFade.fill = "black";
-            addAnimator(function (t) { // Area enter effect part 1
-                areaTeleportFade.alpha = 0 + (t / 500);
-                if (t > 499) {
-                    areaTeleportFade.alpha = 1;
-                    return true;
-                }
-                return false;
-            });
+            fadeOut(500, true);
 
             setTimeout(() => {
                 if (nmapname != undefined) { // The box stuff. Only if the map has a name
@@ -1032,17 +1019,6 @@ scenes.game = () => {
 
                 }
 
-
-                addAnimator(function (t) { // part 2
-                    areaTeleportFade.alpha = 1 - (t / 500);
-                    if (t > 499) {
-                        areaTeleportFade.alpha = 0;
-                        canMove = true;
-                        return true;
-                    }
-                    return false;
-                });
-
                 game.map = themap.teleport[0];
                 for (i in weatherControls) {
                     weatherControls[i].alpha = 0;
@@ -1058,7 +1034,10 @@ scenes.game = () => {
                 instantEffect = true;
                 game.position[0] = themap.teleport[1];
                 game.position[1] = themap.teleport[2];
-            }, 1000);
+
+                fadeIn(500, true);
+                canMove = true;
+            }, 750);
         }
     }
 
@@ -1422,9 +1401,8 @@ scenes.game = () => {
         }
     })
 
-    let tTime = 200;
-    if (previousScene == "main" || previousScene == "title") tTime = 800;
-
+    let tTime = 500;
+    if (previousScene == "main" || previousScene == "title" || previousScene == undefined) tTime = 1500; // Not inventory or fight
     fadeIn(tTime, true);
 
     return {
@@ -2068,7 +2046,7 @@ scenes.game = () => {
                 setScene(scenes.title());
             }
             if (currentKeys["e"]) {
-                setScene(scenes.inventory());
+                fadeOut(500, true, () => setScene(scenes.inventory()));
             }
         },
         controls: [
@@ -2077,7 +2055,7 @@ scenes.game = () => {
             ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             ...cutsceneElements,
             ...dialogueNormalComponents, ...dialogueInvisComponents, ...dialogueNarratorComponents, ...dialogueCutsceneComponents,
-            autoSaveText, ...areaNameBox, areaTeleportFade,
+            autoSaveText, ...areaNameBox,
             testParticle, 
         ],
         name: "game"
