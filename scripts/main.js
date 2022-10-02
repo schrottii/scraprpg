@@ -484,24 +484,14 @@ function animatedText(text, speed = 20) { // 8, 20, 24
 
 function addWrenches(amount = 0) {
     if (game.wrenches != undefined) {
-        if (game.wrenches < 999999999999) {
-            game.wrenches += amount;
-        }
-        else {
-            game.wrenches = 999999999999;
-        }
+        game.wrenches = Math.min(game.wrenches + amount, 999999999);
     }
 }
 
 function addBricks(amount = 0) {
     // only from boss fights and enemies from the "Scorched Planet"(Scrap Planet after Platinschrott Volcano eruption)
     if (game.bricks != undefined) {
-        if (game.bricks < 999999) {
-            game.bricks += amount;
-        }
-        else {
-            game.bricks = 999999;
-        }
+        game.bricks = Math.min(game.bricks + amount, 999999);
     }
 }
 

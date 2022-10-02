@@ -601,8 +601,8 @@ scenes.fight = () => {
                 critBonus = 3;
             }
             return [isCritical, Math.round(epositions[pos1][pos2].strength
-                * (1.33 - (0.33 * pos1))
-                * (0.67 + (0.33 * enpos1))
+                * (1 + ROWBOOST - (ROWBOOST * pos1))
+                * (1 - ROWBOOST + (ROWBOOST * enpos1))
                 / positions[enpos1][enpos2].shield
                 * getElementDamage(epositions[pos1][pos2].element, getStat(positions[enpos1][enpos2].occupied, "element").element))
                 * critBonus];
@@ -610,8 +610,8 @@ scenes.fight = () => {
 
         if (type == 3) { // My own men attack themselves ohe noe
             return [isCritical, Math.round(getStat(positions[pos1][pos2].occupied, "strength")
-                * (1.33 - (0.33 * pos1))
-                * (0.67 + (0.33 * enpos1))
+                * (1 + ROWBOOST - (ROWBOOST * pos1))
+                * (1 - ROWBOOST + (ROWBOOST * enpos1))
                 * getElementDamage(positions[pos1][pos2].element, getStat(positions[enpos1][enpos2].occupied, "element").element))
                 * critBonus];
         }
@@ -1323,8 +1323,8 @@ scenes.fight = () => {
         for (i in myElements) {
             for (j in theirElements) {
                 //console.log("i: " + i, "   j:" + j);
-                if (elementLogic(myElements[i], theirElements[j]) == "weak") damageBoost -= 0.33;
-                if (elementLogic(myElements[i], theirElements[j]) == "strong") damageBoost += 0.33;
+                if (elementLogic(myElements[i], theirElements[j]) == "weak") damageBoost -= ELEMENTBOOST;
+                if (elementLogic(myElements[i], theirElements[j]) == "strong") damageBoost += ELEMENTBOOST;
             }
         }
         return Math.round(damageBoost*100)/100;

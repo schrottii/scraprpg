@@ -11,6 +11,9 @@ var dialogueEmotion = "neutral";
 var overWorldStatsScroll = 0;
 var cutsceneMode = false;
 
+const ROWBOOST = 0.33;
+const ELEMENTBOOST = 0.5; // 0.33 = 33%, 0.5 = 50%
+
 // Function used to create enemies
 function createEnemy(type) {
     if (currentEnemies.length < 9) {
