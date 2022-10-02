@@ -213,6 +213,7 @@ var scenes = {
     equipment: "scripts/scenes/equipment.js",
     savemanager: "scripts/scenes/savemanager.js",
     settings: "scripts/scenes/settings.js",
+    status: "scripts/scenes/status.js",
 };
 
 var audio = {

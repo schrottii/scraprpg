@@ -68,6 +68,9 @@ scenes.inventory = () => {
                 anchor: [0.05 + (0.3 * i), 0.275 + (0.3 * j)], sizeOffset: [64, 64], snip: [0, 0, 32, 32], offset: [0, -64],
                 source: "bleu",
                 alpha: 0,
+                onClick(args) {
+                    fadeOut(500, true, () => setScene(scenes.status(this.source)));
+                }
             }));
             characterImages.push(controls.image({
                 anchor: [0.1 + (0.3 * i), 0.275 + (0.3 * j)], sizeOffset: [32, 32], offset: [0, -32],
@@ -197,7 +200,7 @@ scenes.inventory = () => {
                 else characterBars[2 + (i * 10)].sizeAnchor[0] = 0.00001;
                 characterBars[6 + (i * 10)].fill = "rgb(205, 0, 205)";
 
-                if (getPlayer(1 + i).HP > 0) characterBars[6 + (i * 10)].sizeAnchor[0] = 0.1960 * ((0.00001 + getPlayer(1 + i).EP) / getStat(getPlayer(1 + i).name.toLowerCase(), "maxEP"));
+                if (getPlayer(1 + i).EP > 0) characterBars[6 + (i * 10)].sizeAnchor[0] = 0.1960 * ((0.00001 + getPlayer(1 + i).EP) / getStat(getPlayer(1 + i).name.toLowerCase(), "maxEP"));
                 else characterBars[6 + (i * 10)].sizeAnchor[0] = 0.00001;
 
                 characterBars[8 + (i * 10)].text = getPlayer(1 + i).HP + "/" + getStat(getPlayer(1 + i).name.toLowerCase(), "maxHP");

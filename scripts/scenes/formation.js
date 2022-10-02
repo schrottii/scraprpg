@@ -1,5 +1,4 @@
 scenes.formation = () => {
-
     var background = [];
     var positionGrid = [];
     var positions = [];
