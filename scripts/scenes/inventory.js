@@ -8,6 +8,7 @@ scenes.inventory = () => {
     let characterBars = [];
     let emptyChars = [];
     let coolDisplays = [];
+    let cl = [];
 
     // Background
     background.push(controls.rect({
@@ -51,6 +52,15 @@ scenes.inventory = () => {
                 text: "No Party Member",
                 alpha: 0,
             }));
+            cl.push(controls.rect({
+                anchor: [0.01 + (0.3 * i), 0.01 + (0.3 * j)], sizeAnchor: [0.3, 0.3],
+                fill: "white",
+                alpha: 0,
+                i: j + (i * 3),
+                onClick(args) {
+                    fadeOut(500, true, () => setScene(scenes.status(characterImages[this.i * 2].source)));
+                }
+            }));
 
             characterNames.push(controls.label({
                 anchor: [0.06 + (0.3 * i), 0.09 + (0.3 * j)],
@@ -68,9 +78,6 @@ scenes.inventory = () => {
                 anchor: [0.05 + (0.3 * i), 0.275 + (0.3 * j)], sizeOffset: [64, 64], snip: [0, 0, 32, 32], offset: [0, -64],
                 source: "bleu",
                 alpha: 0,
-                onClick(args) {
-                    fadeOut(500, true, () => setScene(scenes.status(this.source)));
-                }
             }));
             characterImages.push(controls.image({
                 anchor: [0.1 + (0.3 * i), 0.275 + (0.3 * j)], sizeOffset: [32, 32], offset: [0, -32],
@@ -220,7 +227,7 @@ scenes.inventory = () => {
         },
         // Controls
         controls: [
-            ...background, ...buttons, ...characters, ...characterNames, ...characterImages, ...characterBars, ...emptyChars, ...coolDisplays,
+            ...background, ...buttons, ...characters, ...characterNames, ...characterImages, ...characterBars, ...emptyChars, ...coolDisplays, ...cl,
         ],
         name: "inventory"
     }
