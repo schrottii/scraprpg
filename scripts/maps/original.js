@@ -56,7 +56,8 @@ maps["original"] = {
         "ntf": 2
     },
     maxEnemies: 8,
-    music: "bgm/placeholder",
+    intro: "bgm/town/intro",
+    music: "bgm/town/loop",
     weather: "rain",
     weatherStrength: 1,
     map: [

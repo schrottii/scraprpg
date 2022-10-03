@@ -222,6 +222,9 @@ var audio = {
     "bgm/fight": "data/bgm/battle.ogg",
     "bgm/boss": "data/bgm/boss_battle_full.ogg",
 
+    "bgm/town/intro": "data/bgm/Town_intro.ogg",
+    "bgm/town/loop": "data/bgm/town_loop.ogg",
+
     "titletransition": "data/sounds/Title_screen_transition.mp3",
     "buttonClickSound": "data/sounds/sound_ok.wav",
     "no": "data/sounds/sound_no.wav",

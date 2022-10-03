@@ -1367,11 +1367,15 @@ scenes.game = () => {
                 stopMusic();
             }
             if (map.music == undefined) return false;
-            playMusic(map.music);
+
+            if (map.intro != undefined) playMusic(map.music, map.intro);
+            else playMusic(map.music);
         }
         else {
             if (map.music == undefined) return false;
-            playMusic(map.music);
+
+            if (map.intro != undefined) playMusic(map.music, map.intro);
+            else playMusic(map.music);
         }
     }
 
