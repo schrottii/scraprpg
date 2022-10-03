@@ -921,30 +921,38 @@ scenes.fight = () => {
 
         // Ok, ok, now we know who (whoAGI) is first (highestAGI), so now do something
         prepareAttackAnimation(selectedAlly[0], selectedAlly[1], pos[0], pos[1], (fpos1, fpos2, pos) => {
-            let Damage = calculateDamage(2, pos[0], pos[1], selectedAlly[0], selectedAlly[1])[1];
-            let isCritical = calculateDamage(2, pos[0], pos[1], selectedAlly[0], selectedAlly[1])[0];
-            if (positions[fpos1][fpos2].isOccupied != false) {
-                let HealthBefore = game.characters[positions[fpos1][fpos2].occupied].HP;
-                game.characters[positions[fpos1][fpos2].occupied].HP -= Damage;
+            if (epositions[pos[0]][pos[1]].acc - getStat(positions[fpos1][fpos2].occupied, "eva") > (Math.random() * 100)) {
+                let Damage = calculateDamage(2, pos[0], pos[1], selectedAlly[0], selectedAlly[1])[1];
+                let isCritical = calculateDamage(2, pos[0], pos[1], selectedAlly[0], selectedAlly[1])[0];
+                if (positions[fpos1][fpos2].isOccupied != false) {
+                    let HealthBefore = game.characters[positions[fpos1][fpos2].occupied].HP;
+                    game.characters[positions[fpos1][fpos2].occupied].HP -= Damage;
+                    epositions[pos[0]][pos[1]].action = false;
+                    battleNumber(positionControls[fpos1 + (fpos2 * 3)].anchor, Damage * (-1), 0, positionControls[fpos1 + (fpos2 * 3)].offset, isCritical);
+
+                    if (!isCritical) playSound("damage");
+                    else playSound("critdamage");
+
+                    postLog(epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[fpos1][fpos2].occupied].name + " and deals " + Damage + " damage!");
+                    if (getElementDamage(epositions[pos[0]][pos[1]].element, getStat(positions[fpos1][fpos2].occupied, "element")) != 1) {
+                        postLog("Element boost: x" + getElementDamage(epositions[pos[0]][pos[1]].element, getStat(positions[fpos1][fpos2].occupied)) + "!");
+                    }
+
+                    // Bar animation! (Cowboy moment)
+                    updateBar(positions[fpos1][fpos2].occupied, HealthBefore);
+                    if (game.characters[positions[fpos1][fpos2].occupied].HP < 1) {
+                        game.characters[positions[fpos1][fpos2].occupied].HP = 0;
+                        postLog(epositions[pos[0]][pos[1]].name + " killed " + game.characters[positions[fpos1][fpos2].occupied].name + "!");
+                        positions[fpos1][fpos2].isOccupied = false;
+                        checkAllDead();
+                    }
+                }
+            }
+            else {
                 epositions[pos[0]][pos[1]].action = false;
-                battleNumber(positionControls[fpos1 + (fpos2 * 3)].anchor, Damage * (-1), 0, positionControls[fpos1 + (fpos2 * 3)].offset, isCritical);
-
-                if (!isCritical) playSound("damage");
-                else playSound("critdamage");
-
-                postLog(epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[fpos1][fpos2].occupied].name + " and deals " + Damage + " damage!");
-                if (getElementDamage(epositions[pos[0]][pos[1]].element, getStat(positions[fpos1][fpos2].occupied, "element")) != 1) {
-                    postLog("Element boost: x" + getElementDamage(epositions[pos[0]][pos[1]].element, getStat(positions[fpos1][fpos2].occupied)) + "!");
-                }
-
-                // Bar animation! (Cowboy moment)
-                updateBar(positions[fpos1][fpos2].occupied, HealthBefore);
-                if (game.characters[positions[fpos1][fpos2].occupied].HP < 1) {
-                    game.characters[positions[fpos1][fpos2].occupied].HP = 0;
-                    postLog(epositions[pos[0]][pos[1]].name + " killed " + game.characters[positions[fpos1][fpos2].occupied].name + "!");
-                    positions[fpos1][fpos2].isOccupied = false;
-                    checkAllDead();
-                }
+                battleNumber(positionControls[fpos1 + (fpos2 * 3)].anchor, "Miss...", 0, positionControls[fpos1 + (fpos2 * 3)].offset);
+                playSound("miss");
+                postLog(epositions[pos[0]][pos[1]].name + " missed!");
             }
             if (!lost) setTimeout(() => enemiesTurn(), ACTIONDELAY);
         }, true); // very important true, bob

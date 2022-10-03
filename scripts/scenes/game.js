@@ -789,6 +789,11 @@ scenes.game = () => {
         }
     }
 
+    let areaTeleportFade = controls.rect({
+        anchor: [0, 0], sizeAnchor: [1, 1],
+        fill: "black", alpha: 0
+    })
+
     menuItems.push(controls.button({
         anchor: [0.175, 0.85], sizeAnchor: [0.1, 0.075],
         text: "Back", alpha: 0,
@@ -2059,7 +2064,7 @@ scenes.game = () => {
             ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             ...cutsceneElements,
             ...dialogueNormalComponents, ...dialogueInvisComponents, ...dialogueNarratorComponents, ...dialogueCutsceneComponents,
-            autoSaveText, ...areaNameBox,
+            autoSaveText, ...areaNameBox, areaTeleportFade,
             testParticle, 
         ],
         name: "game"

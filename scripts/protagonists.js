@@ -96,7 +96,7 @@ function getStat(prot, stat) {
     if (stat == "maxEP") return Math.round(itemBonus + cStats[prot][stat] * (1 + 0.05 * game.characters[prot].level));
     if (stat == "agi") return Math.round(itemBonus + cStats[prot][stat] * (1 + 0.005 * game.characters[prot].level));
     if (stat == "def") return 0; // Placeholder
-    if (stat == "eva") return 0; // Placeholder
+    if (stat == "eva") return 10 + game.characters[prot].level; // Placeholder
     if (stat == "acc") return Math.min(200, Math.round(itemBonus + cStats[prot][stat] * (1 + 0.005 * game.characters[prot].level)));
     if (stat == "int") return Math.round(itemBonus + cStats[prot][stat] * (1 + 0.005 * game.characters[prot].level));
     if (stat == "wis") return Math.min(999, Math.round(itemBonus + cStats[prot][stat] * Math.pow(Math.log(game.characters[prot].level), 5)));
