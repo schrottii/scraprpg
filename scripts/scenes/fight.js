@@ -362,6 +362,8 @@ scenes.fight = () => {
                 winScreen[6].text = "+" + formatNumber(wrenchGain);
                 winScreen[8].text = "+" + formatNumber(brickGain);
 
+                if (gainedItems.length == 0) winScreen[2].text = "Next";
+
                 for (i = 0; i < game.chars.length; i++) {
                     getPlayer(1 + i).preEXP = getPlayer(1 + i).EXP;
                     if (getPlayer(1 + i).HP > 0) getPlayer(1 + i).EXP += EXPforAll;
@@ -583,7 +585,7 @@ scenes.fight = () => {
             if (getStat(positions[pos1][pos2].occupied, "luk") > Math.random() * 100) {
                 // Critical hit!
                 isCritical = true;
-                critBonus = 3;
+                critBonus = CRITBOOST;
             }
         }
         if (type == 1) { // Allies attack evil
@@ -598,7 +600,7 @@ scenes.fight = () => {
             if (epositions[pos1][pos2].luk > Math.random() * 100) {
                 // Critical hit!
                 isCritical = true;
-                critBonus = 3;
+                critBonus = CRITBOOST;
             }
             return [isCritical, Math.round(epositions[pos1][pos2].strength
                 * (1 + ROWBOOST - (ROWBOOST * pos1))
@@ -1884,36 +1886,39 @@ scenes.fight = () => {
                 playSound("buttonClickSound");
                 if (checkAllDead(true)) {
                     fightaction = "victoryitems";
+                    if (gainedItems.length > 0) {
+                        let gain = {};
 
-                    let gain = {};
+                        // Do this earlier maybe?
+                        for (i in gainedItems) {
+                            if (gain[gainedItems[i]] == undefined) gain[gainedItems[i]] = 0;
+                            gain[gainedItems[i]] += 1;
+                        }
 
-                    // Do this earlier maybe?
-                    for (i in gainedItems) {
-                        if (gain[gainedItems[i]] == undefined) gain[gainedItems[i]] = 0;
-                        gain[gainedItems[i]] += 1;
-                    }
+                        for (i = 0; i < Object.keys(gain).length; i++) {
+                            let it = Object.keys(gain)[i];
 
-                    for (i = 0; i < Object.keys(gain).length; i++) {
-                        let it = Object.keys(gain)[i];
+                            if (winScreen2[2 + (i * 2)] != undefined) {
+                                winScreen2[2 + (i * 2)].source = "items/" + items[it]().source;
+                                winScreen2[3 + (i * 2)].text = items[it]().name + " x" + gain[it];
+                            }
+                        }
 
-                        if (winScreen2[2 + (i * 2)] != undefined) {
-                            winScreen2[2 + (i * 2)].source = "items/" + items[it]().source;
-                            winScreen2[3 + (i * 2)].text = items[it]().name + " x" + gain[it];
+
+                        for (i in winScreen) {
+                            winScreen[i].alpha = 0;
+                        }
+                        winScreen[0].alpha = 0.8;
+                        for (i in winStats) {
+                            winStats[i].alpha = 0;
+                        }
+                        for (i in winScreen2) {
+                            if (winScreen2[i].source != "gear" && winScreen2[i].text != "nothing") winScreen2[i].alpha = 1;
                         }
                     }
-
-
-                    for (i in winScreen) {
-                        winScreen[i].alpha = 0;
+                    else {
+                        endFight();
                     }
-                    winScreen[0].alpha = 0.8;
-                    for (i in winStats) {
-                        winStats[i].alpha = 0;
-                    }
-                    for (i in winScreen2) {
-                        if (winScreen2[i].source != "gear" && winScreen2[i].text != "nothing") winScreen2[i].alpha = 1;
-                    }
-
 
                 }
             }

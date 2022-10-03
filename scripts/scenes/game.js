@@ -13,6 +13,7 @@ var cutsceneMode = false;
 
 const ROWBOOST = 0.33;
 const ELEMENTBOOST = 0.5; // 0.33 = 33%, 0.5 = 50%
+const CRITBOOST = 2;
 
 // Function used to create enemies
 function createEnemy(type) {
