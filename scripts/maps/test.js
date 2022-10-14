@@ -87,7 +87,7 @@ maps["test"] = {
     maxEnemies: 8,
     name: "Schrotttroll's playground",
     music: "bgm/placeholder",
-    weather: "fog",
+    weather: "dust",
     weatherStrength: 1,
     worldmode: true,
     map: [

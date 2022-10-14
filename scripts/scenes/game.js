@@ -256,9 +256,6 @@ scenes.game = () => {
     var menuItemsStoryOnly = false;
     var areaNameBox = [];
     
-    var weatherControls = [];
-    var cloudControls = [];
-    var dustControls = [];
     var fogopa = 2;
 
     var cutsceneElements = [];
@@ -1286,62 +1283,23 @@ scenes.game = () => {
         movable: true, lifespan: 20, alpha: 0.75, amount: 30, spawnTime: 0.8,
         dead: true,
     })
+    let darkCloud = Particles({
+        anchor: [0.2, -0.2], spreadAnchor: [1, 0], sizeOffset: [128, 64], sizeOffsetVary: [2, 2], quadraticVary: true,
+        type: "img", source: ["cloudshadow1", "cloudshadow2", "cloudshadow3"],
+        direction: 0, speedAnchor: 0.01,
+        direction2: 1, speedAnchor2: 0.01,
+        movable: true, movable2: true, lifespan: 30, alpha: 0.75, amount: 25, spawnTime: 3,
+        dead: true,
+    })
+    let dustParticles = Particles({
+        anchor: [-0.2, 0], spreadAnchor: [0, 1], sizeOffset: [2, 2], sizeOffsetVary: [2, 2], quadraticVary: true,
+        type: "rect", fill: "yellow",
+        direction: 2, speedAnchor: 0.1,
+        direction2: 3, speedAnchor2: 0.05, moveRandom2: 1,
+        movable: true, movable2: true, lifespan: 5, alpha: 1, amount: 100, spawnTime: 0.04,
+        dead: true,
+    })
 
-    function spawnDarkcloud() {
-        let thisOne = 499;
-        for (i in cloudControls) {
-            if (cloudControls[i].alpha == 0) {
-                thisOne = i;
-                break;
-            }
-        }
-        if (thisOne != 499) {
-            if (Math.random() > 0.49) cloudControls[thisOne].source = "cloudshadow1";
-            if (Math.random() > 0.49) cloudControls[thisOne].source = "cloudshadow2";
-            else cloudControls[thisOne].source = "cloudshadow3";
-            let r = 128 * (1 + Math.random());
-            cloudControls[thisOne].sizeOffset = [r * 2, r];
-            cloudControls[thisOne].anchor = [0.3 + (0.9 * Math.random()), -0.3 + (0.2 * Math.random())];
-            cloudControls[thisOne].alpha = 0.75;
-        }
-    }
-
-    function spawnDust() {
-        let thisOne = 499;
-        for (i in dustControls) {
-            if (dustControls[i].alpha == 0) {
-                thisOne = i;
-                break;
-            }
-        }
-        if (thisOne != 499) {
-            dustControls[thisOne].anchor = [-0.2, Math.random()];
-            dustControls[thisOne].alpha = 1;
-        }
-    }
-
-    let shouldCloudControlsBeVisibleAtStart = 0;
-    if (maps[game.map].worldmode == true) shouldCloudControlsBeVisibleAtStart = 0.75;
-
-    for (i = 0; i < 100; i++) {
-        weatherControls.push(controls.image({
-            anchor: [Math.random(), -0.2], sizeAnchor: [0, 0], sizeOffset: [64, 64],
-            source: "rain", alpha: 0,
-        }))
-        let r = 128 * (1 + Math.random());
-        cloudControls.push(controls.image({
-            anchor: [Math.random(), Math.random()], sizeAnchor: [0, 0], sizeOffset: [r * 2, r],
-            source: "cloudshadow1", alpha: shouldCloudControlsBeVisibleAtStart,
-        }))
-        if (i == 10) shouldCloudControlsBeVisibleAtStart = 0;
-    }
-    for (i = 0; i < 400; i++) {
-        dustControls.push(controls.rect({
-            anchor: [-0.2, Math.random()], sizeOffset: [4, 4],
-            fill: "yellow",
-            alpha: 0,
-        }))
-    }
 
     function loadAreaMusic(prev = "none") {
         let map = maps[game.map];
@@ -1426,15 +1384,12 @@ scenes.game = () => {
 
             // Weather
             if (map.worldmode) {
-                if (Math.random() > 0.995) spawnDarkcloud();
-                for (i in cloudControls) {
-                    if (cloudControls[i].alpha > 0) {
-                        cloudControls[i].anchor[0] -= 0.00002 * delta;
-                        cloudControls[i].anchor[1] += 0.00002 * delta;
-
-                        if (cloudControls[i].anchor[0] < -0.1) cloudControls[i].alpha = 0;
-                    }
-                }
+                darkCloud.dead = false;
+                darkCloud.speedAnchor = 0.01 * map.weatherStrength;
+                darkCloud.speedAnchor2 = 0.01 * map.weatherStrength;
+            }
+            else {
+                darkCloud.dead = true;
             }
 
             if (map.weather != undefined) {
@@ -1456,26 +1411,11 @@ scenes.game = () => {
                     fogCloud.dead = true;
                 }
                 if (map.weather == "dust") {
-                    spawnDust();
-                    spawnDust();
-                    spawnDust();
-                    spawnDust();
-                    for (i in dustControls) {
-                        if (dustControls[i].alpha > 0) {
-                            if (map.weatherStrength != undefined) dustControls[i].anchor[0] += 0.001 * delta * map.weatherStrength;
-                            else dustControls[i].anchor[0] += 0.001 * delta;
-                            if (dustControls[i].anchor[0] > 1.1) dustControls[i].alpha = 0;
-
-                            if (Math.random() > 0.9) { // Down
-                                if (map.weatherStrength != undefined) dustControls[i].anchor[1] += 0.001 * delta * map.weatherStrength;
-                                else dustControls[i].anchor[1] += 0.001 * delta;
-                            }
-                            if (Math.random() > 0.9) { // Up
-                                if (map.weatherStrength != undefined) dustControls[i].anchor[1] -= 0.001 * delta * map.weatherStrength;
-                                else dustControls[i].anchor[1] -= 0.001 * delta;
-                            }
-                        }
-                    }
+                    dustParticles.dead = false;
+                    dustParticles.speedAnchor = 0.1 * map.weatherStrength;
+                }
+                else {
+                    dustParticles.dead = true;
                 }
             }
 
@@ -2039,7 +1979,7 @@ scenes.game = () => {
             }
         },
         controls: [
-            poisonBlack, nightEffect, nightEffect2, fallingRain, fogCloud,
+            poisonBlack, nightEffect, nightEffect2, fallingRain, fogCloud, darkCloud, dustParticles,
             ...walkPad, mapDisplay, mapIcon, actionButton,
             ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             ...cutsceneElements,
