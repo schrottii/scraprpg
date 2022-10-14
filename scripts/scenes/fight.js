@@ -590,9 +590,9 @@ scenes.fight = () => {
         }
         if (type == 1) { // Allies attack evil
             return [isCritical, Math.round(getStat(positions[pos1][pos2].occupied, "strength")
-                * (0.67 + (0.33 * pos1))
-                * (1.33 - (0.33 * enpos1))
-                * positions[enpos1][enpos2].atk
+                * (1 - ROWBOOST - (ROWBOOST * pos1))
+                * (1 + ROWBOOST + (ROWBOOST * enpos1))
+                * positions[pos1][pos2].atk
                 * getElementDamage(getStat(positions[pos1][pos2].occupied, "element"), epositions[enpos1][enpos2].element))
                 * critBonus];
         }
@@ -603,10 +603,11 @@ scenes.fight = () => {
                 isCritical = true;
                 critBonus = CRITBOOST;
             }
+
             return [isCritical, Math.round(epositions[pos1][pos2].strength
                 * (1 + ROWBOOST - (ROWBOOST * pos1))
                 * (1 - ROWBOOST + (ROWBOOST * enpos1))
-                / positions[enpos1][enpos2].shield
+                / (positions[enpos1][enpos2].shield != undefined ? positions[enpos1][enpos2].shield : 1)
                 * getElementDamage(epositions[pos1][pos2].element, getStat(positions[enpos1][enpos2].occupied, "element").element))
                 * critBonus];
         }
@@ -802,11 +803,13 @@ scenes.fight = () => {
                     for (i = 0; i < 3; i++) {
                         let dude = epositions[i][j];
                         if (dude.occupied == false) continue;
-                        attackEnemy(selectedAlly[0], selectedAlly[1], i, j);
+                        attackEnemy(selectedAlly[0], selectedAlly[1], i, j, () => {
+                            positions[pos[0]][pos[1]].atk = 1;
+                        });
+                        positions[pos[0]][pos[1]].action = false;
+                        setTimeout(() => executeActions(), ACTIONDELAY);
                     }
                 }
-                positions[pos[0]][pos[1]].atk = 1;
-                positions[pos[0]][pos[1]].action = false;
                 break;
             case "nothing":
                 positions[whoAGI.action[1]][whoAGI.action[2]].action = false;
@@ -1121,9 +1124,9 @@ scenes.fight = () => {
     function showFightButtons() {
         addAnimator(function (t) {
             for (i = 0; i < fightButtons.length; i++) {
-                fightButtons[i].offset[1] = -500 + t;
+                fightButtons[i].offset[1] = -300 + t;
             }
-            if (t > 499) {
+            if (t > 299) {
                 for (i = 0; i < fightButtons.length; i++) {
                     fightButtons[i].offset[1] = 0;
                 }
@@ -2374,7 +2377,6 @@ scenes.fight = () => {
                 anchor: [0.0 /* 0.025 */, 0.45], offset: [-256, 72 * j], sizeOffset: [64, 64],
                 defoffset: 72 * i,
                 source: "gear",
-                blend: "multiply",
                 alpha: 1,
                 snip: [0, 64, 32, 32],
                 pos1: i,
@@ -2474,7 +2476,6 @@ scenes.fight = () => {
                 anchor: [1.975, 0.45], offset: [500, 72 * j], sizeOffset: [64, 64], bigoff: 0,
                 defoffset: -(72 + (72 * i)),
                 source: "gear",
-                blend: "xor",
                 alpha: 1,
                 snip: [0, 32, 32, 32],
                 pos1: i,

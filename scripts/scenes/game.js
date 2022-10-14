@@ -1296,7 +1296,7 @@ scenes.game = () => {
         type: "rect", fill: "yellow",
         direction: 2, speedAnchor: 0.1,
         direction2: 3, speedAnchor2: 0.05, moveRandom2: 1,
-        movable: true, movable2: true, lifespan: 5, alpha: 1, amount: 100, spawnTime: 0.04,
+        movable: true, movable2: true, lifespan: 5, alpha: 1, amount: 100, spawnTime: 0.02,
         dead: true,
     })
 

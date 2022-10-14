@@ -132,7 +132,7 @@ scenes.savemanager = () => {
     buttons.push(controls.label({
         anchor: [0.95, 0.8975],
         align: "right", fontSize: 32, fill: "black",
-        text: "Mode: x",
+        text: "Mode: None",
         alpha: 1,
     }));
 
