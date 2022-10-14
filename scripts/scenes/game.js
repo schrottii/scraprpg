@@ -1276,26 +1276,16 @@ scenes.game = () => {
         type: "img", source: "rain",
         direction: 0, speedAnchor: 0.3,
         direction2: 2, speedAnchor2: 0.05,
-        movable: true, movable2: true, lifespan: 1.5, alpha: 1, amount: 60, spawnTime: 0.03, alphaChange: -0.02,
+        movable: true, movable2: true, lifespan: 1.5, alpha: 1, amount: 60, spawnTime: 0.03, alphaChange: 0.2,
         dead: true,
     })
-
-    function spawnFogcloud() {
-        let thisOne = 499;
-        for (i in weatherControls) {
-            if (weatherControls[i].alpha == 0) {
-                thisOne = i;
-                break;
-            }
-        }
-        if (thisOne != 499) {
-            if (Math.random() > 0.49) weatherControls[thisOne].source = "fog";
-            else weatherControls[thisOne].source = "fog2";
-            weatherControls[thisOne].sizeOffset = [128, 64];
-            weatherControls[thisOne].anchor = [-0.2, Math.random()];
-            weatherControls[thisOne].alpha = 0.75;
-        }
-    }
+    let fogCloud = Particles({
+        anchor: [-0.2, 0], spreadAnchor: [0, 1], sizeOffset: [96, 48], sizeOffsetVary: [2, 2], quadraticVary: true,
+        type: "img", source: ["fog", "fog2"],
+        direction: 2, speedAnchor: 0.02,
+        movable: true, lifespan: 20, alpha: 0.75, amount: 30, spawnTime: 0.8,
+        dead: true,
+    })
 
     function spawnDarkcloud() {
         let thisOne = 499;
@@ -1457,17 +1447,13 @@ scenes.game = () => {
                     fallingRain.dead = true;
                 }
                 if (map.weather == "fog") {
-                    if (Math.random() > 0.92) spawnFogcloud();
                     fogopa -= 0.0003 * delta; // Adjust how quickly the fog opacity changes here! Lower = slower
                     if (fogopa < 0) fogopa = 2;
-                    for (i in weatherControls) {
-                        if (weatherControls[i].alpha > 0) {
-                            if (map.weatherStrength != undefined) weatherControls[i].anchor[0] += 0.0001 * delta * map.weatherStrength;
-                            else weatherControls[i].anchor[0] += 0.0001 * delta;
-
-                            if (weatherControls[i].anchor[0] > 1.1) weatherControls[i].alpha = 0;
-                        }
-                    }
+                    fogCloud.dead = false;
+                    fogCloud.speedAnchor = 0.02 * map.weatherStrength;
+                }
+                else {
+                    fogCloud.dead = true;
                 }
                 if (map.weather == "dust") {
                     spawnDust();
@@ -2053,7 +2039,7 @@ scenes.game = () => {
             }
         },
         controls: [
-            ...weatherControls, ...cloudControls, ...dustControls, poisonBlack, nightEffect, nightEffect2, fallingRain,
+            poisonBlack, nightEffect, nightEffect2, fallingRain, fogCloud,
             ...walkPad, mapDisplay, mapIcon, actionButton,
             ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             ...cutsceneElements,

@@ -74,10 +74,26 @@ function Particles(args) {
                 ovary2 = ovary;
             }
 
+            let source = this.source;
+            if (typeof (source) != "string") {
+                source = source[Math.floor(Math.random() * source.length)];
+            }
+
+
             this.p.push([[this.anchor[0] + (this.spreadAnchor[0] * Math.random()), this.anchor[1] + (this.spreadAnchor[1] * Math.random())],
             [this.offset[0] + (1 + (this.spreadOffset[0] * Math.random())), this.offset[1] + (1 + (this.spreadOffset[1] * Math.random()))],
             [this.sizeAnchor[0] * (1 + avary), this.sizeAnchor[1] * (1 + avary2)],
-            [this.sizeOffset[0] * (1 + ovary), this.sizeOffset[1] * (1 + ovary2)], 0, this.alpha]);
+            [this.sizeOffset[0] * (1 + ovary), this.sizeOffset[1] * (1 + ovary2)], 0, this.alpha, source]);
+
+            /*
+            0: anchor
+            1: offset
+            2: size anchor
+            3: size offset
+            4: life
+            5: alpha
+            6: source
+            */
         },
 
         render(ctx) {
@@ -213,14 +229,14 @@ function Particles(args) {
 
                 }
                 if (this.type == "img") {
-                    if (w > 0 && h > 0 && this.snip != false) ctx.drawImage(images[this.source],
+                    if (w > 0 && h > 0 && this.snip != false) ctx.drawImage(images[this.p[p][6]],
                         this.snip[0], this.snip[1], this.snip[2], this.snip[3],
                         this.p[p][1][0] / red + this.p[p][0][0] * ctx.canvas.width,
                         this.p[p][1][1] / red + this.p[p][0][1] * ctx.canvas.height, w, h);
-                    else if (w > 0 && h > 0) ctx.drawImage(images[this.source],
+                    else if (w > 0 && h > 0) ctx.drawImage(images[this.p[p][6]],
                         this.p[p][1][0] / red + this.p[p][0][0] * ctx.canvas.width,
                         this.p[p][1][1] / red + this.p[p][0][1] * ctx.canvas.height, w, h);
-                    else ctx.drawImage(images[this.source],
+                    else ctx.drawImage(images[this.p[p][6]],
                         this.p[p][1][0] / red + this.p[p][0][0] * ctx.canvas.width,
                         this.p[p][1][1] / red + this.p[p][0][1] * ctx.canvas.height);
                 }
