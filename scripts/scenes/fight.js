@@ -346,7 +346,7 @@ scenes.fight = () => {
                     }
                 }
                 for (i in game.characters) {
-                    wrenchLUK += Math.pow(2.2, getStat(game.characters[i].name.toLowerCase(), "luk"));
+                    wrenchLUK += Math.pow(1.2, getStat(game.characters[i].name.toLowerCase(), "luk"));
                     brickLUK += getStat(game.characters[i].name.toLowerCase(), "luk");
                 }
                 wrenchGain = wrenchGain * Math.ceil(wrenchLUK);
@@ -592,6 +592,7 @@ scenes.fight = () => {
             return [isCritical, Math.round(getStat(positions[pos1][pos2].occupied, "strength")
                 * (0.67 + (0.33 * pos1))
                 * (1.33 - (0.33 * enpos1))
+                * positions[enpos1][enpos2].atk
                 * getElementDamage(getStat(positions[pos1][pos2].occupied, "element"), epositions[enpos1][enpos2].element))
                 * critBonus];
         }
@@ -614,6 +615,7 @@ scenes.fight = () => {
             return [isCritical, Math.round(getStat(positions[pos1][pos2].occupied, "strength")
                 * (1 + ROWBOOST - (ROWBOOST * pos1))
                 * (1 - ROWBOOST + (ROWBOOST * enpos1))
+                * positions[enpos1][enpos2].atk
                 * getElementDamage(positions[pos1][pos2].element, getStat(positions[enpos1][enpos2].occupied, "element").element))
                 * critBonus];
         }
@@ -716,82 +718,16 @@ scenes.fight = () => {
 
                 let pos1 = positions[pos[0]][pos[1]].action[3];
                 let pos2 = positions[pos[0]][pos[1]].action[4];
+
                 selectedAlly = [positions[pos[0]][pos[1]].action[1], positions[pos[0]][pos[1]].action[2]];
+
                 fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
-                if (win == false && game.characters[positions[pos[0]][pos[1]].occupied].HP > 0) {
-                    prepareAttackAnimation(selectedAlly[0], selectedAlly[1], pos1, pos2, (fpos1, fpos2, pos1, pos2) => {
-                        if (epositions[pos1][pos2].isOccupied == false) { // folso! Oh no
-                            let exists = 0;
-                            for (nj = 0; nj < 3; nj++) {
-                                for (ni = 0; ni < 3; ni++) {
-                                    if (epositions[ni][nj].isOccupied == true && exists == 0 && canReach(getStat(positions[fpos1][fpos2].occupied, "length"), "enemy", [pos1, pos2])) {
-                                        exists = 1;
-                                        pos1 = ni;
-                                        pos2 = nj;
-                                        break;
-                                    }
-                                }
-                            }
-                            if (exists == 0) {
-                                positions[fpos1][fpos2].action = false;
-                                setTimeout(() => executeActions(), ACTIONDELAY);
-                                return false;
-                            }
 
-                        }
-                        if (getStat(positions[fpos1][fpos2].occupied, "acc") - epositions[pos1][pos2].eva > (Math.random() * 100)) {
-                            let Damage = calculateDamage(1, fpos1, fpos2, pos1, pos2)[1];
-                            let isCritical = calculateDamage(1, fpos1, fpos2, pos1, pos2)[0];
-
-                            epositions[pos1][pos2].HP -= Damage; // Deal damage
-                            battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, Damage * (-1), 0, epositionControls[pos1 + (pos2 * 3)].offset, isCritical);
-
-                            if (isCritical) playSound("critdamage");
-                            else playSound("damage");
-
-                            postLog(game.characters[positions[fpos1][fpos2].occupied].name + " attacks " + epositions[pos1][pos2].name + " and deals " + Damage + " damage!");
-                            if (getElementDamage(getStat(positions[fpos1][fpos2].occupied, "element"), epositions[pos1][pos2].element) != 1) {
-                                postLog("Element boost: x" + getElementDamage(getStat(positions[fpos1][fpos2].occupied, "element"), epositions[pos1][pos2].element) + "!");
-                            }
-
-                            if (epositions[pos1][pos2].HP < 1) { // Is dead?
-                                // Enemy is dead
-                                epositions[pos1][pos2].isOccupied = false;
-                                epositions[pos1][pos2].occupied = false;
-                                epositions[pos1][pos2].action = false;
-                                enemyAmounts[pos1 + (pos2 * 3)] = "";
-
-                                // Random item
-                                if (epositions[pos1][pos2].items != "none") {
-                                    for (i in epositions[pos1][pos2].items) {
-                                        if (Math.random() > 0.2) { // 80% chance
-                                            gainedItems.push(epositions[pos1][pos2].items[i]);
-                                        }
-                                    }
-                                }
-
-                                let Experience = epositions[pos1][pos2].strength;
-                                game.characters[positions[fpos1][fpos2].occupied].EXP += Experience;
-
-                                postLog(game.characters[positions[fpos1][fpos2].occupied].name + " killed " + epositions[pos1][pos2].name + " and earned " + Experience + " EXP!");
-                                checkLevelUps();
-                                checkAllDead();
-                            }
-                        }
-                        else {
-                            battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, "Miss...", 0, epositionControls[pos1 + (pos2 * 3)].offset);
-                            playSound("miss");
-                            postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " missed!");
-                        }
-                        if (!lost) setTimeout(() => executeActions(), ACTIONDELAY);
-                    }, false);
-                }
-                else if (!lost) {
+                // Attack the enemy:
+                attackEnemy(selectedAlly[0], selectedAlly[1], pos1, pos2, () => {
                     positions[pos[0]][pos[1]].action = false;
-                    setTimeout(() => executeActions(), ACTIONDELAY);
-                    break;
-                }
-                positions[pos[0]][pos[1]].action = false;
+                    if (!lost) setTimeout(() => executeActions(), ACTIONDELAY);
+                });
                 break;
             case "sattack":
                 selectedAlly = [whoAGI.action[1], whoAGI.action[2]];
@@ -859,6 +795,18 @@ scenes.fight = () => {
             case "flee":
                 fleeAnimation(whoAGI.action[1], whoAGI.action[2]);
                 setTimeout(() => executeActions(), ACTIONDELAY);
+                break;
+            case "rally":
+                positions[pos[0]][pos[1]].atk = 0.25;
+                for (j = 0; j < 3; j++) {
+                    for (i = 0; i < 3; i++) {
+                        let dude = epositions[i][j];
+                        if (dude.occupied == false) continue;
+                        attackEnemy(selectedAlly[0], selectedAlly[1], i, j);
+                    }
+                }
+                positions[pos[0]][pos[1]].atk = 1;
+                positions[pos[0]][pos[1]].action = false;
                 break;
             case "nothing":
                 positions[whoAGI.action[1]][whoAGI.action[2]].action = false;
@@ -1471,9 +1419,8 @@ scenes.fight = () => {
             i: i,
             onClick(args) {
                 if (this.alpha == 1 && fightaction == "active") {
-                    if (this.i != 1) fightaction = "attack2";
-                    else {
-                        positions[selectedAlly[0]][selectedAlly[1]].action = "defend";
+                    if (this.i == 1) {
+                        positions[selectedAlly[0]][selectedAlly[1]].action = ["defend"];
                         fightaction = "none";
 
                         let dude = positions[selectedAlly[0]][selectedAlly[1]].occupied;
@@ -1481,6 +1428,14 @@ scenes.fight = () => {
                         positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(dude, "defend")[1];
 
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
+                    }
+                    else if (this.i == 2) {
+                        positions[selectedAlly[0]][selectedAlly[1]].action = ["rally"];
+                        fightaction = "none";
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
+                    }
+                    else {
+                        if (this.i != 1) fightaction = "attack2";
                     }
                     hideFightButtons();
                     hideActionButtons();
@@ -1499,7 +1454,7 @@ scenes.fight = () => {
         }))
         actionButtons.push(controls.label({
             anchor: [0.445, 0.02 + (i * 0.035)], offset: [0, -500],
-            text: ["Attack", "Defend", "Dash", "True Killer Move", "Scan", "Astroturf XV"][i],
+            text: ["Attack", "Defend", "Rally", "Insane Instant Kill Attack, can kill you but probably not hmm", "Scan", "Astroturf XV"][i],
             fontSize: 16, fill: "black", align: "right",
             alpha: 1,
         }))
@@ -1776,6 +1731,76 @@ scenes.fight = () => {
         alpha: 1,
     }))
 
+    function attackEnemy(fpos1, fpos2, pos1, pos2, onFinish = () => { }) {
+        if (win == false && game.characters[positions[fpos1][fpos2].occupied].HP > 0) {
+            prepareAttackAnimation(fpos1, fpos2, pos1, pos2, (fpos1, fpos2, pos1, pos2) => {
+                if (epositions[pos1][pos2].isOccupied == false) { // folso! Oh no
+                    let exists = 0;
+                    for (nj = 0; nj < 3; nj++) {
+                        for (ni = 0; ni < 3; ni++) {
+                            if (epositions[ni][nj].isOccupied == true && exists == 0 && canReach(getStat(positions[fpos1][fpos2].occupied, "length"), "enemy", [pos1, pos2])) {
+                                exists = 1;
+                                pos1 = ni;
+                                pos2 = nj;
+                                break;
+                            }
+                        }
+                    }
+                    if (exists == 0) {
+                        positions[fpos1][fpos2].action = false;
+                        setTimeout(() => executeActions(), ACTIONDELAY);
+                        return false;
+                    }
+
+                }
+                if (getStat(positions[fpos1][fpos2].occupied, "acc") - epositions[pos1][pos2].eva > (Math.random() * 100)) {
+                    let Damage = calculateDamage(1, fpos1, fpos2, pos1, pos2)[1];
+                    let isCritical = calculateDamage(1, fpos1, fpos2, pos1, pos2)[0];
+
+                    epositions[pos1][pos2].HP -= Damage; // Deal damage
+                    battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, Damage * (-1), 0, epositionControls[pos1 + (pos2 * 3)].offset, isCritical);
+
+                    if (isCritical) playSound("critdamage");
+                    else playSound("damage");
+
+                    postLog(game.characters[positions[fpos1][fpos2].occupied].name + " attacks " + epositions[pos1][pos2].name + " and deals " + Damage + " damage!");
+                    if (getElementDamage(getStat(positions[fpos1][fpos2].occupied, "element"), epositions[pos1][pos2].element) != 1) {
+                        postLog("Element boost: x" + getElementDamage(getStat(positions[fpos1][fpos2].occupied, "element"), epositions[pos1][pos2].element) + "!");
+                    }
+
+                    if (epositions[pos1][pos2].HP < 1) { // Is dead?
+                        // Enemy is dead
+                        epositions[pos1][pos2].isOccupied = false;
+                        epositions[pos1][pos2].occupied = false;
+                        epositions[pos1][pos2].action = false;
+                        enemyAmounts[pos1 + (pos2 * 3)] = "";
+
+                        // Random item
+                        if (epositions[pos1][pos2].items != "none") {
+                            for (i in epositions[pos1][pos2].items) {
+                                if (Math.random() > 0.2) { // 80% chance
+                                    gainedItems.push(epositions[pos1][pos2].items[i]);
+                                }
+                            }
+                        }
+
+                        let Experience = epositions[pos1][pos2].strength;
+                        game.characters[positions[fpos1][fpos2].occupied].EXP += Experience;
+
+                        postLog(game.characters[positions[fpos1][fpos2].occupied].name + " killed " + epositions[pos1][pos2].name + " and earned " + Experience + " EXP!");
+                        checkLevelUps();
+                        checkAllDead();
+                    }
+                }
+                else {
+                    battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, "Miss...", 0, epositionControls[pos1 + (pos2 * 3)].offset);
+                    playSound("miss");
+                    postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " missed!");
+                }
+                onFinish();
+            }, false);
+        }
+    }
 
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 3; i++) {
@@ -2252,6 +2277,7 @@ scenes.fight = () => {
         ];
 
     for (p in positions) positions[p].shield = 1;
+    for (p in positions) positions[p].atk = 1;
 
     // Positions but for enemies. same usage same stuff
     var epositions =
@@ -2471,7 +2497,7 @@ scenes.fight = () => {
                         fightaction = "none";
                         hideFightButtons();
                         hideFightActions();
-                        
+                        //attackEnemy(selectedAlly[0], selectedAlly[1], this.pos1, this.pos2); // direct attack, testing thing
                     }
                 }
             }));
