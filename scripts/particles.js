@@ -104,7 +104,7 @@ function Particles(args) {
                         let w = this.p[p][3][0] / red + this.p[p][2][0] * ctx.canvas.width;
                         let h = this.p[p][3][1] / red + this.p[p][2][1] * ctx.canvas.height;
 
-                        if (w < 0 || h < 0) this.p.pop(p);
+                        if (w < 0 || h < 0) this.p.slice(p, 1);
                     }
                     for (i = 0; i < this.amount; i++) {
                         this.generate(ctx);
@@ -131,7 +131,7 @@ function Particles(args) {
                         this.life = 0;
                         this.generate(ctx);
                     }
-                    this.p.pop(p);
+                    this.p.slice(p, 1);
                     continue;
                 }
                 if (this.lifeTickIdle || this.movable) this.p[p][4] += (delta / 1000);

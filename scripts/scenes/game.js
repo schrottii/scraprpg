@@ -1271,21 +1271,14 @@ scenes.game = () => {
         });
     }
 
-    function spawnRaindrop() {
-        let thisOne = 499;
-        for (i in weatherControls) {
-            if (weatherControls[i].alpha == 0) {
-                thisOne = i;
-                break;
-            }
-        }
-        if (thisOne != 499) {
-            weatherControls[thisOne].source = "rain";
-            weatherControls[thisOne].sizeOffset = [64, 64];
-            weatherControls[thisOne].anchor = [Math.random(), -0.2];
-            weatherControls[thisOne].alpha = 1;
-        }
-    }
+    let fallingRain = Particles({
+        anchor: [-0.2, -0.2], spreadAnchor: [1, 0], sizeOffset: [64, 64],
+        type: "img", source: "rain",
+        direction: 0, speedAnchor: 0.3,
+        direction2: 2, speedAnchor2: 0.05,
+        movable: true, movable2: true, lifespan: 1.5, alpha: 1, amount: 60, spawnTime: 0.03, alphaChange: -0.02,
+        dead: true,
+    })
 
     function spawnFogcloud() {
         let thisOne = 499;
@@ -1399,7 +1392,7 @@ scenes.game = () => {
         }
     })
 
-    let fallingLeaves = Particles({
+    /*let fallingLeaves = Particles({
         anchor: [0, -0.1], spreadAnchor: [1, 0], sizeOffset: [64, 64], spreadOffset: [0, -256], sizeOffsetVary: [1.5, 1.5], quadraticVary: true,
         type: "img", source: "items/brickyleaf",
         direction: 0, speedAnchor: 0.04,
@@ -1412,7 +1405,7 @@ scenes.game = () => {
             this.p[n][4] -= 3;
             this.p[n][5] = 1;
         }
-    })
+    })*/
 
     let tTime = 500;
     if (previousScene == "main" || previousScene == "title" || previousScene == undefined) tTime = 1500; // Not inventory or fight
@@ -1456,15 +1449,12 @@ scenes.game = () => {
 
             if (map.weather != undefined) {
                 if (map.weather == "rain") {
-                    spawnRaindrop();
-                    spawnRaindrop();
-                    for (i in weatherControls) {
-                        if (weatherControls[i].alpha > 0) {
-                            if (map.weatherStrength != undefined) weatherControls[i].anchor[1] += 0.002 * delta * map.weatherStrength;
-                            else weatherControls[i].anchor[1] += 0.002 * delta;
-                            if (weatherControls[i].anchor[1] > 1.1) weatherControls[i].alpha = 0;
-                        }
-                    }
+                    fallingRain.dead = false;
+                    fallingRain.speedAnchor = 0.3 * map.weatherStrength;
+                    fallingRain.speedAnchor2 = 0.05 * map.weatherStrength;
+                }
+                else {
+                    fallingRain.dead = true;
                 }
                 if (map.weather == "fog") {
                     if (Math.random() > 0.92) spawnFogcloud();
@@ -2063,7 +2053,7 @@ scenes.game = () => {
             }
         },
         controls: [
-            ...weatherControls, ...cloudControls, ...dustControls, poisonBlack, nightEffect, nightEffect2, fallingLeaves,
+            ...weatherControls, ...cloudControls, ...dustControls, poisonBlack, nightEffect, nightEffect2, fallingRain,
             ...walkPad, mapDisplay, mapIcon, actionButton,
             ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
             ...cutsceneElements,

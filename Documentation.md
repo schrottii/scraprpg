@@ -124,7 +124,7 @@ For getEmotion(...)    (portraits)
 | lifeTickIdle  | false         | If set to true, it can get older (and eventually die) when it does not move
 | dead          | false         | When it's dead, it stops doing stuff. Sad.
 | repeatMode    | false         | 
-| lifeMode      | true          | Ohh, this one's great. When enabled, every particle has an own age and the time of death depends on when it was spawned (see spawnTime). onDeath triggers every time someone dies if this is enabled. If repeatMode is also enabled, a new one will spawn every time one dies because of this. When enabled, all particles die at the same time and onDeath is triggered only once.
+| lifeMode      | true          | Ohh, this one's great. When enabled, every particle has an own age and the time of death depends on when it was spawned (see spawnTime). onDeath triggers every time someone dies if this is enabled. If repeatMode is also enabled, a new one will spawn every time one dies because of this. When disabled, all particles die at the same time and onDeath is triggered only once.
 |               |               | 
 | alphaChange   | 0             | Increase / decrease alpha (opacity) over time
 | anchorChange  | [0, 0]        | Increase / decrease anchor over time
