@@ -1026,15 +1026,6 @@ scenes.game = () => {
                 }
 
                 game.map = themap.teleport[0];
-                for (i in weatherControls) {
-                    weatherControls[i].alpha = 0;
-                }
-                for (i in dustControls) {
-                    dustControls[i].alpha = 0;
-                }
-                for (i in cloudControls) {
-                    cloudControls[i].alpha = 0;
-                }
                 loadNPCs();
                 loadAreaMusic(previousmap);
                 instantEffect = true;
@@ -1274,14 +1265,14 @@ scenes.game = () => {
         direction: 0, speedAnchor: 0.3,
         direction2: 2, speedAnchor2: 0.05,
         movable: true, movable2: true, lifespan: 1.5, alpha: 1, amount: 60, spawnTime: 0.03, alphaChange: 0.2,
-        dead: true,
+        dead: true, repeatMode: true,
     })
     let fogCloud = Particles({
         anchor: [-0.2, 0], spreadAnchor: [0, 1], sizeOffset: [96, 48], sizeOffsetVary: [2, 2], quadraticVary: true,
         type: "img", source: ["fog", "fog2"],
         direction: 2, speedAnchor: 0.02,
         movable: true, lifespan: 20, alpha: 0.75, amount: 30, spawnTime: 0.8,
-        dead: true,
+        dead: true, repeatMode: true,
     })
     let darkCloud = Particles({
         anchor: [0.2, -0.2], spreadAnchor: [1, 0], sizeOffset: [128, 64], sizeOffsetVary: [2, 2], quadraticVary: true,
@@ -1289,15 +1280,15 @@ scenes.game = () => {
         direction: 0, speedAnchor: 0.01,
         direction2: 1, speedAnchor2: 0.01,
         movable: true, movable2: true, lifespan: 30, alpha: 0.75, amount: 25, spawnTime: 3,
-        dead: true,
+        dead: true, repeatMode: true,
     })
     let dustParticles = Particles({
         anchor: [-0.2, 0], spreadAnchor: [0, 1], sizeOffset: [2, 2], sizeOffsetVary: [2, 2], quadraticVary: true,
         type: "rect", fill: "yellow",
         direction: 2, speedAnchor: 0.1,
         direction2: 3, speedAnchor2: 0.05, moveRandom2: 1,
-        movable: true, movable2: true, lifespan: 5, alpha: 1, amount: 100, spawnTime: 0.02,
-        dead: true,
+        movable: true, movable2: true, lifespan: 5, alpha: 1, amount: 150, spawnTime: 0.02,
+        dead: true, repeatMode: true,
     })
 
 
@@ -1345,7 +1336,7 @@ scenes.game = () => {
         type: "img", source: "items/brickyleaf",
         direction: 0, speedAnchor: 0.04,
         direction2: 1, speedOffset2: 10, moveRandom2: 5,
-        offsetChange: [3, 3],
+        offsetChange: [3, 3], repeatMode: true,
         movable: true, movable2: true, lifespan: 80, alpha: 1, amount: 8, spawnTime: 1, alphaChange: 0.04,
         onParticleClick(n) {
             this.p[n][3][0] *= 1.2;

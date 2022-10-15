@@ -125,6 +125,8 @@ let items = {
                     battleNumber(args.anchor, amount, 0, args.offset);
                     updateBar(args.player.name.toLowerCase(), HealthBefore);
                 }
+
+                addParticle("revive", { anchor: args.targetAnchor, offset: [args.targetOffset[0], args.targetOffset[1] + 64] })
             },
 
             ...args || {},

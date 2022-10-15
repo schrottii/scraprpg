@@ -772,7 +772,12 @@ scenes.fight = () => {
                 setTimeout(() => executeActions(), ACTIONDELAY);
                 break;
             case "item":
-                items[whoAGI.action[1]]({ user: game.characters[positions[whoAGI.action[2]][whoAGI.action[3]].occupied], player: game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied], anchor: positionControls[whoAGI.action[2] + (whoAGI.action[3] * 3)].anchor, offset: positionControls[pos[0] + (pos[1] * 3)].offset }).effect();
+                items[whoAGI.action[1]]({
+                    user: game.characters[positions[whoAGI.action[2]][whoAGI.action[3]].occupied], player: game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied],
+                    anchor: positionControls[whoAGI.action[2] + (whoAGI.action[3] * 3)].anchor, offset: positionControls[pos[0] + (pos[1] * 3)].offset,
+                    targetAnchor: positionControls[whoAGI.action[4] + (whoAGI.action[5] * 3)].anchor, targetOffset: positionControls[whoAGI.action[4] + (whoAGI.action[5] * 3)].offset
+                }).effect();
+
                 if (game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].HP < 1) {
                     game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].HP = 0;
                     postLog(positions[whoAGI.action[2]][whoAGI.action[3]].name + " killed " + game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].name + "!");
@@ -783,7 +788,12 @@ scenes.fight = () => {
                 setTimeout(() => executeActions(), ACTIONDELAY);
                 break;
             case "magic":
-                magic[whoAGI.action[1]]({ user: game.characters[positions[whoAGI.action[2]][whoAGI.action[3]].occupied], player: game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied], anchor: positionControls[whoAGI.action[2] + (whoAGI.action[3] * 3)].anchor, offset: positionControls[pos[0] + (pos[1] * 3)].offset }).effect();
+                magic[whoAGI.action[1]]({
+                    user: game.characters[positions[whoAGI.action[2]][whoAGI.action[3]].occupied], player: game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied],
+                    anchor: positionControls[whoAGI.action[2] + (whoAGI.action[3] * 3)].anchor, offset: positionControls[pos[0] + (pos[1] * 3)].offset,
+                    targetAnchor: positionControls[whoAGI.action[4] + (whoAGI.action[5] * 3)].anchor, targetOffset: positionControls[whoAGI.action[4] + (whoAGI.action[5] * 3)].offset
+                }).effect();
+
                 if (game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].HP < 1) {
                     game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].HP = 0;
                     postLog(positions[whoAGI.action[2]][whoAGI.action[3]].name + " killed " + game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].name + "!");

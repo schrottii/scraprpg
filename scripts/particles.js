@@ -99,14 +99,16 @@ function Particles(args) {
         render(ctx) {
             if (this.dead) return false;
             this.spawnTimeTick += (delta / 1000);
-            if (this.p.length < this.p.amount && this.spawnTime == 0) {
-                for (i = 0; i < this.amount; i++) {
+            if (this.p.length < this.amount) {
+                if (this.spawnTime == 0) {
+                    for (i = 0; i < this.amount; i++) {
+                        if (this.p.length < this.amount) this.generate(ctx);
+                    }
+                }
+                else if (this.spawnTimeTick >= this.spawnTime) {
+                    this.spawnTimeTick = 0;
                     this.generate(ctx);
                 }
-            }
-            else if (this.spawnTimeTick >= this.spawnTime){
-                this.spawnTimeTick = 0;
-                this.generate(ctx);
             }
 
             if (this.life >= this.lifespan && this.lifespan != 0 && !this.lifeMode) {
@@ -120,10 +122,10 @@ function Particles(args) {
                         let w = this.p[p][3][0] / red + this.p[p][2][0] * ctx.canvas.width;
                         let h = this.p[p][3][1] / red + this.p[p][2][1] * ctx.canvas.height;
 
-                        if (w < 0 || h < 0) this.p.slice(p, 1);
+                        if (w < 0 || h < 0) this.p.splice(parseInt(p), 1);
                     }
                     for (i = 0; i < this.amount; i++) {
-                        this.generate(ctx);
+                        if (this.p.length < this.amount) this.generate(ctx);
                     }
                 }
             }
@@ -143,11 +145,11 @@ function Particles(args) {
             for (p in this.p) {
                 if (this.p[p][4] >= this.lifespan && this.lifespan != 0 && this.lifeMode) {
                     this.onDeath(args);
+                    this.p.splice(parseInt(p), 1);
                     if (this.repeatMode) {
                         this.life = 0;
                         this.generate(ctx);
                     }
-                    this.p.slice(p, 1);
                     continue;
                 }
                 if (this.lifeTickIdle || this.movable) this.p[p][4] += (delta / 1000);
@@ -260,7 +262,14 @@ const commonParticles = {
             this.p[n][4] -= 3;
             this.p[n][5] = 1;
         }
-    }
+    },
+    revive: {
+        anchor: [0.5, 0.5], sizeOffset: [2, 2], spreadOffset: [32, 8],
+        type: "rect", fill: "white",
+        direction: 3, speedAnchor: 0.04,
+        direction2: 1, speedOffset2: 5, moveRandom2: 5,
+        movable: true, movable2: true, lifespan: 2, alpha: 1, amount: 20, spawnTime: 0.03
+    },
 }
 
 
