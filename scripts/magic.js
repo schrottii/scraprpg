@@ -65,10 +65,9 @@ let magic = {
             shopcost: 500,
             battleonly: true,
             cost: 3,
+            damage: 20,
             effect: () => {
-                let HealthBefore = args.enemy.HP;
-                args.enemy.HP -= 20;
-                if (args.anchor != undefined) {
+                if (args.enemyAnchor != undefined) {
                     battleNumber(args.enemyAnchor, 20, 0, args.enemyOffset);
                     //updateBar(args.player.name.toLowerCase(), HealthBefore);
                 }

@@ -795,11 +795,17 @@ scenes.fight = () => {
                     enemyAnchor: epositionControls[whoAGI.action[4] + (whoAGI.action[5] * 3)].anchor, enemyOffset: epositionControls[whoAGI.action[4] + (whoAGI.action[5] * 3)].offset
                 }).effect();
 
-                if (game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].HP < 1) {
-                    game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].HP = 0;
-                    postLog(positions[whoAGI.action[2]][whoAGI.action[3]].name + " killed " + game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].name + "!");
-                    positions[whoAGI.action[4]][whoAGI.action[5]].isOccupied = false;
-                    checkAllDead();
+                if (magic[whoAGI.action[1]]().damage != undefined) {
+                    epositions[whoAGI.action[4]][whoAGI.action[5]].HP -= magic[whoAGI.action[1]]().damage;
+                    checkEnemyDead(whoAGI.action[4], whoAGI.action[5], whoAGI.action[2], whoAGI.action[3]);
+                }
+                else {
+                    if (game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].HP < 1) {
+                        game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].HP = 0;
+                        postLog(positions[whoAGI.action[2]][whoAGI.action[3]].name + " killed " + game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].name + "!");
+                        positions[whoAGI.action[4]][whoAGI.action[5]].isOccupied = false;
+                        checkAllDead();
+                    }
                 }
                 positions[whoAGI.action[2]][whoAGI.action[3]].action = false;
                 setTimeout(() => executeActions(), ACTIONDELAY);
@@ -1782,29 +1788,7 @@ scenes.fight = () => {
                         postLog("Element boost: x" + getElementDamage(getStat(positions[fpos1][fpos2].occupied, "element"), epositions[pos1][pos2].element) + "!");
                     }
 
-                    if (epositions[pos1][pos2].HP < 1) { // Is dead?
-                        // Enemy is dead
-                        epositions[pos1][pos2].isOccupied = false;
-                        epositions[pos1][pos2].occupied = false;
-                        epositions[pos1][pos2].action = false;
-                        enemyAmounts[pos1 + (pos2 * 3)] = "";
-
-                        // Random item
-                        if (epositions[pos1][pos2].items != "none") {
-                            for (i in epositions[pos1][pos2].items) {
-                                if (Math.random() > 0.2) { // 80% chance
-                                    gainedItems.push(epositions[pos1][pos2].items[i]);
-                                }
-                            }
-                        }
-
-                        let Experience = epositions[pos1][pos2].strength;
-                        game.characters[positions[fpos1][fpos2].occupied].EXP += Experience;
-
-                        postLog(game.characters[positions[fpos1][fpos2].occupied].name + " killed " + epositions[pos1][pos2].name + " and earned " + Experience + " EXP!");
-                        checkLevelUps();
-                        checkAllDead();
-                    }
+                    checkEnemyDead(pos1, pos2, fpos1, fpos2);
                 }
                 else {
                     battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, "Miss...", 0, epositionControls[pos1 + (pos2 * 3)].offset);
@@ -1813,6 +1797,32 @@ scenes.fight = () => {
                 }
                 onFinish();
             }, false);
+        }
+    }
+
+    function checkEnemyDead(pos1, pos2, fpos1, fpos2) {
+        if (epositions[pos1][pos2].HP < 1) { // Is dead?
+            // Enemy is dead
+            epositions[pos1][pos2].isOccupied = false;
+            epositions[pos1][pos2].occupied = false;
+            epositions[pos1][pos2].action = false;
+            enemyAmounts[pos1 + (pos2 * 3)] = "";
+
+            // Random item
+            if (epositions[pos1][pos2].items != "none") {
+                for (i in epositions[pos1][pos2].items) {
+                    if (Math.random() > 0.2) { // 80% chance
+                        gainedItems.push(epositions[pos1][pos2].items[i]);
+                    }
+                }
+            }
+
+            let Experience = epositions[pos1][pos2].strength;
+            game.characters[positions[fpos1][fpos2].occupied].EXP += Experience;
+
+            postLog(game.characters[positions[fpos1][fpos2].occupied].name + " killed " + epositions[pos1][pos2].name + " and earned " + Experience + " EXP!");
+            checkLevelUps();
+            checkAllDead();
         }
     }
 
@@ -2520,6 +2530,7 @@ scenes.fight = () => {
                             let parent = epositions[this.pos1][this.pos2].parent;
                             positions[selectedAlly[0]][selectedAlly[1]].action = ["magic", selectedItem.name, selectedAlly[0], selectedAlly[1], parent[0], parent[1]];
                         }
+                        game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EP -= selectedItem().cost;
                         fightaction = "none";
                         hideFightButtons();
                         hideFightActions();
