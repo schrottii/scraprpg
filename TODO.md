@@ -38,7 +38,7 @@ There is still some coding, some new features, but not as much as in phase 1 (Sc
 ##Phase 3
 The testing & publishing phase
 
-- Test until you die
+- Test until we all die
 - Be proud of ourselves
 - Nerf Skro 🤔
 - Publish the game

@@ -828,6 +828,18 @@ scenes.fight = () => {
                     }
                 }
                 break;
+            case "scan":
+                let enemy = epositions[whoAGI.action[3]][whoAGI.action[4]];
+                let enm = enemyTypes[enemy.occupied];
+
+                postLog("Scanning " + enm.name + "...");
+                postLog("HP: " + enemy.HP);
+                postLog("Strength: " + enemy.strength);
+                postLog("Element: " + enemy.element);
+
+                positions[whoAGI.action[1]][whoAGI.action[2]].action = false;
+                setTimeout(() => executeActions(), ACTIONDELAY);
+                break;
             case "nothing":
                 positions[whoAGI.action[1]][whoAGI.action[2]].action = false;
                 setTimeout(() => executeActions(), ACTIONDELAY);
@@ -1454,6 +1466,9 @@ scenes.fight = () => {
                         fightaction = "none";
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                     }
+                    else if (this.i == 3) {
+                        fightaction = "scan";
+                    }
                     else {
                         if (this.i != 1) fightaction = "attack2";
                     }
@@ -1474,7 +1489,7 @@ scenes.fight = () => {
         }))
         actionButtons.push(controls.label({
             anchor: [0.445, 0.02 + (i * 0.035)], offset: [0, -500],
-            text: ["Attack", "Defend", "Rally", "Insane Instant Kill Attack, can kill you but probably not hmm", "Scan", "Astroturf XV"][i],
+            text: ["Attack", "Defend", "Rally", "Scan", "Insane Instant Kill Attack, can kill you but probably not hmm", "Astroturf XV"][i],
             fontSize: 16, fill: "black", align: "right",
             alpha: 1,
         }))
@@ -2531,6 +2546,19 @@ scenes.fight = () => {
                             positions[selectedAlly[0]][selectedAlly[1]].action = ["magic", selectedItem.name, selectedAlly[0], selectedAlly[1], parent[0], parent[1]];
                         }
                         game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EP -= selectedItem().cost;
+                        fightaction = "none";
+                        hideFightButtons();
+                        hideFightActions();
+                    }
+                    if (fightaction == "scan" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "scan";
+
+                        if (epositions[this.pos1][this.pos2].parent == undefined) positions[selectedAlly[0]][selectedAlly[1]].action = ["scan", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
+                        else {
+                            let parent = epositions[this.pos1][this.pos2].parent;
+                            positions[selectedAlly[0]][selectedAlly[1]].action = ["scan", selectedAlly[0], selectedAlly[1], parent[0], parent[1]];
+                        }
+
                         fightaction = "none";
                         hideFightButtons();
                         hideFightActions();
