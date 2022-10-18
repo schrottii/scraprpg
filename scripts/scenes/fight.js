@@ -150,6 +150,7 @@ scenes.fight = () => {
 
     var win = false;
     var lost = false;
+    var busy = false;
 
     var selectedItem;
 
@@ -589,6 +590,7 @@ scenes.fight = () => {
             }
         }
         if (type == 1) { // Allies attack evil
+            if (positions[pos1][pos2].atk == undefined) positions[pos1][pos2].atk = 1;
             return [isCritical, Math.round(getStat(positions[pos1][pos2].occupied, "strength")
                 * (1 - ROWBOOST - (ROWBOOST * pos1))
                 * (1 + ROWBOOST + (ROWBOOST * enpos1))
@@ -598,6 +600,7 @@ scenes.fight = () => {
         }
 
         if (type == 2) { // Evil men attack allies
+            if (positions[enpos1][enpos2].shield == undefined) positions[enpos1][enpos2].shield = 1;
             if (epositions[pos1][pos2].luk > Math.random() * 100) {
                 // Critical hit!
                 isCritical = true;
@@ -673,7 +676,7 @@ scenes.fight = () => {
     }
 
     function executeActions() {
-        if (positions == undefined) return;
+        if (positions == undefined || busy) return;
             let highestAGI = 0;
             let whoAGI;
             let pos = [];
@@ -710,6 +713,7 @@ scenes.fight = () => {
             enemiesTurn(); // Is everyone done? Can we continue?
             return;
         }
+        busy = true;
 
         // Ok, ok, now we know who (whoAGI) is first (highestAGI), so now do something
         switch (whoAGI.action[0]) {
@@ -726,8 +730,7 @@ scenes.fight = () => {
 
                 // Attack the enemy:
                 attackEnemy(selectedAlly[0], selectedAlly[1], pos1, pos2, () => {
-                    positions[pos[0]][pos[1]].action = false;
-                    if (!lost) setTimeout(() => executeActions(), ACTIONDELAY);
+                    endOfExecute(pos);
                 });
                 break;
             case "sattack":
@@ -755,8 +758,7 @@ scenes.fight = () => {
                     checkAllDead();
                 }
 
-                positions[pos[0]][pos[1]].action = false;
-                if (!lost) executeActions();
+                endOfExecute(pos);
                 break;
             case "heal":
                 selectedAlly = [whoAGI.action[1], whoAGI.action[2]];
@@ -768,8 +770,8 @@ scenes.fight = () => {
                 break;
             case "defend":
                 positions[pos[0]][pos[1]].shield = 1.5;
-                positions[pos[0]][pos[1]].action = false;
-                setTimeout(() => executeActions(), ACTIONDELAY);
+
+                endOfExecute(pos);
                 break;
             case "item":
                 items[whoAGI.action[1]]({
@@ -784,8 +786,8 @@ scenes.fight = () => {
                     positions[whoAGI.action[4]][whoAGI.action[5]].isOccupied = false;
                     checkAllDead();
                 }
-                positions[whoAGI.action[2]][whoAGI.action[3]].action = false;
-                setTimeout(() => executeActions(), ACTIONDELAY);
+
+                endOfExecute(pos);
                 break;
             case "magic":
                 magic[whoAGI.action[1]]({
@@ -807,12 +809,13 @@ scenes.fight = () => {
                         checkAllDead();
                     }
                 }
-                positions[whoAGI.action[2]][whoAGI.action[3]].action = false;
-                setTimeout(() => executeActions(), ACTIONDELAY);
+
+                endOfExecute(pos);
                 break;
             case "flee":
                 fleeAnimation(whoAGI.action[1], whoAGI.action[2]);
-                setTimeout(() => executeActions(), ACTIONDELAY);
+
+                endOfExecute(pos);
                 break;
             case "rally":
                 positions[pos[0]][pos[1]].atk = 0.25;
@@ -823,8 +826,7 @@ scenes.fight = () => {
                         attackEnemy(selectedAlly[0], selectedAlly[1], i, j, () => {
                             positions[pos[0]][pos[1]].atk = 1;
                         });
-                        positions[pos[0]][pos[1]].action = false;
-                        setTimeout(() => executeActions(), ACTIONDELAY);
+                        endOfExecute(pos);
                     }
                 }
                 break;
@@ -837,8 +839,7 @@ scenes.fight = () => {
                 postLog("Strength: " + enemy.strength);
                 postLog("Element: " + enemy.element);
 
-                positions[whoAGI.action[1]][whoAGI.action[2]].action = false;
-                setTimeout(() => executeActions(), ACTIONDELAY);
+                endOfExecute(pos);
                 break;
             case "pray":
                 let dude = game.characters[whoAGI.occupied];
@@ -850,18 +851,23 @@ scenes.fight = () => {
 
                 dude.EP = Math.min(getStat(name, "maxEP"), dude.EP + 50);
 
-                positions[pos[0]][pos[1]].action = false;
-                setTimeout(() => executeActions(), ACTIONDELAY);
+                endOfExecute(pos);
                 break;
             case "nothing":
-                positions[whoAGI.action[1]][whoAGI.action[2]].action = false;
-                setTimeout(() => executeActions(), ACTIONDELAY);
+                endOfExecute(pos);
                 break;
 
             // Uhhh... we shouldn't be here.
         }
     }
 
+    function endOfExecute(pos) {
+        positionGrid[pos[0] + (pos[1] * 3)].source = "grid";
+
+        positions[pos[0]][pos[1]].action = false;
+        busy = false;
+        setTimeout(() => executeActions(), ACTIONDELAY);
+    }
 
     function enemiesTurn() {
         if (lost) return false;
@@ -890,7 +896,6 @@ scenes.fight = () => {
             for (j = 0; j < 3; j++) {
                 for (i = 0; i < 3; i++) {
                     positions[i][j].shield = 1;
-                    positionGrid[i + (j * 3)].source = "grid";
                 }
             }
             return;
