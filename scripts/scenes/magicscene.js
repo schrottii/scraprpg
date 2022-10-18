@@ -146,7 +146,7 @@ scenes.magicscene = () => {
                 itemsButtons[i].alpha = 1;
 
                 itemsImages[i].alpha = 1;
-                itemsImages[i].source = "items/" + mag().source;
+                itemsImages[i].source = mag().source;
             }
             else {
                 itemsButtons[i + j].text = "---";

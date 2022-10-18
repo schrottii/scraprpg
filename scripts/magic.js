@@ -16,7 +16,7 @@ let magic = {
     cuyua(args) {
         return {
             ...magic.default(),
-            source: "potion",
+            source: "items/potion",
             name: "Cuyua",
             shopcost: 500,
             effect: () => {
@@ -36,7 +36,7 @@ let magic = {
     cutema(args) {
         return {
             ...magic.default(),
-            source: "potion",
+            source: "items/potion",
             name: "Cutema",
             shopcost: 500,
             cost: 4,
@@ -52,6 +52,28 @@ let magic = {
                         updateBar(p.name.toLowerCase(), HealthBefore);
                     }
                 }
+            },
+
+            ...args || {},
+        }
+    },
+    fisina(args) {
+        return {
+            ...magic.default(),
+            source: "fire",
+            name: "Fisina",
+            shopcost: 500,
+            battleonly: true,
+            cost: 3,
+            effect: () => {
+                let HealthBefore = args.enemy.HP;
+                args.enemy.HP -= 20;
+                if (args.anchor != undefined) {
+                    battleNumber(args.enemyAnchor, 20, 0, args.enemyOffset);
+                    //updateBar(args.player.name.toLowerCase(), HealthBefore);
+                }
+
+                addParticle("fire", { anchor: args.enemyAnchor, offset: [args.enemyOffset[0], args.enemyOffset[1] + 56] })
             },
 
             ...args || {},

@@ -217,8 +217,8 @@ function Particles(args) {
 
                 if (this.anchorChange[0] != 0) this.p[p][2][0] -= Math.max(0, this.anchorChange[0] / delta);
                 if (this.anchorChange[1] != 0) this.p[p][2][1] -= Math.max(0, this.anchorChange[1] / delta);
-                if (this.offsetChange[0] != 0) this.p[p][3][0] -= Math.max(0, this.offsetChange[0] / delta);
-                if (this.offsetChange[1] != 0) this.p[p][3][1] -= Math.max(0, this.offsetChange[1] / delta);
+                if (this.offsetChange[0] != 0) this.p[p][3][0] = Math.max(0, this.p[p][3][0] - this.offsetChange[0] / delta);
+                if (this.offsetChange[1] != 0) this.p[p][3][1] = Math.max(0, this.p[p][3][1] - this.offsetChange[1] / delta);
 
                 let w = this.p[p][3][0] / red + this.p[p][2][0] * ctx.canvas.width;
                 let h = this.p[p][3][1] / red + this.p[p][2][1] * ctx.canvas.height;
@@ -269,6 +269,13 @@ const commonParticles = {
         direction: 3, speedAnchor: 0.04,
         direction2: 1, speedOffset2: 5, moveRandom2: 5,
         movable: true, movable2: true, lifespan: 2, alpha: 1, amount: 20, spawnTime: 0.03
+    },
+    fire: {
+        anchor: [0.5, 0.5], sizeOffset: [4, 4], spreadOffset: [32, 8],
+        type: "rect", fill: "orange", blend: "add",
+        direction: 3, speedAnchor: 0.02,
+        offsetChange: [0.2, 0.2], lifeMode: false,
+        movable: true, movable2: true, lifespan: 2, alpha: 1, amount: 40, spawnTime: 0.04
     },
 }
 

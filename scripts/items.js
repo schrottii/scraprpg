@@ -94,7 +94,6 @@ let items = {
                 /*
                 let HealthBefore = args.player.HP;
                 args.player.HP -= 999;
-                if (args.player.HP > getStat(args.player.name.toLowerCase(), "maxHP")) args.player.HP = getStat(args.player.name.toLowerCase(), "maxHP");
                 if (args.anchor != undefined) {
                     battleNumber(args.anchor, 999, 0, args.offset);
                     updateBar(args.player.name.toLowerCase(), HealthBefore);

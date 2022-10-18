@@ -789,9 +789,10 @@ scenes.fight = () => {
                 break;
             case "magic":
                 magic[whoAGI.action[1]]({
-                    user: game.characters[positions[whoAGI.action[2]][whoAGI.action[3]].occupied], player: game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied],
+                    user: game.characters[positions[whoAGI.action[2]][whoAGI.action[3]].occupied], player: game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied], enemy: epositions[whoAGI.action[4]][whoAGI.action[5]],
                     anchor: positionControls[whoAGI.action[2] + (whoAGI.action[3] * 3)].anchor, offset: positionControls[pos[0] + (pos[1] * 3)].offset,
-                    targetAnchor: positionControls[whoAGI.action[4] + (whoAGI.action[5] * 3)].anchor, targetOffset: positionControls[whoAGI.action[4] + (whoAGI.action[5] * 3)].offset
+                    targetAnchor: positionControls[whoAGI.action[4] + (whoAGI.action[5] * 3)].anchor, targetOffset: positionControls[whoAGI.action[4] + (whoAGI.action[5] * 3)].offset,
+                    enemyAnchor: epositionControls[whoAGI.action[4] + (whoAGI.action[5] * 3)].anchor, enemyOffset: epositionControls[whoAGI.action[4] + (whoAGI.action[5] * 3)].offset
                 }).effect();
 
                 if (game.characters[positions[whoAGI.action[4]][whoAGI.action[5]].occupied].HP < 1) {
@@ -1210,7 +1211,7 @@ scenes.fight = () => {
             else fightActions[(i * 4) + 2].text = mag().name;
             if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EP >= mag().cost) fightActions[(i * 4) + 2].fill = "green";
             else fightActions[(i * 4) + 2].fill = "gray";
-            fightActions[(i * 4) + 3].source = "items/" + mag().source;
+            fightActions[(i * 4) + 3].source = mag().source;
             fightActions[(i * 4) + 3].alpha = 1;
 
         }
@@ -2461,7 +2462,7 @@ scenes.fight = () => {
 
                         positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source = battleAnimation(dude, "magic")[0];
                         positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(dude, "magic")[1];
-                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "items/" + selectedItem().source;
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = selectedItem().source;
                     }
 
                     if (fightaction == "heal1" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true && game.characters[positions[this.pos1][this.pos2].occupied].HP > 0) {
@@ -2509,6 +2510,19 @@ scenes.fight = () => {
                         hideFightButtons();
                         hideFightActions();
                         //attackEnemy(selectedAlly[0], selectedAlly[1], this.pos1, this.pos2); // direct attack, testing thing
+                    }
+                    if (fightaction == "magic" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = selectedItem().source;
+                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source = battleAnimation(dude, "magic")[0];
+                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(dude, "magic")[1];
+                        if (epositions[this.pos1][this.pos2].parent == undefined) positions[selectedAlly[0]][selectedAlly[1]].action = ["magic", selectedItem.name, selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
+                        else {
+                            let parent = epositions[this.pos1][this.pos2].parent;
+                            positions[selectedAlly[0]][selectedAlly[1]].action = ["magic", selectedItem.name, selectedAlly[0], selectedAlly[1], parent[0], parent[1]];
+                        }
+                        fightaction = "none";
+                        hideFightButtons();
+                        hideFightActions();
                     }
                 }
             }));
@@ -2898,12 +2912,39 @@ scenes.fight = () => {
         return false;
     });
 
+    let kokitoziParticles = Particles({
+        anchor: [0.5, 0.5], sizeOffset: [2, 2], spreadOffset: [64, 8],
+        type: "rect", fill: "lightgreen",
+        direction: 3, speedAnchor: 0.01,
+        direction2: 1, speedOffset2: 5, moveRandom2: 10,
+        movable: true, movable2: true, lifespan: 0.4, amount: 25, spawnTime: 0.02, repeatMode: true,
+        dead: true, alpha: 0
+    })
+
     return {
         // Pre-render function
         preRender(ctx, delta) {
             ctx.scale(scal, scal);
 
             ctx.drawImage(images.fight_bg, 0, 0, width * scale, height);
+
+            if (game.characters.kokitozi.HP > 0) {
+                for (j = 0; j < 3; j++) {
+                    for (i = 0; i < 3; i++) {
+                        if (positions[i][j].occupied == "kokitozi") {
+                            kokitoziParticles.alpha = 1;
+                            kokitoziParticles.dead = false;
+                            kokitoziParticles.anchor = positionControls[i + (j * 3)].anchor;
+                            kokitoziParticles.offset[0] = positionControls[i + (j * 3)].offset[0];
+                            kokitoziParticles.offset[1] = positionControls[i + (j * 3)].offset[1] + 56;
+                        }
+                    }
+                }
+            }
+            else {
+                kokitoziParticles.alpha = 0;
+                kokitoziParticles.dead = true;
+            }
 
             // Update the stats stuff at the bottom
             for (i = 0; i < game.chars.length; i++) {
@@ -2967,7 +3008,7 @@ scenes.fight = () => {
             ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
             ...fightStats, ...actionDisplay, ...gameOverScreen,
-            ...positionControls, ...epositionControls, ...positionGrid, ...attackAnimationObjects, ...battleNumbers, ...winScreen, ...winScreen2, ...winStats, ...fleeWrenches, ...gameOverScreen2,
+            ...positionControls, ...epositionControls, ...positionGrid, ...attackAnimationObjects, kokitoziParticles, ...battleNumbers, ...winScreen, ...winScreen2, ...winStats, ...fleeWrenches, ...gameOverScreen2,
             ...cutsceneElements,
         ],
         name: "fight"
