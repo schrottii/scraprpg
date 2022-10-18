@@ -853,6 +853,11 @@ scenes.fight = () => {
 
                 endOfExecute(pos);
                 break;
+            case "counterattack":
+                positions[pos[0]][pos[1]].counter = true;
+
+                endOfExecute(pos);
+                break;
             case "nothing":
                 endOfExecute(pos);
                 break;
@@ -943,6 +948,11 @@ scenes.fight = () => {
                         postLog(epositions[pos[0]][pos[1]].name + " killed " + game.characters[positions[fpos1][fpos2].occupied].name + "!");
                         positions[fpos1][fpos2].isOccupied = false;
                         checkAllDead();
+                    }
+                    else if (positions[fpos1][fpos2].counter) { // Counter attack ! ! !
+                        positions[fpos1][fpos2].counter = false;
+
+                        attackEnemy(fpos1, fpos2, pos[0], pos[1], () => { attackEnemy(fpos1, fpos2, pos[0], pos[1]) }); // Attack T W I C E
                     }
                 }
             }
@@ -1493,6 +1503,11 @@ scenes.fight = () => {
                             fightaction = "none";
                             positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                             break;
+                        case 5:
+                            positions[selectedAlly[0]][selectedAlly[1]].action = ["counterattack"];
+                            fightaction = "none";
+                            positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
+                            break;
                         default:
                             fightaction = "attack2";
                             break;
@@ -1514,7 +1529,7 @@ scenes.fight = () => {
         }))
         actionButtons.push(controls.label({
             anchor: [0.445, 0.02 + (i * 0.035)], offset: [0, -500],
-            text: ["Attack", "Defend", "Rally", "Scan", "Pray", "Astroturf XV"][i],
+            text: ["Attack", "Defend", "Rally", "Scan", "Pray", "Counterattack"][i],
             fontSize: 16, fill: "black", align: "right",
             alpha: 1,
         }))
@@ -2445,6 +2460,8 @@ scenes.fight = () => {
                 onClick(args) {
                     let name = positions[this.pos1][this.pos2].occupied;
                     if (name == false) return;
+
+                    positions[this.pos1][this.pos2].counter = false;
 
                     if (game.characters[name].effect[0] == "paralysis" && positions[this.pos1][this.pos2].action == false) {
                         positions[this.pos1][this.pos2].action = ["nothing", this.pos1, this.pos2];
