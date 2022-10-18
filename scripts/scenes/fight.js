@@ -762,7 +762,7 @@ scenes.fight = () => {
                 selectedAlly = [whoAGI.action[1], whoAGI.action[2]];
 
                 game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].HP += getStat(positions[selectedAlly[0]][selectedAlly[1]].occupied, "strength");
-                
+
                 positions[pos[0]][pos[1]].action = false;
                 setTimeout(() => executeActions(), ACTIONDELAY);
                 break;
@@ -838,6 +838,19 @@ scenes.fight = () => {
                 postLog("Element: " + enemy.element);
 
                 positions[whoAGI.action[1]][whoAGI.action[2]].action = false;
+                setTimeout(() => executeActions(), ACTIONDELAY);
+                break;
+            case "pray":
+                let dude = game.characters[whoAGI.occupied];
+                let name = whoAGI.occupied;
+                let before = dude.HP;
+
+                dude.HP = Math.min(getStat(name, "maxHP"), dude.HP + 50);
+                updateBar(name, before);
+
+                dude.EP = Math.min(getStat(name, "maxEP"), dude.EP + 50);
+
+                positions[pos[0]][pos[1]].action = false;
                 setTimeout(() => executeActions(), ACTIONDELAY);
                 break;
             case "nothing":
@@ -1451,26 +1464,33 @@ scenes.fight = () => {
             i: i,
             onClick(args) {
                 if (this.alpha == 1 && fightaction == "active") {
-                    if (this.i == 1) {
-                        positions[selectedAlly[0]][selectedAlly[1]].action = ["defend"];
-                        fightaction = "none";
+                    switch (this.i) {
+                        case 1:
+                            positions[selectedAlly[0]][selectedAlly[1]].action = ["defend"];
+                            fightaction = "none";
 
-                        let dude = positions[selectedAlly[0]][selectedAlly[1]].occupied;
-                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source = battleAnimation(dude, "defend")[0];
-                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(dude, "defend")[1];
+                            let dude = positions[selectedAlly[0]][selectedAlly[1]].occupied;
+                            positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source = battleAnimation(dude, "defend")[0];
+                            positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(dude, "defend")[1];
 
-                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
-                    }
-                    else if (this.i == 2) {
-                        positions[selectedAlly[0]][selectedAlly[1]].action = ["rally"];
-                        fightaction = "none";
-                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
-                    }
-                    else if (this.i == 3) {
-                        fightaction = "scan";
-                    }
-                    else {
-                        if (this.i != 1) fightaction = "attack2";
+                            positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
+                            break;
+                        case 2:
+                            positions[selectedAlly[0]][selectedAlly[1]].action = ["rally"];
+                            fightaction = "none";
+                            positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
+                            break;
+                        case 3:
+                            fightaction = "scan";
+                            break;
+                        case 4:
+                            positions[selectedAlly[0]][selectedAlly[1]].action = ["pray"];
+                            fightaction = "none";
+                            positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
+                            break;
+                        default:
+                            fightaction = "attack2";
+                            break;
                     }
                     hideFightButtons();
                     hideActionButtons();
@@ -1489,7 +1509,7 @@ scenes.fight = () => {
         }))
         actionButtons.push(controls.label({
             anchor: [0.445, 0.02 + (i * 0.035)], offset: [0, -500],
-            text: ["Attack", "Defend", "Rally", "Scan", "Insane Instant Kill Attack, can kill you but probably not hmm", "Astroturf XV"][i],
+            text: ["Attack", "Defend", "Rally", "Scan", "Pray", "Astroturf XV"][i],
             fontSize: 16, fill: "black", align: "right",
             alpha: 1,
         }))
