@@ -151,6 +151,7 @@ scenes.fight = () => {
     var win = false;
     var lost = false;
     var busy = false;
+    var started = false;
 
     var selectedItem;
 
@@ -591,8 +592,9 @@ scenes.fight = () => {
         }
         if (type == 1) { // Allies attack evil
             if (positions[pos1][pos2].atk == undefined) positions[pos1][pos2].atk = 1;
+
             return [isCritical, Math.round(getStat(positions[pos1][pos2].occupied, "strength")
-                * (1 - ROWBOOST - (ROWBOOST * pos1))
+                * (1 - ROWBOOST + (ROWBOOST * pos1))
                 * (1 + ROWBOOST + (ROWBOOST * enpos1))
                 * positions[pos1][pos2].atk
                 * getElementDamage(getStat(positions[pos1][pos2].occupied, "element"), epositions[enpos1][enpos2].element))
@@ -1840,7 +1842,7 @@ scenes.fight = () => {
                 }
             }
             if (exists == 0) {
-                endOfExecute(pos);
+                endOfExecute([fpos1, fpos2]);
                 return false;
             }
 
@@ -2450,7 +2452,10 @@ scenes.fight = () => {
     if (currentEnemies.length > 0) {
         for (i = 0; i < currentEnemies.length; i++) {
             if (currentEnemies[i][0] == "child") continue;
-            epositions[currentEnemies[i][1]][currentEnemies[i][2]] = enemyTypes[currentEnemies[i][0]];
+            for (tiet in enemyTypes[currentEnemies[i][0]]) {
+                epositions[currentEnemies[i][1]][currentEnemies[i][2]][tiet] = enemyTypes[currentEnemies[i][0]][tiet];
+            }
+
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].isOccupied = true;
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].occupied = currentEnemies[i][0];
             if (currentEnemies[i][3] == "2x2") {
@@ -2462,6 +2467,8 @@ scenes.fight = () => {
             }
         }
     }
+
+    console.log(epositions);
     for (i = 0; i < 18; i++) {
         attackAnimationObjects.push(controls.image({
             anchor: [0, 0], offset: [0, 0], sizeOffset: [48, 48],
@@ -3099,7 +3106,8 @@ scenes.fight = () => {
             if (put > 99) {
                 put = 0;
                 updatePositions();
-                if (checkAllAction()) {
+                if (checkAllAction() && !started) {
+                    started = true;
                     executeActions();
                 }
 

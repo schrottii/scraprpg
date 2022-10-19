@@ -106,7 +106,6 @@ scenes.formation = () => {
                 pos2: j,
                 onClick(args) {
                     if (selectedPos[0] == 8 && this.source != "gear") {
-                        console.log(this.source);
                         selectedPos = [this.pos1, this.pos2];
                         switchText.text = "What character should " + game.characters[this.source].name + " switch with?";
                         switchText.alpha = 1;
