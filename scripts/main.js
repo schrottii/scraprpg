@@ -69,7 +69,7 @@ function init() {
                     saveNR = 3;
                     loadGame();
                     loadSettings();
-                    setScene(scenes.game());
+                    setScene(scenes.shop());
                 }
             }),
             controls.button({

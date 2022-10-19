@@ -86,7 +86,7 @@ let npcs = {
                         dline({ text: "Hey man, I think you're me.", portrait: "Portraits_Bleu", emotion: "neutral", name: "Bleu" }),
                         dline({ text: "I'm a greek emo. I hate you!!!", portrait: "Portraits_Bleu", emotion: "sad", name: "Blue" }),
                         dline({ text: "Why are you blue like me that can't be you're a clone", portrait: "Portraits_Bleu", emotion: "sad", name: "Blue" }),
-                        dline({ text: "Idiots.", portrait: "Portraits_Corelle", emotion: "neutral", name: "The girl" }),
+                        dline({ text: "Idiots.", portrait: "Portraits_Corelle", emotion: "neutral", name: "The girl", script: () => { setScene(scenes.shop()) } }),
                     ],
                 }
             },

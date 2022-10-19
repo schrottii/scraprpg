@@ -49,6 +49,8 @@ let images = {
     delete: "data/images/delete.png",
     autosave: "data/images/autosave.png",
     mapbuttons: "data/images/mapbuttons.png",
+    shopbg1: "data/images/shop-bg.png",
+    shopbg2: "data/images/shop-bg2.png",
 
     eattackani2: "data/images/eattackani2.png",
 
@@ -215,6 +217,7 @@ var scenes = {
     savemanager: "scripts/scenes/savemanager.js",
     settings: "scripts/scenes/settings.js",
     status: "scripts/scenes/status.js",
+    shop: "scripts/scenes/shop.js",
 };
 
 var audio = {
