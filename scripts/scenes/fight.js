@@ -728,6 +728,15 @@ scenes.fight = () => {
 
                 fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
 
+                ret = findNewEnemy(selectedAlly[0], selectedAlly[1], pos1, pos2);
+                if (ret == false) {
+                    break;
+                }
+                else {
+                    pos1 = ret[0];
+                    pos2 = ret[1];
+                }
+
                 // Attack the enemy:
                 attackEnemy(selectedAlly[0], selectedAlly[1], pos1, pos2, () => {
                     endOfExecute(pos);
@@ -833,6 +842,17 @@ scenes.fight = () => {
             case "scan":
                 let enemy = epositions[whoAGI.action[3]][whoAGI.action[4]];
                 let enm = enemyTypes[enemy.occupied];
+
+                ret = findNewEnemy(selectedAlly[0], selectedAlly[1], whoAGI.action[3], whoAGI.action[4]);
+                if (ret == false) {
+                    break;
+                }
+                else {
+                    whoAGI.action[3] = ret[0];
+                    whoAGI.action[4] = ret[1];
+                    enemy = epositions[whoAGI.action[3]][whoAGI.action[4]];
+                    enm = enemyTypes[enemy.occupied];
+                }
 
                 postLog("Scanning " + enm.name + "...");
                 postLog("HP: " + enemy.HP);
@@ -952,7 +972,7 @@ scenes.fight = () => {
                     else if (positions[fpos1][fpos2].counter) { // Counter attack ! ! !
                         positions[fpos1][fpos2].counter = false;
 
-                        attackEnemy(fpos1, fpos2, pos[0], pos[1], () => { attackEnemy(fpos1, fpos2, pos[0], pos[1]) }); // Attack T W I C E
+                        attackEnemy(fpos1, fpos2, pos[0], pos[1], () => { if (epositions[pos[0]][pos[1]].isOccupied) attackEnemy(fpos1, fpos2, pos[0], pos[1]) }); // Attack T W I C E
                     }
                 }
             }
@@ -1428,7 +1448,7 @@ scenes.fight = () => {
                     if (this.alpha == 1 && fightaction == "active") {
                         fightaction = "none";
                         let c = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied];
-                        positions[selectedAlly[0]][selectedAlly[1]].action = [c.macro, selectedAlly[0], selectedAlly[1]];
+                        positions[selectedAlly[0]][selectedAlly[1]].action = [c.macro, selectedAlly[0], selectedAlly[1], 2, 1];
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                         positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source = battleAnimation(c.name.toLowerCase(), "attack")[0];
                         positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(c.name.toLowerCase(), "attack")[1];
@@ -1806,28 +1826,32 @@ scenes.fight = () => {
         alpha: 1,
     }))
 
+    function findNewEnemy(fpos1, fpos2, pos1, pos2) {
+        if (epositions[pos1][pos2].isOccupied == false) { // folso! Oh no
+            let exists = 0;
+            for (nj = 0; nj < 3; nj++) {
+                for (ni = 0; ni < 3; ni++) {
+                    if (epositions[ni][nj].isOccupied == true && exists == 0 && canReach(getStat(positions[fpos1][fpos2].occupied, "length"), "enemy", [pos1, pos2])) {
+                        exists = 1;
+                        pos1 = ni;
+                        pos2 = nj;
+                        break;
+                    }
+                }
+            }
+            if (exists == 0) {
+                endOfExecute(pos);
+                return false;
+            }
+
+        }
+        return [pos1, pos2];
+    }
+
     function attackEnemy(fpos1, fpos2, pos1, pos2, onFinish = () => { }) {
         if (win == false && game.characters[positions[fpos1][fpos2].occupied].HP > 0) {
             prepareAttackAnimation(fpos1, fpos2, pos1, pos2, (fpos1, fpos2, pos1, pos2) => {
-                if (epositions[pos1][pos2].isOccupied == false) { // folso! Oh no
-                    let exists = 0;
-                    for (nj = 0; nj < 3; nj++) {
-                        for (ni = 0; ni < 3; ni++) {
-                            if (epositions[ni][nj].isOccupied == true && exists == 0 && canReach(getStat(positions[fpos1][fpos2].occupied, "length"), "enemy", [pos1, pos2])) {
-                                exists = 1;
-                                pos1 = ni;
-                                pos2 = nj;
-                                break;
-                            }
-                        }
-                    }
-                    if (exists == 0) {
-                        positions[fpos1][fpos2].action = false;
-                        setTimeout(() => executeActions(), ACTIONDELAY);
-                        return false;
-                    }
-
-                }
+                
                 if (getStat(positions[fpos1][fpos2].occupied, "acc") - epositions[pos1][pos2].eva > (Math.random() * 100)) {
                     let Damage = calculateDamage(1, fpos1, fpos2, pos1, pos2)[1];
                     let isCritical = calculateDamage(1, fpos1, fpos2, pos1, pos2)[0];

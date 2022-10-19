@@ -6,6 +6,9 @@ scenes.formation = () => {
     var macroControls = [];
     var selectedPos = [8, 8];
 
+    const macros = ["attack", "defend", "rally", "scan", "pray", "counterattack"];
+    const macroTexts = ["Attack", "Defend", "Rally", "Scan", "Pray", "Counter Attack"];
+
     // Background
     background.push(controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 1],
@@ -70,16 +73,10 @@ scenes.formation = () => {
                 onClick(args) {
                     if (this.alpha == 1 && this.text != "NO CHARACTER") {
                         playSound("buttonClickSound");
-                        switch (this.text) {
-                            case "Attack":
-                                this.text = "Defend"
-                                game.characters[game.chars[this.i + (this.j * 3)]].macro = "defend";
-                                break;
-                            case "Defend":
-                                this.text = "Attack"
-                                game.characters[game.chars[this.i + (this.j * 3)]].macro = "attack";
-                                break;
-                        }
+                        let dude = game.characters[game.chars[this.i + (this.j * 3)]];
+                        let current = macros.indexOf(dude.macro);
+                        dude.macro = macros[current + 1] != undefined ? macros[current + 1] : macros[0];
+                        this.text = macroTexts[current + 1] != undefined ? macroTexts[current + 1] : macroTexts[0];
                     }
                 },
                 alpha: 1,
