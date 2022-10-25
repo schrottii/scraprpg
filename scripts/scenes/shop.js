@@ -1,5 +1,6 @@
 var shopDialogueProgress = 0;
 var currentShopText = [];
+var currentShop;
 
 scenes.shop = () => {
 
@@ -110,6 +111,12 @@ scenes.shop = () => {
         }));
     }
 
+    let clvText = controls.label({
+        anchor: [0.5, 0.45],
+        align: "center", fontSize: 32, fill: "white",
+        text: "0", alpha: 1,
+    });
+
     fadeIn(500, true);
 
     return {
@@ -126,10 +133,12 @@ scenes.shop = () => {
                 shopPicTime = 0;
                 shopPic.source = (shopPic.source == "shopbg1") ? "shopbg2" : "shopbg1";
             }
+
+            clvText.text = "Customer Level: " + currentShop.clv;
         },
         // Controls
         controls: [
-            ...bottomRects, ...navigationButtons, shopPic, wrenchDisplay, ...shopTextControls
+            ...bottomRects, ...navigationButtons, shopPic, wrenchDisplay, ...shopTextControls, clvText
         ],
         name: "shop"
     }

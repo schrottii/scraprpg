@@ -3,6 +3,7 @@ var shops = {
         return {
             name: "none",
             dialogue: [],
+            clv: 1,
 
             ...args || {},
         }
