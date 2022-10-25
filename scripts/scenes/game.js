@@ -1833,8 +1833,6 @@ scenes.game = () => {
                 if (typeof (currentDialogue[dialogueProgress].text) == "string") dialogueCutsceneComponents[1].text = animatedText(currentDialogue[dialogueProgress].text);
                 else dialogueCutsceneComponents[1].text = animatedText(currentDialogue[dialogueProgress].text());
 
-                if (currentDialogue[dialogueProgress].script != false) currentDialogue[dialogueProgress].script();
-
                 if (currentDialogue[dialogueProgress + 1] == undefined) dialogueCutsceneComponents[2].alpha = 0; // Star
                 actionButton.alpha = 0;
 
@@ -1879,8 +1877,6 @@ scenes.game = () => {
                     dialogueNormalComponents[5].source = currentDialogue[dialogueProgress].portrait;
                     dialogueNormalComponents[5].snip = getEmotion(dialogueEmotion);
 
-                    if (currentDialogue[dialogueProgress].script != false) currentDialogue[dialogueProgress].script();
-
                     if (currentDialogue[dialogueProgress + 1] == undefined) dialogueNormalComponents[7].alpha = 0; // Star
                     actionButton.alpha = 0;
                 }
@@ -1916,8 +1912,6 @@ scenes.game = () => {
                     if (typeof (currentDialogue[dialogueProgress].text) == "string") dialogueInvisComponents[2].text = animatedText(currentDialogue[dialogueProgress].text);
                     else dialogueInvisComponents[2].text = animatedText(currentDialogue[dialogueProgress].text());
 
-                    if (currentDialogue[dialogueProgress].script != false) currentDialogue[dialogueProgress].script();
-
                     if (currentDialogue[dialogueProgress + 1] == undefined) dialogueInvisComponents[3].alpha = 0; // Star
                     actionButton.alpha = 0;
                 }
@@ -1935,8 +1929,6 @@ scenes.game = () => {
                     if (typeof (currentDialogue[dialogueProgress].text) == "string") animatedText(dialogueNarratorComponents[1].text = currentDialogue[dialogueProgress].text);
                     else dialogueNarratorComponents[1].text = animatedText(currentDialogue[dialogueProgress].text());
 
-                    if (currentDialogue[dialogueProgress].script != false) currentDialogue[dialogueProgress].script();
-
                     if (currentDialogue[dialogueProgress + 1] == undefined) dialogueNarratorComponents[2].alpha = 0; // Star
                     actionButton.alpha = 0;
                 }
@@ -1946,8 +1938,6 @@ scenes.game = () => {
                 dialogueNarratorComponents[2].alpha = 1;
                 if (typeof (currentDialogue[dialogueProgress].text) == "string") animatedText(dialogueNarratorComponents[1].text = currentDialogue[dialogueProgress].text);
                 else dialogueNarratorComponents[1].text = animatedText(currentDialogue[dialogueProgress].text());
-
-                if (currentDialogue[dialogueProgress].script != false) currentDialogue[dialogueProgress].script();
 
                 if (currentDialogue[dialogueProgress + 1] == undefined) dialogueNarratorComponents[2].alpha = 0; // Star
                 actionButton.alpha = 0;

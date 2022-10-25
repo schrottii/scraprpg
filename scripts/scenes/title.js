@@ -5,7 +5,7 @@ scenes.title = () => {
 
     let particles = [];
     let saveTexts = [];
-
+    let hiddn = false;
 
     let gameIcon = controls.image({
         anchor: [.5, .4], offset: [-277.5, -200], sizeOffset: [555, 300],
@@ -94,12 +94,12 @@ scenes.title = () => {
         addAnimator(function (t) {
             for (let a = 0; a < 4; a++) {
                 id = a;
-                saveButtons[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - (1000-t) / 600, 0) ** 2);
-                saveButtons[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - (1000 - t) / 600, 0)) ** 2);
-                saveImages[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - (1000 - t) / 600, 0) ** 2);
-                saveImages[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - (1000 - t) / 600, 0)) ** 2);
+                saveButtons[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(t / 600, 0) ** 2);
+                saveButtons[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(t / 600, 0)) ** 2);
+                saveImages[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(t / 600, 0) ** 2);
+                saveImages[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(t / 600, 0)) ** 2);
             }
-            if (t > 1000) {
+            if (t > 599) {
                 return true;
             }
             return false;
@@ -380,7 +380,10 @@ scenes.title = () => {
                 optionButton.text = "Go Back";
             }
 
-            if (previousScene == "settings") hideOptions();
+            if (previousScene == "settings" && hiddn == false) {
+                hideOptions();
+                hiddn = true;
+            }
         },
 
         // Controls
