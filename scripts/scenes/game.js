@@ -71,6 +71,12 @@ function tryCreateAgain(pox, poy, big=false) {
     return 9999;
 }
 
+function openShop(whichone) {
+    shopDialogueProgress = 0;
+    currentShopText = shops[whichone]().dialogue;
+    setScene(scenes.shop());
+}
+
 function startDialogue(cd) {
     inDialogue = true;
     currentDialogue = cd.lines;

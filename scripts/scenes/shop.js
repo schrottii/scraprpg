@@ -1,8 +1,37 @@
+var shopDialogueProgress = 0;
+var currentShopText = [];
+
 scenes.shop = () => {
 
     let bottomRects = [];
     let navigationButtons = [];
+    let shopTextControls = [];
     let shopText = [];
+
+    function postShop(text) {
+        let maxLength = 48;
+        let tempText = "";
+        let superTempText = "";
+
+        for (i = 0; i < text.length; i++) {
+            superTempText = superTempText + text[i];
+            if (text[i] == " ") {
+                tempText = tempText + superTempText;
+                superTempText = "";
+            }
+            if (superTempText.length + tempText.length > maxLength) {
+                if (tempText == "") {
+                    tempText = tempText + superTempText;
+                    superTempText = "";
+                }
+                else {
+                    shopText.push(tempText);
+                    tempText = "";
+                }
+            }
+        }
+        shopText.push(tempText + superTempText);
+    }
 
     bottomRects.push(controls.rect({
         anchor: [0.0, 0.48], sizeAnchor: [1, 0.52],
@@ -25,6 +54,7 @@ scenes.shop = () => {
 
     navigationButtons.push(controls.button({
         anchor: [0.66, 0.525], sizeAnchor: [0.32, 0.075],
+        fillTop: "#ffc069",
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
@@ -34,6 +64,7 @@ scenes.shop = () => {
     }));
     navigationButtons.push(controls.button({
         anchor: [0.66, 0.625], sizeAnchor: [0.32, 0.075],
+        fillTop: "#ffc069",
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
@@ -43,15 +74,20 @@ scenes.shop = () => {
     }));
     navigationButtons.push(controls.button({
         anchor: [0.66, 0.725], sizeAnchor: [0.32, 0.075],
+        fillTop: "#ffc069",
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
-            fadeOut(500, true, () => setScene(scenes.inventory()));
+            if (currentShopText.length == 0) return false;
+            if (currentShopText[shopDialogueProgress] == undefined) shopDialogueProgress = 0;
+            postShop(currentShopText[shopDialogueProgress]);
+            shopDialogueProgress += 1;
         },
         text: "Talk",
     }));
     navigationButtons.push(controls.button({
         anchor: [0.66, 0.825], sizeAnchor: [0.32, 0.075],
+        fillTop: "#ffc069",
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
@@ -67,7 +103,7 @@ scenes.shop = () => {
     });
 
     for (i = 0; i < 10; i++) {
-        shopText.push(controls.label({
+        shopTextControls.push(controls.label({
             anchor: [0.05, 0.55], offset: [0, i * 40],
             align: "left", fontSize: 32, fill: "black",
             text: "", alpha: 1,
@@ -81,9 +117,9 @@ scenes.shop = () => {
         preRender(ctx, delta) {
             wrenchDisplay.text = formatNumber(game.wrenches) + "W";
 
-            shopText[0].text = "This is a placeholder text!";
-            shopText[1].text = "Soooo... what do you want to buy?";
-            shopText[2].text = "Or maybe sell me some good super swamp?";
+            for (st in shopTextControls) {
+                shopTextControls[9 - st].text = shopText[shopText.length - 1 - st] != undefined ? shopText[shopText.length - 1 - st] : "";
+            }
 
             shopPicTime += delta;
             if (shopPicTime > 499) {
@@ -93,7 +129,7 @@ scenes.shop = () => {
         },
         // Controls
         controls: [
-            ...bottomRects, ...navigationButtons, shopPic, wrenchDisplay, ...shopText
+            ...bottomRects, ...navigationButtons, shopPic, wrenchDisplay, ...shopTextControls
         ],
         name: "shop"
     }
