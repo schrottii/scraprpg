@@ -9,6 +9,11 @@ scenes.shop = () => {
     let shopTextControls = [];
     let shopText = [];
 
+    let itemsBackground = [];
+    let itemsButtons = [];
+    let itemsImages = [];
+    let itemsOwnAmount = [];
+
     function postShop(text) {
         let maxLength = 48;
         let tempText = "";
@@ -59,7 +64,7 @@ scenes.shop = () => {
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
-            fadeOut(500, true, () => setScene(scenes.inventory()));
+            showItems();
         },
         text: "Buy",
     }));
@@ -69,7 +74,7 @@ scenes.shop = () => {
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
-            fadeOut(500, true, () => setScene(scenes.inventory()));
+            hideItems();
         },
         text: "Sell",
     }));
@@ -117,6 +122,95 @@ scenes.shop = () => {
         text: "0", alpha: 1,
     });
 
+    function showItems() {
+        for (bg in itemsBackground) {
+            itemsBackground[bg].alpha = 1;
+        }
+        for (i in itemsButtons) {
+            if (itemsButtons[i].offer != "") {
+                itemsImages[i].source = "items/" + items[itemsButtons[i].offer]().source;
+                itemsOwnAmount[i].text = game.inventory[itemsButtons[i].offer];
+
+                itemsButtons[i].fillTop = colors.buttontop;
+                itemsButtons[i].fillBottom = colors.buttonbottom;
+                itemsButtons[i].pressedTop = colors.buttontoppressed;
+                itemsButtons[i].pressedBottom = colors.buttonbottompressed;
+
+                itemsButtons[i].alpha = 1;
+                itemsImages[i].alpha = 1;
+                itemsOwnAmount[i].alpha = 1;
+            }
+        }
+    }
+
+    function hideItems() {
+        for (bg in itemsBackground) {
+            itemsBackground[bg].alpha = 0;
+        }
+        for (i in itemsButtons) {
+            itemsButtons[i].alpha = 0;
+            itemsImages[i].alpha = 0;
+            itemsOwnAmount[i].alpha = 0;
+
+            itemsButtons[i].fillTop = "lightgray";
+            itemsButtons[i].fillBottom = "darkgray";
+        }
+    }
+
+    itemsBackground.push(controls.rect({
+        anchor: [0.05, 0.13], sizeAnchor: [0.3, 0.52],
+        fill: colors.buttontop, alpha: 0,
+    }));
+    itemsBackground.push(controls.rect({
+        anchor: [0.07, 0.15], sizeAnchor: [0.26, 0.48],
+        fill: colors.buttonbottom, alpha: 0,
+    }));
+
+    for (j = 0; j < 8; j++) {
+        itemsImages.push(controls.image({
+            anchor: [0.09, 0.205 + (0.1 * j)], sizeOffset: [64, 64], offset: [0, -32],
+            source: "gear",
+            alpha: 0
+        }));
+
+        itemsOwnAmount.push(controls.label({
+            anchor: [0.07, 0.205 + (0.1 * j)],
+            align: "right", fontSize: 24, fill: "black",
+            text: "0", alpha: 0,
+        }));
+
+        itemsButtons.push(controls.button({
+            anchor: [0.155, 0.165 + (0.1 * j)], sizeAnchor: [0.15, 0.08],
+            text: " ",
+            idx: j,
+            offer: "",
+            fillTop: "lightgray", fillBottom: "gray",
+            pressedTop: "darkgray", pressedBottom: "gray",
+            alpha: 0,
+            onClick(args) {
+                if (this.fillTop == "lightgray") {
+                    playSound("no");
+                }
+                else {
+                    let item = items[this.offer]();
+
+                    if (game.wrenches > item.shopcost) {
+                        game.wrenches -= item.shopcost;
+                        addItem(this.offer, 1);
+                    }
+                    showItems();
+                }
+            }
+        }));
+    }
+
+    for (i in currentShop.offers) {
+        if (itemsButtons[i] != undefined) {
+            itemsButtons[i].text = items[currentShop.offers[i][0]]().name;
+            itemsButtons[i].offer = currentShop.offers[i][0];
+        }
+    }
+
     fadeIn(500, true);
 
     return {
@@ -138,7 +232,8 @@ scenes.shop = () => {
         },
         // Controls
         controls: [
-            ...bottomRects, ...navigationButtons, shopPic, wrenchDisplay, ...shopTextControls, clvText
+            ...bottomRects, ...navigationButtons, shopPic, wrenchDisplay, ...shopTextControls, clvText,
+            ...itemsBackground, ...itemsButtons, ...itemsImages, ...itemsOwnAmount
         ],
         name: "shop"
     }
