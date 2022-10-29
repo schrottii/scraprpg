@@ -15,5 +15,5 @@ var shops = {
 
 for (s in shops) {
     shops[s].clv = 1;
-    shops[s].cp = 0;
+    shops[s].clp = 0;
 }

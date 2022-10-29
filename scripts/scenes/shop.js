@@ -212,7 +212,7 @@ scenes.shop = () => {
                     if (game.wrenches > getPrice(this.idx) && this.amount > 0) {
                         game.wrenches -= getPrice(this.idx);
                         addItem(this.offer, 1);
-                        increaseCP(this.offer);
+                        increaseCLP(this.offer);
                         this.amount -= 1;
                         shops[currentShopName].offers[this.idx].amount -= 1;
                         if (this.amount < 1) {
@@ -243,16 +243,16 @@ scenes.shop = () => {
         return items[currentShop.offers[i].item]().shopcost;
     }
 
-    function increaseCP(item) {
-        let cpi = items[item]().cpi;
+    function increaseCLP(item) {
+        let clpi = items[item]().clpi;
         
-        shops[currentShopName].cp += Math.floor(Math.random() * cpi);
+        shops[currentShopName].clp += Math.floor(Math.random() * clpi);
         clvUp();
     }
 
     function clvUp() {
-        if (shops[currentShopName].cp >= shops[currentShopName].clv * 100) {
-            shops[currentShopName].cp -= shops[currentShopName].clv * 100;
+        if (shops[currentShopName].clp >= shops[currentShopName].clv * 100) {
+            shops[currentShopName].clp -= shops[currentShopName].clv * 100;
             shops[currentShopName].clv += 1;
             setButtons();
         }
@@ -280,7 +280,7 @@ scenes.shop = () => {
                 shopPic.source = (shopPic.source == "shopbg1") ? "shopbg2" : "shopbg1";
             }
 
-            clvText.text = "Customer Level: " + currentShop.clv + " (" + currentShop.cp + "/" + (currentShop.clv * 100) + ")";
+            clvText.text = "Customer Level: " + currentShop.clv + " (" + currentShop.clp + "/" + (currentShop.clv * 100) + ")";
         },
         // Controls
         controls: [
