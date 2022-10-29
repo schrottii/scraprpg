@@ -275,6 +275,23 @@ scenes.shop = () => {
                     increaseCLP(item);
                     removeItem(item, 1);
 
+                    // we're evil :)
+                    let de = -1;
+
+                    for (i in currentShop.offers) {
+                        if (currentShop.offers[i].item == item) de = i;
+                    }
+                    if (de != -1) {
+                        shops[currentShopName].offers[de].amount += 1;
+                        shops[currentShopName].offers[de].clv = currentShop.clv;
+                    }
+                    else {
+                        // does not exist yet
+                        shops[currentShopName].offers.push({ item: item, amount: 1, clv: currentShop.clv });
+                    }
+                    updateCurrentShop();
+                    setButtons();
+
                     //if (game.inventory[item] < 1) {
                     hideItems();
                     showItems();
@@ -301,7 +318,7 @@ scenes.shop = () => {
     }
 
     function getSellPrice(i) {
-        return Math.floor(items[i]().shopcost / 5);
+        return items[i]().shopcost;
     }
 
     function increaseCLP(item) {
