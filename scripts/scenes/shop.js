@@ -13,6 +13,7 @@ scenes.shop = () => {
     let itemsButtons = [];
     let itemsImages = [];
     let itemsOwnAmount = [];
+    let itemsCosts = [];
 
     function postShop(text) {
         let maxLength = 48;
@@ -130,6 +131,10 @@ scenes.shop = () => {
             if (itemsButtons[i].offer != "") {
                 itemsImages[i].source = "items/" + items[itemsButtons[i].offer]().source;
                 itemsOwnAmount[i].text = game.inventory[itemsButtons[i].offer];
+                itemsCosts[i].text = getPrice(i) + "W";
+                
+                if (itemsButtons[i].amount < 1000) itemsButtons[i].text = items[currentShop.offers[i].item]().name + " x" + itemsButtons[i].amount;
+                else itemsButtons[i].text = items[currentShop.offers[i].item]().name;
 
                 itemsButtons[i].fillTop = colors.buttontop;
                 itemsButtons[i].fillBottom = colors.buttonbottom;
@@ -139,6 +144,7 @@ scenes.shop = () => {
                 itemsButtons[i].alpha = 1;
                 itemsImages[i].alpha = 1;
                 itemsOwnAmount[i].alpha = 1;
+                itemsCosts[i].alpha = 1;
             }
         }
     }
@@ -151,6 +157,7 @@ scenes.shop = () => {
             itemsButtons[i].alpha = 0;
             itemsImages[i].alpha = 0;
             itemsOwnAmount[i].alpha = 0;
+            itemsCosts[i].alpha = 0;
 
             itemsButtons[i].fillTop = "lightgray";
             itemsButtons[i].fillBottom = "darkgray";
@@ -179,25 +186,35 @@ scenes.shop = () => {
             text: "0", alpha: 0,
         }));
 
+        itemsCosts.push(controls.label({
+            anchor: [0.32, 0.205 + (0.1 * j)],
+            align: "left", fontSize: 24, fill: "yellow",
+            text: "0", alpha: 0,
+        }));
+
         itemsButtons.push(controls.button({
             anchor: [0.155, 0.165 + (0.1 * j)], sizeAnchor: [0.15, 0.08],
             text: " ",
             idx: j,
             offer: "",
+            amount: 999999999,
             fillTop: "lightgray", fillBottom: "gray",
             pressedTop: "darkgray", pressedBottom: "gray",
             alpha: 0,
             onClick(args) {
-                if (this.fillTop == "lightgray") {
+                if (this.fillTop == "lightgray" || this.offer == "") {
                     playSound("no");
                 }
                 else {
                     let item = items[this.offer]();
 
-                    if (game.wrenches > item.shopcost) {
-                        game.wrenches -= item.shopcost;
+                    if (game.wrenches > getPrice(this.idx) && this.amount > 0) {
+                        game.wrenches -= getPrice(this.idx);
                         addItem(this.offer, 1);
+                        this.amount -= 1;
+                        if (this.amount < 1) this.offer = "";
                     }
+                    hideItems();
                     showItems();
                 }
             }
@@ -206,9 +223,14 @@ scenes.shop = () => {
 
     for (i in currentShop.offers) {
         if (itemsButtons[i] != undefined) {
-            itemsButtons[i].text = items[currentShop.offers[i][0]]().name;
-            itemsButtons[i].offer = currentShop.offers[i][0];
+            itemsButtons[i].offer = currentShop.offers[i].item;
+            if (currentShop.offers[i].amount != undefined) itemsButtons[i].amount = currentShop.offers[i].amount;
         }
+    }
+
+    function getPrice(i) {
+        if (currentShop.offers[i].price != undefined) return currentShop.offers[i].price;
+        return items[currentShop.offers[i].item]().shopcost;
     }
 
     fadeIn(500, true);
@@ -233,7 +255,7 @@ scenes.shop = () => {
         // Controls
         controls: [
             ...bottomRects, ...navigationButtons, shopPic, wrenchDisplay, ...shopTextControls, clvText,
-            ...itemsBackground, ...itemsButtons, ...itemsImages, ...itemsOwnAmount
+            ...itemsBackground, ...itemsButtons, ...itemsImages, ...itemsOwnAmount, ...itemsCosts
         ],
         name: "shop"
     }
