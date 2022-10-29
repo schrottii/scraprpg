@@ -4,6 +4,7 @@ let items = {
             source: "",
             name: "none",
             shopcost: 200,
+            cpi: 10,
             max: 99,
             story: false,
             self: false,
@@ -89,6 +90,7 @@ let items = {
             source: "superswamp",
             name: "Super Swamp",
             shopcost: 1000,
+            cpi: 60,
             max: 99,
             effect: () => {
                 /*

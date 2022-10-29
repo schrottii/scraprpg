@@ -73,8 +73,9 @@ function tryCreateAgain(pox, poy, big=false) {
 
 function openShop(whichone) {
     shopDialogueProgress = 0;
-    currentShop = shops[whichone]();
-    currentShopText = shops[whichone]().dialogue;
+    currentShop = shops[whichone];
+    currentShopName = whichone;
+    currentShopText = shops[whichone].dialogue;
     setScene(scenes.shop());
 }
 

@@ -1,6 +1,7 @@
 var shopDialogueProgress = 0;
 var currentShopText = [];
 var currentShop;
+var currentShopName;
 
 scenes.shop = () => {
 
@@ -211,8 +212,13 @@ scenes.shop = () => {
                     if (game.wrenches > getPrice(this.idx) && this.amount > 0) {
                         game.wrenches -= getPrice(this.idx);
                         addItem(this.offer, 1);
+                        increaseCP(this.offer);
                         this.amount -= 1;
-                        if (this.amount < 1) this.offer = "";
+                        shops[currentShopName].offers[this.idx].amount -= 1;
+                        if (this.amount < 1) {
+                            shops[currentShopName].offers[this.idx].oos = true; // out of stock
+                            this.offer = "";
+                        }
                     }
                     hideItems();
                     showItems();
@@ -221,16 +227,40 @@ scenes.shop = () => {
         }));
     }
 
-    for (i in currentShop.offers) {
-        if (itemsButtons[i] != undefined) {
-            itemsButtons[i].offer = currentShop.offers[i].item;
-            if (currentShop.offers[i].amount != undefined) itemsButtons[i].amount = currentShop.offers[i].amount;
+    function setButtons() {
+        for (i in currentShop.offers) {
+            let clvreq = currentShop.offers[i].clv == undefined ? true : currentShop.clv >= currentShop.offers[i].clv;
+            if (itemsButtons[i] != undefined && !currentShop.offers[i].oos && clvreq) {
+                itemsButtons[i].offer = currentShop.offers[i].item;
+                if (currentShop.offers[i].amount != undefined) itemsButtons[i].amount = currentShop.offers[i].amount;
+            }
         }
     }
+    setButtons();
 
     function getPrice(i) {
         if (currentShop.offers[i].price != undefined) return currentShop.offers[i].price;
         return items[currentShop.offers[i].item]().shopcost;
+    }
+
+    function increaseCP(item) {
+        let cpi = items[item]().cpi;
+        
+        shops[currentShopName].cp += Math.floor(Math.random() * cpi);
+        clvUp();
+    }
+
+    function clvUp() {
+        if (shops[currentShopName].cp >= shops[currentShopName].clv * 100) {
+            shops[currentShopName].cp -= shops[currentShopName].clv * 100;
+            shops[currentShopName].clv += 1;
+            setButtons();
+        }
+        updateCurrentShop();
+    }
+
+    function updateCurrentShop() {
+        currentShop = shops[currentShopName];
     }
 
     fadeIn(500, true);
@@ -250,7 +280,7 @@ scenes.shop = () => {
                 shopPic.source = (shopPic.source == "shopbg1") ? "shopbg2" : "shopbg1";
             }
 
-            clvText.text = "Customer Level: " + currentShop.clv;
+            clvText.text = "Customer Level: " + currentShop.clv + " (" + currentShop.cp + "/" + (currentShop.clv * 100) + ")";
         },
         // Controls
         controls: [
