@@ -92,10 +92,8 @@ scenes.shop = () => {
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
-            if (currentShopText.length == 0) return false;
-            if (currentShopText[shopDialogueProgress] == undefined) shopDialogueProgress = 0;
-            postShop(currentShopText[shopDialogueProgress]);
-            shopDialogueProgress += 1;
+            continueTalking();
+            
         },
         text: "Talk",
     }));
@@ -110,19 +108,57 @@ scenes.shop = () => {
         text: "Exit",
     }));
 
+    function continueTalking() {
+        if (currentShopText.length == 0) return false;
+        if (shopDialogueProgress >= currentShopText.length) {
+            shopDialogueProgress = 0;
+        }
+        let txt = currentShopText[shopDialogueProgress];
+        if (typeof (txt) == "object") txt = txt[0];
+        postShop(txt);
+        shopDialogueProgress += 1;
+    }
+
     let wrenchDisplay = controls.label({
         anchor: [0.82, 0.925],
         align: "center", fontSize: 32, fill: "black",
         text: "0", alpha: 1,
     });
 
-    for (i = 0; i < 10; i++) {
+    for (i = 0; i < 8; i++) {
         shopTextControls.push(controls.label({
             anchor: [0.05, 0.55], offset: [0, i * 40],
             align: "left", fontSize: 32, fill: "black",
             text: "", alpha: 1,
         }));
     }
+
+    let shopTextButton1 = controls.button({
+        anchor: [0.1, 0.55], sizeAnchor: [0.15, 0.075], offset: [0, 300],
+        fillTop: "#ffc069",
+        alpha: 1,
+        onClick(args) {
+            playSound("buttonClickSound");
+            shops[currentShopName].clp += this.a;
+            clvUp();
+            postShop(this.t);
+            continueTalking();
+        },
+        text: "...",
+    });
+    let shopTextButton2 = controls.button({
+        anchor: [0.35, 0.55], sizeAnchor: [0.15, 0.075], offset: [0, 300],
+        fillTop: "#ffc069",
+        alpha: 1,
+        onClick(args) {
+            playSound("buttonClickSound");
+            shops[currentShopName].clp += this.a;
+            clvUp();
+            postShop(this.t);
+            continueTalking();
+        },
+        text: "...",
+    });
 
     let clvText = controls.label({
         anchor: [0.5, 0.45],
@@ -283,7 +319,7 @@ scenes.shop = () => {
                     }
                     if (de != -1) {
                         shops[currentShopName].offers[de].amount += 1;
-                        shops[currentShopName].offers[de].clv = currentShop.clv;
+                        shops[currentShopName].offers[de].clv = Math.max(shops[currentShopName].offers[de].clv, currentShop.clv);
                     }
                     else {
                         // does not exist yet
@@ -348,8 +384,31 @@ scenes.shop = () => {
         preRender(ctx, delta) {
             wrenchDisplay.text = formatNumber(game.wrenches) + "W";
 
+            // Render talk texts
             for (st in shopTextControls) {
-                shopTextControls[9 - st].text = shopText[shopText.length - 1 - st] != undefined ? shopText[shopText.length - 1 - st] : "";
+                shopTextControls[7 - st].text = shopText[shopText.length - st] != undefined ? shopText[shopText.length - st] : "";
+            }
+
+            // Buttons
+            let bc = currentShopText[shopDialogueProgress - 1];
+            if (typeof (bc) == "object") {
+                shopTextButton1.alpha = 1;
+                shopTextButton1.text = bc[1];
+                shopTextButton1.a = bc[2].clp;
+                shopTextButton1.t = bc[2].text;
+                if (shopText[shopDialogueProgress][3] != undefined) {
+                    shopTextButton2.alpha = 1;
+                    shopTextButton2.text = bc[3];
+                    shopTextButton2.a = bc[4].clp;
+                    shopTextButton2.t = bc[4].text;
+                }
+                else {
+                    shopTextButton2.alpha = 0;
+                }
+            }
+            else {
+                shopTextButton1.alpha = 0;
+                shopTextButton2.alpha = 0;
             }
 
             shopPicTime += delta;
@@ -363,7 +422,8 @@ scenes.shop = () => {
         // Controls
         controls: [
             ...bottomRects, ...navigationButtons, shopPic, wrenchDisplay, ...shopTextControls, clvText,
-            ...itemsBackground, ...itemsButtons, ...itemsImages, ...itemsOwnAmount, ...itemsCosts
+            ...itemsBackground, ...itemsButtons, ...itemsImages, ...itemsOwnAmount, ...itemsCosts,
+            shopTextButton1, shopTextButton2
         ],
         name: "shop"
     }
