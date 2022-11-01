@@ -597,6 +597,8 @@ function loadGame() {
             }
         }
         game = saveCopy;
+
+        checkOverMax();
     }
     else {
         saveGame();

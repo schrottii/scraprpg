@@ -301,59 +301,61 @@ scenes.shop = () => {
             pressedTop: "darkgray", pressedBottom: "gray",
             alpha: 0,
             onClick(args) {
-                if (mode == "buy") {
-                    if (this.fillTop == "lightgray" || this.offer == "") {
-                        playSound("no");
-                    }
-                    else {
-                        let item = items[this.offer]();
-
-                        if (game.wrenches > getPrice(this.idx) && this.amount > 0) {
-                            addWrenches(getPrice(this.idx) * -1);
-                            addItem(this.offer, 1);
-                            increaseCLP(this.offer);
-                            this.amount -= 1;
-                            shops[currentShopName].offers[this.idx].amount -= 1;
-                            if (this.amount < 1) {
-                                shops[currentShopName].offers[this.idx].oos = true; // out of stock
-                                this.offer = "";
-                            }
+                if (this.alpha == 1) {
+                    if (mode == "buy") {
+                        if (this.fillTop == "lightgray" || this.offer == "") {
+                            playSound("no");
                         }
+                        else {
+                            let item = items[this.offer]();
+
+                            if (game.wrenches > getPrice(this.idx) && this.amount > 0) {
+                                addWrenches(getPrice(this.idx) * -1);
+                                addItem(this.offer, 1);
+                                increaseCLP(this.offer);
+                                this.amount -= 1;
+                                shops[currentShopName].offers[this.idx].amount -= 1;
+                                if (this.amount < 1) {
+                                    shops[currentShopName].offers[this.idx].oos = true; // out of stock
+                                    this.offer = "";
+                                }
+                            }
+                            hideItems();
+                            showItems();
+                        }
+                    }
+                    if (mode == "sell") {
+                        let item = Object.keys(game.inventory)[this.si];
+                        if (currentShop.limitedBuy != false && items[item]().type != currentShop.limitedBuy && currentShop.pawnShop != true) {
+                            playSound("no");
+                            return false;
+                        }
+                        addWrenches(getSellPrice(item));
+                        increaseCLP(item);
+                        removeItem(item, 1);
+
+                        // we're evil :)
+                        let de = -1;
+
+                        for (i in currentShop.offers) {
+                            if (currentShop.offers[i].item == item) de = i;
+                        }
+                        if (de != -1) {
+                            shops[currentShopName].offers[de].amount += 1;
+                            shops[currentShopName].offers[de].clv = Math.max(shops[currentShopName].offers[de].clv, currentShop.clv);
+                        }
+                        else {
+                            // does not exist yet
+                            shops[currentShopName].offers.push({ item: item, amount: 1, clv: currentShop.clv });
+                        }
+                        updateCurrentShop();
+                        setButtons();
+
+                        //if (game.inventory[item] < 1) {
                         hideItems();
                         showItems();
-                    }
-                }
-                if (mode == "sell") {
-                    let item = Object.keys(game.inventory)[this.si];
-                    if (currentShop.limitedBuy != false && items[item]().type != currentShop.limitedBuy && currentShop.pawnShop != true) {
-                        playSound("no");
-                        return false;
-                    }
-                    addWrenches(getSellPrice(item));
-                    increaseCLP(item);
-                    removeItem(item, 1);
 
-                    // we're evil :)
-                    let de = -1;
-
-                    for (i in currentShop.offers) {
-                        if (currentShop.offers[i].item == item) de = i;
                     }
-                    if (de != -1) {
-                        shops[currentShopName].offers[de].amount += 1;
-                        shops[currentShopName].offers[de].clv = Math.max(shops[currentShopName].offers[de].clv, currentShop.clv);
-                    }
-                    else {
-                        // does not exist yet
-                        shops[currentShopName].offers.push({ item: item, amount: 1, clv: currentShop.clv });
-                    }
-                    updateCurrentShop();
-                    setButtons();
-
-                    //if (game.inventory[item] < 1) {
-                    hideItems();
-                    showItems();
-                    
                 }
             }
         }));

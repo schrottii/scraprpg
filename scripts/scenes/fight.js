@@ -2481,7 +2481,7 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             positionControls.push(controls.image({
-                anchor: [0.0 /* 0.025 */, 0.45], offset: [-256, 72 * j], sizeOffset: [64, 64],
+                anchor: [0.0 /* 0.025 */, 0.4], offset: [-256, 72 * j], sizeOffset: [64, 64],
                 defoffset: 72 * i, fly: 0, flydir: 1,
                 source: "gear",
                 alpha: 1,
@@ -2583,7 +2583,7 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             epositionControls.push(controls.image({
-                anchor: [1.975, 0.45], offset: [500, 72 * j], sizeOffset: [64, 64], bigoff: 0,
+                anchor: [1.975, 0.4], offset: [500, 72 * j], sizeOffset: [64, 64], bigoff: 0,
                 defoffset: -(72 + (72 * i)),
                 source: "gear",
                 alpha: 1,
@@ -2646,7 +2646,7 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             positionGrid.push(controls.image({
-                anchor: [0.025, 0.45], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
+                anchor: [0.025, 0.4], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
                 source: "grid",
                 blend: "mul",
                 alpha: 1,
@@ -2656,7 +2656,7 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             positionGrid.push(controls.image({
-                anchor: [0.975, 0.45], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
+                anchor: [0.975, 0.4], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
                 source: "grid",
                 blend: "mul",
                 alpha: 1,

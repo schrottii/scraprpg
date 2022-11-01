@@ -135,6 +135,13 @@ function checkLevelUps() {
     }
 }
 
+function checkOverMax() {
+    for (i in game.characters) {
+        game.characters[i].HP = Math.min(game.characters[i].HP, getStat(game.characters[i].name.toLowerCase(), "maxHP"));
+        game.characters[i].EP = Math.min(game.characters[i].EP, getStat(game.characters[i].name.toLowerCase(), "maxEP"));
+    }
+}
+
 function getEmotion(emotion) { //How do you spell portrait?
     switch (emotion) {
         case "neutral":
