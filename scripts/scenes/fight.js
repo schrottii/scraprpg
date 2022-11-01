@@ -1697,7 +1697,7 @@ scenes.fight = () => {
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 6; i++) {
             fightActions.push(controls.rect({
-                anchor: [0.33 + (j * 0.17), 0 + (i * 0.0375)], sizeAnchor: [0.17, 0.0375], offset: [0, -500],
+                anchor: [0.33 + (j * 0.17), 0 + (i * 0.055)], sizeAnchor: [0.17, 0.055], offset: [0, -500],
                 fill: "rgb(38, 52, 38)",
                 alpha: 1,
                 item: "", type: "item",
@@ -1736,18 +1736,18 @@ scenes.fight = () => {
                 }
             }))
             fightActions.push(controls.rect({
-                anchor: [0.3325 + (j * 0.17), 0.0025 + (i * 0.0375)], sizeAnchor: [0.165, 0.0325], offset: [0, -500],
+                anchor: [0.3325 + (j * 0.17), 0.0025 + (i * 0.055)], sizeAnchor: [0.165, 0.05], offset: [0, -500],
                 fill: "rgb(42, 87, 44)",
                 alpha: 1,
             }))
             fightActions.push(controls.label({
-                anchor: [0.48 + (j * 0.17), 0.025 + (i * 0.0375)], offset: [-24, -500],
+                anchor: [0.48 + (j * 0.17), 0.025 + (i * 0.055)], offset: [-24, -500],
                 text: "---",
                 fontSize: 16, fill: "white", align: "right",
                 alpha: 1,
             }))
             fightActions.push(controls.image({
-                anchor: [0.48 + (j * 0.17), 0.025 + (i * 0.0375)], sizeOffset: [32, 32], offset: [0, -520],
+                anchor: [0.48 + (j * 0.17), 0.025 + (i * 0.055)], sizeOffset: [32, 32], offset: [0, -520],
                 source: "gear",
                 alpha: 0,
             }))
@@ -1755,7 +1755,7 @@ scenes.fight = () => {
         }
     }
     fightActions.push(controls.rect({
-        anchor: [0.67, 0.1875], sizeAnchor: [0.17, 0.0375], offset: [0, -500],
+        anchor: [0.67, 0.33], sizeAnchor: [0.17, 0.055], offset: [0, -500],
         fill: "rgb(38, 52, 38)",
         alpha: 1,
         item: "",
@@ -1767,12 +1767,12 @@ scenes.fight = () => {
         }
     }));
     fightActions.push(controls.rect({
-        anchor: [0.6725, 0.19], sizeAnchor: [0.165, 0.0325], offset: [0, -500],
+        anchor: [0.6725, 0.3325], sizeAnchor: [0.165, 0.05], offset: [0, -500],
         fill: "rgb(42, 87, 44)",
         alpha: 1,
     }))
     fightActions.push(controls.label({
-        anchor: [0.755, 0.2075], offset: [-24, -500],
+        anchor: [0.755, 0.355], offset: [-24, -500],
         text: "Back",
         fontSize: 16, fill: "white", align: "center",
         alpha: 1,
@@ -1780,7 +1780,7 @@ scenes.fight = () => {
 
 
     fightActions.push(controls.rect({
-        anchor: [0.67, 0.0], sizeAnchor: [0.17, 0.0375], offset: [0, -500],
+        anchor: [0.67, 0.0], sizeAnchor: [0.17, 0.055], offset: [0, -500],
         fill: "rgb(38, 52, 38)",
         alpha: 1,
         item: "",
@@ -1792,7 +1792,7 @@ scenes.fight = () => {
         }
     }));
     fightActions.push(controls.rect({
-        anchor: [0.6725, 0.0025], sizeAnchor: [0.165, 0.0325], offset: [0, -500],
+        anchor: [0.6725, 0.0025], sizeAnchor: [0.165, 0.05], offset: [0, -500],
         fill: "rgb(42, 87, 44)",
         alpha: 1,
     }))
@@ -1805,7 +1805,7 @@ scenes.fight = () => {
 
 
     fightActions.push(controls.rect({
-        anchor: [0.67, 0.0375], sizeAnchor: [0.17, 0.0375], offset: [0, -500],
+        anchor: [0.67, 0.055], sizeAnchor: [0.17, 0.055], offset: [0, -500],
         fill: "rgb(38, 52, 38)",
         alpha: 1,
         item: "",
@@ -1817,12 +1817,12 @@ scenes.fight = () => {
         }
     }));
     fightActions.push(controls.rect({
-        anchor: [0.6725, 0.04], sizeAnchor: [0.165, 0.0325], offset: [0, -500],
+        anchor: [0.6725, 0.0575], sizeAnchor: [0.165, 0.05], offset: [0, -500],
         fill: "rgb(42, 87, 44)",
         alpha: 1,
     }))
     fightActions.push(controls.label({
-        anchor: [0.755, 0.0625], offset: [-24, -500],
+        anchor: [0.755, 0.075], offset: [-24, -500],
         text: "Next",
         fontSize: 16, fill: "white", align: "center",
         alpha: 1,
