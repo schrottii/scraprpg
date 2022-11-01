@@ -382,14 +382,9 @@ function getPlayer(character = 1, src = game) {
     return src.characters[game.chars[character - 1]];
 }
 
-function isMobile() {
-    // Somewhat
-    if (width < 24) return true;
-    return false;
-}
 function isLs() {
     // Somewhat
-    if (scale < 24) return true;
+    if (scale < 32) return true;
     return false;
 }
 
@@ -439,7 +434,7 @@ function loop() {
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
     ctx.globalAlpha = 1; //or else it's a bit transparent
-    ctx.fillText((1000 / delta).toFixed(0) + "fps " + delta + "ms  | w: " + width + "  scale: " + scale + "   h: " + height + " mob: " + isMobile() + " ls: " + isLs(), 2, 12);
+    ctx.fillText((1000 / delta).toFixed(0) + "fps " + delta + "ms  | w: " + width + "  scale: " + scale + "   h: " + height + " ls: " + isLs(), 2, 12);
 
     // Auto Save
     if (settings != undefined) {

@@ -2765,36 +2765,6 @@ scenes.fight = () => {
             }
         }
 
-        // Mobile resizing
-        /*if (isMobile()) {
-            for (j = 0; j < 3; j++) {
-                for (i = 0; i < 3; i++) {
-                    positionControls[i + (j * 3)].sizeOffset = [48, 48];
-                    //positionControls[i + (j * 3)].offset = [56 * i, 72 * j];
-                    epositionControls[i + (j * 3)].sizeOffset = [48, 48];
-                    //epositionControls[i + (j * 3)].offset = [-(48 + (56 * i)), 72 * j];
-                    if (positionGrid[i + (j * 3)].source == "grid" || positionGrid[i + (j * 3)].source == "hasaction" || positionGrid[i + (j * 3)].source == "selected") {
-                        positionGrid[i + (j * 3)].sizeOffset = [48, 48];
-                        positionGrid[i + (j * 3)].offset = [56 * i, 72 * j];
-                    }
-                    else {
-                        positionGrid[i + (j * 3)].sizeOffset = [24, 24];
-                        positionGrid[i + (j * 3)].offset = [(56 * i) + 24, (72 * j) + 24];
-                    }
-                    if (positionGrid[9 + i + (j * 3)].source == "grid" || positionGrid[9 + i + (j * 3)].source == "hasaction" || positionGrid[9 + i + (j * 3)].source == "selected") {
-                        positionGrid[9 + i + (j * 3)].sizeOffset = [48, 48];
-                        positionGrid[9 + i + (j * 3)].offset = [-(48 + (56 * i)), 72 * j];
-                    }
-                    else {
-                        positionGrid[9 + i + (j * 3)].sizeOffset = [24, 24];
-                        positionGrid[9 + i + (j * 3)].offset = [(56 * i) + 24, (72 * j) + 24];
-                    }
-
-                    
-                }
-            }
-        }
-        else {*/
             for (j = 0; j < 3; j++) {
                 for (i = 0; i < 3; i++) {
                     positionControls[i + (j * 3)].sizeOffset = [64, 64];
@@ -2819,7 +2789,6 @@ scenes.fight = () => {
                     }
                 }
             }
-        //}
 
 
         actionText = [];
