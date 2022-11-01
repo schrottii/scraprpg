@@ -4,6 +4,7 @@ let items = {
             source: "",
             name: "none",
             shopcost: 200,
+            type: "electronic",
             clpi: 10,
             max: 99,
             story: false,
@@ -24,6 +25,7 @@ let items = {
             source: "brickyleaf",
             name: "Bricky Leaf",
             shopcost: 500,
+            type: "flower",
             max: 99,
             effect: () => {
                 if (args.player.effect[0] == "poison") causeEffect(i, "none", 0);
@@ -39,6 +41,7 @@ let items = {
             source: "potion",
             name: "Small Potion",
             shopcost: 250,
+            type: "potion",
             max: 99,
             effect: () => {
                 let HealthBefore = args.player.HP;
@@ -60,6 +63,7 @@ let items = {
             source: "peppytincture",
             name: "Peppy Tincture",
             shopcost: 2000,
+            type: "potion",
             max: 99,
             effect: () => {
                 causeEffect(game.chars.indexOf(args.player.name.toLowerCase()), "none", 0);
@@ -75,6 +79,7 @@ let items = {
             source: "scroll",
             name: "Scroll of Truth",
             shopcost: 999999,
+            type: "book",
             max: 1,
             story: true,
             effect: () => {
@@ -90,6 +95,7 @@ let items = {
             source: "superswamp",
             name: "Super Swamp",
             shopcost: 1000,
+            type: "flower",
             clpi: 60,
             max: 99,
             effect: () => {
@@ -113,6 +119,7 @@ let items = {
             source: "revive",
             name: "Revive Item",
             shopcost: 2500,
+            type: "potion",
             max: 99,
             effect: () => {
                 let HealthBefore = args.player.HP
@@ -139,6 +146,7 @@ let items = {
             source: "scroll",
             name: "Chicago Pants",
             shopcost: 999999,
+            type: "clothes",
             max: 1,
             type: "body",
             stats: {

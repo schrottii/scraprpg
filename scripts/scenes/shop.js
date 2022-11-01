@@ -166,6 +166,12 @@ scenes.shop = () => {
         text: "0", alpha: 1,
     });
 
+    let typeText = controls.label({
+        anchor: [0.82, 0.5],
+        align: "center", fontSize: 32, fill: "white",
+        text: "", alpha: 1,
+    });
+
     function showItems() {
         let iback = 0;
         for (bg in itemsBackground) {
@@ -307,6 +313,10 @@ scenes.shop = () => {
                 }
                 if (mode == "sell") {
                     let item = Object.keys(game.inventory)[this.si];
+                    if (currentShop.limitedBuy != false && items[item]().type != currentShop.limitedBuy) {
+                        playSound("no");
+                        return false;
+                    }
                     addWrenches(getSellPrice(item));
                     increaseCLP(item);
                     removeItem(item, 1);
@@ -389,6 +399,15 @@ scenes.shop = () => {
                 shopTextControls[7 - st].text = shopText[shopText.length - st] != undefined ? shopText[shopText.length - st] : "";
             }
 
+            if (currentShop.limitedBuy != false && typeText.text == "") {
+                typeText.text = {
+                    flower: "Flowers",
+                    potion: "Potions",
+                    clothes: "Clothes",
+                    electronic: "5 Watt devices"
+                }[currentShop.limitedBuy]
+            }
+
             // Buttons
             let bc = currentShopText[shopDialogueProgress - 1];
             if (typeof (bc) == "object") {
@@ -421,7 +440,7 @@ scenes.shop = () => {
         },
         // Controls
         controls: [
-            ...bottomRects, ...navigationButtons, shopPic, wrenchDisplay, ...shopTextControls, clvText,
+            ...bottomRects, ...navigationButtons, shopPic, wrenchDisplay, ...shopTextControls, clvText, typeText,
             ...itemsBackground, ...itemsButtons, ...itemsImages, ...itemsOwnAmount, ...itemsCosts,
             shopTextButton1, shopTextButton2
         ],
