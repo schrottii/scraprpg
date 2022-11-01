@@ -3053,11 +3053,11 @@ scenes.fight = () => {
 
                             let kokiboi = positionControls[i + (j * 3)];
 
-                            if (kokiboi.flydir == 1) kokiboi.fly += (3 - (kokiboi.fly / 12)) / delta;
-                            if (kokiboi.fly >= 8) kokiboi.flydir = 0;
+                            if (kokiboi.flydir == 1) kokiboi.fly += (3 - (kokiboi.fly / 18)) / delta;
+                            if (kokiboi.fly >= 0) kokiboi.flydir = 0;
 
-                            if (kokiboi.flydir == 0) kokiboi.fly -= (3 - ((8 - kokiboi.fly) / 12)) / delta;
-                            if (kokiboi.fly <= -8) kokiboi.flydir = 1;
+                            if (kokiboi.flydir == 0) kokiboi.fly -= (3 - ((0 - kokiboi.fly) / 18)) / delta;
+                            if (kokiboi.fly <= -16) kokiboi.flydir = 1;
 
                             kokiboi.offset[1] = (72 * kokiboi.pos2) + kokiboi.fly;
                         }
