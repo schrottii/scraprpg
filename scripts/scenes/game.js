@@ -1474,7 +1474,8 @@ scenes.game = () => {
                             if (map.map[activenpcs[i].position[1] + yo] != undefined) {
                                 if (map.map[activenpcs[i].position[1] + yo][activenpcs[i].position[0] + xo] != undefined) {
                                     if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo) != undefined) {
-                                        if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo).occupied != true) {
+                                        if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo).occupied != true
+                                            && getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo).teleport == undefined) {
                                             if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, 2) == undefined || (map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, 2).occupied != true) {
                                                 if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, 3) == undefined || (map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, 3).occupied != true) {
                                                     if (!creaturesOnTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo)) {
@@ -1512,7 +1513,8 @@ scenes.game = () => {
                         if (map.map[activenpcs[i].position[1]] != undefined) {
                             if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0] + xo] != undefined) {
                                 if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo) != undefined) {
-                                    if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo).occupied != true) {
+                                    if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo).occupied != true
+                                        && getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo).teleport == undefined) {
                                         if (!creaturesOnTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo) || xo == 0 && yo == 0) {
                                             activenpcs[i].position[0] += xo;
                                             activenpcs[i].position[1] += yo;
@@ -1564,7 +1566,8 @@ scenes.game = () => {
                             if (map.map[enemies[i].position[1] + xo] != undefined && xo != undefined) {
                                 if (map.map[enemies[i].position[1] + xo][enemies[i].position[0] + yo] != undefined) {
                                     if (getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo) != undefined) {
-                                        if (getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo).occupied != true) {
+                                        if (getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo).occupied != true
+                                            && getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo).teleport == undefined) {
                                             if (getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, 2) == undefined || getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, 2).occupied != true) {
                                                 if (getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, 3) == undefined || getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, 3).occupied != true) {
                                                     if (!creaturesOnTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, false)) {
