@@ -5,6 +5,7 @@ var shops = {
 
         offers: [],
         limitedBuy: false,
+        pawnShop: false,
     },
     placeholder : {
         name: "Yeeeaaaahhhh",
@@ -12,6 +13,7 @@ var shops = {
 
         offers: [{ item: "brickyleaf" }, { item: "superswamp", amount: 1, price: 1 }, { item: "potion", amount: 10, clv: 2 }],
         limitedBuy: "flower",
+        pawnShop: true,
     },
 };
 

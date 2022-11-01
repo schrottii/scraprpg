@@ -51,6 +51,7 @@ let images = {
     mapbuttons: "data/images/mapbuttons.png",
     shopbg1: "data/images/shop-bg.png",
     shopbg2: "data/images/shop-bg2.png",
+    pawn: "data/images/pawn.png",
 
     eattackani2: "data/images/eattackani2.png",
 

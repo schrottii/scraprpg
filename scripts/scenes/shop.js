@@ -67,10 +67,12 @@ scenes.shop = () => {
         fillTop: "#ffc069",
         alpha: 1,
         onClick(args) {
-            playSound("buttonClickSound");
-            mode = "buy";
-            hideItems();
-            showItems();
+            if (this.alpha == 1) {
+                playSound("buttonClickSound");
+                mode = "buy";
+                hideItems();
+                showItems();
+            }
         },
         text: "Buy",
     }));
@@ -79,10 +81,12 @@ scenes.shop = () => {
         fillTop: "#ffc069",
         alpha: 1,
         onClick(args) {
-            playSound("buttonClickSound");
-            mode = "sell";
-            hideItems();
-            showItems();
+            if (this.alpha == 1) {
+                playSound("buttonClickSound");
+                mode = "sell";
+                hideItems();
+                showItems();
+            }
         },
         text: "Sell",
     }));
@@ -91,9 +95,10 @@ scenes.shop = () => {
         fillTop: "#ffc069",
         alpha: 1,
         onClick(args) {
-            playSound("buttonClickSound");
-            continueTalking();
-            
+            if (this.alpha == 1) {
+                playSound("buttonClickSound");
+                continueTalking();
+            }
         },
         text: "Talk",
     }));
@@ -102,8 +107,10 @@ scenes.shop = () => {
         fillTop: "#ffc069",
         alpha: 1,
         onClick(args) {
-            playSound("buttonClickSound");
-            fadeOut(500, true, () => setScene(scenes.game()));
+            if (this.alpha == 1) {
+                playSound("buttonClickSound");
+                fadeOut(500, true, () => setScene(scenes.game()));
+            }
         },
         text: "Exit",
     }));
@@ -170,6 +177,11 @@ scenes.shop = () => {
         anchor: [0.82, 0.5],
         align: "center", fontSize: 32, fill: "white",
         text: "", alpha: 1,
+    });
+
+    let pawnIcon = controls.image({
+        anchor: [0.645, 0.48], offset: [-16, 16],
+        source: "pawn", alpha: 0,
     });
 
     function showItems() {
@@ -313,7 +325,7 @@ scenes.shop = () => {
                 }
                 if (mode == "sell") {
                     let item = Object.keys(game.inventory)[this.si];
-                    if (currentShop.limitedBuy != false && items[item]().type != currentShop.limitedBuy) {
+                    if (currentShop.limitedBuy != false && items[item]().type != currentShop.limitedBuy && currentShop.pawnShop != true) {
                         playSound("no");
                         return false;
                     }
@@ -408,6 +420,11 @@ scenes.shop = () => {
                 }[currentShop.limitedBuy]
             }
 
+            if (currentShop.pawnShop == true) {
+                pawnIcon.alpha = 1;
+                navigationButtons[0].alpha = 0;
+            }
+
             // Buttons
             let bc = currentShopText[shopDialogueProgress - 1];
             if (typeof (bc) == "object") {
@@ -440,7 +457,7 @@ scenes.shop = () => {
         },
         // Controls
         controls: [
-            ...bottomRects, ...navigationButtons, shopPic, wrenchDisplay, ...shopTextControls, clvText, typeText,
+            ...bottomRects, ...navigationButtons, shopPic, wrenchDisplay, ...shopTextControls, clvText, typeText, pawnIcon,
             ...itemsBackground, ...itemsButtons, ...itemsImages, ...itemsOwnAmount, ...itemsCosts,
             shopTextButton1, shopTextButton2
         ],
