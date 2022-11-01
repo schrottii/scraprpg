@@ -21,12 +21,12 @@ scenes.title = () => {
     let infoLabel = controls.label({
         anchor: [.02, .98], offset: [5, -12],
         align: "left", baseline: "alphabetic", fontSize: 16, fill: "#7f7f7f", alpha: 0,
-        text: "©2022 Toast Technology",
+        text: "©2022 Toast Technology Team / Schrottii",
     });
     let verLabel = controls.label({
         anchor: [.98, .98], offset: [-5, -12],
         align: "right", baseline: "alphabetic", fontSize: 16, fill: "#7f7f7f", alpha: 0,
-        text: "Prototype 9",
+        text: "Phase 1.5",
     });
 
     let settingsSaveText = controls.label({
@@ -211,7 +211,7 @@ scenes.title = () => {
 
         saveImages.push(controls.image({
             anchor: [1.2, .3], offset: [0, -220 + 130 * a], sizeAnchor: [0, 0], sizeOffset: [60, 60],
-            source: "saveimage" + Math.ceil(Math.random() * 5),
+            source: "saveimage" + Math.ceil(Math.random() * 5), alpha: 0,
             onClick(args) { //Change the image when clicked
                 saveNR = a;
                 saveButtons[a].clickthrough = true; //To avoid savegame loading when changing image (God tier code)
@@ -357,9 +357,11 @@ scenes.title = () => {
                     saveTexts[14 + (a * amount)].text = formatNumber(thisSave.bricks);
 
                     saveImages[a].source = "saveimage" + thisSave.pfp;
+                    saveImages[a].alpha = 1;
                 }
                 else { // Save does not exist :(
                     saveButtons[a].text = "New Game";
+                    saveImages[a].alpha = 0;
                     let amount = 15;
                     for (i = 0; i < amount; i++) {
                         saveTexts[i + (a * amount)].alpha = 0;
