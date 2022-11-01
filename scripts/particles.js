@@ -146,8 +146,10 @@ function Particles(args) {
                 if (this.p[p][4] >= this.lifespan && this.lifespan != 0 && this.lifeMode) {
                     this.onDeath(args);
                     this.p.splice(parseInt(p), 1);
-                    if (this.repeatMode) {
+                    if (this.repeatMode && this.spawnTimeTick >= this.spawnTime) {
                         this.life = 0;
+                        this.spawnTimeTick = 0;
+
                         this.generate(ctx);
                     }
                     continue;
