@@ -893,6 +893,8 @@ scenes.fight = () => {
         positionGrid[pos[0] + (pos[1] * 3)].source = "grid";
         positionGrid2[pos[0] + (pos[1] * 3)].source = "grid";
 
+        positionControls[pos[0] + (pos[1] * 3)].snip = [0, 64, 32, 32];
+        positionControls.source = positions[pos[0]][pos[1]].occupied;
         positions[pos[0]][pos[1]].action = false;
         busy = false;
         setTimeout(() => executeActions(), ACTIONDELAY);
