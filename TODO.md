@@ -1,20 +1,39 @@
 ﻿##TODO:
-2.5 Things left to do in this phase
+22 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
 The developing phase, Schrottii's phase, the essential features of the game
 
-- More battle sprites
-  - Others (either related to MTs or other normal actions.)
-- Overworld quests (Side quests, NOT main story objectives)
-- Add more of those Attack type things (Defend, Scan, etc.)
+IT'S DONE!
 
 ##Phase 1.5
-???
-🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔🤔
+- MAP MAKER
+  - Display tiles
+  - Move around
+  - Tiles menu
+  - Placing tiles
+  - Expanding map
+  - Display items and NPCs
+  - Adding new tiles
+  - Placing items
+  - Changing map display name
+  - and music
+  - and weather
+  - and worldmode
+  - Different layers
+  - Dialogues
+  - Saving
+  - Loading
+  - Teleporters
+  
+- More battle sprites
+- Highlighted prots / enemies (in fight)
+- Overworld quests (Side quests, NOT main story objectives)
+- A few other things, maybe 2-3 from phase 2
 
-
+- Finishing the story of chapter 1
+- Creating tiles and their images, that we need for chapter 1
 
 ##Phase 2
 The main focus of this phase is creating maps, enemies, the story, etc. - the stuff you play.
