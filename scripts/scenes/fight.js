@@ -1486,7 +1486,7 @@ scenes.fight = () => {
         fightButtons.push(controls.label({
             anchor: [0.145, 0.025 + (i * 0.055)], offset: [0, -500],
             text: ["Normal Actions", "Item Inventory", "Magic", "Mastery Techniques", "Macro", "Flee"][i],
-            fontSize: 16, fill: "black", align: "right", 
+            fontSize: 20, fill: "black", align: "right", 
             alpha: 1,
         }))
         
@@ -1552,7 +1552,7 @@ scenes.fight = () => {
         actionButtons.push(controls.label({
             anchor: [0.445, 0.025 + (i * 0.055)], offset: [0, -500],
             text: ["Attack", "Defend", "Rally", "Scan", "Pray", "Counterattack"][i],
-            fontSize: 16, fill: "black", align: "right",
+            fontSize: 20, fill: "black", align: "right",
             alpha: 1,
         }))
 
@@ -1743,7 +1743,7 @@ scenes.fight = () => {
             fightActions.push(controls.label({
                 anchor: [0.48 + (j * 0.17), 0.025 + (i * 0.055)], offset: [-24, -500],
                 text: "---",
-                fontSize: 16, fill: "white", align: "right",
+                fontSize: 20, fill: "white", align: "right",
                 alpha: 1,
             }))
             fightActions.push(controls.image({
@@ -1774,7 +1774,7 @@ scenes.fight = () => {
     fightActions.push(controls.label({
         anchor: [0.755, 0.355], offset: [-24, -500],
         text: "Back",
-        fontSize: 16, fill: "white", align: "center",
+        fontSize: 20, fill: "white", align: "center",
         alpha: 1,
     }))
 
@@ -1799,7 +1799,7 @@ scenes.fight = () => {
     fightActions.push(controls.label({
         anchor: [0.755, 0.025], offset: [-24, -500],
         text: "Previous",
-        fontSize: 16, fill: "white", align: "center",
+        fontSize: 20, fill: "white", align: "center",
         alpha: 1,
     }))
 
@@ -1824,7 +1824,7 @@ scenes.fight = () => {
     fightActions.push(controls.label({
         anchor: [0.755, 0.075], offset: [-24, -500],
         text: "Next",
-        fontSize: 16, fill: "white", align: "center",
+        fontSize: 20, fill: "white", align: "center",
         alpha: 1,
     }))
 
