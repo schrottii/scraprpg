@@ -7,6 +7,8 @@ let controls = {
             sizeAnchor: [0, 0],
             clickthrough: false,
             blend: false,
+            glow: 0,
+            glowColor: "black",
 
             alpha: 1,
 
@@ -32,6 +34,11 @@ let controls = {
                 if (this.blend != false) setBlend(this.blend);
                 else clearBlend();
 
+                if (this.glow != 0) {
+                    ctx.shadowBlur = this.glow;
+                    ctx.shadowColor = this.glowColor;
+                }
+
                 if (w > 0 && h > 0 && this.snip != false) ctx.drawImage(images[this.source],
                     this.snip[0], this.snip[1], this.snip[2], this.snip[3],
                     this.offset[0] / red + this.anchor[0] * ctx.canvas.width,
@@ -43,6 +50,7 @@ let controls = {
                     this.offset[0] / red + this.anchor[0] * ctx.canvas.width,
                     this.offset[1] / red + this.anchor[1] * ctx.canvas.height);
 
+                if (this.glow) ctx.shadowBlur = 0;
             },
             ...args || {},
         }

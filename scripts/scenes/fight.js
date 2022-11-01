@@ -2488,6 +2488,7 @@ scenes.fight = () => {
                 snip: [0, 64, 32, 32],
                 pos1: i,
                 pos2: j,
+                glow: 15,
                 onClick(args) {
                     let name = positions[this.pos1][this.pos2].occupied;
                     if (name == false) return;
