@@ -2648,6 +2648,7 @@ scenes.fight = () => {
             positionGrid.push(controls.image({
                 anchor: [0.025, 0.45], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
                 source: "grid",
+                blend: "mul",
                 alpha: 1,
             }));
         }
@@ -2657,6 +2658,7 @@ scenes.fight = () => {
             positionGrid.push(controls.image({
                 anchor: [0.975, 0.45], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
                 source: "grid",
+                blend: "mul",
                 alpha: 1,
             }));
         }
@@ -3053,11 +3055,11 @@ scenes.fight = () => {
 
                             let kokiboi = positionControls[i + (j * 3)];
 
-                            if (kokiboi.flydir == 1) kokiboi.fly += (3 - (kokiboi.fly / 18)) / delta;
-                            if (kokiboi.fly >= 0) kokiboi.flydir = 0;
+                            if (kokiboi.flydir == 1) kokiboi.fly += (3 - (kokiboi.fly / 24)) / delta;
+                            if (kokiboi.fly >= -16) kokiboi.flydir = 0;
 
-                            if (kokiboi.flydir == 0) kokiboi.fly -= (3 - ((0 - kokiboi.fly) / 18)) / delta;
-                            if (kokiboi.fly <= -16) kokiboi.flydir = 1;
+                            if (kokiboi.flydir == 0) kokiboi.fly -= (3 - ((-16 - kokiboi.fly) / 24)) / delta;
+                            if (kokiboi.fly <= -32) kokiboi.flydir = 1;
 
                             kokiboi.offset[1] = (72 * kokiboi.pos2) + kokiboi.fly;
                         }
@@ -3099,7 +3101,7 @@ scenes.fight = () => {
             // Grid thing
             if (settings.grid == true) {
                 for (i in positionGrid) {
-                    positionGrid[i].alpha = 1;
+                    positionGrid[i].alpha = 0.5;
                 }
             }
             else {
@@ -3128,11 +3130,11 @@ scenes.fight = () => {
         // Controls
         controls: [
             // Load all the nice stuff
-            ...fightButtons, ...fightActions, ...actionButtons, turnDisplay, fleeLoss, fleeIcon,
+            ...positionGrid, ...fightButtons, ...fightActions, ...actionButtons, turnDisplay, fleeLoss, fleeIcon,
             ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
             ...fightStats, ...actionDisplay, ...gameOverScreen,
-            ...positionControls, ...epositionControls, ...positionGrid, ...attackAnimationObjects, kokitoziParticles, ...battleNumbers, ...winScreen, ...winScreen2, ...winStats, ...fleeWrenches, ...gameOverScreen2,
+            ...positionControls, ...epositionControls,  ...attackAnimationObjects, kokitoziParticles, ...battleNumbers, ...winScreen, ...winScreen2, ...winStats, ...fleeWrenches, ...gameOverScreen2,
             ...cutsceneElements,
         ],
         name: "fight"
