@@ -145,7 +145,7 @@ let items = {
             ...items.default(),
             source: "scroll",
             name: "Chicago Pants",
-            shopcost: 999999,
+            shopcost: 100,
             type: "clothes",
             max: 1,
             type: "body",
