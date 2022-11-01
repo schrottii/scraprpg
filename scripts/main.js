@@ -110,9 +110,9 @@ function init() {
     loop();
 
 
-    image_animation(images.schrottgamesanimation, 4, 5, 100);
+    image_animation(images.schrottgamesanimation, 4, 6, 487, 494, 100);
     setTimeout(() => {
-        if (!cancel) image_animation(images.tttanimation, 4, 5, 100)
+        if (!cancel) image_animation(images.tttanimation, 4, 6, 487, 494, 100)
     }, 2500);
     setTimeout(() => {
         tokenStay.alpha = 1;
@@ -125,13 +125,13 @@ function init() {
             }
             return false;
         })
-    }, 4500);
+    }, 4800);
     setTimeout(() => {
         if (!cancel) {
             musicPlayer.loop = true;
             setScene(scenes.title());
         }
-    }, 5500);
+    }, 6000);
 }
 
 var currentKeys = {};
@@ -370,9 +370,9 @@ var animationspeed = 100;
 let scale = window.innerHeight / 16;
 let width = window.innerWidth / scale;
 
-function image_animation(image, columns, rows, speed=100) {
+function image_animation(image, columns, rows, sizex, sizey, speed=100) {
     animationtime = 0;
-    animation = [image, columns-1, rows-1];
+    animation = [image, columns - 1, rows - 1, sizex / columns, sizey / rows];
     animationspeed = speed;
     canMove = false;
 }
@@ -444,11 +444,11 @@ function loop() {
     }
 
     if (animationtime > -1) {
-        let i = Math.floor(animationtime / animationspeed);
-        let j = Math.floor(i / animation[2]);
-        i = i % animation[2];
-        if (j <= animation[2]) {
-            ctx.drawImage(animation[0], 123 * i, 83 * j, 123, 83, 0, 0, width * scale, height);
+        let prog = Math.floor(animationtime / animationspeed);
+        let i = Math.floor(prog % (animation[1] + 1));
+        let j = Math.floor(prog / (animation[1] + 1));
+        if (i + (j * animation[1]) != animation[1] * (animation[2] + 1) + 2) {
+            ctx.drawImage(animation[0], animation[3] * i, animation[4] * j, animation[3], animation[4], 0, 0, width * scale, height);
             animationtime += delta;
         }
         else {

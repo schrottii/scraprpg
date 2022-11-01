@@ -55,7 +55,7 @@ let images = {
 
     eattackani2: "data/images/eattackani2.png",
 
-    tokenattack: "data/images/battle_transition_clean_1.png",
+    tokenattack: "data/images/token-animation.png",
     schrottgamesanimation: "data/images/sganimation.png",
     tttanimation: "data/images/Toast_Tech_Team_Animation.png",
     
