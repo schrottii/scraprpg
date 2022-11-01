@@ -1390,7 +1390,7 @@ scenes.fight = () => {
     function topRowButton() {
         if (i == 0) { // Normal Actions
             fightButtons.push(controls.rect({
-                anchor: [0.00, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
+                anchor: [0.00, (i * 0.055)], sizeAnchor: [0.15, 0.055], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
                 alpha: 1,
                 onClick(args) {
@@ -1403,7 +1403,7 @@ scenes.fight = () => {
         }
         if (i == 1) { // Item Inventory
             fightButtons.push(controls.rect({
-                anchor: [0.00, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
+                anchor: [0.00, (i * 0.055)], sizeAnchor: [0.15, 0.055], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
                 alpha: 1,
                 onClick(args) {
@@ -1417,7 +1417,7 @@ scenes.fight = () => {
         }
         if (i == 2) { // Magic
             fightButtons.push(controls.rect({
-                anchor: [0.00, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
+                anchor: [0.00, (i * 0.055)], sizeAnchor: [0.15, 0.055], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
                 alpha: 1,
                 onClick(args) {
@@ -1431,7 +1431,7 @@ scenes.fight = () => {
         }
         if (i == 3) { // Mastery Techniques
             fightButtons.push(controls.rect({
-                anchor: [0.00, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
+                anchor: [0.00, (i * 0.055)], sizeAnchor: [0.15, 0.055], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
                 alpha: 1,
                 onClick(args) {
@@ -1443,7 +1443,7 @@ scenes.fight = () => {
         }
         if (i == 4) { // Macro
             fightButtons.push(controls.rect({
-                anchor: [0.00, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
+                anchor: [0.00, (i * 0.055)], sizeAnchor: [0.15, 0.055], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
                 alpha: 1,
                 onClick(args) {
@@ -1461,7 +1461,7 @@ scenes.fight = () => {
         }
         if (i == 5) { // Flee
             fightButtons.push(controls.rect({
-                anchor: [0.00, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
+                anchor: [0.00, (i * 0.055)], sizeAnchor: [0.15, 0.055], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
                 alpha: 1,
                 onClick(args) {
@@ -1479,12 +1479,12 @@ scenes.fight = () => {
     for (i = 0; i < 6; i++) {
         topRowButton(i);
         fightButtons.push(controls.rect({
-            anchor: [0.0025, 0.0025 + (i * 0.035)], sizeAnchor: [0.145, 0.03], offset: [0, -500],
+            anchor: [0.0025, 0.0025 + (i * 0.055)], sizeAnchor: [0.145, 0.05], offset: [0, -500],
             fill: "rgb(221, 155, 79)",
             alpha: 1,
         }))
         fightButtons.push(controls.label({
-            anchor: [0.145, 0.02 + (i * 0.035)], offset: [0, -500],
+            anchor: [0.145, 0.025 + (i * 0.055)], offset: [0, -500],
             text: ["Normal Actions", "Item Inventory", "Magic", "Mastery Techniques", "Macro", "Flee"][i],
             fontSize: 16, fill: "black", align: "right", 
             alpha: 1,
@@ -1495,7 +1495,7 @@ scenes.fight = () => {
     function normalActionsButton(i) {
         //if (i == 0) { // Normal Actions
         actionButtons.push(controls.rect({
-            anchor: [0.3, (i * 0.035)], sizeAnchor: [0.15, 0.035], offset: [0, -500],
+            anchor: [0.3, (i * 0.055)], sizeAnchor: [0.15, 0.055], offset: [0, -500],
             fill: "rgb(191, 137, 69)",
             alpha: 1,
             i: i,
@@ -1545,12 +1545,12 @@ scenes.fight = () => {
     for (i = 0; i < 6; i++) {
         normalActionsButton(i);
         actionButtons.push(controls.rect({
-            anchor: [0.3025, 0.0025 + (i * 0.035)], sizeAnchor: [0.145, 0.03], offset: [0, -500],
+            anchor: [0.3025, 0.0025 + (i * 0.055)], sizeAnchor: [0.145, 0.05], offset: [0, -500],
             fill: "rgb(221, 155, 79)",
             alpha: 1,
         }))
         actionButtons.push(controls.label({
-            anchor: [0.445, 0.02 + (i * 0.035)], offset: [0, -500],
+            anchor: [0.445, 0.025 + (i * 0.055)], offset: [0, -500],
             text: ["Attack", "Defend", "Rally", "Scan", "Pray", "Counterattack"][i],
             fontSize: 16, fill: "black", align: "right",
             alpha: 1,
