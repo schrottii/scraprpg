@@ -1064,7 +1064,7 @@ scenes.fight = () => {
 
         if (enemy == false) {
             positionControls[fpos1 + (fpos2 * 3)].offset[0] = own[1];
-            positionControls[fpos1 + (fpos2 * 3)].offset[1] = own[3];
+            positionControls[fpos1 + (fpos2 * 3)].offset[1] = own[3] + positionControls[fpos1 + (fpos2 * 3)].fly;
 
             goal[1] -= 232;
 
@@ -1089,11 +1089,11 @@ scenes.fight = () => {
                 }
 
                 if (t > 200 && t < 399) {
-                    positionControls[fpos1 + (fpos2 * 3)].offset[1] = own[3] * (1 - ((t - 200)) / 200);
+                    positionControls[fpos1 + (fpos2 * 3)].offset[1] = own[3] * (1 - ((t - 200)) / 200) + positionControls[fpos1 + (fpos2 * 3)].fly;
                     positionControls[fpos1 + (fpos2 * 3)].offset[0] = own[1] * (1 - ((t - 200)) / 200);
                 }
                 if (t > 400 && t < 599) {
-                    positionControls[fpos1 + (fpos2 * 3)].offset[1] = goal[3] * (0 + ((t - 400)) / 200);
+                    positionControls[fpos1 + (fpos2 * 3)].offset[1] = goal[3] * (0 + ((t - 400)) / 200) + positionControls[fpos1 + (fpos2 * 3)].fly;
                     positionControls[fpos1 + (fpos2 * 3)].offset[0] = goal[1] * (0 + ((t - 400)) / 200);
                 }
                 if (t > 1000 && t < 1049 || t > 1100 && t < 1149) {
@@ -1105,7 +1105,7 @@ scenes.fight = () => {
                 if (t > 1200) {
                     positionControls[fpos1 + (fpos2 * 3)].anchor[0] = own[0];
                     positionControls[fpos1 + (fpos2 * 3)].offset[0] = own[1];
-                    positionControls[fpos1 + (fpos2 * 3)].offset[1] = own[3];
+                    positionControls[fpos1 + (fpos2 * 3)].offset[1] = own[3] + positionControls[fpos1 + (fpos2 * 3)].fly;
                     attackAnimationObjects[fpos1 + (fpos2 * 3)].alpha = 0;
                     onFinish(fpos1, fpos2, pos1, pos2);
                     return true;
@@ -2482,7 +2482,7 @@ scenes.fight = () => {
         for (i = 0; i < 3; i++) {
             positionControls.push(controls.image({
                 anchor: [0.0 /* 0.025 */, 0.45], offset: [-256, 72 * j], sizeOffset: [64, 64],
-                defoffset: 72 * i,
+                defoffset: 72 * i, fly: 0, flydir: 1,
                 source: "gear",
                 alpha: 1,
                 snip: [0, 64, 32, 32],
@@ -3027,10 +3027,10 @@ scenes.fight = () => {
 
     let kokitoziParticles = Particles({
         anchor: [0.5, 0.5], sizeOffset: [2, 2], spreadOffset: [64, 8],
-        type: "rect", fill: "lightgreen",
+        type: "rect", fill: "#00cf09",
         direction: 3, speedAnchor: 0.01,
         direction2: 1, speedOffset2: 5, moveRandom2: 10,
-        movable: true, movable2: true, lifespan: 0.4, amount: 25, spawnTime: 0.02, repeatMode: true,
+        movable: true, movable2: true, lifespan: 0.2, amount: 25, spawnTime: 0.01, repeatMode: false,
         dead: true, alpha: 0
     })
 
@@ -3049,7 +3049,17 @@ scenes.fight = () => {
                             kokitoziParticles.dead = false;
                             kokitoziParticles.anchor = positionControls[i + (j * 3)].anchor;
                             kokitoziParticles.offset[0] = positionControls[i + (j * 3)].offset[0];
-                            kokitoziParticles.offset[1] = positionControls[i + (j * 3)].offset[1] + 56;
+                            kokitoziParticles.offset[1] = positionControls[i + (j * 3)].offset[1] + 64;
+
+                            let kokiboi = positionControls[i + (j * 3)];
+
+                            if (kokiboi.flydir == 1) kokiboi.fly += (3 - (kokiboi.fly / 12)) / delta;
+                            if (kokiboi.fly >= 8) kokiboi.flydir = 0;
+
+                            if (kokiboi.flydir == 0) kokiboi.fly -= (3 - ((8 - kokiboi.fly) / 12)) / delta;
+                            if (kokiboi.fly <= -8) kokiboi.flydir = 1;
+
+                            kokiboi.offset[1] = (72 * kokiboi.pos2) + kokiboi.fly;
                         }
                     }
                 }
