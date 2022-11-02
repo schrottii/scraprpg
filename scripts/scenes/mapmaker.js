@@ -1,5 +1,9 @@
 scenes.mapmaker = () => {
 
+    let walkPad = [];
+    let walkPadSize = Math.max(32, 64 * settings.walkPadSize);
+    let pad;
+
     var activenpcs = [];
     var currentMap = "test";
     var map = maps[currentMap];
@@ -17,6 +21,67 @@ scenes.mapmaker = () => {
         }
     }
 
+    walkPad.push(controls.image({ // Up
+        anchor: [.1, .9], offset: [0, -walkPadSize * 3], sizeOffset: [walkPadSize, walkPadSize],
+        fontSize: 16, source: "mapbuttons", snip: [0, 0, 32, 32],
+        isPressed: false,
+        onDown(args) {
+            this.snip[0] = 32;
+            pad = "up";
+        },
+        onClick(args) {
+            this.snip[0] = 0;
+            pad = "";
+        }
+    }));
+    walkPad.push(controls.image({ // Middle
+        anchor: [.1, .9], offset: [0, -walkPadSize * 2], sizeOffset: [walkPadSize, walkPadSize],
+        fontSize: 16, source: "mapbuttons", snip: [64, 0, 32, 32],
+        isPressed: false,
+        onDown(args) {
+            pad = "";
+        },
+    }));
+    walkPad.push(controls.image({ // Down
+        anchor: [.1, .9], offset: [0, -walkPadSize], sizeOffset: [walkPadSize, walkPadSize],
+        fontSize: 16, source: "mapbuttons", snip: [0, 64, 32, 32],
+        isPressed: false,
+        onDown(args) {
+            this.snip[0] = 32;
+            pad = "down";
+        },
+        onClick(args) {
+            this.snip[0] = 0;
+            pad = "";
+        }
+    }));
+    walkPad.push(controls.image({ // Left
+        anchor: [.1, .9], offset: [-walkPadSize, -walkPadSize * 2], sizeOffset: [walkPadSize, walkPadSize],
+        fontSize: 16, source: "mapbuttons", snip: [0, 96, 32, 32],
+        isPressed: false,
+        onDown(args) {
+            this.snip[0] = 32;
+            pad = "left";
+        },
+        onClick(args) {
+            this.snip[0] = 0;
+            pad = "";
+        }
+    }));
+    walkPad.push(controls.image({ // Right
+        anchor: [.1, .9], offset: [walkPadSize, -walkPadSize * 2], sizeOffset: [walkPadSize, walkPadSize],
+        fontSize: 16, source: "mapbuttons", snip: [0, 32, 32, 32],
+        isPressed: false,
+        onDown(args) {
+            this.snip[0] = 32;
+            pad = "right";
+        },
+        onClick(args) {
+            this.snip[0] = 0;
+            pad = "";
+        }
+    }));
+
     let backButton = controls.button({
         anchor: [0.02, 0.925], sizeAnchor: [0.05, 0.045],
         text: "<",
@@ -30,19 +95,60 @@ scenes.mapmaker = () => {
         anchor: [0.075, 0.95],
         text: "ERROR",
         align: "left", fontSize: 32, fill: "black",
+        outline: "white", outlineSize: 4,
         alpha: 1,
     });
 
     loadNPCs();
     fadeIn(250, true);
+    canMove = true;
 
     return {
         // Pre-render function
         preRender(ctx, delta) {
+            if (!kofs[2] && canMove == true) {
+                let xo;
+                let yo;
+                if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up")) {
+                    head = 3;
+                    direction = "up";
+                    xo = 0;
+                    yo = -1;
+                } else if ((currentKeys["s"] || currentKeys["arrowdown"] || pad == "down")) {
+                    head = 0;
+                    direction = "down";
+                    xo = 0;
+                    yo = 1;
+                } else if ((currentKeys["a"] || currentKeys["arrowleft"] || pad == "left")) {
+                    head = 1;
+                    direction = "left";
+                    xo = -1;
+                    yo = 0;
+                } else if ((currentKeys["d"] || currentKeys["arrowright"] || pad == "right")) {
+                    head = 2;
+                    direction = "right";
+                    xo = 1;
+                    yo = 0;
+                }
+                // Optimized code pog
+                if (xo != undefined) {
+                    if (map.worldmode == true) {
+                        xo /= 2;
+                        yo /= 2;
+                    }
+                    kofs = [xo, yo, 0.1];
+                    game.position[0] += xo;
+                    game.position[1] += yo;
+                }
+            }
+
+            kofs[2] = Math.max(kofs[2] - delta / 166, 0);
+
             let scale = window.innerHeight / 16;
             let width = window.innerWidth / scale;
 
-            currentMapText.text = "Current Map: " + currentMap;
+            // Why is this HERE?
+            currentMapText.text = "Current Map: " + currentMap + " | Pos: x" + game.position[0] + " y" + game.position[1];
 
             ctx.imageSmoothingEnabled = false;
             ctx.globalAlpha = 1;
@@ -104,7 +210,7 @@ scenes.mapmaker = () => {
         },
         // Controls
         controls: [
-            currentMapText, backButton
+            ...walkPad, currentMapText, backButton
         ],
         name: "mapmaker"
     }

@@ -1,5 +1,5 @@
 ﻿##TODO:
-22 Things left to do in this phase
+21 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
@@ -11,7 +11,7 @@ IT'S DONE!
 - MAP MAKER
   - <s>Display tiles</s>
   - <s>Display items and NPCs</s>
-  - Move around
+  - <s>Move around</s>
   - Tiles menu
   - Placing tiles
   - Expanding map
