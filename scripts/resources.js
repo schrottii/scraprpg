@@ -208,6 +208,7 @@ let images = {
 
 var scenes = {
     title: "scripts/scenes/title.js",
+    pretitle: "scripts/scenes/pretitle.js",
     game: "scripts/scenes/game.js",
     fight: "scripts/scenes/fight.js",
     inventory: "scripts/scenes/inventory.js",
@@ -279,8 +280,8 @@ function loadAllResources() {
             scene.controls[1].text = "images/" + image + " " + resLoad + "/" + resCount;
             if (resLoad == resCount) {
                 scene.controls[0].text = "Everything good to go!";
-                scene.controls[2].clickthrough = scene.controls[3].clickthrough = scene.controls[4].clickthrough = false;
-                scene.controls[2].alpha = scene.controls[3].alpha = scene.controls[4].alpha = 1;
+                scene.controls[2].clickthrough = false;
+                scene.controls[0].alpha = scene.controls[1].alpha = scene.controls[3].alpha = 1;
             }
         }
         images[image] = img;
@@ -295,8 +296,8 @@ function loadAllResources() {
             scene.controls[1].text = "scenes/" + scn + " " + resLoad + "/" + resCount;
             if (resLoad == resCount) {
                 scene.controls[0].text = "Everything good to go!";
-                scene.controls[2].clickthrough = scene.controls[3].clickthrough = scene.controls[4].clickthrough = false;
-                scene.controls[2].alpha = scene.controls[3].alpha = scene.controls[4].alpha = 1;
+                scene.controls[2].clickthrough = false;
+                scene.controls[0].alpha = scene.controls[1].alpha = scene.controls[3].alpha = 1;
             }
         }
         scenes[scn] = scr;
@@ -311,8 +312,8 @@ function loadAllResources() {
             scene.controls[1].text = "audio/" + snd + " " + resLoad + "/" + resCount;
             if (resLoad == resCount) {
                 scene.controls[0].text = "Everything good to go!";
-                //scene.controls[2].clickthrough = scene.controls[3].clickthrough = scene.controls[4].clickthrough = false;
-                scene.controls[2].alpha = 1;
+                scene.controls[2].clickthrough = false;
+                scene.controls[0].alpha = scene.controls[1].alpha = scene.controls[3].alpha = 1;
             }
         }
         audio[snd] = aud;
@@ -327,8 +328,8 @@ function loadAllResources() {
             scene.controls[1].text = "maps/" + map + " " + resLoad + "/" + resCount;
             if (resLoad == resCount) {
                 scene.controls[0].text = "Everything good to go!";
-                scene.controls[2].clickthrough = scene.controls[3].clickthrough = scene.controls[4].clickthrough = false;
-                scene.controls[2].alpha = scene.controls[3].alpha = scene.controls[4].alpha = 1;
+                scene.controls[2].clickthrough = false;
+                scene.controls[0].alpha = scene.controls[1].alpha = scene.controls[3].alpha = 1;
             }
         }
         maps[map] = mp;
