@@ -52,14 +52,13 @@ let npcs = {
                 let tileY = this.position[1];
 
                 let xAdjust = game.position[0] - width / 2 + 0.5;
-                if (game.map == this.map) {
-                    this.kofs[2] = Math.max(this.kofs[2] - delta / 166, 0);
-                    ctx.drawImage(images[this.skin],
-                        32 * Math.floor(walkTime), 32 * this.head, 32, 32,
-                        ((zoom * scale) * (tileX + kofs[0] * kofs[2] - this.kofs[0] * (this.kofs[2] / this.walkingSpeed) - xAdjust)) - ((zoom - 1) * scale * (width / 2)),
-                        (zoom * scale) * (tileY + kofs[1] * kofs[2] - this.kofs[1] * (this.kofs[2] / this.walkingSpeed) - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7),
-                        zswm, zswm)
-                }
+                this.kofs[2] = Math.max(this.kofs[2] - delta / 166, 0);
+
+                ctx.drawImage(images[this.skin],
+                    32 * Math.floor(walkTime), 32 * this.head, 32, 32,
+                    ((zoom * scale) * (tileX + kofs[0] * kofs[2] - this.kofs[0] * (this.kofs[2] / this.walkingSpeed) - xAdjust)) - ((zoom - 1) * scale * (width / 2)),
+                    (zoom * scale) * (tileY + kofs[1] * kofs[2] - this.kofs[1] * (this.kofs[2] / this.walkingSpeed) - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7),
+                    zswm, zswm)
                 if (this.talk == true) {
                     ctx.drawImage(images.talk,
                         ((zoom * scale) * (tileX + 1 + kofs[0] * kofs[2] - this.kofs[0] * (this.kofs[2] / this.walkingSpeed) - xAdjust)) - ((zoom - 1) * scale * (width / 2)),

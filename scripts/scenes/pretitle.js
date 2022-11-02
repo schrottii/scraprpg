@@ -37,7 +37,6 @@ scenes.pretitle = () => {
         },
         // Controls
         controls: [
-
             tokenStay,
             controls.button({
                 anchor: [.5, .5], offset: [-100, 5], sizeOffset: [200, 50],
@@ -52,7 +51,7 @@ scenes.pretitle = () => {
             }),
 
             controls.button({
-                anchor: [.9, .8], sizeOffset: [50, 25],
+                anchor: [.9, .8], sizeOffset: [100, 50],
                 clickthrough: false, fontSize: 16, alpha: 1,
                 text: "Dev Mode",
                 onClick() {
@@ -75,7 +74,7 @@ scenes.pretitle = () => {
                 }
             }),
             controls.button({
-                anchor: [.9, .9], sizeOffset: [50, 25],
+                anchor: [.9, .9], sizeOffset: [100, 50],
                 clickthrough: false, fontSize: 16, alpha: 1,
                 text: "Fight",
                 onClick() {
@@ -103,7 +102,7 @@ scenes.pretitle = () => {
                 }
             }),
             controls.button({
-                anchor: [.9, .6], sizeOffset: [50, 25],
+                anchor: [.9, .6], sizeOffset: [100, 50],
                 clickthrough: false, fontSize: 16, alpha: 1,
                 text: "Map Maker",
                 onClick() {
@@ -117,7 +116,6 @@ scenes.pretitle = () => {
 
                     stopMusic();
                     setScene(scenes.mapmaker());
-                    openShop("placeholder");
                 }
             }),
         ],

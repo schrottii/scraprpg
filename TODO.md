@@ -9,12 +9,12 @@ IT'S DONE!
 
 ##Phase 1.5
 - MAP MAKER
-  - Display tiles
+  - <s>Display tiles</s>
+  - <s>Display items and NPCs</s>
   - Move around
   - Tiles menu
   - Placing tiles
   - Expanding map
-  - Display items and NPCs
   - Adding new tiles
   - Placing items
   - Changing map display name
@@ -28,6 +28,8 @@ IT'S DONE!
   - Teleporters
   
 - More battle sprites
+- Add the remaining settings
+- Shorter fades apparently?
 - Highlighted prots / enemies (in fight)
 - Overworld quests (Side quests, NOT main story objectives)
 - A few other things, maybe 2-3 from phase 2

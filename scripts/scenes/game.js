@@ -71,6 +71,34 @@ function tryCreateAgain(pox, poy, big=false) {
     return 9999;
 }
 
+// Function used to grab tiles
+function getTile(map, x, y, l = 1) {
+    if (y < 0) return undefined;
+    x = Math.floor(x);
+    y = Math.floor(y);
+    if (l == 1) {
+        if (map.map[y] != undefined) {
+            let thetile = map.map[y][x * 4] + map.map[y][(x * 4) + 1] + map.map[y][(x * 4) + 2];
+            if (map.tiles[thetile] == undefined) return commontiles[thetile];
+            return map.tiles[thetile];
+        }
+    }
+    if (l == 2) {
+        if (map.mapbg2[y] != undefined) {
+            let thetile = map.mapbg2[y][x * 4] + map.mapbg2[y][(x * 4) + 1] + map.mapbg2[y][(x * 4) + 2];
+            if (map.tiles[thetile] == undefined) return commontiles[thetile];
+            return map.tiles[thetile];
+        }
+    }
+    if (l == 3) {
+        if (map.mapfg[y] != undefined) {
+            let thetile = map.mapfg[y][x * 4] + map.mapfg[y][(x * 4) + 1] + map.mapfg[y][(x * 4) + 2];
+            if (map.tiles[thetile] == undefined) return commontiles[thetile];
+            return map.tiles[thetile];
+        }
+    }
+}
+
 function openShop(whichone) {
     shopDialogueProgress = 0;
     currentShop = shops[whichone];
@@ -904,33 +932,6 @@ scenes.game = () => {
         }
     }
 
-    // Function used to grab tiles
-    function getTile(map, x, y, l = 1) {
-        if (y < 0) return undefined;
-        x = Math.floor(x);
-        y = Math.floor(y);
-        if (l == 1) {
-            if (map.map[y] != undefined) {
-                let thetile = map.map[y][x * 4] + map.map[y][(x * 4) + 1] + map.map[y][(x * 4) + 2];
-                if (map.tiles[thetile] == undefined) return commontiles[thetile];
-                return map.tiles[thetile];
-            }
-        }
-        if (l == 2) {
-            if (map.mapbg2[y] != undefined) {
-                let thetile = map.mapbg2[y][x * 4] + map.mapbg2[y][(x * 4) + 1] + map.mapbg2[y][(x * 4) + 2];
-                if (map.tiles[thetile] == undefined) return commontiles[thetile];
-                return map.tiles[thetile];
-            }
-        }
-        if (l == 3) {
-            if (map.mapfg[y] != undefined) {
-                let thetile = map.mapfg[y][x * 4] + map.mapfg[y][(x * 4) + 1] + map.mapfg[y][(x * 4) + 2];
-                if (map.tiles[thetile] == undefined) return commontiles[thetile];
-                return map.tiles[thetile];
-            }
-        }
-    }
 
     // Function used to figure out if anyone (player, npcs, enemies, Ed Sheeran) is on a tile
     function creaturesOnTile(map, x, y, player = true) {
@@ -1217,7 +1218,7 @@ scenes.game = () => {
         activenpcs = [];
         for (i in Object.keys(npcs)) {
             j = Object.keys(npcs)[i];
-            npc = npcs[j]();
+            let npc = npcs[j]();
             if (npc.alpha > 0 && npc.map == game.map) {
                 activenpcs.push(npcs[j]());
             }
@@ -1676,6 +1677,7 @@ scenes.game = () => {
                     }
                 }
             }
+
             kofs[2] = Math.max(kofs[2] - delta / 166, 0);
             walkTime = (walkTime + delta * (kofs[2] ? 5 : 1) / 1000) % 2;
 

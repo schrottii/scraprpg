@@ -211,6 +211,7 @@ var scenes = {
     pretitle: "scripts/scenes/pretitle.js",
     game: "scripts/scenes/game.js",
     fight: "scripts/scenes/fight.js",
+    mapmaker: "scripts/scenes/mapmaker.js",
     inventory: "scripts/scenes/inventory.js",
     itemscene: "scripts/scenes/itemscene.js",
     magicscene: "scripts/scenes/magicscene.js",
