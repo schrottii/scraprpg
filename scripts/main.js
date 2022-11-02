@@ -9,7 +9,7 @@ function init() {
     let cancel = false;
     let tokenStay = controls.image({
         anchor: [0, 0], sizeAnchor: [1, 1],
-        source: "tttanimation", snip: [123, 415, 123, 83],
+        source: "tttanimation", snip: [3200, 9000, 800, 450],
         alpha: 0,
     });
 
@@ -112,26 +112,26 @@ function init() {
 
     image_animation(images.schrottgamesanimation, 4, 6, 487, 494, 100);
     setTimeout(() => {
-        if (!cancel) image_animation(images.tttanimation, 4, 6, 487, 494, 100)
+        if (!cancel) image_animation(images.tttanimation, 5, 21, 4000, 9450, 25)
     }, 2500);
     setTimeout(() => {
         tokenStay.alpha = 1;
         addAnimator(function (t) {
             tokenStay.alpha = 1 - Math.max(0, ((t / 500) - 1));
 
-            if (t > 999) {
+            if (t > 1499) {
                 tokenStay.alpha = 0;
                 return true;
             }
             return false;
         })
-    }, 4800);
+    }, 2500 + 2625);
     setTimeout(() => {
         if (!cancel) {
             musicPlayer.loop = true;
             setScene(scenes.title());
         }
-    }, 6000);
+    }, 4000 + 2625);
 }
 
 var currentKeys = {};
