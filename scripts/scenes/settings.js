@@ -112,8 +112,8 @@ scenes.settings = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 saveSettings();
+                playSound("buttonClickSound");
                 addAnimator(function (t) {
-                    playSound("buttonClickSound");
                     settingsSaveText.alpha = t / 10;
                     if (t > 2500) {
                         settingsSaveText.alpha = 0;

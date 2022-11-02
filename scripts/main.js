@@ -101,6 +101,24 @@ function init() {
                     setScene(scenes.fight());
                 }
             }),
+            controls.button({
+                anchor: [.9, .6], sizeOffset: [50, 25],
+                clickthrough: false, fontSize: 16, alpha: 1,
+                text: "Map Maker",
+                onClick() {
+                    cancel = true;
+                    musicPlayer.muted = true; // false?
+                    soundPlayer.muted = false;
+
+                    loadSettings();
+                    changeSoundVolume(settings.soundVolume);
+                    playSound("titletransition");
+
+                    stopMusic();
+                    setScene(scenes.mapmaker());
+                    openShop("placeholder");
+                }
+            }),
             
         ],
         name: "main"
@@ -110,7 +128,7 @@ function init() {
     loop();
 
 
-    image_animation(images.schrottgamesanimation, 4, 6, 487, 494, 100);
+    image_animation(images.schrottgamesanimation, 5, 15, 2000, 3375, 55);
     setTimeout(() => {
         if (!cancel) image_animation(images.tttanimation, 5, 21, 4000, 9450, 25)
     }, 2500);
@@ -475,7 +493,10 @@ function loop() {
 function animatedText(text, speed = 20) { // 8, 20, 24
     if (textProgress == -1) textProgress = 0;
     let prog = Math.floor(textProgress * speed);
-    if (currentDialogue[dialogueProgress].voice != false && prog < text.length) playSound(currentDialogue[dialogueProgress].voice);
+    if (prog < text.length) {
+        if (currentDialogue[dialogueProgress].voice == false) playSound("female_young");
+        else playSound(currentDialogue[dialogueProgress].voice);
+    }
     return text.slice(0, prog);
 }
 
