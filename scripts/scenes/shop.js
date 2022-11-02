@@ -109,7 +109,7 @@ scenes.shop = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 playSound("buttonClickSound");
-                fadeOut(500, true, () => setScene(scenes.game()));
+                fadeOut(1000 / 3, true, () => setScene(scenes.game()));
             }
         },
         text: "Exit",
@@ -401,7 +401,7 @@ scenes.shop = () => {
         currentShop = shops[currentShopName];
     }
 
-    fadeIn(500, true);
+    fadeIn(1000 / 3, true);
 
     return {
         // Pre-render function

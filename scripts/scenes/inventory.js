@@ -30,7 +30,7 @@ scenes.inventory = () => {
             text: ["Items", "Magic", "Equipment", "Formation", "Save Manager", "Settings", "Exit Menu"][i],
             onClick(args) {
                 playSound("buttonClickSound");
-                fadeOut(500, true, (id=this.id) => {
+                fadeOut(1000 / 3, true, (id=this.id) => {
                     if (id == 0) setScene(scenes.itemscene());
                     if (id == 1) setScene(scenes.magicscene());
                     if (id == 2) setScene(scenes.equipment());
@@ -58,7 +58,7 @@ scenes.inventory = () => {
                 alpha: 0,
                 i: j + (i * 3),
                 onClick(args) {
-                    fadeOut(500, true, () => setScene(scenes.status(characterImages[this.i * 2].source)));
+                    fadeOut(1000 / 3, true, () => setScene(scenes.status(characterImages[this.i * 2].source)));
                 }
             }));
 
@@ -174,7 +174,7 @@ scenes.inventory = () => {
         alpha: 1
     }))
 
-    fadeIn(500, true);
+    fadeIn(1000 / 3, true);
 
     return {
         // Pre-render function

@@ -411,7 +411,7 @@ scenes.game = () => {
         onClick(args) {
             if (this.alpha == 1 && canMove == true) {
                 playSound("buttonClickSound");
-                fadeOut(500, true, () => setScene(scenes.inventory()));
+                fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
             }
         }
     });
@@ -1015,7 +1015,7 @@ scenes.game = () => {
 
             canMove = false;
             playSound("teleport");
-            fadeOut(500, true);
+            fadeOut(1000 / 3, true);
 
             setTimeout(() => {
                 if (nmapname != undefined) { // The box stuff. Only if the map has a name
@@ -1048,7 +1048,7 @@ scenes.game = () => {
                 game.position[0] = themap.teleport[1];
                 game.position[1] = themap.teleport[2];
 
-                fadeIn(500, true);
+                fadeIn(1000 / 3, true);
                 canMove = true;
             }, 750);
         }
@@ -1362,7 +1362,7 @@ scenes.game = () => {
         }
     })*/
 
-    let tTime = 500;
+    let tTime = 1000 / 3;
     if (previousScene == "main" || previousScene == "title" || previousScene == undefined) tTime = 1500; // Not inventory or fight
     fadeIn(tTime, true);
 
@@ -1976,7 +1976,7 @@ scenes.game = () => {
                 setScene(scenes.title());
             }
             if (currentKeys["e"]) {
-                fadeOut(500, true, () => setScene(scenes.inventory()));
+                fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
             }
         },
         controls: [

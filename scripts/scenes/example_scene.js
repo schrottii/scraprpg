@@ -1,6 +1,6 @@
 scenes.SCENENAME = () => {
 
-    fadeIn(500, true);
+    fadeIn(1000 / 3, true);
 
     return {
         // Pre-render function

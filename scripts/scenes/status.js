@@ -30,7 +30,7 @@ scenes.status = (characterSelected="Bleu") => {
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
-            fadeOut(500, true, () => setScene(scenes.inventory()));
+            fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
         },
         text: ">",
         fill: "white"
@@ -245,7 +245,7 @@ scenes.status = (characterSelected="Bleu") => {
         alpha: 1
     }));
 
-    fadeIn(500, true);
+    fadeIn(1000 / 3, true);
 
     return {
         // Pre-render function

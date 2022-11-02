@@ -2912,7 +2912,7 @@ scenes.fight = () => {
     }
 
 
-    fadeIn(500, true);
+    fadeIn(1000 / 3, true);
 
     let scal = 10;
 
