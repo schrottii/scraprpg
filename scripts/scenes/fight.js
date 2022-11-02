@@ -894,7 +894,7 @@ scenes.fight = () => {
         positionGrid2[pos[0] + (pos[1] * 3)].source = "grid";
 
         positionControls[pos[0] + (pos[1] * 3)].snip = [0, 64, 32, 32];
-        positionControls.source = positions[pos[0]][pos[1]].occupied;
+        positionControls[pos[0] + (pos[1] * 3)].source = positions[pos[0]][pos[1]].occupied;
         positions[pos[0]][pos[1]].action = false;
         busy = false;
         setTimeout(() => executeActions(), ACTIONDELAY);
@@ -2472,7 +2472,6 @@ scenes.fight = () => {
         }
     }
 
-    console.log(epositions);
     for (i = 0; i < 18; i++) {
         attackAnimationObjects.push(controls.image({
             anchor: [0, 0], offset: [0, 0], sizeOffset: [48, 48],
@@ -3000,9 +2999,9 @@ scenes.fight = () => {
     let kokitoziParticles = Particles({
         anchor: [0.5, 0.5], sizeOffset: [2, 2], spreadOffset: [64, 8],
         type: "rect", fill: "#00cf09",
-        direction: 3, speedAnchor: 0.01,
-        direction2: 1, speedOffset2: 5, moveRandom2: 10,
-        movable: true, movable2: true, lifespan: 0.2, amount: 25, spawnTime: 0.01, repeatMode: false,
+        direction: 0, speedAnchor: 0.01,
+        direction2: 1, speedOffset2: 3, moveRandom2: 6,
+        movable: true, movable2: true, lifespan: 0.3, amount: 25, spawnTime: 0.01, repeatMode: false,
         dead: true, alpha: 0
     })
 
