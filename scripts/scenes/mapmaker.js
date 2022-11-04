@@ -8,7 +8,14 @@ scenes.mapmaker = () => {
     var currentMap = "test";
     var map = maps[currentMap];
 
+    var tiles_bg = [];
+    var tiles_bg2 = [];
+    var tiles_fg = [];
+    var titems = [];
+    var tnpcs = [];
+
     game.position = [4, 4];
+    let prePos = [-3483493, 934030];
 
     function loadNPCs() {
         activenpcs = [];
@@ -99,6 +106,37 @@ scenes.mapmaker = () => {
         alpha: 1,
     });
 
+    for (i = 0; i < 600; i++) {
+        tiles_bg.push(controls.image({
+            offset: [-1000, -1000], sizeOffset: [2, 2],
+            source: "gear",
+            alpha: 0,
+            onClick(args) {
+                this.source = "nosfegtdsrh";
+            }
+        }));
+        tiles_bg2.push(controls.image({
+            offset: [-1000, -1000], sizeOffset: [2, 2],
+            source: "gear",
+            alpha: 0,
+        }));
+        tiles_fg.push(controls.image({
+            offset: [-1000, -1000], sizeOffset: [2, 2],
+            source: "gear",
+            alpha: 0,
+        }));
+        titems.push(controls.image({
+            offset: [-1000, -1000], sizeOffset: [2, 2],
+            source: "gear",
+            alpha: 0,
+        }));
+        tnpcs.push(controls.image({
+            offset: [-1000, -1000], sizeOffset: [2, 2], snip: [0, 0, 32, 32],
+            source: "gear",
+            alpha: 0,
+        }));
+    }
+
     loadNPCs();
     fadeIn(250, true);
     canMove = true;
@@ -156,34 +194,6 @@ scenes.mapmaker = () => {
             let ofsX = game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5;
             let ofsY = game.position[1] - kofs[1] * kofs[2] - 7.5;
 
-            for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
-                if (map.map[y] && map.map[y][(x * 4) + 2]) {
-                    ctx.drawImage(images["tiles/" + getTile(map, x, y).sprite],
-                        ((zoom * scale) * (x - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
-                } else if (map.tiles.empty) {
-                    ctx.drawImage(images["tiles/" + map.tiles.empty.sprite],
-                        (zoom * scale) * (x - ofsX) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
-                }
-            }
-            for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
-                if (map.mapbg2[y] && map.mapbg2[y][(x * 4) + 2]) {
-                    if (map.mapbg2[y][(x * 4) + 2] != "-") {
-                        ctx.drawImage(images["tiles/" + getTile(map, x, y, 2).sprite],
-                            zoom * scale * (x - ofsX) - ((zoom - 1) * scale * (width / 2)), zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
-                    }
-                }
-            }
-
-            if (map.items != undefined) {
-                for (let item of map.items) {
-                    if (item[4] == true) {
-                        if (images["items/" + items[item[2]]().source] != undefined) ctx.drawImage(images["items/" + items[item[2]]().source],
-                            ((zoom * scale) * (item[0] + kofs[0] * kofs[2] - (game.position[0] - width / 2 + 0.5))) - ((zoom - 1) * scale * (width / 2)),
-                            (zoom * scale) * (item[1] + kofs[1] * kofs[2] - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7),
-                            zoom * scale, zoom * scale)
-                    }
-                }
-            }
 
             let wm = 1;
 
@@ -192,25 +202,84 @@ scenes.mapmaker = () => {
             }
             zswm = (zoom * scale) / wm;
 
-            for (i in activenpcs) {
-                if (activenpcs[i].alpha > 0) {
-                    ctx.globalAlpha = activenpcs[i].alpha;
-                    activenpcs[i].render(ctx);
-                }
-            }
 
-            for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
-                if (map.mapfg[y] && map.mapfg[y][(x * 4) + 2]) {
-                    if (map.mapfg[y][(x * 4) + 2] != "-") {
-                        ctx.drawImage(images["tiles/" + getTile(map, x, y, 3).sprite],
-                            zoom * scale * (x - ofsX) - ((zoom - 1) * scale * (width / 2)), zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale, zoom * scale);
+            if (game.position[0] != prePos[0] || game.position[1] != prePos[1]) {
+                prePos[0] = game.position[0];
+                prePos[1] = game.position[1];
+
+                for (ti in tiles_fg) {
+                    tiles_bg[ti].alpha = 0;
+                    tiles_bg2[ti].alpha = 0;
+                    tiles_fg[ti].alpha = 0;
+                    titems[ti].alpha = 0;
+                }
+
+                let b = 0;
+                let b2 = 0;
+                let t = 0;
+                let it = 0;
+                let np = 0;
+
+                if (map.items != undefined) {
+                    for (let item of map.items) {
+                        if (item[4] == true) {
+                            titems[it].offset = [(((zoom * scale) * (item[0] + kofs[0] * kofs[2] - (game.position[0] - width / 2 + 0.5))) - ((zoom - 1) * scale * (width / 2))) - ((width * scale) / 2), ((zoom * scale) * (item[1] + kofs[1] * kofs[2] - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7)) - (height / 2)];
+                            titems[it].sizeOffset = [zoom * scale, zoom * scale];
+                            titems[it].source = "items/" + items[item[2]]().source;
+                            titems[it].alpha = 1;
+                            it += 1;
+                        }
+                    }
+                }
+                for (i in activenpcs) {
+                    if (activenpcs[i].alpha > 0) {
+                        let npc = activenpcs[i];
+                        tnpcs[np].offset = [(((zoom * scale) * (npc.position[0] + kofs[0] * kofs[2] - (game.position[0] - width / 2 + 0.5))) - ((zoom - 1) * scale * (width / 2))) - ((width * scale) / 2), ((zoom * scale) * (npc.position[1] + kofs[1] * kofs[2] - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7)) - (height / 2)];
+                        tnpcs[np].sizeOffset = [zswm, zswm];
+                        tnpcs[np].source = npc.skin;
+                        tnpcs[np].alpha = 1;
+                        np += 1;
+                    }
+                }
+                for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
+                    b += 1;
+                    tiles_bg[b].offset = [(zoom * scale * (x - ofsX) - ((zoom - 1) * scale * (width / 2))) - ((width * scale) / 2), (zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7)) - (height / 2)];
+                    tiles_bg[b].sizeOffset = [zoom * scale, zoom * scale];
+                    tiles_bg[b].alpha = 1;
+                    if (map.map[y] && map.map[y][(x * 4) + 2]) {
+                        if (map.map[y][(x * 4) + 2] != "-") {
+                            tiles_bg[b].source = "tiles/" + getTile(map, x, y).sprite;
+                        }
+                    }
+                    else if (map.tiles.empty) {
+                        tiles_bg[b].source = "tiles/" + map.tiles.empty.sprite;
+                    }
+                    if (map.mapbg2[y] && map.mapbg2[y][(x * 4) + 2]) {
+                        if (map.mapbg2[y][(x * 4) + 2] != "-") {
+                            t += 1;
+                            tiles_bg2[b2].offset = [(zoom * scale * (x - ofsX) - ((zoom - 1) * scale * (width / 2))) - ((width * scale) / 2), (zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7)) - (height / 2)];
+                            tiles_bg2[b2].sizeOffset = [zoom * scale, zoom * scale];
+                            tiles_bg2[b2].source = "tiles/" + getTile(map, x, y, 2).sprite;
+                            tiles_bg2[b2].alpha = 1;
+                        }
+                    }
+                    if (map.mapfg[y] && map.mapfg[y][(x * 4) + 2]) {
+                        if (map.mapfg[y][(x * 4) + 2] != "-") {
+                            t += 1;
+                            tiles_fg[t].offset = [(zoom * scale * (x - ofsX) - ((zoom - 1) * scale * (width / 2))) - ((width * scale) / 2), (zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7)) - (height / 2)];
+                            tiles_fg[t].sizeOffset = [zoom * scale, zoom * scale];
+                            tiles_fg[t].source = "tiles/" + getTile(map, x, y, 3).sprite;
+                            tiles_fg[t].alpha = 1;
+                        }
                     }
                 }
             }
+
         },
         // Controls
         controls: [
-            ...walkPad, currentMapText, backButton
+            ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg,
+            ...walkPad, currentMapText, backButton,
         ],
         name: "mapmaker"
     }
