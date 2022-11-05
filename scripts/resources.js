@@ -52,6 +52,8 @@ let images = {
     shopbg1: "data/images/shop-bg.png",
     shopbg2: "data/images/shop-bg2.png",
     pawn: "data/images/pawn.png",
+    place: "data/images/placemode.png",
+    move: "data/images/movemode.png",
 
     eattackani2: "data/images/eattackani2.png",
 

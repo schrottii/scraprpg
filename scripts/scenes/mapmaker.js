@@ -3,10 +3,13 @@ scenes.mapmaker = () => {
     let walkPad = [];
     let walkPadSize = Math.max(32, 64 * settings.walkPadSize);
     let pad;
+    let modeButtons = [];
+    let updateTiles = false;
 
     var activenpcs = [];
     var currentMap = "test";
     var map = maps[currentMap];
+    var mode = "move";
 
     var tiles_bg = [];
     var tiles_bg2 = [];
@@ -27,6 +30,31 @@ scenes.mapmaker = () => {
             }
         }
     }
+
+    modeButtons.push(controls.image({
+        anchor: [.025, .6], sizeOffset: [48, 48],
+        source: "move", alpha: 0,
+        onClick(args) {
+            mode = "move";
+            for (w in walkPad) {
+                walkPad[w].alpha = 1;
+            }
+            modeButtons[0].alpha = 0;
+            modeButtons[1].alpha = 1;
+        }
+    }));
+    modeButtons.push(controls.image({
+        anchor: [.025, .6], sizeOffset: [48, 48], offset: [0, 64],
+        source: "place", alpha: 1,
+        onClick(args) {
+            mode = "preplace";
+            for (w in walkPad) {
+                walkPad[w].alpha = 0;
+            }
+            modeButtons[0].alpha = 1;
+            modeButtons[1].alpha = 0;
+        }
+    }));
 
     walkPad.push(controls.image({ // Up
         anchor: [.1, .9], offset: [0, -walkPadSize * 3], sizeOffset: [walkPadSize, walkPadSize],
@@ -109,10 +137,18 @@ scenes.mapmaker = () => {
     for (i = 0; i < 600; i++) {
         tiles_bg.push(controls.image({
             offset: [-1000, -1000], sizeOffset: [2, 2],
+            pos: [-999999999, -999999999],
             source: "gear",
             alpha: 0,
             onClick(args) {
-                this.source = "nosfegtdsrh";
+                if (this.pos[0] == -999999999) return false;
+                let mp = maps[currentMap].map[this.pos[1]];
+
+                if (mode == "place") {
+                    maps[currentMap].map[this.pos[1]] = mp.substr(0, this.pos[0] * 4) + "002 " + mp.substr((1 + this.pos[0]) * 4);
+                    updateTiles = true;
+                }
+                if (mode == "preplace") mode = "place";
             }
         }));
         tiles_bg2.push(controls.image({
@@ -144,7 +180,7 @@ scenes.mapmaker = () => {
     return {
         // Pre-render function
         preRender(ctx, delta) {
-            if (!kofs[2] && canMove == true) {
+            if (!kofs[2] && canMove == true && mode == "move") {
                 let xo;
                 let yo;
                 if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up")) {
@@ -203,7 +239,8 @@ scenes.mapmaker = () => {
             zswm = (zoom * scale) / wm;
 
 
-            if (game.position[0] != prePos[0] || game.position[1] != prePos[1]) {
+            if (game.position[0] != prePos[0] || game.position[1] != prePos[1] || updateTiles) {
+                updateTiles = false;
                 prePos[0] = game.position[0];
                 prePos[1] = game.position[1];
 
@@ -249,6 +286,7 @@ scenes.mapmaker = () => {
                     if (map.map[y] && map.map[y][(x * 4) + 2]) {
                         if (map.map[y][(x * 4) + 2] != "-") {
                             tiles_bg[b].source = "tiles/" + getTile(map, x, y).sprite;
+                            tiles_bg[b].pos = [x, y];
                         }
                     }
                     else if (map.tiles.empty) {
@@ -279,7 +317,7 @@ scenes.mapmaker = () => {
         // Controls
         controls: [
             ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg,
-            ...walkPad, currentMapText, backButton,
+            ...walkPad, currentMapText, backButton, ...modeButtons,
         ],
         name: "mapmaker"
     }
