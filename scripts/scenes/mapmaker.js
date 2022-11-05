@@ -13,6 +13,7 @@ scenes.mapmaker = () => {
     let tileSource = "common";
 
     let ttp = "001"; // tile to place
+    let editingLayer = 0;
 
     var activenpcs = [];
     var currentMap = "test";
@@ -67,6 +68,15 @@ scenes.mapmaker = () => {
             }
         }
     }));
+    for (i = 0; i < 3; i++) {
+        modeButtons.push(controls.image({
+            anchor: [.025, .1], sizeOffset: [48, 48], offset: [0, 64 * i],
+            source: "layerbuttons", snip: [32 * i, 0, 32, 32], alpha: 1, i: i,
+            onClick(args) {
+                editingLayer = this.i;
+            }
+        }));
+    }
 
     // Tiles menu ahahyahahaaaa
     tilesMenuControls.push(controls.rect({
@@ -264,6 +274,38 @@ scenes.mapmaker = () => {
         }
     }
 
+    function placeTile(x, y, layer) {
+        console.log(x, y, layer, ttp);
+        if (x < 0 || y < 0) {
+            if (mode == "preplace") mode = "place";
+            return false;
+        }
+        let mp = maps[currentMap][layer][y];
+        let def = "---";
+        if (layer == "map") def = "002";
+
+        if (mode == "place") {
+            if (mp == undefined) {
+                while (mp == undefined) {
+                    maps[currentMap][layer].push(def);
+                    mp = maps[currentMap][layer][y];
+                }
+                maps[currentMap][layer][y] = ttp;
+            }
+            if (x * 4 > mp.length + 4) {
+                while (x * 4 > mp.length + 4) {
+                    maps[currentMap][layer][y] = mp + " " + def;
+                    mp = maps[currentMap][layer][y];
+                }
+            }
+            if (x * 4 > mp.length) maps[currentMap][layer][y] = mp + " " + ttp;
+            else maps[currentMap][layer][y] = mp.substr(0, x * 4) + ttp + " " + mp.substr((1 + x) * 4);
+            maps[currentMap][layer][y] = maps[currentMap][layer][y].replace(/  /gi, " ");
+            updateTiles = true;
+        }
+        if (mode == "preplace") mode = "place";
+    }
+
     for (i = 0; i < 800; i++) {
         tiles_bg.push(controls.image({
             offset: [-1000, -1000], sizeOffset: [2, 2],
@@ -271,43 +313,30 @@ scenes.mapmaker = () => {
             source: "gear",
             alpha: 0,
             onClick(args) {
-                if (this.pos[0] < 0 || this.pos[1] < 0) {
-                    if (mode == "preplace") mode = "place";
-                    return false;
+                if (editingLayer == 0) {
+                    placeTile(this.pos[0], this.pos[1], "map");
                 }
-                let mp = maps[currentMap].map[this.pos[1]];
-
-                if (mode == "place") {
-                    if (mp == undefined) {
-                        while (mp == undefined) {
-                            maps[currentMap].map.push("002");
-                            mp = maps[currentMap].map[this.pos[1]];
-                        }
-                        maps[currentMap].map[this.pos[1]] = ttp;
-                    }
-                    if (this.pos[0] * 4 > mp.length + 4) {
-                        while (this.pos[0] * 4 > mp.length + 4) {
-                            maps[currentMap].map[this.pos[1]] = mp + " 002";
-                            mp = maps[currentMap].map[this.pos[1]];
-                        }
-                    }
-                    if (this.pos[0] * 4 > mp.length) maps[currentMap].map[this.pos[1]] = mp + " " + ttp;
-                    else maps[currentMap].map[this.pos[1]] = mp.substr(0, this.pos[0] * 4) + ttp + " " + mp.substr((1 + this.pos[0]) * 4);
-                    maps[currentMap].map[this.pos[1]] = maps[currentMap].map[this.pos[1]].replace(/  /gi, " ");
-                    updateTiles = true;
-                }
-                if (mode == "preplace") mode = "place";
             }
         }));
         tiles_bg2.push(controls.image({
             offset: [-1000, -1000], sizeOffset: [2, 2],
             source: "gear",
             alpha: 0,
+            onClick(args) {
+                if (editingLayer == 1) {
+                    placeTile(this.pos[0], this.pos[1], "mapbg2");
+                }
+            }
         }));
         tiles_fg.push(controls.image({
             offset: [-1000, -1000], sizeOffset: [2, 2],
             source: "gear",
             alpha: 0,
+            onClick(args) {
+                if (editingLayer == 2) {
+                    placeTile(this.pos[0], this.pos[1], "mapfg");
+                }
+            }
         }));
         titems.push(controls.image({
             offset: [-1000, -1000], sizeOffset: [2, 2],
@@ -370,7 +399,7 @@ scenes.mapmaker = () => {
             let width = window.innerWidth / scale;
 
             // Why is this HERE?
-            currentMapText.text = "Current Map: " + currentMap + " | Pos: x" + game.position[0] + " y" + game.position[1];
+            currentMapText.text = "Current Map: " + currentMap + " | Pos: x" + game.position[0] + " y" + game.position[1] + " z" + editingLayer + " | Mode: " + mode;
 
             ctx.imageSmoothingEnabled = false;
             ctx.globalAlpha = 1;
@@ -398,6 +427,8 @@ scenes.mapmaker = () => {
                     tiles_fg[ti].alpha = 0;
                     titems[ti].alpha = 0;
                     tiles_bg[ti].pos = [-999999999, -999999999];
+                    tiles_bg2[ti].pos = [-999999999, -999999999];
+                    tiles_fg[ti].pos = [-999999999, -999999999];
                 }
 
                 let b = 0;
@@ -444,20 +475,24 @@ scenes.mapmaker = () => {
                         else tiles_bg[b].source = "tiles/" + map.tiles.empty.sprite;
                         tiles_bg[b].pos = [x, y];
                     }
+
+                    b2 += 1;
+                    tiles_bg2[b2].offset = [(zoom * scale * (x - ofsX) - ((zoom - 1) * scale * (width / 2))) - ((width * scale) / 2), (zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7)) - (height / 2)];
+                    tiles_bg2[b2].sizeOffset = [zoom * scale, zoom * scale];
+                    tiles_bg2[b2].pos = [x, y];
                     if (map.mapbg2[y] && map.mapbg2[y][(x * 4) + 2]) {
                         if (map.mapbg2[y][(x * 4) + 2] != "-") {
-                            t += 1;
-                            tiles_bg2[b2].offset = [(zoom * scale * (x - ofsX) - ((zoom - 1) * scale * (width / 2))) - ((width * scale) / 2), (zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7)) - (height / 2)];
-                            tiles_bg2[b2].sizeOffset = [zoom * scale, zoom * scale];
                             tiles_bg2[b2].source = "tiles/" + getTile(map, x, y, 2).sprite;
                             tiles_bg2[b2].alpha = 1;
                         }
                     }
+
+                    t += 1;
+                    tiles_fg[t].offset = [(zoom * scale * (x - ofsX) - ((zoom - 1) * scale * (width / 2))) - ((width * scale) / 2), (zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7)) - (height / 2)];
+                    tiles_fg[t].sizeOffset = [zoom * scale, zoom * scale];
+                    tiles_fg[t].pos = [x, y];
                     if (map.mapfg[y] && map.mapfg[y][(x * 4) + 2]) {
                         if (map.mapfg[y][(x * 4) + 2] != "-") {
-                            t += 1;
-                            tiles_fg[t].offset = [(zoom * scale * (x - ofsX) - ((zoom - 1) * scale * (width / 2))) - ((width * scale) / 2), (zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7)) - (height / 2)];
-                            tiles_fg[t].sizeOffset = [zoom * scale, zoom * scale];
                             tiles_fg[t].source = "tiles/" + getTile(map, x, y, 3).sprite;
                             tiles_fg[t].alpha = 1;
                         }

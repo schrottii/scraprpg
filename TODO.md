@@ -1,5 +1,5 @@
 ﻿##TODO:
-18 Things left to do in this phase
+17 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
@@ -21,7 +21,7 @@ IT'S DONE!
   - and music
   - and weather
   - and worldmode
-  - Different layers
+  - <s>Different layers</s>
   - Dialogues
   - Saving
   - Loading

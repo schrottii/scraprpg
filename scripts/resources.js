@@ -55,6 +55,7 @@ let images = {
     place: "data/images/placemode.png",
     move: "data/images/movemode.png",
     tilesmenu: "data/images/tilesmenu.png",
+    layerbuttons: "data/images/layerbuttons.png",
 
     eattackani2: "data/images/eattackani2.png",
 
