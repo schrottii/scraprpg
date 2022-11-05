@@ -54,6 +54,7 @@ let images = {
     pawn: "data/images/pawn.png",
     place: "data/images/placemode.png",
     move: "data/images/movemode.png",
+    tilesmenu: "data/images/tilesmenu.png",
 
     eattackani2: "data/images/eattackani2.png",
 

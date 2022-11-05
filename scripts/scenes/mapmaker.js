@@ -6,6 +6,12 @@ scenes.mapmaker = () => {
     let modeButtons = [];
     let updateTiles = false;
 
+    let tilesMenuControls = [];
+    let tilesMenuTiles = [];
+    let pageSize = 1;
+
+    let ttp = "001"; // tile to place
+
     var activenpcs = [];
     var currentMap = "test";
     var map = maps[currentMap];
@@ -35,26 +41,54 @@ scenes.mapmaker = () => {
         anchor: [.025, .6], sizeOffset: [48, 48],
         source: "move", alpha: 0,
         onClick(args) {
-            mode = "move";
-            for (w in walkPad) {
-                walkPad[w].alpha = 1;
-            }
-            modeButtons[0].alpha = 0;
-            modeButtons[1].alpha = 1;
+            moveMode();
         }
     }));
     modeButtons.push(controls.image({
         anchor: [.025, .6], sizeOffset: [48, 48], offset: [0, 64],
         source: "place", alpha: 1,
         onClick(args) {
-            mode = "preplace";
-            for (w in walkPad) {
-                walkPad[w].alpha = 0;
-            }
-            modeButtons[0].alpha = 1;
-            modeButtons[1].alpha = 0;
+            placeMode();
         }
     }));
+    modeButtons.push(controls.image({
+        anchor: [.025, .6], sizeOffset: [48, 48], offset: [0, -64],
+        source: "tilesmenu", alpha: 1,
+        onClick(args) {
+            if (tilesMenuControls[0].alpha == 0) {
+                moveMode();
+                openTilesMenu();
+            }
+            else {
+                placeMode();
+                closeTilesMenu();
+            }
+        }
+    }));
+
+    // Tiles menu ahahyahahaaaa
+    tilesMenuControls.push(controls.rect({
+        anchor: [0.05, 0.1], sizeAnchor: [0.9, 0.4],
+        fill: colors.buttonbottom, alpha: 0,
+    }));
+    tilesMenuControls.push(controls.rect({
+        anchor: [0.05, 0.1], sizeAnchor: [0.9, 0.4], offset: [8, 8], sizeOffset: [-16, -16],
+        fill: colors.buttontop, alpha: 0,
+    }));
+
+    for (t = 0; t < 25; t++) {
+        tilesMenuTiles.push(controls.image({
+            anchor: [0.05, 0.1], offset: [32 + (72 * t), 32], sizeOffset: [64, 64],
+            source: "gear", alpha: 0,
+            // tile: the tile, with sprite, occupied, etc.
+            // tileid: 001, 002, etc.
+            onClick(args) {
+                if (this.alpha == 1) {
+                    ttp = this.tileid;
+                }
+            }
+        }));
+    }
 
     walkPad.push(controls.image({ // Up
         anchor: [.1, .9], offset: [0, -walkPadSize * 3], sizeOffset: [walkPadSize, walkPadSize],
@@ -140,7 +174,53 @@ scenes.mapmaker = () => {
         alpha: 1,
     });
 
-    for (i = 0; i < 600; i++) {
+    function moveMode() {
+        mode = "move";
+        for (w in walkPad) {
+            walkPad[w].alpha = 1;
+        }
+        modeButtons[0].alpha = 0;
+        modeButtons[1].alpha = 1;
+    }
+
+    function placeMode() {
+        mode = "preplace";
+        for (w in walkPad) {
+            walkPad[w].alpha = 0;
+        }
+        modeButtons[0].alpha = 1;
+        modeButtons[1].alpha = 0;
+    }
+
+    function openTilesMenu() {
+        for (t in tilesMenuControls) {
+            tilesMenuControls[t].alpha = 1;
+        }
+        for (t in tilesMenuTiles) {
+            if (tilesMenuTiles[t].offset[0] <= width * scale * 0.85) pageSize = t;
+        }
+        for (t = 0; t < pageSize; t++) {
+            if (Object.keys(commontiles)[t] != undefined) {
+                if (Object.keys(commontiles)[t] != "empty") {
+                    tilesMenuTiles[t].source = "tiles/" + commontiles[Object.keys(commontiles)[t]].sprite;
+                    tilesMenuTiles[t].tile = commontiles[Object.keys(commontiles)[t]];
+                    tilesMenuTiles[t].tileid = Object.keys(commontiles)[t];
+                    tilesMenuTiles[t].alpha = 1;
+                }
+            }
+        }
+    }
+
+    function closeTilesMenu() {
+        for (t in tilesMenuControls) {
+            tilesMenuControls[t].alpha = 0;
+        }
+        for (t in tilesMenuTiles) {
+            tilesMenuTiles[t].alpha = 0;
+        }
+    }
+
+    for (i = 0; i < 800; i++) {
         tiles_bg.push(controls.image({
             offset: [-1000, -1000], sizeOffset: [2, 2],
             pos: [-999999999, -999999999],
@@ -159,7 +239,7 @@ scenes.mapmaker = () => {
                             maps[currentMap].map.push("002");
                             mp = maps[currentMap].map[this.pos[1]];
                         }
-                        maps[currentMap].map[this.pos[1]] = "001";
+                        maps[currentMap].map[this.pos[1]] = ttp;
                     }
                     if (this.pos[0] * 4 > mp.length + 4) {
                         while (this.pos[0] * 4 > mp.length + 4) {
@@ -167,8 +247,8 @@ scenes.mapmaker = () => {
                             mp = maps[currentMap].map[this.pos[1]];
                         }
                     }
-                    if (this.pos[0] * 4 > mp.length) maps[currentMap].map[this.pos[1]] = mp + " 001";
-                    else maps[currentMap].map[this.pos[1]] = mp.substr(0, this.pos[0] * 4) + "001 " + mp.substr((1 + this.pos[0]) * 4);
+                    if (this.pos[0] * 4 > mp.length) maps[currentMap].map[this.pos[1]] = mp + " " + ttp;
+                    else maps[currentMap].map[this.pos[1]] = mp.substr(0, this.pos[0] * 4) + ttp + " " + mp.substr((1 + this.pos[0]) * 4);
                     maps[currentMap].map[this.pos[1]] = maps[currentMap].map[this.pos[1]].replace(/  /gi, " ");
                     updateTiles = true;
                 }
@@ -348,6 +428,7 @@ scenes.mapmaker = () => {
         controls: [
             ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg,
             ...walkPad, middlei, currentMapText, backButton, ...modeButtons,
+            ...tilesMenuControls, ...tilesMenuTiles,
         ],
         name: "mapmaker"
     }
