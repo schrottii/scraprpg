@@ -141,11 +141,29 @@ scenes.mapmaker = () => {
             source: "gear",
             alpha: 0,
             onClick(args) {
-                if (this.pos[0] == -999999999) return false;
+                if (this.pos[0] < 0 || this.pos[1] < 0) {
+                    if (mode == "preplace") mode = "place";
+                    return false;
+                }
                 let mp = maps[currentMap].map[this.pos[1]];
 
                 if (mode == "place") {
-                    maps[currentMap].map[this.pos[1]] = mp.substr(0, this.pos[0] * 4) + "002 " + mp.substr((1 + this.pos[0]) * 4);
+                    if (mp == undefined) {
+                        while (mp == undefined) {
+                            maps[currentMap].map.push("002");
+                            mp = maps[currentMap].map[this.pos[1]];
+                        }
+                        maps[currentMap].map[this.pos[1]] = "001";
+                    }
+                    if (this.pos[0] * 4 > mp.length + 4) {
+                        while (this.pos[0] * 4 > mp.length + 4) {
+                            maps[currentMap].map[this.pos[1]] = mp + " 002";
+                            mp = maps[currentMap].map[this.pos[1]];
+                        }
+                    }
+                    if (this.pos[0] * 4 > mp.length) maps[currentMap].map[this.pos[1]] = mp + " 001";
+                    else maps[currentMap].map[this.pos[1]] = mp.substr(0, this.pos[0] * 4) + "001 " + mp.substr((1 + this.pos[0]) * 4);
+                    maps[currentMap].map[this.pos[1]] = maps[currentMap].map[this.pos[1]].replace(/  /gi, " ");
                     updateTiles = true;
                 }
                 if (mode == "preplace") mode = "place";
@@ -249,6 +267,7 @@ scenes.mapmaker = () => {
                     tiles_bg2[ti].alpha = 0;
                     tiles_fg[ti].alpha = 0;
                     titems[ti].alpha = 0;
+                    tiles_bg[ti].pos = [-999999999, -999999999];
                 }
 
                 let b = 0;
@@ -291,6 +310,7 @@ scenes.mapmaker = () => {
                     }
                     else if (map.tiles.empty) {
                         tiles_bg[b].source = "tiles/" + map.tiles.empty.sprite;
+                        tiles_bg[b].pos = [x, y];
                     }
                     if (map.mapbg2[y] && map.mapbg2[y][(x * 4) + 2]) {
                         if (map.mapbg2[y][(x * 4) + 2] != "-") {
