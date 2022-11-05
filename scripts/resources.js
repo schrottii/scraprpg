@@ -198,6 +198,8 @@ let images = {
     "tiles/cave": "data/images/tiles/tile_cave.png",
     "tiles/black_tile": "data/images/tiles/tile_black_tile.png",
     "tiles/checkpoint": "data/images/tiles/checkpoint.png",
+    "tiles/border": "data/images/tiles/border.png",
+    "tiles/border2": "data/images/tiles/border2.png",
 
 
     "items/brickyleaf": "data/images/items/brickyleaf.png",

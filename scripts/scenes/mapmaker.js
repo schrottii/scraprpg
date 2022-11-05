@@ -134,6 +134,12 @@ scenes.mapmaker = () => {
         alpha: 1,
     });
 
+    let middlei = controls.image({
+        anchor: [0.5, 0.5], sizeOffset: [zswm, zswm],
+        source: "grid",
+        alpha: 1,
+    });
+
     for (i = 0; i < 600; i++) {
         tiles_bg.push(controls.image({
             offset: [-1000, -1000], sizeOffset: [2, 2],
@@ -309,7 +315,9 @@ scenes.mapmaker = () => {
                         }
                     }
                     else if (map.tiles.empty) {
-                        tiles_bg[b].source = "tiles/" + map.tiles.empty.sprite;
+                        if (x == -1) tiles_bg[b].source = "tiles/border";
+                        else if (y == -1) tiles_bg[b].source = "tiles/border2";
+                        else tiles_bg[b].source = "tiles/" + map.tiles.empty.sprite;
                         tiles_bg[b].pos = [x, y];
                     }
                     if (map.mapbg2[y] && map.mapbg2[y][(x * 4) + 2]) {
@@ -333,11 +341,13 @@ scenes.mapmaker = () => {
                 }
             }
 
+            middlei.sizeOffset = [zswm * 2, zswm * 2];
+            middlei.offset = [-zswm, -zswm];
         },
         // Controls
         controls: [
             ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg,
-            ...walkPad, currentMapText, backButton, ...modeButtons,
+            ...walkPad, middlei, currentMapText, backButton, ...modeButtons,
         ],
         name: "mapmaker"
     }
