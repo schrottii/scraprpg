@@ -8,7 +8,9 @@ scenes.mapmaker = () => {
 
     let tilesMenuControls = [];
     let tilesMenuTiles = [];
+    let pageWidth = 1;
     let pageSize = 1;
+    let tileSource = "common";
 
     let ttp = "001"; // tile to place
 
@@ -75,10 +77,32 @@ scenes.mapmaker = () => {
         anchor: [0.05, 0.1], sizeAnchor: [0.9, 0.4], offset: [8, 8], sizeOffset: [-16, -16],
         fill: colors.buttontop, alpha: 0,
     }));
+    tilesMenuControls.push(controls.button({
+        anchor: [0.05, 0.05], sizeAnchor: [0.1, 0.05],
+        text: "Common",
+        alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                tileSource = "common";
+                openTilesMenu();
+            }
+        }
+    }));
+    tilesMenuControls.push(controls.button({
+        anchor: [0.85, 0.05], sizeAnchor: [0.1, 0.05],
+        text: "Map",
+        alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                tileSource = "map";
+                openTilesMenu();
+            }
+        }
+    }));
 
-    for (t = 0; t < 25; t++) {
+    for (t = 0; t < 100; t++) {
         tilesMenuTiles.push(controls.image({
-            anchor: [0.05, 0.1], offset: [32 + (72 * t), 32], sizeOffset: [64, 64],
+            anchor: [0.05, 0.1], offset: [32 + (72 * (t % 25)), 32 + (72 * Math.floor(t / 25))], sizeOffset: [64, 64],
             source: "gear", alpha: 0,
             // tile: the tile, with sprite, occupied, etc.
             // tileid: 001, 002, etc.
@@ -197,17 +221,37 @@ scenes.mapmaker = () => {
             tilesMenuControls[t].alpha = 1;
         }
         for (t in tilesMenuTiles) {
-            if (tilesMenuTiles[t].offset[0] <= width * scale * 0.85) pageSize = t;
+            tilesMenuTiles[t].alpha = 0;
         }
+        for (t = 0; t < 25; t++) {
+            if (tilesMenuTiles[t].offset[0] <= width * scale * 0.85) pageWidth = t;
+        }
+        for (r = 0; r < 4; r++) {
+            if (tilesMenuTiles[r * 25].offset[1] <= width * scale * 0.5) pageSize = pageWidth * r;
+        }
+        let nr = 0;
+        let til;
+        let grb;
+
         for (t = 0; t < pageSize; t++) {
-            if (Object.keys(commontiles)[t] != undefined) {
-                if (Object.keys(commontiles)[t] != "empty") {
-                    tilesMenuTiles[t].source = "tiles/" + commontiles[Object.keys(commontiles)[t]].sprite;
-                    tilesMenuTiles[t].tile = commontiles[Object.keys(commontiles)[t]];
-                    tilesMenuTiles[t].tileid = Object.keys(commontiles)[t];
+            if ((t % 25) % pageWidth == 0 && t > 0) t += (25 - pageWidth) * Math.ceil(t / 25);
+            if (tileSource == "common") {
+                til = Object.keys(commontiles)[nr];
+                grb = commontiles[til];
+            }
+            if (tileSource == "map") {
+                til = Object.keys(maps[currentMap].tiles)[nr];
+                grb = maps[currentMap].tiles[til];
+            }
+            if (til != undefined) {
+                if (til != "empty") {
+                    tilesMenuTiles[t].source = "tiles/" + grb.sprite;
+                    tilesMenuTiles[t].tile = grb;
+                    tilesMenuTiles[t].tileid = til;
                     tilesMenuTiles[t].alpha = 1;
                 }
             }
+            nr += 1;
         }
     }
 
