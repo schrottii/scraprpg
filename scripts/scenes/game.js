@@ -15,6 +15,12 @@ const ROWBOOST = 0.33;
 const ELEMENTBOOST = 0.5; // 0.33 = 33%, 0.5 = 50%
 const CRITBOOST = 2;
 
+const CAMERA_LOCK_X = -2;
+const CAMERA_LOCK_Y = -2;
+
+var CAM_OX = 0;
+var CAM_OY = 0;
+
 // Function used to create enemies
 function createEnemy(type) {
     if (currentEnemies.length < 9) {
@@ -1684,9 +1690,11 @@ scenes.game = () => {
             ctx.imageSmoothingEnabled = false;
             ctx.globalAlpha = 1;
 
-            let ofsX = game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5;
-            let ofsY = game.position[1] - kofs[1] * kofs[2] - 7.5;
+            let ofsX = Math.max(CAMERA_LOCK_X, game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5);
+            let ofsY = Math.max(CAMERA_LOCK_Y, game.position[1] - kofs[1] * kofs[2] - 7.5);
 
+            CAM_OX = Math.min(0, (game.position[0] - width / 2 + 0.5) - CAMERA_LOCK_X);
+            CAM_OY = Math.min(0, (game.position[1] - 7.5) - CAMERA_LOCK_Y);
 
             for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
                 if (map.map[y] && map.map[y][(x * 4) + 2]) {
@@ -1710,8 +1718,8 @@ scenes.game = () => {
                 for (let item of map.items) {
                     if (item[4] == true) {
                         if(images["items/" + items[item[2]]().source] != undefined) ctx.drawImage(images["items/" + items[item[2]]().source],
-                            ((zoom * scale) * (item[0] + kofs[0] * kofs[2] - (game.position[0] - width / 2 + 0.5))) - ((zoom - 1) * scale * (width / 2)),
-                            (zoom * scale) * (item[1] + kofs[1] * kofs[2] - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7),
+                            ((zoom * scale) * (item[0] + (CAM_OX == 0 ? kofs[0] * kofs[2] : 0) - Math.max(CAMERA_LOCK_X, (game.position[0] - width / 2 + 0.5)))) - ((zoom - 1) * scale * (width / 2)),
+                            (zoom * scale) * (item[1] + (CAM_OY == 0 ? kofs[1] * kofs[2] : 0) - Math.max(CAMERA_LOCK_Y, (game.position[1] - 7.5) - ((zoom - 1) * scale * 7))),
                             zoom * scale, zoom * scale)
                     }
                 }

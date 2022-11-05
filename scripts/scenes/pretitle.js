@@ -70,7 +70,7 @@ scenes.pretitle = () => {
                     loadGame();
                     loadSettings();
                     setScene(scenes.game());
-                    openShop("placeholder");
+                    //openShop("placeholder");
                 }
             }),
             controls.button({

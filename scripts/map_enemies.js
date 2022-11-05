@@ -27,11 +27,11 @@ let mapenemies = {
                 let tileX = this.position[0];
                 let tileY = this.position[1];
 
-                let xAdjust = game.position[0] - width / 2 + 0.5;
+                let xAdjust = Math.max(CAMERA_LOCK_X, game.position[0] - width / 2 + 0.5);
                 this.kofs[2] = Math.max(this.kofs[2] - delta / 166, 0);
 
-                let posX = ((zoom * scale) * (tileX + kofs[0] * kofs[2] - this.kofs[0] * (this.kofs[2] / this.walkingSpeed) - xAdjust)) - ((zoom - 1) * scale * (width / 2));
-                let posY = (zoom * scale) * (tileY + kofs[1] * kofs[2] - this.kofs[1] * (this.kofs[2] / this.walkingSpeed) - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7);
+                let posX = ((zoom * scale) * (tileX + (CAM_OX == 0 ? kofs[0] * kofs[2] : 0) - this.kofs[0] * (this.kofs[2] / this.walkingSpeed) - xAdjust)) - ((zoom - 1) * scale * (width / 2));
+                let posY = (zoom * scale) * (tileY + (CAM_OY == 0 ? kofs[1] * kofs[2] : 0) - this.kofs[1] * (this.kofs[2] / this.walkingSpeed) - Math.max(CAMERA_LOCK_Y, (game.position[1] - 7.5) - ((zoom - 1) * scale * 7)));
 
                 if (this.spawntime > 599) {
                     if (game.map == this.map) {
