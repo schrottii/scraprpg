@@ -1,4 +1,5 @@
 let images = {
+    // Misc.
     gear: "data/images/gear.png",
     paper: "data/images/paper.png",
     inventory: "data/images/inventory.png",
@@ -52,17 +53,23 @@ let images = {
     shopbg1: "data/images/shop-bg.png",
     shopbg2: "data/images/shop-bg2.png",
     pawn: "data/images/pawn.png",
-    place: "data/images/placemode.png",
-    move: "data/images/movemode.png",
-    tilesmenu: "data/images/tilesmenu.png",
+    eattackani2: "data/images/eattackani2.png",
+    actionbutton: "data/images/actionbutton_inactive.png",
+    actionbutton_active: "data/images/actionbutton_active.png",
+
+    // Map Maker
+    place: "data/images/mm/mode-place.png",
+    move: "data/images/mm/mode-move.png",
+    erase: "data/images/mm/mode-erase.png",
+    tilesmenu: "data/images/mm/tiles-menu.png",
     layerbuttons: "data/images/layerbuttons.png",
 
-    eattackani2: "data/images/eattackani2.png",
-
+    // Animations
     tokenattack: "data/images/token-animation.png",
     schrottgamesanimation: "data/images/sganimation.png",
     tttanimation: "data/images/Toast_Tech_Team_Animation.png",
-    
+
+    // Characters
     bleu: "data/images/protagonists/map/Map_Bleu.png",
     corelle: "data/images/protagonists/map/Map_Corelle.png",
     gau: "data/images/protagonists/map/Map_Gau.png",
@@ -71,9 +78,6 @@ let images = {
 
     wmbleu: "data/images/protagonists/worldmode/Worldmode_Bleu.png",
     wmcorelle: "data/images/protagonists/worldmode/Worldmode_Corelle.png",
-
-    actionbutton: "data/images/actionbutton_inactive.png",
-    actionbutton_active: "data/images/actionbutton_active.png",
 
     bleu_ani: "data/images/protagonists/other/Bleu_Sprite_Sheet_Other.png",
     corelle_ani: "data/images/protagonists/other/Corelle_Sprite_Sheet_Other.png",
@@ -93,25 +97,27 @@ let images = {
     skro_dead: "data/images/protagonists/dead/SkroDead.png",
     kokitozi_dead: "data/images/protagonists/dead/KokiDead.png",
 
-    saveimage1: "data/images/PFP-1.png",
-    saveimage2: "data/images/PFP-2.png",
-    saveimage3: "data/images/PFP-3.png",
-    saveimage4: "data/images/PFP-4.png",
-    saveimage5: "data/images/PFP-5.png",
-
-    weakhelter: "data/images/Map_Evil.png",
-    stronghelter: "data/images/protagonists/map/Map_Corelle.png",
-    itsalive: "data/images/Map_ItsAlive.png",
-    livingbarrel: "data/images/Map_LivingBarrel.png",
-    nottoofresh: "data/images/NotTooFreshEnemy.png",
-
-
     Portraits_Bleu: "data/images/protagonists/portraits/Portraits_Bleu.png",
     Portraits_Corelle: "data/images/protagonists/portraits/Portraits_Corelle.png",
     Portraits_Gau: "data/images/protagonists/portraits/Portraits_Gau.png",
     Portraits_Skro: "data/images/protagonists/portraits/Portraits_Skro.png",
     Portraits_Kokitozi: "data/images/protagonists/portraits/Portraits_Kokitozi.png",
 
+    // Enemies
+    weakhelter: "data/images/Map_Evil.png",
+    stronghelter: "data/images/protagonists/map/Map_Corelle.png",
+    itsalive: "data/images/Map_ItsAlive.png",
+    livingbarrel: "data/images/Map_LivingBarrel.png",
+    nottoofresh: "data/images/NotTooFreshEnemy.png",
+
+    // Save images
+    saveimage1: "data/images/PFP-1.png",
+    saveimage2: "data/images/PFP-2.png",
+    saveimage3: "data/images/PFP-3.png",
+    saveimage4: "data/images/PFP-4.png",
+    saveimage5: "data/images/PFP-5.png",
+
+    // Elements
     fire: "data/images/elements/fire_element.png",
     earth: "data/images/elements/earth_element.png",
     wind: "data/images/elements/wind_element_colored.png",
@@ -122,7 +128,7 @@ let images = {
     physical: "data/images/elements/physical_element.png",
     ectoplasm: "data/images/elements/ectoplasm_element.png",
 
-
+    // Effects
     acid: "data/images/effects/acid.png",
     poison: "data/images/effects/poison.png",
     burn: "data/images/elements/fire_element.png",
@@ -130,6 +136,7 @@ let images = {
     paralysis: "data/images/effects/paralysis.png",
     condemned: "data/images/effects/condemned.png",
 
+    // Tiles
     "tiles/grass1": "data/images/tiles/grass1.png",
     "tiles/grass2": "data/images/tiles/grass2.png",
     "tiles/sand1": "data/images/tiles/sand1.png",

@@ -40,22 +40,37 @@ scenes.mapmaker = () => {
         }
     }
 
+    modeButtons.push(controls.rect({
+        anchor: [0, 0], sizeAnchor: [1, 0.15],
+        fill: "white", alpha: 0.2,
+        onClick(args) {
+            prot = true;
+            setTimeout("prot = false", 100);
+        }
+    }));
     modeButtons.push(controls.image({
-        anchor: [.025, .6], sizeOffset: [48, 48],
+        anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * 4, 0],
         source: "move", alpha: 0,
         onClick(args) {
             moveMode();
         }
     }));
     modeButtons.push(controls.image({
-        anchor: [.025, .6], sizeOffset: [48, 48], offset: [0, 64],
+        anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * 5, 0],
         source: "place", alpha: 1,
         onClick(args) {
             placeMode();
         }
     }));
     modeButtons.push(controls.image({
-        anchor: [.025, .6], sizeOffset: [48, 48], offset: [0, -64],
+        anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * 6, 0],
+        source: "erase", alpha: 1,
+        onClick(args) {
+            eraseMode();
+        }
+    }));
+    modeButtons.push(controls.image({
+        anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * 9, 0],
         source: "tilesmenu", alpha: 1,
         onClick(args) {
             if (tilesMenuControls[0].alpha == 0) {
@@ -70,7 +85,7 @@ scenes.mapmaker = () => {
     }));
     for (i = 0; i < 3; i++) {
         modeButtons.push(controls.image({
-            anchor: [.025, .1], sizeOffset: [48, 48], offset: [0, 64 * i],
+            anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * i, 0],
             source: "layerbuttons", snip: [32 * i, 0, 32, 32], alpha: 1, i: i,
             onClick(args) {
                 editingLayer = this.i;
@@ -80,15 +95,15 @@ scenes.mapmaker = () => {
 
     // Tiles menu ahahyahahaaaa
     tilesMenuControls.push(controls.rect({
-        anchor: [0.05, 0.1], sizeAnchor: [0.9, 0.4],
+        anchor: [0.05, 0.2], sizeAnchor: [0.9, 0.4],
         fill: colors.buttonbottom, alpha: 0,
     }));
     tilesMenuControls.push(controls.rect({
-        anchor: [0.05, 0.1], sizeAnchor: [0.9, 0.4], offset: [8, 8], sizeOffset: [-16, -16],
+        anchor: [0.05, 0.2], sizeAnchor: [0.9, 0.4], offset: [8, 8], sizeOffset: [-16, -16],
         fill: colors.buttontop, alpha: 0,
     }));
     tilesMenuControls.push(controls.button({
-        anchor: [0.05, 0.05], sizeAnchor: [0.1, 0.05],
+        anchor: [0.05, 0.15], sizeAnchor: [0.15, 0.05],
         text: "Common",
         alpha: 0,
         onClick(args) {
@@ -99,7 +114,7 @@ scenes.mapmaker = () => {
         }
     }));
     tilesMenuControls.push(controls.button({
-        anchor: [0.85, 0.05], sizeAnchor: [0.1, 0.05],
+        anchor: [0.8, 0.15], sizeAnchor: [0.15, 0.05],
         text: "Map",
         alpha: 0,
         onClick(args) {
@@ -112,7 +127,7 @@ scenes.mapmaker = () => {
 
     for (t = 0; t < 100; t++) {
         tilesMenuTiles.push(controls.image({
-            anchor: [0.05, 0.1], offset: [32 + (72 * (t % 25)), 32 + (72 * Math.floor(t / 25))], sizeOffset: [64, 64],
+            anchor: [0.05, 0.2], offset: [32 + (72 * (t % 25)), 32 + (72 * Math.floor(t / 25))], sizeOffset: [64, 64],
             source: "gear", alpha: 0,
             // tile: the tile, with sprite, occupied, etc.
             // tileid: 001, 002, etc.
@@ -213,17 +228,29 @@ scenes.mapmaker = () => {
         for (w in walkPad) {
             walkPad[w].alpha = 1;
         }
-        modeButtons[0].alpha = 0;
-        modeButtons[1].alpha = 1;
+        modeButtons[1].alpha = 0;
+        modeButtons[2].alpha = 1;
+        modeButtons[3].alpha = 1;
     }
 
     function placeMode() {
-        mode = "preplace";
+        mode = "place";
         for (w in walkPad) {
             walkPad[w].alpha = 0;
         }
-        modeButtons[0].alpha = 1;
-        modeButtons[1].alpha = 0;
+        modeButtons[1].alpha = 1;
+        modeButtons[2].alpha = 0;
+        modeButtons[3].alpha = 1;
+    }
+
+    function eraseMode() {
+        mode = "erase";
+        for (w in walkPad) {
+            walkPad[w].alpha = 0;
+        }
+        modeButtons[1].alpha = 1;
+        modeButtons[2].alpha = 1;
+        modeButtons[3].alpha = 0;
     }
 
     function openTilesMenu() {
@@ -275,9 +302,7 @@ scenes.mapmaker = () => {
     }
 
     function placeTile(x, y, layer) {
-        console.log(x, y, layer, ttp);
         if (x < 0 || y < 0) {
-            if (mode == "preplace") mode = "place";
             return false;
         }
         let mp = maps[currentMap][layer][y];
@@ -303,7 +328,20 @@ scenes.mapmaker = () => {
             maps[currentMap][layer][y] = maps[currentMap][layer][y].replace(/  /gi, " ");
             updateTiles = true;
         }
-        if (mode == "preplace") mode = "place";
+    }
+
+    function eraseTile(x, y, layer) {
+        if (x < 0 || y < 0) {
+            return false;
+        }
+        let mp = maps[currentMap][layer][y];
+
+        if (mode == "erase" && mp != undefined && x * 4 <= mp.length) {
+            if(layer == "map") maps[currentMap][layer][y] = mp.substr(0, x * 4) + "002 " + mp.substr((1 + x) * 4);
+            else maps[currentMap][layer][y] = mp.substr(0, x * 4) + "--- " + mp.substr((1 + x) * 4);
+            maps[currentMap][layer][y] = maps[currentMap][layer][y].replace(/  /gi, " ");
+            updateTiles = true;
+        }
     }
 
     for (i = 0; i < 800; i++) {
@@ -313,8 +351,11 @@ scenes.mapmaker = () => {
             source: "gear",
             alpha: 0,
             onClick(args) {
-                if (editingLayer == 0) {
-                    placeTile(this.pos[0], this.pos[1], "map");
+                if (!prot) {
+                    if (editingLayer == 0) {
+                        if (mode == "erase") eraseTile(this.pos[0], this.pos[1], "map");
+                        else placeTile(this.pos[0], this.pos[1], "map");
+                    }
                 }
             }
         }));
@@ -323,8 +364,11 @@ scenes.mapmaker = () => {
             source: "gear",
             alpha: 0,
             onClick(args) {
-                if (editingLayer == 1) {
-                    placeTile(this.pos[0], this.pos[1], "mapbg2");
+                if (!prot) {
+                    if (editingLayer == 1) {
+                        if (mode == "erase") eraseTile(this.pos[0], this.pos[1], "mapbg2");
+                        else placeTile(this.pos[0], this.pos[1], "mapbg2");
+                    }
                 }
             }
         }));
@@ -333,8 +377,11 @@ scenes.mapmaker = () => {
             source: "gear",
             alpha: 0,
             onClick(args) {
-                if (editingLayer == 2) {
-                    placeTile(this.pos[0], this.pos[1], "mapfg");
+                if (!prot) {
+                    if (editingLayer == 2) {
+                        if (mode == "erase") eraseTile(this.pos[0], this.pos[1], "mapfg");
+                        else placeTile(this.pos[0], this.pos[1], "mapfg");
+                    }
                 }
             }
         }));
