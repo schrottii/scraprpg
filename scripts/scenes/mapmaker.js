@@ -1,3 +1,48 @@
+function showSelect() {
+    let dif = document.querySelector("div.loadiv");
+    dif.style.display = "block";
+
+    let canvas = document.querySelector("canvas");
+    canvas.style.display = "none";
+}
+
+var lmresult = "none";
+
+function loadMap() {
+    let dif = document.querySelector("div.loadiv");
+    dif.style.display = "none";
+
+    let canvas = document.querySelector("canvas");
+    canvas.style.display = "block";
+
+    let file = document.getElementById("myFile").files[0];
+
+    let reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = function (e) {
+        // Jesus sweet fucking christ
+        let result = e.target.result;
+        let name = result.split("id: ");
+        name = name[1];
+        if (name != undefined) {
+            name = name.split(",");
+            let finalname = name[0];
+            finalname = finalname.split('\"');
+            finalname = finalname[1];
+            lmresult = finalname;
+        }
+        else {
+            let mapobj = JSON.parse(result);
+            try {
+                lmresult = JSON.parse(mapobj);
+            }
+            catch{
+                lmresult = mapobj;
+            }
+        }
+    }
+}
+
 scenes.mapmaker = () => {
 
     let walkPad = [];
@@ -8,15 +53,18 @@ scenes.mapmaker = () => {
 
     let tilesMenuControls = [];
     let tilesMenuTiles = [];
+    let loadMapButtons = [];
     let pageWidth = 1;
     let pageSize = 1;
     let tileSource = "common";
+    let prot = false;
+    let prott = 0;
 
     let ttp = "001"; // tile to place
     let editingLayer = 0;
 
     var activenpcs = [];
-    var currentMap = "test";
+    var currentMap = "map2";
     var map = maps[currentMap];
     var mode = "move";
 
@@ -41,11 +89,11 @@ scenes.mapmaker = () => {
     }
 
     modeButtons.push(controls.rect({
-        anchor: [0, 0], sizeAnchor: [1, 0.15],
-        fill: "white", alpha: 0.2,
+        anchor: [0, 0], sizeAnchor: [1, 0], sizeOffset: [0, 96],
+        fill: "brown", alpha: 0.8,
         onClick(args) {
             prot = true;
-            setTimeout("prot = false", 100);
+            prott = 100;
         }
     }));
     modeButtons.push(controls.image({
@@ -92,6 +140,58 @@ scenes.mapmaker = () => {
             }
         }));
     }
+    modeButtons.push(controls.image({
+        anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * 11, 0],
+        source: "loadmap", alpha: 1,
+        onClick(args) {
+            toggleLoadButtons();
+        }
+    }));
+    modeButtons.push(controls.image({
+        anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * 12, 0],
+        source: "savemap", alpha: 1,
+        onClick(args) {
+            saveFile();
+        }
+    }));
+    modeButtons.push(controls.image({
+        anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * 13, 0],
+        source: "newmap", alpha: 1,
+        onClick(args) {
+            currentMap = "newMap";
+            map = {
+                id: "newMap",
+                tiles: {
+                    empty: {
+                        sprite: "water1",
+                    },
+                },
+                map: ["---"],
+                mapbg2: ["---"],
+                mapfg: ["---"],
+            }
+            newMap();
+        }
+    }));
+
+    loadMapButtons.push(controls.button({
+        anchor: [0.3, 0.3], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
+        text: "Load from file...", alpha: 0,
+        onClick(args) {
+            showSelect();
+        }
+    }));
+
+    loadMapButtons.push(controls.button({
+        anchor: [0.3, 0.5], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
+        text: "Load from name...", alpha: 0,
+        onClick(args) {
+            let newMapn = prompt("Map name? (e. g. test)");
+            if (maps[newMapn] != undefined) currentMap = newMapn;
+            map = maps[currentMap];
+            newMap();
+        }
+    }));
 
     // Tiles menu ahahyahahaaaa
     tilesMenuControls.push(controls.rect({
@@ -223,6 +323,73 @@ scenes.mapmaker = () => {
         alpha: 1,
     });
 
+    function newMap() {
+        // Function called when the map has changed - not for creating a new map
+        game.position[0] = Math.round(game.position[0]);
+        game.position[1] = Math.round(game.position[1]);
+
+        activenpcs = [];
+        for (i in tnpcs) {
+            tnpcs[i].alpha = 0;
+        }
+        loadNPCs();
+
+        updateTiles = true;
+    }
+
+    function saveFile() {
+        let toExport = JSON.stringify(map);
+
+        var blob = new Blob([toExport], { type: "text/plain" });
+        var anchor = document.createElement("a");
+        anchor.download = currentMap + ".sotrm";
+        anchor.href = window.URL.createObjectURL(blob);
+        anchor.target = "_blank";
+        anchor.style.display = "none"; // just to be safe!
+        document.body.appendChild(anchor);
+        anchor.click();
+        document.body.removeChild(anchor);
+    }
+
+    function toggleLoadButtons() {
+        if (loadMapButtons[0].alpha == 0) {
+            for (i in loadMapButtons) {
+                loadMapButtons[i].offset = [0, -600];
+                loadMapButtons[i].alpha = 1;
+            }
+            addAnimator(function (t) {
+                for (i in loadMapButtons) {
+                    loadMapButtons[i].offset[1] = -600 + t;
+                }
+                if (t > 599) {
+                    for (i in loadMapButtons) {
+                        loadMapButtons[i].offset[1] = 0;
+                    }
+                    return true;
+                }
+                return false;
+            })
+        }
+        else {
+            for (i in loadMapButtons) {
+                loadMapButtons[i].offset = [0, 0];
+            }
+            addAnimator(function (t) {
+                for (i in loadMapButtons) {
+                    loadMapButtons[i].offset[1] = -t;
+                }
+                if (t > 599) {
+                    for (i in loadMapButtons) {
+                        loadMapButtons[i].offset[1] = -600;
+                        loadMapButtons[i].alpha = 0;
+                    }
+                    return true;
+                }
+                return false;
+            })
+        }
+    }
+
     function moveMode() {
         mode = "move";
         for (w in walkPad) {
@@ -277,8 +444,8 @@ scenes.mapmaker = () => {
                 grb = commontiles[til];
             }
             if (tileSource == "map") {
-                til = Object.keys(maps[currentMap].tiles)[nr];
-                grb = maps[currentMap].tiles[til];
+                til = Object.keys(map.tiles)[nr];
+                grb = map.tiles[til];
             }
             if (til != undefined) {
                 if (til != "empty") {
@@ -305,27 +472,27 @@ scenes.mapmaker = () => {
         if (x < 0 || y < 0) {
             return false;
         }
-        let mp = maps[currentMap][layer][y];
+        let mp = map[layer][y];
         let def = "---";
-        if (layer == "map") def = "002";
+        //if (layer == "map") def = "002";
 
         if (mode == "place") {
             if (mp == undefined) {
                 while (mp == undefined) {
-                    maps[currentMap][layer].push(def);
-                    mp = maps[currentMap][layer][y];
+                    map[layer].push(def);
+                    mp = map[layer][y];
                 }
-                maps[currentMap][layer][y] = ttp;
+                map[layer][y] = ttp;
             }
             if (x * 4 > mp.length + 4) {
                 while (x * 4 > mp.length + 4) {
-                    maps[currentMap][layer][y] = mp + " " + def;
-                    mp = maps[currentMap][layer][y];
+                    map[layer][y] = mp + " " + def;
+                    mp = map[layer][y];
                 }
             }
-            if (x * 4 > mp.length) maps[currentMap][layer][y] = mp + " " + ttp;
-            else maps[currentMap][layer][y] = mp.substr(0, x * 4) + ttp + " " + mp.substr((1 + x) * 4);
-            maps[currentMap][layer][y] = maps[currentMap][layer][y].replace(/  /gi, " ");
+            if (x * 4 > mp.length) map[layer][y] = mp + " " + ttp;
+            else map[layer][y] = mp.substr(0, x * 4) + ttp + " " + mp.substr((1 + x) * 4);
+            map[layer][y] = map[layer][y].replace(/  /gi, " ");
             updateTiles = true;
         }
     }
@@ -334,12 +501,12 @@ scenes.mapmaker = () => {
         if (x < 0 || y < 0) {
             return false;
         }
-        let mp = maps[currentMap][layer][y];
+        let mp = map[layer][y];
 
         if (mode == "erase" && mp != undefined && x * 4 <= mp.length) {
-            if(layer == "map") maps[currentMap][layer][y] = mp.substr(0, x * 4) + "002 " + mp.substr((1 + x) * 4);
-            else maps[currentMap][layer][y] = mp.substr(0, x * 4) + "--- " + mp.substr((1 + x) * 4);
-            maps[currentMap][layer][y] = maps[currentMap][layer][y].replace(/  /gi, " ");
+            if(layer == "map") map[layer][y] = mp.substr(0, x * 4) + "002 " + mp.substr((1 + x) * 4);
+            else map[layer][y] = mp.substr(0, x * 4) + "--- " + mp.substr((1 + x) * 4);
+            map[layer][y] = map[layer][y].replace(/  /gi, " ");
             updateTiles = true;
         }
     }
@@ -349,7 +516,7 @@ scenes.mapmaker = () => {
             offset: [-1000, -1000], sizeOffset: [2, 2],
             pos: [-999999999, -999999999],
             source: "gear",
-            alpha: 0,
+            alpha: 0, ri: true,
             onClick(args) {
                 if (!prot) {
                     if (editingLayer == 0) {
@@ -362,7 +529,7 @@ scenes.mapmaker = () => {
         tiles_bg2.push(controls.image({
             offset: [-1000, -1000], sizeOffset: [2, 2],
             source: "gear",
-            alpha: 0,
+            alpha: 0, ri: true,
             onClick(args) {
                 if (!prot) {
                     if (editingLayer == 1) {
@@ -375,7 +542,7 @@ scenes.mapmaker = () => {
         tiles_fg.push(controls.image({
             offset: [-1000, -1000], sizeOffset: [2, 2],
             source: "gear",
-            alpha: 0,
+            alpha: 0, ri: true,
             onClick(args) {
                 if (!prot) {
                     if (editingLayer == 2) {
@@ -388,12 +555,12 @@ scenes.mapmaker = () => {
         titems.push(controls.image({
             offset: [-1000, -1000], sizeOffset: [2, 2],
             source: "gear",
-            alpha: 0,
+            alpha: 0, ri: true,
         }));
         tnpcs.push(controls.image({
             offset: [-1000, -1000], sizeOffset: [2, 2], snip: [0, 0, 32, 32],
             source: "gear",
-            alpha: 0,
+            alpha: 0, ri: true,
         }));
     }
 
@@ -404,6 +571,37 @@ scenes.mapmaker = () => {
     return {
         // Pre-render function
         preRender(ctx, delta) {
+            prott -= delta;
+            if (prott <= 0) prot = false;
+
+            if (lmresult != "none") {
+                if (typeof(lmresult) == "string") {
+                    // The map you have loaded already exists :)
+                    currentMap = lmresult;
+                    map = maps[currentMap];
+                    newMap();
+                }
+                else {
+                    // It does not hmm
+                    map = lmresult;
+                    if (map.map == undefined) {
+                        map.map = ["--- --- 001 001 001", "--- --- 001 001 001", "--- --- 001 001 001"];
+                        console.log(map);
+                    }
+                    if (map.mapbg2 == undefined) {
+                        map.mapbg2 = ["--- --- ---", "--- --- ---", "--- --- ---"];
+                    }
+                    if (map.mapfg == undefined) {
+                        map.mapfg = ["--- --- ---", "--- --- ---", "--- --- ---"];
+                    }
+                    newMap();
+                }
+
+                toggleLoadButtons();
+                lmresult = "none";
+            }
+
+
             if (!kofs[2] && canMove == true && mode == "move") {
                 let xo;
                 let yo;
@@ -457,6 +655,7 @@ scenes.mapmaker = () => {
 
             let wm = 1;
 
+            if (map == undefined) return false;
             if (map.worldmode == true) {
                 wm = 2;
             }
@@ -507,14 +706,19 @@ scenes.mapmaker = () => {
                 }
                 for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
                     b += 1;
+                    if (tiles_bg[b] == undefined) return false;
+
                     tiles_bg[b].offset = [(zoom * scale * (x - ofsX) - ((zoom - 1) * scale * (width / 2))) - ((width * scale) / 2), (zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7)) - (height / 2)];
                     tiles_bg[b].sizeOffset = [zoom * scale, zoom * scale];
                     tiles_bg[b].alpha = 1;
                     if (map.map[y] && map.map[y][(x * 4) + 2]) {
                         if (map.map[y][(x * 4) + 2] != "-") {
                             tiles_bg[b].source = "tiles/" + getTile(map, x, y).sprite;
-                            tiles_bg[b].pos = [x, y];
                         }
+                        else {
+                            tiles_bg[b].source = "tiles/" + map.tiles.empty.sprite;
+                        }
+                        tiles_bg[b].pos = [x, y];
                     }
                     else if (map.tiles.empty) {
                         if (x == -1) tiles_bg[b].source = "tiles/border";
@@ -547,14 +751,14 @@ scenes.mapmaker = () => {
                 }
             }
 
-            middlei.sizeOffset = [zswm * 2, zswm * 2];
-            middlei.offset = [-zswm, -zswm];
+            middlei.sizeOffset = [zoom * scale, zoom * scale];
+            middlei.offset = [-zoom * scale / 2, -zoom * scale / 2];
         },
         // Controls
         controls: [
             ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg,
             ...walkPad, middlei, currentMapText, backButton, ...modeButtons,
-            ...tilesMenuControls, ...tilesMenuTiles,
+            ...tilesMenuControls, ...loadMapButtons, ...tilesMenuTiles,
         ],
         name: "mapmaker"
     }

@@ -24,9 +24,10 @@ let controls = {
             ...controls.base(),
             source: null,
             snip: false,
+            ri: false,
             render(ctx) {
                 let red = 1;
-                if (isLs() == true) red = 2;
+                if (isLs() == true && !this.ri) red = 2;
 
                 let w = this.sizeOffset[0] / red + this.sizeAnchor[0] * ctx.canvas.width;
                 let h = this.sizeOffset[1] / red + this.sizeAnchor[1] * ctx.canvas.height;

@@ -1,5 +1,5 @@
 ﻿##TODO:
-17 Things left to do in this phase
+15 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
@@ -23,8 +23,8 @@ IT'S DONE!
   - and worldmode
   - <s>Different layers</s>
   - Dialogues
-  - Saving
-  - Loading
+  - <s>Saving</s>
+  - <s>Loading</s>
   - Teleporters
   
 - More battle sprites

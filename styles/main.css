@@ -19,3 +19,11 @@ body {
     overflow: hidden;
     filter: none;
 }
+
+.loadiv {
+    height: 100%;
+    width: 100%;
+    background-color: sandybrown;
+    color: black;
+    text-align: center;
+}

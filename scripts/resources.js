@@ -62,6 +62,9 @@ let images = {
     move: "data/images/mm/mode-move.png",
     erase: "data/images/mm/mode-erase.png",
     tilesmenu: "data/images/mm/tiles-menu.png",
+    loadmap: "data/images/mm/load.png",
+    savemap: "data/images/mm/save.png",
+    newmap: "data/images/mm/Senza titolo.png",
     layerbuttons: "data/images/layerbuttons.png",
 
     // Animations

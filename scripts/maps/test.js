@@ -1,4 +1,5 @@
 maps["test"] = {
+    id: "test",
     tiles: {
         empty: {
             sprite: "water1",
