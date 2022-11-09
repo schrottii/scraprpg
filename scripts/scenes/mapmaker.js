@@ -6,14 +6,18 @@ function showSelect() {
     canvas.style.display = "none";
 }
 
-var lmresult = "none";
-
-function loadMap() {
+function hideSelect() {
     let dif = document.querySelector("div.loadiv");
     dif.style.display = "none";
 
     let canvas = document.querySelector("canvas");
     canvas.style.display = "block";
+}
+
+var lmresult = "none";
+
+function loadMap() {
+    hideSelect();
 
     let file = document.getElementById("myFile").files[0];
 
@@ -189,6 +193,7 @@ scenes.mapmaker = () => {
             let newMapn = prompt("Map name? (e. g. test)");
             if (maps[newMapn] != undefined) currentMap = newMapn;
             map = maps[currentMap];
+            if (loadMapButtons[0].alpha == 1) toggleLoadButtons();
             newMap();
         }
     }));
@@ -575,29 +580,32 @@ scenes.mapmaker = () => {
             if (prott <= 0) prot = false;
 
             if (lmresult != "none") {
-                if (typeof(lmresult) == "string") {
-                    // The map you have loaded already exists :)
-                    currentMap = lmresult;
-                    map = maps[currentMap];
-                    newMap();
-                }
-                else {
-                    // It does not hmm
-                    map = lmresult;
-                    if (map.map == undefined) {
-                        map.map = ["--- --- 001 001 001", "--- --- 001 001 001", "--- --- 001 001 001"];
-                        console.log(map);
+                if (loadMapButtons[0].alpha == 1) toggleLoadButtons();
+
+                if (lmresult != "justhide") {
+                    if (typeof (lmresult) == "string") {
+                        // The map you have loaded already exists :)
+                        currentMap = lmresult;
+                        map = maps[currentMap];
+                        newMap();
                     }
-                    if (map.mapbg2 == undefined) {
-                        map.mapbg2 = ["--- --- ---", "--- --- ---", "--- --- ---"];
+                    else {
+                        // It does not hmm
+                        map = lmresult;
+                        if (map.map == undefined) {
+                            map.map = ["--- --- 001 001 001", "--- --- 001 001 001", "--- --- 001 001 001"];
+                            console.log(map);
+                        }
+                        if (map.mapbg2 == undefined) {
+                            map.mapbg2 = ["--- --- ---", "--- --- ---", "--- --- ---"];
+                        }
+                        if (map.mapfg == undefined) {
+                            map.mapfg = ["--- --- ---", "--- --- ---", "--- --- ---"];
+                        }
+                        newMap();
                     }
-                    if (map.mapfg == undefined) {
-                        map.mapfg = ["--- --- ---", "--- --- ---", "--- --- ---"];
-                    }
-                    newMap();
                 }
 
-                toggleLoadButtons();
                 lmresult = "none";
             }
 

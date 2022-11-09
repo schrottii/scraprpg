@@ -28,10 +28,11 @@
 <body onload="init()">
     <audio id="musicPlayer" type="audio/ogg" preload="auto"></audio>
     <canvas id="mainCanvas"></canvas>
-    <div class="loadiv">
+    <div class="loadiv" style="display: none">
         <div id="myFhile" style="left: 70vw; top: 70vh;" type="file"></div>
         <input id="myFile" style="margin-left: 50%; margin-right: 50%;" type="file">
-        <button onclick="loadMap(myFhile)">Load!</button>
+        <button onclick="loadMap(myFhile)">Load!</button><br />
+        <button onclick="lmresult = 'justhide'; hideSelect();">Cancel</button>
     </div>
 </body>
 </html>
