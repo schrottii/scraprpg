@@ -133,6 +133,28 @@ var commontiles = {
         sprite: "bush_1",
         occupied: true,
     },
+    "040": {
+        sprite: "town_pav",
+    },
+    "041": {
+        sprite: "water_s._leg",
+        occupied: true,
+    },
+    "042": {
+        sprite:  "water_s._leg_2",
+        occupied: true,
+    },
+    "043": {
+        sprite: "water_s._leg_middle",
+        occupied: true,
+    },
+    "044": {
+        sprite: "water_s._leg_middle_2",
+        occupied: true,
+    },
+    "045": {
+        sprite: "water_structure",
+    },
     "SVP": {
         sprite: "checkpoint",
             occupied: false,
