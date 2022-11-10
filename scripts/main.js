@@ -32,7 +32,7 @@ function init() {
 
             controls.label({
                 anchor: [.5, .5],
-                align: "right", baseline: "alphabetic", fontSize: 16, fill: "white",
+                align: "center", baseline: "alphabetic", fontSize: 16, fill: "white",
                 text: "Press A to start", alpha: 0,
             }),
             

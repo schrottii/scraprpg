@@ -499,7 +499,7 @@ scenes.game = () => {
                     if (canMove == true) inDialogue = false;
                 }
             }
-            else if (currentDialogue[dialogueProgress].script != false) {
+            else if (currentDialogue[dialogueProgress].script != undefined && currentDialogue[dialogueProgress].script != false) {
                 currentDialogue[dialogueProgress].script();
             }
         }
@@ -650,11 +650,6 @@ scenes.game = () => {
         onClick(args) {
             this.snip[1] = 96;
 
-            testParticle.alpha = 1;
-            testParticle.movable = true;
-            testParticle.movable2 = true;
-            testParticle.p = [];
-            testParticle.dead = false;
             // Look at how amazingly optimized this is now YAY (xo & yo, more like that's awesome yo)
             let xo = 0;
             let yo = 0;
@@ -971,6 +966,7 @@ scenes.game = () => {
             }
             x = Math.floor(x);
             y = Math.floor(y);
+            console.log(direction, x, y, getTile(map, x, y, l).occupied);
             if (getTile(map, x, y, l).occupied != undefined) { //Check if occupied exists
                 if (typeof (getTile(map, x, y, l).occupied) == "object") { // Config exists?
                     if (direction == "up" && getTile(map, x, y, l).occupied.includes("up")) {
@@ -1124,8 +1120,8 @@ scenes.game = () => {
 
     function check_ItemCollision(i) {
         let map = maps[game.map];
-        if (game.position[0] == map.items[i][0] &&
-            game.position[1] == map.items[i][1]) {
+        if (Math.floor(game.position[0]) == map.items[i][0] &&
+            Math.floor(game.position[1]) == map.items[i][1]) {
             // Collision!
 
             map.items[i][4] = !addItem(map.items[i][2], map.items[i][3]);
@@ -1335,23 +1331,6 @@ scenes.game = () => {
 
     loadNPCs();
     loadAreaMusic();
-
-    let testParticle = Particles({
-        anchor: [0.5, 0.5], offset: [10, 10], sizeOffset: [8, 8], //type: "img", source: "spawn",
-        type: "rect", fill: "red",
-        direction: 2, speedOffset: 4, moveRandom: 5,
-        direction2: 3, speedOffset2: 12, acc2: 0.2,
-        spreadOffset: [500, 50], amount: 300, repeatMode: true, alpha: 0,
-        onDeath(args) {
-            testParticle = false;
-        },
-        onClick(args) {
-            for (p in this.p) {
-                this.p[p][0][1] += 0.1;
-                this.acc2 = 0.2;
-            }
-        }
-    })
 
     /*let fallingLeaves = Particles({
         anchor: [0, -0.1], spreadAnchor: [1, 0], sizeOffset: [64, 64], spreadOffset: [0, -256], sizeOffsetVary: [1.5, 1.5], quadraticVary: true,
@@ -1994,7 +1973,6 @@ scenes.game = () => {
             ...cutsceneElements,
             ...dialogueNormalComponents, ...dialogueInvisComponents, ...dialogueNarratorComponents, ...dialogueCutsceneComponents,
             autoSaveText, ...areaNameBox, areaTeleportFade,
-            testParticle, 
         ],
         name: "game"
     }
