@@ -154,6 +154,10 @@ var commontiles = {
     },
     "045": {
         sprite: "water_structure",
+    
+    },
+        
+       
     },
     "SVP": {
         sprite: "checkpoint",
