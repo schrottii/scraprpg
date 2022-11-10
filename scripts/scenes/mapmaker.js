@@ -122,6 +122,13 @@ scenes.mapmaker = () => {
         }
     }));
     modeButtons.push(controls.image({
+        anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * 7, 0],
+        source: "movenplace", alpha: 1,
+        onClick(args) {
+            moveAndPlaceMode();
+        }
+    }));
+    modeButtons.push(controls.image({
         anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * 9, 0],
         source: "tilesmenu", alpha: 1,
         onClick(args) {
@@ -251,10 +258,12 @@ scenes.mapmaker = () => {
         fontSize: 16, source: "mapbuttons", snip: [0, 0, 32, 32],
         isPressed: false,
         onDown(args) {
+            protect();
             this.snip[0] = 32;
             pad = "up";
         },
         onClick(args) {
+            protect();
             this.snip[0] = 0;
             pad = "";
         }
@@ -264,18 +273,24 @@ scenes.mapmaker = () => {
         fontSize: 16, source: "mapbuttons", snip: [64, 0, 32, 32],
         isPressed: false,
         onDown(args) {
+            protect();
             pad = "";
         },
+        onClick(args) {
+            protect();
+        }
     }));
     walkPad.push(controls.image({ // Down
         anchor: [.1, .9], offset: [0, -walkPadSize], sizeOffset: [walkPadSize, walkPadSize],
         fontSize: 16, source: "mapbuttons", snip: [0, 64, 32, 32],
         isPressed: false,
         onDown(args) {
+            protect();
             this.snip[0] = 32;
             pad = "down";
         },
         onClick(args) {
+            protect();
             this.snip[0] = 0;
             pad = "";
         }
@@ -285,10 +300,12 @@ scenes.mapmaker = () => {
         fontSize: 16, source: "mapbuttons", snip: [0, 96, 32, 32],
         isPressed: false,
         onDown(args) {
+            protect();
             this.snip[0] = 32;
             pad = "left";
         },
         onClick(args) {
+            protect();
             this.snip[0] = 0;
             pad = "";
         }
@@ -298,10 +315,12 @@ scenes.mapmaker = () => {
         fontSize: 16, source: "mapbuttons", snip: [0, 32, 32, 32],
         isPressed: false,
         onDown(args) {
+            protect();
             this.snip[0] = 32;
             pad = "right";
         },
         onClick(args) {
+            protect();
             this.snip[0] = 0;
             pad = "";
         }
@@ -405,6 +424,7 @@ scenes.mapmaker = () => {
         modeButtons[1].alpha = 0;
         modeButtons[2].alpha = 1;
         modeButtons[3].alpha = 1;
+        modeButtons[4].alpha = 1;
     }
 
     function placeMode() {
@@ -415,6 +435,7 @@ scenes.mapmaker = () => {
         modeButtons[1].alpha = 1;
         modeButtons[2].alpha = 0;
         modeButtons[3].alpha = 1;
+        modeButtons[4].alpha = 1;
     }
 
     function eraseMode() {
@@ -425,6 +446,18 @@ scenes.mapmaker = () => {
         modeButtons[1].alpha = 1;
         modeButtons[2].alpha = 1;
         modeButtons[3].alpha = 0;
+        modeButtons[4].alpha = 1;
+    }
+
+    function moveAndPlaceMode() {
+        mode = "moveandplace";
+        for (w in walkPad) {
+            walkPad[w].alpha = 1;
+        }
+        modeButtons[1].alpha = 1;
+        modeButtons[2].alpha = 1;
+        modeButtons[3].alpha = 1;
+        modeButtons[4].alpha = 0;
     }
 
     function openTilesMenu() {
@@ -475,6 +508,13 @@ scenes.mapmaker = () => {
         }
     }
 
+    function protect() {
+        if (mode == "moveandplace") {
+            prot = true;
+            prott = 100;
+        }
+    }
+
     function placeTile(x, y, layer) {
         if (x < 0 || y < 0) {
             return false;
@@ -483,7 +523,7 @@ scenes.mapmaker = () => {
         let def = "---";
         //if (layer == "map") def = "002";
 
-        if (mode == "place") {
+        if (mode == "place" || mode == "moveandplace") {
             if (mp == undefined) {
                 while (mp == undefined) {
                     map[layer].push(def);
@@ -612,7 +652,7 @@ scenes.mapmaker = () => {
             }
 
 
-            if (!kofs[2] && canMove == true && mode == "move") {
+            if (!kofs[2] && canMove == true && (mode == "move" || mode == "moveandplace")) {
                 let xo;
                 let yo;
                 if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up")) {

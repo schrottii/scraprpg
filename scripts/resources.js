@@ -61,6 +61,7 @@ let images = {
     place: "data/images/mm/mode-place.png",
     move: "data/images/mm/mode-move.png",
     erase: "data/images/mm/mode-erase.png",
+    movenplace: "data/images/mm/mode-movenplace.png",
     tilesmenu: "data/images/mm/tiles-menu.png",
     loadmap: "data/images/mm/load.png",
     savemap: "data/images/mm/save.png",
