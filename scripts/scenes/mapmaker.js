@@ -199,7 +199,7 @@ scenes.mapmaker = () => {
     }));
     modeButtons.push(controls.image({
         anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * 15, 0],
-        source: "newmap", alpha: 1,
+        source: "mmzoom", alpha: 1,
         onClick(args) {
             switch (zoom) {
                 case 1:

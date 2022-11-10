@@ -67,6 +67,7 @@ let images = {
     savemap: "data/images/mm/save.png",
     newmap: "data/images/mm/Senza titolo.png",
     layerbuttons: "data/images/layerbuttons.png",
+    mmzoom: "data/images/mm/zoom.png",
 
     // Animations
     tokenattack: "data/images/token-animation.png",
