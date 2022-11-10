@@ -196,6 +196,34 @@ scenes.mapmaker = () => {
             }
         }
     }));
+    modeButtons.push(controls.image({
+        anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * 15, 0],
+        source: "newmap", alpha: 1,
+        onClick(args) {
+            switch (zoom) {
+                case 1:
+                    zoom = 1.25;
+                    updateTiles = true;
+                    break;
+                case 1.25:
+                    zoom = 1.5;
+                    updateTiles = true;
+                    break;
+                case 1.5:
+                    zoom = 2;
+                    updateTiles = true;
+                    break;
+                case 2:
+                    zoom = 4;
+                    updateTiles = true;
+                    break;
+                case 4:
+                    zoom = 1;
+                    updateTiles = true;
+                    break;
+            }
+        }
+    }));
 
     loadMapButtons.push(controls.button({
         anchor: [0.3, 0.3], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
@@ -816,7 +844,7 @@ scenes.mapmaker = () => {
             }
 
             middlei.sizeOffset = [zoom * scale, zoom * scale];
-            middlei.offset = [-zoom * scale / 2, -zoom * scale / 2];
+            middlei.offset = [-zoom * scale / 2, (zoom * scale * 7.5 - ((zoom - 1) * scale * 7)) - (height / 2)];
         },
         // Controls
         controls: [
