@@ -162,19 +162,21 @@ scenes.mapmaker = () => {
         anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * 13, 0],
         source: "newmap", alpha: 1,
         onClick(args) {
-            currentMap = "newMap";
-            map = {
-                id: "newMap",
-                tiles: {
-                    empty: {
-                        sprite: "water1",
+            if (confirm("Do you really want to create a new map?") == true) {
+                currentMap = "newMap";
+                map = {
+                    id: "newMap",
+                    tiles: {
+                        empty: {
+                            sprite: "water1",
+                        },
                     },
-                },
-                map: ["---"],
-                mapbg2: ["---"],
-                mapfg: ["---"],
+                    map: ["---"],
+                    mapbg2: ["---"],
+                    mapfg: ["---"],
+                }
+                newMap();
             }
-            newMap();
         }
     }));
 

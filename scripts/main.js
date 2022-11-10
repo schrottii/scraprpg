@@ -19,7 +19,6 @@ function init() {
                 align: "right", baseline: "alphabetic", fontSize: 16, fill: "#7f7f7f",
                 text: "",
             }),
-
     
             controls.rect({
                 anchor: [0, 0], sizeAnchor: [1, 1],
@@ -30,10 +29,11 @@ function init() {
                     setScene(scenes.pretitle());
                 }
             }),
+
             controls.label({
                 anchor: [.5, .5],
                 align: "right", baseline: "alphabetic", fontSize: 16, fill: "white",
-                text: "Press A to start",
+                text: "Press A to start", alpha: 0,
             }),
             
         ],
