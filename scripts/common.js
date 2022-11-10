@@ -127,7 +127,7 @@ var commontiles = {
             occupied: true,
                 action: () => {
                     zoom = 1;
-                }
+               
     },
     "039": {
         sprite: "bush_1",
