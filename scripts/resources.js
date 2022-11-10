@@ -220,6 +220,7 @@ let images = {
     "tiles/water_s._leg_middle": "data/images/tiles/water_s._leg_middle.png",
     "tiles/water_s._leg_middle_2": "data/images/tiles/water_s._leg_middle_2.png",
     "tiles/water_structure": "data/images/tiles/water_structure.png",
+    "tiles/water_structure_2": "data/images/tiles/water_structure_2.png",
     
     
 
