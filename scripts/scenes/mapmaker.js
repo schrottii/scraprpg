@@ -71,6 +71,7 @@ scenes.mapmaker = () => {
     var currentMap = "map2";
     var map = maps[currentMap];
     var mode = "move";
+    var prevmode = "move";
 
     var tiles_bg = [];
     var tiles_bg2 = [];
@@ -133,11 +134,13 @@ scenes.mapmaker = () => {
         source: "tilesmenu", alpha: 1,
         onClick(args) {
             if (tilesMenuControls[0].alpha == 0) {
+                prevmode = mode;
                 moveMode();
                 openTilesMenu();
             }
             else {
-                placeMode();
+                if (prevmode == "moveandplace") moveAndPlaceMode();
+                else placeMode();
                 closeTilesMenu();
             }
         }
@@ -162,11 +165,18 @@ scenes.mapmaker = () => {
         anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * 12, 0],
         source: "savemap", alpha: 1,
         onClick(args) {
-            saveFile();
+            saveFile("sotrm");
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * 13, 0],
+        source: "savemap", alpha: 1,
+        onClick(args) {
+            saveFile("js");
+        }
+    }));
+    modeButtons.push(controls.image({
+        anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * 14, 0],
         source: "newmap", alpha: 1,
         onClick(args) {
             if (confirm("Do you really want to create a new map?") == true) {
@@ -363,12 +373,16 @@ scenes.mapmaker = () => {
         updateTiles = true;
     }
 
-    function saveFile() {
-        let toExport = JSON.stringify(map);
+    function saveFile(type) {
+        let toExport;
+
+        if(type == "sotrm") toExport = JSON.stringify(map);
+        if (type == "js") toExport = 'maps["' + currentMap + '"] = ' + JSON.stringify(map);
 
         var blob = new Blob([toExport], { type: "text/plain" });
         var anchor = document.createElement("a");
-        anchor.download = currentMap + ".sotrm";
+        if (type == "sotrm") anchor.download = currentMap + ".sotrm";
+        if (type == "js") anchor.download = currentMap + ".js";
         anchor.href = window.URL.createObjectURL(blob);
         anchor.target = "_blank";
         anchor.style.display = "none"; // just to be safe!

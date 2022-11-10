@@ -1697,7 +1697,7 @@ scenes.game = () => {
             CAM_OY = Math.min(0, (game.position[1] - 7.5) - CAMERA_LOCK_Y);
 
             for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
-                if (map.map[y] && map.map[y][(x * 4) + 2]) {
+                if (map.map[y] && map.map[y][(x * 4) + 2] && map.map[y][(x * 4) + 2] != "-") {
                     ctx.drawImage(images["tiles/" + getTile(map, x, y).sprite],
                         ((zoom * scale) * (x - ofsX)) - ((zoom - 1) * scale * (width/2)), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
                 } else if (map.tiles.empty) {
