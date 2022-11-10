@@ -214,7 +214,7 @@ let images = {
     "tiles/checkpoint": "data/images/tiles/checkpoint.png",
     "tiles/border": "data/images/tiles/border.png",
     "tiles/border2": "data/images/tiles/border2.png",
-    "tiles/town_pav": "data/images/tiles/town.pav.png",
+    "tiles/town_pav": "data/images/tiles/town_pav.png",
     "tiles/water_s._leg": "data/images/tiles/water_s._leg.png",
     "tiles/water_s.leg_2": "data/images/tiles/water_s._leg_2.png",
     "tiles/water_s._leg_middle": "data/images/tiles/water_s._leg_middle.png",

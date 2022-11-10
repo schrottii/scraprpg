@@ -579,7 +579,7 @@ scenes.mapmaker = () => {
         let grb;
 
         for (t = 0; t < pageSize; t++) {
-            if ((t % 25) % pageWidth == 0 && t > 0) t += (25 - pageWidth) * Math.ceil(t / 25);
+            if ((t % 25) % pageWidth == 0 && t > 0) t += (25 - pageWidth);
             if (tileSource == "common") {
                 til = Object.keys(commontiles)[nr];
                 grb = commontiles[til];

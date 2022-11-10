@@ -124,10 +124,10 @@ var commontiles = {
         },
     "038": {
         sprite: "hay_left",
-            occupied: true,
-                action: () => {
-                    zoom = 1;
-               
+        occupied: true,
+        action: () => {
+            zoom = 1;
+        }
     },
     "039": {
         sprite: "bush_1",
@@ -141,7 +141,7 @@ var commontiles = {
         occupied: true,
     },
     "042": {
-        sprite:  "water_s._leg_2",
+        sprite:  "water_s.leg_2",
         occupied: true,
     },
     "043": {
@@ -155,9 +155,6 @@ var commontiles = {
     "045": {
         sprite: "water_structure",
     },
-    
- 
-      },
     "SVP": {
         sprite: "checkpoint",
             occupied: false,
