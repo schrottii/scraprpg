@@ -1,5 +1,5 @@
 ﻿##TODO:
-15 Things left to do in this phase
+14 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
@@ -14,7 +14,7 @@ IT'S DONE!
   - <s>Move around</s>
   - <s>Tiles menu</s>
   - <s>Placing tiles</s>
-  - Expanding map (left / top still missing)
+  - <s>Expanding map</s>
   - Adding new tiles
   - Placing items
   - Changing map display name

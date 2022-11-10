@@ -58,6 +58,7 @@ scenes.mapmaker = () => {
     let tilesMenuControls = [];
     let tilesMenuTiles = [];
     let loadMapButtons = [];
+    let expandMapButtons = [];
     let pageWidth = 1;
     let pageSize = 1;
     let tileSource = "common";
@@ -241,6 +242,64 @@ scenes.mapmaker = () => {
             if (maps[newMapn] != undefined) currentMap = newMapn;
             map = maps[currentMap];
             if (loadMapButtons[0].alpha == 1) toggleLoadButtons();
+            newMap();
+        }
+    }));
+
+    expandMapButtons.push(controls.image({
+        anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
+        source: "newmap", alpha: 1,
+        onClick(args) {
+            for (x in map.map) {
+                map.map[x] = "--- " + map.map[x];
+            }
+            for (x in map.mapbg2) {
+                map.mapbg2[x] = "--- " + map.mapbg2[x];
+            }
+            for (x in map.mapfg) {
+                map.mapfg[x] = "--- " + map.mapfg[x];
+            }
+            newMap();
+        }
+    }));
+
+    expandMapButtons.push(controls.image({
+        anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
+        source: "newmap", alpha: 1,
+        onClick(args) {
+            map.map.unshift("---");
+            map.mapbg2.unshift("---");
+            map.mapfg.unshift("---");
+            updateTiles = true;
+            newMap();
+        }
+    }));
+
+    expandMapButtons.push(controls.image({
+        anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
+        source: "newmap", alpha: 1,
+        onClick(args) {
+            for (x in map.map) {
+                map.map[x] = map.map[x].slice(4);
+            }
+            for (x in map.mapbg2) {
+                map.mapbg2[x] = map.mapbg2[x].slice(4);
+            }
+            for (x in map.mapfg) {
+                map.mapfg[x] = map.mapfg[x].slice(4);
+            }
+            newMap();
+        }
+    }));
+
+    expandMapButtons.push(controls.image({
+        anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
+        source: "newmap", alpha: 1,
+        onClick(args) {
+            map.map.shift();
+            map.mapbg2.shift();
+            map.mapfg.shift();
+            updateTiles = true;
             newMap();
         }
     }));
@@ -843,12 +902,24 @@ scenes.mapmaker = () => {
                 }
             }
 
+            expandMapButtons[0].sizeOffset = [zoom * scale, zoom * scale];
+            expandMapButtons[0].offset = [(zoom * scale * (-2 - ofsX) - ((zoom - 1) * scale * (width / 2))), (zoom * scale * (-1 - ofsY) - ((zoom - 1) * scale * 7))];
+
+            expandMapButtons[1].sizeOffset = [zoom * scale, zoom * scale];
+            expandMapButtons[1].offset = [(zoom * scale * (-1 - ofsX) - ((zoom - 1) * scale * (width / 2))), (zoom * scale * (-2 - ofsY) - ((zoom - 1) * scale * 7))];
+
+            expandMapButtons[2].sizeOffset = [zoom * scale, zoom * scale];
+            expandMapButtons[2].offset = [(zoom * scale * (-4 - ofsX) - ((zoom - 1) * scale * (width / 2))), (zoom * scale * (-1 - ofsY) - ((zoom - 1) * scale * 7))];
+
+            expandMapButtons[3].sizeOffset = [zoom * scale, zoom * scale];
+            expandMapButtons[3].offset = [(zoom * scale * (-1 - ofsX) - ((zoom - 1) * scale * (width / 2))), (zoom * scale * (-4 - ofsY) - ((zoom - 1) * scale * 7))];
+
             middlei.sizeOffset = [zoom * scale, zoom * scale];
             middlei.offset = [-zoom * scale / 2, (zoom * scale * 7.5 - ((zoom - 1) * scale * 7)) - (height / 2)];
         },
         // Controls
         controls: [
-            ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg,
+            ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg, ...expandMapButtons,
             ...walkPad, middlei, currentMapText, backButton, ...modeButtons,
             ...tilesMenuControls, ...loadMapButtons, ...tilesMenuTiles,
         ],
