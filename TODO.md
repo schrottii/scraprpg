@@ -1,5 +1,5 @@
 ﻿##TODO:
-13 Things left to do in this phase
+14 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
@@ -15,7 +15,7 @@ IT'S DONE!
   - <s>Tiles menu</s>
   - <s>Placing tiles</s>
   - <s>Expanding map</s>
-  - Adding new tiles
+  - <s>Adding new tiles</s>
   - Placing items
   - Changing map display name
   - and music
@@ -26,6 +26,8 @@ IT'S DONE!
   - <s>Saving</s>
   - <s>Loading</s>
   - Teleporters
+  - Undo / Redo
+  - Copy / Paste
   
 - More battle sprites
 - Add the remaining settings

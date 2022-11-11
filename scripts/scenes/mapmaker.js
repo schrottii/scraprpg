@@ -57,6 +57,7 @@ scenes.mapmaker = () => {
 
     let tilesMenuControls = [];
     let tilesMenuTiles = [];
+    let createTileButtons = [];
     let loadMapButtons = [];
     let expandMapButtons = [];
     let pageWidth = 1;
@@ -79,6 +80,11 @@ scenes.mapmaker = () => {
     var tiles_fg = [];
     var titems = [];
     var tnpcs = [];
+
+    // For creating new tiles
+    let tileID;
+    let tileSprite;
+    let tileOccupied;
 
     game.position = [4, 4];
     let prePos = [-3483493, 934030];
@@ -197,6 +203,7 @@ scenes.mapmaker = () => {
             }
         }
     }));
+
     modeButtons.push(controls.image({
         anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * 15, 0],
         source: "mmzoom", alpha: 1,
@@ -226,6 +233,66 @@ scenes.mapmaker = () => {
         }
     }));
 
+    modeButtons.push(controls.image({
+        anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * 16, 0],
+        source: "newmap", alpha: 1,
+        onClick(args) {
+            toggleCreateTileButtons();
+        }
+    }));
+
+    createTileButtons.push(controls.button({
+        anchor: [0.3, 0.2], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "Tile ID", alpha: 0,
+        onClick(args) {
+            tileID = prompt('New map tile ID? (e. g. 001)');
+            this.text = tileID;
+        }
+    }));
+    createTileButtons.push(controls.button({
+        anchor: [0.3, 0.325], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "Tile Sprite", alpha: 0,
+        onClick(args) {
+            tileSprite = prompt('New map tile sprite? (e. g. water1 - must be the name from resources)');
+            this.text = tileSprite;
+        }
+    }));
+    createTileButtons.push(controls.button({
+        anchor: [0.3, 0.45], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "Tile Occupied", alpha: 0,
+        onClick(args) {
+            tileOccupied = prompt('New map tile occupied? YES / NO / up.right.left.down');
+            this.text = tileOccupied;
+        }
+    }));
+    createTileButtons.push(controls.button({
+        anchor: [0.3, 0.575], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "CREATE!", alpha: 0,
+        onClick(args) {
+            try {
+                map.tiles[tileID] = {
+                    "sprite": tileSprite
+                }
+
+                if (tileOccupied.toLowerCase() == "yes") map.tiles[tileID].occupied = true;
+                else if (tileOccupied.toLowerCase() != "no") map.tiles[tileID].occupied = tileOccupied.split("."); // array
+
+                tileID = "";
+                tileSprite = "";
+                tileOccupied = "";
+
+                createTileButtons[0].text = "Tile ID";
+                createTileButtons[1].text = "Tile Sprite";
+                createTileButtons[2].text = "Tile Occupied";
+            }
+            catch {
+                alert("An error occured!");
+            }
+            toggleCreateTileButtons();
+        }
+    }));
+
+
     loadMapButtons.push(controls.button({
         anchor: [0.3, 0.3], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
         text: "Load from file...", alpha: 0,
@@ -233,7 +300,6 @@ scenes.mapmaker = () => {
             showSelect();
         }
     }));
-
     loadMapButtons.push(controls.button({
         anchor: [0.3, 0.5], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
         text: "Load from name...", alpha: 0,
@@ -476,6 +542,45 @@ scenes.mapmaker = () => {
         document.body.appendChild(anchor);
         anchor.click();
         document.body.removeChild(anchor);
+    }
+
+    function toggleCreateTileButtons() {
+        if (createTileButtons[0].alpha == 0) {
+            for (i in createTileButtons) {
+                createTileButtons[i].offset = [0, -600];
+                createTileButtons[i].alpha = 1;
+            }
+            addAnimator(function (t) {
+                for (i in createTileButtons) {
+                    createTileButtons[i].offset[1] = -600 + t;
+                }
+                if (t > 599) {
+                    for (i in createTileButtons) {
+                        createTileButtons[i].offset[1] = 0;
+                    }
+                    return true;
+                }
+                return false;
+            })
+        }
+        else {
+            for (i in createTileButtons) {
+                createTileButtons[i].offset = [0, 0];
+            }
+            addAnimator(function (t) {
+                for (i in createTileButtons) {
+                    createTileButtons[i].offset[1] = -t;
+                }
+                if (t > 599) {
+                    for (i in createTileButtons) {
+                        createTileButtons[i].offset[1] = -600;
+                        createTileButtons[i].alpha = 0;
+                    }
+                    return true;
+                }
+                return false;
+            })
+        }
     }
 
     function toggleLoadButtons() {
@@ -925,7 +1030,7 @@ scenes.mapmaker = () => {
         controls: [
             ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg, ...expandMapButtons,
             ...walkPad, middlei, currentMapText, backButton, ...modeButtons,
-            ...tilesMenuControls, ...loadMapButtons, ...tilesMenuTiles,
+            ...tilesMenuControls, ...loadMapButtons, ...createTileButtons, ...tilesMenuTiles,
         ],
         name: "mapmaker"
     }
