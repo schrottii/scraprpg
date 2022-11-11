@@ -26,7 +26,7 @@ function loadMap() {
     reader.onload = function (e) {
         // Jesus sweet fucking christ
         let result = e.target.result;
-        let name = result.split("id: ");
+        let name = result.split('id":');
         name = name[1];
         if (name != undefined) {
             name = name.split(",");
