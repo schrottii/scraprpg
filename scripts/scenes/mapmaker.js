@@ -248,7 +248,7 @@ scenes.mapmaker = () => {
 
     expandMapButtons.push(controls.image({
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
-        source: "newmap", alpha: 1,
+        source: "newmap", alpha: 1, ri: true,
         onClick(args) {
             for (x in map.map) {
                 map.map[x] = "--- " + map.map[x];
@@ -265,7 +265,7 @@ scenes.mapmaker = () => {
 
     expandMapButtons.push(controls.image({
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
-        source: "newmap", alpha: 1,
+        source: "newmap", alpha: 1, ri: true,
         onClick(args) {
             map.map.unshift("---");
             map.mapbg2.unshift("---");
@@ -277,7 +277,7 @@ scenes.mapmaker = () => {
 
     expandMapButtons.push(controls.image({
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
-        source: "newmap", alpha: 1,
+        source: "newmap", alpha: 1, ri: true,
         onClick(args) {
             for (x in map.map) {
                 map.map[x] = map.map[x].slice(4);
@@ -294,7 +294,7 @@ scenes.mapmaker = () => {
 
     expandMapButtons.push(controls.image({
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
-        source: "newmap", alpha: 1,
+        source: "newmap", alpha: 1, ri: true,
         onClick(args) {
             map.map.shift();
             map.mapbg2.shift();
@@ -562,6 +562,8 @@ scenes.mapmaker = () => {
     }
 
     function openTilesMenu() {
+        let red = isLs() ? 2 : 1;
+
         for (t in tilesMenuControls) {
             tilesMenuControls[t].alpha = 1;
         }
@@ -569,34 +571,36 @@ scenes.mapmaker = () => {
             tilesMenuTiles[t].alpha = 0;
         }
         for (t = 0; t < 25; t++) {
-            if (tilesMenuTiles[t].offset[0] <= width * scale * 0.85) pageWidth = t;
+            if (tilesMenuTiles[t].offset[0] / red <= width * scale * 0.9) pageWidth = t;
         }
         for (r = 0; r < 4; r++) {
-            if (tilesMenuTiles[r * 25].offset[1] <= width * scale * 0.5) pageSize = pageWidth * r;
+            if (tilesMenuTiles[r * 25].offset[1] / red <= height * 0.4) pageSize = pageWidth * (r + 1);
         }
         let nr = 0;
         let til;
         let grb;
+        let i = 0;
 
-        for (t = 0; t < pageSize; t++) {
-            if ((t % 25) % pageWidth == 0 && t > 0) t += (25 - pageWidth);
+        while (i < pageSize) {
+            if ((nr % 25) % pageWidth == 0 && nr > 0) nr += (25 - pageWidth);
             if (tileSource == "common") {
-                til = Object.keys(commontiles)[nr];
+                til = Object.keys(commontiles)[i];
                 grb = commontiles[til];
             }
             if (tileSource == "map") {
-                til = Object.keys(map.tiles)[nr];
+                til = Object.keys(map.tiles)[i];
                 grb = map.tiles[til];
             }
             if (til != undefined) {
                 if (til != "empty") {
-                    tilesMenuTiles[t].source = "tiles/" + grb.sprite;
-                    tilesMenuTiles[t].tile = grb;
-                    tilesMenuTiles[t].tileid = til;
-                    tilesMenuTiles[t].alpha = 1;
+                    tilesMenuTiles[nr].source = "tiles/" + grb.sprite;
+                    tilesMenuTiles[nr].tile = grb;
+                    tilesMenuTiles[nr].tileid = til;
+                    tilesMenuTiles[nr].alpha = 1;
+                    nr += 1;
                 }
             }
-            nr += 1;
+            i += 1;
         }
     }
 
