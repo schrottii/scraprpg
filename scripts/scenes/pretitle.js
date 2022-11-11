@@ -98,6 +98,13 @@ scenes.pretitle = () => {
                     createEnemy("weakhelter");
                     createEnemy("weakhelter");
                     createEnemy("weakhelter");
+                    createEnemy("weakhelter");
+                    createEnemy("weakhelter");
+                    createEnemy("weakhelter");
+                    createEnemy("weakhelter");
+                    createEnemy("weakhelter");
+                    createEnemy("weakhelter");
+                    createEnemy("weakhelter");
                     setScene(scenes.fight());
                 }
             }),

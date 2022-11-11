@@ -1,5 +1,5 @@
 ﻿##TODO:
-14 Things left to do in this phase
+13 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
@@ -29,7 +29,6 @@ IT'S DONE!
   
 - More battle sprites
 - Add the remaining settings
-- Highlighted prots / enemies (in fight)
 - Overworld quests (Side quests, NOT main story objectives)
 - A few other things, maybe 2-3 from phase 2
 

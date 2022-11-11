@@ -145,6 +145,9 @@ scenes.fight = () => {
     var epositionControls = [];
     var positionGrid = [];
     var positionGrid2 = [];
+    var highlightGrid = [];
+    var highlightChange = 0;
+    var highlightAlpha = 1;
     var attackAnimationObjects = [];
 
     var selectedAlly = [0, 0];
@@ -562,23 +565,32 @@ scenes.fight = () => {
         return false;
     }
 
-    function canReach(length, type, pos) {
-        // Is it long enough?
-        // Length = 1, 2 or 3
-        // pos is pos of enemy
+    function getDistance(type, pos) {
+        // Used to get how many enemies are between the player and this enemy / the distance (output: 0, 1 or 2)
 
         if (type == "enemy") { // Player attacks enemy
             // Keep in mind epos are swapped - 2 is left and not right
-            if (pos[0] == 2 && length > 0) return true;
+
+            if (pos[0] == 2 && length > 0) return 0;
 
             let inFrontOfMe = 0;
-            for (i = 2; i > pos[0]; i--) {
-                if (epositions[i][pos[1]].isOccupied == true) inFrontOfMe += 1;
+            for (d = 2; d > pos[0]; d--) {
+                if (epositions[d][pos[1]].isOccupied == true) inFrontOfMe += 1;
             }
 
-            if (length > inFrontOfMe) return true;
-            return false;
+            // Return 0, 1 or 2 depending on how many other enemies are between player and this enemy
+            return inFrontOfMe;
         }
+    }
+
+    function canReach(length, type, pos) {
+        // Used to determine whether the enemy is in range or not.
+
+        // Length = 1, 2 or 3
+        // pos is pos of enemy
+
+        if (length > getDistance(type, pos)) return true;
+        return false;
     }
 
     function calculateDamage(type, pos1, pos2, enpos1, enpos2) {
@@ -2659,6 +2671,11 @@ scenes.fight = () => {
                 source: "grid",
                 alpha: 1,
             }));
+            highlightGrid.push(controls.rect({
+                anchor: [0.025, 0.4], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
+                fill: "white",
+                alpha: 0,
+            }));
         }
     }
 
@@ -2674,6 +2691,11 @@ scenes.fight = () => {
                 anchor: [0.975, 0.4], offset: [-(72 + (72 * i)), (72 * j) + 32], sizeOffset: [32, 32],
                 source: "grid",
                 alpha: 1,
+            }));
+            highlightGrid.push(controls.rect({
+                anchor: [0.975, 0.4], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
+                fill: "white",
+                alpha: 0,
             }));
         }
     }
@@ -3077,6 +3099,43 @@ scenes.fight = () => {
                 }
             }
 
+            // Highlight thing
+            if (highlightChange == 1) highlightAlpha = Math.min(0.5, highlightAlpha + 0.2 / delta);
+            else highlightAlpha = Math.max(0, highlightAlpha - 0.2 / delta);
+            if (highlightAlpha == 0.5) highlightChange = 0;
+            if (highlightAlpha == 0) highlightChange = 1;
+
+            if (fightaction == "none") {
+                for (i = 0; i < 9; i++) {
+                    if (positionControls[i].source != "gear") highlightGrid[i].alpha = highlightAlpha;
+                }
+                if (highlightGrid[9].alpha != 0) {
+                    for (i = 0; i < 9; i++) {
+                        highlightGrid[i + 9].alpha = 0;
+                    }
+                }
+            }
+            else if (fightaction == "attack2" || fightaction == "magic" || fightaction == "item") {
+                for (i = 0; i < 9; i++) {
+                    if (positionControls[i].source != "gear") highlightGrid[i].alpha = highlightAlpha;
+                    if (epositionControls[i].source != "gear") highlightGrid[i + 9].alpha = highlightAlpha;
+                    else highlightGrid[i + 9].alpha = 0;
+                    if (epositionControls[i].source != "gear") highlightGrid[i + 9].fill = ["white", "orange", "red"][getDistance("enemy", [i % 3, Math.floor(i / 3)])];
+                }
+            }
+            else {
+                if (highlightGrid[0].alpha != 0) {
+                    for (i = 0; i < 9; i++) {
+                        highlightGrid[i].alpha = 0;
+                    }
+                }
+                if (highlightGrid[9].alpha != 0) {
+                    for (i = 0; i < 9; i++) {
+                        highlightGrid[i + 9].alpha = 0;
+                    }
+                }
+            }
+
             put += delta;
             if (put > 99) {
                 put = 0;
@@ -3096,7 +3155,7 @@ scenes.fight = () => {
             ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
             ...fightStats, ...actionDisplay, ...gameOverScreen,
-            ...positionControls, ...epositionControls, ...positionGrid2, ...attackAnimationObjects, kokitoziParticles, ...battleNumbers, ...winScreen, ...winScreen2, ...winStats, ...fleeWrenches, ...gameOverScreen2,
+            ...positionControls, ...epositionControls, ...positionGrid2, ...highlightGrid, ...attackAnimationObjects, kokitoziParticles, ...battleNumbers, ...winScreen, ...winScreen2, ...winStats, ...fleeWrenches, ...gameOverScreen2,
             ...cutsceneElements,
         ],
         name: "fight"

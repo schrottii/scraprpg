@@ -47,21 +47,24 @@ function createEnemy(type) {
         else {
             let dup;
             let ret = tryCreateAgain(pox, poy);
+
             dup = ret[2];
             pox = ret[0];
             poy = ret[1];
 
-            if(dup == 0) currentEnemies.push([type, pox, poy]);
+            if (dup == 0) {
+                currentEnemies.push([type, pox, poy]);
+            }
         }
     }
 }
 
-function tryCreateAgain(pox, poy, big=false) {
-    for (i = 0; i < 5; i++) {
+function tryCreateAgain(pox, poy, big = false) {
+    for (i = 0; i < 25; i++) {
         dup = 0;
         for (e in currentEnemies) {
-            if (currentEnemies[e][1] == pox || (big && currentEnemies[e][1] == pox + 1) ||
-                currentEnemies[e][2] == poy || (big && currentEnemies[e][2] == poy + 1)) {
+            if ((currentEnemies[e][1] == pox || (big && currentEnemies[e][1] == pox + 1)) && // goofy || aah
+                (currentEnemies[e][2] == poy || (big && currentEnemies[e][2] == poy + 1))) {
                 dup += 1;
             }
         }
@@ -74,7 +77,7 @@ function tryCreateAgain(pox, poy, big=false) {
             return [pox, poy, dup];
         }
     }
-    return 9999;
+    return [0, 0, 9999];
 }
 
 // Function used to grab tiles
