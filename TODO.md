@@ -3,35 +3,24 @@
 (we are not always good at counting)
 
 ##Phase 1:
-The developing phase, Schrottii's phase, the essential features of the game
-
+The developing phase, Schrottii's phase, the essential features of the game, mostly coding (maybe a bad decision in hindsight, sigh).
+Nov 2021 - Nov 2022!
 IT'S DONE!
 
 ##Phase 1.5
+The current phase, focus on Map Maker and preparing for the first chapter. Transition between phase 1 and 2.
+Nov 2022 - (still going)
+
 - MAP MAKER
-  - <s>Display tiles</s>
-  - <s>Display items and NPCs</s>
-  - <s>Move around</s>
-  - <s>Tiles menu</s>
-  - <s>Placing tiles</s>
-  - <s>Expanding map</s>
-  - <s>Adding new tiles</s>
   - Placing items
-  - <s>Changing map display name</s>
-  - <s>and music</s>
-  - <s>and weather</s>
-  - <s>and worldmode</s>
-  - <s>Different layers</s>
   - Dialogues
-  - <s>Saving</s>
-  - <s>Loading</s>
   - Teleporters
-  - <s>Undo / Redo</s>
   - Copy / Paste
   
 - More battle sprites
 - Add the remaining settings
 - Overworld quests (Side quests, NOT main story objectives)
+
 - A few other things, maybe 2-3 from phase 2
 
 - Finishing the story of chapter 1
@@ -41,6 +30,8 @@ IT'S DONE!
 The main focus of this phase is creating maps, enemies, the story, etc. - the stuff you play.
 There is still some coding, some new features, but not as much as in phase 1 (Schrottii can finally rest a bit)
 
+
+Coding stuff to do in phase 2:
 - Startup introduction
 
 - Mastery Techs
@@ -54,9 +45,10 @@ There is still some coding, some new features, but not as much as in phase 1 (Sc
 - More Animated UI (what exactly?)
 - Most equipment can be upgraded by a blacksmith with enough Bricks, up to +10.
 
+- Code improvements
 
 ##Phase 3
-The testing & publishing phase
+The testing & publishing phase. This will be fun.
 
 - Test until we all die
 - Be proud of ourselves
