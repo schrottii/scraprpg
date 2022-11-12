@@ -61,6 +61,8 @@ scenes.mapmaker = () => {
     let loadMapButtons = [];
     let expandMapButtons = [];
     let undoButtons = [];
+    let mapInfoControls = [];
+
     let pageWidth = 1;
     let pageSize = 1;
     let tileSource = "common";
@@ -436,9 +438,11 @@ scenes.mapmaker = () => {
         fontSize: 16, source: "mapbuttons", snip: [0, 0, 32, 32],
         isPressed: false,
         onDown(args) {
-            protect();
-            this.snip[0] = 32;
-            pad = "up";
+            if (this.alpha == 1) {
+                protect();
+                this.snip[0] = 32;
+                pad = "up";
+            }
         },
         onClick(args) {
             protect();
@@ -451,8 +455,10 @@ scenes.mapmaker = () => {
         fontSize: 16, source: "mapbuttons", snip: [64, 0, 32, 32],
         isPressed: false,
         onDown(args) {
-            protect();
-            pad = "";
+            if (this.alpha == 1) {
+                protect();
+                pad = "";
+            }
         },
         onClick(args) {
             protect();
@@ -463,9 +469,11 @@ scenes.mapmaker = () => {
         fontSize: 16, source: "mapbuttons", snip: [0, 64, 32, 32],
         isPressed: false,
         onDown(args) {
-            protect();
-            this.snip[0] = 32;
-            pad = "down";
+            if (this.alpha == 1) {
+                protect();
+                this.snip[0] = 32;
+                pad = "down";
+            }
         },
         onClick(args) {
             protect();
@@ -478,9 +486,11 @@ scenes.mapmaker = () => {
         fontSize: 16, source: "mapbuttons", snip: [0, 96, 32, 32],
         isPressed: false,
         onDown(args) {
-            protect();
-            this.snip[0] = 32;
-            pad = "left";
+            if (this.alpha == 1) {
+                protect();
+                this.snip[0] = 32;
+                pad = "left";
+            }
         },
         onClick(args) {
             protect();
@@ -493,9 +503,11 @@ scenes.mapmaker = () => {
         fontSize: 16, source: "mapbuttons", snip: [0, 32, 32, 32],
         isPressed: false,
         onDown(args) {
-            protect();
-            this.snip[0] = 32;
-            pad = "right";
+            if (this.alpha == 1) {
+                protect();
+                this.snip[0] = 32;
+                pad = "right";
+            }
         },
         onClick(args) {
             protect();
@@ -512,6 +524,66 @@ scenes.mapmaker = () => {
         },
         alpha: 1,
     });
+
+    let toggleMapInfoButton = controls.button({
+        anchor: [0.02, 0.85], sizeAnchor: [0.05, 0.045],
+        text: "(i)",
+        onClick(args) {
+            if (mapInfoControls[0].alpha == 0) {
+                for (w in walkPad) {
+                    walkPad[w].alpha = 0;
+                }
+                for (mi in mapInfoControls) {
+                    mapInfoControls[mi].alpha = 1;
+                }
+            }
+            else if (mapInfoControls[0].alpha == 1) {
+                for (mi in mapInfoControls) {
+                    mapInfoControls[mi].alpha = 0;
+                }
+                for (w in walkPad) {
+                    walkPad[w].alpha = 1;
+                }
+            }
+        },
+        alpha: 1,
+    });
+
+    mapInfoControls.push(controls.rect({
+        anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.6],
+        fill: colors.buttonbottompressed, alpha: 0,
+    }));
+    mapInfoControls.push(controls.rect({
+        anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.6], offset: [8, 8], sizeOffset: [-16, -16],
+        fill: colors.buttontoppressed, alpha: 0,
+    }));
+    mapInfoControls.push(controls.button({
+        anchor: [0.1, 0.2], sizeAnchor: [0.2, 0.1],
+        text: "Map name: " + map.name, alpha: 0,
+        onClick(args) {
+            let newName = prompt("New map name?");
+            map.name = newName;
+            this.text = "Map name: " + newName;
+        }
+    }));
+    mapInfoControls.push(controls.button({
+        anchor: [0.1, 0.325], sizeAnchor: [0.2, 0.1],
+        text: "Music intro: " + map.intro, alpha: 0,
+        onClick(args) {
+            let newIntro = prompt("New map music intro?");
+            map.intro = newIntro;
+            this.text = "Music intro: " + newIntro;
+        }
+    }));
+    mapInfoControls.push(controls.button({
+        anchor: [0.1, 0.45], sizeAnchor: [0.2, 0.1],
+        text: "Music loop: " + map.music, alpha: 0,
+        onClick(args) {
+            let newLoop = prompt("New map music loop?");
+            map.music = newLoop;
+            this.text = "Music loop: " + newLoop;
+        }
+    }));
 
     let currentMapText = controls.label({
         anchor: [0.075, 0.95],
@@ -1088,8 +1160,8 @@ scenes.mapmaker = () => {
         // Controls
         controls: [
             ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg, ...expandMapButtons,
-            ...walkPad, middlei, currentMapText, backButton, ...modeButtons,
-            ...tilesMenuControls, ...undoButtons, ...loadMapButtons, ...createTileButtons, ...tilesMenuTiles,
+            ...walkPad, middlei, currentMapText, backButton, toggleMapInfoButton, ...modeButtons,
+            ...tilesMenuControls, ...undoButtons, ...loadMapButtons, ...createTileButtons, ...tilesMenuTiles, ...mapInfoControls,
         ],
         name: "mapmaker"
     }

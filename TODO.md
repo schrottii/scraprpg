@@ -1,5 +1,5 @@
 ﻿##TODO:
-13 Things left to do in this phase
+11 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
@@ -17,8 +17,8 @@ IT'S DONE!
   - <s>Expanding map</s>
   - <s>Adding new tiles</s>
   - Placing items
-  - Changing map display name
-  - and music
+  - <s>Changing map display name</s>
+  - <s>and music</s>
   - and weather
   - and worldmode
   - <s>Different layers</s>

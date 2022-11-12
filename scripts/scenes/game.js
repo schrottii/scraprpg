@@ -969,7 +969,6 @@ scenes.game = () => {
             }
             x = Math.floor(x);
             y = Math.floor(y);
-            console.log(direction, x, y, getTile(map, x, y, l).occupied);
             if (getTile(map, x, y, l).occupied != undefined) { //Check if occupied exists
                 if (typeof (getTile(map, x, y, l).occupied) == "object") { // Config exists?
                     if (direction == "up" && getTile(map, x, y, l).occupied.includes("up")) {
