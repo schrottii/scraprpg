@@ -1,5 +1,5 @@
 ﻿##TODO:
-11 Things left to do in this phase
+9 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
@@ -19,8 +19,8 @@ IT'S DONE!
   - Placing items
   - <s>Changing map display name</s>
   - <s>and music</s>
-  - and weather
-  - and worldmode
+  - <s>and weather</s>
+  - <s>and worldmode</s>
   - <s>Different layers</s>
   - Dialogues
   - <s>Saving</s>
@@ -50,7 +50,6 @@ There is still some coding, some new features, but not as much as in phase 1 (Sc
 - Mastery Tokens
 
 - Parallax/animated effects for battle backgrounds (and overworld too if possible.)
-- and a dramatic sequence before battle.
 
 - More Animated UI (what exactly?)
 - Most equipment can be upgraded by a blacksmith with enough Bricks, up to +10.

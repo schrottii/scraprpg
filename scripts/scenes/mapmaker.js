@@ -557,6 +557,10 @@ scenes.mapmaker = () => {
         anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.6], offset: [8, 8], sizeOffset: [-16, -16],
         fill: colors.buttontoppressed, alpha: 0,
     }));
+    mapInfoControls.push(controls.label({
+        anchor: [0.5, 0.15],
+        text: "Map Info / Details", alpha: 0,
+    }));
     mapInfoControls.push(controls.button({
         anchor: [0.1, 0.2], sizeAnchor: [0.2, 0.1],
         text: "Map name: " + map.name, alpha: 0,
@@ -582,6 +586,42 @@ scenes.mapmaker = () => {
             let newLoop = prompt("New map music loop?");
             map.music = newLoop;
             this.text = "Music loop: " + newLoop;
+        }
+    }));
+    mapInfoControls.push(controls.button({
+        anchor: [0.4, 0.2], sizeAnchor: [0.2, 0.1],
+        text: "Weather: " + map.weather, alpha: 0, i: 0,
+        onClick(args) {
+            let weathers = ["none", "fog", "rain", "dust"];
+            let newWeather = this.i < weathers.length - 1 ? weathers[this.i + 1] : weathers[0];
+            this.i += 1;
+            if (this.i >= weathers.length) this.i = 0;
+
+            map.weather = newWeather;
+            this.text = "Weather: " + newWeather;
+        }
+    }));
+    mapInfoControls.push(controls.button({
+        anchor: [0.4, 0.325], sizeAnchor: [0.2, 0.1],
+        text: "Weather Strength: " + map.weather, alpha: 0,
+        onClick(args) {
+            let newWeather = prompt("New weather strength? (default is 1)");
+            map.weatherStrength = newWeather;
+            this.text = "Weather Strength: " + newWeather;
+        }
+    }));
+    mapInfoControls.push(controls.button({
+        anchor: [0.4, 0.45], sizeAnchor: [0.2, 0.1],
+        text: "Worldmode: OFF", alpha: 0,
+        onClick(args) {
+            if (this.text == "Worldmode: OFF") {
+                this.text = "Worldmode: ON";
+                map.worldmode = true;
+            }
+            else {
+                this.text = "Worldmode: OFF";
+                map.worldmode = false;
+            }
         }
     }));
 
