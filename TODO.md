@@ -1,5 +1,5 @@
 ﻿##TODO:
-14 Things left to do in this phase
+13 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
@@ -26,7 +26,7 @@ IT'S DONE!
   - <s>Saving</s>
   - <s>Loading</s>
   - Teleporters
-  - Undo / Redo
+  - <s>Undo / Redo</s>
   - Copy / Paste
   
 - More battle sprites

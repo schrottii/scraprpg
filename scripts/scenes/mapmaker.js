@@ -60,6 +60,7 @@ scenes.mapmaker = () => {
     let createTileButtons = [];
     let loadMapButtons = [];
     let expandMapButtons = [];
+    let undoButtons = [];
     let pageWidth = 1;
     let pageSize = 1;
     let tileSource = "common";
@@ -86,19 +87,11 @@ scenes.mapmaker = () => {
     let tileSprite;
     let tileOccupied;
 
+    var undoLog = [];
+    var redoLog = [];
+
     game.position = [4, 4];
     let prePos = [-3483493, 934030];
-
-    function loadNPCs() {
-        activenpcs = [];
-        for (i in Object.keys(npcs)) {
-            j = Object.keys(npcs)[i];
-            let npc = npcs[j]();
-            if (npc.alpha > 0 && npc.map == currentMap) {
-                activenpcs.push(npcs[j]());
-            }
-        }
-    }
 
     modeButtons.push(controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 0], sizeOffset: [0, 96],
@@ -238,6 +231,28 @@ scenes.mapmaker = () => {
         source: "newmap", alpha: 1,
         onClick(args) {
             toggleCreateTileButtons();
+        }
+    }));
+
+    undoButtons.push(controls.image({
+        anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * 17, 0],
+        source: "undo", alpha: 1,
+        onClick(args) {
+            if (this.alpha == 1) {
+                placeTile(undoLog[0][0], undoLog[0][1], undoLog[0][2], undoLog[0][3], "undo");
+                undoLog.shift();
+            }
+        }
+    }));
+
+    undoButtons.push(controls.image({
+        anchor: [0.025, 0.025], sizeOffset: [64, 64], offset: [72 * 18, 0],
+        source: "redo", alpha: 1,
+        onClick(args) {
+            if (this.alpha == 1) {
+                placeTile(redoLog[0][0], redoLog[0][1], redoLog[0][2], redoLog[0][3]);
+                redoLog.shift();
+            }
         }
     }));
 
@@ -512,6 +527,17 @@ scenes.mapmaker = () => {
         alpha: 1,
     });
 
+    function loadNPCs() {
+        activenpcs = [];
+        for (i in Object.keys(npcs)) {
+            j = Object.keys(npcs)[i];
+            let npc = npcs[j]();
+            if (npc.alpha > 0 && npc.map == currentMap) {
+                activenpcs.push(npcs[j]());
+            }
+        }
+    }
+
     function newMap() {
         // Function called when the map has changed - not for creating a new map
         game.position[0] = Math.round(game.position[0]);
@@ -524,6 +550,18 @@ scenes.mapmaker = () => {
         loadNPCs();
 
         updateTiles = true;
+    }
+
+    function postUndoLog(x, y, layer, prevContent) {
+        undoLog.unshift([x, y, layer, prevContent])
+
+        if(undoLog.length > 25) undoLog.pop();
+    }
+
+    function postRedoLog(x, y, layer, prevContent) {
+        redoLog.unshift([x, y, layer, prevContent])
+
+        if (undoLog.length > 25) redoLog.pop();
     }
 
     function saveFile(type) {
@@ -725,21 +763,28 @@ scenes.mapmaker = () => {
         }
     }
 
-    function placeTile(x, y, layer) {
+    function placeTile(x, y, layer, tileToPlace="none", umode="default") {
         if (x < 0 || y < 0) {
             return false;
         }
+
         let mp = map[layer][y];
         let def = "---";
+
+
         //if (layer == "map") def = "002";
 
         if (mode == "place" || mode == "moveandplace") {
+            if (tileToPlace == "none") {
+                tileToPlace = ttp;
+            }
+
             if (mp == undefined) {
                 while (mp == undefined) {
                     map[layer].push(def);
                     mp = map[layer][y];
                 }
-                map[layer][y] = ttp;
+                map[layer][y] = tileToPlace;
             }
             if (x * 4 > mp.length + 4) {
                 while (x * 4 > mp.length + 4) {
@@ -747,8 +792,16 @@ scenes.mapmaker = () => {
                     mp = map[layer][y];
                 }
             }
-            if (x * 4 > mp.length) map[layer][y] = mp + " " + ttp;
-            else map[layer][y] = mp.substr(0, x * 4) + ttp + " " + mp.substr((1 + x) * 4);
+
+            if (umode == "default") {
+                postUndoLog(x, y, layer, mp.substr(x * 4, 3));
+            }
+            if (umode == "undo") {
+                postRedoLog(x, y, layer, mp.substr(x * 4, 3));
+            }
+
+            if (x * 4 > mp.length) map[layer][y] = mp + " " + tileToPlace;
+            else map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
             map[layer][y] = map[layer][y].replace(/  /gi, " ");
             updateTiles = true;
         }
@@ -830,6 +883,12 @@ scenes.mapmaker = () => {
         preRender(ctx, delta) {
             prott -= delta;
             if (prott <= 0) prot = false;
+
+            if (undoLog.length == 0) undoButtons[0].alpha = 0;
+            else undoButtons[0].alpha = 1;
+
+            if (redoLog.length == 0) undoButtons[1].alpha = 0;
+            else undoButtons[1].alpha = 1;
 
             if (lmresult != "none") {
                 if (loadMapButtons[0].alpha == 1) toggleLoadButtons();
@@ -1030,7 +1089,7 @@ scenes.mapmaker = () => {
         controls: [
             ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg, ...expandMapButtons,
             ...walkPad, middlei, currentMapText, backButton, ...modeButtons,
-            ...tilesMenuControls, ...loadMapButtons, ...createTileButtons, ...tilesMenuTiles,
+            ...tilesMenuControls, ...undoButtons, ...loadMapButtons, ...createTileButtons, ...tilesMenuTiles,
         ],
         name: "mapmaker"
     }

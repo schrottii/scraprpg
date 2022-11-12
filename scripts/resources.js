@@ -68,6 +68,8 @@ let images = {
     newmap: "data/images/mm/Senza titolo.png",
     layerbuttons: "data/images/layerbuttons.png",
     mmzoom: "data/images/mm/zoom.png",
+    undo: "data/images/mm/back.png",
+    redo: "data/images/mm/forward.png",
 
     // Animations
     tokenattack: "data/images/token-animation.png",
