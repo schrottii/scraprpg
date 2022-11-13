@@ -848,7 +848,14 @@ scenes.mapmaker = () => {
             }
             if (til != undefined) {
                 if (til != "empty") {
-                    tilesMenuTiles[nr].source = "tiles/" + grb.sprite;
+                    if (grb.set != undefined) {
+                        tilesMenuTiles[nr].source = "tilesets/" + grb.set;
+                        tilesMenuTiles[nr].snip = [grb.snip[0] * 32, grb.snip[1] * 32, 32, 32];
+                    }
+                    else {
+                        tilesMenuTiles[nr].source = "tiles/" + grb.sprite;
+                        tilesMenuTiles[nr].snip = false;
+                    }
                     tilesMenuTiles[nr].tile = grb;
                     tilesMenuTiles[nr].tileid = til;
                     tilesMenuTiles[nr].alpha = 1;
@@ -1144,7 +1151,14 @@ scenes.mapmaker = () => {
                     tiles_bg[b].alpha = 1;
                     if (map.map[y] && map.map[y][(x * 4) + 2]) {
                         if (map.map[y][(x * 4) + 2] != "-") {
-                            tiles_bg[b].source = "tiles/" + getTile(map, x, y).sprite;
+                            if (getTile(map, x, y).set != undefined) {
+                                tiles_bg[b].source = "tilesets/" + getTile(map, x, y).set;
+                                tiles_bg[b].snip = [getTile(map, x, y).snip[0] * 32, getTile(map, x, y).snip[1] * 32, 32, 32];
+                            }
+                            else {
+                                tiles_bg[b].source = "tiles/" + getTile(map, x, y).sprite;
+                                tiles_bg[b].snip = false;
+                            }
                         }
                         else {
                             tiles_bg[b].source = "tiles/" + map.tiles.empty.sprite;
@@ -1164,7 +1178,14 @@ scenes.mapmaker = () => {
                     tiles_bg2[b2].pos = [x, y];
                     if (map.mapbg2[y] && map.mapbg2[y][(x * 4) + 2]) {
                         if (map.mapbg2[y][(x * 4) + 2] != "-") {
-                            tiles_bg2[b2].source = "tiles/" + getTile(map, x, y, 2).sprite;
+                            if (getTile(map, x, y, 2).set != undefined) {
+                                tiles_bg2[b2].source = "tilesets/" + getTile(map, x, y, 2).set;
+                                tiles_bg2[b2].snip = [getTile(map, x, y, 2).snip[0] * 32, getTile(map, x, y, 2).snip[1] * 32, 32, 32];
+                            }
+                            else {
+                                tiles_bg2[b2].source = "tiles/" + getTile(map, x, y, 2).sprite;
+                                tiles_bg2[b2].snip = false;
+                            }
                             tiles_bg2[b2].alpha = 1;
                         }
                     }
@@ -1175,7 +1196,14 @@ scenes.mapmaker = () => {
                     tiles_fg[t].pos = [x, y];
                     if (map.mapfg[y] && map.mapfg[y][(x * 4) + 2]) {
                         if (map.mapfg[y][(x * 4) + 2] != "-") {
-                            tiles_fg[t].source = "tiles/" + getTile(map, x, y, 3).sprite;
+                            if (getTile(map, x, y, 3).set != undefined) {
+                                tiles_fg[t].source = "tilesets/" + getTile(map, x, y, 3).set;
+                                tiles_fg[t].snip = [getTile(map, x, y, 3).snip[0] * 32, getTile(map, x, y, 3).snip[1] * 32, 32, 32];
+                            }
+                            else {
+                                tiles_fg[t].source = "tiles/" + getTile(map, x, y, 3).sprite;
+                                tiles_fg[t].snip = false;
+                            }
                             tiles_fg[t].alpha = 1;
                         }
                     }

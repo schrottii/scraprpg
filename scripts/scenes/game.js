@@ -1068,6 +1068,29 @@ scenes.game = () => {
         }
     }
 
+    function drawTiles(ctx, layer) {
+        let ofsX = Math.max(CAMERA_LOCK_X, game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5);
+        let ofsY = Math.max(CAMERA_LOCK_Y, game.position[1] - kofs[1] * kofs[2] - 7.5);
+
+        map = maps[game.map];
+
+        let Ts = "map";
+        if (layer == 2) Ts = "mapbg2";
+        if (layer == 3) Ts = "mapfg";
+
+        for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
+            if (map[Ts][y] && map[Ts][y][(x * 4) + 2] && map[Ts][y][(x * 4) + 2] != "-") {
+                if (getTile(map, x, y, layer).set != undefined) ctx.drawImage(images["tilesets/" + getTile(map, x, y, layer).set], getTile(map, x, y, layer).snip[0] * 32, getTile(map, x, y, layer).snip[1] * 32, 32, 32,
+                    ((zoom * scale) * (x - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
+                    else ctx.drawImage(images["tiles/" + getTile(map, x, y, layer).sprite],
+                    ((zoom * scale) * (x - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
+            } else if (map.tiles.empty && layer == 1) {
+                ctx.drawImage(images["tiles/" + map.tiles.empty.sprite],
+                    (zoom * scale) * (x - ofsX) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
+            }
+        }
+    }
+
     function check_EnemyCollision(i) {
         if (game.position[0] == enemies[i].position[0] &&
             game.position[1] == enemies[i].position[1] &&
@@ -1355,8 +1378,7 @@ scenes.game = () => {
 
     return {
         preRender(ctx, delta) {
-            let scale = window.innerHeight / 16;
-            let width = window.innerWidth / scale;
+            scale = window.innerHeight / 16;
             let map = maps[game.map];
 
             // Auto Save & Auto Save Text
@@ -1671,29 +1693,15 @@ scenes.game = () => {
             ctx.imageSmoothingEnabled = false;
             ctx.globalAlpha = 1;
 
-            let ofsX = Math.max(CAMERA_LOCK_X, game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5);
-            let ofsY = Math.max(CAMERA_LOCK_Y, game.position[1] - kofs[1] * kofs[2] - 7.5);
-
             CAM_OX = Math.min(0, (game.position[0] - width / 2 + 0.5) - CAMERA_LOCK_X);
             CAM_OY = Math.min(0, (game.position[1] - 7.5) - CAMERA_LOCK_Y);
 
-            for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
-                if (map.map[y] && map.map[y][(x * 4) + 2] && map.map[y][(x * 4) + 2] != "-") {
-                    ctx.drawImage(images["tiles/" + getTile(map, x, y).sprite],
-                        ((zoom * scale) * (x - ofsX)) - ((zoom - 1) * scale * (width/2)), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
-                } else if (map.tiles.empty) {
-                    ctx.drawImage(images["tiles/" + map.tiles.empty.sprite],
-                        (zoom * scale) * (x - ofsX) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
-                }
-            }
-            for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
-                if (map.mapbg2[y] && map.mapbg2[y][(x * 4) + 2]) {
-                    if (map.mapbg2[y][(x * 4) + 2] != "-") {
-                        ctx.drawImage(images["tiles/" + getTile(map, x, y, 2).sprite],
-                            zoom * scale * (x - ofsX) - ((zoom - 1) * scale * (width / 2)), zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
-                    }
-                }
-            }
+            drawTiles(ctx, 1);
+
+            drawTiles(ctx, 2);
+
+            let ofsX = Math.max(CAMERA_LOCK_X, game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5);
+            let ofsY = Math.max(CAMERA_LOCK_Y, game.position[1] - kofs[1] * kofs[2] - 7.5);
 
             if (map.items != undefined) {
                 for (let item of map.items) {
@@ -1741,14 +1749,7 @@ scenes.game = () => {
                 ctx.imageSmoothingEnabled = false;
             }
 
-            for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
-                if (map.mapfg[y] && map.mapfg[y][(x * 4) + 2]) {
-                    if (map.mapfg[y][(x * 4) + 2] != "-") {
-                        ctx.drawImage(images["tiles/" + getTile(map, x, y, 3).sprite],
-                            zoom * scale * (x - ofsX) - ((zoom - 1) * scale * (width / 2)), zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale, zoom * scale);
-                    }
-                }
-            }
+            drawTiles(ctx, 3);
 
             // Joystick
             if (settings.joystick) {

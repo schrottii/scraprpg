@@ -143,6 +143,9 @@ let images = {
     paralysis: "data/images/effects/paralysis.png",
     condemned: "data/images/effects/condemned.png",
 
+    // Tilesets
+    "tilesets/well": "data/images/tilesets/wellinthatcase.png",
+
     // Tiles
     "tiles/grass1": "data/images/tiles/grass1.png",
     "tiles/grass2": "data/images/tiles/grass2.png",
@@ -223,8 +226,7 @@ let images = {
     "tiles/water_s._leg_middle_2": "data/images/tiles/water_s._leg_middle_2.png",
     "tiles/water_structure": "data/images/tiles/water_structure.png",
     "tiles/water_structure_2": "data/images/tiles/water_structure_2.png",
-    
-    
+
 
     "items/brickyleaf": "data/images/items/brickyleaf.png",
     "items/potion": "data/images/items/potion.png",

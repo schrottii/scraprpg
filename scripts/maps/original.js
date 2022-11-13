@@ -12,26 +12,32 @@ maps["original"] = {
             teleport: ["test", 4, 5],
         },
         "040": {
-             sprite: "well_1",
+            set: "well",
+            snip: [1,2],
              occupied: true,
         },
         "041": {
-              sprite: "well_2",
+            set: "well",
+            snip: [0,2],
               occupied: true,
         },
         "042": {
-            sprite: "well_3",
+            set: "well",
+            snip: [1, 1],
             occupied: true,
         }, 
         "043": {
-            sprite: "well_4",
+            set: "well",
+            snip: [0, 1],
             occupied: true,
         },
         "044": {
-             sprite: "well_5",
+            set: "well",
+            snip: [1, 0],
         },
         "045": {
-              sprite: "well_6",
+            set: "well",
+            snip: [0, 0],
         },
         "D07": {
               sprite: "hole_1",
