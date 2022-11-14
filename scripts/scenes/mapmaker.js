@@ -529,6 +529,7 @@ scenes.mapmaker = () => {
         anchor: [0.02, 0.85], sizeAnchor: [0.05, 0.045],
         text: "(i)",
         onClick(args) {
+            protect();
             if (mapInfoControls[0].alpha == 0) {
                 for (w in walkPad) {
                     walkPad[w].alpha = 0;
@@ -565,62 +566,74 @@ scenes.mapmaker = () => {
         anchor: [0.1, 0.2], sizeAnchor: [0.2, 0.1],
         text: "Map name: " + map.name, alpha: 0,
         onClick(args) {
-            let newName = prompt("New map name?");
-            map.name = newName;
-            this.text = "Map name: " + newName;
+            if (this.alpha == 1) {
+                let newName = prompt("New map name?");
+                map.name = newName;
+                this.text = "Map name: " + newName;
+            }
         }
     }));
     mapInfoControls.push(controls.button({
         anchor: [0.1, 0.325], sizeAnchor: [0.2, 0.1],
         text: "Music intro: " + map.intro, alpha: 0,
         onClick(args) {
-            let newIntro = prompt("New map music intro?");
-            map.intro = newIntro;
-            this.text = "Music intro: " + newIntro;
+            if (this.alpha == 1) {
+                let newIntro = prompt("New map music intro?");
+                map.intro = newIntro;
+                this.text = "Music intro: " + newIntro;
+            }
         }
     }));
     mapInfoControls.push(controls.button({
         anchor: [0.1, 0.45], sizeAnchor: [0.2, 0.1],
         text: "Music loop: " + map.music, alpha: 0,
         onClick(args) {
-            let newLoop = prompt("New map music loop?");
-            map.music = newLoop;
-            this.text = "Music loop: " + newLoop;
+            if (this.alpha == 1) {
+                let newLoop = prompt("New map music loop?");
+                map.music = newLoop;
+                this.text = "Music loop: " + newLoop;
+            }
         }
     }));
     mapInfoControls.push(controls.button({
         anchor: [0.4, 0.2], sizeAnchor: [0.2, 0.1],
         text: "Weather: " + map.weather, alpha: 0, i: 0,
         onClick(args) {
-            let weathers = ["none", "fog", "rain", "dust"];
-            let newWeather = this.i < weathers.length - 1 ? weathers[this.i + 1] : weathers[0];
-            this.i += 1;
-            if (this.i >= weathers.length) this.i = 0;
+            if (this.alpha == 1) {
+                let weathers = ["none", "fog", "rain", "dust"];
+                let newWeather = this.i < weathers.length - 1 ? weathers[this.i + 1] : weathers[0];
+                this.i += 1;
+                if (this.i >= weathers.length) this.i = 0;
 
-            map.weather = newWeather;
-            this.text = "Weather: " + newWeather;
+                map.weather = newWeather;
+                this.text = "Weather: " + newWeather;
+            }
         }
     }));
     mapInfoControls.push(controls.button({
         anchor: [0.4, 0.325], sizeAnchor: [0.2, 0.1],
         text: "Weather Strength: " + map.weather, alpha: 0,
         onClick(args) {
-            let newWeather = prompt("New weather strength? (default is 1)");
-            map.weatherStrength = newWeather;
-            this.text = "Weather Strength: " + newWeather;
+            if (this.alpha == 1) {
+                let newWeather = prompt("New weather strength? (default is 1)");
+                map.weatherStrength = newWeather;
+                this.text = "Weather Strength: " + newWeather;
+            }
         }
     }));
     mapInfoControls.push(controls.button({
         anchor: [0.4, 0.45], sizeAnchor: [0.2, 0.1],
         text: "Worldmode: OFF", alpha: 0,
         onClick(args) {
-            if (this.text == "Worldmode: OFF") {
-                this.text = "Worldmode: ON";
-                map.worldmode = true;
-            }
-            else {
-                this.text = "Worldmode: OFF";
-                map.worldmode = false;
+            if (this.alpha == 1) {
+                if (this.text == "Worldmode: OFF") {
+                    this.text = "Worldmode: ON";
+                    map.worldmode = true;
+                }
+                else {
+                    this.text = "Worldmode: OFF";
+                    map.worldmode = false;
+                }
             }
         }
     }));
@@ -846,7 +859,8 @@ scenes.mapmaker = () => {
                 til = Object.keys(map.tiles)[i];
                 grb = map.tiles[til];
             }
-            if (til != undefined) {
+            console.log(til, map.tiles[til]);
+            if (til != undefined && (map.tiles[til] == undefined || tileSource == "map")) {
                 if (til != "empty") {
                     if (grb.set != undefined) {
                         tilesMenuTiles[nr].source = "tilesets/" + grb.set;
