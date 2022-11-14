@@ -859,7 +859,7 @@ scenes.mapmaker = () => {
                 til = Object.keys(map.tiles)[i];
                 grb = map.tiles[til];
             }
-            console.log(til, map.tiles[til]);
+
             if (til != undefined && (map.tiles[til] == undefined || tileSource == "map")) {
                 if (til != "empty") {
                     if (grb.set != undefined) {

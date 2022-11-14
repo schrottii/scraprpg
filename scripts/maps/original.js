@@ -8,7 +8,9 @@ maps["original"] = {
             sprite: "tend_high_right",
         },
         "D06": {
-            sprite: "teleport",
+            set: "teleport",
+            snip: [0, 0],
+            ani: [3, 1],
             teleport: ["test", 4, 5],
         },
         "040": {

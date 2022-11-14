@@ -2,6 +2,7 @@ var zoom = 1;
 var zswm = 1;
 var kofs = [0, 0, 0];
 var walkTime = 0;
+var animateTime = 0;
 var direction = "none";
 var inDialogue = false;
 var currentDialogue;
@@ -1074,13 +1075,17 @@ scenes.game = () => {
 
         map = maps[game.map];
 
+        let ani = 0;
+
         let Ts = "map";
         if (layer == 2) Ts = "mapbg2";
         if (layer == 3) Ts = "mapfg";
 
         for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
             if (map[Ts][y] && map[Ts][y][(x * 4) + 2] && map[Ts][y][(x * 4) + 2] != "-") {
-                if (getTile(map, x, y, layer).set != undefined) ctx.drawImage(images["tilesets/" + getTile(map, x, y, layer).set], getTile(map, x, y, layer).snip[0] * 32, getTile(map, x, y, layer).snip[1] * 32, 32, 32,
+                if (getTile(map, x, y, layer).ani != undefined) ani = Math.floor(getTile(map, x, y, layer).ani[0] * (animateTime / 2)) * (32 * getTile(map, x, y, layer).ani[1]);
+                else ani = 0;
+                if (getTile(map, x, y, layer).set != undefined) ctx.drawImage(images["tilesets/" + getTile(map, x, y, layer).set], ani + getTile(map, x, y, layer).snip[0] * 32, getTile(map, x, y, layer).snip[1] * 32, 32, 32,
                     ((zoom * scale) * (x - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
                     else ctx.drawImage(images["tiles/" + getTile(map, x, y, layer).sprite],
                     ((zoom * scale) * (x - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
@@ -1689,6 +1694,7 @@ scenes.game = () => {
 
             kofs[2] = Math.max(kofs[2] - delta / 166, 0);
             walkTime = (walkTime + delta * (kofs[2] ? 5 : 1) / 1000) % 2;
+            animateTime = (animateTime + delta / 1000) % 2;
 
             ctx.imageSmoothingEnabled = false;
             ctx.globalAlpha = 1;
