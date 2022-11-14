@@ -1692,7 +1692,10 @@ scenes.game = () => {
                 }
             }
 
-            kofs[2] = Math.max(kofs[2] - delta / 166, 0);
+            let isInWater = 1;
+            if (getTile(map, game.position[0], game.position[1]).swim == true) isInWater = 2;
+
+            kofs[2] = Math.max(kofs[2] - delta / 166  / isInWater, 0);
             walkTime = (walkTime + delta * (kofs[2] ? 5 : 1) / 1000) % 2;
             animateTime = (animateTime + delta / 1000) % 2;
 
@@ -1743,15 +1746,15 @@ scenes.game = () => {
             }
 
             if (map.worldmode != true || images["wm" + game.leader] == undefined) {
-                ctx.drawImage(images[game.leader], 32 * Math.floor(walkTime), 32 * head, 32, 32,
+                ctx.drawImage(images[game.leader], 32 * Math.floor(walkTime), 32 * head, 32, 32 / isInWater,
                     scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5)),
-                    scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zswm, zswm)
+                    scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zswm, zswm / isInWater)
                 ctx.imageSmoothingEnabled = false;
             }
             else {
-                ctx.drawImage(images["wm" + game.leader], 16 * Math.floor(walkTime), 16 * head, 16, 16,
+                ctx.drawImage(images["wm" + game.leader], 16 * Math.floor(walkTime), 16 * head, 16, 16 / isInWater,
                     scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5)),
-                    scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zswm, zswm)
+                    scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zswm, zswm / isInWater)
                 ctx.imageSmoothingEnabled = false;
             }
 
