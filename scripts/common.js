@@ -158,6 +158,37 @@ var commontiles = {
     "046": {
         sprite: "water_structure_2",
     },
+    "TO0": {
+        set: "torch",
+        snip: [0, 0],
+        ani: [2, 1],
+    },
+    "C01": {
+        set: "castle",
+        snip: [1, 2],
+        occupied: true,
+    },
+    "C02": {
+        set: "castle",
+        snip: [2, 2],
+        occupied: true,
+    },
+    "Cd1": {
+        set: "castle",
+        snip: [1, 0],
+    },
+    "Cd2": {
+        set: "castle",
+        snip: [2, 0],
+    },
+    "Cd3": {
+        set: "castle",
+        snip: [1, 1],
+    },
+    "Cd4": {
+        set: "castle",
+        snip: [2, 1],
+    },
     "SVP": {
         sprite: "checkpoint",
             occupied: false,

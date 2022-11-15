@@ -146,6 +146,9 @@ let images = {
     // Tilesets
     "tilesets/well": "data/images/tilesets/wellinthatcase.png",
     "tilesets/teleport": "data/images/tilesets/teleport.png",
+    "tilesets/castle": "data/images/tilesets/castle.png",
+    "tilesets/torch": "data/images/tilesets/torch.png",
+    "tilesets/chests": "data/images/tilesets/chests.png",
 
     // Tiles
     "tiles/grass1": "data/images/tiles/grass1.png",
@@ -227,6 +230,14 @@ let images = {
     "tiles/water_s._leg_middle_2": "data/images/tiles/water_s._leg_middle_2.png",
     "tiles/water_structure": "data/images/tiles/water_structure.png",
     "tiles/water_structure_2": "data/images/tiles/water_structure_2.png",
+    "tiles/gravel": "data/images/tiles/gravel.png",
+    "tiles/bush": "data/images/tiles/bush.png",
+    "tiles/bush2": "data/images/tiles/bush2.png",
+    "tiles/darkbulb": "data/images/tiles/dark_bulb.png",
+    "tiles/lava": "data/images/tiles/Lava-Tile.png",
+    "tiles/cobblepath": "data/images/tiles/cobblepath.png",
+    "tiles/concrete": "data/images/tiles/concrete.png",
+    "tiles/soilcliff": "data/images/tiles/soil_cliff.png",
 
 
     "items/brickyleaf": "data/images/items/brickyleaf.png",
