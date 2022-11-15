@@ -1,5 +1,5 @@
 ﻿##TODO:
-9 Things left to do in this phase
+4+2 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
@@ -17,11 +17,8 @@ Nov 2022 - (still going)
   - Teleporters
   - Copy / Paste
   
-- More battle sprites
 - Add the remaining settings
 - Overworld quests (Side quests, NOT main story objectives)
-
-- A few other things, maybe 2-3 from phase 2
 
 - Finishing the story of chapter 1
 - Creating tiles and their images, that we need for chapter 1

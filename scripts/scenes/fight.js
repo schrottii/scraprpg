@@ -163,6 +163,8 @@ scenes.fight = () => {
 
     var cutsceneElements = [];
 
+    let globalFightAnimationTime = 0;
+
     const ACTIONDELAY = 670;
 
     var fightlog = [
@@ -292,8 +294,7 @@ scenes.fight = () => {
             for (i = 0; i < 3; i++) {
                 if (positionControls[i + (j * 3)].source != "gear") {
                     positionControls[i + (j * 3)].defanchor = positionControls[i].anchor[0];
-                    positionControls[i + (j * 3)].source = positions[i][j].occupied;
-                    positionControls[i + (j * 3)].snip = [0, 64, 32, 32];
+                    changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "unassigned");
                 }
             }
         }
@@ -593,6 +594,11 @@ scenes.fight = () => {
         return false;
     }
 
+    function changeEmo(who, to) {
+        // Change battle sprite emotion thing
+        positionControls[who].emo = to;
+    }
+
     function calculateDamage(type, pos1, pos2, enpos1, enpos2) {
         let isCritical = false;
         let critBonus = 1;
@@ -713,8 +719,7 @@ scenes.fight = () => {
             fightaction = "enemiesturn";
             for (i in positionControls) {
                 if (positionControls[i].source != "gear") {
-                    positionControls[i].source = positions[positionControls[i].pos1][positionControls[i].pos2].occupied;
-                    positionControls[i].snip = [0, 64, 32, 32];
+                    changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "unassigned");
                 }
             }
 
@@ -905,8 +910,7 @@ scenes.fight = () => {
         positionGrid[pos[0] + (pos[1] * 3)].source = "grid";
         positionGrid2[pos[0] + (pos[1] * 3)].source = "grid";
 
-        positionControls[pos[0] + (pos[1] * 3)].snip = [0, 64, 32, 32];
-        positionControls[pos[0] + (pos[1] * 3)].source = positions[pos[0]][pos[1]].occupied;
+        changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "unassigned");
         positions[pos[0]][pos[1]].action = false;
         busy = false;
         setTimeout(() => executeActions(), ACTIONDELAY);
@@ -968,6 +972,8 @@ scenes.fight = () => {
                 if (positions[fpos1][fpos2].isOccupied != false) {
                     let HealthBefore = game.characters[positions[fpos1][fpos2].occupied].HP;
                     game.characters[positions[fpos1][fpos2].occupied].HP -= Damage;
+                    changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "hurt");
+
                     epositions[pos[0]][pos[1]].action = false;
                     battleNumber(positionControls[fpos1 + (fpos2 * 3)].anchor, Damage * (-1), 0, positionControls[fpos1 + (fpos2 * 3)].offset, isCritical);
 
@@ -1006,6 +1012,8 @@ scenes.fight = () => {
 
     function endOfTurnEvents() {
         for (i = 0; i < game.chars.length; i++) {
+            changeEmo(getPlayer(i + 1).pos[0] + getPlayer(i + 1).pos[1] * 3, "unassigned");
+
             if (getPlayer(i + 1).effect[0] == "acid") {
                 getPlayer(i + 1).HP -= Math.ceil(getStat(i + 1, "maxHP") / 15);
                 postLog(getPlayer(i + 1).name + " took " + Math.ceil(getStat(i + 1, "maxHP") / 15) + " damage from acid!");
@@ -1107,16 +1115,18 @@ scenes.fight = () => {
                 if (t > 200 && t < 399) {
                     positionControls[fpos1 + (fpos2 * 3)].offset[1] = own[3] * (1 - ((t - 200)) / 200) + positionControls[fpos1 + (fpos2 * 3)].fly;
                     positionControls[fpos1 + (fpos2 * 3)].offset[0] = own[1] * (1 - ((t - 200)) / 200);
+                    changeEmo(fpos1 + (fpos2 * 3), "attacking0");
                 }
                 if (t > 400 && t < 599) {
                     positionControls[fpos1 + (fpos2 * 3)].offset[1] = goal[3] * (0 + ((t - 400)) / 200) + positionControls[fpos1 + (fpos2 * 3)].fly;
                     positionControls[fpos1 + (fpos2 * 3)].offset[0] = goal[1] * (0 + ((t - 400)) / 200);
+                    changeEmo(fpos1 + (fpos2 * 3), "attacking1");
                 }
                 if (t > 1000 && t < 1049 || t > 1100 && t < 1149) {
-                    attackAnimationObjects[fpos1 + (fpos2 * 3)].source = "attackani1";
+                    changeEmo(fpos1 + (fpos2 * 3), "attacking2");
                 }
                 if (t > 1050 && t < 1099 || t > 1150 && t < 1199) {
-                    attackAnimationObjects[fpos1 + (fpos2 * 3)].source = "attackani2";
+                    changeEmo(fpos1 + (fpos2 * 3), "attacking3");
                 }
                 if (t > 1200) {
                     positionControls[fpos1 + (fpos2 * 3)].anchor[0] = own[0];
@@ -1468,8 +1478,7 @@ scenes.fight = () => {
                         let c = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied];
                         positions[selectedAlly[0]][selectedAlly[1]].action = [c.macro, selectedAlly[0], selectedAlly[1], 2, 1];
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
-                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source = battleAnimation(c.name.toLowerCase(), "attack")[0];
-                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(c.name.toLowerCase(), "attack")[1];
+                        changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "attack");
                         hideFightButtons();
                     }
                 }
@@ -1482,7 +1491,7 @@ scenes.fight = () => {
                 alpha: 1,
                 onClick(args) {
                     if (this.alpha == 1 && fightaction == "active") {
-                        positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "fleeing";
+                        changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "flee");
                         positions[selectedAlly[0]][selectedAlly[1]].action = ["flee", selectedAlly[0], selectedAlly[1], getStat(positions[selectedAlly[0]][selectedAlly[1]].occupied, "AGI")];
                         fightaction = "none";
                         hideFightButtons();
@@ -1522,9 +1531,7 @@ scenes.fight = () => {
                             positions[selectedAlly[0]][selectedAlly[1]].action = ["defend"];
                             fightaction = "none";
 
-                            let dude = positions[selectedAlly[0]][selectedAlly[1]].occupied;
-                            positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source = battleAnimation(dude, "defend")[0];
-                            positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(dude, "defend")[1];
+                            changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "defend");
 
                             positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                             break;
@@ -1624,15 +1631,13 @@ scenes.fight = () => {
         let wrenchTime = 0;
         let wrenchi = 0;
         if (positionControls[p].source != "gear") positionControls[p].defoffset[0] = positionControls[p].offset[0];
-        if (positionControls[p].source != "gear") positionControls[p].snip[1] = 32;
+        changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "flee");
 
         addAnimator(function (t) {
            if (positionControls[p].source != "gear") {
                positionControls[p].offset[0] = positionControls[p].defoffset - (t / 4);
                positionControls[p].anchor[0] = Math.min((2000 - t) / 80000, 0.025);
-               positionControls[p].snip[0] = Math.floor(runTime) * 32;
             }
-            
 
             runTime += ((t - runLaps) / 250);
             if (runTime >= 2) {
@@ -2503,6 +2508,7 @@ scenes.fight = () => {
                 snip: [0, 64, 32, 32],
                 pos1: i,
                 pos2: j,
+                emo: "unassigned",
                 glow: 15,
                 onClick(args) {
                     let name = positions[this.pos1][this.pos2].occupied;
@@ -2535,8 +2541,7 @@ scenes.fight = () => {
                     // Attack teammate
                     else if (fightaction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
-                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source, "attack")[1];
-                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source = battleAnimation(positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source, "attack")[0];
+                        changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "attack");
                         positions[selectedAlly[0]][selectedAlly[1]].action = ["sattack", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
 
                         fightaction = "none";
@@ -2562,8 +2567,7 @@ scenes.fight = () => {
                         removeItem(selectedItem.name, 1);
                         fightaction = "none";
 
-                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source = battleAnimation(dude, "item")[0];
-                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(dude, "item")[1];
+                        changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "item");
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "items/" + selectedItem().source;
                     }
 
@@ -2574,8 +2578,7 @@ scenes.fight = () => {
                         game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EP -= selectedItem().cost;
                         fightaction = "none";
 
-                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source = battleAnimation(dude, "magic")[0];
-                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(dude, "magic")[1];
+                        changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "magic");
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = selectedItem().source;
                     }
 
@@ -2613,8 +2616,7 @@ scenes.fight = () => {
                     let dude = positions[selectedAlly[0]][selectedAlly[1]].occupied;
                     if (fightaction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
-                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source = battleAnimation(dude, "attack")[0];
-                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(dude, "attack")[1];
+                        changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "attack");
                         if (epositions[this.pos1][this.pos2].parent == undefined) positions[selectedAlly[0]][selectedAlly[1]].action = ["attack", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
                         else {
                             let parent = epositions[this.pos1][this.pos2].parent;
@@ -2627,8 +2629,7 @@ scenes.fight = () => {
                     }
                     if (fightaction == "magic" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = selectedItem().source;
-                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].source = battleAnimation(dude, "magic")[0];
-                        positionControls[selectedAlly[0] + (selectedAlly[1] * 3)].snip = battleAnimation(dude, "magic")[1];
+                        changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "magic");
                         if (epositions[this.pos1][this.pos2].parent == undefined) positions[selectedAlly[0]][selectedAlly[1]].action = ["magic", selectedItem.name, selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
                         else {
                             let parent = epositions[this.pos1][this.pos2].parent;
@@ -2714,7 +2715,7 @@ scenes.fight = () => {
     function updatePositions() {
         for (j = 0; j < 3; j++) {
             for (i = 0; i < 3; i++) {
-                if (positions[i]) {
+                /*if (positions[i]) {
                     if (positions[i][j].isOccupied == true) {
                         if (win == true) {
                         }
@@ -2729,8 +2730,6 @@ scenes.fight = () => {
                     else {
                         if (positions[i][j].occupied != undefined && positions[i][j].occupied != false) {
                             if (game.characters[positions[i][j].occupied].HP < 1 || positions[i][j].isOccupied == false) {
-                                positionControls[i + (j * 3)].source = positions[i][j].occupied + "_dead";
-                                positionControls[i + (j * 3)].snip = [0, 0, 32, 32];
                                 fightStats[4 + (game.chars.indexOf(positions[i][j].occupied)) * amountStats].alpha = 0;
                             }
                             else {
@@ -2747,7 +2746,7 @@ scenes.fight = () => {
                 }
                 else {
                     positionControls[i + (j * 3)].source = "gear";
-                }
+                }*/
 
                 // enemies! enemies!
                 if (epositions[i]) {
@@ -3030,9 +3029,26 @@ scenes.fight = () => {
     return {
         // Pre-render function
         preRender(ctx, delta) {
+            globalFightAnimationTime = Math.min(1.999, globalFightAnimationTime + 0.341 / delta);
+            if (globalFightAnimationTime == 1.999) globalFightAnimationTime = 0;
+
             ctx.scale(scal, scal);
 
             ctx.drawImage(images.fight_bg, 0, 0, width * scale, height);
+
+            for (pcc in positionControls) {
+                let occ = positions[positionControls[pcc].pos1][positionControls[pcc].pos2].occupied;
+                if (occ != false) {
+                    if (game.characters[occ].HP > 0) {
+                        positionControls[pcc].source = "bleu" + "_battle";
+                        positionControls[pcc].snip = battleAnimation(occ, positionControls[pcc].emo, Math.floor(globalFightAnimationTime));
+                    }
+                    else {
+                        positionControls[pcc].source = occ + "_dead";
+                        positionControls[pcc].snip = [0, 0, 32, 32];
+                    }
+                }
+            }
 
             if (game.characters.kokitozi.HP > 0) {
                 for (j = 0; j < 3; j++) {

@@ -238,30 +238,52 @@ function emotionAnimation(char, emotion) { // Epic rhyme
     return [file, snip, amount];
 }
 
-function battleAnimation(char, emotion) { // Epic rhyme
+function battleAnimation(char, emotion, anit=0) { // Epic rhyme
     // This function returns, well, emotion animation pics (laughing, victory, etc.)
     let file = char + "_battle";
     if (images[file] == undefined) return false;
     let snip = [];
     let size = 32;
+    anit *= size;
+
     switch (emotion) {
+        case "unassigned": // not ass
+            if (game.characters[char].HP > getStat(char, "maxHP") / 4) snip = [0, anit, size, size];
+            else if (game.characters[char].HP > getStat(char, "maxHP") / 8) snip = [size, size * 3 + anit, size, size];
+            else snip = [size * 2, size * 3 + anit, size, size];
+            break;
         case "attack":
-            snip = [0, 0, size, size];
+            snip = [size, anit, size, size];
             break;
         case "item":
-            snip = [size, 0, size, size];
+            snip = [size * 2, anit, size, size];
             break;
         case "magic":
-            snip = [size * 2, 0, size, size];
+            snip = [size * 3, anit, size, size];
             break;
         case "defend":
-            snip = [size * 3, 0, size, size];
+            snip = [size * 4, anit, size, size];
             break;
-        case "other":
-            snip = [size * 4, 0, size, size];
+        case "flee":
+            snip = [size * 5, anit, size, size];
+            break;
+        case "hurt":
+            snip = [0, size * 3 + anit, size, size];
+            break;
+        case "attacking0":
+            snip = [size * 6, anit, size, size];
+            break;
+        case "attacking1":
+            snip = [size * 7, anit, size, size];
+            break;
+        case "attacking2":
+            snip = [size * 9, anit, size, size];
+            break;
+        case "attacking3":
+            snip = [size * 10, anit, size, size];
             break;
     }
-    return [file, snip];
+    return snip;
 }
 
 function addItem(name, amount = 1) {
