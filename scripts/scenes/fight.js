@@ -938,6 +938,7 @@ scenes.fight = () => {
         if (highestAGI == 0) {
             fightaction = "none";
             turn += 1;
+            started = false;
             endOfTurnEvents();
 
             for (j = 0; j < 3; j++) {

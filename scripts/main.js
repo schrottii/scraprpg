@@ -28,7 +28,6 @@ function init() {
                 anchor: [0, 0], sizeAnchor: [1, 1],
                 clickthrough: true, fontSize: 16, alpha: 0,
                 onClick() {
-                    playSound("buttonClickSound");
                     musicPlayer.loop = true;
                     setScene(scenes.pretitle());
                 }

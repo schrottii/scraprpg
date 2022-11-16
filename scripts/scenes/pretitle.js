@@ -7,10 +7,10 @@ scenes.pretitle = () => {
         alpha: 0,
     });
 
-    image_animation(images.schrottgamesanimation, 5, 15, 2000, 3375, 55);
+    image_animation(images.schrottgamesanimation, 5, 15, 2000, 3375, 50);
     setTimeout(() => {
         if (!cancel) image_animation(images.tttanimation, 5, 21, 4000, 9450, 25)
-    }, 2500);
+    }, 3650);
     setTimeout(() => {
         tokenStay.alpha = 1;
         addAnimator(function (t) {
@@ -22,13 +22,13 @@ scenes.pretitle = () => {
             }
             return false;
         })
-    }, 2500 + 2625);
+    }, 3650 + 2625);
     setTimeout(() => {
         if (!cancel) {
             musicPlayer.loop = true;
             setScene(scenes.title());
         }
-    }, 4000 + 2625);
+    }, 5150 + 2625);
 
     return {
         // Pre-render function
