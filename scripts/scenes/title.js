@@ -416,7 +416,7 @@ scenes.title = () => {
                         if (localStorage.getItem("SRPG3") != undefined) saveButtons[3].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
 
                         for (i in saveTexts) {
-                            saveTexts[i].anchor[0] = Math.max(saveTexts[i].defanch, 1.2 - (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4));
+                            saveTexts[i].anchor[0] = saveButtons[Math.floor(i / 15)].anchor[0] + saveTexts[i].defanch - 0.2;
                         }
 
                         saveImages[0].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4);
