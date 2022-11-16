@@ -69,6 +69,7 @@ scenes.pretitle = () => {
                     saveNR = 3;
                     loadGame();
                     loadSettings();
+                    canMove = true;
                     setScene(scenes.game());
                     //openShop("placeholder");
                 }

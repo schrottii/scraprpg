@@ -8,6 +8,10 @@ function init() {
 
 
     setScene({
+        // Pre-render function
+        preRender(ctx, delta) {
+            if (scene.controls[3].alpha == 1) scene.controls[2].onClick();
+        },
         controls: [
             controls.label({
                 anchor: [.02, .98], offset: [5, -12],
