@@ -3010,7 +3010,7 @@ scenes.fight = () => {
     return {
         // Pre-render function
         preRender(ctx, delta) {
-            globalFightAnimationTime = Math.min(1.999, globalFightAnimationTime + 0.341 / delta);
+            globalFightAnimationTime = Math.min(1.999, globalFightAnimationTime + (2.9325 / delta));
             if (globalFightAnimationTime == 1.999) globalFightAnimationTime = 0;
 
             ctx.scale(scal, scal);

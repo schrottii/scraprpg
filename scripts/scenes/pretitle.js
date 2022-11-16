@@ -80,7 +80,7 @@ scenes.pretitle = () => {
                 text: "Fight",
                 onClick() {
                     cancel = true;
-                    musicPlayer.muted = true; // false?
+                    musicPlayer.muted = false; // false?
                     soundPlayer.muted = false;
 
                     loadSettings();
@@ -88,7 +88,7 @@ scenes.pretitle = () => {
                     playSound("titletransition");
 
                     stopMusic();
-                    //playMusic("bgm/boss", "bgm/placeholder");
+                    playMusic("bgm/fight");
                     //^intro example - remove comment ^ there, add comment to setscene few lines below, set musicplayer muted to false above
                     saveNR = 3;
                     loadGame();
