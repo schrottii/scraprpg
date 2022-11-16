@@ -2716,39 +2716,19 @@ scenes.fight = () => {
     function updatePositions() {
         for (j = 0; j < 3; j++) {
             for (i = 0; i < 3; i++) {
-                /*if (positions[i]) {
+                if (positions[i]) {
                     if (positions[i][j].isOccupied == true) {
-                        if (win == true) {
+                        if (positionControls[i + j * 3].emo == "hurt" && Math.random() > 0.9) {
+                            changeEmo(i + j * 3, "hurt2");
                         }
-                        else {
-                            if (positionControls[i + (j * 3)].source == positions[i][j].occupied + "_dead") {
-                                positionControls[i + (j * 3)].snip = [0, 64, 32, 32];
-                            }
-                            if (positionGrid2[i + (j * 3)].source == "grid") positionControls[i + (j * 3)].source = positions[i][j].occupied;
+                        else if (positionControls[i + j * 3].emo == "hurt2" && Math.random() > 0.9) {
+                            changeEmo(i + j * 3, "unassigned");
                         }
-                        positionControls[i + (j * 3)].alpha = 1;
-                    }
-                    else {
-                        if (positions[i][j].occupied != undefined && positions[i][j].occupied != false) {
-                            if (game.characters[positions[i][j].occupied].HP < 1 || positions[i][j].isOccupied == false) {
-                                fightStats[4 + (game.chars.indexOf(positions[i][j].occupied)) * amountStats].alpha = 0;
-                            }
-                            else {
-                                positionControls[i + (j * 3)].source = "gear";
-                                positionControls[i + (j * 3)].alpha = 0;
-                            }
-                        }
-                        else {
-                                positionControls[i + (j * 3)].source = "gear";
-                                positionControls[i + (j * 3)].alpha = 0;
-                        }
-                
                     }
                 }
-                else {
-                    positionControls[i + (j * 3)].source = "gear";
-                }*/
+        
 
+                        
                 // enemies! enemies!
                 if (epositions[i]) {
                     if (epositions[i][j].parent != undefined) {

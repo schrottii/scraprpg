@@ -1,5 +1,5 @@
 ﻿##TODO:
-4+2 Things left to do in this phase
+4+1+2 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
@@ -17,7 +17,6 @@ Nov 2022 - (still going)
   - Teleporters
   - Copy / Paste
   
-- Add the remaining settings
 - Overworld quests (Side quests, NOT main story objectives)
 
 - Finishing the story of chapter 1
@@ -33,6 +32,8 @@ Coding stuff to do in phase 2:
 
 - Mastery Techs
 - Duo Mastery Techs
+
+- Add the remaining settings
 
 - Promotion (and Evolution Tree) system
 - Mastery Tokens

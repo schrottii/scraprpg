@@ -268,19 +268,22 @@ function battleAnimation(char, emotion, anit=0) { // Epic rhyme
             snip = [size * 5, anit, size, size];
             break;
         case "hurt":
-            snip = [0, size * 3 + anit, size, size];
+            snip = [0, size * 4, size, size];
+            break;
+        case "hurt2":
+            snip = [0, size * 3, size, size];
             break;
         case "attacking0":
-            snip = [size * 6, anit, size, size];
+            snip = [size * 6, 0, size, size];
             break;
         case "attacking1":
-            snip = [size * 7, anit, size, size];
+            snip = [size * 7, 0, size, size];
             break;
         case "attacking2":
-            snip = [size * 9, anit, size, size];
+            snip = [size * 9, 0, size, size];
             break;
         case "attacking3":
-            snip = [size * 10, anit, size, size];
+            snip = [size * 10, 0, size, size];
             break;
     }
     return snip;
