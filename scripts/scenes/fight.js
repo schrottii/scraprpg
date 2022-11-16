@@ -3102,7 +3102,7 @@ scenes.fight = () => {
             if (highlightAlpha == 0.5) highlightChange = 0;
             if (highlightAlpha == 0) highlightChange = 1;
 
-            if (fightaction == "none") {
+            /*if (fightaction == "none") {
                 for (i = 0; i < 9; i++) {
                     if (positionControls[i].source != "gear") highlightGrid[i].alpha = highlightAlpha;
                 }
@@ -3112,7 +3112,7 @@ scenes.fight = () => {
                     }
                 }
             }
-            else if (fightaction == "attack2" || fightaction == "magic" || fightaction == "item") {
+            else */if (fightaction == "attack2" || fightaction == "magic" || fightaction == "item") {
                 for (i = 0; i < 9; i++) {
                     if (positionControls[i].source != "gear") highlightGrid[i].alpha = highlightAlpha;
                     if (epositionControls[i].source != "gear") highlightGrid[i + 9].alpha = highlightAlpha;
