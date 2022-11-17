@@ -361,14 +361,14 @@ scenes.mapmaker = () => {
                     if (tileSetSnip == "") tileSetSnip = "0.0";
                     map.tiles[tileID] = {
                         "set": tileSet,
-                        "snip": tileSetSnip.split("."),
+                        "snip": [parseInt(tileSetSnip.split(".")[0]), parseInt(tileSetSnip.split(".")[1])],
                     }
                 }
 
                 if (tileOccupied.toLowerCase() == "yes") map.tiles[tileID].occupied = true;
-                else if (tileOccupied.toLowerCase() != "no") map.tiles[tileID].occupied = tileOccupied.split(".");
+                else if (tileOccupied.toLowerCase() != "no" && tileOccupied.toLowerCase() != "") map.tiles[tileID].occupied = tileOccupied.split(".");
 
-                if (tileAni != "") map.tiles[tileID].ani = tileAni.split(".");
+                if (tileAni != "") map.tiles[tileID].ani = [parseInt(tileAni.split(".")[0]), parseInt(tileAni.split(".")[1])];
 
                 tileID = "";
                 tileSprite = "";
@@ -651,6 +651,7 @@ scenes.mapmaker = () => {
                 let newName = prompt("New map name?");
                 map.name = newName;
                 this.text = "Map name: " + newName;
+                currentMap = newName;
             }
         }
     }));

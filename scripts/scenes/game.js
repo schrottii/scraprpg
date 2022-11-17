@@ -1718,7 +1718,7 @@ scenes.game = () => {
             }
 
             let isInWater = 1;
-            if (getTile(map, game.position[0], game.position[1]).swim == true) isInWater = 2;
+            if (getTile(map, game.position[0], game.position[1]) != undefined) if(getTile(map, game.position[0], game.position[1]).swim == true) isInWater = 2;
 
             kofs[2] = Math.max(kofs[2] - delta / 166  / isInWater, 0);
             walkTime = (walkTime + delta * (kofs[2] ? 5 : 1) / 1000) % 2;

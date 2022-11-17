@@ -299,6 +299,7 @@ var maps = {
     "map2": "scripts/maps/map2.js",
     "original": "scripts/maps/original.js",
     "cave1": "scripts/maps/cave1.js",
+    "test505": "scripts/maps/test505.js",
 };
 
 var colors = { // colors not colours
