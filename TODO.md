@@ -1,5 +1,5 @@
 ﻿##TODO:
-4+1+2 Things left to do in this phase
+3+1+2 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
@@ -15,7 +15,6 @@ Nov 2022 - (still going)
   - Placing items
   - Dialogues
   - Teleporters
-  - Copy / Paste
   
 - Overworld quests (Side quests, NOT main story objectives)
 

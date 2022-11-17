@@ -2510,7 +2510,7 @@ scenes.fight = () => {
                 pos1: i,
                 pos2: j,
                 emo: "unassigned",
-                glow: 15,
+                glow: 8,
                 onClick(args) {
                     let name = positions[this.pos1][this.pos2].occupied;
                     if (name == false) return;
@@ -2609,6 +2609,7 @@ scenes.fight = () => {
                 snip: [0, 32, 32, 32],
                 pos1: i,
                 pos2: j,
+                glow: 8,
                 onClick(args) {
                     //epositions[this.pos1][this.pos2].occupied = "selected";
                     // uhhh... no?F
