@@ -70,6 +70,8 @@ let images = {
     mmzoom: "data/images/mm/zoom.png",
     undo: "data/images/mm/back.png",
     redo: "data/images/mm/forward.png",
+    copy: "data/images/mm/copy.png",
+    paste: "data/images/mm/paste.png",
 
     // Animations
     tokenattack: "data/images/token-animation.png",

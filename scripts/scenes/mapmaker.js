@@ -292,6 +292,27 @@ scenes.mapmaker = () => {
             }
         }
     }));
+    modeButtons.push(controls.rect({
+        anchor: [0.015, 0], sizeOffset: [2, 96], offset: [72 * 17 - 5, 0],
+        fill: "white", alpha: 0.8,
+    }));
+    modeButtons.push(controls.image({
+        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 17, 0],
+        source: "copy", alpha: 1,
+        onClick(args) {
+            let my = map[["map", "mapbg2", "mapfg"][editingLayer]][game.position[1]];
+            let x = game.position[0];
+
+            ttp = thetile = my[x * 4] + my[(x * 4) + 1] + my[(x * 4) + 2];
+        }
+    }));
+    modeButtons.push(controls.image({
+        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 18, 0],
+        source: "paste", alpha: 1,
+        onClick(args) {
+            placeTile(game.position[0], game.position[1], ["map", "mapbg2", "mapfg"][editingLayer], ttp, "copy");
+        }
+    }));
 
     createTileButtons.push(controls.button({
         anchor: [0.3, 0.2], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
@@ -989,7 +1010,7 @@ scenes.mapmaker = () => {
 
         //if (layer == "map") def = "002";
 
-        if (mode == "place" || mode == "moveandplace") {
+        if (mode == "place" || mode == "moveandplace" || umode == "copy") {
             if (tileToPlace == "none") {
                 tileToPlace = ttp;
             }
