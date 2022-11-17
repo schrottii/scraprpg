@@ -1,5 +1,5 @@
 ﻿##TODO:
-3+1+2 Things left to do in this phase
+3+2 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
@@ -14,8 +14,6 @@ Nov 2022 - (still going)
 - MAP MAKER
   - Placing items
   - Dialogues
-  - Teleporters
-  
 - Overworld quests (Side quests, NOT main story objectives)
 
 - Finishing the story of chapter 1

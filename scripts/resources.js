@@ -302,6 +302,7 @@ var maps = {
     "original": "scripts/maps/original.js",
     "cave1": "scripts/maps/cave1.js",
     "test505": "scripts/maps/test505.js",
+    "scrapIsland": "scripts/maps/Scrap_Island.js",
 };
 
 var colors = { // colors not colours

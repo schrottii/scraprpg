@@ -330,6 +330,9 @@ scenes.mapmaker = () => {
         onClick(args) {
             tileSprite = prompt('New map tile sprite? (e. g. water1 - must be the name from resources)');
             this.text = "Tile Sprite: " + tileSprite;
+
+            if (images["tiles/" + tileSprite] != undefined) createTileButtons[7].source = "tiles/" + tileSprite;
+            else createTileButtons[7].source = "gear";
         }
     }));
     createTileButtons.push(controls.button({
@@ -346,6 +349,9 @@ scenes.mapmaker = () => {
         onClick(args) {
             tileSet = prompt('New map tile set? (e. g. castle - must be the name from resources)');
             this.text = "Tile Set: " + tileSet;
+
+            if (images["tilesets/" + tileSet] != undefined) createTileButtons[7].source = "tilesets/" + tileSet;
+            else createTileButtons[7].source = "gear";
         }
     }));
     createTileButtons.push(controls.button({
@@ -371,6 +377,10 @@ scenes.mapmaker = () => {
             tileTele = prompt('Teleport to? map.x.y (e. g. original.7.8 or map2.0.0)');
             this.text = "Teleport: " + tileTele;
         }
+    }));
+    createTileButtons.push(controls.image({
+        anchor: [0.25, 0.325], sizeOffset: [64, 64], offset: [72 * 16 -32, -632],
+        source: "gear",
     }));
     createTileButtons.push(controls.button({
         anchor: [0.3, 0.575], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
@@ -413,7 +423,11 @@ scenes.mapmaker = () => {
                 createTileButtons[1].text = "Tile Sprite";
                 createTileButtons[2].text = "Tile Occupied";
                 createTileButtons[3].text = "Tile Set";
-                createTileButtons[4].text = "Tile Set Snip";
+                createTileButtons[4].text = "Set Snip";
+                createTileButtons[5].text = "Animation";
+                createTileButtons[6].text = "Teleport";
+
+                createTileButtons[7].source = "gear";
             }
             catch {
                 alert("An error occured!");
