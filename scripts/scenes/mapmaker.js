@@ -101,9 +101,12 @@ scenes.mapmaker = () => {
     var tnpcs = [];
 
     // For creating new tiles
-    let tileID;
-    let tileSprite;
-    let tileOccupied;
+    let tileID = "";
+    let tileSprite = "";
+    let tileSet = "";
+    let tileSetSnip = "";
+    let tileAni = "";
+    let tileOccupied = "";
 
     var undoLog = [];
     var redoLog = [];
@@ -293,6 +296,7 @@ scenes.mapmaker = () => {
     createTileButtons.push(controls.button({
         anchor: [0.3, 0.2], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
         text: "Tile ID", alpha: 0,
+        fillTop: "red", fillBottom: "darkred",
         onClick(args) {
             tileID = prompt('New map tile ID? (e. g. 001)');
             this.text = "Tile ID: " + tileID;
@@ -315,24 +319,69 @@ scenes.mapmaker = () => {
         }
     }));
     createTileButtons.push(controls.button({
+        anchor: [0.55, 0.325], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "Tile Set", alpha: 0,
+        onClick(args) {
+            tileSet = prompt('New map tile set? (e. g. castle - must be the name from resources)');
+            this.text = "Tile Set: " + tileSet;
+        }
+    }));
+    createTileButtons.push(controls.button({
+        anchor: [0.55, 0.45], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "Set Snip", alpha: 0,
+        onClick(args) {
+            tileSetSnip = prompt('New map tile set snip? X.Y (e. g. 1.1)');
+            this.text = "Set Snip: " + tileSetSnip;
+        }
+    }));
+    createTileButtons.push(controls.button({
+        anchor: [0.55, 0.575], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "Animation", alpha: 0,
+        onClick(args) {
+            tileAni = prompt('New map tile set snip? X.Y (e. g. 1.1)');
+            this.text = "Animation: " + tileAni;
+        }
+    }));
+    createTileButtons.push(controls.button({
         anchor: [0.3, 0.575], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
         text: "CREATE!", alpha: 0,
+        fillTop: "red", fillBottom: "darkred",
         onClick(args) {
+            if (tileSprite == "" && tileSet == "") {
+                alert("You have to set a sprite or a set!");
+                return false;
+            }
             try {
-                map.tiles[tileID] = {
-                    "sprite": tileSprite
+                if (tileSet == "") {
+                    map.tiles[tileID] = {
+                        "sprite": tileSprite
+                    }
+                }
+                else {
+                    if (tileSetSnip == "") tileSetSnip = "0.0";
+                    map.tiles[tileID] = {
+                        "set": tileSet,
+                        "snip": tileSetSnip.split("."),
+                    }
                 }
 
                 if (tileOccupied.toLowerCase() == "yes") map.tiles[tileID].occupied = true;
-                else if (tileOccupied.toLowerCase() != "no") map.tiles[tileID].occupied = tileOccupied.split("."); // array
+                else if (tileOccupied.toLowerCase() != "no") map.tiles[tileID].occupied = tileOccupied.split(".");
+
+                if (tileAni != "") map.tiles[tileID].ani = tileAni.split(".");
 
                 tileID = "";
                 tileSprite = "";
                 tileOccupied = "";
+                tileSet = "";
+                tileSetSnip = "";
+                tileAni = "";
 
                 createTileButtons[0].text = "Tile ID";
                 createTileButtons[1].text = "Tile Sprite";
                 createTileButtons[2].text = "Tile Occupied";
+                createTileButtons[3].text = "Tile Set";
+                createTileButtons[4].text = "Tile Set Snip";
             }
             catch {
                 alert("An error occured!");
