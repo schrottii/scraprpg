@@ -1023,22 +1023,27 @@ scenes.game = () => {
         }
     }
 
-    function isTeleport(map, x, y) {
-        if (map.map[y] && map.map[y][(x * 3) + 2]) { //Check if tile exists
-            if (getTile(map, x, y).teleport != undefined) { //Check if occupied exists
-                //It exists! A miracle
-                return true;
-            }
-            else {
-                return false;
+    function isTeleport(map, x, y, l = 1) {
+        // Is it a teleporter?
+
+        let lay = ["map", "map", "mapbg2", "mapfg"][l];
+        if (map[lay][y] && map[lay][y][(x * 3) + 2]) { //Check if tile exists
+            if (getTile(map, x, y, l) != undefined) {
+                if (getTile(map, x, y, l).teleport != undefined) { //Check if teleport exists
+                    //It exists! A miracle
+                    return true;
+                }
+                else {
+                    return false;
+                }
             }
         }
         return false;
     }
 
-    function tryTeleport(map, x, y) {
-        if (isTeleport(map, x, y)) {
-            let themap = getTile(map, x, y);
+    function tryTeleport(map, x, y, l=1) {
+        if (isTeleport(map, x, y, l)) {
+            let themap = getTile(map, x, y, l);
             let previousmap = game.map;
             // Set map and pos
             let nmapname = maps[themap.teleport[0]].name;
@@ -1703,6 +1708,7 @@ scenes.game = () => {
 
                         ActionsOnMove();
                         tryTeleport(map, Math.floor(game.position[0]), Math.floor(game.position[1]));
+                        tryTeleport(map, Math.floor(game.position[0]), Math.floor(game.position[1]), 2);
 
                         actionButton.snip = [64, 96, 64, 32];
                         if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo).action != undefined) actionButton.snip = [64, 32, 64, 32]

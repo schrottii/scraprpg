@@ -106,6 +106,7 @@ scenes.mapmaker = () => {
     let tileSet = "";
     let tileSetSnip = "";
     let tileAni = "";
+    let tileTele = "";
     let tileOccupied = "";
 
     var undoLog = [];
@@ -340,7 +341,7 @@ scenes.mapmaker = () => {
         }
     }));
     createTileButtons.push(controls.button({
-        anchor: [0.55, 0.325], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        anchor: [0.525, 0.325], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
         text: "Tile Set", alpha: 0,
         onClick(args) {
             tileSet = prompt('New map tile set? (e. g. castle - must be the name from resources)');
@@ -348,7 +349,7 @@ scenes.mapmaker = () => {
         }
     }));
     createTileButtons.push(controls.button({
-        anchor: [0.55, 0.45], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        anchor: [0.525, 0.45], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
         text: "Set Snip", alpha: 0,
         onClick(args) {
             tileSetSnip = prompt('New map tile set snip? X.Y (e. g. 1.1)');
@@ -356,11 +357,19 @@ scenes.mapmaker = () => {
         }
     }));
     createTileButtons.push(controls.button({
-        anchor: [0.55, 0.575], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        anchor: [0.525, 0.575], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
         text: "Animation", alpha: 0,
         onClick(args) {
             tileAni = prompt('New map tile set snip? X.Y (e. g. 1.1)');
             this.text = "Animation: " + tileAni;
+        }
+    }));
+    createTileButtons.push(controls.button({
+        anchor: [0.75, 0.325], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "Teleport", alpha: 0,
+        onClick(args) {
+            tileTele = prompt('Teleport to? map.x.y (e. g. original.7.8 or map2.0.0)');
+            this.text = "Teleport: " + tileTele;
         }
     }));
     createTileButtons.push(controls.button({
@@ -390,6 +399,8 @@ scenes.mapmaker = () => {
                 else if (tileOccupied.toLowerCase() != "no" && tileOccupied.toLowerCase() != "") map.tiles[tileID].occupied = tileOccupied.split(".");
 
                 if (tileAni != "") map.tiles[tileID].ani = [parseInt(tileAni.split(".")[0]), parseInt(tileAni.split(".")[1])];
+
+                if (tileTele != "") map.tiles[tileID].teleport = [tileTele.split(".")[0], parseInt(tileTele.split(".")[1]), parseInt(tileTele.split(".")[2])];
 
                 tileID = "";
                 tileSprite = "";
