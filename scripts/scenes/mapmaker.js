@@ -27,23 +27,39 @@ function loadMap() {
         // Jesus sweet fucking christ
         let result = e.target.result;
         let name = result.split('id":');
+        let noid = false;
+
         name = name[1];
         if (name != undefined) {
-            name = name.split(",");
-            let finalname = name[0];
+            console.log("map maker load: has id");
+            let finalname = name.split(",");
+            finalname = name[0];
             finalname = finalname.split('\"');
             finalname = finalname[1];
-            lmresult = finalname;
+            if (maps[finalname] != undefined) {
+                lmresult = finalname;
+            }
+            else {
+                noid = true;
+            }
         }
         else {
+            noid = true;
+        }
+        if(noid) {
+            console.log("map maker load: no id");
+            result = result.split('"] =');
+            result = result[1];
             let mapobj = JSON.parse(result);
             try {
                 lmresult = JSON.parse(mapobj);
             }
-            catch{
+            catch {
+                console.log("map maker load: single parse");
                 lmresult = mapobj;
             }
         }
+        //console.log(lmresult);
     }
 }
 
