@@ -67,7 +67,6 @@ function loadMap() {
                 lmresult = result;
             }
         }
-        //console.log(lmresult);
     }
 }
 
@@ -308,7 +307,7 @@ scenes.mapmaker = () => {
     }));
     modeButtons.push(controls.image({
         anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 14, 0],
-        source: "newmap", alpha: 1,
+        source: "senza", alpha: 1,
         onClick(args) {
             if (this.alpha == 1) toggleCreateTileButtons();
         }
@@ -500,14 +499,14 @@ scenes.mapmaker = () => {
 
 
     loadMapButtons.push(controls.button({
-        anchor: [0.3, 0.3], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
+        anchor: [0.3, 0.2], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
         text: "Load from file...", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) showSelect();
         }
     }));
     loadMapButtons.push(controls.button({
-        anchor: [0.3, 0.5], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
+        anchor: [0.3, 0.35], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
         text: "Load from name...", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -522,7 +521,7 @@ scenes.mapmaker = () => {
 
     expandMapButtons.push(controls.image({
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
-        source: "newmap", alpha: 1, ri: true,
+        source: "senza", alpha: 1, ri: true,
         onClick(args) {
             if (this.alpha == 1 && !prot) {
                 for (x in map.map) {
@@ -541,7 +540,7 @@ scenes.mapmaker = () => {
 
     expandMapButtons.push(controls.image({
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
-        source: "newmap", alpha: 1, ri: true,
+        source: "senza", alpha: 1, ri: true,
         onClick(args) {
             if (this.alpha == 1 && !prot) {
                 map.map.unshift("---");
@@ -555,7 +554,7 @@ scenes.mapmaker = () => {
 
     expandMapButtons.push(controls.image({
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
-        source: "newmap", alpha: 1, ri: true,
+        source: "senza", alpha: 1, ri: true,
         onClick(args) {
             if (this.alpha == 1 && !prot) {
                 for (x in map.map) {
@@ -574,7 +573,7 @@ scenes.mapmaker = () => {
 
     expandMapButtons.push(controls.image({
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
-        source: "newmap", alpha: 1, ri: true,
+        source: "senza", alpha: 1, ri: true,
         onClick(args) {
             if (this.alpha == 1 && !prot) {
                 map.map.shift();
