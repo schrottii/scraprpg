@@ -769,7 +769,7 @@ scenes.mapmaker = () => {
     }));
     mapInfoControls.push(controls.button({
         anchor: [0.4, 0.325], sizeAnchor: [0.2, 0.1],
-        text: "Weather Strength: " + map.weather, alpha: 0,
+        text: "Weather Strength: " + map.weatherStrength, alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
                 let newWeather = prompt("New weather strength? (default is 1)");
@@ -791,6 +791,33 @@ scenes.mapmaker = () => {
                     this.text = "Worldmode: OFF";
                     map.worldmode = false;
                 }
+            }
+        }
+    }));
+    mapInfoControls.push(controls.button({
+        anchor: [0.7, 0.325], sizeAnchor: [0.2, 0.1],
+        text: "Empty sprite: " + map.tiles.empty.sprite, alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let newSprite = prompt("New empty sprite? (e. g. water1)");
+                if (images["tiles/" + newSprite] != undefined) {
+                    map.tiles.empty.sprite = newSprite;
+                    this.text = "Empty sprite: " + newSprite;
+                    updateTiles = true;
+                }
+                else {
+                    alert("Error: Does not exist!")
+                }
+            }
+        }
+    }));
+    mapInfoControls.push(controls.button({
+        anchor: [0.7, 0.45], sizeAnchor: [0.2, 0.1],
+        text: "Max. enemies: " + map.maxEnemies, alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                map.maxEnemies = Math.max(0, Math.round(prompt("New max.? (e. g. 8)")));
+                this.text = "Max. enemies: " + map.maxEnemies;
             }
         }
     }));
