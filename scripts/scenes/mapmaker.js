@@ -111,6 +111,7 @@ scenes.mapmaker = () => {
     let tileOccupied = "";
 
     let layerVisi = [1, 1, 1];
+    let enableAnimations = false;
 
     var undoLog = [];
     var redoLog = [];
@@ -774,6 +775,7 @@ scenes.mapmaker = () => {
                 currentMapText.alpha = 0;
                 toggleMapInfoButton.alpha = 0;
                 backButton.alpha = 0;
+                toggleAnimate.alpha = 0;
                 this.alpha = 0.5;
             }
             else {
@@ -789,7 +791,27 @@ scenes.mapmaker = () => {
                 currentMapText.alpha = 1;
                 toggleMapInfoButton.alpha = 1;
                 backButton.alpha = 1;
+                toggleAnimate.alpha = 1;
                 this.alpha = 1;
+            }
+        },
+        alpha: 1,
+    });
+
+    let toggleAnimate = controls.button({
+        anchor: [0.02, 0.7], sizeAnchor: [0.05, 0.045],
+        text: "ani:off",
+        onClick(args) {
+            if (this.alpha == 1) {
+                if (this.text == "ani:off") {
+                    enableAnimations = true;
+                    this.text = "ani:on";
+                }
+                else {
+                    enableAnimations = false;
+                    this.text = "ani:off";
+                }
+                updateTiles = true;
             }
         },
         alpha: 1,
@@ -958,7 +980,7 @@ scenes.mapmaker = () => {
         anchor: [0.5, 0.15], offset: [0, 80],
         text: "water1", alpha: 0,
     }));
-    for (t = 0; t < 5; t++) {
+    for (t = 0; t < 6; t++) {
         tileInfoControls.push(controls.label({
             anchor: [0.5, 0.2 + (0.05 * t)], offset: [0, 80],
             text: "ERROR", alpha: 0,
@@ -1220,7 +1242,7 @@ scenes.mapmaker = () => {
 
         //if (layer == "map") def = "002";
 
-        if (mode == "place" || mode == "moveandplace" || umode == "copy") {
+        if (mode == "place" || mode == "moveandplace" || umode == "undo" || umode == "copy") {
             if (tileToPlace == "none") {
                 tileToPlace = ttp;
             }
@@ -1292,8 +1314,9 @@ scenes.mapmaker = () => {
         tileInfoControls[6].text = "ID: " + selectedTileID;
         tileInfoControls[7].text = "Layer: " + layer + " (" + l + "/3)";
         tileInfoControls[8].text = "Occupied: " + (selectedTile.occupied == undefined ? "not" : selectedTile.occupied);
-        tileInfoControls[9].text = "Teleport: " + (selectedTile.teleport == undefined ? "not" : selectedTile.teleport);
-        tileInfoControls[10].text = "Swim: " + (selectedTile.swim == undefined ? "not" : selectedTile.swim);
+        tileInfoControls[9].text = "Animated: " + (selectedTile.ani == undefined ? "not" : selectedTile.ani);
+        tileInfoControls[10].text = "Teleport: " + (selectedTile.teleport == undefined ? "not" : selectedTile.teleport);
+        tileInfoControls[11].text = "Swim: " + (selectedTile.swim == undefined ? "not" : selectedTile.swim);
         for (tic in tileInfoControls) {
             tileInfoControls[tic].alpha = 1;
         }
@@ -1460,6 +1483,21 @@ scenes.mapmaker = () => {
             }
             zswm = (zoom * scale) / wm;
 
+            if (enableAnimations) {
+                animateTime = (animateTime + delta / 1000) % 2;
+
+                for (ti in tiles_fg) {
+                    if (tiles_bg[ti].ani != undefined) {
+                        tiles_bg[ti].snip = [Math.floor(tiles_bg[ti].ani[0] * (animateTime / 2)) * (32 * tiles_bg[ti].ani[1]) + tiles_bg[ti].isnip[0], tiles_bg[ti].isnip[1], 32, 32];
+                    }
+                    if (tiles_bg2[ti].ani != undefined) {
+                        tiles_bg2[ti].snip = [Math.floor(tiles_bg2[ti].ani[0] * (animateTime / 2)) * (32 * tiles_bg2[ti].ani[1]) + tiles_bg2[ti].isnip[0], tiles_bg2[ti].isnip[1], 32, 32];
+                    }
+                    if (tiles_fg[ti].ani != undefined) {
+                        tiles_fg[ti].snip = [Math.floor(tiles_fg[ti].ani[0] * (animateTime / 2)) * (32 * tiles_fg[ti].ani[1]) + tiles_fg[ti].isnip[0], tiles_fg[ti].isnip[1], 32, 32];
+                    }
+                }
+            }
 
             if (game.position[0] != prePos[0] || game.position[1] != prePos[1] || updateTiles) {
                 updateTiles = false;
@@ -1520,6 +1558,14 @@ scenes.mapmaker = () => {
                                 tiles_bg[b].source = "tiles/" + getTile(map, x, y).sprite;
                                 tiles_bg[b].snip = false;
                             }
+                            // Animate stuff
+                            if (getTile(map, x, y).ani != undefined && enableAnimations) {
+                                tiles_bg[b].isnip = [getTile(map, x, y).snip[0] * 32, getTile(map, x, y).snip[1] * 32, 32, 32];
+                                tiles_bg[b].ani = getTile(map, x, y).ani;
+                            }
+                            else {
+                                tiles_bg[b].ani = undefined;
+                            }
                         }
                         else {
                             tiles_bg[b].source = "tiles/" + map.tiles.empty.sprite;
@@ -1547,6 +1593,14 @@ scenes.mapmaker = () => {
                                 tiles_bg2[b2].source = "tiles/" + getTile(map, x, y, 2).sprite;
                                 tiles_bg2[b2].snip = false;
                             }
+                            // Animate stuff
+                            if (getTile(map, x, y, 2).ani != undefined && enableAnimations) {
+                                tiles_bg2[b2].isnip = [getTile(map, x, y, 2).snip[0] * 32, getTile(map, x, y, 2).snip[1] * 32, 32, 32];
+                                tiles_bg2[b2].ani = getTile(map, x, y, 2).ani;
+                            }
+                            else {
+                                tiles_bg2[b2].ani = undefined;
+                            }
                             tiles_bg2[b2].alpha = layerVisi[1];
                         }
                     }
@@ -1564,6 +1618,14 @@ scenes.mapmaker = () => {
                             else {
                                 tiles_fg[t].source = "tiles/" + getTile(map, x, y, 3).sprite;
                                 tiles_fg[t].snip = false;
+                            }
+                            // Animate stuff
+                            if (getTile(map, x, y, 3).ani != undefined && enableAnimations) {
+                                tiles_fg[t].isnip = [getTile(map, x, y, 3).snip[0] * 32, getTile(map, x, y, 3).snip[1] * 32, 32, 32];
+                                tiles_fg[t].ani = getTile(map, x, y, 3).ani;
+                            }
+                            else {
+                                tiles_fg[t].ani = undefined;
                             }
                             tiles_fg[t].alpha = layerVisi[2];
                         }
@@ -1589,7 +1651,7 @@ scenes.mapmaker = () => {
         // Controls
         controls: [
             ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg, ...expandMapButtons,
-            ...walkPad, middlei, currentMapText, backButton, toggleMapInfoButton, eyeButton, ...modeButtons,
+            ...walkPad, middlei, currentMapText, backButton, toggleMapInfoButton, eyeButton, toggleAnimate, ...modeButtons,
             ...tilesMenuControls, ...undoButtons, ...loadMapButtons, ...createTileButtons, ...tilesMenuTiles, ...mapInfoControls, ...tileInfoControls,
         ],
         name: "mapmaker"
