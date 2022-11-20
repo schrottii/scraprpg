@@ -72,6 +72,7 @@ let images = {
     redo: "data/images/mm/forward.png",
     copy: "data/images/mm/copy.png",
     paste: "data/images/mm/paste.png",
+    selectedtile: "data/images/mm/selected-tile.png",
 
     // Animations
     tokenattack: "data/images/token-animation.png",

@@ -776,7 +776,7 @@ scenes.mapmaker = () => {
 
     let middlei = controls.image({
         anchor: [0.5, 0.5], sizeOffset: [zswm, zswm],
-        source: "grid",
+        source: "selectedtile",
         alpha: 1,
     });
 
