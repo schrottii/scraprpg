@@ -121,16 +121,14 @@ scenes.mapmaker = () => {
         anchor: [0, 0], sizeAnchor: [1, 0], sizeOffset: [0, 96],
         fill: "brown", alpha: 0.8,
         onClick(args) {
-            prot = true;
-            prott = 100;
+            protect();
         }
     }));
     modeButtons.push(controls.rect({
         anchor: [0, 0], sizeAnchor: [0.15, 0], sizeOffset: [0, 32], offset: [0, 96],
         fill: "brown", alpha: 0.8,
         onClick(args) {
-            prot = true;
-            prott = 100;
+            protect();
         }
     }));
     for (i = 0; i < 3; i++) {
@@ -591,9 +589,11 @@ scenes.mapmaker = () => {
             }
         },
         onClick(args) {
+            if (this.alpha == 1) {
             protect();
             this.snip[0] = 0;
-            pad = "";
+                pad = "";
+            }
         }
     }));
     walkPad.push(controls.image({ // Middle
@@ -607,7 +607,9 @@ scenes.mapmaker = () => {
             }
         },
         onClick(args) {
-            protect();
+            if (this.alpha == 1) {
+                protect();
+            }
         }
     }));
     walkPad.push(controls.image({ // Down
@@ -622,9 +624,11 @@ scenes.mapmaker = () => {
             }
         },
         onClick(args) {
+            if (this.alpha == 1) {
             protect();
             this.snip[0] = 0;
-            pad = "";
+                pad = "";
+            }
         }
     }));
     walkPad.push(controls.image({ // Left
@@ -639,9 +643,11 @@ scenes.mapmaker = () => {
             }
         },
         onClick(args) {
+            if (this.alpha == 1) {
             protect();
             this.snip[0] = 0;
-            pad = "";
+                pad = "";
+            }
         }
     }));
     walkPad.push(controls.image({ // Right
@@ -656,9 +662,11 @@ scenes.mapmaker = () => {
             }
         },
         onClick(args) {
-            protect();
-            this.snip[0] = 0;
-            pad = "";
+            if (this.alpha == 1) {
+                protect();
+                this.snip[0] = 0;
+                pad = "";
+            }
         }
     }));
 
@@ -688,8 +696,10 @@ scenes.mapmaker = () => {
                 for (mi in mapInfoControls) {
                     mapInfoControls[mi].alpha = 0;
                 }
-                for (w in walkPad) {
-                    walkPad[w].alpha = 1;
+                if (mode == "move" || mode == "moveandplace") {
+                    for (w in walkPad) {
+                        walkPad[w].alpha = 1;
+                    }
                 }
             }
         },
@@ -934,8 +944,8 @@ scenes.mapmaker = () => {
 
     function hideOtherModes(thisMode) {
         for (m in modeButtons) {
-            if (modeButtons[m].setmode == undefined || modeButtons[m].setmode != thisMode) modeButtons[m].alpha = 1;
-            else modeButtons[m].alpha = 0;
+            if ((modeButtons[m].setmode == undefined || modeButtons[m].setmode != thisMode) && modeButtons[m].alpha != 0.5) modeButtons[m].alpha = 1;
+            else if (modeButtons[m].alpha != 0.5) modeButtons[m].alpha = 0;
         }
     }
 
@@ -1032,10 +1042,8 @@ scenes.mapmaker = () => {
     }
 
     function protect() {
-        if (mode == "moveandplace") {
-            prot = true;
-            prott = 100;
-        }
+        prot = true;
+        prott = 100;
     }
 
     function placeTile(x, y, layer, tileToPlace="none", umode="default") {
@@ -1045,7 +1053,6 @@ scenes.mapmaker = () => {
 
         let mp = map[layer][y];
         let def = "---";
-
 
         //if (layer == "map") def = "002";
 
@@ -1089,8 +1096,7 @@ scenes.mapmaker = () => {
         let mp = map[layer][y];
 
         if (mode == "erase" && mp != undefined && x * 4 <= mp.length) {
-            if(layer == "map") map[layer][y] = mp.substr(0, x * 4) + "002 " + mp.substr((1 + x) * 4);
-            else map[layer][y] = mp.substr(0, x * 4) + "--- " + mp.substr((1 + x) * 4);
+            map[layer][y] = mp.substr(0, x * 4) + "--- " + mp.substr((1 + x) * 4);
             map[layer][y] = map[layer][y].replace(/  /gi, " ");
             updateTiles = true;
         }
