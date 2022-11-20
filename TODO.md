@@ -1,5 +1,5 @@
 ﻿##TODO:
-3+2 Things left to do in this phase
+2+2 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
@@ -12,7 +12,6 @@ The current phase, focus on Map Maker and preparing for the first chapter. Trans
 Nov 2022 - (still going)
 
 - MAP MAKER
-  - Placing items
   - Dialogues
 - Overworld quests (Side quests, NOT main story objectives)
 

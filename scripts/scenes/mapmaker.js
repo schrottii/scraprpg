@@ -125,6 +125,7 @@ scenes.mapmaker = () => {
 
     game.position = [4, 4];
     let prePos = [-3483493, 934030];
+    let currInfo = [0, 0, 1];
 
     modeButtons.push(controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 0], sizeOffset: [0, 96],
@@ -957,6 +958,11 @@ scenes.mapmaker = () => {
     tileInfoControls.push(controls.rect({
         anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.6],
         fill: colors.buttonbottompressed, alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                protect();
+            }
+        }
     }));
     tileInfoControls.push(controls.rect({
         anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.6], offset: [8, 8], sizeOffset: [-16, -16],
@@ -987,12 +993,38 @@ scenes.mapmaker = () => {
         anchor: [0.5, 0.15], offset: [0, 80],
         text: "water1", alpha: 0,
     }));
-    for (t = 0; t < 6; t++) {
+    for (t = 0; t < 7; t++) {
         tileInfoControls.push(controls.label({
             anchor: [0.5, 0.2 + (0.05 * t)], offset: [0, 80],
             text: "ERROR", alpha: 0,
         }));
     }
+    tileInfoControls.push(controls.image({
+        anchor: [0.05, 0.5], sizeOffset: [64, 64], offset: [40, 40],
+        source: "tiles/water1", alpha: 0,
+    }));
+
+    tileInfoControls.push(controls.button({
+        anchor: [0.4, 0.625], sizeAnchor: [0.2, 0.1],
+        text: "Place item here", alpha: 0,
+        onClick(args) {
+            let itemToPlace = prompt("Desired item name? (the one defined in items, e. g. revive)");
+            let amount = prompt("Desired item amount? (e. g. 1)");
+            if (items[itemToPlace] == undefined) {
+                alert("Does not exist!");
+            }
+            else {
+                if (amount == "") amount = 1;
+                if (map.items == undefined) {
+                    map.items = [];
+                }
+                map.items.push([currInfo[0], currInfo[1], itemToPlace, parseInt(amount), true]);
+                // Update
+                tileInfo(currInfo[0], currInfo[1], ["map", "mapbg2", "mapfg"][currInfo[2] - 1]);
+                updateTiles = true;
+            }
+        }
+    }));
 
     function loadNPCs() {
         activenpcs = [];
@@ -1299,9 +1331,12 @@ scenes.mapmaker = () => {
         if (x < 0 || y < 0) {
             return false;
         }
+
         let l = 1;
         if (layer == "mapbg2") l = 2;
         if (layer == "mapfg") l = 3;
+
+        currInfo = [x, y, l];
 
         let selectedTile = getTile(map, x, y, l);
         if (selectedTile == undefined) selectedTile = map.tiles.empty;
@@ -1324,6 +1359,17 @@ scenes.mapmaker = () => {
         tileInfoControls[9].text = "Animated: " + (selectedTile.ani == undefined ? "not" : selectedTile.ani);
         tileInfoControls[10].text = "Teleport: " + (selectedTile.teleport == undefined ? "not" : selectedTile.teleport);
         tileInfoControls[11].text = "Swim: " + (selectedTile.swim == undefined ? "not" : selectedTile.swim);
+
+        // Item display
+        let thisTilesItem;
+        for (i in map.items) {
+            if (map.items[i][0] == x && map.items[i][1] == y) thisTilesItem = map.items[i];
+        }
+        tileInfoControls[12].text = "Item: " + (thisTilesItem == undefined ? "not" : map.items[i][2] + " x" + map.items[i][3]);
+        if (thisTilesItem != undefined) tileInfoControls[13].source = "items/" + items[map.items[i][2]]().source;
+        else tileInfoControls[13].source = "gear";
+
+        // Show it all
         for (tic in tileInfoControls) {
             tileInfoControls[tic].alpha = 1;
         }
