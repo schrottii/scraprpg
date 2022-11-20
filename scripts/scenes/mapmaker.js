@@ -78,6 +78,7 @@ scenes.mapmaker = () => {
     let expandMapButtons = [];
     let undoButtons = [];
     let mapInfoControls = [];
+    let tileInfoControls = [];
 
     let pageWidth = 1;
     let pageSize = 1;
@@ -125,7 +126,7 @@ scenes.mapmaker = () => {
         }
     }));
     modeButtons.push(controls.rect({
-        anchor: [0, 0], sizeAnchor: [0.15, 0], sizeOffset: [0, 32], offset: [0, 96],
+        anchor: [0, 0], sizeAnchor: [0.015, 0], sizeOffset: [72 * 3 - 5, 32], offset: [0, 96],
         fill: "brown", alpha: 0.8,
         onClick(args) {
             protect();
@@ -179,6 +180,13 @@ scenes.mapmaker = () => {
         source: "movenplace", alpha: 1, setmode: "moveandplace",
         onClick(args) {
             moveAndPlaceMode();
+        }
+    }));
+    modeButtons.push(controls.image({
+        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 7, 0],
+        source: "tilemode", alpha: 1, setmode: "tile",
+        onClick(args) {
+            tileMode();
         }
     }));
     modeButtons.push(controls.rect({
@@ -477,16 +485,18 @@ scenes.mapmaker = () => {
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
         source: "newmap", alpha: 1, ri: true,
         onClick(args) {
-            for (x in map.map) {
-                map.map[x] = "--- " + map.map[x];
+            if (this.alpha == 1 && !prot) {
+                for (x in map.map) {
+                    map.map[x] = "--- " + map.map[x];
+                }
+                for (x in map.mapbg2) {
+                    map.mapbg2[x] = "--- " + map.mapbg2[x];
+                }
+                for (x in map.mapfg) {
+                    map.mapfg[x] = "--- " + map.mapfg[x];
+                }
+                newMap();
             }
-            for (x in map.mapbg2) {
-                map.mapbg2[x] = "--- " + map.mapbg2[x];
-            }
-            for (x in map.mapfg) {
-                map.mapfg[x] = "--- " + map.mapfg[x];
-            }
-            newMap();
         }
     }));
 
@@ -494,11 +504,13 @@ scenes.mapmaker = () => {
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
         source: "newmap", alpha: 1, ri: true,
         onClick(args) {
-            map.map.unshift("---");
-            map.mapbg2.unshift("---");
-            map.mapfg.unshift("---");
-            updateTiles = true;
-            newMap();
+            if (this.alpha == 1 && !prot) {
+                map.map.unshift("---");
+                map.mapbg2.unshift("---");
+                map.mapfg.unshift("---");
+                updateTiles = true;
+                newMap();
+            }
         }
     }));
 
@@ -506,16 +518,18 @@ scenes.mapmaker = () => {
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
         source: "newmap", alpha: 1, ri: true,
         onClick(args) {
-            for (x in map.map) {
-                map.map[x] = map.map[x].slice(4);
+            if (this.alpha == 1 && !prot) {
+                for (x in map.map) {
+                    map.map[x] = map.map[x].slice(4);
+                }
+                for (x in map.mapbg2) {
+                    map.mapbg2[x] = map.mapbg2[x].slice(4);
+                }
+                for (x in map.mapfg) {
+                    map.mapfg[x] = map.mapfg[x].slice(4);
+                }
+                newMap();
             }
-            for (x in map.mapbg2) {
-                map.mapbg2[x] = map.mapbg2[x].slice(4);
-            }
-            for (x in map.mapfg) {
-                map.mapfg[x] = map.mapfg[x].slice(4);
-            }
-            newMap();
         }
     }));
 
@@ -523,11 +537,13 @@ scenes.mapmaker = () => {
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
         source: "newmap", alpha: 1, ri: true,
         onClick(args) {
-            map.map.shift();
-            map.mapbg2.shift();
-            map.mapfg.shift();
-            updateTiles = true;
-            newMap();
+            if (this.alpha == 1 && !prot) {
+                map.map.shift();
+                map.mapbg2.shift();
+                map.mapfg.shift();
+                updateTiles = true;
+                newMap();
+            }
         }
     }));
 
@@ -716,7 +732,7 @@ scenes.mapmaker = () => {
     }));
     mapInfoControls.push(controls.label({
         anchor: [0.5, 0.15],
-        text: "Map Info / Details", alpha: 0,
+        text: "Map Info / Settings", alpha: 0,
     }));
     mapInfoControls.push(controls.button({
         anchor: [0.1, 0.2], sizeAnchor: [0.2, 0.1],
@@ -835,6 +851,46 @@ scenes.mapmaker = () => {
         source: "selectedtile",
         alpha: 1,
     });
+
+    tileInfoControls.push(controls.rect({
+        anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.6],
+        fill: colors.buttonbottompressed, alpha: 0,
+    }));
+    tileInfoControls.push(controls.rect({
+        anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.6], offset: [8, 8], sizeOffset: [-16, -16],
+        fill: colors.buttontoppressed, alpha: 0,
+    }));
+    tileInfoControls.push(controls.button({
+        anchor: [0.95, 0.15], sizeOffset: [64, 40], offset: [-64, 0],
+        text: "X", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                protect();
+                for (tic in tileInfoControls) {
+                    tileInfoControls[tic].alpha = 0;
+                }
+            }
+        }
+    }));
+    tileInfoControls.push(controls.label({
+        anchor: [0.5, 0.15],
+        text: "Tile Info", alpha: 0,
+    }));
+
+    tileInfoControls.push(controls.image({
+        anchor: [0.05, 0.15], sizeOffset: [64, 64], offset: [40, 40],
+        source: "tiles/water1", alpha: 0,
+    }));
+    tileInfoControls.push(controls.label({
+        anchor: [0.5, 0.15], offset: [0, 80],
+        text: "water1", alpha: 0,
+    }));
+    for (t = 0; t < 5; t++) {
+        tileInfoControls.push(controls.label({
+            anchor: [0.5, 0.2 + (0.05 * t)], offset: [0, 80],
+            text: "ERROR", alpha: 0,
+        }));
+    }
 
     function loadNPCs() {
         activenpcs = [];
@@ -971,8 +1027,8 @@ scenes.mapmaker = () => {
 
     function hideOtherModes(thisMode) {
         for (m in modeButtons) {
-            if ((modeButtons[m].setmode == undefined || modeButtons[m].setmode != thisMode) && modeButtons[m].alpha != 0.5) modeButtons[m].alpha = 1;
-            else if (modeButtons[m].alpha != 0.5) modeButtons[m].alpha = 0;
+            if ((modeButtons[m].setmode == undefined || modeButtons[m].setmode != thisMode) && (modeButtons[m].alpha == 0 || modeButtons[m].alpha == 1)) modeButtons[m].alpha = 1;
+            else if (modeButtons[m].alpha == 0 || modeButtons[m].alpha == 1) modeButtons[m].alpha = 0;
         }
     }
 
@@ -1006,6 +1062,14 @@ scenes.mapmaker = () => {
             walkPad[w].alpha = 1;
         }
         hideOtherModes("moveandplace");
+    }
+
+    function tileMode() {
+        mode = "tile";
+        for (w in walkPad) {
+            walkPad[w].alpha = 1;
+        }
+        hideOtherModes("tile");
     }
 
     function openTilesMenu() {
@@ -1129,6 +1193,39 @@ scenes.mapmaker = () => {
         }
     }
 
+    function tileInfo(x, y, layer) {
+        if (x < 0 || y < 0) {
+            return false;
+        }
+        let l = 1;
+        if (layer == "mapbg2") l = 2;
+        if (layer == "mapfg") l = 3;
+
+        let selectedTile = getTile(map, x, y, l);
+        if (selectedTile == undefined) selectedTile = map.tiles.empty;
+        let selectedTileID = "empty";
+        if (map[layer][y] != undefined) selectedTileID = map[layer][y].substr(x * 4, 3);
+
+        if (selectedTile.set != undefined) {
+            tileInfoControls[4].source = "tilesets/" + selectedTile.set;
+            tileInfoControls[4].snip = [selectedTile.snip[0] * 32, selectedTile.snip[1] * 32, 32, 32];
+            tileInfoControls[5].text = "Set: " + selectedTile.set;
+        }
+        else {
+            tileInfoControls[4].source = "tiles/" + selectedTile.sprite;
+            tileInfoControls[4].snip = [0, 0, 32, 32];
+            tileInfoControls[5].text = "Sprite: " + selectedTile.sprite;
+        }
+        tileInfoControls[6].text = "ID: " + selectedTileID;
+        tileInfoControls[7].text = "Layer: " + layer + " (" + l + "/3)";
+        tileInfoControls[8].text = "Occupied: " + (selectedTile.occupied == undefined ? "not" : selectedTile.occupied);
+        tileInfoControls[9].text = "Teleport: " + (selectedTile.teleport == undefined ? "not" : selectedTile.teleport);
+        tileInfoControls[10].text = "Swim: " + (selectedTile.swim == undefined ? "not" : selectedTile.swim);
+        for (tic in tileInfoControls) {
+            tileInfoControls[tic].alpha = 1;
+        }
+    }
+
     for (i = 0; i < 800; i++) {
         tiles_bg.push(controls.image({
             offset: [-1000, -1000], sizeOffset: [2, 2],
@@ -1139,6 +1236,7 @@ scenes.mapmaker = () => {
                 if (!prot) {
                     if (editingLayer == 0) {
                         if (mode == "erase") eraseTile(this.pos[0], this.pos[1], "map");
+                        else if (mode == "tile") tileInfo(this.pos[0], this.pos[1], "map");
                         else placeTile(this.pos[0], this.pos[1], "map");
                     }
                 }
@@ -1152,6 +1250,7 @@ scenes.mapmaker = () => {
                 if (!prot) {
                     if (editingLayer == 1) {
                         if (mode == "erase") eraseTile(this.pos[0], this.pos[1], "mapbg2");
+                        else if (mode == "tile") tileInfo(this.pos[0], this.pos[1], "mapbg2");
                         else placeTile(this.pos[0], this.pos[1], "mapbg2");
                     }
                 }
@@ -1165,6 +1264,7 @@ scenes.mapmaker = () => {
                 if (!prot) {
                     if (editingLayer == 2) {
                         if (mode == "erase") eraseTile(this.pos[0], this.pos[1], "mapfg");
+                        else if (mode == "tile") tileInfo(this.pos[0], this.pos[1], "mapfg");
                         else placeTile(this.pos[0], this.pos[1], "mapfg");
                     }
                 }
@@ -1213,7 +1313,6 @@ scenes.mapmaker = () => {
                         map = lmresult;
                         if (map.map == undefined) {
                             map.map = ["--- --- 001 001 001", "--- --- 001 001 001", "--- --- 001 001 001"];
-                            console.log(map);
                         }
                         if (map.mapbg2 == undefined) {
                             map.mapbg2 = ["--- --- ---", "--- --- ---", "--- --- ---"];
@@ -1229,7 +1328,7 @@ scenes.mapmaker = () => {
             }
 
 
-            if (!kofs[2] && canMove == true && (mode == "move" || mode == "moveandplace")) {
+            if (!kofs[2] && canMove == true && (mode == "move" || mode == "moveandplace" || mode == "tile")) {
                 let xo;
                 let yo;
                 if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up")) {
@@ -1418,7 +1517,7 @@ scenes.mapmaker = () => {
         controls: [
             ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg, ...expandMapButtons,
             ...walkPad, middlei, currentMapText, backButton, toggleMapInfoButton, ...modeButtons,
-            ...tilesMenuControls, ...undoButtons, ...loadMapButtons, ...createTileButtons, ...tilesMenuTiles, ...mapInfoControls,
+            ...tilesMenuControls, ...undoButtons, ...loadMapButtons, ...createTileButtons, ...tilesMenuTiles, ...mapInfoControls, ...tileInfoControls,
         ],
         name: "mapmaker"
     }

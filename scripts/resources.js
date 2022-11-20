@@ -74,6 +74,7 @@ let images = {
     paste: "data/images/mm/paste.png",
     selectedtile: "data/images/mm/selected-tile.png",
     eye: "data/images/mm/eye.png",
+    tilemode: "data/images/mm/tilemode.png",
 
     // Animations
     tokenattack: "data/images/token-animation.png",
