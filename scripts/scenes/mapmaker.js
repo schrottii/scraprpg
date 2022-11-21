@@ -769,6 +769,7 @@ scenes.mapmaker = () => {
         anchor: [0.02, 0.775], sizeAnchor: [0.05, 0.045],
         source: "eye",
         onClick(args) {
+            protect();
             if (this.alpha == 1) {
                 for (m in modeButtons) {
                     modeButtons[m].va = modeButtons[m].alpha;
@@ -1008,20 +1009,22 @@ scenes.mapmaker = () => {
         anchor: [0.4, 0.625], sizeAnchor: [0.2, 0.1],
         text: "Place item here", alpha: 0,
         onClick(args) {
-            let itemToPlace = prompt("Desired item name? (the one defined in items, e. g. revive)");
-            let amount = prompt("Desired item amount? (e. g. 1)");
-            if (items[itemToPlace] == undefined) {
-                alert("Does not exist!");
-            }
-            else {
-                if (amount == "") amount = 1;
-                if (map.items == undefined) {
-                    map.items = [];
+            if (this.alpha == 1) {
+                let itemToPlace = prompt("Desired item name? (the one defined in items, e. g. revive)");
+                let amount = prompt("Desired item amount? (e. g. 1)");
+                if (items[itemToPlace] == undefined) {
+                    alert("Does not exist!");
                 }
-                map.items.push([currInfo[0], currInfo[1], itemToPlace, parseInt(amount), true]);
-                // Update
-                tileInfo(currInfo[0], currInfo[1], ["map", "mapbg2", "mapfg"][currInfo[2] - 1]);
-                updateTiles = true;
+                else {
+                    if (amount == "") amount = 1;
+                    if (map.items == undefined) {
+                        map.items = [];
+                    }
+                    map.items.push([currInfo[0], currInfo[1], itemToPlace, parseInt(amount), true]);
+                    // Update
+                    tileInfo(currInfo[0], currInfo[1], ["map", "mapbg2", "mapfg"][currInfo[2] - 1]);
+                    updateTiles = true;
+                }
             }
         }
     }));
