@@ -159,6 +159,9 @@ let images = {
     // Tiles
     "tiles/grass1": "data/images/tiles/grass1.png",
     "tiles/grass2": "data/images/tiles/grass2.png",
+    "tiles/GrassV2: "data/images/tiles/GrassV2.png",
+    "tiles/BricksV2: "data/images/tiles/BricksV2.png",
+    "tiles/Test: "data/images/tiles/Test.png",
     "tiles/sand1": "data/images/tiles/sand1.png",
     "tiles/sand2": "data/images/tiles/sand2.png",
     "tiles/water1": "data/images/tiles/water1.png",
