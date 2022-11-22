@@ -189,7 +189,7 @@ function onCanvasPointerDown(e) {
         let red = 1;
         //if (con.offset == undefined) console.trace();
 
-        if (isLs()) red = 2;
+        if (isLs() && !scene.controls[a].ri) red = 2;
 
         offsetX = con.offset[0] / red + con.anchor[0] * mainCanvas.width;
         offsetY = con.offset[1] / red + con.anchor[1] * mainCanvas.height;
@@ -229,7 +229,7 @@ function onCanvasPointerUp(e) {
         let red = 1;
         if (con.offset == undefined) console.trace();
 
-        if (isLs()) red = 2;
+        if (isLs() && !scene.controls[a].ri) red = 2;
 
         offsetX = con.offset[0] / red + con.anchor[0] * mainCanvas.width;
         offsetY = con.offset[1] / red + con.anchor[1] * mainCanvas.height;

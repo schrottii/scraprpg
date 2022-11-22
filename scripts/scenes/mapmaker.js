@@ -952,6 +952,7 @@ scenes.mapmaker = () => {
 
     let middlei = controls.image({
         anchor: [0.5, 0.5], sizeOffset: [zswm, zswm],
+        ri: true,
         source: "selectedtile",
         alpha: 1,
     });
@@ -1625,15 +1626,20 @@ scenes.mapmaker = () => {
                         }
                         else {
                             tiles_bg[b].source = "tiles/" + map.tiles.empty.sprite;
+                            tiles_bg[b].snip = false;
+                            tiles_bg[b].ani = undefined;
+                            tiles_bg[b].alpha = 1;
                         }
-                        tiles_bg[b].pos = [x, y];
                     }
                     else if (map.tiles.empty) {
                         if (x == -1) tiles_bg[b].source = "tiles/border";
                         else if (y == -1) tiles_bg[b].source = "tiles/border2";
                         else tiles_bg[b].source = "tiles/" + map.tiles.empty.sprite;
-                        tiles_bg[b].pos = [x, y];
+                        tiles_bg[b].snip = false;
+                        tiles_bg[b].ani = undefined;
+                        tiles_bg[b].alpha = 1;
                     }
+                    tiles_bg[b].pos = [x, y];
 
                     b2 += 1;
                     tiles_bg2[b2].offset = [(zoom * scale * (x - ofsX) - ((zoom - 1) * scale * (width / 2))) - ((width * scale) / 2), (zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7)) - (height / 2)];
