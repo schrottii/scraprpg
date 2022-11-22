@@ -413,7 +413,7 @@ scenes.mapmaker = () => {
         text: "Set Snip", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                tileSetSnip = prompt('New map tile set snip? X.Y (e. g. 1.1)');
+                tileSetSnip = prompt('New map tile set snip? X.Y (e. g. 1.2  - 0.0 for top left)');
                 this.text = "Set Snip: " + tileSetSnip;
             }
         }

@@ -1076,6 +1076,7 @@ scenes.game = () => {
 
                 }
 
+                enemies = [];
                 game.map = themap.teleport[0];
                 loadNPCs();
                 loadAreaMusic(previousmap);
