@@ -6,8 +6,17 @@ var commontiles = {
     "000": {
         sprite: "grass1",
         },
+    "00A": {
+         sprite: "GrassV2"
+        },
     "001": {
         sprite: "sand1",
+        },
+    "00B": {
+         sprite: "Test"
+        },
+    "00C": {
+         sprite: "BricksV2"
         },
     "002": {
         sprite: "water1",
