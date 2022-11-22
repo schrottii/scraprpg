@@ -735,12 +735,16 @@ scenes.mapmaker = () => {
     for (t = 0; t < 100; t++) {
         tilesMenuTiles.push(controls.image({
             anchor: [0.05, 0.2], offset: [32 + (72 * (t % 25)), 32 + (72 * Math.floor(t / 25))], sizeOffset: [64, 64],
-            source: "gear", alpha: 0,
+            source: "gear", alpha: 0, glowColor: "white", glow: 0,
             // tile: the tile, with sprite, occupied, etc.
             // tileid: 001, 002, etc.
             onClick(args) {
                 if (this.alpha == 1) {
                     ttp = this.tileid;
+                    for (t in tilesMenuTiles) {
+                        tilesMenuTiles[t].glow = 0;
+                    }
+                    this.glow = 25;
                 }
             }
         }));
@@ -1387,6 +1391,7 @@ scenes.mapmaker = () => {
         }
         for (t in tilesMenuTiles) {
             tilesMenuTiles[t].alpha = 0;
+            tilesMenuTiles[t].glow = 0;
         }
         for (t = 0; t < 25; t++) {
             if (tilesMenuTiles[t].offset[0] / red <= width * scale * 0.9) pageWidth = t;
