@@ -1,5 +1,5 @@
 ﻿##TODO:
-2+2 Things left to do in this phase
+3 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
@@ -11,20 +11,21 @@ IT'S DONE!
 The current phase, focus on Map Maker and preparing for the first chapter. Transition between phase 1 and 2.
 Nov 2022 - (still going)
 
-- MAP MAKER
-  - Dialogues
-- Overworld quests (Side quests, NOT main story objectives)
-
-- Finishing the story of chapter 1
-- Creating tiles and their images, that we need for chapter 1
+- Map Maker enemy spawns
+- Map Maker map dialogues
+- Map Maker auto save
 
 ##Phase 2
 The main focus of this phase is creating maps, enemies, the story, etc. - the stuff you play.
 There is still some coding, some new features, but not as much as in phase 1 (Schrottii can finally rest a bit)
 
+- Finishing the story of chapter 1
+- Creating tiles and their images, that we need for chapter 1
 
 Coding stuff to do in phase 2:
 - Startup introduction
+
+- Overworld quests (Side quests, NOT main story objectives)
 
 - Mastery Techs
 - Duo Mastery Techs

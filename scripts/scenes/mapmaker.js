@@ -1413,11 +1413,13 @@ scenes.mapmaker = () => {
             if (til != undefined && (map.tiles[til] == undefined || tileSource == "map")) {
                 if (til != "empty") {
                     if (grb.set != undefined) {
-                        tilesMenuTiles[nr].source = "tilesets/" + grb.set;
+                        if (images["tilesets/" + grb.set] != undefined) tilesMenuTiles[nr].source = "tilesets/" + grb.set;
+                        else tilesMenuTiles[nr].source = "gear";
                         tilesMenuTiles[nr].snip = [grb.snip[0] * 32, grb.snip[1] * 32, 32, 32];
                     }
-                    else {
-                        tilesMenuTiles[nr].source = "tiles/" + grb.sprite;
+                    else{
+                        if (images["tiles/" + grb.sprite] != undefined) tilesMenuTiles[nr].source = "tiles/" + grb.sprite;
+                        else tilesMenuTiles[nr].source = "gear";
                         tilesMenuTiles[nr].snip = false;
                     }
                     tilesMenuTiles[nr].tile = grb;
