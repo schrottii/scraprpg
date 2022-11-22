@@ -1186,7 +1186,7 @@ scenes.mapmaker = () => {
     }));
 
     tileInfoControls.push(controls.button({
-        anchor: [0.4, 0.625], sizeAnchor: [0.2, 0.1],
+        anchor: [0.2, 0.625], sizeAnchor: [0.2, 0.1],
         text: "Place item here", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -1201,6 +1201,28 @@ scenes.mapmaker = () => {
                         map.items = [];
                     }
                     map.items.push([currInfo[0], currInfo[1], itemToPlace, parseInt(amount), true]);
+                    // Update
+                    tileInfo(currInfo[0], currInfo[1], ["map", "mapbg2", "mapfg"][currInfo[2] - 1]);
+                    updateTiles = true;
+                }
+            }
+        }
+    }));
+    tileInfoControls.push(controls.button({
+        anchor: [0.6, 0.625], sizeAnchor: [0.2, 0.1],
+        text: "Remove item", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let thisOne = -1;
+                for (i = 0; i < map.items.length; i++) {
+                    if (map.items[i][0] == currInfo[0] && map.items[i][1] == currInfo[1]) {
+                        // Same coords
+                        thisOne = i;
+                    }
+                }
+
+                if (thisOne != -1) {
+                    map.items.splice(thisOne, 1);
                     // Update
                     tileInfo(currInfo[0], currInfo[1], ["map", "mapbg2", "mapfg"][currInfo[2] - 1]);
                     updateTiles = true;
