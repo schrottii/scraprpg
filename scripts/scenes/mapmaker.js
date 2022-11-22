@@ -375,6 +375,7 @@ scenes.mapmaker = () => {
     createTileButtons.push(controls.button({
         anchor: [0.3, 0.325], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
         text: "Tile Sprite", alpha: 0,
+        fillTop: "red", fillBottom: "darkred",
         onClick(args) {
             if (this.alpha == 1) {
                 tileSprite = prompt('New map tile sprite? (e. g. water1 - must be the name from resources)');
@@ -382,6 +383,13 @@ scenes.mapmaker = () => {
 
                 if (images["tiles/" + tileSprite] != undefined) createTileButtons[7].source = "tiles/" + tileSprite;
                 else createTileButtons[7].source = "gear";
+
+                tileSet = "";
+                createTileButtons[3].text = "Tile Set";
+                createTileButtons[3].fillTop = "darkgray";
+                createTileButtons[3].fillBottom = "gray";
+                this.fillTop = "red";
+                this.fillBottom = "darkred";
             }
         }
     }));
@@ -398,6 +406,7 @@ scenes.mapmaker = () => {
     createTileButtons.push(controls.button({
         anchor: [0.525, 0.325], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
         text: "Tile Set", alpha: 0,
+        fillTop: "red", fillBottom: "darkred",
         onClick(args) {
             if (this.alpha == 1) {
                 tileSet = prompt('New map tile set? (e. g. castle - must be the name from resources)');
@@ -405,6 +414,13 @@ scenes.mapmaker = () => {
 
                 if (images["tilesets/" + tileSet] != undefined) createTileButtons[7].source = "tilesets/" + tileSet;
                 else createTileButtons[7].source = "gear";
+
+                tileSprite = "";
+                createTileButtons[1].text = "Tile Sprite";
+                createTileButtons[1].fillTop = "darkgray";
+                createTileButtons[1].fillBottom = "gray";
+                this.fillTop = "red";
+                this.fillBottom = "darkred";
             }
         }
     }));
@@ -415,6 +431,8 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) {
                 tileSetSnip = prompt('New map tile set snip? X.Y (e. g. 1.2  - 0.0 for top left)');
                 this.text = "Set Snip: " + tileSetSnip;
+
+                if (images["tilesets/" + tileSet] != undefined) createTileButtons[7].snip = [parseInt(tileSetSnip.split(".")[0]) * 32, parseInt(tileSetSnip.split(".")[1]) * 32, 32, 32];
             }
         }
     }));
@@ -448,8 +466,12 @@ scenes.mapmaker = () => {
         fillTop: "red", fillBottom: "darkred",
         onClick(args) {
             if (this.alpha == 1) {
-                if (tileSprite == "" && tileSet == "") {
-                    alert("You have to set a sprite or a set!");
+                if (images["tiles/" + tileSprite] == undefined && images["tilesets/" + tileSet] == undefined) {
+                    alert("You have to set a valid sprite or a set!");
+                    return false;
+                }
+                if (tileID == "" || map.tiles[tileID] != undefined) {
+                    alert("You have to set an ID that does not exist yet!");
                     return false;
                 }
                 try {
