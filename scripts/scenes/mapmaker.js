@@ -83,6 +83,7 @@ scenes.mapmaker = () => {
 
     let createTileButtons = [];
     let createTileBG = [];
+    let createTileInfoBG = [];
     let createTileInfo = [];
     let createTileInfoPage = 0;
     let createTileInfoPageLength = 1;
@@ -384,52 +385,66 @@ scenes.mapmaker = () => {
         text: "Tile Maker", alpha: 0,
     }));
 
-    createTileBG.push(controls.rect({
+    createTileInfoBG.push(controls.rect({
         anchor: [0.05, 0.15], sizeAnchor: [0.2, 0.7],
         fill: colors.buttonbottom, alpha: 0,
         onClick(args) {
             if (this.alpha == 1) protect();
         }
     }));
-    createTileBG.push(controls.rect({
+    createTileInfoBG.push(controls.rect({
         anchor: [0.05, 0.15], sizeAnchor: [0.2, 0.7], offset: [8, 8], sizeOffset: [-16, -16],
         fill: colors.buttontop, alpha: 0,
     }));
-    createTileBG.push(controls.label({
+    createTileInfoBG.push(controls.label({
         anchor: [0.15, 0.15],
         text: "Info", alpha: 0,
     }));
 
-    createTileBG.push(controls.button({
+    createTileInfoBG.push(controls.button({
         anchor: [0.05, 0.15], sizeOffset: [32, 32],
         text: "T", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) renderInfo("t");
         }
     }));
-    createTileBG.push(controls.button({
+    createTileInfoBG.push(controls.button({
         anchor: [0.05, 0.15], sizeOffset: [32, 32], offset: [0, 48 * 1],
         text: "TS", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) renderInfo("ts");
         }
     }));
-    createTileBG.push(controls.button({
+    createTileInfoBG.push(controls.button({
         anchor: [0.05, 0.15], sizeOffset: [32, 32], offset: [0, 48 * 2],
         text: "ID", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) renderInfo("id");
         }
     }));
-    createTileBG.push(controls.button({
+    createTileInfoBG.push(controls.button({
         anchor: [0.05, 0.15], sizeOffset: [32, 32], offset: [0, 48 * 3],
         text: "M", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) renderInfo("m");
         }
     }));
+    createTileInfoBG.push(controls.button({
+        anchor: [0.05, 0.15], sizeOffset: [32, 32], offset: [0, 48 * 4],
+        text: "E", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) renderInfo("e");
+        }
+    }));
+    createTileInfoBG.push(controls.button({
+        anchor: [0.05, 0.15], sizeOffset: [32, 32], offset: [0, 48 * 5],
+        text: "ES", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) renderInfo("es");
+        }
+    }));
 
-    createTileBG.push(controls.button({
+    createTileInfoBG.push(controls.button({
         anchor: [0.25, 0.85], sizeOffset: [32, 32], offset: [-80, -32],
         text: "P-", alpha: 0,
         onClick(args) {
@@ -437,7 +452,7 @@ scenes.mapmaker = () => {
             renderInfo("auto");
         }
     }));
-    createTileBG.push(controls.button({
+    createTileInfoBG.push(controls.button({
         anchor: [0.25, 0.85], sizeOffset: [32, 32], offset: [-32, -32],
         text: "P+", alpha: 0,
         onClick(args) {
@@ -945,11 +960,11 @@ scenes.mapmaker = () => {
     });
 
     mapInfoControls.push(controls.rect({
-        anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.6],
+        anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.7],
         fill: colors.buttonbottompressed, alpha: 0,
     }));
     mapInfoControls.push(controls.rect({
-        anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.6], offset: [8, 8], sizeOffset: [-16, -16],
+        anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.7], offset: [8, 8], sizeOffset: [-16, -16],
         fill: colors.buttontoppressed, alpha: 0,
     }));
     mapInfoControls.push(controls.label({
@@ -1033,7 +1048,7 @@ scenes.mapmaker = () => {
         }
     }));
     mapInfoControls.push(controls.button({
-        anchor: [0.7, 0.325], sizeAnchor: [0.2, 0.1],
+        anchor: [0.7, 0.2], sizeAnchor: [0.2, 0.1],
         text: "Empty sprite: " + map.tiles.empty.sprite, alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -1050,12 +1065,58 @@ scenes.mapmaker = () => {
         }
     }));
     mapInfoControls.push(controls.button({
-        anchor: [0.7, 0.45], sizeAnchor: [0.2, 0.1],
+        anchor: [0.7, 0.325], sizeAnchor: [0.2, 0.1],
         text: "Max. enemies: " + map.maxEnemies, alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                map.maxEnemies = Math.max(0, Math.round(prompt("New max.? (e. g. 8)")));
-                this.text = "Max. enemies: " + map.maxEnemies;
+                if (this.alpha == 1) {
+                    map.maxEnemies = Math.max(0, Math.round(prompt("New max.? (e. g. 8)")));
+                    this.text = "Max. enemies: " + map.maxEnemies;
+                }
+            }
+        }
+    }));
+    mapInfoControls.push(controls.button({
+        anchor: [0.7, 0.45], sizeAnchor: [0.2, 0.1],
+        text: "Show/Hide Info", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                if (createTileInfo[0].alpha == 0) {
+                    showInfo();
+                    renderInfo("es");
+                }
+                else {
+                    hideInfo();
+                }
+            }
+        }
+    }));
+    mapInfoControls.push(controls.button({
+        anchor: [0.7, 0.575], sizeAnchor: [0.2, 0.1],
+        text: "Add spawn", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let newSpawn = prompt("Name?");
+                let newSpawn2 = prompt("Chance? (e. g. 10)");
+                if (newSpawn != "" && newSpawn2 != "") {
+                    if (map.spawns == undefined) map.spawns = {};
+                    map.spawns[newSpawn] = newSpawn2;
+                    renderInfo("es");
+                }
+            }
+        }
+    }));
+    mapInfoControls.push(controls.button({
+        anchor: [0.7, 0.7], sizeAnchor: [0.2, 0.1],
+        text: "Remove spawn", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let killThis = prompt("KILL who?");
+
+                if (map.spawns[killThis] != undefined) {
+                    delete map.spawns[killThis];
+                    renderInfo("es");
+                }
             }
         }
     }));
@@ -1215,15 +1276,8 @@ scenes.mapmaker = () => {
 
             createTileInfoPageLength = 0;
 
-            let red = 1;
-            if (isLs()) red = 2;
+            showInfo();
 
-            for (i in createTileInfo) {
-                if (height * 0.6 * red > i * 20) {
-                    createTileInfoPageLength += 1;
-                    createTileInfo[i].alpha = 1;
-                }
-            }
             addAnimator(function (t) {
                 for (i in createTileButtons) {
                     createTileButtons[i].offset[1] = -600 + t;
@@ -1244,9 +1298,8 @@ scenes.mapmaker = () => {
             for (i in createTileBG) {
                 createTileBG[i].alpha = 0;
             }
-            for (i in createTileInfo) {
-                createTileInfo[i].alpha = 0;
-            }
+            hideInfo();
+
             addAnimator(function (t) {
                 for (i in createTileButtons) {
                     createTileButtons[i].offset[1] = -t;
@@ -1260,6 +1313,30 @@ scenes.mapmaker = () => {
                 }
                 return false;
             })
+        }
+    }
+
+    function showInfo() {
+        let red = 1;
+        if (isLs()) red = 2;
+
+        for (i in createTileInfoBG) {
+            createTileInfoBG[i].alpha = 1;
+        }
+        for (i in createTileInfo) {
+            if (height * 0.6 * red > i * 20) {
+                createTileInfoPageLength += 1;
+                createTileInfo[i].alpha = 1;
+            }
+        }
+    }
+
+    function hideInfo() {
+        for (i in createTileInfoBG) {
+            createTileInfoBG[i].alpha = 0;
+        }
+        for (i in createTileInfo) {
+            createTileInfo[i].alpha = 0;
         }
     }
 
@@ -1285,6 +1362,18 @@ scenes.mapmaker = () => {
                 break;
             case "m":
                 grabFrom = Object.keys(maps);
+                break;
+            case "es":
+                if (map.spawns != undefined) {
+                    let j = 0;
+                    for (i in map.spawns) {
+                        grabFrom.push(Object.keys(map.spawns)[j] + " | " + map.spawns[i]);
+                        j += 1;
+                    }
+                }
+                break;
+            case "e":
+                grabFrom = Object.keys(mapenemies);
                 break;
         }
         for (g = 0; g < 40; g++) {
@@ -1890,7 +1979,7 @@ scenes.mapmaker = () => {
         controls: [
             ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg, ...expandMapButtons,
             ...walkPad, middlei, currentMapText, backButton, toggleMapInfoButton, eyeButton, toggleAnimate, ...modeButtons,
-            ...tilesMenuControls, ...undoButtons, ...loadMapButtons, ...createTileBG, ...createTileInfo, ...createTileButtons, ...tilesMenuTiles, ...mapInfoControls, ...tileInfoControls,
+            ...tilesMenuControls, ...undoButtons, ...loadMapButtons, ...mapInfoControls, ...createTileBG, ...createTileInfoBG, ...createTileInfo, ...createTileButtons, ...tilesMenuTiles, ...tileInfoControls,
         ],
         name: "mapmaker"
     }
