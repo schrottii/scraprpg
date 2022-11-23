@@ -9,15 +9,24 @@ var commontiles = {
     "00A": {
          sprite: "GrassV2"
         },
+    "01A": {
+        sprite: "AshTile"
+    },
     "001": {
         sprite: "sand1",
         },
     "00B": {
          sprite: "Test"
         },
+    "01B": {
+        sprite: "StoneTile"
+    },
     "00C": {
          sprite: "BricksV2"
         },
+    "01C": {
+        sprite: "GrayBrickTile"
+    },
     "002": {
         sprite: "water1",
             occupied: true,
