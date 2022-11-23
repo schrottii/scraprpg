@@ -250,6 +250,7 @@ let images = {
     "tiles/cobblepath": "data/images/tiles/cobblepath.png",
     "tiles/concrete": "data/images/tiles/concrete.png",
     "tiles/soilcliff": "data/images/tiles/soil_cliff.png",
+    "tiles/dirtcliff": "data/images/tiles/dirtcliff.png",
 
 
     "items/brickyleaf": "data/images/items/brickyleaf.png",
