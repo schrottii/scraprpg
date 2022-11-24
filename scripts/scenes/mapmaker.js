@@ -632,7 +632,10 @@ scenes.mapmaker = () => {
         anchor: [0.3, 0.2], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
         text: "Load from file...", alpha: 0,
         onClick(args) {
-            if (this.alpha == 1) showSelect();
+            if (this.alpha == 1) {
+                protect();
+                showSelect();
+            }
         }
     }));
     loadMapButtons.push(controls.button({
@@ -640,6 +643,7 @@ scenes.mapmaker = () => {
         text: "Load from name...", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                protect();
                 let newMapn = prompt("Map name? (e. g. test)");
                 if (maps[newMapn] != undefined) currentMap = newMapn;
                 map = maps[currentMap];
@@ -719,6 +723,9 @@ scenes.mapmaker = () => {
     tilesMenuControls.push(controls.rect({
         anchor: [0.05, 0.2], sizeAnchor: [0.9, 0.4],
         fill: colors.buttonbottom, alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) protect();
+        }
     }));
     tilesMenuControls.push(controls.rect({
         anchor: [0.05, 0.2], sizeAnchor: [0.9, 0.4], offset: [8, 8], sizeOffset: [-16, -16],
@@ -730,6 +737,7 @@ scenes.mapmaker = () => {
         alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                protect();
                 tileSource = "common";
                 openTilesMenu();
             }
@@ -741,6 +749,7 @@ scenes.mapmaker = () => {
         alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                protect();
                 tileSource = "map";
                 openTilesMenu();
             }
@@ -962,6 +971,9 @@ scenes.mapmaker = () => {
     mapInfoControls.push(controls.rect({
         anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.7],
         fill: colors.buttonbottompressed, alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) protect();
+        }
     }));
     mapInfoControls.push(controls.rect({
         anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.7], offset: [8, 8], sizeOffset: [-16, -16],
