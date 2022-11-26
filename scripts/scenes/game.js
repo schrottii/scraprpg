@@ -118,6 +118,7 @@ function openShop(whichone) {
 }
 
 function startDialogue(cd) {
+    if (typeof (cd) == "string") cd = map.dialogues[cd];
     inDialogue = true;
     currentDialogue = cd.lines;
     dialogueType = cd.type;
@@ -342,8 +343,9 @@ scenes.game = () => {
 
     let walkPad = [];
     let walkPadIdle = 5;
-
     let walkPadSize = Math.max(32, 64 * settings.walkPadSize);
+
+    let dialogueObjects = [];
 
     walkPad.push(controls.image({ // Up
         anchor: [.1, .9], offset: [0, -walkPadSize * 3], sizeOffset: [walkPadSize, walkPadSize],
@@ -432,13 +434,9 @@ scenes.game = () => {
         anchor: [0, 0], sizeAnchor: [1, 1],
         alpha: 0, fill: "white",
     });
-    let weatherEffect = controls.image({
-        anchor: [0, 0], sizeAnchor: [1, 1],
-        source: "vignette", alpha: 0,
-    });
 
-        // Alright, alright, we need comments, so let me comment this
-        // This is for the map's display. In the BOTTOM RIGHT. No idea what else to call it.
+    // Alright, alright, we need comments, so let me comment this
+    // This is for the map's display. In the BOTTOM RIGHT. No idea what else to call it.
     let mapDisplay = controls.button({
         anchor: [1, 0], offset: [-96, 0], sizeOffset: [96, 96],
         alpha: 1,
@@ -461,8 +459,6 @@ scenes.game = () => {
     //    anchor: [.9925, .68], offset: [-220, 0], sizeOffset: [250, 250],
     //    fill: colors.bottomcolor,
     //}));
-
-
 
     let poisonBlack = controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 1],
@@ -492,31 +488,15 @@ scenes.game = () => {
                 canMove = true;
                 actionButton.alpha = 1;
 
-                if (dialogueNormalComponents[0].at == 1) {
-                    dialogueNormalComponents[0].at = 0.4;
+                if (dialogueObjects[0].at == 1 && (dialogueType == "normal" || dialogueType == "invis")) {
+                    dialogueObjects[0].at = 0.4;
                     addAnimator(function (t) {
-                        for (i in dialogueNormalComponents) {
-                            dialogueNormalComponents[i].offset[1] = dialogueNormalComponents[i].defoff[1] + Math.min(t, 500);
+                        for (i in dialogueObjects) {
+                            dialogueObjects[i].offset[1] = dialogueObjects[i].defoff[1] + Math.min(t, 500);
                         }
                         if (t > 499) {
-                            for (i in dialogueNormalComponents) {
-                                dialogueNormalComponents[i].at = 0;
-                            }
-                            if (canMove == true) inDialogue = false;
-                            return true;
-                        }
-                        return false;
-                    });
-                }
-                else if (dialogueInvisComponents[0].at == 1) {
-                    dialogueInvisComponents[0].at = 0.4;
-                    addAnimator(function (t) {
-                        for (i in dialogueInvisComponents) {
-                            dialogueInvisComponents[i].offset[1] = dialogueInvisComponents[i].defoff[1] + Math.min(t, 500);
-                        }
-                        if (t > 499) {
-                            for (i in dialogueInvisComponents) {
-                                dialogueInvisComponents[i].at = 0;
+                            for (i in dialogueObjects) {
+                                dialogueObjects[i].at = 0;
                             }
                             if (canMove == true) inDialogue = false;
                             return true;
@@ -525,6 +505,9 @@ scenes.game = () => {
                     });
                 }
                 else {
+                    for (i in dialogueObjects) {
+                        dialogueObjects[i].alpha = 0;
+                    }
                     if (canMove == true) inDialogue = false;
                 }
             }
@@ -547,47 +530,47 @@ scenes.game = () => {
                 dialogueBox();
             }
         },
-        alpha: 0, 
+        alpha: 0, falpha: 1,
     }));
     dialogueNormalComponents.push(controls.rect({
         anchor: [0.01, 1.01], offset: [0, -200], defoff: [0, -200], sizeOffset: [136, 136], at: 0,
         clickthrough: false,
         fill: colors.topcolor,
-        alpha: 0,
+        alpha: 0, falpha: 1,
     }));
     dialogueNormalComponents.push(controls.rect({
         anchor: [0.01, 1.01], offset: [0, -54], defoff: [0, -54], sizeOffset: [128, 32], at: 0,
         clickthrough: false,
         fill: colors.topcolor,
-        alpha: 0,
+        alpha: 0, falpha: 1,
     }));
     dialogueNormalComponents.push(controls.label({
         anchor: [0.01, 1.01], offset: [64, -34], defoff: [64, -34], at: 0,
         align: "center", fontSize: 20, fill: "black",
         text: "Bleu",
-        alpha: 0,
+        alpha: 0, falpha: 1,
     }));
     dialogueNormalComponents.push(controls.rect({
         anchor: [0.01, 1.01], offset: [164, -200], defoff: [164, -200], sizeOffset: [0, 178], sizeAnchor: [0.8, 0], at: 0,
         clickthrough: false,
         fill: colors.topcolor,
-        alpha: 0,
+        alpha: 0, falpha: 1,
     }));
     dialogueNormalComponents.push(controls.image({
         anchor: [0.01, 1.01], offset: [0, -192], defoff: [0, -192], sizeOffset: [128, 128], snip: [0, 0, 64, 64], at: 0,
         source: "Portraits_Bleu",
-        alpha: 0,
+        alpha: 0, falpha: 1,
     }));
     dialogueNormalComponents.push(controls.label({ // 6
         anchor: [0, 1], offset: [196, -168], defoff: [196, -168], at: 0,
         align: "left", fontSize: 16, fill: "black",
         text: "...",
-        alpha: 0,
+        alpha: 0, falpha: 1,
     }));
     dialogueNormalComponents.push(controls.image({
         anchor: [0.81, 1], sizeOffset: [64, 64], offset: [100, -96], defoff: [100, -96], at: 0,
         source: "star",
-        alpha: 0,
+        alpha: 0, falpha: 0,
     }));
 
     dialogueInvisComponents.push(controls.rect({
@@ -599,24 +582,24 @@ scenes.game = () => {
                 dialogueBox();
             }
         },
-        alpha: 0,
+        alpha: 0, falpha: 1,
     }));
     dialogueInvisComponents.push(controls.rect({
         anchor: [0.01, 1.01], offset: [0, -200], defoff: [0, -200], sizeOffset: [0, 180], sizeAnchor: [0.98, 0], at: 0,
         clickthrough: false,
         fill: colors.topcolor,
-        alpha: 0,
+        alpha: 0, falpha: 1,
     }));
     dialogueInvisComponents.push(controls.label({ // 2
         anchor: [0.02, 1], offset: [0, -168], defoff: [0, -168], at: 0,
         align: "left", fontSize: 16, fill: "black",
         text: "...",
-        alpha: 0,
+        alpha: 0, falpha: 1,
     }));
     dialogueInvisComponents.push(controls.image({
         anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96], defoff: [0, -96], at: 0,
         source: "star",
-        alpha: 0,
+        alpha: 0, falpha: 0,
     }));
 
 
@@ -629,18 +612,18 @@ scenes.game = () => {
                 dialogueBox();
             }
         },
-        alpha: 0,
+        alpha: 0, falpha: 1,
     }));
     dialogueNarratorComponents.push(controls.label({ // 1
         anchor: [0.5, 0.5],
         align: "center", fontSize: 16, fill: "white",
         text: "...",
-        alpha: 0,
+        alpha: 0, falpha: 1,
     }));
     dialogueNarratorComponents.push(controls.image({
         anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96], defoff: [0, -96], at: 0,
         source: "star",
-        alpha: 0,
+        alpha: 0, falpha: 0,
     }));
 
 
@@ -653,18 +636,18 @@ scenes.game = () => {
                 dialogueBox();
             }
         },
-        alpha: 0,
+        alpha: 0, falpha: 0.01,
     }));
     dialogueCutsceneComponents.push(controls.label({ // 1
         anchor: [0.01, 1], offset: [0, -96], defoff: [0, -96], at: 0,
         align: "left", fontSize: 16, fill: "white",
         text: "...",
-        alpha: 0,
+        alpha: 0, falpha: 1,
     }));
     dialogueCutsceneComponents.push(controls.image({
         anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96], defoff: [0, -96], at: 0,
         source: "star",
-        alpha: 0,
+        alpha: 0, falpha: 0,
     }));
 
     // end of the dialogue stuff. lol.
@@ -963,6 +946,25 @@ scenes.game = () => {
         }
     }
 
+    function renderNPC(ctx, npc) {
+        let tileX = npc.position[0];
+        let tileY = npc.position[1];
+
+        let xAdjust = Math.max(CAMERA_LOCK_X, game.position[0] - width / 2 + 0.5);
+        npc.kofs[2] = Math.max(npc.kofs[2] - delta / 166, 0);
+
+        ctx.drawImage(images[npc.skin],
+            32 * Math.floor(walkTime), 32 * npc.head, 32, 32,
+            ((zoom * scale) * (tileX + (CAM_OX == 0 ? kofs[0] * kofs[2] : 0) - npc.kofs[0] * (npc.kofs[2] / npc.walkingSpeed) - xAdjust)) - ((zoom - 1) * scale * (width / 2)),
+            (zoom * scale) * (tileY + (CAM_OY == 0 ? kofs[1] * kofs[2] : 0) - npc.kofs[1] * (npc.kofs[2] / npc.walkingSpeed) - Math.max(CAMERA_LOCK_Y, game.position[1] - 7.5) - ((zoom - 1) * scale * 7)),
+            zswm, zswm)
+        if (npc.talk == true) {
+            ctx.drawImage(images.talk,
+                ((zoom * scale) * (tileX + 1 + kofs[0] * kofs[2] - npc.kofs[0] * (npc.kofs[2] / npc.walkingSpeed) - xAdjust)) - ((zoom - 1) * scale * (width / 2)),
+                (zoom * scale) * (tileY - 1 + (CAM_OY == 0 ? kofs[1] * kofs[2] : 0) - npc.kofs[1] * (npc.kofs[2] / npc.walkingSpeed) - Math.max(CAMERA_LOCK_Y, (game.position[1] - 7.5) - ((zoom - 1) * scale * 7))),
+                zswm, zswm)
+        }
+    }
 
     // Function used to figure out if anyone (player, npcs, enemies, Ed Sheeran) is on a tile
     function creaturesOnTile(map, x, y, player = true) {
@@ -1285,11 +1287,19 @@ scenes.game = () => {
 
     function loadNPCs() {
         activenpcs = [];
-        for (i in Object.keys(npcs)) {
-            j = Object.keys(npcs)[i];
-            let npc = npcs[j]();
-            if (npc.alpha > 0 && npc.map == game.map) {
-                activenpcs.push(npcs[j]());
+        for (i in npcs) {
+            if (npcs[i].alpha != 0 && npcs[i].map == game.map) {
+                activenpcs.push(npcs[i]);
+            }
+        }
+        if (maps[game.map].npcs != undefined) for (i in maps[game.map].npcs) {
+            if (maps[game.map].npcs[i].alpha != 0) {
+                activenpcs.push(maps[game.map].npcs[i]);
+            }
+        }
+        for (i in activenpcs) {
+            for (j in npcs.default) {
+                if (activenpcs[i][j] == undefined) activenpcs[i][j] = npcs.default[j];
             }
         }
     }
@@ -1772,7 +1782,7 @@ scenes.game = () => {
             for (i in activenpcs) {
                 if (activenpcs[i].alpha > 0) {
                     ctx.globalAlpha = activenpcs[i].alpha;
-                    activenpcs[i].render(ctx);
+                    renderNPC(ctx, activenpcs[i]);
                 }
             }
 
@@ -1883,135 +1893,104 @@ scenes.game = () => {
                 }
             }
 
+            //
+            // DIALOGUES
+            //
+
+            let dNameID = dTextID = dPortraitID = dStarID = -1; // star and text must exist, rest optional
+
+            // Set dialogueObjects (which will be used) to whatever our current type is
+            // Cutscene, normal, invis., narrator
+
             if (inDialogue == true && cutsceneMode == true) {
-                dialogueCutsceneComponents[0].alpha = 0.01;
-                dialogueCutsceneComponents[1].alpha = 1;
-                dialogueCutsceneComponents[2].alpha = 1;
-                if (typeof (currentDialogue[dialogueProgress].text) == "string") dialogueCutsceneComponents[1].text = animatedText(currentDialogue[dialogueProgress].text);
-                else dialogueCutsceneComponents[1].text = animatedText(currentDialogue[dialogueProgress].text());
-
-                if (currentDialogue[dialogueProgress + 1] == undefined) dialogueCutsceneComponents[2].alpha = 0; // Star
-                actionButton.alpha = 0;
-
+                dialogueObjects = dialogueCutsceneComponents;
+                dTextID = 1;
+                dStarID = 2;
             }
-            else {
-                if (dialogueCutsceneComponents[1].alpha != 0) {
-                    for (i = 0; i < dialogueCutsceneComponents.length; i++) {
-                        dialogueCutsceneComponents[i].alpha = 0;
-                    }
-                }
-            }
-
             if (inDialogue == true && dialogueType == "normal" && cutsceneMode == false) {
-                for (i = 0; i < dialogueNormalComponents.length; i++) {
-                    dialogueNormalComponents[i].alpha = 1;
-                }
-
-                if (dialogueNormalComponents[0].at == 0) {
-                    dialogueNormalComponents[0].at = 0.5;
-                    for (i in dialogueNormalComponents) {
-                        dialogueNormalComponents[i].offset[1] = dialogueNormalComponents[i].defoff[1] + 500;
-                    }
-                    addAnimator(function (t) {
-                        for (i in dialogueNormalComponents) {
-                            dialogueNormalComponents[i].offset[1] = dialogueNormalComponents[i].defoff[1] + 500 - Math.min(t, 500);
-                        }
-                        if (t > 499) {
-                            for (i in dialogueNormalComponents) {
-                                dialogueNormalComponents[i].at = 1;
-                            }
-                            return true;
-                        }
-                        return false;
-                    });
-                }
-                if (dialogueNormalComponents[0].at != 0.4) {
-                    if (typeof (currentDialogue[dialogueProgress].text) == "string") dialogueNormalComponents[6].text = animatedText(currentDialogue[dialogueProgress].text);
-                    else dialogueNormalComponents[6].text = animatedText(currentDialogue[dialogueProgress].text());
-
-                    if (currentDialogue[dialogueProgress].name != undefined) dialogueNormalComponents[3].text = currentDialogue[dialogueProgress].name;
-                    dialogueEmotion = currentDialogue[dialogueProgress].emotion;
-                    dialogueNormalComponents[5].source = currentDialogue[dialogueProgress].portrait;
-                    dialogueNormalComponents[5].snip = getEmotion(dialogueEmotion);
-
-                    if (currentDialogue[dialogueProgress + 1] == undefined) dialogueNormalComponents[7].alpha = 0; // Star
-                    actionButton.alpha = 0;
-                }
-            }
-            else if (dialogueNormalComponents[0].alpha != 0) {
-                for (i = 0; i < dialogueNormalComponents.length; i++) {
-                    dialogueNormalComponents[i].alpha = 0;
-                }
+                dialogueObjects = dialogueNormalComponents;
+                dNameID = 3;
+                dTextID = 6;
+                dPortraitID = 5;
+                dStarID = 7;
             }
             if (inDialogue == true && dialogueType == "invis" && cutsceneMode == false) {
-                for (i = 0; i < dialogueInvisComponents.length; i++) {
-                    dialogueInvisComponents[i].alpha = 1;
+                dialogueObjects = dialogueInvisComponents;
+                dTextID = 2;
+                dStarID = 3;
+            }
+            if (inDialogue == true && dialogueType == "narrator" && cutsceneMode == false) {
+                dialogueNarratorComponents[0].falpha = 1;
+                dialogueObjects = dialogueNarratorComponents;
+                dTextID = 1;
+                dStarID = 2;
+            }
+            if (inDialogue == true && dialogueType == "cinematic" && cutsceneMode == false) {
+                dialogueNarratorComponents[0].falpha = 0;
+                dialogueObjects = dialogueNarratorComponents;
+                dTextID = 1;
+                dStarID = 2;
+            }
+
+            if (inDialogue == true) {
+                // Make / keep the dialogue objects visible
+                for (i = 0; i < dialogueObjects.length; i++) {
+                    dialogueObjects[i].alpha = dialogueObjects[i].falpha;
                 }
-                if (dialogueInvisComponents[0].at == 0) {
-                    dialogueInvisComponents[0].at = 0.5;
-                    for (i in dialogueInvisComponents) {
-                        dialogueInvisComponents[i].offset[1] = dialogueInvisComponents[i].defoff[1] + 500;
+
+                // Slide them in
+                if (dialogueObjects[0].at == 0) {
+                    dialogueObjects[0].at = 0.5;
+                    for (i in dialogueObjects) {
+                        dialogueObjects[i].offset[1] = dialogueObjects[i].defoff[1] + 500;
                     }
                     addAnimator(function (t) {
-                        for (i in dialogueInvisComponents) {
-                            dialogueInvisComponents[i].offset[1] = dialogueInvisComponents[i].defoff[1] + 500 - Math.min(t, 500);
+                        for (i in dialogueObjects) {
+                            dialogueObjects[i].offset[1] = dialogueObjects[i].defoff[1] + 500 - Math.min(t, 500);
                         }
                         if (t > 499) {
-                            for (i in dialogueInvisComponents) {
-                                dialogueInvisComponents[i].at = 1;
+                            for (i in dialogueObjects) {
+                                dialogueObjects[i].at = 1;
                             }
                             return true;
                         }
                         return false;
                     });
                 }
-                if (dialogueInvisComponents[0].at != 0.4) {
-                    if (typeof (currentDialogue[dialogueProgress].text) == "string") dialogueInvisComponents[2].text = animatedText(currentDialogue[dialogueProgress].text);
-                    else dialogueInvisComponents[2].text = animatedText(currentDialogue[dialogueProgress].text());
 
-                    if (currentDialogue[dialogueProgress + 1] == undefined) dialogueInvisComponents[3].alpha = 0; // Star
+                // They are there, visible
+                if (dialogueObjects[0].at != 0.4) {
+                    // Update text
+                    if (typeof (currentDialogue[dialogueProgress].text) == "string") dialogueObjects[dTextID].text = animatedText(currentDialogue[dialogueProgress].text);
+                    else dialogueObjects[dTextID].text = animatedText(currentDialogue[dialogueProgress].text());
+
+                    if (dNameID != -1) { // Change name display if it exists
+                        if (currentDialogue[dialogueProgress].name != undefined) dialogueObjects[dNameID].text = currentDialogue[dialogueProgress].name;
+                        else dialogueObjects[dNameID].text = "Bleu";
+                    }
+                    if (dPortraitID != -1) { // Change portrait display if it exists
+                        dialogueEmotion = currentDialogue[dialogueProgress].emotion;
+                        if (currentDialogue[dialogueProgress].portrait != undefined) {
+                            dialogueObjects[dPortraitID].source = currentDialogue[dialogueProgress].portrait;
+                            if (dialogueEmotion != undefined) dialogueObjects[dPortraitID].snip = getEmotion(dialogueEmotion);
+                            else dialogueObjects[dPortraitID].snip = getEmotion("neutral");
+                        }
+                        else { // doesn't exist - use default
+                            dialogueObjects[dPortraitID].source = "Bleu_Portrait";
+                            dialogueObjects[dPortraitID].snip = getEmotion("neutral");
+                        }
+                    }
+
+                    if (currentDialogue[dialogueProgress + 1] != undefined) dialogueObjects[dStarID].alpha = 1; // Star
                     actionButton.alpha = 0;
                 }
             }
-            else if (dialogueInvisComponents[0].alpha != 0) {
-                for (i = 0; i < dialogueInvisComponents.length; i++) {
-                    dialogueInvisComponents[i].alpha = 0;
-                }
-            }
-            if (inDialogue == true && dialogueType == "narrator" && cutsceneMode == false) {
-                for (i = 0; i < dialogueNarratorComponents.length; i++) {
-                    dialogueNarratorComponents[i].alpha = 1;
-                }
-                if (map.dialogues != undefined) {
-                    if (typeof (currentDialogue[dialogueProgress].text) == "string") animatedText(dialogueNarratorComponents[1].text = currentDialogue[dialogueProgress].text);
-                    else dialogueNarratorComponents[1].text = animatedText(currentDialogue[dialogueProgress].text());
-
-                    if (currentDialogue[dialogueProgress + 1] == undefined) dialogueNarratorComponents[2].alpha = 0; // Star
-                    actionButton.alpha = 0;
-                }
-            }
-            else if (inDialogue == true && dialogueType == "cinematic" && cutsceneMode == false) {
-                dialogueNarratorComponents[1].alpha = 1;
-                dialogueNarratorComponents[2].alpha = 1;
-                if (typeof (currentDialogue[dialogueProgress].text) == "string") animatedText(dialogueNarratorComponents[1].text = currentDialogue[dialogueProgress].text);
-                else dialogueNarratorComponents[1].text = animatedText(currentDialogue[dialogueProgress].text());
-
-                if (currentDialogue[dialogueProgress + 1] == undefined) dialogueNarratorComponents[2].alpha = 0; // Star
-                actionButton.alpha = 0;
-
-            }
-            else if (dialogueNarratorComponents[1].alpha != 0) {
-                for (i = 0; i < dialogueNarratorComponents.length; i++) {
-                    dialogueNarratorComponents[i].alpha = 0;
-                }
-            }
-
-
 
             // ...leave?
             if (currentKeys["q"]) {
                 setScene(scenes.title());
             }
+            // open inventory
             if (currentKeys["e"]) {
                 fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
             }

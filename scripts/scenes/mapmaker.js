@@ -92,6 +92,9 @@ scenes.mapmaker = () => {
     let createDialogueButtons = [];
     let createDialogueLabels = [];
 
+    let createNPCButtons = [];
+    let createNPCLabels = [];
+
     let loadMapButtons = [];
     let expandMapButtons = [];
     let undoButtons = [];
@@ -109,6 +112,8 @@ scenes.mapmaker = () => {
 
     let curDia = ""; // current dialogue
     let curLine = 0; // current dialogue
+
+    let curNPC = ""; // current dialogue
 
     var activenpcs = [];
     var currentMap = "map2";
@@ -380,6 +385,13 @@ scenes.mapmaker = () => {
         source: "senza", alpha: 1,
         onClick(args) {
             if (this.alpha == 1) toggleCreateDialogueButtons();
+        }
+    }));
+    modeButtons.push(controls.image({
+        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 20, 0],
+        source: "senza", alpha: 1,
+        onClick(args) {
+            if (this.alpha == 1) toggleCreateNPCButtons();
         }
     }));
 
@@ -991,6 +1003,162 @@ scenes.mapmaker = () => {
         }
     }));
 
+    // Create NPC
+    createNPCButtons.push(controls.button({
+        anchor: [0.3, 0.2], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "Create New / Load", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                curNPC = prompt('NPC ID? (e. g. mrbeast)');
+                if (map.npcs == undefined) {
+                    map.npcs = {};
+                }
+                if (map.npcs[curNPC] == undefined) {
+                    map.npcs[curNPC] = {
+                        position: [4, 4],
+                        map: currentMap,
+                    }
+                }
+                for (j in npcs.default) {
+                    if (map.npcs[curNPC][j] == undefined) map.npcs[curNPC][j] = npcs.default[j];
+                }
+                this.text = "NPC: " + curNPC;
+                toggleCreateNPCButtons(true);
+                updateNPCLabels();
+            }
+        }
+    }));
+
+    createNPCButtons.push(controls.button({
+        anchor: [0.55, 0.2], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "Dialogue", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let newText = prompt("Dialogue name?");
+
+                if (map.dialogues[newText] != undefined) {
+                    if (newText != "") map.npcs[curNPC].dialogues["1"] = newText;
+                    this.text = "Dialogue: " + newText;
+                    updateNPCLabels();
+                }
+                else {
+                    alert("Does not exist!");
+                }
+            }
+        }
+    }));
+
+    createNPCButtons.push(controls.button({
+        anchor: [0.8, 0.2], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "Movement Type: No", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let npc = map.npcs[curNPC];
+                switch (npc.movement) {
+                    case 0:
+                        npc.movement = 1;
+                        this.text = "Movement Type: Random";
+                        break;
+                    case 1:
+                        npc.movement = 2;
+                        this.text = "Movement Type: Path";
+                        break;
+                    case 2:
+                        npc.movement = 0;
+                        this.text = "Movement Type: No";
+                        break;
+                }
+            }
+        }
+    }));
+
+    createNPCButtons.push(controls.button({
+        anchor: [0.8, 0.325], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "Path", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let newText = prompt("Path? 0 down 1 left 2 right 3 up (e. g. 0.1.2.2.2.3.2.1)");
+                if (newText != "") {
+                    newText = newText.split(".");
+                    for (i in newText) {
+                        newText[i] = parseInt(newText[i]);
+                    }
+                    map.npcs[curNPC].path = newText;
+                }
+                updateNPCLabels();
+            }
+        }
+    }));
+
+    for (i = 0; i < 5; i++) {
+        createNPCLabels.push(controls.label({
+            anchor: [0.375, 0.35 + (0.06 * i)], offset: [0, -600],
+            text: "...",
+            fontSize: 32, fill: "white", align: "left",
+            alpha: 0,
+        }));
+    }
+
+    createNPCButtons.push(controls.button({
+        anchor: [0.3, 0.325], sizeAnchor: [0.05, 0.05], offset: [72 * 16, -600],
+        text: "Position", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let newText = prompt("New position? (e. g. 4.4)");
+                if (newText != "") map.npcs[curNPC].position = [parseInt(newText.split(".")[0]), parseInt(newText.split(".")[1])];
+                updateNPCLabels();
+            }
+        }
+    }));
+
+    createNPCButtons.push(controls.button({
+        anchor: [0.3, 0.385], sizeAnchor: [0.05, 0.05], offset: [72 * 16, -600],
+        text: "Alpha", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let newText = prompt("New alpha? (0 - 1)");
+                if (newText != "") map.npcs[curNPC].alpha = newText;
+                updateNPCLabels();
+            }
+        }
+    }));
+
+    createNPCButtons.push(controls.button({
+        anchor: [0.3, 0.445], sizeAnchor: [0.05, 0.05], offset: [72 * 16, -600],
+        text: "Skin", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let newText = prompt("New skin?");
+                if (newText != "") map.npcs[curNPC].skin = newText;
+                updateNPCLabels();
+            }
+        }
+    }));
+
+    createNPCButtons.push(controls.button({
+        anchor: [0.3, 0.505], sizeAnchor: [0.05, 0.05], offset: [72 * 16, -600],
+        text: "Walking Interval", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let newText = prompt("New interval? (default: 0.5)");
+                if (newText != "") map.npcs[curNPC].walkingInterval = newText;
+                updateNPCLabels();
+            }
+        }
+    }));
+
+    createNPCButtons.push(controls.button({
+        anchor: [0.3, 0.565], sizeAnchor: [0.05, 0.05], offset: [72 * 16, -600],
+        text: "Walking Speed", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let newText = prompt("New speed? (default: 1, in seconds)");
+                if (newText != "") map.npcs[curNPC].walkingSpeed = newText;
+                updateNPCLabels();
+            }
+        }
+    }));
+
     // Tiles menu ahahyahahaaaa
     tilesMenuControls.push(controls.rect({
         anchor: [0.05, 0.2], sizeAnchor: [0.9, 0.4],
@@ -1517,11 +1685,19 @@ scenes.mapmaker = () => {
 
     function loadNPCs() {
         activenpcs = [];
-        for (i in Object.keys(npcs)) {
-            j = Object.keys(npcs)[i];
-            let npc = npcs[j]();
-            if (npc.alpha > 0 && npc.map == currentMap) {
-                activenpcs.push(npcs[j]());
+        for (i in npcs) {
+            if (npcs[i].alpha != 0 && npcs[i].map == currentMap) {
+                activenpcs.push(npcs[i]);
+            }
+        }
+        if (map.npcs != undefined) for (i in map.npcs) {
+            if (map.npcs[i].alpha != 0) {
+                activenpcs.push(map.npcs[i]);
+            }
+        }
+        for (i in activenpcs) {
+            for (j in npcs.default) {
+                if (activenpcs[i][j] == undefined) activenpcs[i][j] = npcs.default[j];
             }
         }
     }
@@ -1698,6 +1874,87 @@ scenes.mapmaker = () => {
         }
     }
 
+    function toggleCreateNPCButtons(mustShow = false) {
+        if (createNPCButtons[0].alpha == 0 || mustShow) {
+            if (curNPC != "") {
+                for (i in createNPCButtons) {
+                    createNPCButtons[i].offset = [0, -600];
+                    createNPCButtons[i].alpha = 1;
+                }
+                for (i in createNPCLabels) {
+                    createNPCLabels[i].alpha = 1;
+                }
+            }
+            else {
+                createNPCButtons[0].offset = [0, 0];
+                createNPCButtons[0].alpha = 1;
+            }
+            for (i in createTileBG) {
+                createTileBG[i].alpha = 1;
+            }
+            createTileBG[2].text = "NPC Maker";
+
+            createTileInfoPageLength = 0;
+
+            showInfo();
+
+            if (curNPC != "") {
+                addAnimator(function (t) {
+                    for (i in createNPCButtons) {
+                        createNPCButtons[i].offset[1] = -600 + t;
+                    }
+                    for (i in createNPCLabels) {
+                        createNPCLabels[i].offset[1] = -600 + t;
+                    }
+                    if (t > 599) {
+                        for (i in createNPCButtons) {
+                            createNPCButtons[i].offset[1] = 0;
+                        }
+                        for (i in createNPCLabels) {
+                            createNPCLabels[i].offset[1] = 0;
+                        }
+                        return true;
+                    }
+                    return false;
+                })
+            }
+        }
+        else {
+            for (i in createNPCButtons) {
+                createNPCButtons[i].offset = [0, 0];
+            }
+            for (i in createNPCLabels) {
+                createNPCLabels[i].offset = [0, 0];
+            }
+            for (i in createTileBG) {
+                createTileBG[i].alpha = 0;
+            }
+            hideInfo();
+
+            addAnimator(function (t) {
+                for (i in createNPCButtons) {
+                    createNPCButtons[i].offset[1] = -t;
+                }
+                for (i in createNPCLabels) {
+                    createNPCLabels[i].offset[1] = -t;
+                }
+
+                if (t > 599) {
+                    for (i in createNPCButtons) {
+                        createNPCButtons[i].offset[1] = -600;
+                        createNPCButtons[i].alpha = 0;
+                    }
+                    for (i in createNPCLabels) {
+                        createNPCLabels[i].offset[1] = -600;
+                        createNPCLabels[i].alpha = 0;
+                    }
+                    return true;
+                }
+                return false;
+            })
+        }
+    }
+
     function updateDialogueLabels() {
         createDialogueLabels[0].text = curLine;
         createDialogueLabels[1].text = map.dialogues[curDia].lines[curLine].text;
@@ -1706,6 +1963,17 @@ scenes.mapmaker = () => {
         createDialogueLabels[4].text = map.dialogues[curDia].lines[curLine].name;
         createDialogueLabels[5].text = map.dialogues[curDia].lines[curLine].voice;
         createDialogueLabels[6].text = map.dialogues[curDia].lines[curLine].script;
+    }
+
+    function updateNPCLabels() {
+        createNPCLabels[0].text = map.npcs[curNPC].position;
+        createNPCLabels[1].text = map.npcs[curNPC].alpha;
+        createNPCLabels[2].text = map.npcs[curNPC].skin;
+        createNPCLabels[3].text = map.npcs[curNPC].walkingInterval;
+        createNPCLabels[4].text = map.npcs[curNPC].walkingSpeed;
+
+        loadNPCs();
+        updateTiles = true;
     }
 
     function showInfo() {
@@ -2380,7 +2648,10 @@ scenes.mapmaker = () => {
         controls: [
             ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg, ...expandMapButtons,
             ...walkPad, middlei, currentMapText, backButton, toggleMapInfoButton, eyeButton, toggleAnimate, ...modeButtons,
-            ...tilesMenuControls, ...undoButtons, ...loadMapButtons, ...mapInfoControls, ...createTileBG, ...createTileInfoBG, ...createTileInfo, ...createTileButtons, ...createDialogueButtons, ...createDialogueLabels, ...tilesMenuTiles, ...tileInfoControls,
+            ...tilesMenuControls, ...undoButtons, ...loadMapButtons, ...mapInfoControls,
+            ...createTileBG, ...createTileInfoBG, ...createTileInfo, ...createTileButtons,
+            ...createDialogueButtons, ...createDialogueLabels, ...createNPCButtons, ...createNPCLabels,
+            ...tilesMenuTiles, ...tileInfoControls,
         ],
         name: "mapmaker"
     }

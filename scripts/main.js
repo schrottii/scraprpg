@@ -389,7 +389,7 @@ function animatedText(text, speed = 20) { // 8, 20, 24
     if (textProgress == -1) textProgress = 0;
     let prog = Math.floor(textProgress * speed);
     if (prog < text.length) {
-        if (currentDialogue[dialogueProgress].voice == false) playSound("female_young");
+        if (currentDialogue[dialogueProgress].voice == false || currentDialogue[dialogueProgress].voice == undefined) playSound("female_young");
         else playSound(currentDialogue[dialogueProgress].voice);
     }
     return text.slice(0, prog);

@@ -52,18 +52,6 @@ For getEmotion(...)    (portraits)
 | Condemned  | condemned            | You die
 
 
-
-## dline (used to create lines for dialogue)
-| Name       | Default              | Description
-|:----------:|:--------------------:|:------------------------------:
-| text       | "ah"                 | The text
-| portrait   | Portraits_Bleu       | Portrait image
-| emotion    | neutral              | Emotion of the portrait (See emotions)
-| name       | Bleu                 | The displayed name (can be unrelated to portrait and emotion)
-| voice      | false (off)          | Voice (optional)
-| script     | false (off)          | Script (optional)
-
-
 ## Usage of filters
 | function name                  | Example usage                    | Description
 |:------------------------------:|:--------------------------------:|:------------------------------:
