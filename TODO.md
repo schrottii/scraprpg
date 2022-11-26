@@ -1,5 +1,5 @@
 ﻿##TODO:
-2 Things left to do in this phase
+1 Things left to do in this phase
 (we are not always good at counting)
 
 ##Phase 1:
@@ -11,7 +11,6 @@ IT'S DONE!
 The current phase, focus on Map Maker and preparing for the first chapter. Transition between phase 1 and 2.
 Nov 2022 - (still going)
 
-- Map Maker map dialogues
 - Map Maker auto save
 
 ##Phase 2

@@ -529,7 +529,8 @@ scenes.game = () => {
                 }
             }
             else if (currentDialogue[dialogueProgress].script != undefined && currentDialogue[dialogueProgress].script != false) {
-                currentDialogue[dialogueProgress].script();
+                if (typeof (currentDialogue[dialogueProgress].script) == "string") eval(currentDialogue[dialogueProgress].script());
+                else currentDialogue[dialogueProgress].script();
             }
         }
         else {
@@ -1273,6 +1274,11 @@ scenes.game = () => {
 
         if (getTile(map, game.position[0], game.position[1]).dialogue != undefined) {
             startDialogue(map.dialogues[getTile(map, game.position[0], game.position[1]).dialogue]);
+        }
+        if (getTile(map, game.position[0], game.position[1], 2) != undefined) {
+            if (getTile(map, game.position[0], game.position[1], 2).dialogue != undefined) {
+                startDialogue(map.dialogues[getTile(map, game.position[0], game.position[1], 2).dialogue]);
+            }
         }
     }
 

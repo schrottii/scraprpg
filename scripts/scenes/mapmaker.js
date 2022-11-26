@@ -89,6 +89,9 @@ scenes.mapmaker = () => {
     let createTileInfoPageLength = 1;
     let createTileInfoprevM = "t";
 
+    let createDialogueButtons = [];
+    let createDialogueLabels = [];
+
     let loadMapButtons = [];
     let expandMapButtons = [];
     let undoButtons = [];
@@ -103,6 +106,9 @@ scenes.mapmaker = () => {
 
     let ttp = "001"; // tile to place
     let editingLayer = 0;
+
+    let curDia = ""; // current dialogue
+    let curLine = 0; // current dialogue
 
     var activenpcs = [];
     var currentMap = "map2";
@@ -123,6 +129,7 @@ scenes.mapmaker = () => {
     let tileSetSnip = "";
     let tileAni = "";
     let tileTele = "";
+    let tileDia = "";
     let tileOccupied = "";
 
     let layerVisi = [1, 1, 1];
@@ -368,6 +375,13 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) placeTile(game.position[0], game.position[1], ["map", "mapbg2", "mapfg"][editingLayer], ttp, "copy");
         }
     }));
+    modeButtons.push(controls.image({
+        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 19, 0],
+        source: "senza", alpha: 1,
+        onClick(args) {
+            if (this.alpha == 1) toggleCreateDialogueButtons();
+        }
+    }));
 
     createTileBG.push(controls.rect({
         anchor: [0.25, 0.15], sizeAnchor: [0.725, 0.7],
@@ -563,6 +577,16 @@ scenes.mapmaker = () => {
             }
         }
     }));
+    createTileButtons.push(controls.button({
+        anchor: [0.75, 0.45], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "Dialogue", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                tileDia = prompt('Dialogue?');
+                this.text = "Dialogue: " + tileDia;
+            }
+        }
+    }));
     createTileButtons.push(controls.image({
         anchor: [0.25, 0.325], sizeOffset: [64, 64], offset: [72 * 16 -32, -632],
         source: "gear",
@@ -601,6 +625,8 @@ scenes.mapmaker = () => {
                     if (tileAni != "") map.tiles[tileID].ani = [parseInt(tileAni.split(".")[0]), parseInt(tileAni.split(".")[1])];
 
                     if (tileTele != "") map.tiles[tileID].teleport = [tileTele.split(".")[0], parseInt(tileTele.split(".")[1]), parseInt(tileTele.split(".")[2])];
+
+                    if (tileDia != "") map.tiles[tileID].dialogue = tileDia;
 
                     tileID = "";
                     tileSprite = "";
@@ -715,6 +741,226 @@ scenes.mapmaker = () => {
                 map.mapfg.shift();
                 updateTiles = true;
                 newMap();
+            }
+        }
+    }));
+
+    // Create Dialogue
+    createDialogueButtons.push(controls.button({
+        anchor: [0.3, 0.2], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "Create New / Load", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                curDia = prompt('Dialogue ID? (e. g. 1)');
+                if (map.dialogues == undefined) {
+                    map.dialogues = {};
+                }
+                if (map.dialogues[curDia] == undefined) {
+                    map.dialogues[curDia] = {
+                        "type": "normal", "lines": [{
+                            "text": "",
+                            "portrait": "Portraits_Bleu",
+                            "emotion": "neutral",
+                            "name": "Bleu",
+                            "voice": false
+                        }]
+                    };
+                }
+                curLine = 0;
+                this.text = "Dialogue: " + curDia;
+                toggleCreateDialogueButtons(true);
+                updateDialogueLabels();
+            }
+        }
+    }));
+
+    createDialogueButtons.push(controls.button({
+        anchor: [0.525, 0.2], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "Type: Normal", alpha: 0,
+        fillTop: "red", fillBottom: "darkred",
+        onClick(args) {
+            if (this.alpha == 1) {
+                switch (map.dialogues[curDia].type) {
+                    case "normal":
+                        map.dialogues[curDia].type = "invis";
+                        this.text = "Type: Invisible";
+                        break;
+                    case "invis":
+                        map.dialogues[curDia].type = "narrator";
+                        this.text = "Type: Narrator";
+                        break;
+                    case "narrator":
+                        map.dialogues[curDia].type = "cinematic";
+                        this.text = "Type: Cinematic";
+                        break;
+                    case "cinematic":
+                        map.dialogues[curDia].type = "normal";
+                        this.text = "Type: Normal";
+                        break;
+                }
+                updateDialogueLabels();
+            }
+        }
+    }));
+
+    createDialogueButtons.push(controls.button({
+        anchor: [0.3, 0.325], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "Add line", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                map.dialogues[curDia].lines.push(
+                    {
+                        "text": "",
+                        "portrait": "Portraits_Bleu",
+                        "emotion": "neutral",
+                        "name": "Bleu",
+                        "voice": false
+                    });
+                curLine = map.dialogues[curDia].lines.length - 1;
+                updateDialogueLabels();
+            }
+        }
+    }));
+
+    createDialogueButtons.push(controls.button({
+        anchor: [0.75, 0.325], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "Remove this line", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1 && curLine >= 0) {
+                map.dialogues[curDia].lines.splice(curLine, 1);
+                if (curLine != 0) curLine -= 1;
+                updateDialogueLabels();
+            }
+        }
+    }));
+
+    createDialogueButtons.push(controls.button({
+        anchor: [0.525, 0.325], sizeAnchor: [0.075, 0.1], offset: [72 * 16, -600],
+        text: "Prev.", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                if (curLine > 0) curLine -= 1;
+                updateDialogueLabels();
+            }
+        }
+    }));
+
+    createDialogueButtons.push(controls.button({
+        anchor: [0.65, 0.325], sizeAnchor: [0.075, 0.1], offset: [72 * 16, -600],
+        text: "Next", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                if (curLine < map.dialogues[curDia].lines.length - 1) curLine += 1;
+                updateDialogueLabels();
+            }
+        }
+    }));
+
+    createDialogueLabels.push(controls.label({
+        anchor: [0.625, 0.375], offset: [0, -600],
+        text: "0",
+        fontSize: 32, fill: "white", align: "center",
+        alpha: 0,
+    }));
+
+    for (i = 0; i < 6; i++) {
+        createDialogueLabels.push(controls.label({
+            anchor: [0.375, 0.475 + (0.06 * i)], offset: [0, -600],
+            text: "...",
+            fontSize: 32, fill: "white", align: "left",
+            alpha: 0,
+        }));
+    }
+
+    createDialogueButtons.push(controls.button({
+        anchor: [0.3, 0.45], sizeAnchor: [0.05, 0.05], offset: [72 * 16, -600],
+        text: "Text", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let newText = prompt("New text?");
+                if (newText != "") map.dialogues[curDia].lines[curLine].text = newText;
+                updateDialogueLabels();
+            }
+        }
+    }));
+
+    createDialogueButtons.push(controls.button({
+        anchor: [0.3, 0.51], sizeAnchor: [0.05, 0.05], offset: [72 * 16, -600],
+        text: "Portrait", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let newText = prompt("New portrait? (e. g. Portraits_Bleu)");
+                if (newText != "") map.dialogues[curDia].lines[curLine].portrait = newText;
+                updateDialogueLabels();
+            }
+        }
+    }));
+
+    createDialogueButtons.push(controls.button({
+        anchor: [0.3, 0.58], sizeAnchor: [0.05, 0.05], offset: [72 * 16, -600],
+        text: "Emotion", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let newEmo;
+                switch (map.dialogues[curDia].lines[curLine].emotion) {
+                    case "neutral":
+                        newEmo = "happy";
+                        break;
+                    case "happy":
+                        newEmo = "love";
+                        break;
+                    case "love":
+                        newEmo = "disappointed";
+                        break;
+                    case "disappointed":
+                        newEmo = "sad";
+                        break;
+                    case "sad":
+                        newEmo = "angry";
+                        break;
+                    case "angry":
+                        newEmo = "neutral";
+                        break;
+                }
+                map.dialogues[curDia].lines[curLine].emotion = newEmo;
+                updateDialogueLabels();
+            }
+        }
+    }));
+
+    createDialogueButtons.push(controls.button({
+        anchor: [0.3, 0.64], sizeAnchor: [0.05, 0.05], offset: [72 * 16, -600],
+        text: "Name", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let newText = prompt("New name? (e. g. Bleu)");
+                if (newText != "") map.dialogues[curDia].lines[curLine].name = newText;
+                updateDialogueLabels();
+            }
+        }
+    }));
+
+    createDialogueButtons.push(controls.button({
+        anchor: [0.3, 0.7], sizeAnchor: [0.05, 0.05], offset: [72 * 16, -600],
+        text: "Voice", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let newText = prompt("New voice? (leave it empty for default voice)");
+                if (newText != "") map.dialogues[curDia].lines[curLine].voice = newText;
+                else map.dialogues[curDia].lines[curLine].voice = false;
+                updateDialogueLabels();
+            }
+        }
+    }));
+
+    createDialogueButtons.push(controls.button({
+        anchor: [0.3, 0.76], sizeAnchor: [0.05, 0.05], offset: [72 * 16, -600],
+        text: "Script", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let newText = prompt("New script? (advanced)");
+                if (newText != "") map.dialogues[curDia].lines[curLine].script = newText;
+                updateDialogueLabels();
             }
         }
     }));
@@ -1307,6 +1553,7 @@ scenes.mapmaker = () => {
             for (i in createTileBG) {
                 createTileBG[i].alpha = 1;
             }
+            createTileBG[2].text = "Tile Maker";
 
             createTileInfoPageLength = 0;
 
@@ -1338,6 +1585,7 @@ scenes.mapmaker = () => {
                 for (i in createTileButtons) {
                     createTileButtons[i].offset[1] = -t;
                 }
+
                 if (t > 599) {
                     for (i in createTileButtons) {
                         createTileButtons[i].offset[1] = -600;
@@ -1348,6 +1596,90 @@ scenes.mapmaker = () => {
                 return false;
             })
         }
+    }
+
+    function toggleCreateDialogueButtons(mustShow=false) {
+        if (createDialogueButtons[0].alpha == 0 || mustShow) {
+            if (curDia != "") {
+                for (i in createDialogueButtons) {
+                    createDialogueButtons[i].offset = [0, -600];
+                    createDialogueButtons[i].alpha = 1;
+                }
+                for (i in createDialogueLabels) {
+                    createDialogueLabels[i].alpha = 1;
+                }
+            }
+            else {
+                createDialogueButtons[0].offset = [0, 0];
+                createDialogueButtons[0].alpha = 1;
+            } 
+            for (i in createTileBG) {
+                createTileBG[i].alpha = 1;
+            }
+            createTileBG[2].text = "Dialogue Maker";
+
+            createTileInfoPageLength = 0;
+
+            showInfo();
+
+            if (curDia != "") {
+                addAnimator(function (t) {
+                    for (i in createDialogueButtons) {
+                        createDialogueButtons[i].offset[1] = -600 + t;
+                    }
+                    for (i in createDialogueLabels) {
+                        createDialogueLabels[i].offset[1] = -600 + t;
+                    }
+
+                    if (t > 599) {
+                        for (i in createDialogueButtons) {
+                            createDialogueButtons[i].offset[1] = 0;
+                        }
+                        for (i in createDialogueLabels) {
+                            createDialogueLabels[i].offset[1] = 0;
+                        }
+                        return true;
+                    }
+                    return false;
+                })
+            }
+        }
+        else {
+            for (i in createDialogueButtons) {
+                createDialogueButtons[i].offset = [0, 0];
+            }
+            for (i in createTileBG) {
+                createTileBG[i].alpha = 0;
+            }
+            for (i in createDialogueLabels) {
+                createDialogueLabels[i].alpha = 0;
+            }
+            hideInfo();
+
+            addAnimator(function (t) {
+                for (i in createDialogueButtons) {
+                    createDialogueButtons[i].offset[1] = -t;
+                }
+                if (t > 599) {
+                    for (i in createDialogueButtons) {
+                        createDialogueButtons[i].offset[1] = -600;
+                        createDialogueButtons[i].alpha = 0;
+                    }
+                    return true;
+                }
+                return false;
+            })
+        }
+    }
+
+    function updateDialogueLabels() {
+        createDialogueLabels[0].text = curLine;
+        createDialogueLabels[1].text = map.dialogues[curDia].lines[curLine].text;
+        createDialogueLabels[2].text = map.dialogues[curDia].lines[curLine].portrait;
+        createDialogueLabels[3].text = map.dialogues[curDia].lines[curLine].emotion;
+        createDialogueLabels[4].text = map.dialogues[curDia].lines[curLine].name;
+        createDialogueLabels[5].text = map.dialogues[curDia].lines[curLine].voice;
+        createDialogueLabels[6].text = map.dialogues[curDia].lines[curLine].script;
     }
 
     function showInfo() {
@@ -2013,7 +2345,7 @@ scenes.mapmaker = () => {
         controls: [
             ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg, ...expandMapButtons,
             ...walkPad, middlei, currentMapText, backButton, toggleMapInfoButton, eyeButton, toggleAnimate, ...modeButtons,
-            ...tilesMenuControls, ...undoButtons, ...loadMapButtons, ...mapInfoControls, ...createTileBG, ...createTileInfoBG, ...createTileInfo, ...createTileButtons, ...tilesMenuTiles, ...tileInfoControls,
+            ...tilesMenuControls, ...undoButtons, ...loadMapButtons, ...mapInfoControls, ...createTileBG, ...createTileInfoBG, ...createTileInfo, ...createTileButtons, ...createDialogueButtons, ...createDialogueLabels, ...tilesMenuTiles, ...tileInfoControls,
         ],
         name: "mapmaker"
     }

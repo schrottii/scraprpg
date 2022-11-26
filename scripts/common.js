@@ -59,10 +59,6 @@ var commontiles = {
         sprite: "placeholder",
             occupied: true,
         },
-    "009": {
-        sprite: "tend_high_left",
-            dialogue: 1,
-        },
     "018": {
         sprite: "cliff_1",
             occupied: true,
