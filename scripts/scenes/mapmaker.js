@@ -457,6 +457,20 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) renderInfo("es");
         }
     }));
+    createTileInfoBG.push(controls.button({
+        anchor: [0.05, 0.15], sizeOffset: [32, 32], offset: [0, 48 * 6],
+        text: "D", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) renderInfo("d");
+        }
+    }));
+    createTileInfoBG.push(controls.button({
+        anchor: [0.05, 0.15], sizeOffset: [32, 32], offset: [0, 48 * 7],
+        text: "P", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) renderInfo("p");
+        }
+    }));
 
     createTileInfoBG.push(controls.button({
         anchor: [0.25, 0.85], sizeOffset: [32, 32], offset: [-80, -32],
@@ -828,8 +842,20 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1 && curLine >= 0) {
                 map.dialogues[curDia].lines.splice(curLine, 1);
-                if (curLine != 0) curLine -= 1;
+                if (curLine >= 0) curLine -= 1;
+                if (curLine == -1) {
+                    map.dialogues[curDia].lines.push(
+                        {
+                            "text": "",
+                            "portrait": "Portraits_Bleu",
+                            "emotion": "neutral",
+                            "name": "Bleu",
+                            "voice": false
+                        });
+                    curLine = 0;
+                }
                 updateDialogueLabels();
+
             }
         }
     }));
@@ -1740,6 +1766,15 @@ scenes.mapmaker = () => {
                 break;
             case "e":
                 grabFrom = Object.keys(mapenemies);
+                break;
+            case "d":
+                if (map.dialogues != undefined) grabFrom = Object.keys(map.dialogues);
+                else grabFrom = [];
+                break;
+            case "p":
+                for (i in Object.keys(images)) {
+                    if (Object.keys(images)[i].substr(0, 10) == "Portraits_") grabFrom.push(Object.keys(images)[i]);
+                }
                 break;
         }
         for (g = 0; g < 40; g++) {
