@@ -135,6 +135,7 @@ scenes.mapmaker = () => {
     let tileAni = "";
     let tileTele = "";
     let tileDia = "";
+    let tileSwim = "";
     let tileOccupied = "";
 
     let layerVisi = [1, 1, 1];
@@ -528,8 +529,8 @@ scenes.mapmaker = () => {
                 tileSprite = prompt('New map tile sprite? (e. g. water1 - must be the name from resources)');
                 this.text = "Tile Sprite: " + tileSprite;
 
-                if (images["tiles/" + tileSprite] != undefined) createTileButtons[7].source = "tiles/" + tileSprite;
-                else createTileButtons[7].source = "gear";
+                if (images["tiles/" + tileSprite] != undefined) createTileButtons[9].source = "tiles/" + tileSprite;
+                else createTileButtons[9].source = "gear";
 
                 tileSet = "";
                 createTileButtons[3].text = "Tile Set";
@@ -559,8 +560,8 @@ scenes.mapmaker = () => {
                 tileSet = prompt('New map tile set? (e. g. castle - must be the name from resources)');
                 this.text = "Tile Set: " + tileSet;
 
-                if (images["tilesets/" + tileSet] != undefined) createTileButtons[7].source = "tilesets/" + tileSet;
-                else createTileButtons[7].source = "gear";
+                if (images["tilesets/" + tileSet] != undefined) createTileButtons[9].source = "tilesets/" + tileSet;
+                else createTileButtons[9].source = "gear";
 
                 tileSprite = "";
                 createTileButtons[1].text = "Tile Sprite";
@@ -579,7 +580,7 @@ scenes.mapmaker = () => {
                 tileSetSnip = prompt('New map tile set snip? X.Y (e. g. 1.2  - 0.0 for top left)');
                 this.text = "Set Snip: " + tileSetSnip;
 
-                if (images["tilesets/" + tileSet] != undefined) createTileButtons[7].snip = [parseInt(tileSetSnip.split(".")[0]) * 32, parseInt(tileSetSnip.split(".")[1]) * 32, 32, 32];
+                if (images["tilesets/" + tileSet] != undefined) createTileButtons[9].snip = [parseInt(tileSetSnip.split(".")[0]) * 32, parseInt(tileSetSnip.split(".")[1]) * 32, 32, 32];
             }
         }
     }));
@@ -610,6 +611,16 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) {
                 tileDia = prompt('Dialogue?');
                 this.text = "Dialogue: " + tileDia;
+            }
+        }
+    }));
+    createTileButtons.push(controls.button({
+        anchor: [0.75, 0.575], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "Swim", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                tileSwim = prompt('Swim? (YES / NO)');
+                this.text = "Swim: " + tileSwim;
             }
         }
     }));
@@ -654,12 +665,17 @@ scenes.mapmaker = () => {
 
                     if (tileDia != "") map.tiles[tileID].dialogue = tileDia;
 
+                    if (tileSwim.toLowerCase() == "yes") map.tiles[tileID].swim = true;
+
                     tileID = "";
                     tileSprite = "";
                     tileOccupied = "";
                     tileSet = "";
                     tileSetSnip = "";
                     tileAni = "";
+                    tileTele = "";
+                    tileDia = "";
+                    tileSwim = "";
 
                     createTileButtons[0].text = "Tile ID";
                     createTileButtons[1].text = "Tile Sprite";
@@ -668,8 +684,10 @@ scenes.mapmaker = () => {
                     createTileButtons[4].text = "Set Snip";
                     createTileButtons[5].text = "Animation";
                     createTileButtons[6].text = "Teleport";
+                    createTileButtons[7].text = "Dialogue";
+                    createTileButtons[8].text = "Swim";
 
-                    createTileButtons[7].source = "gear";
+                    createTileButtons[9].source = "gear";
                 }
                 catch {
                     alert("An error occured!");
