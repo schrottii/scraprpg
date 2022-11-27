@@ -323,14 +323,18 @@ scenes.mapmaker = () => {
         anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 9, 0],
         source: "loadmap", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1) toggleLoadButtons();
+            if (this.alpha == 1) {
+                toggleLoadButtons();
+                renderInfo("m");
+                showInfo();
+            }
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 10, 0],
         source: "savemap", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1) toggleSaveButtons();
+            if (this.alpha == 1) toggleSaveButtons()
         }
     }));
     modeButtons.push(controls.image({
@@ -730,6 +734,7 @@ scenes.mapmaker = () => {
                 if (maps[newMapn] != undefined) currentMap = newMapn;
                 map = maps[currentMap];
                 if (loadMapButtons[0].alpha == 1) toggleLoadButtons();
+                hideInfo();
                 newMap();
             }
         }
@@ -2564,7 +2569,7 @@ scenes.mapmaker = () => {
 
             if (lmresult != "none") {
                 if (loadMapButtons[0].alpha == 1) toggleLoadButtons();
-
+                hideInfo();
                 if (lmresult != "justhide") {
                     if (typeof (lmresult) == "string") {
                         // The map you have loaded already exists :)
