@@ -966,7 +966,7 @@ scenes.game = () => {
         }
     }
 
-    // Function used to figure out if anyone (player, npcs, enemies, Ed Sheeran) is on a tile
+    // Function used to figure out if anyone (player, NPCs, enemies) is on a tile
     function creaturesOnTile(map, x, y, player = true) {
         // Set player to false if you want to ignore the player
         // This functions returns true if anyone is there - false if nobody is there

@@ -26,7 +26,7 @@ scenes.title = () => {
     let verLabel = controls.label({
         anchor: [.98, .98], offset: [-5, -12],
         align: "right", baseline: "alphabetic", fontSize: 16, fill: "#7f7f7f", alpha: 0,
-        text: "Phase 1.5",
+        text: "Phase 2",
     });
 
     let settingsSaveText = controls.label({
