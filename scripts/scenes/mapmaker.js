@@ -130,6 +130,7 @@ scenes.mapmaker = () => {
 
     var mode = "move";
     var prevmode = "move";
+    var doFill = false;
 
     var tiles_bg = [];
     var tiles_bg2 = [];
@@ -411,6 +412,22 @@ scenes.mapmaker = () => {
     modeButtons.push(controls.rect({
         anchor: [0.015, 0], sizeOffset: [2, 96], offset: [72 * 17 - 5, 0],
         fill: "white", alpha: 0.8,
+    }));
+    modeButtons.push(controls.image({
+        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 17, 0],
+        source: "fill", alpha: 1, glow: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                if (doFill) {
+                    doFill = false;
+                    this.glow = 0;
+                }
+                else {
+                    doFill = true;
+                    this.glow = 10;
+                }
+            }
+        }
     }));
 
     createTileBG.push(controls.rect({
@@ -2217,6 +2234,7 @@ scenes.mapmaker = () => {
             for (i in loadMapButtons) {
                 loadMapButtons[i].offset = [0, 0];
             }
+            hideInfo();
             addAnimator(function (t) {
                 for (i in loadMapButtons) {
                     loadMapButtons[i].offset[1] = -t;
@@ -2402,6 +2420,8 @@ scenes.mapmaker = () => {
                 tileToPlace = ttp;
             }
 
+            let rePlaced = mp.substr(x * 4, 3);
+
             if (mp == undefined) {
                 while (mp == undefined) {
                     map[layer].push(def);
@@ -2423,10 +2443,56 @@ scenes.mapmaker = () => {
                 postRedoLog(x, y, layer, mp.substr(x * 4, 3));
             }
 
-            if (x * 4 > mp.length) map[layer][y] = mp + " " + tileToPlace;
-            else map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
+            if (doFill) {
+                let temp = [x, y];
+                replaceY("+", mp, x, y, layer, rePlaced, tileToPlace, temp);
+                x = temp[0];
+                y = temp[1];
+                replaceY("-", mp, x, y, layer, rePlaced, tileToPlace, temp);
+                x = temp[0];
+                y = temp[1];
+            }
+            else {
+                if (x * 4 > mp.length) map[layer][y] = mp + " " + tileToPlace;
+                else map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
+            }
+
             map[layer][y] = map[layer][y].replace(/  /gi, " ");
             updateTiles = true;
+        }
+    }
+
+    function replaceY(pom, mp, x, y, layer, rePlaced, tileToPlace, temp) {
+        if (rePlaced == "") return false;
+        let startX = 0;
+        let startY = y;
+
+        while (map[layer][y] != undefined && y - 100 < startY) {
+            if (mp.substr(x * 4, 3) != rePlaced) {
+                // Nope (limit Y)
+                break;
+            }
+            startX = x;
+            while (mp.substr(0, x * 4) != undefined && x - 100 < startX) {
+                if (mp.substr(x * 4, 3) == rePlaced) map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
+                else break;
+                mp = map[layer][y];
+                x -= 1;
+            }
+            x = temp[0] + 1;
+            mp = map[layer][y];
+            startX = x;
+            while (mp.substr(0, x * 4) != undefined && x - 100 < startX) {
+                if (mp.substr(x * 4, 3) == rePlaced) map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
+                else break;
+                mp = map[layer][y];
+                x += 1;
+            }
+            // pom = plus or minus
+            if(pom == "-") y -= 1;
+            if (pom == "+") y += 1;
+            mp = map[layer][y];
+            x = temp[0];
         }
     }
 

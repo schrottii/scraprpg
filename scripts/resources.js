@@ -76,6 +76,7 @@ let images = {
     selectedtile: "data/images/mm/selected-tile.png",
     eye: "data/images/mm/eye.png",
     tilemode: "data/images/mm/tilemode.png",
+    fill: "data/images/mm/fill.png",
 
     // Animations
     tokenattack: "data/images/token-animation.png",
