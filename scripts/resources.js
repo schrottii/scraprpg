@@ -315,6 +315,7 @@ var maps = {
     "test505": "scripts/maps/test505.js",
     "scrapIsland": "scripts/maps/Scrap_Island.js",
     "hotel": "scripts/maps/Hotel_Island_1_2.js",
+    "partyHouse": "scripts/maps/PartyHouse.js",
 };
 
 var colors = { // colors not colours
