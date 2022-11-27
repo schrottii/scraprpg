@@ -1437,7 +1437,7 @@ scenes.game = () => {
             if (autoSaveTime > 14999) {
                 // Animation
                 addAnimator(function (t) {
-                    autoSaveText.alpha = t / 10;
+                    autoSaveText.alpha = 1 - (1 / 2500) * t;
                     if (t > 2500) {
                         autoSaveTime = 0;
                         autoSaveText.alpha = 0;

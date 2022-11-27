@@ -213,7 +213,7 @@ var commontiles = {
                 action: () => {
                     saveGame();
                     addAnimator(function (t) {
-                        autoSaveText.alpha = t / 10;
+                        autoSaveText.alpha = 1 - (1 / 2500) * t;
                         if (t > 2500) {
                             autoSaveText.alpha = 0;
                             return true;

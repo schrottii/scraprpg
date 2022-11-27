@@ -96,6 +96,7 @@ scenes.mapmaker = () => {
     let createNPCLabels = [];
 
     let loadMapButtons = [];
+    let saveMapButtons = [];
     let expandMapButtons = [];
     let undoButtons = [];
     let mapInfoControls = [];
@@ -118,6 +119,15 @@ scenes.mapmaker = () => {
     var activenpcs = [];
     var currentMap = "map2";
     var map = maps[currentMap];
+
+    let loadFromAutoSave = localStorage.getItem("SRPGMM");
+    if (loadFromAutoSave != undefined) {
+        map = JSON.parse(loadFromAutoSave);
+        currentMap = map.id;
+    }
+
+    let autoSaveTime = 0;
+
     var mode = "move";
     var prevmode = "move";
 
@@ -148,18 +158,23 @@ scenes.mapmaker = () => {
     let prePos = [-3483493, 934030];
     let currInfo = [0, 0, 1];
 
+    let autoSaveText = controls.label({
+        anchor: [.025, .98], offset: [12, -12],
+        fontSize: 16, text: "Game saved!", alpha: 0,
+    });
+
     modeButtons.push(controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 0], sizeOffset: [0, 96],
         fill: "brown", alpha: 0.8,
         onClick(args) {
-            protect();
+            if(!prot) protect();
         }
     }));
     modeButtons.push(controls.rect({
         anchor: [0, 0], sizeAnchor: [0.015, 0], sizeOffset: [72 * 3 - 5, 96], offset: [0, 96],
         fill: "brown", alpha: 0.8,
         onClick(args) {
-            protect();
+            if (!prot) protect();
         }
     }));
     undoButtons.push(controls.image({
@@ -315,18 +330,11 @@ scenes.mapmaker = () => {
         anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 10, 0],
         source: "savemap", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1) saveFile("sotrm");
+            if (this.alpha == 1) toggleSaveButtons();
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 11, 0],
-        source: "savemap", alpha: 1,
-        onClick(args) {
-            if (this.alpha == 1) saveFile("js");
-        }
-    }));
-    modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 12, 0],
         source: "newmap", alpha: 1,
         onClick(args) {
             if (this.alpha == 1) {
@@ -349,36 +357,36 @@ scenes.mapmaker = () => {
         }
     }));
     modeButtons.push(controls.rect({
-        anchor: [0.015, 0], sizeOffset: [2, 96], offset: [72 * 13 - 5, 0],
+        anchor: [0.015, 0], sizeOffset: [2, 96], offset: [72 * 12 - 5, 0],
         fill: "white", alpha: 0.8,
     }));
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 13, 0],
+        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 12, 0],
         source: "senza", alpha: 1,
         onClick(args) {
             if (this.alpha == 1) toggleCreateTileButtons();
         }
     }));
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 14, 0],
+        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 13, 0],
         source: "senza", alpha: 1,
         onClick(args) {
             if (this.alpha == 1) toggleCreateDialogueButtons();
         }
     }));
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 15, 0],
+        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 14, 0],
         source: "senza", alpha: 1,
         onClick(args) {
             if (this.alpha == 1) toggleCreateNPCButtons();
         }
     }));
     modeButtons.push(controls.rect({
-        anchor: [0.015, 0], sizeOffset: [2, 96], offset: [72 * 16 - 5, 0],
+        anchor: [0.015, 0], sizeOffset: [2, 96], offset: [72 * 15 - 5, 0],
         fill: "white", alpha: 0.8,
     }));
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 16, 0],
+        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 15, 0],
         source: "copy", alpha: 1,
         onClick(args) {
             if (this.alpha == 1) {
@@ -386,21 +394,18 @@ scenes.mapmaker = () => {
                 let x = game.position[0];
 
                 updateTTP(my[x * 4] + my[(x * 4) + 1] + my[(x * 4) + 2]);
-                thetile = ttp;
-                if (map.tiles[ttp] != undefined) currentTile.source = "tiles/" + map.tiles[ttp].sprite;
-                else currentTile.source = "tiles/" + commontiles[ttp].sprite;
             }
         }
     }));
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 17, 0],
+        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 16, 0],
         source: "paste", alpha: 1,
         onClick(args) {
             if (this.alpha == 1) placeTile(game.position[0], game.position[1], ["map", "mapbg2", "mapfg"][editingLayer], ttp, "copy");
         }
     }));
     modeButtons.push(controls.rect({
-        anchor: [0.015, 0], sizeOffset: [2, 96], offset: [72 * 18 - 5, 0],
+        anchor: [0.015, 0], sizeOffset: [2, 96], offset: [72 * 17 - 5, 0],
         fill: "white", alpha: 0.8,
     }));
 
@@ -705,7 +710,6 @@ scenes.mapmaker = () => {
         }
     }));
 
-
     loadMapButtons.push(controls.button({
         anchor: [0.3, 0.2], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
         text: "Load from file...", alpha: 0,
@@ -727,6 +731,27 @@ scenes.mapmaker = () => {
                 map = maps[currentMap];
                 if (loadMapButtons[0].alpha == 1) toggleLoadButtons();
                 newMap();
+            }
+        }
+    }));
+
+    saveMapButtons.push(controls.button({
+        anchor: [0.3, 0.2], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
+        text: "Save as .sotrm", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                protect();
+                saveFile("sotrm");
+            }
+        }
+    }));
+    saveMapButtons.push(controls.button({
+        anchor: [0.3, 0.35], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
+        text: "Save as .js", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                protect();
+                saveFile("js");
             }
         }
     }));
@@ -1425,6 +1450,7 @@ scenes.mapmaker = () => {
         text: "ani:off",
         onClick(args) {
             if (this.alpha == 1) {
+                protect();
                 if (this.text == "ani:off") {
                     enableAnimations = true;
                     this.text = "ani:on";
@@ -2180,6 +2206,45 @@ scenes.mapmaker = () => {
         }
     }
 
+    function toggleSaveButtons() {
+        if (saveMapButtons[0].alpha == 0) {
+            for (i in saveMapButtons) {
+                saveMapButtons[i].offset = [0, -600];
+                saveMapButtons[i].alpha = 1;
+            }
+            addAnimator(function (t) {
+                for (i in saveMapButtons) {
+                    saveMapButtons[i].offset[1] = -600 + t;
+                }
+                if (t > 599) {
+                    for (i in saveMapButtons) {
+                        saveMapButtons[i].offset[1] = 0;
+                    }
+                    return true;
+                }
+                return false;
+            })
+        }
+        else {
+            for (i in saveMapButtons) {
+                saveMapButtons[i].offset = [0, 0];
+            }
+            addAnimator(function (t) {
+                for (i in saveMapButtons) {
+                    saveMapButtons[i].offset[1] = -t;
+                }
+                if (t > 599) {
+                    for (i in saveMapButtons) {
+                        saveMapButtons[i].offset[1] = -600;
+                        saveMapButtons[i].alpha = 0;
+                    }
+                    return true;
+                }
+                return false;
+            })
+        }
+    }
+
     function hideOtherModes(thisMode) {
         for (m in modeButtons) {
             if ((modeButtons[m].setmode == undefined || modeButtons[m].setmode != thisMode) && (modeButtons[m].alpha == 0 || modeButtons[m].alpha == 1)) modeButtons[m].alpha = 1;
@@ -2733,15 +2798,30 @@ scenes.mapmaker = () => {
 
             middlei.sizeOffset = [zoom * scale, zoom * scale];
             middlei.offset = [-zoom * scale / 2, (zoom * scale * 7.5 - ((zoom - 1) * scale * 7)) - (height / 2)];
+
+            autoSaveTime += 1 / delta;
+            if (autoSaveTime >= 12) {
+                autoSaveTime = 0;
+                localStorage.setItem("SRPGMM", JSON.stringify(map));
+                addAnimator(function (t) {
+                    autoSaveText.alpha = 1 - (1 / 500) * t;
+                    if (t > 500) {
+                        autoSaveTime = 0;
+                        autoSaveText.alpha = 0;
+                        return true;
+                    }
+                    return false;
+                })
+            }
         },
         // Controls
         controls: [
             ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg, ...expandMapButtons,
             ...walkPad, middlei, currentMapText, backButton, toggleMapInfoButton, eyeButton, toggleAnimate, ...modeButtons,
-            ...tilesMenuControls, ...undoButtons, ...loadMapButtons, ...mapInfoControls, currentTile,
+            ...tilesMenuControls, ...undoButtons, ...loadMapButtons, ...saveMapButtons, ...mapInfoControls, currentTile,
             ...createTileBG, ...createTileInfoBG, ...createTileInfo, ...createTileButtons,
             ...createDialogueButtons, ...createDialogueLabels, ...createNPCButtons, ...createNPCLabels,
-            ...tilesMenuTiles, ...tileInfoControls,
+            ...tilesMenuTiles, ...tileInfoControls, autoSaveText
         ],
         name: "mapmaker"
     }
