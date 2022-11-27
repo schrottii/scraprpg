@@ -156,10 +156,60 @@ scenes.mapmaker = () => {
         }
     }));
     modeButtons.push(controls.rect({
-        anchor: [0, 0], sizeAnchor: [0.015, 0], sizeOffset: [72 * 3 - 5, 32], offset: [0, 96],
+        anchor: [0, 0], sizeAnchor: [0.015, 0], sizeOffset: [72 * 3 - 5, 96], offset: [0, 96],
         fill: "brown", alpha: 0.8,
         onClick(args) {
             protect();
+        }
+    }));
+    undoButtons.push(controls.image({
+        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 1, 104],
+        source: "undo", alpha: 1,
+        onClick(args) {
+            if (this.alpha == 1) {
+                placeTile(undoLog[0][0], undoLog[0][1], undoLog[0][2], undoLog[0][3], "undo");
+                undoLog.shift();
+            }
+        }
+    }));
+    undoButtons.push(controls.image({
+        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 2, 104],
+        source: "redo", alpha: 1,
+        onClick(args) {
+            if (this.alpha == 1) {
+                placeTile(redoLog[0][0], redoLog[0][1], redoLog[0][2], redoLog[0][3]);
+                redoLog.shift();
+            }
+        }
+    }));
+    modeButtons.push(controls.image({
+        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [0, 104],
+        source: "mmzoom", alpha: 1,
+        onClick(args) {
+            if (this.alpha == 1) {
+                switch (zoom) {
+                    case 1:
+                        zoom = 1.25;
+                        updateTiles = true;
+                        break;
+                    case 1.25:
+                        zoom = 1.5;
+                        updateTiles = true;
+                        break;
+                    case 1.5:
+                        zoom = 2;
+                        updateTiles = true;
+                        break;
+                    case 2:
+                        zoom = 4;
+                        updateTiles = true;
+                        break;
+                    case 4:
+                        zoom = 1;
+                        updateTiles = true;
+                        break;
+                }
+            }
         }
     }));
     for (i = 0; i < 3; i++) {
@@ -169,6 +219,10 @@ scenes.mapmaker = () => {
             onClick(args) {
                 if (this.alpha == 1) {
                     editingLayer = this.i;
+                    modeButtons[3].glow = 0;
+                    modeButtons[5].glow = 0;
+                    modeButtons[7].glow = 0;
+                    this.glow = 10;
                 }
             }
         }));
@@ -184,6 +238,7 @@ scenes.mapmaker = () => {
             }
         }));
     }
+    modeButtons[3].glow = 10;
     modeButtons.push(controls.rect({
         anchor: [0.015, 0], sizeOffset: [2, 96], offset: [72 * 3 - 5, 0],
         fill: "white", alpha: 0.8,
@@ -299,101 +354,54 @@ scenes.mapmaker = () => {
     }));
     modeButtons.push(controls.image({
         anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 13, 0],
-        source: "mmzoom", alpha: 1,
+        source: "senza", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1) {
-                switch (zoom) {
-                    case 1:
-                        zoom = 1.25;
-                        updateTiles = true;
-                        break;
-                    case 1.25:
-                        zoom = 1.5;
-                        updateTiles = true;
-                        break;
-                    case 1.5:
-                        zoom = 2;
-                        updateTiles = true;
-                        break;
-                    case 2:
-                        zoom = 4;
-                        updateTiles = true;
-                        break;
-                    case 4:
-                        zoom = 1;
-                        updateTiles = true;
-                        break;
-                }
-            }
+            if (this.alpha == 1) toggleCreateTileButtons();
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 14, 0],
         source: "senza", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1) toggleCreateTileButtons();
+            if (this.alpha == 1) toggleCreateDialogueButtons();
         }
     }));
-    modeButtons.push(controls.rect({
-        anchor: [0.015, 0], sizeOffset: [2, 96], offset: [72 * 15 - 5, 0],
-        fill: "white", alpha: 0.8,
-    }));
-    undoButtons.push(controls.image({
+    modeButtons.push(controls.image({
         anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 15, 0],
-        source: "undo", alpha: 1,
+        source: "senza", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1) {
-                placeTile(undoLog[0][0], undoLog[0][1], undoLog[0][2], undoLog[0][3], "undo");
-                undoLog.shift();
-            }
-        }
-    }));
-    undoButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 16, 0],
-        source: "redo", alpha: 1,
-        onClick(args) {
-            if (this.alpha == 1) {
-                placeTile(redoLog[0][0], redoLog[0][1], redoLog[0][2], redoLog[0][3]);
-                redoLog.shift();
-            }
+            if (this.alpha == 1) toggleCreateNPCButtons();
         }
     }));
     modeButtons.push(controls.rect({
-        anchor: [0.015, 0], sizeOffset: [2, 96], offset: [72 * 17 - 5, 0],
+        anchor: [0.015, 0], sizeOffset: [2, 96], offset: [72 * 16 - 5, 0],
         fill: "white", alpha: 0.8,
     }));
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 17, 0],
+        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 16, 0],
         source: "copy", alpha: 1,
         onClick(args) {
             if (this.alpha == 1) {
                 let my = map[["map", "mapbg2", "mapfg"][editingLayer]][game.position[1]];
                 let x = game.position[0];
 
-                ttp = thetile = my[x * 4] + my[(x * 4) + 1] + my[(x * 4) + 2];
+                updateTTP(my[x * 4] + my[(x * 4) + 1] + my[(x * 4) + 2]);
+                thetile = ttp;
+                if (map.tiles[ttp] != undefined) currentTile.source = "tiles/" + map.tiles[ttp].sprite;
+                else currentTile.source = "tiles/" + commontiles[ttp].sprite;
             }
         }
     }));
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 18, 0],
+        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 17, 0],
         source: "paste", alpha: 1,
         onClick(args) {
             if (this.alpha == 1) placeTile(game.position[0], game.position[1], ["map", "mapbg2", "mapfg"][editingLayer], ttp, "copy");
         }
     }));
-    modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 19, 0],
-        source: "senza", alpha: 1,
-        onClick(args) {
-            if (this.alpha == 1) toggleCreateDialogueButtons();
-        }
-    }));
-    modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 20, 0],
-        source: "senza", alpha: 1,
-        onClick(args) {
-            if (this.alpha == 1) toggleCreateNPCButtons();
-        }
+    modeButtons.push(controls.rect({
+        anchor: [0.015, 0], sizeOffset: [2, 96], offset: [72 * 18 - 5, 0],
+        fill: "white", alpha: 0.8,
     }));
 
     createTileBG.push(controls.rect({
@@ -1213,6 +1221,10 @@ scenes.mapmaker = () => {
             }
         }
     }));
+    tilesMenuControls.push(controls.label({
+        anchor: [0.5, 0.15],
+        text: "Tile Picker", alpha: 0,
+    }));
 
     for (t = 0; t < 100; t++) {
         tilesMenuTiles.push(controls.image({
@@ -1222,7 +1234,8 @@ scenes.mapmaker = () => {
             // tileid: 001, 002, etc.
             onClick(args) {
                 if (this.alpha == 1) {
-                    ttp = this.tileid;
+                    updateTTP(this.tileid);
+
                     for (t in tilesMenuTiles) {
                         tilesMenuTiles[t].glow = 0;
                     }
@@ -1326,7 +1339,7 @@ scenes.mapmaker = () => {
     }));
 
     let backButton = controls.button({
-        anchor: [0.02, 0.925], sizeAnchor: [0.05, 0.045],
+        anchor: [0.01, 0.925], sizeAnchor: [0.05, 0.045],
         text: "<",
         onClick(args) {
             if (this.alpha == 1) {
@@ -1337,7 +1350,7 @@ scenes.mapmaker = () => {
     });
 
     let toggleMapInfoButton = controls.button({
-        anchor: [0.02, 0.85], sizeAnchor: [0.05, 0.045],
+        anchor: [0.01, 0.85], sizeAnchor: [0.05, 0.045],
         text: "(i)",
         onClick(args) {
             if (this.alpha == 1) {
@@ -1366,7 +1379,7 @@ scenes.mapmaker = () => {
     });
 
     let eyeButton = controls.image({
-        anchor: [0.02, 0.775], sizeAnchor: [0.05, 0.045],
+        anchor: [0.01, 0.775], sizeAnchor: [0.05, 0.045],
         source: "eye",
         onClick(args) {
             protect();
@@ -1408,7 +1421,7 @@ scenes.mapmaker = () => {
     });
 
     let toggleAnimate = controls.button({
-        anchor: [0.02, 0.7], sizeAnchor: [0.05, 0.045],
+        anchor: [0.01, 0.7], sizeAnchor: [0.05, 0.045],
         text: "ani:off",
         onClick(args) {
             if (this.alpha == 1) {
@@ -1423,6 +1436,12 @@ scenes.mapmaker = () => {
                 updateTiles = true;
             }
         },
+        alpha: 1,
+    });
+
+    let currentTile = controls.image({
+        anchor: [0.015, 0.625], sizeOffset: [64, 64], offset: [0, -16],
+        source: "tiles/sand1", glow: 5, glowColor: "yellow",
         alpha: 1,
     });
 
@@ -1732,6 +1751,31 @@ scenes.mapmaker = () => {
         loadNPCs();
 
         updateTiles = true;
+    }
+
+    function updateTTP(newTTP) {
+        ttp = newTTP;
+
+        if (map.tiles[ttp] != undefined) {
+            if (map.tiles[ttp].sprite != undefined) {
+                currentTile.source = "tiles/" + map.tiles[ttp].sprite;
+                currentTile.snip = false;
+            }
+            else {
+                currentTile.source = "tilesets/" + map.tiles[ttp].set;
+                currentTile.snip = [map.tiles[ttp].snip[0] * 32, map.tiles[ttp].snip[1] * 32, 32, 32];
+            }
+        }
+        else if (commontiles[ttp] != undefined) {
+            if (commontiles[ttp].sprite != undefined) {
+                currentTile.source = "tiles/" + commontiles[ttp].sprite;
+                currentTile.snip = false;
+            }
+            else {
+                currentTile.source = "tilesets/" + commontiles[ttp].set;
+                currentTile.snip = [commontiles[ttp].snip[0] * 32, commontiles[ttp].snip[1] * 32, 32, 32];
+            }
+        }
     }
 
     function postUndoLog(x, y, layer, prevContent) {
@@ -2666,7 +2710,7 @@ scenes.mapmaker = () => {
         controls: [
             ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg, ...expandMapButtons,
             ...walkPad, middlei, currentMapText, backButton, toggleMapInfoButton, eyeButton, toggleAnimate, ...modeButtons,
-            ...tilesMenuControls, ...undoButtons, ...loadMapButtons, ...mapInfoControls,
+            ...tilesMenuControls, ...undoButtons, ...loadMapButtons, ...mapInfoControls, currentTile,
             ...createTileBG, ...createTileInfoBG, ...createTileInfo, ...createTileButtons,
             ...createDialogueButtons, ...createDialogueLabels, ...createNPCButtons, ...createNPCLabels,
             ...tilesMenuTiles, ...tileInfoControls,
