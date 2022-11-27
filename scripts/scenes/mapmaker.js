@@ -734,6 +734,28 @@ scenes.mapmaker = () => {
             }
         }
     }));
+    loadMapButtons.push(controls.button({
+        anchor: [0.3, 0.5], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
+        text: "Play", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let toPos = [game.position[0], game.position[1]];
+
+                saveNR = 3;
+                loadGame();
+                loadSettings();
+
+                maps[currentMap] = map;
+
+                game.map = currentMap;
+                game.position = toPos;
+
+                canMove = true;
+                isMapTestingMode = true;
+                setScene(scenes.game());
+            }
+        }
+    }));
 
     saveMapButtons.push(controls.button({
         anchor: [0.3, 0.2], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],

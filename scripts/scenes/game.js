@@ -1424,6 +1424,17 @@ scenes.game = () => {
         }
     })*/
 
+    let backButton = controls.button({
+        anchor: [0.01, 0.925], sizeAnchor: [0.05, 0.045],
+        text: "<",
+        onClick(args) {
+            if (this.alpha == 1) {
+                setScene(scenes.mapmaker());
+            }
+        },
+        alpha: (isMapTestingMode ? 1 : 0),
+    });
+
     let tTime = 1000 / 3;
     if (previousScene == "main" || previousScene == "title" || previousScene == undefined) tTime = 1500; // Not inventory or fight
     fadeIn(tTime, true);
@@ -1998,7 +2009,7 @@ scenes.game = () => {
         controls: [
             poisonBlack, nightEffect, nightEffect2, fallingRain, fogCloud, darkCloud, dustParticles,
             ...walkPad, mapDisplay, mapIcon, actionButton,
-            ...menuItems, ...menuItemsImages, ...menuItemsAmounts,
+            ...menuItems, ...menuItemsImages, ...menuItemsAmounts, backButton,
             ...cutsceneElements,
             ...dialogueNormalComponents, ...dialogueInvisComponents, ...dialogueNarratorComponents, ...dialogueCutsceneComponents,
             autoSaveText, ...areaNameBox, areaTeleportFade,

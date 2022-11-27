@@ -50,6 +50,7 @@ function init() {
 var currentKeys = {};
 var autoSaveTime = 0;
 var canMove = true;
+var isMapTestingMode = false;
 
 var textProgress = -1;
 
