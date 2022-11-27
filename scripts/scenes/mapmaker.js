@@ -1663,7 +1663,7 @@ scenes.mapmaker = () => {
         anchor: [0.5, 0.15], offset: [0, 80],
         text: "water1", alpha: 0,
     }));
-    for (t = 0; t < 7; t++) {
+    for (t = 0; t < 8; t++) {
         tileInfoControls.push(controls.label({
             anchor: [0.5, 0.2 + (0.05 * t)], offset: [0, 80],
             text: "ERROR", alpha: 0,
@@ -2366,8 +2366,10 @@ scenes.mapmaker = () => {
             if (map.items[i][0] == x && map.items[i][1] == y) thisTilesItem = map.items[i];
         }
         tileInfoControls[12].text = "Item: " + (thisTilesItem == undefined ? "not" : map.items[i][2] + " x" + map.items[i][3]);
-        if (thisTilesItem != undefined) tileInfoControls[13].source = "items/" + items[map.items[i][2]]().source;
-        else tileInfoControls[13].source = "gear";
+        if (thisTilesItem != undefined) tileInfoControls[14].source = "items/" + items[map.items[i][2]]().source;
+        else tileInfoControls[14].source = "gear";
+
+        tileInfoControls[13].text = "Dialogue: " + (selectedTile.dialogue == undefined ? "not" : selectedTile.dialogue);
 
         // Show it all
         for (tic in tileInfoControls) {
