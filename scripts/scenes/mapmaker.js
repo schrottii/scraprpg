@@ -1673,6 +1673,30 @@ scenes.mapmaker = () => {
         anchor: [0.05, 0.5], sizeOffset: [64, 64], offset: [40, 40],
         source: "tiles/water1", alpha: 0,
     }));
+    tileInfoControls.push(controls.image({
+        anchor: [0.05, 0.35], sizeOffset: [64, 64], offset: [40, 40],
+        source: "tilesets/teleport", alpha: 0, snip: [0, 0, 32, 32],
+        pos: [0, 0, 0],
+        onClick(args) {
+            if (this.alpha == 1) {
+                let selectedTile = getTile(map, this.pos[0], this.pos[1], this.pos[2]);
+                if (selectedTile != undefined) {
+                    if (selectedTile.teleport != undefined) {
+                        if (confirm("Do you really want to teleport? Unsaved changes are lost!")) {
+                            currentMap = selectedTile.teleport[0];
+                            map = maps[currentMap];
+                            game.position = [selectedTile.teleport[1], selectedTile.teleport[2]];
+                            newMap();
+
+                            for (tic in tileInfoControls) {
+                                tileInfoControls[tic].alpha = 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }));
 
     tileInfoControls.push(controls.button({
         anchor: [0.2, 0.625], sizeAnchor: [0.2, 0.1],
@@ -2342,6 +2366,8 @@ scenes.mapmaker = () => {
         if (selectedTile == undefined) selectedTile = map.tiles.empty;
         let selectedTileID = "empty";
         if (map[layer][y] != undefined) selectedTileID = map[layer][y].substr(x * 4, 3);
+
+        tileInfoControls[15].pos = currInfo;
 
         if (selectedTile.set != undefined) {
             tileInfoControls[4].source = "tilesets/" + selectedTile.set;
