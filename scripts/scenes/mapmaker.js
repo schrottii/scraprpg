@@ -292,7 +292,14 @@ scenes.mapmaker = () => {
         anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 7, 0],
         source: "tilemode", alpha: 1, setmode: "tile",
         onClick(args) {
-            if (this.alpha == 1) tileMode();
+            if (this.alpha == 1) {
+                if (tilesMenuControls[0].alpha == 1) {
+                    tileInfo(0, 0, 0, ttp);
+                }
+                else {
+                    tileMode();
+                }
+            }
         }
     }));
     modeButtons.push(controls.rect({
@@ -2566,21 +2573,31 @@ scenes.mapmaker = () => {
         }
     }
 
-    function tileInfo(x, y, layer) {
-        if (x < 0 || y < 0) {
-            return false;
-        }
-
+    function tileInfo(x, y, layer, selected = "none") {
+        let selectedTile;
+        let selectedTileID;
         let l = 1;
-        if (layer == "mapbg2") l = 2;
-        if (layer == "mapfg") l = 3;
 
-        currInfo = [x, y, l];
+        if (selected == "none") {
+            if (x < 0 || y < 0) {
+                return false;
+            }
 
-        let selectedTile = getTile(map, x, y, l);
-        if (selectedTile == undefined) selectedTile = map.tiles.empty;
-        let selectedTileID = "empty";
-        if (map[layer][y] != undefined) selectedTileID = map[layer][y].substr(x * 4, 3);
+            if (layer == "mapbg2") l = 2;
+            if (layer == "mapfg") l = 3;
+
+            currInfo = [x, y, l];
+
+            selectedTile = getTile(map, x, y, l);
+
+            if (selectedTile == undefined) selectedTile = map.tiles.empty;
+            selectedTileID = "empty";
+            if (map[layer][y] != undefined) selectedTileID = map[layer][y].substr(x * 4, 3);
+        }
+        else {
+            selectedTile = map.tiles[selected] != undefined ? map.tiles[selected] : commontiles[selected];
+            selectedTileID = selected;
+        }
 
         tileInfoControls[15].pos = currInfo;
 
