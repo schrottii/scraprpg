@@ -77,6 +77,7 @@ let images = {
     eye: "data/images/mm/eye.png",
     tilemode: "data/images/mm/tilemode.png",
     fill: "data/images/mm/fill.png",
+    tilepickerinfoicons: "data/images/mm/miniicons.png",
 
     // Animations
     tokenattack: "data/images/token-animation.png",

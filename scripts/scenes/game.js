@@ -714,6 +714,11 @@ scenes.game = () => {
 
     instantEffect = true;
 
+    let areaTeleportFade = controls.rect({
+        anchor: [0, 0], sizeAnchor: [1, 1],
+        fill: "black", alpha: 0
+    })
+
     // Weather time thing
     function setNightEffect(color, al = 0.5, type = "none") {
         //console.log(nightEffect.alpha, color, al, type, instantEffect);

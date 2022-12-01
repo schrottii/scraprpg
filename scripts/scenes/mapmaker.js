@@ -80,6 +80,7 @@ scenes.mapmaker = () => {
 
     let tilesMenuControls = [];
     let tilesMenuTiles = [];
+    let tilesMenuIcons = [];
 
     let createTileButtons = [];
     let createTileBG = [];
@@ -1310,6 +1311,12 @@ scenes.mapmaker = () => {
                 }
             }
         }));
+        for (t2 = 0; t2 < 4; t2++) {
+            tilesMenuIcons.push(controls.image({
+                anchor: [0.05, 0.2], offset: [32 + (72 * (t % 25)) + (16 * t2), 84 + (72 * Math.floor(t / 25))], sizeOffset: [16, 16],
+                source: "tilepickerinfoicons", snip: [8 * t2, 0, 8, 8], alpha: 0,
+            }));
+        }
     }
 
     walkPad.push(controls.image({ // Up
@@ -2381,6 +2388,9 @@ scenes.mapmaker = () => {
             tilesMenuTiles[t].alpha = 0;
             tilesMenuTiles[t].glow = 0;
         }
+        for (t in tilesMenuIcons) {
+            tilesMenuIcons[t].alpha = 0;
+        }
         for (t = 0; t < 25; t++) {
             if (tilesMenuTiles[t].offset[0] / red <= width * scale * 0.9) pageWidth = t;
         }
@@ -2418,6 +2428,12 @@ scenes.mapmaker = () => {
                     tilesMenuTiles[nr].tile = grb;
                     tilesMenuTiles[nr].tileid = til;
                     tilesMenuTiles[nr].alpha = 1;
+
+                    let nr2 = (nr * 4);
+                    if (grb.occupied != undefined && grb.occupied != false) tilesMenuIcons[nr2].alpha = 1;
+                    if (grb.ani != undefined) tilesMenuIcons[nr2 + 1].alpha = 1;
+                    if (grb.teleport != undefined) tilesMenuIcons[nr2 + 2].alpha = 1;
+                    if (grb.dialogue != undefined || grb.action != undefined) tilesMenuIcons[nr2 + 3].alpha = 1;
                     nr += 1;
                 }
             }
@@ -2435,6 +2451,9 @@ scenes.mapmaker = () => {
         }
         for (t in tilesMenuTiles) {
             tilesMenuTiles[t].alpha = 0;
+        }
+        for (t in tilesMenuIcons) {
+            tilesMenuIcons[t].alpha = 0;
         }
     }
 
@@ -2943,10 +2962,10 @@ scenes.mapmaker = () => {
         controls: [
             ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg, ...expandMapButtons,
             ...walkPad, middlei, currentMapText, backButton, toggleMapInfoButton, eyeButton, toggleAnimate, ...modeButtons,
-            ...tilesMenuControls, ...undoButtons, ...loadMapButtons, ...saveMapButtons, ...mapInfoControls, currentTile,
+            ...tilesMenuControls, ...tilesMenuTiles, ...tilesMenuIcons, ...undoButtons, ...loadMapButtons, ...saveMapButtons, ...mapInfoControls, currentTile,
             ...createTileBG, ...createTileInfoBG, ...createTileInfo, ...createTileButtons,
             ...createDialogueButtons, ...createDialogueLabels, ...createNPCButtons, ...createNPCLabels,
-            ...tilesMenuTiles, ...tileInfoControls, autoSaveText
+            ...tileInfoControls, autoSaveText
         ],
         name: "mapmaker"
     }
