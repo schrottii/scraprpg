@@ -180,7 +180,7 @@ scenes.mapmaker = () => {
     }));
     undoButtons.push(controls.image({
         anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 1, 104],
-        source: "undo", alpha: 1,
+        source: "undo", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
                 placeTile(undoLog[0][0], undoLog[0][1], undoLog[0][2], undoLog[0][3], "undo");
@@ -190,7 +190,7 @@ scenes.mapmaker = () => {
     }));
     undoButtons.push(controls.image({
         anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 2, 104],
-        source: "redo", alpha: 1,
+        source: "redo", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
                 placeTile(redoLog[0][0], redoLog[0][1], redoLog[0][2], redoLog[0][3]);
@@ -326,8 +326,6 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 toggleLoadButtons();
-                renderInfo("m");
-                showInfo();
             }
         }
     }));
@@ -1424,24 +1422,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 protect();
-                if (mapInfoControls[0].alpha == 0) {
-                    for (w in walkPad) {
-                        walkPad[w].alpha = 0;
-                    }
-                    for (mi in mapInfoControls) {
-                        mapInfoControls[mi].alpha = 1;
-                    }
-                }
-                else if (mapInfoControls[0].alpha == 1) {
-                    for (mi in mapInfoControls) {
-                        mapInfoControls[mi].alpha = 0;
-                    }
-                    if (mode == "move" || mode == "moveandplace") {
-                        for (w in walkPad) {
-                            walkPad[w].alpha = 1;
-                        }
-                    }
-                }
+                toggleMapInfoButtons();
             }
         },
         alpha: 1,
@@ -1848,8 +1829,10 @@ scenes.mapmaker = () => {
     }
 
     function updateTTP(newTTP) {
+        // Change the tile to place, and the current tile selected display
         ttp = newTTP;
 
+        // Display
         if (map.tiles[ttp] != undefined) {
             if (map.tiles[ttp].sprite != undefined) {
                 currentTile.source = "tiles/" + map.tiles[ttp].sprite;
@@ -1873,14 +1856,16 @@ scenes.mapmaker = () => {
     }
 
     function postUndoLog(x, y, layer, prevContent) {
+        // Add something to the undo log
         undoLog.unshift([x, y, layer, prevContent])
-
+        undoButtons[0].alpha = 1;
         if(undoLog.length > 25) undoLog.pop();
     }
 
     function postRedoLog(x, y, layer, prevContent) {
+        // Add something to the redo log
         redoLog.unshift([x, y, layer, prevContent])
-
+        undoButtons[1].alpha = 1;
         if (undoLog.length > 25) redoLog.pop();
     }
 
@@ -2132,9 +2117,44 @@ scenes.mapmaker = () => {
         updateTiles = true;
     }
 
+    function toggleMapInfoButtons() {
+        if (mapInfoControls[0].alpha == 0) {
+            for (u in undoButtons) {
+                undoButtons[u].al = undoButtons[u].alpha;
+                undoButtons[u].alpha = 0;
+            }
+
+            for (w in walkPad) {
+                walkPad[w].alpha = 0;
+            }
+            for (mi in mapInfoControls) {
+                mapInfoControls[mi].alpha = 1;
+            }
+        }
+        else if (mapInfoControls[0].alpha == 1) {
+            for (u in undoButtons) {
+                undoButtons[u].alpha = undoButtons[u].al;
+            }
+
+            for (mi in mapInfoControls) {
+                mapInfoControls[mi].alpha = 0;
+            }
+            if (mode == "move" || mode == "moveandplace") {
+                for (w in walkPad) {
+                    walkPad[w].alpha = 1;
+                }
+            }
+        }
+    }
+
     function showInfo() {
         let red = 1;
         if (isLs()) red = 2;
+
+        for (u in undoButtons) {
+            undoButtons[u].al = undoButtons[u].alpha;
+            undoButtons[u].alpha = 0;
+        }
 
         for (i in createTileInfoBG) {
             createTileInfoBG[i].alpha = 1;
@@ -2148,6 +2168,10 @@ scenes.mapmaker = () => {
     }
 
     function hideInfo() {
+        for (u in undoButtons) {
+            undoButtons[u].alpha = undoButtons[u].al;
+        }
+
         for (i in createTileInfoBG) {
             createTileInfoBG[i].alpha = 0;
         }
@@ -2213,6 +2237,9 @@ scenes.mapmaker = () => {
 
     function toggleLoadButtons() {
         if (loadMapButtons[0].alpha == 0) {
+            renderInfo("m");
+            showInfo();
+
             for (i in loadMapButtons) {
                 loadMapButtons[i].offset = [0, -600];
                 loadMapButtons[i].alpha = 1;
@@ -2231,6 +2258,8 @@ scenes.mapmaker = () => {
             })
         }
         else {
+            hideInfo();
+
             for (i in loadMapButtons) {
                 loadMapButtons[i].offset = [0, 0];
             }
@@ -2340,6 +2369,11 @@ scenes.mapmaker = () => {
     function openTilesMenu() {
         let red = isLs() ? 2 : 1;
 
+        for (u in undoButtons) {
+            undoButtons[u].al = undoButtons[u].alpha;
+            undoButtons[u].alpha = 0;
+        }
+
         for (t in tilesMenuControls) {
             tilesMenuControls[t].alpha = 1;
         }
@@ -2392,6 +2426,10 @@ scenes.mapmaker = () => {
     }
 
     function closeTilesMenu() {
+        for (u in undoButtons) {
+            undoButtons[u].alpha = undoButtons[u].al;
+        }
+
         for (t in tilesMenuControls) {
             tilesMenuControls[t].alpha = 0;
         }
@@ -2626,12 +2664,6 @@ scenes.mapmaker = () => {
         preRender(ctx, delta) {
             prott -= delta;
             if (prott <= 0) prot = false;
-
-            if (undoLog.length == 0) undoButtons[0].alpha = 0;
-            else undoButtons[0].alpha = 1;
-
-            if (redoLog.length == 0) undoButtons[1].alpha = 0;
-            else undoButtons[1].alpha = 1;
 
             if (lmresult != "none") {
                 if (loadMapButtons[0].alpha == 1) toggleLoadButtons();
