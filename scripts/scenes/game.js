@@ -320,7 +320,6 @@ let autoSaveText = controls.label({
 });
 
 scenes.game = () => {
-    
     let head = 0;
     let pad = "";
 
@@ -329,23 +328,26 @@ scenes.game = () => {
     var enemies = [];
     var activenpcs = [];
 
-    var menuItems = [];
-    var menuItemsImages = [];
-    var menuItemsAmounts = [];
-    var menuItemsStoryOnly = false;
     var areaNameBox = [];
     
-    var fogopa = 2;
+    var currentFogAlpha = 2;
 
     var cutsceneElements = [];
 
     var tokenRunning = false;
 
+    let dialogueObjects = [];
+
+    // Walk Pad
     let walkPad = [];
     let walkPadIdle = 5;
     let walkPadSize = Math.max(32, 64 * settings.walkPadSize);
 
-    let dialogueObjects = [];
+    // Joy Stick
+    let padActive = false;
+    let padAlpha = 0;
+    let padPosition = [0, 0];
+    let padThumbPosition = [0, 0];
 
     walkPad.push(controls.image({ // Up
         anchor: [.1, .9], offset: [0, -walkPadSize * 3], sizeOffset: [walkPadSize, walkPadSize],
@@ -419,11 +421,6 @@ scenes.game = () => {
             walkPad[wp].alpha = 1;
         }
     }
-
-    let padActive = false;
-    let padAlpha = 0;
-    let padPosition = [0, 0];
-    let padThumbPosition = [0, 0];
 
 
     let nightEffect = controls.rect({
@@ -701,181 +698,6 @@ scenes.game = () => {
         }
     });
 
-    function hideMenuItems() {
-        canMove = true;
-        for (i = 0; i < menuItems.length; i++) {
-            menuItems[i].alpha = 0;
-        }
-        for (i = 0; i < menuItemsImages.length; i++) {
-            menuItemsImages[i].alpha = 0;
-        }
-        for (i = 0; i < menuItemsAmounts.length; i++) {
-            menuItemsAmounts[i].alpha = 0;
-        }
-    }
-
-    function showMenuItems(storyonly = false) {
-        canMove = false;
-        let j = 0;
-
-        if (storyonly == false) menuItems[2].text = "Items Case";
-        if (storyonly == true) menuItems[2].text = "Story Items";
-
-        for (i = 0; i < menuItems.length; i++) {
-            menuItems[i].alpha = 1;
-        }
-        for (i = 0; i < menuItemsImages.length; i++) {
-            if (menuItemsImages[i + j] != undefined) {
-                if (Object.keys(game.inventory)[i] != undefined) {
-                    if (storyonly == false && items[Object.keys(game.inventory)[i]]().story == false) {
-                        menuItemsImages[i + j].source = "items/" + items[Object.keys(game.inventory)[i]]().source;
-                        menuItemsImages[i + j].item = Object.keys(game.inventory)[i];
-                        menuItemsImages[i + j].alpha = 1;
-                    }
-                    else {
-                        if (storyonly == true && items[Object.keys(game.inventory)[i]]().story == true) {
-                            menuItemsImages[i + j].source = "items/" + items[Object.keys(game.inventory)[i]]().source;
-                            menuItemsImages[i + j].item = undefined; // can't use it
-                            menuItemsImages[i + j].alpha = 1;
-                        }
-                        else {
-                            menuItemsImages[i + j].item = undefined;
-                            menuItemsImages[i + j].alpha = 0;
-                            j -= 1;
-                        }
-                    }
-                }
-                else {
-                    menuItemsImages[i + j].item = undefined;
-                    menuItemsImages[i + j].alpha = 0;
-                    j -= 1;
-                }
-            }
-        }
-        j = 0;
-        for (i = 0; i < menuItemsAmounts.length; i++) {
-            if (menuItemsAmounts[i + j] != undefined) {
-                if (Object.keys(game.inventory)[i] != undefined) {
-                    if (storyonly == false && items[Object.keys(game.inventory)[i]]().story == false) {
-                        menuItemsAmounts[i + j].text = "x" + game.inventory[Object.keys(game.inventory)[i]];
-                        menuItemsAmounts[i + j].alpha = 1;
-                    }
-                    else { 
-                        if (storyonly == true && items[Object.keys(game.inventory)[i]]().story == true) {
-                            menuItemsAmounts[i + j].text = "x" + game.inventory[Object.keys(game.inventory)[i]];
-                            menuItemsAmounts[i + j].alpha = 1;
-                        }
-                        else {
-                            menuItemsAmounts[i + j].text = "";
-                            menuItemsAmounts[i + j].alpha = 0;
-                            j -= 1;
-                        }
-                    }
-                }
-                else {
-                    menuItemsAmounts[i + j].text = "";
-                    menuItemsAmounts[i + j].alpha = 0;
-                    j -= 1;
-                }
-            }
-        }
-    }
-
-    // BOTTOM RIGHT MENU STUFF
-
-    // Settings
-
-    
-
-
-
-    // Items
-
-    menuItems.push(controls.rect({
-        anchor: [0.05, 0.05], sizeAnchor: [0.9, 0.9],
-        fill: "#B58543", alpha: 0,
-    }));
-
-    menuItems.push(controls.rect({
-        anchor: [0.075, 0.075], sizeAnchor: [0.85, 0.85],
-        fill: "#D49F53", alpha: 0,
-    }));
-
-    menuItems.push(controls.label({
-        anchor: [0.5, 0.1],
-        align: "center", fontSize: 48, fill: "black",
-        text: "Items Case", alpha: 0,
-    }));
-
-    for (j = 0; j < 2; j++) {
-        for (i = 0; i < 8; i++) {
-            menuItems.push(controls.button({
-                anchor: [0.1 + (i * 0.1), 0.2 + (j * 0.2)], sizeAnchor: [0.075, 0.15],
-                text: "", alpha: 0, nr: i + (j*8),
-                onClick(args) {
-                    if (this.alpha == 1) {
-                        playSound("buttonClickSound");
-                        let imageNumber = this.nr;
-                        let item = menuItemsImages[imageNumber].item;
-                        if (items[item] != undefined) {
-                            if (items[item]().story != true) {
-                                if (game.inventory[item] > 0) {
-                                    items[item]({ player: game.characters.bleu }).effect();
-                                    removeItem(item, 1);
-                                    showMenuItems(menuItemsStoryOnly);
-                                }
-                            }
-                        }
-                    }
-                }
-            }));
-            
-            menuItemsImages.push(controls.image({
-                anchor: [0.1 + (i * 0.1), 0.2 + (j * 0.2)], sizeAnchor: [0.075, 0.15],
-                source: "gear", alpha: 0, item: "",
-            }));
-
-            menuItemsAmounts.push(controls.label({
-                anchor: [0.1375 + (i * 0.1), 0.375 + (j * 0.2)],
-                align: "center", fontSize: 16, fill: "black",
-                text: "x0", alpha: 0,
-            }));
-        }
-    }
-
-    let areaTeleportFade = controls.rect({
-        anchor: [0, 0], sizeAnchor: [1, 1],
-        fill: "black", alpha: 0
-    })
-
-    menuItems.push(controls.button({
-        anchor: [0.175, 0.85], sizeAnchor: [0.1, 0.075],
-        text: "Back", alpha: 0,
-        onClick(args) {
-            if (this.alpha == 1) {
-                playSound("buttonClickSound");
-                showMapDisplay();
-                hideMenuItems();
-            }
-        }
-    }));
-    menuItems.push(controls.button({
-        anchor: [0.675, 0.85], sizeAnchor: [0.1, 0.075],
-        text: "Sort by", alpha: 0,
-        onClick(args) {
-            if (this.alpha == 1) {
-                playSound("buttonClickSound");
-                if (menuItemsStoryOnly == false) {
-                    menuItemsStoryOnly = true;
-                }
-                else {
-                    menuItemsStoryOnly = false;
-                }
-                showMenuItems(menuItemsStoryOnly);
-            }
-        }
-    }));
-
     areaNameBox.push(controls.rect({
         anchor: [0.3, 0.2], sizeAnchor: [0.4, 0.2],
         fill: "purple", alpha: 0
@@ -896,7 +718,7 @@ scenes.game = () => {
     function setNightEffect(color, al = 0.5, type = "none") {
         //console.log(nightEffect.alpha, color, al, type, instantEffect);
         let transitionDuration = 30000; // Roughly how long it lasts. 1000 = 1 sec
-        let fogOpacityChangeIntensity = 10; // How much the opacity during fog changes. Higher number = less
+        let fogAlphaChangeIntensity = 10; // How much the opacity during fog changes. Higher number = less
         // Speed in preRender
 
         if (instantEffect == true) {
@@ -908,8 +730,8 @@ scenes.game = () => {
         }
 
         if (type == "fog") {
-            if (fogopa >= 1) al += (fogopa - 1) / fogOpacityChangeIntensity;
-            else al -= ((fogopa) / fogOpacityChangeIntensity) - (1 / fogOpacityChangeIntensity);
+            if (currentFogAlpha >= 1) al += (currentFogAlpha - 1) / fogAlphaChangeIntensity;
+            else al -= ((currentFogAlpha) / fogAlphaChangeIntensity) - (1 / fogAlphaChangeIntensity);
             if (al > 1) al = 1;
             if (al <= 0) al = 0.01;
             //nightEffect.alpha = al;
@@ -1481,8 +1303,8 @@ scenes.game = () => {
                     fallingRain.dead = true;
                 }
                 if (map.weather == "fog") {
-                    fogopa -= 0.0003 * delta; // Adjust how quickly the fog opacity changes here! Lower = slower
-                    if (fogopa < 0) fogopa = 2;
+                    currentFogAlpha -= 0.0003 * delta; // Adjust how quickly the fog opacity changes here! Lower = slower
+                    if (currentFogAlpha < 0) currentFogAlpha = 2;
                     fogCloud.dead = false;
                     fogCloud.speedAnchor = 0.02 * map.weatherStrength;
                 }
@@ -2008,10 +1830,8 @@ scenes.game = () => {
         },
         controls: [
             poisonBlack, nightEffect, nightEffect2, fallingRain, fogCloud, darkCloud, dustParticles,
-            ...walkPad, mapDisplay, mapIcon, actionButton,
-            ...menuItems, ...menuItemsImages, ...menuItemsAmounts, backButton,
-            ...cutsceneElements,
-            ...dialogueNormalComponents, ...dialogueInvisComponents, ...dialogueNarratorComponents, ...dialogueCutsceneComponents,
+            ...walkPad, mapDisplay, mapIcon, actionButton, backButton,
+            ...cutsceneElements, ...dialogueNormalComponents, ...dialogueInvisComponents, ...dialogueNarratorComponents, ...dialogueCutsceneComponents,
             autoSaveText, ...areaNameBox, areaTeleportFade,
         ],
         name: "game"
