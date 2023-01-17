@@ -79,6 +79,12 @@ scenes.title = () => {
                 saveButtons[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
                 saveImages[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
                 saveImages[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
+
+                // Bricks and Wrenches
+                saveTexts[11 + a * 15].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
+                saveTexts[11 + a * 15].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
+                saveTexts[12 + a * 15].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
+                saveTexts[12 + a * 15].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
             }
 
             if (t > 599) {
@@ -243,34 +249,27 @@ scenes.title = () => {
             playSound("buttonClickSound");
             if (mode == 1) {
                 mode = 0;
-            }
-            else if (mode == 0) {
-                mode = 1;
-                addAnimator(function (t) {
-                    for (i = 0; i < 3; i++) {
-                        saveButtons[i].fillTop = t % 800 > 400 ? "red" : colors.buttontop;
-                        saveButtons[i].fillBottom = t % 800 > 400 ? "darkred" : colors.buttonbottom;
-                    }
-                    saveButtons[3].fillTop = t % 800 > 400 ? "purple" : "#54d4ff";
-                    saveButtons[3].fillBottom = t % 800 > 400 ? "rebeccapurple" : "#4fa1bc";
-                    if (mode != 1) {
-                        return true;
-                    }
-                    return false;
-                });
-            }
-            else if (mode == 2) {
-                settings.grid = true;
-                settings.musicVolume = 0.5;
-                settings.soundVolume = 0.5;
-            }
-            if (mode != 1) {
                 for (i = 0; i < 3; i++) {
                     saveButtons[i].fillTop = colors.buttontop;
                     saveButtons[i].fillBottom = colors.buttonbottom;
                 }
                 saveButtons[3].fillTop = "#54d4ff";
                 saveButtons[3].fillBottom = "#4fa1bc";
+            }
+            else if (mode == 0) {
+                mode = 1;
+                addAnimator(function (t) {
+                    if (mode != 1) {
+                        return true;
+                    }
+                    for (i = 0; i < 3; i++) {
+                        saveButtons[i].fillTop = t % 800 > 400 ? "red" : colors.buttontop;
+                        saveButtons[i].fillBottom = t % 800 > 400 ? "darkred" : colors.buttonbottom;
+                    }
+                    saveButtons[3].fillTop = t % 800 > 400 ? "purple" : "#54d4ff";
+                    saveButtons[3].fillBottom = t % 800 > 400 ? "rebeccapurple" : "#4fa1bc";
+                    return false;
+                });
             }
         }
     });
