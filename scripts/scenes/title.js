@@ -152,34 +152,35 @@ scenes.title = () => {
         }));
 
         for (i = 0; i < 2; i++) {
+            // Names 1 2
             saveTexts.push(controls.label({
-                anchor: [1.2 + (0.225 * i), 0.3], offset: [0, -146 + 130 * a], defanch: 0.12 + (0.2 * i),
+                anchor: [1.2 + (0.225 * i), 0.305], offset: [0, -146 + 130 * a], defanch: 0.205 + (0.125 * i),
                 align: "left", fontSize: 20, fill: "black",
-                text: " ",
+                text: "",
                 alpha: 1,
             }));
             saveTexts.push(controls.label({
-                anchor: [1.2 + (0.225 * i), 0.3], offset: [0, -120 + 130 * a], defanch: 0.12 + (0.2 * i),
+                anchor: [1.2 + (0.225 * i), 0.305], offset: [0, -120 + 130 * a], defanch: 0.205 + (0.125 * i),
                 align: "left", fontSize: 20, fill: "black",
-                text: " ",
+                text: "",
                 alpha: 1,
             }));
-
+            // Levels 1 2
             saveTexts.push(controls.label({
-                anchor: [1.2 + (0.225 * i), 0.3], offset: [0, -146 + 130 * a], defanch: 0.25 + (0.125 * i),
+                anchor: [1.2 + (0.225 * i), 0.305], offset: [0, -146 + 130 * a], defanch: 0.255 + (0.125 * i),
                 align: "left", fontSize: 20, fill: "black",
-                text: " ",
+                text: "",
                 alpha: 1,
             }));
             saveTexts.push(controls.label({
-                anchor: [1.2 + (0.225 * i), 0.3], offset: [0, -120 + 130 * a], defanch: 0.25 + (0.125 * i),
+                anchor: [1.2 + (0.225 * i), 0.305], offset: [0, -120 + 130 * a], defanch: 0.255 + (0.125 * i),
                 align: "left", fontSize: 20, fill: "black",
-                text: " ",
+                text: "",
                 alpha: 1,
             }));
         }
         saveTexts.push(controls.label({
-            anchor: [1.2, 0.3], offset: [0, -120 + 130 * a], defanch: 0.775,
+            anchor: [1.2, 0.3], offset: [0, -120 + 130 * a], defanch: 0.75,
             align: "right", fontSize: 32, fill: "black",
             text: "24:31:02",
             alpha: 1,
@@ -342,13 +343,14 @@ scenes.title = () => {
                     for (i = 0; i < amount; i++) {
                         saveTexts[i + (a * amount)].alpha = 1;
                     }
+                    // Current party with levels texts, e. g. Skro Lvl. 4
                     saveTexts[2 + (a * amount)].text = getPlayer(1, thisSave).name;
-                    if (thisSave.chars.length > 1) saveTexts[3 + (a * amount)].text = getPlayer(2, thisSave).name;
                     saveTexts[4 + (a * amount)].text = "Lvl. " + getPlayer(1, thisSave).level;
+                    if (thisSave.chars.length > 1) saveTexts[3 + (a * amount)].text = getPlayer(2, thisSave).name;
                     if (thisSave.chars.length > 1) saveTexts[5 + (a * amount)].text = "Lvl. " + getPlayer(2, thisSave).level;
                     if (thisSave.chars.length > 2) saveTexts[6 + (a * amount)].text = getPlayer(3, thisSave).name;
-                    if (thisSave.chars.length > 3) saveTexts[7 + (a * amount)].text = getPlayer(4, thisSave).name;
                     if (thisSave.chars.length > 2) saveTexts[8 + (a * amount)].text = "Lvl. " + getPlayer(3, thisSave).level;
+                    if (thisSave.chars.length > 3) saveTexts[7 + (a * amount)].text = getPlayer(4, thisSave).name;
                     if (thisSave.chars.length > 3) saveTexts[9 + (a * amount)].text = "Lvl. " + getPlayer(4, thisSave).level;
 
                     saveTexts[10 + (a * amount)].text = getTime(thisSave.playTime, 60, 3600);
