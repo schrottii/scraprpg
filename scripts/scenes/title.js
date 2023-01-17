@@ -213,9 +213,13 @@ scenes.title = () => {
         saveImages.push(controls.image({
             anchor: [1.2, .3], offset: [0, -220 + 130 * a], sizeAnchor: [0, 0], sizeOffset: [60, 60],
             source: "saveimage" + Math.ceil(Math.random() * 5), alpha: 0,
-            onClick(args) { //Change the image when clicked
-                saveNR = a;
+            isPressed: false,
+            onDown(args) {
                 saveButtons[a].clickthrough = true; //To avoid savegame loading when changing image (God tier code)
+            },
+            onClick(args) { //Change the image when clicked
+                console.log(saveButtons[a].clickthrough);
+                saveNR = a;
                 stopMusic();
                 loadGame(saveNR);
                 if (game.pfp == 5) { //To avoid changing to a pic that does not exist
@@ -224,7 +228,6 @@ scenes.title = () => {
                 else {
                     game.pfp += 1;
                 }
-                setTimeout(() => { saveButtons[a].clickthrough = false }, 500);
                 saveGame();
             }
         }))    
@@ -243,11 +246,31 @@ scenes.title = () => {
             }
             else if (mode == 0) {
                 mode = 1;
+                addAnimator(function (t) {
+                    for (i = 0; i < 3; i++) {
+                        saveButtons[i].fillTop = t % 800 > 400 ? "red" : colors.buttontop;
+                        saveButtons[i].fillBottom = t % 800 > 400 ? "darkred" : colors.buttonbottom;
+                    }
+                    saveButtons[3].fillTop = t % 800 > 400 ? "purple" : "#54d4ff";
+                    saveButtons[3].fillBottom = t % 800 > 400 ? "rebeccapurple" : "#4fa1bc";
+                    if (mode != 1) {
+                        return true;
+                    }
+                    return false;
+                });
             }
             else if (mode == 2) {
                 settings.grid = true;
                 settings.musicVolume = 0.5;
                 settings.soundVolume = 0.5;
+            }
+            if (mode != 1) {
+                for (i = 0; i < 3; i++) {
+                    saveButtons[i].fillTop = colors.buttontop;
+                    saveButtons[i].fillBottom = colors.buttonbottom;
+                }
+                saveButtons[3].fillTop = "#54d4ff";
+                saveButtons[3].fillBottom = "#4fa1bc";
             }
         }
     });
