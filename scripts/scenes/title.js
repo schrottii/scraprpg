@@ -21,7 +21,7 @@ scenes.title = () => {
     let infoLabel = controls.label({
         anchor: [.02, .98], offset: [5, -12],
         align: "left", baseline: "alphabetic", fontSize: 16, fill: "#7f7f7f", alpha: 0,
-        text: "©2022 Toast Technology Team / Schrottii",
+        text: "©2023 Toast Technology Team / Schrottii",
     });
     let verLabel = controls.label({
         anchor: [.98, .98], offset: [-5, -12],
@@ -252,7 +252,7 @@ scenes.title = () => {
         }
     });
     let optionButton = controls.button({
-        anchor: [-.2, .5], offset: [-200, 170], sizeOffset: [150, 50],
+        anchor: [-.2, .5], offset: [-30, 170], sizeOffset: [150, 50],
         fontSize: 16, text: "Options",
         onClick(args) {
             playSound("buttonClickSound");
@@ -427,7 +427,7 @@ scenes.title = () => {
                         if (localStorage.getItem("SRPG3") != undefined) saveImages[3].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
 
                         deleteButton.anchor[0] = -.8 + (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
-                        optionButton.anchor[0] = -.2 + (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4);
+                        optionButton.anchor[0] = -.3 + (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4);
 
                         if (t > 3000) {
                             return true;
