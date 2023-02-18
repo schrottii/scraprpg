@@ -227,7 +227,7 @@ var commontiles = {
 
 tiles_forest = {
     "F01":
-        { "set": "forest", "snip": [0, 0], "ani": [2, 1], "occupied": true },
+        { "set": "forest", "snip": [0, 0], "ani": [2, 1], "occupied": false },
     "F02": { "set": "forest", "snip": [0, 1], "ani": [2, 1], "occupied": true },
     "F03": { "set": "forest", "snip": [0, 2], "occupied": true },
     "F04": { "set": "forest", "snip": [1, 2], "occupied": ["down"] },

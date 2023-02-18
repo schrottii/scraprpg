@@ -22,6 +22,24 @@ const CAMERA_LOCK_Y = -2;
 var CAM_OX = 0;
 var CAM_OY = 0;
 
+// move this
+function loadPacks(map = 0) {
+    //console.log("load start");
+    let packTiles = {};
+    if (map == 0) {
+        for (i in game.map.packs) {
+            packTiles = Object.assign({}, eval(game.map.packs[i]))
+        }
+    }
+    else {
+        for (i in map.packs) {
+            packTiles = Object.assign({}, eval(map.packs[i]))
+        }
+    }
+    //console.log("load finish");
+    return packTiles;
+}
+
 // Function used to create enemies
 function createEnemy(type) {
     if (currentEnemies.length < 9) {
@@ -678,6 +696,7 @@ scenes.game = () => {
 
             if (inDialogue == false) {
                 let map = maps[game.map];
+                map.tiles = Object.assign({}, map.tiles, loadPacks(map));
                 if (getTile(map, xpos + xo, ypos + yo) != undefined) {
                     if (getTile(map, xpos + xo, ypos + yo).action != undefined) {
                         getTile(map, xpos + xo, ypos + yo).action();
@@ -908,6 +927,7 @@ scenes.game = () => {
 
                 enemies = [];
                 game.map = themap.teleport[0];
+                game.map.tiles = Object.assign({}, game.map.tiles, loadPacks());
                 loadNPCs();
                 loadAreaMusic(previousmap);
                 instantEffect = true;
@@ -935,6 +955,7 @@ scenes.game = () => {
         let ofsY = Math.max(CAMERA_LOCK_Y, game.position[1] - kofs[1] * kofs[2] - 7.5);
 
         map = maps[game.map];
+        map.tiles = Object.assign({}, map.tiles, loadPacks(map));
 
         let ani = 0;
 
@@ -1009,8 +1030,7 @@ scenes.game = () => {
         }
     }
 
-    function check_ItemCollision(i) {
-        let map = maps[game.map];
+    function check_ItemCollision(map, i) {
         if (Math.floor(game.position[0]) == map.items[i][0] &&
             Math.floor(game.position[1]) == map.items[i][1]) {
             // Collision!
@@ -1021,6 +1041,7 @@ scenes.game = () => {
 
     function ActionsOnMove() {
         let map = maps[game.map];
+        map.tiles = Object.assign({}, map.tiles, loadPacks(map));
         // Everything performed when the player moves successfully
 
         // Calculate how many enemies can still be spawned.
@@ -1097,7 +1118,7 @@ scenes.game = () => {
 
         if (map.items != undefined) {
             for (i = 0; i < map.items.length; i++) {
-                check_ItemCollision(i);
+                check_ItemCollision(map, i);
             }
         }
 
@@ -1216,6 +1237,7 @@ scenes.game = () => {
 
     function loadAreaMusic(prev = "none") {
         let map = maps[game.map];
+        map.tiles = Object.assign({}, map.tiles, loadPacks(map));
         if (maps[prev] != undefined) {
             if (maps[prev].music != map.music) {
                 stopMusic();
@@ -1270,6 +1292,7 @@ scenes.game = () => {
         preRender(ctx, delta) {
             scale = window.innerHeight / 16;
             let map = maps[game.map];
+            map.tiles = Object.assign({}, map.tiles, loadPacks(map));
 
             // Auto Save & Auto Save Text
             if (autoSaveTime > 14999) {

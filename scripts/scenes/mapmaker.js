@@ -120,10 +120,12 @@ scenes.mapmaker = () => {
     var activenpcs = [];
     var currentMap = "map2";
     var map = maps[currentMap];
+    map.tiles = Object.assign({}, map.tiles, loadPacks(map));
 
     let loadFromAutoSave = localStorage.getItem("SRPGMM");
-    if (loadFromAutoSave != undefined) {
+    if (loadFromAutoSave != undefined && loadFromAutoSave != "empty") {
         map = JSON.parse(loadFromAutoSave);
+        map.tiles = Object.assign({}, map.tiles, loadPacks(map));
         currentMap = map.id;
     }
 
@@ -770,6 +772,7 @@ scenes.mapmaker = () => {
                 maps[currentMap] = map;
 
                 game.map = currentMap;
+                game.map.tiles = Object.assign({}, game.map.tiles, loadPacks());
                 game.position = toPos;
 
                 canMove = true;
@@ -1831,7 +1834,10 @@ scenes.mapmaker = () => {
         for (i in tnpcs) {
             tnpcs[i].alpha = 0;
         }
+
         loadNPCs();
+
+        map.tiles = Object.assign({}, map.tiles, loadPacks(map));
 
         updateTiles = true;
     }
@@ -2737,7 +2743,7 @@ scenes.mapmaker = () => {
                 if (loadMapButtons[0].alpha == 1) toggleLoadButtons();
                 hideInfo();
                 if (lmresult != "justhide") {
-                    if (typeof (lmresult) == "string") {
+                    if (typeof (lmresult) == "string" && lmresult.id != undefined) {
                         // The map you have loaded already exists :)
                         currentMap = lmresult.id;
                         map = maps[lmresult];
@@ -2745,8 +2751,11 @@ scenes.mapmaker = () => {
                     }
                     else {
                         // It does not hmm
-                        map = lmresult;
-                        if (map.map == undefined) {
+                        map = eval(lmresult);
+
+                        // Not sure about this . . .
+
+                        /*if (map.map == undefined) {
                             map.map = ["--- --- 001 001 001", "--- --- 001 001 001", "--- --- 001 001 001"];
                         }
                         if (map.mapbg2 == undefined) {
@@ -2754,7 +2763,7 @@ scenes.mapmaker = () => {
                         }
                         if (map.mapfg == undefined) {
                             map.mapfg = ["--- --- ---", "--- --- ---", "--- --- ---"];
-                        }
+                        }*/
                         newMap();
                     }
                 }
