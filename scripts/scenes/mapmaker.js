@@ -2484,7 +2484,8 @@ scenes.mapmaker = () => {
                 tileToPlace = ttp;
             }
 
-            let rePlaced = mp.substr(x * 4, 3);
+            let rePlaced;
+            if(doFill) rePlaced = mp.substr(x * 4, 3);
 
             if (mp == undefined) {
                 while (mp == undefined) {
