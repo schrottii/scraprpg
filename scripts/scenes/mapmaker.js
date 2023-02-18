@@ -373,21 +373,21 @@ scenes.mapmaker = () => {
     }));
     modeButtons.push(controls.image({
         anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 12, 0],
-        source: "senza", alpha: 1,
+        source: "tilemaker", alpha: 1,
         onClick(args) {
             if (this.alpha == 1) toggleCreateTileButtons();
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 13, 0],
-        source: "senza", alpha: 1,
+        source: "dialoguemaker", alpha: 1,
         onClick(args) {
             if (this.alpha == 1) toggleCreateDialogueButtons();
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 14, 0],
-        source: "senza", alpha: 1,
+        source: "npcmaker", alpha: 1,
         onClick(args) {
             if (this.alpha == 1) toggleCreateNPCButtons();
         }
@@ -556,7 +556,22 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 tileID = prompt('New map tile ID? (e. g. 001)');
-                this.text = "Tile ID: " + tileID;
+
+                if (map.tiles[tileID] != undefined || commontiles[tileID] != undefined) {
+                    let thisTile;
+                    if (map.tiles[tileID] != undefined) thisTile = map.tiles[tileID];
+                    if (commontiles[tileID] != undefined) thisTile = commontiles[tileID];
+
+                    if (thisTile.sprite != undefined) tileSprite = thisTile.sprite;
+                    if (thisTile.occupied != undefined) tileOccupied = thisTile.occupied;
+                    if (thisTile.set != undefined) tileSet = thisTile.set;
+                    if (thisTile.snip != undefined) tileSetSnip = thisTile.snip;
+                    if (thisTile.ani != undefined) tileAni = thisTile.ani;
+                    if (thisTile.teleport != undefined) tileTele = thisTile.teleport;
+                    if (thisTile.dialogue != undefined) tileDia = thisTile.dialogue;
+                    if (thisTile.swim != undefined) tileSwim = thisTile.swim;
+                }
+                updateTileLabels();
             }
         }
     }));
@@ -567,7 +582,6 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 tileSprite = prompt('New map tile sprite? (e. g. water1 - must be the name from resources)');
-                this.text = "Tile Sprite: " + tileSprite;
 
                 if (images["tiles/" + tileSprite] != undefined) createTileButtons[9].source = "tiles/" + tileSprite;
                 else createTileButtons[9].source = "gear";
@@ -578,6 +592,7 @@ scenes.mapmaker = () => {
                 createTileButtons[3].fillBottom = "gray";
                 this.fillTop = "red";
                 this.fillBottom = "darkred";
+                updateTileLabels();
             }
         }
     }));
@@ -587,7 +602,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 tileOccupied = prompt('New map tile occupied? YES / NO / up.right.left.down');
-                this.text = "Tile Occ: " + tileOccupied;
+                updateTileLabels();
             }
         }
     }));
@@ -598,7 +613,6 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 tileSet = prompt('New map tile set? (e. g. castle - must be the name from resources)');
-                this.text = "Tile Set: " + tileSet;
 
                 if (images["tilesets/" + tileSet] != undefined) createTileButtons[9].source = "tilesets/" + tileSet;
                 else createTileButtons[9].source = "gear";
@@ -609,6 +623,7 @@ scenes.mapmaker = () => {
                 createTileButtons[1].fillBottom = "gray";
                 this.fillTop = "red";
                 this.fillBottom = "darkred";
+                updateTileLabels();
             }
         }
     }));
@@ -618,9 +633,10 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 tileSetSnip = prompt('New map tile set snip? X.Y (e. g. 1.2  - 0.0 for top left)');
-                this.text = "Set Snip: " + tileSetSnip;
 
                 if (images["tilesets/" + tileSet] != undefined) createTileButtons[9].snip = [parseInt(tileSetSnip.split(".")[0]) * 32, parseInt(tileSetSnip.split(".")[1]) * 32, 32, 32];
+
+                updateTileLabels();
             }
         }
     }));
@@ -630,7 +646,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 tileAni = prompt('New map tile set snip? X.Y (e. g. 1.1)');
-                this.text = "Animation: " + tileAni;
+                updateTileLabels();
             }
         }
     }));
@@ -640,7 +656,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 tileTele = prompt('Teleport to? map.x.y (e. g. original.7.8 or map2.0.0)');
-                this.text = "Teleport: " + tileTele;
+                updateTileLabels();
             }
         }
     }));
@@ -650,7 +666,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 tileDia = prompt('Dialogue?');
-                this.text = "Dialogue: " + tileDia;
+                updateTileLabels();
             }
         }
     }));
@@ -660,7 +676,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 tileSwim = prompt('Swim? (YES / NO)');
-                this.text = "Swim: " + tileSwim;
+                updateTileLabels();
             }
         }
     }));
@@ -2108,6 +2124,18 @@ scenes.mapmaker = () => {
                 return false;
             })
         }
+    }
+
+    function updateTileLabels() {
+        createTileButtons[0].text = "Tile ID: " + tileID;
+        createTileButtons[1].text = "Tile Sprite: " + tileSprite
+        createTileButtons[2].text = "Tile Occ: " + tileOccupied;
+        createTileButtons[3].text = "Tile Set: " + tileSet;
+        createTileButtons[4].text = "Set Snip: " + tileSetSnip;
+        createTileButtons[5].text = "Animation: " + tileAni;
+        createTileButtons[6].text = "Teleport: " + tileTele;
+        createTileButtons[7].text = "Dialogue: " + tileDia;
+        createTileButtons[8].text = "Swim: " + tileSwim;
     }
 
     function updateDialogueLabels() {

@@ -1207,7 +1207,7 @@ scenes.game = () => {
     let dustParticles = Particles({
         anchor: [-0.2, 0], spreadAnchor: [0, 1], sizeOffset: [2, 2], sizeOffsetVary: [2, 2], quadraticVary: true,
         type: "rect", fill: "yellow",
-        direction: 2, speedAnchor: 0.1,
+        direction: 2, speedAnchor: 0.2,
         direction2: 3, speedAnchor2: 0.05, moveRandom2: 1,
         movable: true, movable2: true, lifespan: 5, alpha: 1, amount: 150, spawnTime: 0.02,
         dead: true, repeatMode: true,
