@@ -157,6 +157,7 @@ let images = {
     "tilesets/castle": "data/images/tilesets/castle.png",
     "tilesets/torch": "data/images/tilesets/torch.png",
     "tilesets/chests": "data/images/tilesets/chests.png",
+    "tilesets/forest": "data/images/tilesets/forest.png",
 
     // Tiles
     "tiles/grass1": "data/images/tiles/grass1.png",

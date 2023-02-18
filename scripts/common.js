@@ -222,6 +222,11 @@ var commontiles = {
                     })
                 }
     },
-
+    "F01":
+        { "set": "forest", "snip": [0, 0], "occupied": true },
+    "F02": { "set": "forest", "snip": [0, 1], "occupied": true },
+    "F03": { "set": "forest", "snip": [0, 2], "occupied": true },
+    "F04": { "set": "forest", "snip": [1, 2], "occupied": ["up"] },
+    "F05": { "set": "forest", "snip": [2, 2], "occupied": true },
     // Do not remove this } here. Make sure there's a } right above this too
 }
