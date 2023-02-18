@@ -563,13 +563,13 @@ scenes.mapmaker = () => {
                     if (commontiles[tileID] != undefined) thisTile = commontiles[tileID];
 
                     if (thisTile.sprite != undefined) tileSprite = thisTile.sprite;
-                    if (thisTile.occupied != undefined) tileOccupied = thisTile.occupied;
+                    if (thisTile.occupied != undefined) tileOccupied = thisTile.occupied.toString();
                     if (thisTile.set != undefined) tileSet = thisTile.set;
-                    if (thisTile.snip != undefined) tileSetSnip = thisTile.snip;
+                    if (thisTile.snip != undefined) tileSetSnip = thisTile.snip.toString().replace(",", ".");
                     if (thisTile.ani != undefined) tileAni = thisTile.ani;
                     if (thisTile.teleport != undefined) tileTele = thisTile.teleport;
                     if (thisTile.dialogue != undefined) tileDia = thisTile.dialogue;
-                    if (thisTile.swim != undefined) tileSwim = thisTile.swim;
+                    if (thisTile.swim != undefined) tileSwim = thisTile.swim.toString();
                 }
                 updateTileLabels();
             }
@@ -582,16 +582,6 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 tileSprite = prompt('New map tile sprite? (e. g. water1 - must be the name from resources)');
-
-                if (images["tiles/" + tileSprite] != undefined) createTileButtons[9].source = "tiles/" + tileSprite;
-                else createTileButtons[9].source = "gear";
-
-                tileSet = "";
-                createTileButtons[3].text = "Tile Set";
-                createTileButtons[3].fillTop = "darkgray";
-                createTileButtons[3].fillBottom = "gray";
-                this.fillTop = "red";
-                this.fillBottom = "darkred";
                 updateTileLabels();
             }
         }
@@ -613,16 +603,6 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 tileSet = prompt('New map tile set? (e. g. castle - must be the name from resources)');
-
-                if (images["tilesets/" + tileSet] != undefined) createTileButtons[9].source = "tilesets/" + tileSet;
-                else createTileButtons[9].source = "gear";
-
-                tileSprite = "";
-                createTileButtons[1].text = "Tile Sprite";
-                createTileButtons[1].fillTop = "darkgray";
-                createTileButtons[1].fillBottom = "gray";
-                this.fillTop = "red";
-                this.fillBottom = "darkred";
                 updateTileLabels();
             }
         }
@@ -634,8 +614,6 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) {
                 tileSetSnip = prompt('New map tile set snip? X.Y (e. g. 1.2  - 0.0 for top left)');
 
-                if (images["tilesets/" + tileSet] != undefined) createTileButtons[9].snip = [parseInt(tileSetSnip.split(".")[0]) * 32, parseInt(tileSetSnip.split(".")[1]) * 32, 32, 32];
-
                 updateTileLabels();
             }
         }
@@ -645,7 +623,7 @@ scenes.mapmaker = () => {
         text: "Animation", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                tileAni = prompt('New map tile set snip? X.Y (e. g. 1.1)');
+                tileAni = prompt('New map tile animation? amount.distance (e. g. 1.1)');
                 updateTileLabels();
             }
         }
@@ -694,8 +672,8 @@ scenes.mapmaker = () => {
                     alert("You have to set a valid sprite or a set!");
                     return false;
                 }
-                if (tileID == "" || map.tiles[tileID] != undefined) {
-                    alert("You have to set an ID that does not exist yet!");
+                if (tileID == "") {
+                    alert("You have to set an ID!");
                     return false;
                 }
                 try {
@@ -712,8 +690,8 @@ scenes.mapmaker = () => {
                         }
                     }
 
-                    if (tileOccupied.toLowerCase() == "yes") map.tiles[tileID].occupied = true;
-                    else if (tileOccupied.toLowerCase() != "no" && tileOccupied.toLowerCase() != "") map.tiles[tileID].occupied = tileOccupied.split(".");
+                    if (tileOccupied.toLowerCase() == "yes" || tileOccupied.toLowerCase() == "true") map.tiles[tileID].occupied = true;
+                    else if ((tileOccupied.toLowerCase() != "no" || tileOccupied.toLowerCase() != "false") && tileOccupied.toLowerCase() != "") map.tiles[tileID].occupied = tileOccupied.split(".");
 
                     if (tileAni != "") map.tiles[tileID].ani = [parseInt(tileAni.split(".")[0]), parseInt(tileAni.split(".")[1])];
 
@@ -721,7 +699,7 @@ scenes.mapmaker = () => {
 
                     if (tileDia != "") map.tiles[tileID].dialogue = tileDia;
 
-                    if (tileSwim.toLowerCase() == "yes") map.tiles[tileID].swim = true;
+                    if (tileSwim.toLowerCase() == "yes" || tileSwim.toLowerCase() == "true") map.tiles[tileID].swim = true;
 
                     tileID = "";
                     tileSprite = "";
@@ -745,8 +723,8 @@ scenes.mapmaker = () => {
 
                     createTileButtons[9].source = "gear";
                 }
-                catch {
-                    alert("An error occured!");
+                catch(e) {
+                    alert("An error occured!\n" + e);
                 }
                 toggleCreateTileButtons();
             }
@@ -2136,6 +2114,31 @@ scenes.mapmaker = () => {
         createTileButtons[6].text = "Teleport: " + tileTele;
         createTileButtons[7].text = "Dialogue: " + tileDia;
         createTileButtons[8].text = "Swim: " + tileSwim;
+
+        if (images["tilesets/" + tileSet] != undefined) createTileButtons[9].snip = [parseInt(tileSetSnip.split(".")[0]) * 32, parseInt(tileSetSnip.split(".")[1]) * 32, 32, 32];
+
+        if (tileSprite != "") {
+            if (images["tiles/" + tileSprite] != undefined) createTileButtons[9].source = "tiles/" + tileSprite;
+            else createTileButtons[9].source = "gear";
+
+            tileSet = "";
+            createTileButtons[3].text = "Tile Set";
+            createTileButtons[3].fillTop = "darkgray";
+            createTileButtons[3].fillBottom = "gray";
+            this.fillTop = "red";
+            this.fillBottom = "darkred";
+        }
+        if (tileSet != "") {
+            if (images["tilesets/" + tileSet] != undefined) createTileButtons[9].source = "tilesets/" + tileSet;
+            else createTileButtons[9].source = "gear";
+
+            tileSprite = "";
+            createTileButtons[1].text = "Tile Sprite";
+            createTileButtons[1].fillTop = "darkgray";
+            createTileButtons[1].fillBottom = "gray";
+            this.fillTop = "red";
+            this.fillBottom = "darkred";
+        }
     }
 
     function updateDialogueLabels() {
