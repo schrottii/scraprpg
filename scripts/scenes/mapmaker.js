@@ -2912,13 +2912,15 @@ scenes.mapmaker = () => {
                     tiles_bg[b].alpha = layerVisi[0];
                     if (map.map[y] && map.map[y][(x * 4) + 2]) {
                         if (map.map[y][(x * 4) + 2] != "-") {
-                            if (getTile(map, x, y).set != undefined) {
-                                tiles_bg[b].source = "tilesets/" + getTile(map, x, y).set;
-                                tiles_bg[b].snip = [getTile(map, x, y).snip[0] * 32, getTile(map, x, y).snip[1] * 32, 32, 32];
-                            }
-                            else {
-                                tiles_bg[b].source = "tiles/" + getTile(map, x, y).sprite;
-                                tiles_bg[b].snip = false;
+                            if (getTile(map, x, y) != undefined) {
+                                if (getTile(map, x, y).set != undefined) {
+                                    tiles_bg[b].source = "tilesets/" + getTile(map, x, y).set;
+                                    tiles_bg[b].snip = [getTile(map, x, y).snip[0] * 32, getTile(map, x, y).snip[1] * 32, 32, 32];
+                                }
+                                else {
+                                    tiles_bg[b].source = "tiles/" + getTile(map, x, y).sprite;
+                                    tiles_bg[b].snip = false;
+                                }
                             }
                             // Animate stuff
                             if (getTile(map, x, y).ani != undefined && enableAnimations) {
