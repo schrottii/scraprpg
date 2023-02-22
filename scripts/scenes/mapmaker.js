@@ -1599,6 +1599,20 @@ scenes.mapmaker = () => {
         }
     }));
     mapInfoControls.push(controls.button({
+        anchor: [0.4, 0.65], sizeAnchor: [0.2, 0.1],
+        text: "Add map pack", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                if (map.packs == undefined) {
+                    map.packs = [];
+                }
+                let newPack = prompt("Name? (e. g. tiles_forest)");
+                map.packs.push(newPack);
+                map.tiles = Object.assign({}, map.tiles, loadPacks({ packs: [newPack] }));
+            }
+        }
+    }));
+    mapInfoControls.push(controls.button({
         anchor: [0.7, 0.2], sizeAnchor: [0.2, 0.1],
         text: "Empty sprite: " + map.tiles.empty.sprite, alpha: 0,
         onClick(args) {

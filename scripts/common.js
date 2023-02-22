@@ -232,4 +232,5 @@ tiles_forest = {
     "F03": { "set": "forest", "snip": [0, 2], "occupied": true },
     "F04": { "set": "forest", "snip": [1, 2], "occupied": ["down"] },
     "F05": { "set": "forest", "snip": [2, 2], "occupied": true },
+    "F06": { "set": "forest", "snip": [4, 0] }, "F07": { "set": "forest", "snip": [5, 0] }, "F08": { "set": "forest", "snip": [7, 0] }, "F09": { "set": "forest", "snip": [7, 1] }, "F10": { "set": "forest", "snip": [4, 2], "occupied": true }, "F11": { "set": "forest", "snip": [4, 3], "occupied": true }, "F12": { "set": "forest", "snip": [5, 3] }, "F13": { "set": "forest", "snip": [6, 3] }, "F14": { "set": "forest", "snip": [5, 2] }, "F15": { "set": "forest", "snip": [6, 2] }, "F16": { "set": "forest", "snip": [7, 2], "occupied": true }, "F17": { "set": "forest", "snip": [7, 3], "occupied": true }, "F18": { "set": "forest", "snip": [8, 2], "occupied": ["no"] }, "F19": { "set": "forest", "snip": [8, 3], "occupied": true }
 }
