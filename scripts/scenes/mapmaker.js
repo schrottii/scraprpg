@@ -568,8 +568,8 @@ scenes.mapmaker = () => {
                     if (thisTile.occupied != undefined) tileOccupied = thisTile.occupied.toString();
                     if (thisTile.set != undefined) tileSet = thisTile.set;
                     if (thisTile.snip != undefined) tileSetSnip = thisTile.snip.toString().replace(",", ".");
-                    if (thisTile.ani != undefined) tileAni = thisTile.ani;
-                    if (thisTile.teleport != undefined) tileTele = thisTile.teleport;
+                    if (thisTile.ani != undefined) tileAni = thisTile.ani.toString().replace(",", ".");
+                    if (thisTile.teleport != undefined) tileTele = thisTile.teleport.toString().replace(",", ".").toString().replace(",", ".");
                     if (thisTile.dialogue != undefined) tileDia = thisTile.dialogue;
                     if (thisTile.swim != undefined) tileSwim = thisTile.swim.toString();
                 }
@@ -1843,13 +1843,13 @@ scenes.mapmaker = () => {
             if (tileOccupied.toLowerCase() == "yes" || tileOccupied.toLowerCase() == "true") ttc.occupied = true;
             else if ((tileOccupied.toLowerCase() != "no" || tileOccupied.toLowerCase() != "false") && tileOccupied.toLowerCase() != "") ttc.occupied = tileOccupied.split(".");
 
-            if (tileAni != "") ttc[tileID].ani = [parseInt(tileAni.split(".")[0]), parseInt(tileAni.split(".")[1])];
+            if (tileAni != "") ttc.ani = [parseInt(tileAni.split(".")[0]), parseInt(tileAni.split(".")[1])];
 
-            if (tileTele != "") ttc[tileID].teleport = [tileTele.split(".")[0], parseInt(tileTele.split(".")[1]), parseInt(tileTele.split(".")[2])];
+            if (tileTele != "") ttc.teleport = [tileTele.split(".")[0], parseInt(tileTele.split(".")[1]), parseInt(tileTele.split(".")[2])];
 
-            if (tileDia != "") ttc[tileID].dialogue = tileDia;
+            if (tileDia != "") ttc.dialogue = tileDia;
 
-            if (tileSwim.toLowerCase() == "yes" || tileSwim.toLowerCase() == "true") ttc[tileID].swim = true;
+            if (tileSwim.toLowerCase() == "yes" || tileSwim.toLowerCase() == "true") ttc.swim = true;
 
             if (createType == "map") {
                 map.tiles[tileID] = ttc;

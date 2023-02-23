@@ -323,6 +323,7 @@ var maps = {
     "hotel": "scripts/maps/Hotel_Island_1_2.js",
     "partyHouse": "scripts/maps/partyHouse.js",
     "foresttest": "scripts/maps/foresttest.js",
+    "forestmap": "scripts/maps/forestmap_v1.0.js",
 };
 
 var colors = { // colors not colours
