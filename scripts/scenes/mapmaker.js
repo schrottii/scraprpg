@@ -621,7 +621,7 @@ scenes.mapmaker = () => {
         }
     }));
     createTileButtons.push(controls.button({
-        anchor: [0.525, 0.575], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        anchor: [0.525, 0.7], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
         text: "Animation", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -670,65 +670,61 @@ scenes.mapmaker = () => {
         fillTop: "red", fillBottom: "darkred",
         onClick(args) {
             if (this.alpha == 1) {
-                if (images["tiles/" + tileSprite] == undefined && images["tilesets/" + tileSet] == undefined) {
-                    alert("You have to set a valid sprite or a set!");
-                    return false;
-                }
-                if (tileID == "") {
-                    alert("You have to set an ID!");
-                    return false;
-                }
-                try {
-                    if (tileSet == "") {
-                        map.tiles[tileID] = {
-                            "sprite": tileSprite
-                        }
-                    }
-                    else {
-                        if (tileSetSnip == "") tileSetSnip = "0.0";
-                        map.tiles[tileID] = {
-                            "set": tileSet,
-                            "snip": [parseInt(tileSetSnip.split(".")[0]), parseInt(tileSetSnip.split(".")[1])],
-                        }
-                    }
+                createTile("map");
+            }
+        }
+    }));
+    createTileButtons.push(controls.button({
+        anchor: [0.3, 0.7], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "Copy", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1 && tileSetSnip != "") {
+                createTile("copy");
+            }
+        }
+    }));
 
-                    if (tileOccupied.toLowerCase() == "yes" || tileOccupied.toLowerCase() == "true") map.tiles[tileID].occupied = true;
-                    else if ((tileOccupied.toLowerCase() != "no" || tileOccupied.toLowerCase() != "false") && tileOccupied.toLowerCase() != "") map.tiles[tileID].occupied = tileOccupied.split(".");
-
-                    if (tileAni != "") map.tiles[tileID].ani = [parseInt(tileAni.split(".")[0]), parseInt(tileAni.split(".")[1])];
-
-                    if (tileTele != "") map.tiles[tileID].teleport = [tileTele.split(".")[0], parseInt(tileTele.split(".")[1]), parseInt(tileTele.split(".")[2])];
-
-                    if (tileDia != "") map.tiles[tileID].dialogue = tileDia;
-
-                    if (tileSwim.toLowerCase() == "yes" || tileSwim.toLowerCase() == "true") map.tiles[tileID].swim = true;
-
-                    tileID = "";
-                    tileSprite = "";
-                    tileOccupied = "";
-                    tileSet = "";
-                    tileSetSnip = "";
-                    tileAni = "";
-                    tileTele = "";
-                    tileDia = "";
-                    tileSwim = "";
-
-                    createTileButtons[0].text = "Tile ID";
-                    createTileButtons[1].text = "Tile Sprite";
-                    createTileButtons[2].text = "Tile Occupied";
-                    createTileButtons[3].text = "Tile Set";
-                    createTileButtons[4].text = "Set Snip";
-                    createTileButtons[5].text = "Animation";
-                    createTileButtons[6].text = "Teleport";
-                    createTileButtons[7].text = "Dialogue";
-                    createTileButtons[8].text = "Swim";
-
-                    createTileButtons[9].source = "gear";
-                }
-                catch(e) {
-                    alert("An error occured!\n" + e);
-                }
-                toggleCreateTileButtons();
+    // X-
+    createTileButtons.push(controls.button({
+        anchor: [0.525, 0.575], sizeAnchor: [0.05, 0.1], offset: [72 * 16, -600],
+        text: "X-", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1 && tileSetSnip != "" && tileSetSnip.split(".")[0] > 0) {
+                tileSetSnip = (parseInt(tileSetSnip.split(".")[0]) - 1) + "." + tileSetSnip.split(".")[1];
+                updateTileLabels();
+            }
+        }
+    }));
+    // X+
+    createTileButtons.push(controls.button({
+        anchor: [0.575, 0.575], sizeAnchor: [0.05, 0.1], offset: [72 * 16, -600],
+        text: "X+", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1 && tileSetSnip != "") {
+                tileSetSnip = (parseInt(tileSetSnip.split(".")[0]) + 1) + "." + tileSetSnip.split(".")[1];
+                updateTileLabels();
+            }
+        }
+    }));
+    // Y-
+    createTileButtons.push(controls.button({
+        anchor: [0.625, 0.575], sizeAnchor: [0.05, 0.1], offset: [72 * 16, -600],
+        text: "Y-", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1 && tileSetSnip != "" && tileSetSnip.split(".")[1] > 0) {
+                tileSetSnip = tileSetSnip.split(".")[0] + "." + (parseInt(tileSetSnip.split(".")[1]) - 1);
+                updateTileLabels();
+            }
+        }
+    }));
+    // Y+
+    createTileButtons.push(controls.button({
+        anchor: [0.675, 0.575], sizeAnchor: [0.05, 0.1], offset: [72 * 16, -600],
+        text: "Y+", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1 && tileSetSnip != "") {
+                tileSetSnip = tileSetSnip.split(".")[0] + "." + (parseInt(tileSetSnip.split(".")[1]) + 1);
+                updateTileLabels();
             }
         }
     }));
@@ -1819,6 +1815,76 @@ scenes.mapmaker = () => {
             }
         }
     }));
+
+    function createTile(createType) {
+        if (images["tiles/" + tileSprite] == undefined && images["tilesets/" + tileSet] == undefined) {
+            alert("You have to set a valid sprite or a set!");
+            return false;
+        }
+        if (tileID == "") {
+            alert("You have to set an ID!");
+            return false;
+        }
+        try {
+            let ttc = {};
+            if (tileSet == "") {
+                ttc = {
+                    "sprite": tileSprite
+                }
+            }
+            else {
+                if (tileSetSnip == "") tileSetSnip = "0.0";
+                ttc = {
+                    "set": tileSet,
+                    "snip": [parseInt(tileSetSnip.split(".")[0]), parseInt(tileSetSnip.split(".")[1])],
+                }
+            }
+
+            if (tileOccupied.toLowerCase() == "yes" || tileOccupied.toLowerCase() == "true") ttc.occupied = true;
+            else if ((tileOccupied.toLowerCase() != "no" || tileOccupied.toLowerCase() != "false") && tileOccupied.toLowerCase() != "") ttc.occupied = tileOccupied.split(".");
+
+            if (tileAni != "") ttc[tileID].ani = [parseInt(tileAni.split(".")[0]), parseInt(tileAni.split(".")[1])];
+
+            if (tileTele != "") ttc[tileID].teleport = [tileTele.split(".")[0], parseInt(tileTele.split(".")[1]), parseInt(tileTele.split(".")[2])];
+
+            if (tileDia != "") ttc[tileID].dialogue = tileDia;
+
+            if (tileSwim.toLowerCase() == "yes" || tileSwim.toLowerCase() == "true") ttc[tileID].swim = true;
+
+            if (createType == "map") {
+                map.tiles[tileID] = ttc;
+            }
+            if (createType == "copy") {
+                navigator.clipboard.writeText('"' + tileID + '": ' + JSON.stringify(ttc));
+            }
+
+            tileID = "";
+            tileSprite = "";
+            tileOccupied = "";
+            tileSet = "";
+            tileSetSnip = "";
+            tileAni = "";
+            tileTele = "";
+            tileDia = "";
+            tileSwim = "";
+
+            createTileButtons[0].text = "Tile ID";
+            createTileButtons[1].text = "Tile Sprite";
+            createTileButtons[2].text = "Tile Occupied";
+            createTileButtons[3].text = "Tile Set";
+            createTileButtons[4].text = "Set Snip";
+            createTileButtons[5].text = "Animation";
+            createTileButtons[6].text = "Teleport";
+            createTileButtons[7].text = "Dialogue";
+            createTileButtons[8].text = "Swim";
+
+            createTileButtons[9].source = "gear";
+        }
+        catch (e) {
+            alert("An error occured!\n" + e);
+        }
+        toggleCreateTileButtons();
+    }
 
     function loadNPCs() {
         activenpcs = [];
