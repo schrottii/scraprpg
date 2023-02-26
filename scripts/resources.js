@@ -293,6 +293,8 @@ var audio = {
     "bgm/town/intro": "data/bgm/Town_intro.ogg",
     "bgm/town/loop": "data/bgm/town_loop.ogg",
 
+    "bgm/forest/loop": "data/bgm/desperate-forest.mp3",
+
     "titletransition": "data/sounds/Title_screen_transition.mp3",
     "buttonClickSound": "data/sounds/sound_ok.wav",
     "no": "data/sounds/sound_no.wav",
@@ -323,7 +325,7 @@ var maps = {
     "hotel": "scripts/maps/Hotel_Island_1_2.js",
     "partyHouse": "scripts/maps/partyHouse.js",
     "foresttest": "scripts/maps/foresttest.js",
-    "forestmap": "scripts/maps/forestmap_v1.0.js",
+    "forestmap": "scripts/maps/forestmap.js",
 };
 
 var colors = { // colors not colours
