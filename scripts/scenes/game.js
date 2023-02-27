@@ -741,7 +741,7 @@ scenes.game = () => {
     // Weather time thing
     function setNightEffect(color, al = 0.5, type = "none") {
         //console.log(nightEffect.alpha, color, al, type, instantEffect);
-        let transitionDuration = 30000; // Roughly how long it lasts. 1000 = 1 sec
+        let transitionDuration = 15000; // Roughly how long it lasts. 1000 = 1 sec
         let fogAlphaChangeIntensity = 10; // How much the opacity during fog changes. Higher number = less
         // Speed in preRender
 
@@ -1350,7 +1350,7 @@ scenes.game = () => {
 
 
             if (map.weather == "none" || map.weather == undefined) {
-                if (isNoon()) setNightEffect("none", 0.35);
+                if (isNoon()) setNightEffect("#d92200", 0);
                 else if (isDusk()) setNightEffect("#ff8c1a", 0.35);
                 else if (isNight()) setNightEffect("#481365", 0.35);
                 else if (isDawn()) setNightEffect("#d92200", 0.35);
