@@ -1981,8 +1981,9 @@ scenes.mapmaker = () => {
         document.body.removeChild(anchor);
     }
 
-    function toggleCreateTileButtons() {
-        if (createTileButtons[0].alpha == 0) {
+    function toggleCreateTileButtons(musthide) {
+        if (createTileButtons[0].alpha == 0 && !musthide) {
+            closeAllMenus(4);
             for (i in createTileButtons) {
                 createTileButtons[i].offset = [0, -600];
                 createTileButtons[i].alpha = 1;
@@ -2037,6 +2038,7 @@ scenes.mapmaker = () => {
 
     function toggleCreateDialogueButtons(mustShow=false) {
         if (createDialogueButtons[0].alpha == 0 || mustShow) {
+            closeAllMenus(5);
             if (curDia != "") {
                 for (i in createDialogueButtons) {
                     createDialogueButtons[i].offset = [0, -600];
@@ -2111,6 +2113,7 @@ scenes.mapmaker = () => {
 
     function toggleCreateNPCButtons(mustShow = false) {
         if (createNPCButtons[0].alpha == 0 || mustShow) {
+            closeAllMenus(6);
             if (curNPC != "") {
                 for (i in createNPCButtons) {
                     createNPCButtons[i].offset = [0, -600];
@@ -2248,8 +2251,8 @@ scenes.mapmaker = () => {
         updateTiles = true;
     }
 
-    function toggleMapInfoButtons() {
-        if (mapInfoControls[0].alpha == 0) {
+    function toggleMapInfoButtons(mustclose=false) {
+        if (mapInfoControls[0].alpha == 0 && !mustclose) {
             for (u in undoButtons) {
                 undoButtons[u].al = undoButtons[u].alpha;
                 undoButtons[u].alpha = 0;
@@ -2263,6 +2266,8 @@ scenes.mapmaker = () => {
             }
         }
         else if (mapInfoControls[0].alpha == 1) {
+            if (!mustclose) closeAllMenus(7);
+
             for (u in undoButtons) {
                 undoButtons[u].alpha = undoButtons[u].al;
             }
@@ -2366,8 +2371,9 @@ scenes.mapmaker = () => {
         }
     }
 
-    function toggleLoadButtons() {
-        if (loadMapButtons[0].alpha == 0) {
+    function toggleLoadButtons(mustclose=false) {
+        if (loadMapButtons[0].alpha == 0 && !mustclose) {
+            closeAllMenus(2);
             renderInfo("m");
             showInfo();
 
@@ -2411,8 +2417,9 @@ scenes.mapmaker = () => {
         }
     }
 
-    function toggleSaveButtons() {
-        if (saveMapButtons[0].alpha == 0) {
+    function toggleSaveButtons(mustclose=false) {
+        if (saveMapButtons[0].alpha == 0 && !mustclose) {
+            closeAllMenus(3);
             for (i in saveMapButtons) {
                 saveMapButtons[i].offset = [0, -600];
                 saveMapButtons[i].alpha = 1;
@@ -2431,6 +2438,7 @@ scenes.mapmaker = () => {
             })
         }
         else {
+
             for (i in saveMapButtons) {
                 saveMapButtons[i].offset = [0, 0];
             }
@@ -2498,6 +2506,8 @@ scenes.mapmaker = () => {
     }
 
     function openTilesMenu() {
+        closeAllMenus(0);
+
         let red = isLs() ? 2 : 1;
 
         for (u in undoButtons) {
@@ -2579,6 +2589,55 @@ scenes.mapmaker = () => {
         for (t in tilesMenuIcons) {
             tilesMenuIcons[t].alpha = 0;
         }
+    }
+
+    function closeAllMenus(i) {
+        // Tile Menu
+        if (i != 0) closeTilesMenu();
+
+        // Tile Info
+        if (i != 1) {
+            for (tic in tileInfoControls) {
+                tileInfoControls[tic].alpha = 0;
+            }
+        }
+
+        // Load
+        if (i != 2) toggleLoadButtons(true);
+
+        // Save
+        if (i != 3) toggleSaveButtons(true);
+
+        // Tile Maker
+        if (i != 4) {
+            toggleCreateTileButtons(true);
+        }
+
+        // Dialogue Maker
+        if (i != 5) {
+            for (tic in createDialogueButtons) {
+                createDialogueButtons[tic].alpha = 0;
+            }
+            for (tic in createDialogueLabels) {
+                createDialogueLabels[tic].alpha = 0;
+            }
+        }
+
+        // NPC Maker
+        if (i != 6) {
+            for (tic in createNPCButtons) {
+                createNPCButtons[tic].alpha = 0;
+            }
+            for (tic in createNPCLabels) {
+                createNPCLabels[tic].alpha = 0;
+            }
+        }
+
+        // Map Info
+        if (i != 7) toggleMapInfoButtons(true);
+
+        // Info
+        hideInfo();
     }
 
     function protect() {
@@ -2707,6 +2766,8 @@ scenes.mapmaker = () => {
     }
 
     function tileInfo(x, y, layer, selected = "none") {
+        closeAllMenus(1);
+
         let selectedTile;
         let selectedTileID;
         let l = 1;
