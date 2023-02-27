@@ -2611,8 +2611,11 @@ scenes.mapmaker = () => {
                 }
                 map[layer][y] = tileToPlace;
             }
-            if (x * 4 > mp.length + 4) {
-                while (x * 4 > mp.length + 4) {
+            map[layer][y] = map[layer][y].replace(/\s{2,}/g, ' '); // remove double spaces
+            mp = map[layer][y];
+
+            if (x * 4 > mp.length) {
+                while (x * 4 > mp.length) {
                     map[layer][y] = mp + " " + def;
                     mp = map[layer][y];
                 }
@@ -2625,7 +2628,12 @@ scenes.mapmaker = () => {
                 postRedoLog(x, y, layer, mp.substr(x * 4, 3));
             }
 
+            map[layer][y] = map[layer][y].replace(/  /gi, " ");
+            mp = map[layer][y];
+
+            // Fill thing
             if (doFill) {
+                // Fill ON - multiple tiles
                 let temp = [x, y];
                 replaceY("+", mp, x, y, layer, rePlaced, tileToPlace, temp);
                 x = temp[0];
@@ -2635,8 +2643,15 @@ scenes.mapmaker = () => {
                 y = temp[1];
             }
             else {
-                if (x * 4 > mp.length) map[layer][y] = mp + " " + tileToPlace;
-                else map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
+                // FILL OFF - single tile
+                if (x * 4 > mp.length) {
+                    // Expand map!
+                    map[layer][y] = mp + " " + tileToPlace;
+                }
+                else {
+                    // Somewhere in the middle of the map
+                    map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
+                }
             }
 
             map[layer][y] = map[layer][y].replace(/  /gi, " ");
