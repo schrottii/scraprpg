@@ -53,6 +53,7 @@ var canMove = true;
 var isMapTestingMode = false;
 
 var textProgress = -1;
+var isHolding = false;
 
 //   Day: 6:00 - 17:59 (12 hours)
 //  ----> Dawn: 6:00 - 8:59
@@ -178,6 +179,8 @@ let pointerActive = false;
 let pointerPos = [0, 0];
 
 function onCanvasPointerDown(e) {
+    isHolding = true;
+
     pointerActive = true;
     pointerPos = [e.clientX, e.clientY];
     for (let a = scene.controls.length - 1; a >= 0; a--) {
@@ -214,9 +217,15 @@ function onCanvasPointerDown(e) {
 
 function onCanvasPointerMove(e) {
     pointerPos = [e.clientX, e.clientY];
+
+    if (isHolding && scene.name == "mapmaker") {
+        onCanvasPointerUp(e, true);
+    }
 }
 
-function onCanvasPointerUp(e) {
+function onCanvasPointerUp(e, keepHold=false) {
+    if (!keepHold) isHolding = false;
+
     pointerActive = false;
     pointerPos = [e.clientX, e.clientY];
     for (let a = scene.controls.length - 1; a >= 0; a--) {
