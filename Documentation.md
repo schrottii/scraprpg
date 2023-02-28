@@ -1,10 +1,10 @@
-A basic ScrapRPG documentation as even I found myself struggling to remember some things sometimes
+A basic ScrapRPG documentation as even I (frankneurhein) found myself struggling to remember some things sometimes
 
 Name means the thing you have to use in the code
 
 ## Dialogue types
 | Title      | Name (in code)       | Description
-|:----------:|:--------------------:|:------------------------------:
+|:----------:|:--------------------:|:--------------------:
 | Normal     | normal               | The default dialogue type, with image, name, etc.
 | Invisible  | invis                | Similiar to normal, but text only. No image, no name.
 | Narrator   | narrator             | Text only, but in the middle of the screen, with a black bg behind it.
@@ -16,40 +16,40 @@ Name means the thing you have to use in the code
 ## Emotion animations
 For emotionAnimation(...)   (other sprite)
 
-| x, y       | Name (in code)       | Description
-|:----------:|:--------------------:|:------------------------------:
-| 0, 0       | disappointed         | 
-| 32, 0      | love                 | 
-| 64, 0      | crying               | 
-| 0, 32      | laugh                | 
-| 0, 64      | victory              | 
-| 0, 96      | anger                | 
+| Origin (x, y) | Name (in code)| Description
+|:-------------:|:-------------:|:--------------------:
+| 0, 0          | disappointed  | Usually a sad frown with a pouty appearance. (Can be substituted for other emotions like fear, like in Kokitozi's example.)
+| 32, 0         | love          | A blushy face, sometimes with a few gestures and quirks for appeal.
+| 64, 0         | crying        | The only emotion animation to have 3 unique frames. Sob severity can vary from barrel to barrel depending on personality. (Can be substituted for other things like Kokitozi's 3-frame disintegration animation.)
+| 0, 32         | laugh         | Two frames. Usually hysterical. (Switches between frames (1-2-1-2-...). Frame interval can be adjusted.)
+| 0, 64         | victory       | Also two frames. Mainly used in battles (winning the battle) but can also be used in non-battle cutscenes.
+| 0, 96         | anger         | Obviously maddened face with a small anger mark at top for comedic effect. (Not always applicable.)
 
 
 
 ## Emotions
 For getEmotion(...)    (portraits)
 
-| x, y       | Name (in code)       | Description
-|:----------:|:--------------------:|:------------------------------:
-| 0, 0       | neutral              | Default
-| 0, 64      | happy                | 
-| 0, 128     | love                 | 
-| 0, 192     | disappointed         | 
-| 0, 256     | sad                  | 
-| 0, 320     | angry                | 
+| Origin (x, y) | Name (in code)       | Description
+|:-------------:|:--------------------:|:--------------------:
+| 0, 0          | neutral              | Not much emotion, but can be dashed with a slight smile. (Default.)
+| 0, 64         | happy                | Ranges from an open smile to a euphoric cheer.
+| 0, 128        | love                 | Can also be substituted for other emotions/feelings like embarrassment or feeling drunk.
+| 0, 192        | disappointed         | Usually depicted as a disdainful frown. (Can be substituted for other emotions/feelings like fear.)
+| 0, 256        | sad                  | Like the "crying" emotion animation, sob severity can vary from barrel to barrel depending on personality. (Again, can be substituted for other things like Koki's disintegrated form.)
+| 0, 320        | angry                | Like the "anger" emotion animation, but more-elaborate in detail.
 
 
 
 ## Status effects
 | Title      | Name (in code)       | Description
 |:----------:|:--------------------:|:------------------------------:
-| Acid       | acid                 | 1/15 of MaxHP damage every round
-| Poison     | poison               | 1/15 of MaxHP damage every round, 1 HP / tile in overworld
-| Fire/Burn  | burn                 | 1/10 of MaxHP damage every round
-| Enraged    | enraged              | Auto-assigns attack
-| Paralysis  | paralysis            | No-assigns attack no no no
-| Condemned  | condemned            | You die
+| Acid       | acid                 | Melts the victim's HP by 1/15 of victim's MaxHP per turn. Cured after battle.
+| Poison     | poison               | Drains the victim's HP by 1/15 of victim's MaxHP per turn. -1 HP per tile outside battles.
+| Fire/Burn  | burn                 | Burns the victim's HP by 1/10 of victim's MaxHP per turn. Cured after battle.
+| Enraged    | enraged              | Auto-assigns the victim with the "Attack" action always. Cured after battle.
+| Paralysis  | paralysis            | Disables the victim for a while. Cured after battle.
+| Condemned  | condemned            | You die. (Or maybe... maybe after a few turns?)
 
 
 ## Usage of filters
