@@ -4,6 +4,9 @@ const amountStats = 14;
 var positions;
 var defeatType = "default"; // default or nogameover
 
+// Colors of the range indicator
+const rangeColors = ["red", "pink", "blue"];
+
 function battleNumber(pos, amount, type, offset = [0, 0], crit = false) {
     // Type 0 is HP, 1 is EP
     let bn;
@@ -290,6 +293,7 @@ scenes.fight = () => {
     }
 
     function victoryScreen() {
+        // Victory Screen
         for (j = 0; j < 3; j++) {
             for (i = 0; i < 3; i++) {
                 if (positionControls[i + (j * 3)].source != "gear") {
@@ -379,19 +383,21 @@ scenes.fight = () => {
                 let a = 7;
 
                 for (i = 0; i < game.chars.length; i++) {
+                    // This Player exists
                     if (getPlayer(1 + i).HP > 0) {
+                        // and is alive
                         winStats[0 + (i * a)].fill = "#c4c404";
                         winStats[1 + (i * a)].fill = "#707001";
                         winStats[5 + (i * a)].source = getPlayer(i + 1).name.toLowerCase();
                         winStats[4 + (i * a)].text = "Lvl. " + getPlayer(i + 1).level;
                     }
                     else {
+                        // and is dead
                         winStats[0 + (i * a)].fill = "#aeaeae";
                         winStats[1 + (i * a)].fill = "#636363";
                         winStats[5 + (i * a)].source = getPlayer(i + 1).name.toLowerCase() + "_dead";
                     }
                     winStats[6 + (i * a)].text = getPlayer(i + 1).preEXP + "/25";
-                    
                 }
 
                 addAnimator(function (t) {
@@ -413,8 +419,10 @@ scenes.fight = () => {
                     if(i != 2) winScreen[i].alpha = 1;
                 }
                 for (i = 0; i < winStats.length; i++) {
-                    winStats[i].offset[0] = -2000;
-                    if (i % a != 3 && winStats[i].source != "gear") winStats[i].alpha = 1;
+                    if (Math.floor(i / a) < game.chars.length) { // Don't show not existing dudes
+                        winStats[i].offset[0] = -2000;
+                        if (i % a != 3 && winStats[i].source != "gear") winStats[i].alpha = 1;
+                    }
                 }
 
                 winScreen[0].alpha = 0;
@@ -3120,7 +3128,7 @@ scenes.fight = () => {
                     if (positionControls[i].source != "gear") highlightGrid[i].alpha = highlightAlpha;
                     if (epositionControls[i].source != "gear") highlightGrid[i + 9].alpha = highlightAlpha;
                     else highlightGrid[i + 9].alpha = 0;
-                    if (epositionControls[i].source != "gear") highlightGrid[i + 9].fill = ["white", "orange", "red"][getDistance("enemy", [i % 3, Math.floor(i / 3)])];
+                    if (epositionControls[i].source != "gear") highlightGrid[i + 9].fill = rangeColors[getDistance("enemy", [i % 3, Math.floor(i / 3)])];
                 }
             }
             else {
