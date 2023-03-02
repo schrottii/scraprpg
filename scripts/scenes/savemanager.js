@@ -47,6 +47,10 @@ scenes.savemanager = () => {
                 if (mode == "load") {
                     saveNR = a;
                     loadGame(a);
+
+                    fadeOut(1000 / 3, true, (id = this.id) => {
+                        setScene(scenes.game());
+                    });
                 }
                 if (mode == "delete") {
                     saveNR = a;
@@ -130,7 +134,7 @@ scenes.savemanager = () => {
 
     // Buttons
     buttons.push(controls.label({
-        anchor: [0.95, 0.8975],
+        anchor: [0.975, 0.8975],
         align: "right", fontSize: 32, fill: "black",
         text: "Mode: None",
         alpha: 1,
@@ -145,6 +149,12 @@ scenes.savemanager = () => {
             mode = "save";
         }
     }));
+    buttons.push(controls.label({
+        anchor: [0.15, 0.95],
+        align: "center", fontSize: 16, fill: "black",
+        text: "Save",
+        alpha: 1,
+    }));
     buttons.push(controls.button({ // Load
         anchor: [0.3, 0.86], sizeAnchor: [0.1, 0.075],
         alpha: 1,
@@ -154,6 +164,12 @@ scenes.savemanager = () => {
             mode = "load";
         }
     }));
+    buttons.push(controls.label({
+        anchor: [0.35, 0.95],
+        align: "center", fontSize: 16, fill: "black",
+        text: "Load",
+        alpha: 1,
+    }));
     buttons.push(controls.button({ // Delete
         anchor: [0.5, 0.86], sizeAnchor: [0.1, 0.075],
         alpha: 1,
@@ -162,6 +178,12 @@ scenes.savemanager = () => {
         onClick(args) {
             mode = "delete";
         }
+    }));
+    buttons.push(controls.label({
+        anchor: [0.55, 0.95],
+        align: "center", fontSize: 16, fill: "black",
+        text: "Delete",
+        alpha: 1,
     }));
     buttons.push(controls.button({ // Auto
         anchor: [0.7, 0.86], sizeAnchor: [0.1, 0.075],
@@ -173,7 +195,12 @@ scenes.savemanager = () => {
             loadGame(3);
         }
     }));
-
+    buttons.push(controls.label({
+        anchor: [0.75, 0.95],
+        align: "center", fontSize: 16, fill: "black",
+        text: "Load auto save",
+        alpha: 1,
+    }));
     buttons.push(controls.image({ // Save
         anchor: [0.15, 0.86], sizeOffset: [64, 64], offset: [-32, 0],
         source: "save",
