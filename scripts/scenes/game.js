@@ -486,6 +486,47 @@ scenes.game = () => {
     let dialogueNarratorComponents = [];
     let dialogueCutsceneComponents = [];
 
+    function dialogueNext() {
+        dialogueProgress += 1;
+        textProgress = -1;
+
+        if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
+            // Dialogue end
+            currentDialogue = false;
+            dialogueEmotion = "neutral";
+            dialogueProgress = 0;
+            canMove = true;
+            actionButton.alpha = 1;
+
+            if (dialogueObjects[0].at == 1 && (dialogueType == "normal" || dialogueType == "invis")) {
+                dialogueObjects[0].at = 0.4;
+                addAnimator(function (t) {
+                    for (i in dialogueObjects) {
+                        dialogueObjects[i].offset[1] = dialogueObjects[i].defoff[1] + Math.min(t, 500);
+                    }
+                    if (t > 499) {
+                        for (i in dialogueObjects) {
+                            dialogueObjects[i].at = 0;
+                        }
+                        if (canMove == true) inDialogue = false;
+                        return true;
+                    }
+                    return false;
+                });
+            }
+            else {
+                for (i in dialogueObjects) {
+                    dialogueObjects[i].alpha = 0;
+                }
+                if (canMove == true) inDialogue = false;
+            }
+        } // Continue dialogue
+        else if (currentDialogue[dialogueProgress].script != undefined && currentDialogue[dialogueProgress].script != false) {
+            if (typeof (currentDialogue[dialogueProgress].script) == "string") eval(currentDialogue[dialogueProgress].script());
+            else currentDialogue[dialogueProgress].script();
+        }
+    }
+
     function dialogueBox() {
         let text;
         if (currentDialogue[dialogueProgress] == undefined) return false;
@@ -493,43 +534,7 @@ scenes.game = () => {
         else text = currentDialogue[dialogueProgress].text();
 
         if ((textProgress * 20) >= text.length) {
-            dialogueProgress += 1;
-            textProgress = -1;
-            if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
-                // Dialogue end
-                currentDialogue = false;
-                dialogueEmotion = "neutral";
-                dialogueProgress = 0;
-                canMove = true;
-                actionButton.alpha = 1;
-
-                if (dialogueObjects[0].at == 1 && (dialogueType == "normal" || dialogueType == "invis")) {
-                    dialogueObjects[0].at = 0.4;
-                    addAnimator(function (t) {
-                        for (i in dialogueObjects) {
-                            dialogueObjects[i].offset[1] = dialogueObjects[i].defoff[1] + Math.min(t, 500);
-                        }
-                        if (t > 499) {
-                            for (i in dialogueObjects) {
-                                dialogueObjects[i].at = 0;
-                            }
-                            if (canMove == true) inDialogue = false;
-                            return true;
-                        }
-                        return false;
-                    });
-                }
-                else {
-                    for (i in dialogueObjects) {
-                        dialogueObjects[i].alpha = 0;
-                    }
-                    if (canMove == true) inDialogue = false;
-                }
-            }
-            else if (currentDialogue[dialogueProgress].script != undefined && currentDialogue[dialogueProgress].script != false) {
-                if (typeof (currentDialogue[dialogueProgress].script) == "string") eval(currentDialogue[dialogueProgress].script());
-                else currentDialogue[dialogueProgress].script();
-            }
+            dialogueNext();
         }
         else {
             textProgress = text.length * 20;
@@ -1594,9 +1599,9 @@ scenes.game = () => {
 
                         tryTalk(xo, yo);
 
-                        for (i in activenpcs) {
+                        /*for (i in activenpcs) {
                             if (activenpcs[i].position[0] == Math.floor(game.position[0]) + xo && activenpcs[i].position[1] == Math.floor(game.position[1]) + yo) actionButton.source = "actionbutton_active";
-                        }
+                        }*/ // Looks outdated to me
                     }
                 }
             }
@@ -1822,28 +1827,35 @@ scenes.game = () => {
                 // They are there, visible
                 if (dialogueObjects[0].at != 0.4) {
                     // Update text
-                    if (typeof (currentDialogue[dialogueProgress].text) == "string") dialogueObjects[dTextID].text = animatedText(currentDialogue[dialogueProgress].text);
+                    if (currentDialogue[dialogueProgress].text == undefined) {
+                        // Broken dialogue (undefined)
+                        alert("This dialogue is broken!\nPlease report it to the devs!");
+                        dialogueNext();
+                    }
+                    else if (typeof (currentDialogue[dialogueProgress].text) == "string") dialogueObjects[dTextID].text = animatedText(currentDialogue[dialogueProgress].text);
                     else dialogueObjects[dTextID].text = animatedText(currentDialogue[dialogueProgress].text());
 
-                    if (dNameID != -1) { // Change name display if it exists
-                        if (currentDialogue[dialogueProgress].name != undefined) dialogueObjects[dNameID].text = currentDialogue[dialogueProgress].name;
-                        else dialogueObjects[dNameID].text = "Bleu";
-                    }
-                    if (dPortraitID != -1) { // Change portrait display if it exists
-                        dialogueEmotion = currentDialogue[dialogueProgress].emotion;
-                        if (currentDialogue[dialogueProgress].portrait != undefined) {
-                            dialogueObjects[dPortraitID].source = currentDialogue[dialogueProgress].portrait;
-                            if (dialogueEmotion != undefined) dialogueObjects[dPortraitID].snip = getEmotion(dialogueEmotion);
-                            else dialogueObjects[dPortraitID].snip = getEmotion("neutral");
+                    if (currentDialogue != false) {
+                        if (dNameID != -1) { // Change name display if it exists
+                            if (currentDialogue[dialogueProgress].name != undefined) dialogueObjects[dNameID].text = currentDialogue[dialogueProgress].name;
+                            else dialogueObjects[dNameID].text = "Bleu";
                         }
-                        else { // doesn't exist - use default
-                            dialogueObjects[dPortraitID].source = "Bleu_Portrait";
-                            dialogueObjects[dPortraitID].snip = getEmotion("neutral");
+                        if (dPortraitID != -1) { // Change portrait display if it exists
+                            dialogueEmotion = currentDialogue[dialogueProgress].emotion;
+                            if (currentDialogue[dialogueProgress].portrait != undefined) {
+                                dialogueObjects[dPortraitID].source = currentDialogue[dialogueProgress].portrait;
+                                if (dialogueEmotion != undefined) dialogueObjects[dPortraitID].snip = getEmotion(dialogueEmotion);
+                                else dialogueObjects[dPortraitID].snip = getEmotion("neutral");
+                            }
+                            else { // doesn't exist - use default
+                                dialogueObjects[dPortraitID].source = "Bleu_Portrait";
+                                dialogueObjects[dPortraitID].snip = getEmotion("neutral");
+                            }
                         }
-                    }
 
-                    if (currentDialogue[dialogueProgress + 1] != undefined) dialogueObjects[dStarID].alpha = 1; // Star
-                    actionButton.alpha = 0;
+                        if (currentDialogue[dialogueProgress + 1] != undefined) dialogueObjects[dStarID].alpha = 1; // Star
+                        actionButton.alpha = 0;
+                    }
                 }
             }
 

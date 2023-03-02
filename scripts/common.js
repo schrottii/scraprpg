@@ -29,7 +29,7 @@ var commontiles = {
         },
     "01D": {
         sprite: "dirtcliff",
-            occupied: true,
+            occupied: false,
         },
     "002": {
         sprite: "water1",

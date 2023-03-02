@@ -2263,6 +2263,7 @@ scenes.fight = () => {
         alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                playSound("buttonClickSound");
                 loadGame();
                 endFight();
             }
@@ -2275,6 +2276,7 @@ scenes.fight = () => {
         alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                playSound("buttonClickSound");
                 setScene(scenes.title());
                 fightStats = [];
             }

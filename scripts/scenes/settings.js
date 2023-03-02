@@ -213,13 +213,24 @@ scenes.settings = () => {
     menuSettingsAudio.push(controls.button({
         anchor: [0.55, 0.25], sizeAnchor: [0.2, 0.1],
         text: "Music Volume: 50%", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let tempVol = settings.soundVolume;
+                settings.soundVolume = settings.musicVolume;
+                changeSoundVolume(settings.soundVolume);
+                playSound("buttonClickSound");
+                settings.soundVolume = tempVol;
+                setTimeout(() => {
+                    changeSoundVolume(settings.soundVolume);
+                }, 1000);
+            }
+        }
     }));
     menuSettingsAudio.push(controls.button({
         anchor: [0.5, 0.25], sizeAnchor: [0.04, 0.1],
         text: "-", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                playSound("buttonClickSound");
                 if (settings.musicVolume > 0.01) {
                     settings.musicVolume = settings.musicVolume - 0.05;
                     if (settings.musicVolume < 0) settings.musicVolume = 0;
@@ -234,7 +245,6 @@ scenes.settings = () => {
         text: "+", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                playSound("buttonClickSound");
                 if (settings.musicVolume < 0.99) {
                     settings.musicVolume = settings.musicVolume + 0.05;
                     if (settings.musicVolume > 1) settings.musicVolume = 1;
@@ -248,13 +258,17 @@ scenes.settings = () => {
     menuSettingsAudio.push(controls.button({
         anchor: [0.55, 0.375], sizeAnchor: [0.2, 0.1],
         text: "Sound Volume: 50%", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                playSound("buttonClickSound");
+            }
+        }
     }));
     menuSettingsAudio.push(controls.button({
         anchor: [0.5, 0.375], sizeAnchor: [0.04, 0.1],
         text: "-", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                playSound("buttonClickSound");
                 if (settings.soundVolume > 0.01) {
                     settings.soundVolume = settings.soundVolume - 0.05;
                     if (settings.soundVolume < 0) settings.soundVolume = 0;
@@ -269,7 +283,6 @@ scenes.settings = () => {
         text: "+", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                playSound("buttonClickSound");
                 if (settings.soundVolume < 0.99) {
                     settings.soundVolume = settings.soundVolume + 0.05;
                     if (settings.soundVolume > 1) settings.soundVolume = 1;
