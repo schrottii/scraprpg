@@ -18,7 +18,7 @@ These are mainly the bosses of things other than programming and releasing the g
 *Lead Map Maker, Discord Server Owner, Idea Planner, Graphic Designer, Story Writer
 
 - **Niko (Lun4-R)**
-*Lead Graphic Designer*, Idea Planner, Composer
+*Lead Graphic Designer, Idea Planner, Composer
 
 - **Decastar**
 *[Father of ScrapRPG](https://youtube.com/playlist?list=PLl18EjlJraJi3R_jBT266QQ8-smWw0GMn), Idea Planner, Lead Graphic Designer, Story Writer, Lead Composer
