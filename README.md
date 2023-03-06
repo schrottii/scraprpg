@@ -9,20 +9,25 @@ DecastarWasNeverACoder (More known as *Decastar*) was the second person to think
 - **Frank Neurhein (Schrottii)**
 *Lead Programmer, Main Game Developer, Lead Idea Planner, Lead Story Writer*, Graphic Designer, Composer, Motivator
 
+- **ducdat0507**
+*Former Programmer*
 ### Staff of All Trades
 These are mainly the bosses of things other than programming and releasing the game.
 
 - **Barduzzi (*Salveeny* in GitHub)**
-*Lead Map Maker, Discord Server Owner*, Idea Planner, Graphic Designer, Story Writer
+*Lead Map Maker, Discord Server Owner, Idea Planner, Graphic Designer, Story Writer
 
 - **Niko (Lun4-R)**
 *Lead Graphic Designer*, Idea Planner, Composer
 
 - **Decastar**
-[Father of ScrapRPG](https://youtube.com/playlist?list=PLl18EjlJraJi3R_jBT266QQ8-smWw0GMn), Idea Planner, Composer
+*[Father of ScrapRPG](https://youtube.com/playlist?list=PLl18EjlJraJi3R_jBT266QQ8-smWw0GMn), Idea Planner, Lead Graphic Designer, Story Writer, Lead Composer
 
 - **Daem S. (TheKingofTrash)**
-Graphic Designer, Story Writer, Game Tester, Idea Planner
+*Graphic Designer, Story Writer, Game Tester, Idea Planner
+
+- **Zedoreku**
+*Composer
 
 ## Links
 - Discord Server: https://discord.gg/kavN4FYyDB
