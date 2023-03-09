@@ -1220,15 +1220,15 @@ scenes.fight = () => {
         })
     }
 
-    function hideActionButtons() {
-        if (actionButtons[0].offset[1] != 0) return false;
+    function hideActionButtons(thisButton) {
+        if (actionButtons[0].offset[1] != 0 && thisButton != 99) return false;
         addAnimator(function (t) {
             for (i = 0; i < actionButtons.length; i++) {
-                actionButtons[i].offset[1] = -t;
+                if (thisButton != 0 || i < 18) actionButtons[i].offset[1] = -t;
             }
             if (t > 499) {
                 for (i = 0; i < actionButtons.length; i++) {
-                    actionButtons[i].offset[1] = -500;
+                    if (thisButton != 0 || i < 18) actionButtons[i].offset[1] = -500;
                 }
                 return true;
             }
@@ -1251,6 +1251,7 @@ scenes.fight = () => {
 
     function hideFightButtons() {
         if (fightButtons[0].offset[1] != 0) return false;
+
         addAnimator(function (t) {
             for (i = 0; i < fightButtons.length; i++) {
                 fightButtons[i].offset[1] = -t;
@@ -1258,6 +1259,7 @@ scenes.fight = () => {
             if (t > 499) {
                 for (i = 0; i < fightButtons.length; i++) {
                     fightButtons[i].offset[1] = -500;
+                    fightButtons[i].offset[1] = -t;
                 }
                 return true;
             }
@@ -1534,7 +1536,7 @@ scenes.fight = () => {
             alpha: 1,
             i: i,
             onClick(args) {
-                if (this.alpha == 1 && fightaction == "active") {
+                if (this.alpha == 1 && (fightaction == "active" || (fightaction == "attack2" && this.i == 6))) {
                     switch (this.i) {
                         case 1:
                             positions[selectedAlly[0]][selectedAlly[1]].action = ["defend"];
@@ -1562,19 +1564,28 @@ scenes.fight = () => {
                             fightaction = "none";
                             positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                             break;
+                        case 6:
+                            positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "grid";
+                            if (fightaction == "attack2" && this.i == 6) {
+                                hideActionButtons(99);
+                                fightaction = "none";
+                                return true;
+                            }
+                            fightaction = "none";
+                            break;
                         default:
                             fightaction = "attack2";
                             break;
                     }
                     hideFightButtons();
-                    hideActionButtons();
+                    hideActionButtons(this.i);
                 }
             }
         }))
         //}
     }
 
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < 7; i++) {
         normalActionsButton(i);
         actionButtons.push(controls.rect({
             anchor: [0.3025, 0.0025 + (i * 0.055)], sizeAnchor: [0.145, 0.05], offset: [0, -500],
@@ -1583,7 +1594,7 @@ scenes.fight = () => {
         }))
         actionButtons.push(controls.label({
             anchor: [0.445, 0.025 + (i * 0.055)], offset: [0, -500],
-            text: ["Attack", "Defend", "Rally", "Scan", "Pray", "Counterattack"][i],
+            text: ["Attack", "Defend", "Rally", "Scan", "Pray", "Counterattack", "Back"][i],
             fontSize: 20, fill: "black", align: "right",
             alpha: 1,
         }))
@@ -2628,6 +2639,7 @@ scenes.fight = () => {
                     let dude = positions[selectedAlly[0]][selectedAlly[1]].occupied;
                     if (fightaction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
+                        fightActions[6].offset[1] = -500;
                         changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "attack");
                         if (epositions[this.pos1][this.pos2].parent == undefined) positions[selectedAlly[0]][selectedAlly[1]].action = ["attack", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
                         else {
