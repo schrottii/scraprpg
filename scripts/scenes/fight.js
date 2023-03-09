@@ -1948,6 +1948,9 @@ scenes.fight = () => {
         }
     }
 
+    // This line below. Oh my god. God is nothing compared to this. (This line fixes/prevents the gray bar bug)
+    fightStats = [];
+
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 3; i++) {
             fightStats.push(controls.label({
