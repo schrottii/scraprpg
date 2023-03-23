@@ -125,11 +125,11 @@ scenes.fight = () => {
     var turn = 1;
     var put = 0; //positions update time
     var itemPage = 0;
+    var alliesFled = 0;
 
     var fightButtons = [];
     var actionButtons = [];
     var fightActions = [];
-
 
     var fightLogComponents = [];
     var enemyListComponents = [];
@@ -259,6 +259,7 @@ scenes.fight = () => {
             
         }
 
+        // Check how many allies are still alive
         let aliveallies = 0;
         for (j = 0; j < 3; j++) {
             for (i = 0; i < 3; i++) {
@@ -267,9 +268,11 @@ scenes.fight = () => {
                 }
             }
         }
-        if (aliveallies == 0) { // All dead :)
+        // All allies are dead and nobody has fled -> GAME OVER
+        if (aliveallies == 0 && alliesFled == 0) {
             lost = true;
             if (defeatType == "default") {
+                // GAME OVER script
                 deathScreen();
             }
             if (defeatType == "nogameover") {
@@ -290,6 +293,11 @@ scenes.fight = () => {
                 });
             }
         }
+        else if (aliveallies == 0) {
+            // No allies are left, some of them dead, but some fled so no GAME OVER
+            lost = true;
+            endFight();
+        } 
     }
 
     function victoryScreen() {
@@ -451,6 +459,7 @@ scenes.fight = () => {
     }
 
     function deathScreen() {
+        // GAME OVER
         stopMusic();
 
         addAnimator(function (t) {
@@ -851,7 +860,6 @@ scenes.fight = () => {
                 break;
             case "flee":
                 fleeAnimation(whoAGI.action[1], whoAGI.action[2]);
-
                 endOfExecute(pos);
                 break;
             case "rally":
@@ -925,6 +933,8 @@ scenes.fight = () => {
     }
 
     function enemiesTurn() {
+        // Script handling enemies attacking protagonists / allies
+        // Looking for a barrel to attack and attacking it
         if (lost) return false;
         let highestAGI = 0;
         let whoAGI;
@@ -932,6 +942,7 @@ scenes.fight = () => {
         // Look for the fastest man alive
         for (j = 0; j < 3; j++) {
             for (i = 0; i < 3; i++) {
+                // Must not have an action and either be a small enemy or the parent enemy
                 if (epositions[i][j].action != false && (epositions[i][j].parent == undefined || epositions[i][j].parent != false)) {
                     if (epositions[i][j].agi > highestAGI) {
                         highestAGI = epositions[i][j].agi;
@@ -957,23 +968,32 @@ scenes.fight = () => {
             return;
         }
 
+        // Select a random ally (protagonist)
+        // The 75/75 is temporary. 75 = not selected yet, basically
         selectedAlly = [75, 75];
         while (selectedAlly[0] == 75) {
-            let randyTheIdiot = Math.random() * 2.98;
-            if (positions[Math.floor(randyTheIdiot)][0].isOccupied == true ||
-                positions[Math.floor(randyTheIdiot)][1].isOccupied == true ||
-                positions[Math.floor(randyTheIdiot)][2].isOccupied == true) {
-                selectedAlly[0] = Math.floor(randyTheIdiot);
+            let randyTheIdiot = Math.floor(Math.random() * 2.98);
+            if (positions[randyTheIdiot][0].isOccupied == true ||
+                positions[randyTheIdiot][1].isOccupied == true ||
+                positions[randyTheIdiot][2].isOccupied == true) {
+                selectedAlly[0] = randyTheIdiot;
             }
         }
+        // We have found a row(?) with an ally (reminder: we are the enemy looking for an ally to attack)
+        // Now look which column of that row has the ally
         while (selectedAlly[1] == 75) {
-            let randyTheIdiot = Math.random() * 2.98;
-            if (positions[selectedAlly[0]][Math.floor(randyTheIdiot)].isOccupied == true) {
-                selectedAlly[1] = Math.floor(randyTheIdiot);
+            let randyTheIdiot = Math.floor(Math.random() * 2.98);
+            if (positions[selectedAlly[0]][randyTheIdiot].isOccupied == true) {
+                selectedAlly[1] = randyTheIdiot;
             }
         }
 
-        // Ok, ok, now we know who (whoAGI) is first (highestAGI), so now do something
+        console.log(selectedAlly);
+        console.log(positions[selectedAlly[0]][selectedAlly[1]]);
+        console.log(positions[selectedAlly[0]][selectedAlly[1]].occupied);
+
+        // Now attack the protagonist
+        // whoAGI = the enemy attacking
         prepareAttackAnimation(selectedAlly[0], selectedAlly[1], pos[0], pos[1], (fpos1, fpos2, pos) => {
             if (epositions[pos[0]][pos[1]].acc - getStat(positions[fpos1][fpos2].occupied, "eva") > (Math.random() * 100)) {
                 let Damage = calculateDamage(2, pos[0], pos[1], selectedAlly[0], selectedAlly[1])[1];
@@ -1142,7 +1162,7 @@ scenes.fight = () => {
                     positionControls[fpos1 + (fpos2 * 3)].offset[0] = own[1];
                     positionControls[fpos1 + (fpos2 * 3)].offset[1] = own[3] + positionControls[fpos1 + (fpos2 * 3)].fly;
                     attackAnimationObjects[fpos1 + (fpos2 * 3)].alpha = 0;
-                    onFinish(fpos1, fpos2, pos1, pos2);
+                    onFinish(fpos1, fpos2, pos1, pos2); // no [] here for some reason
                     return true;
                 }
 
@@ -1624,8 +1644,17 @@ scenes.fight = () => {
         if ((getStat(positions[x][y].occupied, "agi") / 200) < Math.random()) {
             battleNumber(positionControls[p].anchor, "Failed!", 0, positionControls[p].offset);
             positions[x][y].action = false;
+            // fleeing was not successful
             return false;
         }
+
+        // fleeing was successful
+
+        // Set action, isOccupied and occupied to false
+        positions[x][y].action = false;
+        positions[x][y].isOccupied = false;
+        positions[x][y].occupied = false;
+        alliesFled += 1; // used later in the GAME OVER script
 
         let peopleLeft = 0;
         for (j = 0; j < 3; j++) {
@@ -1635,13 +1664,14 @@ scenes.fight = () => {
         }
         peopleLeft -= 1; // you
 
-        if (peopleLeft == 0) {
+        //if (peopleLeft == 0) {
+            // Not a single protagonist exists anymore ! ! !
             let loss = Math.round(50 + (game.wrenches / 100)) * (-1);
             addWrenches(loss);
             fleeLoss.text = loss + "!";
             fleeLoss.alpha = 1;
             fleeIcon.alpha = 1;
-        }
+        //}
 
         hideFightButtons();
         hideFightActions();
@@ -1653,6 +1683,7 @@ scenes.fight = () => {
         if (positionControls[p].source != "gear") positionControls[p].defoffset[0] = positionControls[p].offset[0];
         changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "flee");
 
+        // Wrenches animation
         addAnimator(function (t) {
            if (positionControls[p].source != "gear") {
                positionControls[p].offset[0] = positionControls[p].defoffset - (t / 4);
@@ -1685,12 +1716,9 @@ scenes.fight = () => {
             }
 
             if (t > 2000) {
+                // Fleeing done - I do not exist anymore (bye bye)
                 if (positionControls[p].source != "gear") positionControls[p].offset[0] = -500;
                 if (positionControls[p].source != "gear") positionControls[p].anchor[0] = 0;
-
-                positions[x][y].action = false;
-                positions[x][y].isOccupied = false;
-                positions[x][y].occupied = false;
                 delete runTime;
                 delete runLaps;
 
@@ -1698,10 +1726,9 @@ scenes.fight = () => {
                     fleeWrenches[i].alpha = 0;
                 }
 
+                fleeLoss.alpha = 0;
+                fleeIcon.alpha = 0;
                 if (peopleLeft == 0) {
-                    fleeLoss.alpha = 0;
-                    fleeIcon.alpha = 0;
-
                     endFight();
                 }
 
@@ -3141,9 +3168,9 @@ scenes.fight = () => {
             else */if (fightaction == "attack2" || fightaction == "magic" || fightaction == "item") {
                 for (i = 0; i < 9; i++) {
                     if (positionControls[i].source != "gear") highlightGrid[i].alpha = highlightAlpha;
-                    if (epositionControls[i].source != "gear") highlightGrid[i + 9].alpha = highlightAlpha;
+                    if (epositionControls[i].source != "gear" || epositions[i % 3][Math.floor(i / 3)].parent != undefined) highlightGrid[i + 9].alpha = highlightAlpha;
                     else highlightGrid[i + 9].alpha = 0;
-                    if (epositionControls[i].source != "gear") highlightGrid[i + 9].fill = rangeColors[getDistance("enemy", [i % 3, Math.floor(i / 3)])];
+                    if (epositionControls[i].source != "gear" || epositions[i % 3][Math.floor(i / 3)].parent != undefined) highlightGrid[i + 9].fill = rangeColors[getDistance("enemy", [i % 3, Math.floor(i / 3)])];
                 }
             }
             else {
