@@ -222,6 +222,7 @@ scenes.fight = () => {
                 if (exc.length == 0) continue;
 
                 if (game.characters[positions[exc[0]][exc[1]].occupied].HP > 0) { // Dead? No animation! We will let you bleed out there hahaha
+                    // Is not dead - do the animation
                     let ret = emotionAnimation(game.chars[i], "victory");
                     if (ret != false) {
                         let file = ret[0];
@@ -234,6 +235,7 @@ scenes.fight = () => {
                         controlled.amount = amount;
                         controlled.aniTime = 0;
                         controlled.aniTime2 = 0;
+                        console.log(controlled);
 
                         if (amount > 1) {
                             addAnimator(function (t) {
@@ -248,6 +250,7 @@ scenes.fight = () => {
                                     delete controlled.aniTime;
                                     delete controlled.aniTime2;
                                     delete controlled.defsnip;
+                                    console.log(controlled.source);
                                     return true;
                                 }
                                 return false;
@@ -3072,8 +3075,9 @@ scenes.fight = () => {
 
             for (pcc in positionControls) {
                 let occ = positions[positionControls[pcc].pos1][positionControls[pcc].pos2].occupied;
-                if (occ != false) {
+                if (occ != false && !win) {
                     if (game.characters[occ].HP > 0) {
+                        // temporary everyone-looks-like-bleu
                         positionControls[pcc].source = "bleu" + "_battle";
                         positionControls[pcc].snip = battleAnimation(occ, positionControls[pcc].emo, Math.floor(globalFightAnimationTime));
                     }

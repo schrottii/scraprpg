@@ -140,8 +140,24 @@ scenes.formation = () => {
     }
 
     for (i in game.characters) {
-        positions[game.characters[i].pos[0] + 3 * game.characters[i].pos[1]].source = i;
-        positions[game.characters[i].pos[0] + 3 * game.characters[i].pos[1]].alpha = 1;
+        let thisPos = game.characters[i].pos[0] + 3 * game.characters[i].pos[1];
+
+        // Already occupied - 2 on the same pos?!
+        if (positions[thisPos].alpha == 1) {
+            let newPos = [0, 0];
+            while (positions[newPos[0] + 3 * newPos[1]].alpha == 1) {
+                if (newPos[0] < 2) newPos[0] += 1;
+                else {
+                    newPos[0] = 0;
+                    newPos[1] += 1;
+                }
+            }
+            thisPos = newPos[0] + 3 * newPos[1];
+        }
+
+        // Not occupied - put me there
+        positions[thisPos].source = i;
+        positions[thisPos].alpha = 1;
     }
 
     for (i = 0; i < 3; i++) {
