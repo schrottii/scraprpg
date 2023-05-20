@@ -54,7 +54,7 @@ let game = {
             level: 1,
             EXP: 0,
             EP: 2,
-            HP: 0,
+            HP: 8,
             effect: ["none", 0],
             pos: [2, 2],
             macro: "attack",
@@ -116,4 +116,8 @@ let settings = {
     walkPadSize: 1,
     musicVolume: 0.5,
     soundVolume: 0.5
+}
+
+for (c in game.characters) {
+    game.characters[c].HP = getStat(game.characters[c].name.toLowerCase(), "maxHP");
 }

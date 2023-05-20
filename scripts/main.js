@@ -472,7 +472,9 @@ function loadGame() {
             return;
         }
 
-        if (saveCopy.characters == undefined) saveCopy.characters = game.characters;
+        if (saveCopy.characters == undefined) {
+            saveCopy.characters = game.characters;
+        }
         for (i in characters) {
             if (saveCopy.characters[characters[i]] == undefined) {
                 saveCopy.characters[characters[i]] = game.characters[characters[i]];
