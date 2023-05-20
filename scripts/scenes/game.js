@@ -1223,11 +1223,11 @@ scenes.game = () => {
         dead: true, repeatMode: true,
     })
     let darkCloud = Particles({
-        anchor: [0.2, -0.2], spreadAnchor: [1, 0], sizeOffset: [128, 64], sizeOffsetVary: [2, 2], quadraticVary: true,
+        anchor: [1.2, -0.8], spreadAnchor: [0.2, 1.5], sizeOffset: [128, 64], sizeOffsetVary: [2, 2], quadraticVary: true,
         type: "img", source: ["cloudshadow1", "cloudshadow2", "cloudshadow3"],
-        direction: 0, speedAnchor: 0.01,
-        direction2: 1, speedAnchor2: 0.01,
-        movable: true, movable2: true, lifespan: 30, alpha: 0.75, amount: 25, spawnTime: 3,
+        direction: 0, speedAnchor: 0.015,
+        direction2: 1, speedAnchor2: 0.015,
+        movable: true, movable2: true, lifespan: 45, alpha: 0.75, amount: 25, spawnTime: 3,
         dead: true, repeatMode: true,
     })
     let dustParticles = Particles({
