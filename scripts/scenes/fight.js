@@ -71,50 +71,54 @@ function updateBar(charName, HealthBefore) {
     let which = 5 + (whichChar * amountStats);
     let row = Math.ceil((whichChar + 1) / 3); // 1 or 2
 
-    if (game.characters[charName].HP > 0) {
-        let Leftend = 0.1960 * (Math.max(getPlayer(1 + whichChar).HP, 0) / getStat(1 + whichChar, "maxHP"));
-        let Length = (0.1960 * (HealthBefore / getStat(1 + whichChar, "maxHP"))) - Leftend;
+    if (game.characters[charName].HP < 0) game.characters[charName].HP = 0;
 
-        if (Length == 0) return false;
+    let Leftend = 0.1960 * (Math.max(getPlayer(1 + whichChar).HP, 0) / getStat(1 + whichChar, "maxHP"));
+    let Length = (0.1960 * (HealthBefore / getStat(1 + whichChar, "maxHP"))) - Leftend;
+
+    fightStats[which].alpha = 1;
+    fightStats[which - 1].alpha = 1;
+    if (Leftend > 0) {
+        if (getPlayer(1 + whichChar).HP > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (getPlayer(1 + whichChar).HP / getStat(1 + whichChar, "maxHP"));
+        fightStats[which].anchor[0] = 0.242 + Leftend + (0.35 * (row - 1));
+        fightStats[which].sizeAnchor[0] = Length;
+        addAnimator(function (t) {
+            if (t > 400) {
+                fightStats[which].sizeAnchor[0] = Length * Math.max(0.01, (1 - (Math.min((t - 399) * 0.01, 1))));
+            }
+
+            if (t > 1400) {
+                fightStats[which].alpha = 0;
+                if (charName.HP < 1) {
+                    fightStats[which - 1].alpha = 0;
+                    fightStats[which].alpha = 0;
+                }
+                return true;
+            }
+        });
+    }
+    else {
+        Leftend = 0.1960 * (HealthBefore / getStat(1 + whichChar, "maxHP"));
+        Length = (0.1960 * (getPlayer(1 + whichChar).HP / HealthBefore)) - Leftend;
+        fightStats[which].anchor[0] = 0.242 + Leftend + (0.35 * (row - 1));;
+        fightStats[which].sizeAnchor[0] = 0.00001;
+
+        if (!(Length >= 0.001)) Length = 0.001;
+
         fightStats[which].alpha = 1;
-        fightStats[which - 1].alpha = 1;
-        if (Length > 0) {
-            if (getPlayer(1 + whichChar).HP > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (getPlayer(1 + whichChar).HP / getStat(1 + whichChar, "maxHP"));
-            fightStats[which].anchor[0] = 0.242 + Leftend + (0.35 * (row-1));
-            fightStats[which].sizeAnchor[0] = Length;
-            addAnimator(function (t) {
-                if (t > 400) {
-                    fightStats[which].sizeAnchor[0] = Length * Math.max(0.01, (1 - (Math.min((t - 399) * 0.01, 1))));
-                }
+        addAnimator(function (t) {
+            fightStats[which].sizeAnchor[0] = Length * Math.max(0.01, ((Math.min(t * 0.01, 0.5))));
+            console.log(Length + "    " + Math.max(0.01, ((Math.min(t * 0.01, 0.5))))  + "   " + Length * Math.max(0.01, ((Math.min(t * 0.01, 0.5)))));
 
-                if (t > 1400) {
-                    fightStats[which].alpha = 0;
-                    if (charName.HP < 1) {
-                        fightStats[which - 1].alpha = 0;
-                        fightStats[which].alpha = 0;
-                    }
-                    return true;
-                }
-            });
-        }
-        else {
-            Leftend = 0.1960 * (HealthBefore / getStat(1 + whichChar, "maxHP"));
-            Length = (0.1960 * (getPlayer(1 + whichChar).HP / HealthBefore)) - Leftend;
-            fightStats[which].anchor[0] = 0.242 + Leftend + (0.35 * (row-1));;
-            fightStats[which].sizeAnchor[0] = 0.00001;
+            if (t > 1400) {
+                fightStats[which].anchor[0] = 0.242 + Leftend;
+                if (getPlayer(1 + whichChar).HP > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (getPlayer(1 + whichChar).HP / getStat(1 + whichChar, "maxHP"));
+                fightStats[which].alpha = 0;
+                fightStats[which - 1].alpha = 0;
+                return true;
+            }
+        });
 
-            fightStats[which - 1].alpha = 1;
-            addAnimator(function (t) {
-                fightStats[which].sizeAnchor[0] = Length * Math.max(0.01, ((Math.min(t * 0.01, 0.5))));
-                
-                if (t > 1400) {
-                    fightStats[which].anchor[0] = 0.242 + Leftend;
-                    if (getPlayer(1 + whichChar).HP > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (getPlayer(1 + whichChar).HP / getStat(1 + whichChar, "maxHP"));
-                    fightStats[which].alpha = 0;
-                    return true;
-                }
-            });
-        }
     }
 }
 
@@ -801,13 +805,13 @@ scenes.fight = () => {
                 postLog(positions[whoAGI.action[1]][whoAGI.action[2]].name + " attacks " + game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].name + " and deals " + Damage + " damage!");
 
                 // Bar animation! (Cowboy moment)
-                updateBar(positions[whoAGI.action[3]][whoAGI.action[4]].occupied, HealthBefore);
                 if (game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].HP < 1) {
                     game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].HP = 0;
-                    postLog(positions[whoAGI.action[1]][whoAGI.action[2]].name + " killed " + game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].name + "!");
+                    postLog(game.characters[positions[whoAGI.action[1]][whoAGI.action[2]].occupied].name + " killed " + game.characters[positions[whoAGI.action[3]][whoAGI.action[4]].occupied].name + "!");
                     positions[whoAGI.action[3]][whoAGI.action[4]].isOccupied = false;
                     checkAllDead();
                 }
+                updateBar(positions[whoAGI.action[3]][whoAGI.action[4]].occupied, HealthBefore);
 
                 endOfExecute(pos);
                 break;
