@@ -11,7 +11,7 @@ let enemyTypes = {
         luk: 3,
         element: "physical",
         items: ["potion", "brickyleaf", "peppytincture", "superswamp"],
-        size: "2x2",
+        //size: "2x2",
     },
 
     "stronghelter": {

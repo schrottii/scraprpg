@@ -192,7 +192,7 @@ scenes.fight = () => {
             if (checkonly == true) return true;
             win = true;
 
-            
+
             setTimeout(() => { stopMusic(); playSound("victory"); }, 250);
 
             setTimeout(() => { victoryScreen() }, 3000);
@@ -259,7 +259,7 @@ scenes.fight = () => {
                     }
                 }
             }
-            
+
         }
 
         // Check how many allies are still alive
@@ -300,7 +300,7 @@ scenes.fight = () => {
             // No allies are left, some of them dead, but some fled so no GAME OVER
             lost = true;
             endFight();
-        } 
+        }
     }
 
     function victoryScreen() {
@@ -427,7 +427,7 @@ scenes.fight = () => {
 
                 for (i = 1; i < winScreen.length; i++) {
                     winScreen[i].offset[1] = -1000;
-                    if(i != 2) winScreen[i].alpha = 1;
+                    if (i != 2) winScreen[i].alpha = 1;
                 }
                 for (i = 0; i < winStats.length; i++) {
                     if (Math.floor(i / a) < game.chars.length) { // Don't show not existing dudes
@@ -566,7 +566,7 @@ scenes.fight = () => {
             });
         }, 10500);
     }
-    
+
 
     function checkAllAction() {
         let active = 0;
@@ -620,6 +620,8 @@ scenes.fight = () => {
     }
 
     function calculateDamage(type, pos1, pos2, enpos1, enpos2) {
+        // Calculate damage that will be dealt
+
         let isCritical = false;
         let critBonus = 1;
         if (type == 1 || type == 3) {
@@ -656,7 +658,7 @@ scenes.fight = () => {
                 * critBonus];
         }
 
-        if (type == 3) { // My own men attack themselves ohe noe
+        if (type == 3) { // My own men attack themselves oh no
             return [isCritical, Math.round(getStat(positions[pos1][pos2].occupied, "strength")
                 * (1 + ROWBOOST - (ROWBOOST * pos1))
                 * (1 - ROWBOOST + (ROWBOOST * enpos1))
@@ -718,21 +720,21 @@ scenes.fight = () => {
 
     function executeActions() {
         if (positions == undefined || busy) return;
-            let highestAGI = 0;
-            let whoAGI;
-            let pos = [];
-            // Look for the fastest man alive
-            for (j = 0; j < 3; j++) {
-                for (i = 0; i < 3; i++) {
-                    if (positions[i][j].action != false) { 
-                            if (getStat(positions[i][j].occupied, "agi") > highestAGI) {
-                                highestAGI = getStat(positions[i][j].occupied, "agi");
-                                whoAGI = positions[i][j];
-                                pos = [i, j];
-                            }
+        let highestAGI = 0;
+        let whoAGI;
+        let pos = [];
+        // Look for the fastest man alive
+        for (j = 0; j < 3; j++) {
+            for (i = 0; i < 3; i++) {
+                if (positions[i][j].action != false) {
+                    if (getStat(positions[i][j].occupied, "agi") > highestAGI) {
+                        highestAGI = getStat(positions[i][j].occupied, "agi");
+                        whoAGI = positions[i][j];
+                        pos = [i, j];
                     }
                 }
             }
+        }
 
         // Stop if there is nobody (when is that?)
         if (highestAGI == 0) {
@@ -1247,11 +1249,11 @@ scenes.fight = () => {
         if (actionButtons[0].offset[1] != 0 && thisButton != 99) return false;
         addAnimator(function (t) {
             for (i = 0; i < actionButtons.length; i++) {
-                if (thisButton != 0 || i < 18) actionButtons[i].offset[1] = -t;
+                if (thisButton != 0 || i < 21) actionButtons[i].offset[1] = -t;
             }
             if (t > 499) {
                 for (i = 0; i < actionButtons.length; i++) {
-                    if (thisButton != 0 || i < 18) actionButtons[i].offset[1] = -500;
+                    if (thisButton != 0 || i < 21) actionButtons[i].offset[1] = -500;
                 }
                 return true;
             }
@@ -1427,7 +1429,7 @@ scenes.fight = () => {
                 if (elementLogic(myElements[i], theirElements[j]) == "strong") damageBoost += ELEMENTBOOST;
             }
         }
-        return Math.round(damageBoost*100)/100;
+        return Math.round(damageBoost * 100) / 100;
     }
 
 
@@ -1545,10 +1547,10 @@ scenes.fight = () => {
         fightButtons.push(controls.label({
             anchor: [0.145, 0.025 + (i * 0.055)], offset: [0, -500],
             text: ["Normal Actions", "Item Inventory", "Magic", "Mastery Techniques", "Macro", "Flee"][i],
-            fontSize: 20, fill: "black", align: "right", 
+            fontSize: 20, fill: "black", align: "right",
             alpha: 1,
         }))
-        
+
     }
 
     function normalActionsButton(i) {
@@ -1662,18 +1664,18 @@ scenes.fight = () => {
         let peopleLeft = 0;
         for (j = 0; j < 3; j++) {
             for (i = 0; i < 3; i++) {
-                if(positions[i][j].isOccupied == true) peopleLeft += 1;
+                if (positions[i][j].isOccupied == true) peopleLeft += 1;
             }
         }
         peopleLeft -= 1; // you
 
         //if (peopleLeft == 0) {
-            // Not a single protagonist exists anymore ! ! !
-            let loss = Math.round(50 + (game.wrenches / 100)) * (-1);
-            addWrenches(loss);
-            fleeLoss.text = loss + "!";
-            fleeLoss.alpha = 1;
-            fleeIcon.alpha = 1;
+        // Not a single protagonist exists anymore ! ! !
+        let loss = Math.round(50 + (game.wrenches / 100)) * (-1);
+        addWrenches(loss);
+        fleeLoss.text = loss + "!";
+        fleeLoss.alpha = 1;
+        fleeIcon.alpha = 1;
         //}
 
         hideFightButtons();
@@ -1688,9 +1690,9 @@ scenes.fight = () => {
 
         // Wrenches animation
         addAnimator(function (t) {
-           if (positionControls[p].source != "gear") {
-               positionControls[p].offset[0] = positionControls[p].defoffset - (t / 4);
-               positionControls[p].anchor[0] = Math.min((2000 - t) / 80000, 0.025);
+            if (positionControls[p].source != "gear") {
+                positionControls[p].offset[0] = positionControls[p].defoffset - (t / 4);
+                positionControls[p].anchor[0] = Math.min((2000 - t) / 80000, 0.025);
             }
 
             runTime += ((t - runLaps) / 250);
@@ -1763,7 +1765,7 @@ scenes.fight = () => {
         }));
     }
 
-    
+
 
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 6; i++) {
@@ -1924,7 +1926,7 @@ scenes.fight = () => {
     function attackEnemy(fpos1, fpos2, pos1, pos2, onFinish = () => { }) {
         if (win == false && game.characters[positions[fpos1][fpos2].occupied].HP > 0) {
             prepareAttackAnimation(fpos1, fpos2, pos1, pos2, (fpos1, fpos2, pos1, pos2) => {
-                
+
                 if (getStat(positions[fpos1][fpos2].occupied, "acc") - epositions[pos1][pos2].eva > (Math.random() * 100)) {
                     let Damage = calculateDamage(1, fpos1, fpos2, pos1, pos2)[1];
                     let isCritical = calculateDamage(1, fpos1, fpos2, pos1, pos2)[0];
@@ -2189,7 +2191,7 @@ scenes.fight = () => {
         source: "nosfegtdsrh",
         alpha: 0,
     }));
-    
+
     // Left side of the victory screen
     for (i = 0; i < 6; i++) { // BARZ
         winStats.push(controls.rect({
@@ -2334,7 +2336,7 @@ scenes.fight = () => {
             }
         }
     }));
-    
+
     // Battle Log (Bottom Left)
 
     fightLogComponents.push(controls.rect({
@@ -2371,7 +2373,7 @@ scenes.fight = () => {
         fill: "rgb(221, 155, 79)",
         alpha: 1,
     }));
-    
+
     for (i = 0; i < 9; i++) {
         enemyListComponents.push(controls.label({
             anchor: [0.86, 0.79], offset: [2, (16 * i)], baseoffset: [2, (16 * i)],
@@ -2457,8 +2459,12 @@ scenes.fight = () => {
             ],
         ];
 
-    for (p in positions) positions[p].shield = 1;
-    for (p in positions) positions[p].atk = 1;
+    for (p = 0; p < 3; p++) {
+        for (q = 0; q < 3; q++) {
+            positions[p][q].shield = 1;
+            positions[p][q].atk = 1;
+        }
+    }
 
     // Positions but for enemies. same usage same stuff
     var epositions =

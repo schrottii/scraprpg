@@ -1799,6 +1799,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let thisOne = -1;
+                if (map.items == undefined) return false;
                 for (i = 0; i < map.items.length; i++) {
                     if (map.items[i][0] == currInfo[0] && map.items[i][1] == currInfo[1]) {
                         // Same coords
