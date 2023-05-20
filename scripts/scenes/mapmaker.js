@@ -185,7 +185,7 @@ scenes.mapmaker = () => {
         anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 1, 104],
         source: "undo", alpha: 0,
         onClick(args) {
-            if (this.alpha == 1) {
+            if (this.alpha == 1 && tilesMenuControls[0].alpha == 0) {
                 placeTile(undoLog[0][0], undoLog[0][1], undoLog[0][2], undoLog[0][3], "undo");
                 undoLog.shift();
             }
@@ -195,7 +195,7 @@ scenes.mapmaker = () => {
         anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 2, 104],
         source: "redo", alpha: 0,
         onClick(args) {
-            if (this.alpha == 1) {
+            if (this.alpha == 1 && tilesMenuControls[0].alpha == 0) {
                 placeTile(redoLog[0][0], redoLog[0][1], redoLog[0][2], redoLog[0][3]);
                 redoLog.shift();
             }
@@ -1255,14 +1255,14 @@ scenes.mapmaker = () => {
 
     // Tiles menu ahahyahahaaaa
     tilesMenuControls.push(controls.rect({
-        anchor: [0.05, 0.2], sizeAnchor: [0.9, 0.4],
+        anchor: [0.05, 0.2], sizeAnchor: [0.9, 0.7],
         fill: colors.buttonbottom, alpha: 0,
         onClick(args) {
             if (this.alpha == 1) protect();
         }
     }));
     tilesMenuControls.push(controls.rect({
-        anchor: [0.05, 0.2], sizeAnchor: [0.9, 0.4], offset: [8, 8], sizeOffset: [-16, -16],
+        anchor: [0.05, 0.2], sizeAnchor: [0.9, 0.7], offset: [8, 8], sizeOffset: [-16, -16],
         fill: colors.buttontop, alpha: 0,
     }));
     tilesMenuControls.push(controls.button({
@@ -1324,7 +1324,7 @@ scenes.mapmaker = () => {
         fontSize: 16, source: "mapbuttons", snip: [0, 0, 32, 32],
         isPressed: false,
         onDown(args) {
-            if (this.alpha == 1) {
+            if (this.alpha == 1 && prot == false) {
                 protect();
                 this.snip[0] = 32;
                 pad = "up";
@@ -1343,7 +1343,7 @@ scenes.mapmaker = () => {
         fontSize: 16, source: "mapbuttons", snip: [64, 0, 32, 32],
         isPressed: false,
         onDown(args) {
-            if (this.alpha == 1) {
+            if (this.alpha == 1 && tilesMenuControls[0].alpha == 0) {
                 protect();
                 pad = "";
             }
@@ -1359,7 +1359,7 @@ scenes.mapmaker = () => {
         fontSize: 16, source: "mapbuttons", snip: [0, 64, 32, 32],
         isPressed: false,
         onDown(args) {
-            if (this.alpha == 1) {
+            if (this.alpha == 1 && tilesMenuControls[0].alpha == 0) {
                 protect();
                 this.snip[0] = 32;
                 pad = "down";
@@ -1378,7 +1378,7 @@ scenes.mapmaker = () => {
         fontSize: 16, source: "mapbuttons", snip: [0, 96, 32, 32],
         isPressed: false,
         onDown(args) {
-            if (this.alpha == 1) {
+            if (this.alpha == 1 && tilesMenuControls[0].alpha == 0) {
                 protect();
                 this.snip[0] = 32;
                 pad = "left";
@@ -1397,7 +1397,7 @@ scenes.mapmaker = () => {
         fontSize: 16, source: "mapbuttons", snip: [0, 32, 32, 32],
         isPressed: false,
         onDown(args) {
-            if (this.alpha == 1) {
+            if (this.alpha == 1 && tilesMenuControls[0].alpha == 0) {
                 protect();
                 this.snip[0] = 32;
                 pad = "right";
@@ -3180,7 +3180,8 @@ scenes.mapmaker = () => {
         controls: [
             ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg, ...expandMapButtons,
             ...walkPad, middlei, currentMapText, backButton, toggleMapInfoButton, eyeButton, toggleAnimate, ...modeButtons,
-            ...tilesMenuControls, ...tilesMenuTiles, ...tilesMenuIcons, ...undoButtons, ...loadMapButtons, ...saveMapButtons, ...mapInfoControls, currentTile,
+            ...undoButtons, ...loadMapButtons, ...saveMapButtons, ...mapInfoControls, currentTile,
+            ...tilesMenuControls, ...tilesMenuTiles, ...tilesMenuIcons, 
             ...createTileBG, ...createTileInfoBG, ...createTileInfo, ...createTileButtons,
             ...createDialogueButtons, ...createDialogueLabels, ...createNPCButtons, ...createNPCLabels,
             ...tileInfoControls, autoSaveText
