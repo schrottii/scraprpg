@@ -260,6 +260,12 @@ scenes.title = () => {
                 mode = 1;
                 addAnimator(function (t) {
                     if (mode != 1) {
+                        for (i = 0; i < 3; i++) {
+                            saveButtons[i].fillTop = colors.buttontop;
+                            saveButtons[i].fillBottom = colors.buttonbottom;
+                        }
+                        saveButtons[3].fillTop = "#54d4ff";
+                        saveButtons[3].fillBottom = "#4fa1bc";
                         return true;
                     }
                     for (i = 0; i < 3; i++) {
@@ -295,7 +301,8 @@ scenes.title = () => {
         clickthrough: true,
         fill: "#000000", alpha: 0,
         onClick(args) {
-            console.log("click");
+            //console.log("click");
+            // ^ not needed anymore??
             return true;
         }
     });
