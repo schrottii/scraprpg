@@ -15,6 +15,7 @@ function hideSelect() {
 }
 
 var lmresult = "none";
+var animationOverlap = false;
 
 function loadMap() {
     hideSelect();
@@ -1436,7 +1437,7 @@ scenes.mapmaker = () => {
     });
 
     let eyeButton = controls.image({
-        anchor: [0.01, 0.775], sizeAnchor: [0.05, 0.045],
+        anchor: [0.01, 0.525], sizeAnchor: [0.05, 0.045],
         source: "eye",
         onClick(args) {
             protect();
@@ -2373,7 +2374,12 @@ scenes.mapmaker = () => {
     }
 
     function toggleLoadButtons(mustclose=false) {
+        if (loadMapButtons[0].offset[1] != -600 && loadMapButtons[0].offset[1] != 0) {
+            animationOverlap = true;
+            return false;
+        }
         if (loadMapButtons[0].alpha == 0 && !mustclose) {
+            // Open
             closeAllMenus(2);
             renderInfo("m");
             showInfo();
@@ -2386,16 +2392,18 @@ scenes.mapmaker = () => {
                 for (i in loadMapButtons) {
                     loadMapButtons[i].offset[1] = -600 + t;
                 }
-                if (t > 599) {
+                if (t > 599 || animationOverlap) {
                     for (i in loadMapButtons) {
                         loadMapButtons[i].offset[1] = 0;
                     }
+                    animationOverlap = false;
                     return true;
                 }
                 return false;
             })
         }
         else {
+            // Close
             hideInfo();
 
             for (i in loadMapButtons) {
@@ -2406,11 +2414,12 @@ scenes.mapmaker = () => {
                 for (i in loadMapButtons) {
                     loadMapButtons[i].offset[1] = -t;
                 }
-                if (t > 599) {
+                if (t > 599 || animationOverlap) {
                     for (i in loadMapButtons) {
                         loadMapButtons[i].offset[1] = -600;
                         loadMapButtons[i].alpha = 0;
                     }
+                    animationOverlap = false;
                     return true;
                 }
                 return false;
@@ -2418,8 +2427,13 @@ scenes.mapmaker = () => {
         }
     }
 
-    function toggleSaveButtons(mustclose=false) {
+    function toggleSaveButtons(mustclose = false) {
+        if (saveMapButtons[0].offset[1] != -600 && saveMapButtons[0].offset[1] != 0) {
+            animationOverlap = true;
+            return false;
+        }
         if (saveMapButtons[0].alpha == 0 && !mustclose) {
+            // Open
             closeAllMenus(3);
             for (i in saveMapButtons) {
                 saveMapButtons[i].offset = [0, -600];
@@ -2429,17 +2443,18 @@ scenes.mapmaker = () => {
                 for (i in saveMapButtons) {
                     saveMapButtons[i].offset[1] = -600 + t;
                 }
-                if (t > 599) {
+                if (t > 599 || animationOverlap) {
                     for (i in saveMapButtons) {
                         saveMapButtons[i].offset[1] = 0;
                     }
+                    animationOverlap = false;
                     return true;
                 }
                 return false;
             })
         }
         else {
-
+            // Close
             for (i in saveMapButtons) {
                 saveMapButtons[i].offset = [0, 0];
             }
@@ -2447,11 +2462,12 @@ scenes.mapmaker = () => {
                 for (i in saveMapButtons) {
                     saveMapButtons[i].offset[1] = -t;
                 }
-                if (t > 599) {
+                if (t > 599 || animationOverlap) {
                     for (i in saveMapButtons) {
                         saveMapButtons[i].offset[1] = -600;
                         saveMapButtons[i].alpha = 0;
                     }
+                    animationOverlap = false;
                     return true;
                 }
                 return false;

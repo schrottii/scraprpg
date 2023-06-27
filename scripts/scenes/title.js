@@ -1,6 +1,4 @@
 scenes.title = () => {
-
-
     let state = "intro";
 
     let particles = [];

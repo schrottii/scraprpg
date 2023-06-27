@@ -9,7 +9,7 @@ scenes.status = (characterSelected="Bleu") => {
     var elementDisplay = [];
     var immunityDisplay = [];
 
-    var tinder = [];
+    var masteryComp = [];
 
     characterSelectedName = game.characters[characterSelected].name;
     nr = game.chars.indexOf(characterSelected) + 1;
@@ -232,13 +232,13 @@ scenes.status = (characterSelected="Bleu") => {
     }
     updateImmunities();
 
-    tinder.push(controls.label({
+    masteryComp.push(controls.label({
         anchor: [0.5, 0.85],
         text: "Compatible Duo Mastery Technique Partners:",
         align: "left", fontSize: 20, fill: "black",
         alpha: 1
     }));
-    tinder.push(controls.label({
+    masteryComp.push(controls.label({
         anchor: [0.5, 0.89],
         text: "Corelle, Aspen, Go, Skrau",
         align: "left", fontSize: 20, fill: "black",
@@ -289,7 +289,7 @@ scenes.status = (characterSelected="Bleu") => {
         controls: [
             ...background,
             ...characterName, characterImage, ...characterStats,
-            ...characterBars, ...buttons, ...equipmentDisplay, ...elementDisplay, ...immunityDisplay, ...tinder
+            ...characterBars, ...buttons, ...equipmentDisplay, ...elementDisplay, ...immunityDisplay, ...masteryComp
         ],
         name: "status"
     }
