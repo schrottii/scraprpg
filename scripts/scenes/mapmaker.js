@@ -187,8 +187,20 @@ scenes.mapmaker = () => {
         source: "undo", alpha: 0,
         onClick(args) {
             if (this.alpha == 1 && tilesMenuControls[0].alpha == 0) {
-                placeTile(undoLog[0][0], undoLog[0][1], undoLog[0][2], undoLog[0][3], "undo");
-                undoLog.shift();
+                let shifterCoords = [undoLog[0][0], undoLog[0][1], undoLog[0][2], undoLog[0][3]];
+                while (undoLog[0][0] == shifterCoords[0]
+                    && undoLog[0][1] == shifterCoords[1]
+                    && undoLog[0][2] == shifterCoords[2]
+                    && undoLog[0][3] == shifterCoords[3]) {
+                    placeTile(undoLog[0][0], undoLog[0][1], undoLog[0][2], undoLog[0][3], "undo");
+                    undoLog.shift();
+                }
+                if(undoLog[0][0] == shifterCoords[0]
+                    && undoLog[0][1] == shifterCoords[1]
+                    && undoLog[0][2] == shifterCoords[2]){
+                    placeTile(undoLog[0][0], undoLog[0][1], undoLog[0][2], undoLog[0][3], "undo");
+                    undoLog.shift();
+                }
             }
         }
     }));
@@ -1955,14 +1967,16 @@ scenes.mapmaker = () => {
         // Add something to the undo log
         undoLog.unshift([x, y, layer, prevContent])
         undoButtons[0].alpha = 1;
-        if(undoLog.length > 25) undoLog.pop();
+        if (undoLog.length > 2048) undoLog.pop();
+        console.log(undoLog.length, undoLog);
     }
 
     function postRedoLog(x, y, layer, prevContent) {
         // Add something to the redo log
         redoLog.unshift([x, y, layer, prevContent])
         undoButtons[1].alpha = 1;
-        if (undoLog.length > 25) redoLog.pop();
+        if (undoLog.length > 2048) redoLog.pop();
+        console.log(undoLog.length, undoLog);
     }
 
     function saveFile(type) {
