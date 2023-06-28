@@ -280,7 +280,7 @@ scenes.mapmaker = () => {
             onClick(args) {
                 if (this.alpha >= 0.5) {
                     layerVisi[this.i] = layerVisi[this.i] == 0 ? 1 : 0;
-                    this.alpha = (layerVisi[this.i] / 2) + 0.5;
+                    this.alpha = layerVisi[this.i] == 0 ? 0.3 : 1;
                     updateTiles = true;
                 }
             }
@@ -1442,18 +1442,18 @@ scenes.mapmaker = () => {
     }));
 
     let backButton = controls.button({
-        anchor: [0.01, 0.925], sizeAnchor: [0.05, 0.045],
+        anchor: [0.01, 0.96], sizeAnchor: [0.05, 0.045],
         text: "<",
         onClick(args) {
             if (this.alpha == 1) {
-                setScene(scenes.pretitle());
+                if(confirm("Do you really want to leave Map Maker?")) setScene(scenes.pretitle());
             }
         },
         alpha: 1,
     });
 
     let toggleMapInfoButton = controls.button({
-        anchor: [0.01, 0.85], sizeAnchor: [0.05, 0.045],
+        anchor: [0.01, 0.9], sizeAnchor: [0.05, 0.045],
         text: "(i)",
         onClick(args) {
             if (this.alpha == 1) {
@@ -1465,7 +1465,7 @@ scenes.mapmaker = () => {
     });
 
     let eyeButton = controls.image({
-        anchor: [0.01, 0.525], sizeAnchor: [0.05, 0.045],
+        anchor: [0.0125, 0.625], sizeAnchor: [0.05, 0.045],
         source: "eye",
         onClick(args) {
             protect();
@@ -1507,7 +1507,7 @@ scenes.mapmaker = () => {
     });
 
     let toggleAnimate = controls.button({
-        anchor: [0.01, 0.7], sizeAnchor: [0.05, 0.045],
+        anchor: [0.01, 0.84], sizeAnchor: [0.05, 0.045],
         text: "ani:off",
         onClick(args) {
             if (this.alpha == 1) {
@@ -1527,7 +1527,7 @@ scenes.mapmaker = () => {
     });
 
     let currentTile = controls.image({
-        anchor: [0.015, 0.625], sizeOffset: [64, 64], offset: [0, -16],
+        anchor: [0.015, 0.7], sizeOffset: [64, 64], offset: [0, -16],
         source: "tiles/sand1", glow: 5, glowColor: "yellow",
         alpha: 1,
     });
@@ -1714,7 +1714,7 @@ scenes.mapmaker = () => {
     let currentMapText = controls.label({
         anchor: [0.075, 0.95],
         text: "ERROR",
-        align: "left", fontSize: 32, fill: "black",
+        align: "left", fontSize: 24, fill: "black",
         outline: "white", outlineSize: 4,
         alpha: 1,
     });
