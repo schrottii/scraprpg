@@ -186,7 +186,8 @@ scenes.mapmaker = () => {
         anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 1, 104],
         source: "undo", alpha: 0,
         onClick(args) {
-            if (this.alpha == 1 && tilesMenuControls[0].alpha == 0) {
+            if (undoLog.length == 0) this.alpha = 0;
+            else if (this.alpha == 1 && tilesMenuControls[0].alpha == 0) {
                 let shifterCoords = [undoLog[0][0], undoLog[0][1], undoLog[0][2], undoLog[0][3]];
                 while (undoLog[0][0] == shifterCoords[0]
                     && undoLog[0][1] == shifterCoords[1]
@@ -201,6 +202,7 @@ scenes.mapmaker = () => {
                     placeTile(undoLog[0][0], undoLog[0][1], undoLog[0][2], undoLog[0][3], "undo");
                     undoLog.shift();
                 }
+                if (undoLog.length == 0) this.alpha = 0;
             }
         }
     }));
@@ -208,9 +210,23 @@ scenes.mapmaker = () => {
         anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 2, 104],
         source: "redo", alpha: 0,
         onClick(args) {
-            if (this.alpha == 1 && tilesMenuControls[0].alpha == 0) {
-                placeTile(redoLog[0][0], redoLog[0][1], redoLog[0][2], redoLog[0][3]);
-                redoLog.shift();
+            if (redoLog.length == 0) this.alpha = 0;
+            else if (this.alpha == 1 && tilesMenuControls[0].alpha == 0) {
+                let shifterCoords = [redoLog[0][0], redoLog[0][1], redoLog[0][2], redoLog[0][3]];
+                while (redoLog[0][0] == shifterCoords[0]
+                    && redoLog[0][1] == shifterCoords[1]
+                    && redoLog[0][2] == shifterCoords[2]
+                    && redoLog[0][3] == shifterCoords[3]) {
+                    placeTile(redoLog[0][0], redoLog[0][1], redoLog[0][2], redoLog[0][3]);
+                    redoLog.shift();
+                }
+                if (redoLog[0][0] == shifterCoords[0]
+                    && redoLog[0][1] == shifterCoords[1]
+                    && redoLog[0][2] == shifterCoords[2]) {
+                    placeTile(redoLog[0][0], redoLog[0][1], redoLog[0][2], redoLog[0][3]);
+                    redoLog.shift();
+                }
+                if (redoLog.length == 0) this.alpha = 0;
             }
         }
     }));
@@ -1968,7 +1984,7 @@ scenes.mapmaker = () => {
         undoLog.unshift([x, y, layer, prevContent])
         undoButtons[0].alpha = 1;
         if (undoLog.length > 2048) undoLog.pop();
-        console.log(undoLog.length, undoLog);
+        //console.log(undoLog.length, undoLog);
     }
 
     function postRedoLog(x, y, layer, prevContent) {
@@ -1976,7 +1992,7 @@ scenes.mapmaker = () => {
         redoLog.unshift([x, y, layer, prevContent])
         undoButtons[1].alpha = 1;
         if (undoLog.length > 2048) redoLog.pop();
-        console.log(undoLog.length, undoLog);
+        //console.log(undoLog.length, undoLog);
     }
 
     function saveFile(type) {
