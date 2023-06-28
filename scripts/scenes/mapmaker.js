@@ -176,14 +176,14 @@ scenes.mapmaker = () => {
         }
     }));
     modeButtons.push(controls.rect({
-        anchor: [0, 0], sizeAnchor: [0.015, 0], sizeOffset: [72 * 3 - 5, 96], offset: [0, 96],
+        anchor: [0, 0], sizeAnchor: [0.015, 0], sizeOffset: [72 * 3 - 5, 112], offset: [0, 96],
         fill: "brown", alpha: 0.8,
         onClick(args) {
             if (!prot) protect();
         }
     }));
     undoButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 1, 104],
+        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 1, 120],
         source: "undo", alpha: 0,
         onClick(args) {
             if (undoLog.length == 0) this.alpha = 0;
@@ -207,7 +207,7 @@ scenes.mapmaker = () => {
         }
     }));
     undoButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 2, 104],
+        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 2, 120],
         source: "redo", alpha: 0,
         onClick(args) {
             if (redoLog.length == 0) this.alpha = 0;
@@ -231,7 +231,7 @@ scenes.mapmaker = () => {
         }
     }));
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [0, 104],
+        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [0, 120],
         source: "mmzoom", alpha: 1,
         onClick(args) {
             if (this.alpha == 1) {
@@ -275,7 +275,7 @@ scenes.mapmaker = () => {
             }
         }));
         modeButtons.push(controls.image({
-            anchor: [0.015, 0.025], sizeOffset: [32, 32], offset: [16 + 72 * i, 72],
+            anchor: [0.015, 0.025], sizeOffset: [48, 48], offset: [8 + 72 * i, 64],
             source: "eye", alpha: 1, i: i,
             onClick(args) {
                 if (this.alpha >= 0.5) {
@@ -3228,6 +3228,7 @@ scenes.mapmaker = () => {
             ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg, ...expandMapButtons,
             ...walkPad, middlei, currentMapText, backButton, toggleMapInfoButton, eyeButton, toggleAnimate, ...modeButtons,
             ...undoButtons, ...loadMapButtons, ...saveMapButtons, ...mapInfoControls, currentTile,
+
             ...tilesMenuControls, ...tilesMenuTiles, ...tilesMenuIcons, 
             ...createTileBG, ...createTileInfoBG, ...createTileInfo, ...createTileButtons,
             ...createDialogueButtons, ...createDialogueLabels, ...createNPCButtons, ...createNPCLabels,
