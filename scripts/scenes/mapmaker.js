@@ -1633,6 +1633,8 @@ scenes.mapmaker = () => {
                 else {
                     this.text = "Worldmode: OFF";
                     map.worldmode = false;
+                    game.position[0] = Math.ceil(game.position[0]);
+                    game.position[1] = Math.ceil(game.position[1]);
                 }
             }
         }

@@ -2,6 +2,7 @@ var zoom = 1;
 var zswm = 1;
 var kofs = [0, 0, 0];
 var walkTime = 0;
+var mapWidth = 0;
 var animateTime = 0;
 var direction = "none";
 var inDialogue = false;
@@ -931,6 +932,7 @@ scenes.game = () => {
                 }
 
                 enemies = [];
+                mapWidth = 0;
                 game.map = themap.teleport[0];
                 game.map.tiles = Object.assign({}, game.map.tiles, loadPacks());
                 loadNPCs();
@@ -1110,10 +1112,15 @@ scenes.game = () => {
                         if (mapenemies[possibleSpawns]().time == "dusk" && !isDusk()) return false;
                         if (mapenemies[possibleSpawns]().time == "night" && !isNight()) return false;
                     }
-                        enemies.push(mapenemies[possibleSpawns]({
-                            position: [Math.floor(Math.random() * maps[game.map].map[0].length), Math.floor(Math.random() * maps[game.map].map.length)], map: game.map,
-                        }));
+                    if (mapWidth == 0) {
+                        for (i = 0; i < maps[game.map].map.length; i++) {
+                            if (maps[game.map].map[i].length > mapWidth) mapWidth = maps[game.map].map[i].length;
+                        }
                     }
+                    enemies.push(mapenemies[possibleSpawns]({
+                        position: [Math.floor(Math.random() * mapWidth), Math.floor(Math.random() * maps[game.map].map.length)], map: game.map,
+                    }));
+                }
             }
         }
 
