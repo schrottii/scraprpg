@@ -278,7 +278,7 @@ scenes.mapmaker = () => {
             anchor: [0.015, 0.025], sizeOffset: [48, 48], offset: [8 + 72 * i, 64],
             source: "eye", alpha: 1, i: i,
             onClick(args) {
-                if (this.alpha >= 0.5) {
+                if (this.alpha >= 0.3) {
                     layerVisi[this.i] = layerVisi[this.i] == 0 ? 1 : 0;
                     this.alpha = layerVisi[this.i] == 0 ? 0.3 : 1;
                     updateTiles = true;
