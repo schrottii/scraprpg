@@ -112,6 +112,7 @@ scenes.mapmaker = () => {
 
     let ttp = "001"; // tile to place
     let editingLayer = 0;
+    let visibleCollision = false;
 
     let curDia = ""; // current dialogue
     let curLine = 0; // current dialogue
@@ -172,7 +173,7 @@ scenes.mapmaker = () => {
         anchor: [0, 0], sizeAnchor: [1, 0], sizeOffset: [0, 96],
         fill: "brown", alpha: 0.8,
         onClick(args) {
-            if(!prot) protect();
+            if (!prot) protect();
         }
     }));
     modeButtons.push(controls.rect({
@@ -196,9 +197,9 @@ scenes.mapmaker = () => {
                     placeTile(undoLog[0][0], undoLog[0][1], undoLog[0][2], undoLog[0][3], "undo");
                     undoLog.shift();
                 }
-                if(undoLog[0][0] == shifterCoords[0]
+                if (undoLog[0][0] == shifterCoords[0]
                     && undoLog[0][1] == shifterCoords[1]
-                    && undoLog[0][2] == shifterCoords[2]){
+                    && undoLog[0][2] == shifterCoords[2]) {
                     placeTile(undoLog[0][0], undoLog[0][1], undoLog[0][2], undoLog[0][3], "undo");
                     undoLog.shift();
                 }
@@ -690,7 +691,7 @@ scenes.mapmaker = () => {
         }
     }));
     createTileButtons.push(controls.image({
-        anchor: [0.25, 0.325], sizeOffset: [64, 64], offset: [72 * 16 -32, -632],
+        anchor: [0.25, 0.325], sizeOffset: [64, 64], offset: [72 * 16 - 32, -632],
         source: "gear",
     }));
     createTileButtons.push(controls.button({
@@ -1361,8 +1362,8 @@ scenes.mapmaker = () => {
         },
         onClick(args) {
             if (this.alpha == 1) {
-            protect();
-            this.snip[0] = 0;
+                protect();
+                this.snip[0] = 0;
                 pad = "";
             }
         }
@@ -1396,8 +1397,8 @@ scenes.mapmaker = () => {
         },
         onClick(args) {
             if (this.alpha == 1) {
-            protect();
-            this.snip[0] = 0;
+                protect();
+                this.snip[0] = 0;
                 pad = "";
             }
         }
@@ -1415,8 +1416,8 @@ scenes.mapmaker = () => {
         },
         onClick(args) {
             if (this.alpha == 1) {
-            protect();
-            this.snip[0] = 0;
+                protect();
+                this.snip[0] = 0;
                 pad = "";
             }
         }
@@ -1446,7 +1447,7 @@ scenes.mapmaker = () => {
         text: "<",
         onClick(args) {
             if (this.alpha == 1) {
-                if(confirm("Do you really want to leave Map Maker?")) setScene(scenes.pretitle());
+                if (confirm("Do you really want to leave Map Maker?")) setScene(scenes.pretitle());
             }
         },
         alpha: 1,
@@ -1502,6 +1503,19 @@ scenes.mapmaker = () => {
                 toggleAnimate.alpha = 1;
                 this.alpha = 1;
             }
+        },
+        alpha: 1,
+    });
+
+    let collisionButton = controls.image({
+        anchor: [0.0125, 0.555], sizeAnchor: [0.05, 0.045],
+        source: "eye",
+        onClick(args) {
+            protect();
+            visibleCollision = !visibleCollision;
+            if (visibleCollision) this.alpha = 0.3;
+            else this.alpha = 1;
+            updateTiles = true;
         },
         alpha: 1,
     });
@@ -3025,7 +3039,6 @@ scenes.mapmaker = () => {
             let ofsX = game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5;
             let ofsY = game.position[1] - kofs[1] * kofs[2] - 7.5;
 
-
             let wm = 1;
 
             if (map == undefined) return false;
@@ -3119,6 +3132,9 @@ scenes.mapmaker = () => {
                             else {
                                 tiles_bg[b].ani = undefined;
                             }
+                            if (visibleCollision && !getTile(map, x, y).occupied) {
+                                tiles_bg[b].alpha -= 0.6;
+                            }
                         }
                         else {
                             tiles_bg[b].source = "tiles/" + map.tiles.empty.sprite;
@@ -3162,6 +3178,9 @@ scenes.mapmaker = () => {
                                 tiles_bg2[b2].ani = undefined;
                             }
                             tiles_bg2[b2].alpha = layerVisi[1];
+                            if (visibleCollision && !getTile(map, x, y, 2).occupied) {
+                                tiles_bg2[b2].alpha -= 0.6;
+                            }
                         }
                     }
 
@@ -3188,6 +3207,9 @@ scenes.mapmaker = () => {
                                 tiles_fg[t].ani = undefined;
                             }
                             tiles_fg[t].alpha = layerVisi[2];
+                            if (visibleCollision && !getTile(map, x, y, 3).occupied) {
+                                tiles_fg[t].alpha -= 0.6;
+                            }
                         }
                     }
                 }
@@ -3226,7 +3248,7 @@ scenes.mapmaker = () => {
         // Controls
         controls: [
             ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg, ...expandMapButtons,
-            ...walkPad, middlei, currentMapText, backButton, toggleMapInfoButton, eyeButton, toggleAnimate, ...modeButtons,
+            ...walkPad, middlei, currentMapText, backButton, toggleMapInfoButton, eyeButton, collisionButton, toggleAnimate, ...modeButtons,
             ...undoButtons, ...loadMapButtons, ...saveMapButtons, ...mapInfoControls, currentTile,
 
             ...tilesMenuControls, ...tilesMenuTiles, ...tilesMenuIcons, 
