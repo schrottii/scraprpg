@@ -1127,8 +1127,10 @@ scenes.game = () => {
             }
         }
 
-        if (getTile(map, game.position[0], game.position[1]).dialogue != undefined) {
-            startDialogue(map.dialogues[getTile(map, game.position[0], game.position[1]).dialogue]);
+        if (getTile(map, game.position[0], game.position[1]) != undefined) {
+            if (getTile(map, game.position[0], game.position[1]).dialogue != undefined) {
+                startDialogue(map.dialogues[getTile(map, game.position[0], game.position[1]).dialogue]);
+            }
         }
         if (getTile(map, game.position[0], game.position[1], 2) != undefined) {
             if (getTile(map, game.position[0], game.position[1], 2).dialogue != undefined) {
@@ -1582,8 +1584,11 @@ scenes.game = () => {
 
                     tryTalk(xo, yo);
 
-                    if (isWalkable(map, game.position[0] + xo, game.position[1] + yo)
-                        && isWalkable(map, game.position[0] + xo, game.position[1] + yo, 2)) { //Direction-change-against-wall
+                    if ((isWalkable(map, game.position[0] + xo, game.position[1] + yo)
+                        && isWalkable(map, game.position[0] + xo, game.position[1] + yo, 2))
+                        || (getTile(map, game.position[0] + xo, game.position[1] + yo) == undefined &&
+                        getTile(map, game.position[0] + xo, game.position[1] + yo, 2) != undefined &&
+                        isWalkable(map, game.position[0] + xo, game.position[1] + yo, 2))) { //Direction-change-against-wall
 
                         kofs = [xo, yo, 1];
                         game.position[0] += xo;
