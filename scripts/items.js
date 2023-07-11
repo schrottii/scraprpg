@@ -146,7 +146,7 @@ let items = {
             source: "scroll",
             name: "Chicago Pants",
             shopcost: 200,
-            type: "clothes",
+            type: "armor",
             max: 1,
             type: "body",
             stats: {

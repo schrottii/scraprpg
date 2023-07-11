@@ -106,6 +106,10 @@ let game = {
             },
             magic: [],
         }
+    },
+
+    shops: {
+
     }
 }
 

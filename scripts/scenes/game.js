@@ -128,14 +128,6 @@ function getTile(map, x, y, l = 1) {
     }
 }
 
-function openShop(whichone) {
-    shopDialogueProgress = 0;
-    currentShop = shops[whichone];
-    currentShopName = whichone;
-    currentShopText = shops[whichone].dialogue;
-    setScene(scenes.shop());
-}
-
 function startDialogue(cd) {
     if (typeof (cd) == "string") cd = map.dialogues[cd];
     inDialogue = true;

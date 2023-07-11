@@ -25,7 +25,7 @@ function loadMap() {
     let reader = new FileReader();
     reader.readAsText(file);
     reader.onload = function (e) {
-        // Jesus sweet fucking christ
+        // Jesus sweet f***ing christ
         let result = e.target.result;
         let name = result.split('id":')[1];
         let name2 = result.split('id:')[1];

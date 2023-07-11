@@ -1,7 +1,12 @@
 var shopDialogueProgress = 0;
-var currentShopText = [];
-var currentShop;
-var currentShopName;
+var shop;
+
+function openShop(whichone) {
+    shopDialogueProgress = 0;
+    shop = shops[whichone];
+    shop.loadShop();
+    setScene(scenes.shop());
+}
 
 scenes.shop = () => {
 
@@ -109,6 +114,8 @@ scenes.shop = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 playSound("buttonClickSound");
+                shop.saveShop();
+                saveGame();
                 fadeOut(1000 / 3, true, () => setScene(scenes.game()));
             }
         },
@@ -116,11 +123,11 @@ scenes.shop = () => {
     }));
 
     function continueTalking() {
-        if (currentShopText.length == 0) return false;
-        if (shopDialogueProgress >= currentShopText.length) {
+        if (shop.dialogue.length == 0) return false;
+        if (shopDialogueProgress >= shop.dialogue.length) {
             shopDialogueProgress = 0;
         }
-        let txt = currentShopText[shopDialogueProgress];
+        let txt = shop.dialogue[shopDialogueProgress];
         if (typeof (txt) == "object") txt = txt[0];
         postShop(txt);
         shopDialogueProgress += 1;
@@ -145,11 +152,7 @@ scenes.shop = () => {
         fillTop: "#ffc069",
         alpha: 1,
         onClick(args) {
-            playSound("buttonClickSound");
-            shops[currentShopName].clp += this.a;
-            clvUp();
-            postShop(this.t);
-            continueTalking();
+            if (this.alpha == 1) shopTextButton(this.t, this.a);
         },
         text: "...",
     });
@@ -158,11 +161,7 @@ scenes.shop = () => {
         fillTop: "#ffc069",
         alpha: 1,
         onClick(args) {
-            playSound("buttonClickSound");
-            shops[currentShopName].clp += this.a;
-            clvUp();
-            postShop(this.t);
-            continueTalking();
+            if (this.alpha == 1) shopTextButton(this.t, this.a);
         },
         text: "...",
     });
@@ -184,6 +183,15 @@ scenes.shop = () => {
         source: "pawn", alpha: 0,
     });
 
+    function shopTextButton(t, a) {
+        playSound("buttonClickSound");
+        shop.clp += a;
+        if (shop.clp < 0) shop.clp = 0;
+        shop.clvUp();
+        postShop(t);
+        continueTalking();
+    }
+
     function showItems() {
         let iback = 0;
         for (bg in itemsBackground) {
@@ -193,11 +201,12 @@ scenes.shop = () => {
             for (i in itemsButtons) {
                 if (itemsButtons[i].offer != "") {
                     itemsImages[i].source = "items/" + items[itemsButtons[i].offer]().source;
-                    itemsOwnAmount[i].text = game.inventory[itemsButtons[i].offer];
-                    itemsCosts[i].text = getPrice(i) + "W";
+                    // v how many of it YOU have, not the shop
+                    itemsOwnAmount[i].text = game.inventory[itemsButtons[i].offer] != undefined ? game.inventory[itemsButtons[i].offer] : "0";
+                    itemsCosts[i].text = shop.getPrice(i) + "W";
 
-                    if (itemsButtons[i].amount < 1000) itemsButtons[i].text = items[currentShop.offers[i].item]().name + " x" + itemsButtons[i].amount;
-                    else itemsButtons[i].text = items[currentShop.offers[i].item]().name;
+                    if (itemsButtons[i].amount < 1000) itemsButtons[i].text = items[shop.offers[i].item]().name + " x" + itemsButtons[i].amount;
+                    else itemsButtons[i].text = items[shop.offers[i].item]().name;
 
                     showButtons(i);
                 }
@@ -217,7 +226,7 @@ scenes.shop = () => {
                     }
                     itemsImages[ibt].source = "items/" + items[item]().source;
                     itemsOwnAmount[ibt].text = am;
-                    itemsCosts[ibt].text = getSellPrice(item) + "W";
+                    itemsCosts[ibt].text = shop.getSellPrice(item) + "W";
 
                     itemsButtons[ibt].text = items[item]().name + " x" + am;
                     itemsButtons[ibt].si = ibt + iback;
@@ -309,46 +318,47 @@ scenes.shop = () => {
                         else {
                             let item = items[this.offer]();
 
-                            if (game.wrenches > getPrice(this.idx) && this.amount > 0) {
-                                addWrenches(getPrice(this.idx) * -1);
+                            if (game.wrenches > shop.getPrice(this.idx) && this.amount > 0) {
+                                addWrenches(shop.getPrice(this.idx) * -1);
                                 addItem(this.offer, 1);
-                                increaseCLP(this.offer);
+                                shop.increaseCLP(this.offer);
                                 this.amount -= 1;
-                                shops[currentShopName].offers[this.idx].amount -= 1;
+                                shop.offers[this.idx].amount -= 1;
                                 if (this.amount < 1) {
-                                    shops[currentShopName].offers[this.idx].oos = true; // out of stock
+                                    shop.offers[this.idx].oos = true; // out of stock
                                     this.offer = "";
                                 }
                             }
+                            //setButtons();
                             hideItems();
                             showItems();
                         }
                     }
                     if (mode == "sell") {
                         let item = Object.keys(game.inventory)[this.si];
-                        if (currentShop.limitedBuy != false && items[item]().type != currentShop.limitedBuy && currentShop.pawnShop != true) {
+                        if (shop.limitedBuy != false && items[item]().type != shop.limitedBuy && shop.pawnShop != true) {
                             playSound("no");
                             return false;
                         }
-                        addWrenches(getSellPrice(item));
-                        increaseCLP(item);
+                        addWrenches(shop.getSellPrice(item));
+                        shop.increaseCLP(item);
                         removeItem(item, 1);
+                        setButtons();
 
                         // we're evil :)
                         let de = -1;
 
-                        for (i in currentShop.offers) {
-                            if (currentShop.offers[i].item == item) de = i;
+                        for (i in shop.offers) {
+                            if (shop.offers[i].item == item) de = i;
                         }
                         if (de != -1) {
-                            shops[currentShopName].offers[de].amount += 1;
-                            shops[currentShopName].offers[de].clv = Math.max(shops[currentShopName].offers[de].clv, currentShop.clv);
+                            shop.offers[de].amount += 1;
+                            shop.offers[de].clv = Math.max(shop.offers[de].clv, shop.clv);
                         }
                         else {
                             // does not exist yet
-                            shops[currentShopName].offers.push({ item: item, amount: 1, clv: currentShop.clv });
+                            shop.offers.push({ item: item, amount: 1, clv: shop.clv });
                         }
-                        updateCurrentShop();
                         setButtons();
 
                         //if (game.inventory[item] < 1) {
@@ -362,44 +372,15 @@ scenes.shop = () => {
     }
 
     function setButtons() {
-        for (i in currentShop.offers) {
-            let clvreq = currentShop.offers[i].clv == undefined ? true : currentShop.clv >= currentShop.offers[i].clv;
-            if (itemsButtons[i] != undefined && !currentShop.offers[i].oos && clvreq) {
-                itemsButtons[i].offer = currentShop.offers[i].item;
-                if (currentShop.offers[i].amount != undefined) itemsButtons[i].amount = currentShop.offers[i].amount;
+        for (i in shop.offers) {
+            let clvreq = shop.offers[i].clv == undefined ? true : shop.clv >= shop.offers[i].clv;
+            if (itemsButtons[i] != undefined && !shop.offers[i].oos && clvreq) {
+                itemsButtons[i].offer = shop.offers[i].item;
+                if (shop.offers[i].amount != undefined) itemsButtons[i].amount = shop.offers[i].amount;
             }
         }
     }
     setButtons();
-
-    function getPrice(i) {
-        if (currentShop.offers[i].price != undefined) return currentShop.offers[i].price;
-        return items[currentShop.offers[i].item]().shopcost;
-    }
-
-    function getSellPrice(i) {
-        return items[i]().shopcost;
-    }
-
-    function increaseCLP(item) {
-        let clpi = items[item]().clpi;
-        
-        shops[currentShopName].clp += Math.floor(Math.random() * clpi);
-        clvUp();
-    }
-
-    function clvUp() {
-        if (shops[currentShopName].clp >= shops[currentShopName].clv * 100) {
-            shops[currentShopName].clp -= shops[currentShopName].clv * 100;
-            shops[currentShopName].clv += 1;
-            setButtons();
-        }
-        updateCurrentShop();
-    }
-
-    function updateCurrentShop() {
-        currentShop = shops[currentShopName];
-    }
 
     fadeIn(1000 / 3, true);
 
@@ -413,22 +394,22 @@ scenes.shop = () => {
                 shopTextControls[7 - st].text = shopText[shopText.length - st] != undefined ? shopText[shopText.length - st] : "";
             }
 
-            if (currentShop.limitedBuy != false && typeText.text == "") {
+            if (shop.limitedBuy != false && typeText.text == "") {
                 typeText.text = {
                     flower: "Flowers",
                     potion: "Potions",
-                    clothes: "Clothes",
+                    armor: "Clothes",
                     electronic: "5 Watt devices"
-                }[currentShop.limitedBuy]
+                }[shop.limitedBuy]
             }
 
-            if (currentShop.pawnShop == true) {
+            if (shop.pawnShop == true) {
                 pawnIcon.alpha = 1;
                 navigationButtons[0].alpha = 0;
             }
 
             // Buttons
-            let bc = currentShopText[shopDialogueProgress - 1];
+            let bc = shop.dialogue[shopDialogueProgress - 1];
             if (typeof (bc) == "object") {
                 shopTextButton1.alpha = 1;
                 shopTextButton1.text = bc[1];
@@ -443,10 +424,12 @@ scenes.shop = () => {
                 else {
                     shopTextButton2.alpha = 0;
                 }
+                navigationButtons[2].alpha = 0;
             }
             else {
                 shopTextButton1.alpha = 0;
                 shopTextButton2.alpha = 0;
+                navigationButtons[2].alpha = 1;
             }
 
             shopPicTime += delta;
@@ -455,7 +438,7 @@ scenes.shop = () => {
                 shopPic.source = (shopPic.source == "shopbg1") ? "shopbg2" : "shopbg1";
             }
 
-            clvText.text = "Customer Level: " + currentShop.clv + " (" + currentShop.clp + "/" + (currentShop.clv * 100) + ")";
+            clvText.text = "Customer Level: " + shop.clv + " (" + shop.clp + "/" + (shop.clv * 100) + ")";
         },
         // Controls
         controls: [
