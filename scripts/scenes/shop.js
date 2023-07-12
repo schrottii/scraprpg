@@ -445,7 +445,7 @@ scenes.shop = () => {
             }
 
             shopPicTime += delta;
-            shopPics[2].snip[0] = 32 * (Math.floor(shopPicTime / 500) % 2);
+            shopPics[1].snip[0] = 32 * (Math.floor(shopPicTime / 500) % 2);
 
             clvText.text = "Customer Level: " + shop.clv + " (" + shop.clp + "/" + (shop.clv * 100) + ")";
         },
