@@ -715,16 +715,20 @@ scenes.game = () => {
         }
     });
 
-    areaNameBox.push(controls.rect({
+    /*areaNameBox.push(controls.rect({
         anchor: [0.3, 0.2], sizeAnchor: [0.4, 0.2],
         fill: "purple", alpha: 0
     }))
     areaNameBox.push(controls.rect({
         anchor: [0.3, 0.2], sizeAnchor: [0.4, 0.2], sizeOffset: [-16, -16], offset: [8, 8],
         fill: "lightblue", alpha: 0
+    }))*/
+    areaNameBox.push(controls.image({
+        anchor: [0.2, 0], sizeAnchor: [0.6, 0.4],
+        source: "hangingsign", alpha: 0
     }))
     areaNameBox.push(controls.label({
-        anchor: [0.5, 0.3],
+        anchor: [0.5, 0.25],
         align: "center", fontSize: 32, fill: "black",
         text: "AREA UNDEFINED", alpha: 0,
     }))
@@ -901,17 +905,19 @@ scenes.game = () => {
 
             setTimeout(() => {
                 if (nmapname != undefined) { // The box stuff. Only if the map has a name
-                    areaNameBox[2].text = nmapname;
+                    areaNameBox[1].text = nmapname;
                     for (i in areaNameBox) {
                         areaNameBox[i].alpha = 1;
+                        areaNameBox[i].offset = [0, 0];
                     }
 
                     setTimeout(() => { // Box disappear
                         addAnimator(function (t) {
                             for (i in areaNameBox) {
-                                areaNameBox[i].alpha = 1 - (t / 500);
+                                //areaNameBox[i].alpha = 1 - (t / 500);
+                                areaNameBox[i].offset[1] = t * (-0.5);
                             }
-                            if (t > 499) {
+                            if (t > 999) {
                                 for (i in areaNameBox) {
                                     areaNameBox[i].alpha = 0;
                                 }
@@ -919,7 +925,7 @@ scenes.game = () => {
                             }
                             return false;
                         });
-                    }, 1000);
+                    }, 800);
 
                 }
 

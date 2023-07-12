@@ -45,6 +45,7 @@ let images = {
     shoptable: "data/images/shop-table.png",
     pawn: "data/images/pawn.png",
     eattackani2: "data/images/eattackani2.png",
+    hangingsign: "data/images/hanging-sign.png",
 
     // Map Maker
     place: "data/images/mm/mode-place.png",
