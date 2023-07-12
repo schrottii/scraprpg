@@ -2192,7 +2192,7 @@ scenes.fight = () => {
     }));
     winScreen.push(controls.image({
         anchor: [0.65, 0.6], offset: [32, -1000], sizeAnchor: [0.3, 0.25],
-        source: "nosfegtdsrh",
+        source: "gear",
         alpha: 0,
     }));
 
