@@ -60,11 +60,23 @@ scenes.shop = () => {
         anchor: [0.63, 0.48], sizeAnchor: [0.03, 0.52],
         fill: colors.buttontop, alpha: 1,
     }));
-
-    let shopPic = controls.image({
-        anchor: [0, 0], sizeAnchor: [1, 0.48],
-        source: "shopbg1", alpha: 1,
-    });
+    let shopPics = [
+        // BACKGROUND
+        controls.image({
+            anchor: [0, 0], sizeAnchor: [1, 0.48],
+            source: "shopbg", alpha: 1
+        }),
+        // CHARACTER
+        controls.image({
+            anchor: [0.5, 0.25], sizeOffset: [128, 128], offset: [-64, 0],
+            source: "bleu", alpha: 1, snip: [0, 0, 32, 32]
+        }),
+        // TABLE
+        controls.image({
+            anchor: [0, 0], sizeAnchor: [1, 0.48],
+            source: "shoptable", alpha: 1
+        })
+    ]
     let shopPicTime = 0;
 
     navigationButtons.push(controls.button({
@@ -433,16 +445,13 @@ scenes.shop = () => {
             }
 
             shopPicTime += delta;
-            if (shopPicTime > 499) {
-                shopPicTime = 0;
-                shopPic.source = (shopPic.source == "shopbg1") ? "shopbg2" : "shopbg1";
-            }
+            shopPics[2].snip[0] = 32 * (Math.floor(shopPicTime / 500) % 2);
 
             clvText.text = "Customer Level: " + shop.clv + " (" + shop.clp + "/" + (shop.clv * 100) + ")";
         },
         // Controls
         controls: [
-            ...bottomRects, ...navigationButtons, shopPic, wrenchDisplay, ...shopTextControls, clvText, typeText, pawnIcon,
+            ...bottomRects, ...navigationButtons, ...shopPics, wrenchDisplay, ...shopTextControls, clvText, typeText, pawnIcon,
             ...itemsBackground, ...itemsButtons, ...itemsImages, ...itemsOwnAmount, ...itemsCosts,
             shopTextButton1, shopTextButton2
         ],
