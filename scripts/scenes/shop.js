@@ -277,15 +277,15 @@ scenes.shop = () => {
     }
 
     itemsBackground.push(controls.rect({
-        anchor: [0.05, 0.13], sizeAnchor: [0.3, 0.75],
+        anchor: [0.03, 0.13], sizeAnchor: [0.4, 0.75],
         fill: colors.buttontop, alpha: 0,
     }));
     itemsBackground.push(controls.rect({
-        anchor: [0.07, 0.15], sizeAnchor: [0.26, 0.71],
+        anchor: [0.07, 0.15], sizeAnchor: [0.34, 0.71],
         fill: colors.buttonbottom, alpha: 0,
     }));
     itemsBackground.push(controls.button({
-        anchor: [0.05, 0.13], sizeAnchor: [0.02, 0.02],
+        anchor: [0.03, 0.13], sizeAnchor: [0.04, 0.04],
         text: "X", fontSize: 20,
         alpha: 0,
         onClick(args) {
