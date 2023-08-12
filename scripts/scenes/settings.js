@@ -6,6 +6,9 @@ scenes.settings = () => {
     var menuSettingsGraphics = [];
     var menuSettingsAudio = [];
 
+    var baseY = 0.25;
+    var cY = 0.15;
+
     // Background
     let settingsSaveText = controls.label({
         anchor: [.04, .98], offset: [12, -12],
@@ -85,7 +88,7 @@ scenes.settings = () => {
     }));
     menuSettings.push(controls.button({
         anchor: [0.1, 0.625], sizeAnchor: [0.25, 0.1],
-        text: "Audio", alpha: 0,
+        text: "Audio", alpha: 1,
         onClick(args) {
             if (this.alpha == 1) {
                 playSound("buttonClickSound");
@@ -105,7 +108,7 @@ scenes.settings = () => {
             }
         }
     }));
-    
+
     menuSettings.push(controls.button({
         anchor: [0.675, 0.9], sizeAnchor: [0.1, 0.075],
         text: "Save Changes", alpha: 0,
@@ -124,248 +127,345 @@ scenes.settings = () => {
             }
         }
     }));
-    
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Gameplay
 
-    menuSettingsGameplay.push(controls.button({
-        anchor: [0.55, 0.25], sizeAnchor: [0.2, 0.1],
-        text: "Autosave: ON", alpha: 0,
-        onClick(args) {
-            if (this.alpha == 1) {
-                playSound("buttonClickSound");
+    menuSettingsGameplay = [
+        controls.button({
+            anchor: [0.55, 0], sizeAnchor: [0.2, 0.1],
+            text: "Autosave: ON", alpha: 0,
+            onClick(args) {
+                if (this.alpha == 1) {
+                    playSound("buttonClickSound");
+                    if (settings.autosave == true) {
+                        settings.autosave = false;
+                    }
+                    else {
+                        settings.autosave = true;
+                    }
+                    showMenuSettings();
+                }
+            },
+            tick() {
                 if (settings.autosave == true) {
-                    settings.autosave = false;
+                    this.text = "Autosave: ON";
                 }
                 else {
-                    settings.autosave = true;
+                    this.text = "Autosave: OFF";
                 }
-                showMenuSettings();
             }
-        }
-    }));
+        }),
+    ]
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Graphics
 
-    menuSettingsGraphics.push(controls.button({
-        anchor: [0.55, 0.25], sizeAnchor: [0.2, 0.1],
-        text: "Grid: ON", alpha: 0,
-        onClick(args) {
-            if (this.alpha == 1) {
-                playSound("buttonClickSound");
+    menuSettingsGraphics = [
+        controls.button({
+            anchor: [0.55, 0], sizeAnchor: [0.2, 0.1],
+            text: "Fight Grid: ON", alpha: 0,
+            onClick(args) {
+                if (this.alpha == 1) {
+                    playSound("buttonClickSound");
+                    if (settings.grid == true) {
+                        settings.grid = false;
+                    }
+                    else {
+                        settings.grid = true;
+                    }
+                    showMenuSettings();
+                }
+            },
+            tick() {
                 if (settings.grid == true) {
-                    settings.grid = false;
+                    this.text = "Fight Grid: ON";
                 }
                 else {
-                    settings.grid = true;
+                    this.text = "Fight Grid: OFF";
                 }
-                showMenuSettings();
             }
-        }
-    }));
-    menuSettingsGraphics.push(controls.button({
-        anchor: [0.55, 0.4], sizeAnchor: [0.2, 0.1],
-        text: "Joystick", alpha: 0,
-        onClick(args) {
-            if (this.alpha == 1) {
-                playSound("buttonClickSound");
+        }),
+        controls.button({
+            anchor: [0.55, 0], sizeAnchor: [0.2, 0.1],
+            text: "Fight Grid: ON", alpha: 0,
+            onClick(args) {
+                if (this.alpha == 1) {
+                    playSound("buttonClickSound");
+                    if (settings.grid == true) {
+                        settings.grid = false;
+                    }
+                    else {
+                        settings.grid = true;
+                    }
+                    showMenuSettings();
+                }
+            },
+            tick() {
+                if (settings.grid == true) {
+                    this.text = "Fight Grid: ON";
+                }
+                else {
+                    this.text = "Fight Grid: OFF";
+                }
+            }
+        }),
+        controls.button({
+            anchor: [0.55, 0], sizeAnchor: [0.2, 0.1],
+            text: "Fight Grid: ON", alpha: 0,
+            onClick(args) {
+                if (this.alpha == 1) {
+                    playSound("buttonClickSound");
+                    if (settings.grid == true) {
+                        settings.grid = false;
+                    }
+                    else {
+                        settings.grid = true;
+                    }
+                    showMenuSettings();
+                }
+            },
+            tick() {
+                if (settings.grid == true) {
+                    this.text = "Fight Grid: ON";
+                }
+                else {
+                    this.text = "Fight Grid: OFF";
+                }
+            }
+        }),
+        controls.button({
+            anchor: [0.55, 0], sizeAnchor: [0.2, 0.1],
+            text: "Fight Grid: ON", alpha: 0,
+            onClick(args) {
+                if (this.alpha == 1) {
+                    playSound("buttonClickSound");
+                    if (settings.grid == true) {
+                        settings.grid = false;
+                    }
+                    else {
+                        settings.grid = true;
+                    }
+                    showMenuSettings();
+                }
+            },
+            tick() {
+                if (settings.grid == true) {
+                    this.text = "Fight Grid: ON";
+                }
+                else {
+                    this.text = "Fight Grid: OFF";
+                }
+            }
+        }),
+    ]
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Controls
+    menuSettingsControls = [
+        controls.button({
+            anchor: [0.55, 0], sizeAnchor: [0.2, 0.1],
+            text: "Joystick", alpha: 0,
+            onClick(args) {
+                if (this.alpha == 1) {
+                    playSound("buttonClickSound");
+                    if (settings.joystick == true) {
+                        settings.joystick = false;
+                    }
+                    else {
+                        settings.joystick = true;
+                    }
+                    showMenuSettings();
+                }
+            },
+            tick() {
                 if (settings.joystick == true) {
-                    settings.joystick = false;
+                    this.text = "Joystick";
                 }
                 else {
-                    settings.joystick = true;
+                    this.text = "WalkPad";
                 }
-                showMenuSettings();
             }
-        }
-    }));
+        }),
+        controls.button({
+            anchor: [0.55, 0], sizeAnchor: [0.2, 0.1],
+            text: "WalkPad Size: 32", alpha: 0,
+            tick() {
+                this.text = "WalkPad Size: " + Math.max(50, settings.walkPadSize * 100) + "%";
+            }
+        }),
+        controls.button({
+            anchor: [0.5, 0], sizeAnchor: [0.04, 0.1],
+            text: "-", alpha: 0,
+            onClick(args) {
+                if (this.alpha == 1) {
+                    playSound("buttonClickSound");
+                    settings.walkPadSize -= 1;
+                    if (settings.walkPadSize < 0) settings.walkPadSize = 2;
+                }
+            }
+        }),
+        controls.button({
+            anchor: [0.76, 0], sizeAnchor: [0.04, 0.1],
+            text: "+", alpha: 0,
+            onClick(args) {
+                if (this.alpha == 1) {
+                    playSound("buttonClickSound");
+                    settings.walkPadSize += 1;
+                    if (settings.walkPadSize > 2) settings.walkPadSize = 0;
+                }
+            }
+        })
+    ]
 
-    menuSettingsGraphics.push(controls.button({
-        anchor: [0.55, 0.55], sizeAnchor: [0.2, 0.1],
-        text: "WalkPad Size: 32", alpha: 0,
-    }));
-    menuSettingsGraphics.push(controls.button({
-        anchor: [0.5, 0.55], sizeAnchor: [0.04, 0.1],
-        text: "-", alpha: 0,
-        onClick(args) {
-            if (this.alpha == 1) {
-                playSound("buttonClickSound");
-                settings.walkPadSize -= 1;
-                if (settings.walkPadSize < 0) settings.walkPadSize = 2;
-                showMenuSettings(); //Update
-            }
-        }
-    }));
-    menuSettingsGraphics.push(controls.button({
-        anchor: [0.76, 0.55], sizeAnchor: [0.04, 0.1],
-        text: "+", alpha: 0,
-        onClick(args) {
-            if (this.alpha == 1) {
-                playSound("buttonClickSound");
-                settings.walkPadSize += 1;
-                if (settings.walkPadSize > 2) settings.walkPadSize = 0;
-                showMenuSettings(); //Update
-            }
-        }
-    }));
-
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Audio
 
-    menuSettingsAudio.push(controls.button({
-        anchor: [0.55, 0.25], sizeAnchor: [0.2, 0.1],
-        text: "Music Volume: 50%", alpha: 0,
-        onClick(args) {
-            if (this.alpha == 1) {
-                let tempVol = settings.soundVolume;
-                settings.soundVolume = settings.musicVolume;
-                changeSoundVolume(settings.soundVolume);
-                playSound("buttonClickSound");
-                settings.soundVolume = tempVol;
-                setTimeout(() => {
+    menuSettingsAudio = [
+        controls.button({
+            anchor: [0.55, 0], sizeAnchor: [0.2, 0.1],
+            text: "Music Volume: 50%", alpha: 0,
+            onClick(args) {
+                if (this.alpha == 1) {
+                    let tempVol = settings.soundVolume;
+                    settings.soundVolume = settings.musicVolume;
                     changeSoundVolume(settings.soundVolume);
-                }, 1000);
+                    playSound("buttonClickSound");
+                    settings.soundVolume = tempVol;
+                    setTimeout(() => {
+                        changeSoundVolume(settings.soundVolume);
+                    }, 1000);
+                }
+            },
+            tick() {
+                this.text = "Music Volume: " + Math.round(settings.musicVolume * 100) + "%";
             }
-        }
-    }));
-    menuSettingsAudio.push(controls.button({
-        anchor: [0.5, 0.25], sizeAnchor: [0.04, 0.1],
-        text: "-", alpha: 0,
-        onClick(args) {
-            if (this.alpha == 1) {
-                if (settings.musicVolume > 0.01) {
-                    settings.musicVolume = settings.musicVolume - 0.05;
-                    if (settings.musicVolume < 0) settings.musicVolume = 0;
-                    musicPlayer.volume = settings.musicVolume;
-                    showMenuSettings(); //Update
+        }),
+        controls.button({
+            anchor: [0.5, 0], sizeAnchor: [0.04, 0.1],
+            text: "-", alpha: 0,
+            onClick(args) {
+                if (this.alpha == 1) {
+                    if (settings.musicVolume > 0.01) {
+                        settings.musicVolume = settings.musicVolume - 0.05;
+                        if (settings.musicVolume < 0) settings.musicVolume = 0;
+                        musicPlayer.volume = settings.musicVolume;
+                    }
                 }
             }
-        }
-    }));
-    menuSettingsAudio.push(controls.button({
-        anchor: [0.76, 0.25], sizeAnchor: [0.04, 0.1],
-        text: "+", alpha: 0,
-        onClick(args) {
-            if (this.alpha == 1) {
-                if (settings.musicVolume < 0.99) {
-                    settings.musicVolume = settings.musicVolume + 0.05;
-                    if (settings.musicVolume > 1) settings.musicVolume = 1;
-                    musicPlayer.volume = settings.musicVolume;
-                    showMenuSettings(); //Update
+        }),
+        controls.button({
+            anchor: [0.76, 0], sizeAnchor: [0.04, 0.1],
+            text: "+", alpha: 0,
+            onClick(args) {
+                if (this.alpha == 1) {
+                    if (settings.musicVolume < 0.99) {
+                        settings.musicVolume = settings.musicVolume + 0.05;
+                        if (settings.musicVolume > 1) settings.musicVolume = 1;
+                        musicPlayer.volume = settings.musicVolume;
+                    }
                 }
             }
-        }
-    }));
+        }),
 
-    menuSettingsAudio.push(controls.button({
-        anchor: [0.55, 0.375], sizeAnchor: [0.2, 0.1],
-        text: "Sound Volume: 50%", alpha: 0,
-        onClick(args) {
-            if (this.alpha == 1) {
-                playSound("buttonClickSound");
+        controls.button({
+            anchor: [0.55, 0], sizeAnchor: [0.2, 0.1],
+            text: "Sound Volume: 50%", alpha: 0,
+            pmSetting: true,
+            onClick(args) {
+                if (this.alpha == 1) {
+                    playSound("buttonClickSound");
+                }
+            },
+            tick() {
+                this.text = "Sound Volume: " + Math.round(settings.soundVolume * 100) + "%";
             }
-        }
-    }));
-    menuSettingsAudio.push(controls.button({
-        anchor: [0.5, 0.375], sizeAnchor: [0.04, 0.1],
-        text: "-", alpha: 0,
-        onClick(args) {
-            if (this.alpha == 1) {
-                if (settings.soundVolume > 0.01) {
-                    settings.soundVolume = settings.soundVolume - 0.05;
-                    if (settings.soundVolume < 0) settings.soundVolume = 0;
-                    changeSoundVolume(settings.soundVolume);
-                    showMenuSettings(); //Update
+        }),
+        controls.button({
+            anchor: [0.5, 0], sizeAnchor: [0.04, 0.1],
+            text: "-", alpha: 0,
+            onClick(args) {
+                if (this.alpha == 1) {
+                    if (settings.soundVolume > 0.01) {
+                        settings.soundVolume = settings.soundVolume - 0.05;
+                        if (settings.soundVolume < 0) settings.soundVolume = 0;
+                        changeSoundVolume(settings.soundVolume);
+                    }
                 }
             }
-        }
-    }));
-    menuSettingsAudio.push(controls.button({
-        anchor: [0.76, 0.375], sizeAnchor: [0.04, 0.1],
-        text: "+", alpha: 0,
-        onClick(args) {
-            if (this.alpha == 1) {
-                if (settings.soundVolume < 0.99) {
-                    settings.soundVolume = settings.soundVolume + 0.05;
-                    if (settings.soundVolume > 1) settings.soundVolume = 1;
-                    changeSoundVolume(settings.soundVolume);
-                    showMenuSettings(); //Update
+        }),
+        controls.button({
+            anchor: [0.76, 0], sizeAnchor: [0.04, 0.1],
+            text: "+", alpha: 0,
+            onClick(args) {
+                if (this.alpha == 1) {
+                    if (settings.soundVolume < 0.99) {
+                        settings.soundVolume = settings.soundVolume + 0.05;
+                        if (settings.soundVolume > 1) settings.soundVolume = 1;
+                        changeSoundVolume(settings.soundVolume);
+                    }
                 }
             }
-        }
-    }));
+        }),
+    ]
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    for (i = 0; i < menuSettingsAudio.length; i++) {
+        menuSettings[i].alpha = 1;
+    }
 
     function showMenuSettings() {
-        menuSettingsAudio[0].text = "Music Volume: " + Math.round(settings.musicVolume * 100) + "%";
-        menuSettingsAudio[3].text = "Sound Volume: " + Math.round(settings.soundVolume * 100) + "%";
+        for (i = 0; i < menuSettingsGameplay.length; i++) {
+            menuSettingsGameplay[i].alpha = 0;
+        }
+        for (i = 0; i < menuSettingsGraphics.length; i++) {
+            menuSettingsGraphics[i].alpha = 0;
+        }
+        for (i = 0; i < menuSettingsControls.length; i++) {
+            menuSettingsControls[i].alpha = 0;
+        }
+        for (i = 0; i < menuSettingsAudio.length; i++) {
+            menuSettingsAudio[i].alpha = 0;
+        }
 
-        for (i = 0; i < menuSettings.length; i++) {
-            menuSettings[i].alpha = 1;
-        }
-        if (settingsCategory == "gameplay") {
-            if (settings.autosave == true) {
-                menuSettingsGameplay[0].text = "Autosave: ON";
+        let categoryEntries = "";
+        if (settingsCategory == "gameplay") categoryEntries = menuSettingsGameplay;
+        if (settingsCategory == "graphics") categoryEntries = menuSettingsGraphics;
+        if (settingsCategory == "controls") categoryEntries = menuSettingsControls;
+        if (settingsCategory == "audio") categoryEntries = menuSettingsAudio;
+
+        let c = 0;
+        for (i = 0; i < categoryEntries.length; i++) {
+            if (categoryEntries[i].anchor[0] == 0.55) {
+                c = 0;
+                for (j = 0; j < i; j++) {
+                    if (categoryEntries[i].anchor[0] == categoryEntries[j].anchor[0] && (categoryEntries[j].anchor[1] - baseY) / cY >= c) c = 1 + ((categoryEntries[j].anchor[1] - baseY) / cY);
+                }
             }
-            else {
-                menuSettingsGameplay[0].text = "Autosave: OFF";
-            }
-            for (i = 0; i < menuSettingsGameplay.length; i++) {
-                menuSettingsGameplay[i].alpha = 1;
-            }
-        }
-        else {
-            for (i = 0; i < menuSettingsGameplay.length; i++) {
-                menuSettingsGameplay[i].alpha = 0;
-            }
-        }
-        if (settingsCategory == "graphics") {
-            if (settings.grid == true) {
-                menuSettingsGraphics[0].text = "Grid: ON";
-            }
-            else {
-                menuSettingsGraphics[0].text = "Grid: OFF";
-            }
-            if (settings.joystick == true) {
-                menuSettingsGraphics[1].text = "Joystick";
-            }
-            else {
-                menuSettingsGraphics[1].text = "WalkPad";
-            }
-            menuSettingsGraphics[2].text = "WalkPad Size: " + Math.max(50, settings.walkPadSize * 100) + "%";
-            for (i = 0; i < menuSettingsGraphics.length; i++) {
-                menuSettingsGraphics[i].alpha = 1;
-            }
-        }
-        else {
-            for (i = 0; i < menuSettingsGraphics.length; i++) {
-                menuSettingsGraphics[i].alpha = 0;
-            }
-        }
-        if (settingsCategory == "audio") {
-            for (i = 0; i < menuSettingsAudio.length; i++) {
-                menuSettingsAudio[i].alpha = 1;
-            }
-        }
-        else {
-            for (i = 0; i < menuSettingsAudio.length; i++) {
-                menuSettingsAudio[i].alpha = 0;
-            }
+            categoryEntries[i].anchor[1] = baseY + (c * cY);
+            
+            categoryEntries[i].alpha = 1;
+            if (categoryEntries[i].tick != undefined) categoryEntries[i].tick();
         }
     }
-    showMenuSettings();
-
 
     fadeIn(1000 / 3, true);
 
     return {
         // Pre-render function
         preRender(ctx, delta) {
-
+            showMenuSettings();
         },
         // Controls
         controls: [
             ...background,
-            ...menuSettings, ...menuSettingsGameplay, ...menuSettingsGraphics, ...menuSettingsAudio, 
+            ...menuSettings, ...menuSettingsGameplay, ...menuSettingsGraphics, ...menuSettingsControls, ...menuSettingsAudio, 
             settingsSaveText,
         ],
         name: "settings"

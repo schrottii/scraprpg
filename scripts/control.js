@@ -144,6 +144,7 @@ let controls = {
             pressedBottom: colors.buttonbottompressed,
             fillText: "black",
             fontSize: 30,
+            pmSetting: false,
             render(ctx) {
                 let x, y, w, h;
 
@@ -171,6 +172,39 @@ let controls = {
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
                 ctx.fillText(this.text, x + w / 2, y + h / 2, w);
+                /*
+                if (this.pmSetting) {
+                    // pm = plus minus + -
+
+                    x = this.offset[0] / red + this.anchor[0] * ctx.canvas.width - (0.05 * ctx.canvas.width);
+                    w = w / 5;
+
+                    if (this.isPressed) ctx.fillStyle = this.pressedTop;
+                    else ctx.fillStyle = this.fillTop;
+                    ctx.fillRect(x, y, w, h / 2 + 0.25);
+
+                    if (this.isPressed) ctx.fillStyle = this.pressedBottom;
+                    else ctx.fillStyle = this.fillBottom;
+                    ctx.fillRect(x, y + h / 2, w, h / 2);
+
+                    ctx.fillStyle = this.fillText;
+                    ctx.fillText("-", x + w / 2, y + h / 2, w);
+
+
+
+                    x = this.offset[0] / red + this.anchor[0] * ctx.canvas.width + (0.05 * ctx.canvas.width);
+
+                    if (this.isPressed) ctx.fillStyle = this.pressedTop;
+                    else ctx.fillStyle = this.fillTop;
+                    ctx.fillRect(x, y, w, h / 2 + 0.25);
+
+                    if (this.isPressed) ctx.fillStyle = this.pressedBottom;
+                    else ctx.fillStyle = this.fillBottom;
+                    ctx.fillRect(x, y + h / 2, w, h / 2);
+
+                    ctx.fillStyle = this.fillText;
+                    ctx.fillText("+", x + w / 2, y + h / 2, w);
+                }*/
             },
             ...args || {},
         }
