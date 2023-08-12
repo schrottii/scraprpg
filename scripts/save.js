@@ -116,6 +116,7 @@ let game = {
 let settings = {
     autosave: false,
     grid: true,
+    particles: true,
     joystick: false,
     walkPadSize: 1,
     musicVolume: 0.5,

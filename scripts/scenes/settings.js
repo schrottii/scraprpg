@@ -173,12 +173,7 @@ scenes.settings = () => {
             onClick(args) {
                 if (this.alpha == 1) {
                     playSound("buttonClickSound");
-                    if (settings.grid == true) {
-                        settings.grid = false;
-                    }
-                    else {
-                        settings.grid = true;
-                    }
+                    settings.grid = !settings.grid;
                     showMenuSettings();
                 }
             },
@@ -193,73 +188,20 @@ scenes.settings = () => {
         }),
         controls.button({
             anchor: [0.55, 0], sizeAnchor: [0.2, 0.1],
-            text: "Fight Grid: ON", alpha: 0,
+            text: "Particles: ON", alpha: 0,
             onClick(args) {
                 if (this.alpha == 1) {
                     playSound("buttonClickSound");
-                    if (settings.grid == true) {
-                        settings.grid = false;
-                    }
-                    else {
-                        settings.grid = true;
-                    }
+                    settings.particles = !settings.particles;
                     showMenuSettings();
                 }
             },
             tick() {
-                if (settings.grid == true) {
-                    this.text = "Fight Grid: ON";
+                if (settings.particles == true) {
+                    this.text = "Particles: ON";
                 }
                 else {
-                    this.text = "Fight Grid: OFF";
-                }
-            }
-        }),
-        controls.button({
-            anchor: [0.55, 0], sizeAnchor: [0.2, 0.1],
-            text: "Fight Grid: ON", alpha: 0,
-            onClick(args) {
-                if (this.alpha == 1) {
-                    playSound("buttonClickSound");
-                    if (settings.grid == true) {
-                        settings.grid = false;
-                    }
-                    else {
-                        settings.grid = true;
-                    }
-                    showMenuSettings();
-                }
-            },
-            tick() {
-                if (settings.grid == true) {
-                    this.text = "Fight Grid: ON";
-                }
-                else {
-                    this.text = "Fight Grid: OFF";
-                }
-            }
-        }),
-        controls.button({
-            anchor: [0.55, 0], sizeAnchor: [0.2, 0.1],
-            text: "Fight Grid: ON", alpha: 0,
-            onClick(args) {
-                if (this.alpha == 1) {
-                    playSound("buttonClickSound");
-                    if (settings.grid == true) {
-                        settings.grid = false;
-                    }
-                    else {
-                        settings.grid = true;
-                    }
-                    showMenuSettings();
-                }
-            },
-            tick() {
-                if (settings.grid == true) {
-                    this.text = "Fight Grid: ON";
-                }
-                else {
-                    this.text = "Fight Grid: OFF";
+                    this.text = "Particles: OFF";
                 }
             }
         }),
@@ -332,14 +274,7 @@ scenes.settings = () => {
             text: "Music Volume: 50%", alpha: 0,
             onClick(args) {
                 if (this.alpha == 1) {
-                    let tempVol = settings.soundVolume;
-                    settings.soundVolume = settings.musicVolume;
-                    changeSoundVolume(settings.soundVolume);
                     playSound("buttonClickSound");
-                    settings.soundVolume = tempVol;
-                    setTimeout(() => {
-                        changeSoundVolume(settings.soundVolume);
-                    }, 1000);
                 }
             },
             tick() {
