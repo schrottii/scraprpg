@@ -1324,7 +1324,7 @@ scenes.mapmaker = () => {
         text: "Tile Picker", alpha: 0,
     }));
 
-    for (t = 0; t < 100; t++) {
+    for (t = 0; t < 200; t++) {
         tilesMenuTiles.push(controls.image({
             anchor: [0.05, 0.2], offset: [32 + (72 * (t % 25)), 32 + (72 * Math.floor(t / 25))], sizeOffset: [64, 64],
             source: "gear", alpha: 0, glowColor: "white", glow: 0,
@@ -2014,6 +2014,12 @@ scenes.mapmaker = () => {
     function saveFile(type) {
         let toExport;
 
+        for (let tilesetTile in map.tiles) {
+            if (map.tiles[tilesetTile].set != undefined) {
+                delete map.tiles[tilesetTile];
+            }
+        }
+        
         if(type == "sotrm") toExport = JSON.stringify(map);
         if (type == "js") toExport = 'maps["' + currentMap + '"] = ' + JSON.stringify(map);
 
@@ -2591,8 +2597,8 @@ scenes.mapmaker = () => {
         for (t = 0; t < 25; t++) {
             if (tilesMenuTiles[t].offset[0] / red <= width * scale * 0.9) pageWidth = t;
         }
-        for (r = 0; r < 4; r++) {
-            if (tilesMenuTiles[r * 25].offset[1] / red <= height * 0.4) pageSize = pageWidth * (r + 1);
+        for (r = 0; r < 8; r++) {
+            if (tilesMenuTiles[r * 25].offset[1] / red <= height * 0.6) pageSize = pageWidth * (r + 1);
         }
         let nr = 0;
         let til;

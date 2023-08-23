@@ -154,6 +154,7 @@ let images = {
     "tilesets/castle": "data/images/tilesets/castle.png",
     "tilesets/torch": "data/images/tilesets/torch.png",
     "tilesets/chests": "data/images/tilesets/chests.png",
+    "tilesets/forest_old": "data/images/tilesets/forest-old.png",
     "tilesets/forest": "data/images/tilesets/forest.png",
 
     // Tiles
@@ -320,6 +321,7 @@ var maps = {
     "partyHouse": "scripts/maps/partyHouse.js",
     "foresttest": "scripts/maps/foresttest.js",
     "forestmap": "scripts/maps/forestmap.js",
+    "newforest": "scripts/maps/newForest.js",
 };
 
 var colors = { // colors not colours

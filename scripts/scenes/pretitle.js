@@ -117,6 +117,14 @@ scenes.pretitle = () => {
                     setScene(scenes.mapmaker());
                 }
             }),
+            controls.button({
+                anchor: [.9, .5], sizeOffset: [100, 50],
+                clickthrough: false, fontSize: 24, alpha: 0.5,
+                text: "Delete MM Cache",
+                onClick() {
+                    localStorage.removeItem("SRPGMM");
+                }
+            }),
         ],
         name: "pretitle"
     }
