@@ -151,7 +151,7 @@ scenes.savemanager = () => {
     }));
     buttons.push(controls.label({
         anchor: [0.15, 0.95],
-        align: "center", fontSize: 16, fill: "black",
+        align: "center", fontSize: 20, fill: "black",
         text: "Save",
         alpha: 1,
     }));
@@ -166,7 +166,7 @@ scenes.savemanager = () => {
     }));
     buttons.push(controls.label({
         anchor: [0.35, 0.95],
-        align: "center", fontSize: 16, fill: "black",
+        align: "center", fontSize: 20, fill: "black",
         text: "Load",
         alpha: 1,
     }));
@@ -181,7 +181,7 @@ scenes.savemanager = () => {
     }));
     buttons.push(controls.label({
         anchor: [0.55, 0.95],
-        align: "center", fontSize: 16, fill: "black",
+        align: "center", fontSize: 20, fill: "black",
         text: "Delete",
         alpha: 1,
     }));
@@ -197,7 +197,7 @@ scenes.savemanager = () => {
     }));
     buttons.push(controls.label({
         anchor: [0.75, 0.95],
-        align: "center", fontSize: 16, fill: "black",
+        align: "center", fontSize: 20, fill: "black",
         text: "Load auto save",
         alpha: 1,
     }));

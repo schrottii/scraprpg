@@ -8,7 +8,6 @@ scenes.itemscene = () => {
 
     var itemPage = 0;
     var characterSelected = "bleu";
-
     // Background
     background.push(controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 1],
@@ -52,6 +51,7 @@ scenes.itemscene = () => {
     }));
 
     // The top
+    /*
     theTop.push(controls.rect({
         anchor: [0.05, 0.01], sizeAnchor: [0.15, 0.1],
         alpha: 0,
@@ -67,6 +67,7 @@ scenes.itemscene = () => {
         align: "center", fontSize: 20, fill: "black",
         alpha: 1,
     }));
+    */
 
     theTop.push(controls.rect({
         anchor: [0.25, 0.01], sizeAnchor: [0.15, 0.1],
@@ -91,11 +92,11 @@ scenes.itemscene = () => {
             playSound("buttonClickSound");
             if (storyonly == false) {
                 storyonly = true;
-                theTop[5].text = "Key Items";
+                theTop[3].text = "Story Items";
             }
             else if (storyonly == true) {
                 storyonly = false;
-                theTop[5].text = "Story Items";
+                theTop[3].text = "Normal Items";
             }
             showItems();
         },
@@ -118,7 +119,7 @@ scenes.itemscene = () => {
             if (game.chars[i + 1] != undefined) characterSelected = game.chars[i + 1];
             else characterSelected = game.chars[0];
 
-            theTop[7].text = game.characters[characterSelected].name;
+            theTop[5].text = game.characters[characterSelected].name;
         },
         fill: "black"
     }));
@@ -128,6 +129,13 @@ scenes.itemscene = () => {
         align: "center", fontSize: 20, fill: "black",
         alpha: 1,
     }));
+
+    // Coming from status
+    if (globalSelectedCharacter != "") {
+        characterSelected == globalSelectedCharacter;
+        theTop[5].text = game.characters[globalSelectedCharacter].name;
+        globalSelectedCharacter = "";
+    }
 
     // Items n stuff
     for (i = 0; i < 4; i++) {

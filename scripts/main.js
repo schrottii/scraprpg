@@ -112,6 +112,7 @@ function formatNumber(number) {
 }
 
 var playAfterIntro = "none";
+var globalSelectedCharacter = "";
 
 function playMusic(name, intro = "none") {
     if (musicPlayer.volume > 0 && musicPlayer.volume <= 1) {

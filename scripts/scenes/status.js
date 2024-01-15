@@ -9,7 +9,7 @@ scenes.status = (characterSelected="Bleu") => {
     var elementDisplay = [];
     var immunityDisplay = [];
 
-    var masteryComp = [];
+    //var masteryComp = [];
 
     characterSelectedName = game.characters[characterSelected].name;
     nr = game.chars.indexOf(characterSelected) + 1;
@@ -160,19 +160,27 @@ scenes.status = (characterSelected="Bleu") => {
     // Buttons
     buttons.push(controls.button({
         anchor: [0.05, 0.625], sizeAnchor: [0.4, 0.1],
-        text: "Evolution Tree (0 Skill Points)",
+        text: "Use Item",
         alpha: 1,
+        onClick(args) {
+            globalSelectedCharacter = characterSelected;
+            setScene(scenes.itemscene());
+        }
     }));
     buttons.push(controls.button({
         anchor: [0.05, 0.75], sizeAnchor: [0.4, 0.1],
         text: "View Magic",
         alpha: 1,
+        onClick(args) {
+            globalSelectedCharacter = characterSelected;
+            setScene(scenes.magicscene());
+        }
     }));
-    buttons.push(controls.button({
+    /*buttons.push(controls.button({
         anchor: [0.05, 0.875], sizeAnchor: [0.4, 0.1],
         text: "View Mastery Techniques",
         alpha: 1,
-    }));
+    }));*/
 
     // Equipment
     for (i = 0; i < 6; i++) {
@@ -232,7 +240,7 @@ scenes.status = (characterSelected="Bleu") => {
     }
     updateImmunities();
 
-    masteryComp.push(controls.label({
+    /*masteryComp.push(controls.label({
         anchor: [0.5, 0.85],
         text: "Compatible Duo Mastery Technique Partners:",
         align: "left", fontSize: 20, fill: "black",
@@ -243,7 +251,7 @@ scenes.status = (characterSelected="Bleu") => {
         text: "Corelle, Aspen, Go, Skrau",
         align: "left", fontSize: 20, fill: "black",
         alpha: 1
-    }));
+    }));*/
 
     fadeIn(1000 / 3, true);
 
@@ -289,7 +297,7 @@ scenes.status = (characterSelected="Bleu") => {
         controls: [
             ...background,
             ...characterName, characterImage, ...characterStats,
-            ...characterBars, ...buttons, ...equipmentDisplay, ...elementDisplay, ...immunityDisplay, ...masteryComp
+            ...characterBars, ...buttons, ...equipmentDisplay, ...elementDisplay, ...immunityDisplay//, ...masteryComp
         ],
         name: "status"
     }

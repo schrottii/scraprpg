@@ -107,7 +107,7 @@ scenes.formation = () => {
                 onClick(args) {
                     if (selectedPos[0] == 8 && this.source != "gear") {
                         selectedPos = [this.pos1, this.pos2];
-                        switchText.text = "What character should " + game.characters[this.source].name + " switch with?";
+                        switchText.text = "Which character should " + game.characters[this.source].name + " switch with?";
                         switchText.alpha = 1;
                     }
                     else if (selectedPos[0] != 8 && (selectedPos[0] != this.pos1 || selectedPos[1] != this.pos2)) {
@@ -171,7 +171,7 @@ scenes.formation = () => {
 
     for (i = 0; i < 3; i++) {
         posInfos.push(controls.label({
-            anchor: [0.075, 0.125], offset: [0, 144 * (3.5 + (i / 4))],
+            anchor: [0.075, 0.175], offset: [0, 144 * (3.5 + (i / 3))],
             fontSize: 32, fill: ["blue", "pink", "red"][i], align: "left",
             text: ["Back: " + (1 - ROWBOOST).toFixed(2) + "x STR, " + (1 + ROWBOOST).toFixed(2) + "x DEF", "Mid: 1x STR, 1x DEF", "Front: " + (1 + ROWBOOST).toFixed(2) + "STR, " + (1 - ROWBOOST).toFixed(2) + "x DEF"][i],
             alpha: 1,
@@ -179,9 +179,9 @@ scenes.formation = () => {
     }
 
     let switchText = controls.label({
-        anchor: [0.075, 0.25], offset: [144 + 72, 144 * 3.5],
+        anchor: [0.075, 0.9], offset: [144 + 72, 0],
         fontSize: 20, fill: "black", align: "center",
-        text: "What character should x switch with?",
+        text: "Which character should x switch with?",
         alpha: 0,
     });
 

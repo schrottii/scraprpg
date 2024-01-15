@@ -443,30 +443,23 @@ scenes.game = () => {
         alpha: 0, fill: "white",
     });
 
-    // Alright, alright, we need comments, so let me comment this
-    // This is for the map's display. In the BOTTOM RIGHT. No idea what else to call it.
-    let mapDisplay = controls.button({
-        anchor: [1, 0], offset: [-96, 0], sizeOffset: [96, 96],
-        alpha: 1,
+    // This is for the inventory button. In the TOP RIGHT.
+    let inventoryButton = controls.button({
+        anchor: [1, 0], offset: [-128, 0], sizeOffset: [128, 128],
+        alpha: 0,
         text: "",
         onClick(args) {
-            if (this.alpha == 1 && canMove == true) {
+            //if (canMove == true) { // DISABLED DURING TESTING RE-ADD LATER
                 playSound("buttonClickSound");
                 fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
-            }
+            //}
         }
     });
-    let mapIcon = controls.image({
-        anchor: [1, 0], offset: [-96, 0], sizeOffset: [96, 96],
+    let inventoryImage = controls.image({
+        anchor: [1, 0], offset: [-128, 0], sizeOffset: [128, 128],
         alpha: 1,
         source: "inventory",
     });
-
-    // The top bg rect
-    //mapDisplay.push(controls.rect({
-    //    anchor: [.9925, .68], offset: [-220, 0], sizeOffset: [250, 250],
-    //    fill: colors.bottomcolor,
-    //}));
 
     let poisonBlack = controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 1],
@@ -983,7 +976,7 @@ scenes.game = () => {
         }
     }
 
-    function check_EnemyCollision(i) {
+    function checkEnemyCollision(i) {
         if (game.position[0] == enemies[i].position[0] &&
             game.position[1] == enemies[i].position[1] &&
             enemies[i].map == game.map && canMove == true && tokenRunning == false) {
@@ -1035,7 +1028,7 @@ scenes.game = () => {
         }
     }
 
-    function check_ItemCollision(map, i) {
+    function checkItemCollision(map, i) {
         if (Math.floor(game.position[0]) == map.items[i][0] &&
             Math.floor(game.position[1]) == map.items[i][1]) {
             // Collision!
@@ -1123,12 +1116,12 @@ scenes.game = () => {
         }
 
         for (i = 0; i < enemies.length; i++) {
-            check_EnemyCollision(i);
+            checkEnemyCollision(i);
         }
 
         if (map.items != undefined) {
             for (i = 0; i < map.items.length; i++) {
-                check_ItemCollision(map, i);
+                checkItemCollision(map, i);
             }
         }
 
@@ -1547,7 +1540,7 @@ scenes.game = () => {
                         }
 
                         // Don't put this in a for loop. lol
-                        check_EnemyCollision(i);
+                        checkEnemyCollision(i);
                     }
                 }
             }
@@ -1880,7 +1873,7 @@ scenes.game = () => {
         },
         controls: [
             poisonBlack, nightEffect, nightEffect2, fallingRain, fogCloud, darkCloud, dustParticles,
-            ...walkPad, mapDisplay, mapIcon, actionButton, backButton,
+            ...walkPad, inventoryButton, inventoryImage, actionButton, backButton,
             ...cutsceneElements, ...dialogueNormalComponents, ...dialogueInvisComponents, ...dialogueNarratorComponents, ...dialogueCutsceneComponents,
             autoSaveText, ...areaNameBox, areaTeleportFade,
         ],

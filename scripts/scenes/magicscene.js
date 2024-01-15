@@ -43,7 +43,7 @@ scenes.magicscene = () => {
 
     // The top
     theTop.push(controls.label({
-        anchor: [0.105, 0.06],
+        anchor: [0.405, 0.06],
         text: "EP: ",
         align: "left", fontSize: 32, fill: "black",
         alpha: 1,
@@ -51,7 +51,7 @@ scenes.magicscene = () => {
 
     theTop.push(controls.label({
         anchor: [0.505, 0.06],
-        text: "Drip",
+        text: "0",
         align: "right", fontSize: 32, fill: "black",
         alpha: 1,
     }));
@@ -77,6 +77,13 @@ scenes.magicscene = () => {
         align: "center", fontSize: 20, fill: "black",
         alpha: 1,
     }));
+
+    // Coming from status
+    if (globalSelectedCharacter != "") {
+        characterSelected == globalSelectedCharacter;
+        theTop[3].text = game.characters[globalSelectedCharacter].name;
+        globalSelectedCharacter = "";
+    }
 
     // Items n stuff
     for (i = 0; i < 4; i++) {
