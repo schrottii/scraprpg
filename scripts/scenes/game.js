@@ -791,18 +791,18 @@ scenes.game = () => {
         let tileX = npc.position[0];
         let tileY = npc.position[1];
 
-        let xAdjust = Math.max(CAMERA_LOCK_X, game.position[0] - width / 2 + 0.5);
+        let ofsX = Math.max(CAMERA_LOCK_X, game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5) + npc.kofs[0] * (npc.kofs[2] / npc.walkingSpeed);
+        let ofsY = Math.max(CAMERA_LOCK_Y, game.position[1] - kofs[1] * kofs[2] - 7.5) + npc.kofs[1] * (npc.kofs[2] / npc.walkingSpeed);
+
         npc.kofs[2] = Math.max(npc.kofs[2] - delta / 166, 0);
 
         ctx.drawImage(images[npc.skin],
             32 * Math.floor(walkTime), 32 * npc.head, 32, 32,
-            ((zoom * scale) * (tileX + (CAM_OX == 0 ? kofs[0] * kofs[2] : 0) - npc.kofs[0] * (npc.kofs[2] / npc.walkingSpeed) - xAdjust)) - ((zoom - 1) * scale * (width / 2)),
-            (zoom * scale) * (tileY + (CAM_OY == 0 ? kofs[1] * kofs[2] : 0) - npc.kofs[1] * (npc.kofs[2] / npc.walkingSpeed) - Math.max(CAMERA_LOCK_Y, game.position[1] - 7.5) - ((zoom - 1) * scale * 7)),
+            ((zoom * scale) * (tileX - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (tileY - ofsY) - ((zoom - 1) * scale * 7),
             zswm, zswm)
         if (npc.talk == true) {
             ctx.drawImage(images.talk,
-                ((zoom * scale) * (tileX + 1 + kofs[0] * kofs[2] - npc.kofs[0] * (npc.kofs[2] / npc.walkingSpeed) - xAdjust)) - ((zoom - 1) * scale * (width / 2)),
-                (zoom * scale) * (tileY - 1 + (CAM_OY == 0 ? kofs[1] * kofs[2] : 0) - npc.kofs[1] * (npc.kofs[2] / npc.walkingSpeed) - Math.max(CAMERA_LOCK_Y, (game.position[1] - 7.5) - ((zoom - 1) * scale * 7))),
+                ((zoom * scale) * (tileX + (map.worldmode ? 0.5 : 1) - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (tileY - (map.worldmode ? 0.5 : 1) - ofsY) - ((zoom - 1) * scale * 7),
                 zswm, zswm)
         }
     }
@@ -1573,6 +1573,7 @@ scenes.game = () => {
                 // Optimized code pog
                 if (xo != undefined) {
                     if (map.worldmode == true) {
+                        // only move half a tile in world mode
                         xo /= 2;
                         yo /= 2;
                     }
@@ -1601,16 +1602,12 @@ scenes.game = () => {
                         else if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2).action != undefined) actionButton.snip = [64, 32, 64, 32]
 
                         tryTalk(xo, yo);
-
-                        /*for (i in activenpcs) {
-                            if (activenpcs[i].position[0] == Math.floor(game.position[0]) + xo && activenpcs[i].position[1] == Math.floor(game.position[1]) + yo) actionButton.source = "actionbutton_active";
-                        }*/ // Looks outdated to me
                     }
                 }
             }
 
             let isInWater = 1;
-            if (getTile(map, game.position[0], game.position[1]) != undefined) if(getTile(map, game.position[0], game.position[1]).swim == true) isInWater = 2;
+            if (getTile(map, game.position[0], game.position[1]) != undefined) if (getTile(map, game.position[0], game.position[1]).swim == true) isInWater = 2;
 
             kofs[2] = Math.max(kofs[2] - delta / 166  / isInWater, 0);
             walkTime = (walkTime + delta * (kofs[2] ? 5 : 1) / 1000) % 2;
@@ -1619,11 +1616,14 @@ scenes.game = () => {
             ctx.imageSmoothingEnabled = false;
             ctx.globalAlpha = 1;
 
+            // Camera limit (corners of the map)
+            // the min(0, does the limiting. CAMERA_LOCK_X and Y are some sorta offset
+            // CAM_OX and Y range from 0 to inf, 0 = locked camera, value = distance to the lock
             CAM_OX = Math.min(0, (game.position[0] - width / 2 + 0.5) - CAMERA_LOCK_X);
             CAM_OY = Math.min(0, (game.position[1] - 7.5) - CAMERA_LOCK_Y);
 
+            // draw tiles of BG and BG2 layers (behind player)
             drawTiles(ctx, 1);
-
             drawTiles(ctx, 2);
 
             let ofsX = Math.max(CAMERA_LOCK_X, game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5);
@@ -1631,23 +1631,22 @@ scenes.game = () => {
 
             if (map.items != undefined) {
                 for (let item of map.items) {
-                    if (item[4] == true) {
-                        if(images["items/" + items[item[2]]().source] != undefined) ctx.drawImage(images["items/" + items[item[2]]().source],
-                            ((zoom * scale) * (item[0] + (CAM_OX == 0 ? kofs[0] * kofs[2] : 0) - Math.max(CAMERA_LOCK_X, (game.position[0] - width / 2 + 0.5)))) - ((zoom - 1) * scale * (width / 2)),
-                            (zoom * scale) * (item[1] + (CAM_OY == 0 ? kofs[1] * kofs[2] : 0) - Math.max(CAMERA_LOCK_Y, (game.position[1] - 7.5) - ((zoom - 1) * scale * 7))),
-                            zoom * scale, zoom * scale)
+                    if (item[4] == true) { // is visible
+                        if (images["items/" + items[item[2]]().source] != undefined) ctx.drawImage(images["items/" + items[item[2]]().source],
+                            ((zoom * scale) * (item[0] - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (item[1] - ofsY) - ((zoom - 1) * scale * 7),
+                            zoom * scale, zoom * scale);
                     }
                 }
             }
 
-
+            // worldmode
             let wm = 1;
-
             if (map.worldmode == true) {
                 wm = 2;
             }
             zswm = (zoom * scale) / wm;
 
+            // draw NPCs
             for (i in activenpcs) {
                 if (activenpcs[i].alpha > 0) {
                     ctx.globalAlpha = activenpcs[i].alpha;
@@ -1655,6 +1654,7 @@ scenes.game = () => {
                 }
             }
 
+            // draw enemies
             for (let enemy of enemies) {
                 if (enemy.alpha > 0) {
                     ctx.globalAlpha = enemy.alpha;
@@ -1662,6 +1662,7 @@ scenes.game = () => {
                 }
             }
 
+            // draw player / formation leader
             if (map.worldmode != true || images["wm" + game.leader] == undefined) {
                 ctx.drawImage(images[game.leader], 32 * Math.floor(walkTime), 32 * head, 32, 32 / isInWater,
                     scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5)),
@@ -1675,6 +1676,7 @@ scenes.game = () => {
                 ctx.imageSmoothingEnabled = false;
             }
 
+            // draw FG tiles (in front of player)
             drawTiles(ctx, 3);
 
             // Joystick
@@ -1862,6 +1864,8 @@ scenes.game = () => {
                 }
             }
 
+            // Keybinds
+
             // ...leave?
             if (currentKeys["q"]) {
                 setScene(scenes.title());
@@ -1880,5 +1884,3 @@ scenes.game = () => {
         name: "game"
     }
 }
-
-// TBD - to be developed
