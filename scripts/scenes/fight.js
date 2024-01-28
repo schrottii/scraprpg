@@ -1495,6 +1495,7 @@ scenes.fight = () => {
                 }
             }))
         }
+        /*
         if (i == 3) { // Mastery Techniques
             fightButtons.push(controls.rect({
                 anchor: [0.00, (i * 0.055)], sizeAnchor: [0.15, 0.055], offset: [0, -500],
@@ -1507,7 +1508,8 @@ scenes.fight = () => {
                 }
             }))
         }
-        if (i == 4) { // Macro
+        */
+        if (i == 3) { // Macro
             fightButtons.push(controls.rect({
                 anchor: [0.00, (i * 0.055)], sizeAnchor: [0.15, 0.055], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
@@ -1524,7 +1526,7 @@ scenes.fight = () => {
                 }
             }))
         }
-        if (i == 5) { // Flee
+        if (i == 4) { // Flee
             fightButtons.push(controls.rect({
                 anchor: [0.00, (i * 0.055)], sizeAnchor: [0.15, 0.055], offset: [0, -500],
                 fill: "rgb(191, 137, 69)",
@@ -1541,7 +1543,7 @@ scenes.fight = () => {
         }
 
     }
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < 5; i++) {
         topRowButton(i);
         fightButtons.push(controls.rect({
             anchor: [0.0025, 0.0025 + (i * 0.055)], sizeAnchor: [0.145, 0.05], offset: [0, -500],
@@ -1550,7 +1552,7 @@ scenes.fight = () => {
         }))
         fightButtons.push(controls.label({
             anchor: [0.145, 0.025 + (i * 0.055)], offset: [0, -500],
-            text: ["Normal Actions", "Item Inventory", "Magic", "Mastery Techniques", "Macro", "Flee"][i],
+            text: ["Normal Actions", "Item Inventory", "Magic", "Macro", "Flee"][i],
             fontSize: 20, fill: "black", align: "right",
             alpha: 1,
         }))
@@ -1755,7 +1757,7 @@ scenes.fight = () => {
     // finally a non array
     turnDisplay = controls.label({
         anchor: [0.95, 0.07],
-        fontSize: 36, fill: "blue", align: "right", outline: "black", outlineSize: 8,
+        fontSize: 36, fill: "lightblue", align: "right", outline: "black", outlineSize: 8,
         text: "Turn 1",
         alpha: 1,
     });
