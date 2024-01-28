@@ -8,46 +8,50 @@ Progress was fast in November of 2021, early 2022 and that year's Summer. Howeve
 
 ## Project Leader
 - **Schrottii**
-*Main Game Developer
-*Lead Programmer
-*Lead Idea Planner
-*Lead Story Writer
-*Lead Graphic Designer
-*Lead Composer
-*Lead Map Maker
-*Game Tester
-*Discord Server Owner
-*Motivator
+- Main Game Developer
+- Lead Programmer
+- Lead Idea Planner
+- Lead Story Writer
+- Lead Graphic Designer
+- Lead Composer
+- Lead Map Maker
+- Game Tester
+- Discord Server Owner
+- Motivator
 
 ### Staff
 - **Barduzzi (*Salveeny* in GitHub)**
-*Map Maker
-*Idea Planner
-*Graphic Designer
-*Story Writer
+- Map Maker
+- Idea Planner
+- Graphic Designer
+- Story Writer
+
+- **DaGame**
+- Game Tester
+- Graphic Designer
 
 - **Niko (Lun4-R)**
-*Graphic Designer
-*Idea Planner
-*Composer
+- Graphic Designer
+- Idea Planner
+- Composer
 
 - **Daem S. (TheKingofTrash)**
-*Graphic Designer
-*Story Writer
-*Game Tester
-*Idea Planner
+- Graphic Designer
+- Story Writer
+- Game Tester
+- Idea Planner
 
 - **Zedoreku**
-*Composer
+- Composer
 
 - **Decastar**
-*Inactive
-*[Father of ScrapRPG](https://youtube.com/playlist?list=PLl18EjlJraJi3R_jBT266QQ8-smWw0GMn)
-*Idea Planner
-*Graphic Designer
-*Story Writer
-*Lead Composer
+- Inactive
+- [Father of ScrapRPG](https://youtube.com/playlist?list=PLl18EjlJraJi3R_jBT266QQ8-smWw0GMn)
+- Idea Planner
+- Graphic Designer
+- Story Writer
+- Lead Composer
 
 - **ducdat0507**
-*Inactive
-*Programmer
+- Inactive
+- Programmer
