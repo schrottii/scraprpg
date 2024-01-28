@@ -1,6 +1,7 @@
 ﻿## TODO:
-11 Coding Things left to do in this phase
-(we are not always good at counting)
+- 3 coding things left to do in this phase
+- (we are not always good at counting)
+- lots of uhh making maps and stories and chapters yea
 
 ## Phase 1:
 The developing phase, Schrottii's phase, the essential features of the game, mostly coding (maybe a bad decision in hindsight, sigh).
@@ -39,7 +40,7 @@ There is still some coding, some new features, but not as much as in phase 1 (~~
 - Add the remaining settings
 - Code improvements
 
-##Phase 3
+## Phase 3
 The testing & publishing phase. This will be fun.
 
 - Test until we all die
