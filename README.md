@@ -19,32 +19,32 @@ Progress was fast in November of 2021, early 2022 and that year's Summer. Howeve
 - Discord Server Owner
 - Motivator
 
-### Staff
-- **Barduzzi (*Salveeny* in GitHub)**
+## Staff
+### Barduzzi (*Salveeny* in GitHub)
 - Map Maker
 - Idea Planner
 - Graphic Designer
 - Story Writer
 
-- **DaGame**
+### DaGame
 - Game Tester
 - Graphic Designer
 
-- **Niko (Lun4-R)**
+### Niko (Lun4-R)
 - Graphic Designer
 - Idea Planner
 - Composer
 
-- **Daem S. (TheKingofTrash)**
+### Daem S. (TheKingofTrash)
 - Graphic Designer
 - Story Writer
 - Game Tester
 - Idea Planner
 
-- **Zedoreku**
+### Zedoreku
 - Composer
 
-- **Decastar**
+### Decastar
 - Inactive
 - [Father of ScrapRPG](https://youtube.com/playlist?list=PLl18EjlJraJi3R_jBT266QQ8-smWw0GMn)
 - Idea Planner
@@ -52,6 +52,6 @@ Progress was fast in November of 2021, early 2022 and that year's Summer. Howeve
 - Story Writer
 - Lead Composer
 
-- **ducdat0507**
+### ducdat0507
 - Inactive
 - Programmer
