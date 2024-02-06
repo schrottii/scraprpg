@@ -108,7 +108,7 @@ function updateBar(charName, HealthBefore) {
         fightStats[which].alpha = 1;
         addAnimator(function (t) {
             fightStats[which].sizeAnchor[0] = Length * Math.max(0.01, ((Math.min(t * 0.01, 0.5))));
-            console.log(Length + "    " + Math.max(0.01, ((Math.min(t * 0.01, 0.5))))  + "   " + Length * Math.max(0.01, ((Math.min(t * 0.01, 0.5)))));
+            //console.log(Length + "    " + Math.max(0.01, ((Math.min(t * 0.01, 0.5))))  + "   " + Length * Math.max(0.01, ((Math.min(t * 0.01, 0.5)))));
 
             if (t > 1400) {
                 fightStats[which].anchor[0] = 0.242 + Leftend;
@@ -145,8 +145,6 @@ scenes.fight = () => {
     var gameOverScreen = [];
     var gameOverScreen2 = [];
     var fleeWrenches = [];
-    var actionDisplay = [];
-    var actionText = [];
     var attackAnimationObjects = [];
     var cutsceneElements = [];
 
@@ -339,9 +337,7 @@ scenes.fight = () => {
                 fightStats[i].offset[1] = t / 4;
             }
             turnDisplay.offset[1] = 0 - (t / 4);
-            for (i = 0; i < actionDisplay.length; i++) {
-                actionDisplay[i].offset[1] = 0 - (t / 4);
-            }
+            actionDisplay.offset[0] = 0 - (t / 4);
 
             for (i = 0; i < fightLogComponents.length; i++) {
                 fightLogComponents[i].offset[1] = (t / 4) + fightLogComponents[i].baseoffset[1];
@@ -702,31 +698,6 @@ scenes.fight = () => {
             }
         }
         fightlog.push(tempText + superTempText);
-    }
-
-    function postAction(text) {
-        let maxLength = 16;
-        let tempText = "";
-        let superTempText = "";
-
-        for (i = 0; i < text.length; i++) {
-            superTempText = superTempText + text[i];
-            if (text[i] == " ") {
-                tempText = tempText + superTempText;
-                superTempText = "";
-            }
-            if (superTempText.length + tempText.length > maxLength) {
-                if (tempText == "") {
-                    tempText = tempText + superTempText;
-                    superTempText = "";
-                }
-                else {
-                    actionText.push(tempText);
-                    tempText = "";
-                }
-            }
-        }
-        actionText.push(tempText + superTempText);
     }
 
     function executeActions() {
@@ -1645,14 +1616,14 @@ scenes.fight = () => {
         }));
     }
 
-    for (i = 0; i < 4; i++) {
-        actionDisplay.push(controls.label({
-            anchor: [0.175, 0.07 + (0.03 * i)],
-            fontSize: 24, fill: "rgb(125, 255, 0)", align: "left", outline: "darkgreen", outlineSize: 8,
-            text: actionText[Math.max(0, actionText.length - 3 + i)],
-            alpha: 1,
-        }));
-    }
+    // action display (what do you want to do?)
+    var actionDisplay = controls.label({
+        anchor: [0.025, 0.75],
+        fontSize: 24, fill: "rgb(125, 255, 0)", align: "left", outline: "darkgreen", outlineSize: 8,
+        text: "...",
+        alpha: 1,
+    });
+
 
     function fleeAnimation(x, y) {
         let p = x + (y * 3);
@@ -2864,24 +2835,25 @@ scenes.fight = () => {
             }
         }
 
-
-        actionText = [];
-
-        if (fightaction == "none") postAction("Select a character before assigning a command.");
-
-        if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied] != undefined &&
-            fightaction == "active") postAction("What will you assign for " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + "?");
-
-        if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied] != undefined &&
-            fightaction == "attack1") postAction("What <category> will " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " use?");
-
-        if (fightaction == "attack2") postAction("Choose a target.");
-
-        if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied] != undefined &&
-            fightaction == "macro") postAction("What predetermined set ot actions will " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " use?");
-
-        while (actionText.length < 4) {
-            actionText.push("");
+        // for actionDisplay (what do you want to do?)
+        // this used to be soooo long when it was 3 rows... but now...
+        actionDisplay.text = "";
+        switch (fightaction) {
+            case "none":
+                actionDisplay.text = "Select a character before assigning a command.";
+                break;
+            case "active":
+                if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied] != undefined) actionDisplay.text = "What will you assign for " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + "?";
+                break;
+            case "attack1":
+                if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied] != undefined) actionDisplay.text = "What <category> will " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " use?";
+                break;
+            case "attack2":
+                actionDisplay.text = "Choose a target.";
+                break;
+            case "macro":
+                if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied] != undefined) actionDisplay.text = "What predetermined set ot actions will " + game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " use?";
+                break;
         }
 
         turnDisplay.text = "Turn " + turn;
@@ -3001,9 +2973,7 @@ scenes.fight = () => {
         enemyListComponents[cp].bigoff = enemyListComponents[cp].offset[1];
         enemyListComponents[cp].offset = [0, 1000 + enemyListComponents[cp].bigoff];
     }
-    for (cp in actionDisplay) {
-        actionDisplay[cp].offset = [0, -500];
-    }
+    actionDisplay.offset = [-500, 0];
     turnDisplay.offset = [0, -500];
 
     addAnimator(function (t) {
@@ -3016,9 +2986,7 @@ scenes.fight = () => {
         for (cp in enemyListComponents) {
             enemyListComponents[cp].offset[1] = (enemyListComponents.bigoff + 1000) - t;
         }
-        for (cp in actionDisplay) {
-            actionDisplay[cp].offset[1] = -500 + (t / 2);
-        }
+        actionDisplay.offset[0] = -500 + (t / 2);
         turnDisplay.offset[1] = -500 + (t / 2);
 
         scal = Math.max(1, 10 - (t / 75));
@@ -3027,7 +2995,7 @@ scenes.fight = () => {
             for (cp in fightStats) fightStats[cp].offset[1] = fightStats[cp].defoff ? fightStats[cp].defoff : 0;
             for (cp in fightLogComponents) fightLogComponents[cp].offset[1] = fightLogComponents[cp].bigoff;
             for (cp in enemyListComponents) enemyListComponents[cp].offset[1] = enemyListComponents[cp].bigoff;
-            for (cp in actionDisplay) actionDisplay[cp].offset[1] = 0;
+            actionDisplay.offset[0] = 0;
             turnDisplay.offset[1] = 0;
 
             let runTime = 0;
@@ -3155,9 +3123,6 @@ scenes.fight = () => {
             for (i = 0; i < 12; i++) {
                 fightLogComponents[2 + i].text = fightlog[Math.max(0, fightlog.length - 12 + i)];
             }
-            for (i = 0; i < 4; i++) {
-                actionDisplay[i].text = actionText[i];
-            }
 
             // Grid thing
             for (i in positionGrid2) {
@@ -3224,7 +3189,7 @@ scenes.fight = () => {
             ...positionGrid, ...fightButtons, ...fightActions, ...actionButtons, turnDisplay, fleeLoss, fleeIcon,
             ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
-            ...fightStats, ...actionDisplay, ...gameOverScreen,
+            ...fightStats, actionDisplay, ...gameOverScreen,
             ...positionControls, ...epositionControls, ...positionGrid2, ...highlightGrid, ...attackAnimationObjects, kokitoziParticles, ...battleNumbers,
             ...winScreen, ...winScreen2, ...winStats, ...fleeWrenches, ...gameOverScreen2,
             ...cutsceneElements,

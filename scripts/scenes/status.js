@@ -44,7 +44,7 @@ scenes.status = (characterSelected="Bleu") => {
     // Name stuff
     characterName.push(controls.label({
         anchor: [0.05, 0.2],
-        align: "left", fontSize: 32, fill: "black",
+        align: "left", fontSize: 48, fill: "black",
         text: characterSelectedName,
         alpha: 1,
     }));
@@ -56,8 +56,15 @@ scenes.status = (characterSelected="Bleu") => {
         alpha: 1,
     }));
 
+    characterName.push(controls.label({
+        anchor: [0.05, 0.05],
+        align: "left", fontSize: 48, fill: "black",
+        text: "Character Status",
+        alpha: 1,
+    }));
+
     let characterImage = controls.image({
-        anchor: [0.3, 0.2], sizeOffset: [128, 128], snip: getEmotion("neutral"),
+        anchor: [0.3, 0.2], sizeOffset: [256, 256], snip: getEmotion("neutral"),
         source: "Portraits_" + characterSelectedName,
         alpha: 1,
     });
@@ -156,6 +163,15 @@ scenes.status = (characterSelected="Bleu") => {
         alpha: 1
     }))
 
+    for (i = 0; i < 3; i++) {
+        characterBars.push(controls.label({
+            anchor: [0.455, 0.509 + 0.04 * i],
+            fill: "black", align: "left", fontSize: 20,
+            text: ["HP", "Mana", "EXP"][i],
+            alpha: 1
+        }))
+    }
+
 
     // Buttons
     buttons.push(controls.button({
@@ -183,6 +199,12 @@ scenes.status = (characterSelected="Bleu") => {
     }));*/
 
     // Equipment
+    equipmentDisplay.push(controls.label({
+        anchor: [0.5, 0.46],
+        text: "Equipment:",
+        align: "left", fontSize: 32, fill: "black",
+        alpha: 1
+    }));
     for (i = 0; i < 6; i++) {
         equipmentDisplay.push(controls.label({
             anchor: [0.5, 0.5 + (0.04 * i)],
@@ -194,28 +216,33 @@ scenes.status = (characterSelected="Bleu") => {
 
     // Element
     elementDisplay.push(controls.label({
-        anchor: [0.5, 0.75],
+        anchor: [0.5, 0.8],
         text: "Element:",
-        align: "left", fontSize: 20, fill: "black",
+        align: "left", fontSize: 32, fill: "black",
         alpha: 1
     }));
     elementDisplay.push(controls.label({
-        anchor: [0.5, 0.79],
-        text: getStat(characterSelected, "element"),
+        anchor: [0.5, 0.84],
+        text: getStat(characterSelected, "element").charAt(0).toUpperCase() + getStat(characterSelected, "element").slice(1),
         align: "left", fontSize: 20, fill: "black",
+        alpha: 1
+    }));
+    elementDisplay.push(controls.image({
+        anchor: [0.5, 0.875], sizeOffset: [64, 64],
+        source: getStat(characterSelected, "element"),
         alpha: 1
     }));
 
     // Immune
     immunityDisplay.push(controls.label({
-        anchor: [0.8, 0.5],
+        anchor: [0.8, 0.46],
         text: "Immune to:",
-        align: "left", fontSize: 20, fill: "black",
+        align: "left", fontSize: 32, fill: "black",
         alpha: 1
     }));
     for (i = 0; i < 6; i++) {
         immunityDisplay.push(controls.label({
-            anchor: [0.8, 0.54 + (0.04 * i)],
+            anchor: [0.8, 0.5 + (0.04 * i)],
             text: "...",
             align: "left", fontSize: 20, fill: "black",
             alpha: 1
@@ -285,8 +312,7 @@ scenes.status = (characterSelected="Bleu") => {
 
             // Equipment
             for (i in equipmentDisplay) {
-                if (i == 0) equipmentDisplay[0].text = "Equipping";
-                else {
+                if (i != 0) {
                     let part = ["head", "body", "lhand", "rhand", "acc1", "acc2"][i - 1];
                     if (game.characters[characterSelected].equipment[part] != "none") equipmentDisplay[i].text = ["Head", "Body", "L. Hand", "R. Hand", "Acc. 1", "Acc. 2"][i - 1] + ": " + items[game.characters[characterSelected].equipment[part]]().name;
                     else equipmentDisplay[i].text = ["Head", "Body", "L. Hand", "R. Hand", "Acc. 1", "Acc. 2"][i - 1] + ": None";

@@ -58,7 +58,7 @@ scenes.inventory = () => {
                 alpha: 0,
                 i: j + (i * 3),
                 onClick(args) {
-                    fadeOut(1000 / 3, true, () => setScene(scenes.status(characterImages[this.i * 2].source)));
+                    if (emptyChars[this.i].alpha == 0) fadeOut(1000 / 3, true, () => setScene(scenes.status(characterImages[this.i * 2].source)));
                 }
             }));
 
