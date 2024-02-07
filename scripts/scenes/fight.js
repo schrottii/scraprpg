@@ -173,6 +173,7 @@ scenes.fight = () => {
     // time stuff
     const ACTIONDELAY = 670;
     let globalFightAnimationTime = 0;
+    let scal = 10;
 
     var fightlog = [
         "",
@@ -574,7 +575,6 @@ scenes.fight = () => {
         }, 10500);
     }
 
-
     function checkAllAction() {
         let active = 0;
         let needed = 0;
@@ -705,7 +705,17 @@ scenes.fight = () => {
         let highestAGI = 0;
         let pos = [];
 
-        // Look for the fastest enemy alive
+        // give all enemies an action. for later
+        for (j = 0; j < 3; j++) {
+            for (i = 0; i < 3; i++) {
+                if (epositions[i][j].isOccupied != false) {
+                    epositions[i][j].action = true;
+                }
+            }
+        }
+        generateOrderDisplay();
+
+        // Look for the fastest protagonist alive
         for (j = 0; j < 3; j++) {
             for (i = 0; i < 3; i++) {
                 if (positions[i][j].action != false) {
@@ -718,7 +728,7 @@ scenes.fight = () => {
             }
         }
 
-        // Stop if there is nobody (when is that?)
+        // Stop if there is neveryone is done attacking, let's go to the enemies
         if (highestAGI == 0) {
             fightaction = "enemiesturn";
             for (i in positionControls) {
@@ -727,13 +737,6 @@ scenes.fight = () => {
                 }
             }
 
-            for (j = 0; j < 3; j++) {
-                for (i = 0; i < 3; i++) {
-                    if (epositions[i][j].isOccupied != false) {
-                        epositions[i][j].action = true
-                    }
-                }
-            }
             enemiesTurn(); // Is everyone done? Can we continue?
             return;
         }
@@ -918,6 +921,8 @@ scenes.fight = () => {
         changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "unassigned");
         positions[pos[0]][pos[1]].action = false;
         alliesCurrentlyActive = false;
+        generateOrderDisplay();
+
         setTimeout(() => executeActions(), ACTIONDELAY);
     }
 
@@ -1019,6 +1024,8 @@ scenes.fight = () => {
                 playSound("miss");
                 postLog(epositions[pos[0]][pos[1]].name + " missed!");
             }
+
+            generateOrderDisplay();
             if (!fightLost) setTimeout(() => enemiesTurn(), ACTIONDELAY);
         }, true); // very important true, bob
     }
@@ -1509,7 +1516,7 @@ scenes.fight = () => {
                 onClick(args) {
                     if (this.alpha == 1 && fightaction == "active") {
                         changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "flee");
-                        positions[selectedAlly[0]][selectedAlly[1]].action = ["flee", selectedAlly[0], selectedAlly[1], getStat(positions[selectedAlly[0]][selectedAlly[1]].occupied, "AGI")];
+                        positions[selectedAlly[0]][selectedAlly[1]].action = ["flee", selectedAlly[0], selectedAlly[1], getStat(positions[selectedAlly[0]][selectedAlly[1]].occupied, "agi")];
                         fightaction = "none";
                         hideFightButtons();
                     }
@@ -2857,7 +2864,6 @@ scenes.fight = () => {
         }
 
         turnDisplay.text = "Turn " + turn;
-            
     }
 
     // When the fight starts. How many chars do we have? Who exists? Show/Hide/Gray out stats
@@ -2957,10 +2963,79 @@ scenes.fight = () => {
         });
     }
 
+    // calculate for attack order
+    function calculateOrder() {
+        let unsortedOrder = [];
+        let sortedOrder = [];
+
+        // Gather all protagonists and enemies, with their names and agility
+        for (x = 0; x < 3; x++) {
+            for (y = 0; y < 3; y++) {
+                if (positions[x][y].occupied != false && game.characters[positions[x][y].occupied].HP > 0) unsortedOrder.push([positions[x][y].action != false && positions[x][y].action != "none", positions[x][y].occupied, getStat(positions[x][y].occupied, "agi")]);
+                if (epositions[x][y].occupied != false) unsortedOrder.push([epositions[x][y].action != false, epositions[x][y].occupied, epositions[x][y].agi]);
+            }
+        }
+
+        // Sort them
+        while (unsortedOrder.length > 0) {
+            let whoAGI = ["", "", 0, 0];
+
+            // find highest
+            for (ul in unsortedOrder) {
+                if (unsortedOrder[ul][2] > whoAGI[2]) {
+                    whoAGI = unsortedOrder[ul];
+                    whoAGI[3] = ul;
+                }
+            }
+
+            // add it to sorted and remove
+            sortedOrder.push(whoAGI);
+            unsortedOrder.splice(whoAGI[3], 1);
+        }
+        return sortedOrder;
+    }
+
+    // attack order display
+    var orderDisplay = [];
+    for (ord = 0; ord < 18; ord++) {
+        orderDisplay.push(controls.image({
+            anchor: [0.95, 0.7], sizeOffset: [80, 64], offset: [-80 * ord, 0],
+            source: "order",
+            alpha: 1,
+        }));
+        orderDisplay.push(controls.image({
+            anchor: [0.95, 0.7], sizeOffset: [64, 64], offset: [-80 * ord, 0],
+            source: "gear",
+            alpha: 0, snip: [0, 64, 32, 32]
+        }));
+        orderDisplay.push(controls.image({
+            anchor: [0.95, 0.7], sizeOffset: [32, 32], offset: [-80 * ord + 32, 32],
+            source: "hasaction",
+            alpha: 1,
+        }));
+    }
+
+    // generate attack order
+    function generateOrderDisplay() {
+        for (o in orderDisplay) {
+            orderDisplay[o].alpha = 0;
+        }
+        if (fightLost || fightWon) return false; // don't display/render it when the fight is lost or won
+
+        let sortedOrder = calculateOrder(); // get them by AGI
+        for (o in sortedOrder) {
+            // order
+            orderDisplay[3 * o].alpha = 1;
+            // characters
+            orderDisplay[3 * o + 1].alpha = 1;
+            orderDisplay[3 * o + 1].source = sortedOrder[o][1];
+            // hasaction
+            if (sortedOrder[o][0]) orderDisplay[3 * o + 2].alpha = 1;
+        }
+    }
+    generateOrderDisplay();
 
     fadeIn(1000 / 3, true);
-
-    let scal = 10;
 
     for (cp in fightStats) {
         fightStats[cp].offset = [0, 1000];
@@ -2973,7 +3048,7 @@ scenes.fight = () => {
         enemyListComponents[cp].bigoff = enemyListComponents[cp].offset[1];
         enemyListComponents[cp].offset = [0, 1000 + enemyListComponents[cp].bigoff];
     }
-    actionDisplay.offset = [-500, 0];
+    actionDisplay.offset = [-2000, 0];
     turnDisplay.offset = [0, -500];
 
     addAnimator(function (t) {
@@ -2986,7 +3061,7 @@ scenes.fight = () => {
         for (cp in enemyListComponents) {
             enemyListComponents[cp].offset[1] = (enemyListComponents.bigoff + 1000) - t;
         }
-        actionDisplay.offset[0] = -500 + (t / 2);
+        actionDisplay.offset[0] = -2000 + (t * 2);
         turnDisplay.offset[1] = -500 + (t / 2);
 
         scal = Math.max(1, 10 - (t / 75));
@@ -3177,6 +3252,7 @@ scenes.fight = () => {
                 updatePositions();
                 if (checkAllAction() && !fightStarted) {
                     fightStarted = true;
+                    generateOrderDisplay();
                     executeActions();
                 }
 
@@ -3186,7 +3262,7 @@ scenes.fight = () => {
         // Controls
         controls: [
             // Load all the nice stuff
-            ...positionGrid, ...fightButtons, ...fightActions, ...actionButtons, turnDisplay, fleeLoss, fleeIcon,
+            ...positionGrid, ...fightButtons, ...fightActions, ...actionButtons, turnDisplay, fleeLoss, fleeIcon, ...orderDisplay,
             ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
             ...fightStats, actionDisplay, ...gameOverScreen,

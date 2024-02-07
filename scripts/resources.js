@@ -21,6 +21,7 @@ let images = {
     hasaction: "data/images/done.png",
     scan: "data/images/scan.png",
     talk: "data/images/talk.png",
+    order: "data/images/order.png",
 
     attackani0: "data/images/animations/attack/attackani0.png",
     attackani1: "data/images/animations/attack/attackani1.png",
