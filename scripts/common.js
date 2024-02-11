@@ -225,6 +225,24 @@ var commontiles = {
     // Do not remove this } here. Make sure there's a } right above this too
 }
 
+// Map packs (tilesets)
+function loadPacks(map = 0) {
+    //console.log("load start");
+    let packTiles = {};
+    if (map == 0) {
+        for (i in game.map.packs) {
+            packTiles = Object.assign({}, eval(game.map.packs[i]))
+        }
+    }
+    else {
+        for (i in map.packs) {
+            packTiles = Object.assign({}, eval(map.packs[i]))
+        }
+    }
+    //console.log("load finish");
+    return packTiles;
+}
+
 tiles_forest_old = {
     "F01":
         { "set": "forest_old", "snip": [0, 0], "ani": [2, 1], "occupied": false },

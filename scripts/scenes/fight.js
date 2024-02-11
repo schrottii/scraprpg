@@ -408,13 +408,15 @@ scenes.fight = () => {
                         winStats[0 + (i * a)].fill = "#c4c404";
                         winStats[1 + (i * a)].fill = "#707001";
                         winStats[5 + (i * a)].source = getPlayer(i + 1).name.toLowerCase();
+                        winStats[5 + (i * a)].snip = [0, 0, 32, 32];
                         winStats[4 + (i * a)].text = "Lvl. " + getPlayer(i + 1).level;
                     }
                     else {
                         // and is dead
                         winStats[0 + (i * a)].fill = "#aeaeae";
                         winStats[1 + (i * a)].fill = "#636363";
-                        winStats[5 + (i * a)].source = getPlayer(i + 1).name.toLowerCase() + "_dead";
+                        winStats[5 + (i * a)].source = getPlayer(i + 1).name.toLowerCase() + "_battle";
+                        winStats[5 + (i * a)].snip = battleAnimation(getPlayer(i + 1).name.toLowerCase(), "dead");
                     }
                     winStats[6 + (i * a)].text = getPlayer(i + 1).preEXP + "/25";
                 }
@@ -676,7 +678,7 @@ scenes.fight = () => {
     }
 
     function postLog(text) {
-        let maxLength = 24;
+        let maxLength = 30;
         let tempText = "";
         let superTempText = "";
 
@@ -783,7 +785,7 @@ scenes.fight = () => {
                 if (isCritical) playSound("critdamage");
                 else playSound("damage");
 
-                postLog(positions[activeCharacter.action[1]][activeCharacter.action[2]].name + " attacks " + game.characters[positions[activeCharacter.action[3]][activeCharacter.action[4]].occupied].name + " and deals " + Damage + " damage!");
+                postLog(game.characters[positions[activeCharacter.action[1]][activeCharacter.action[2]].occupied].name + " attacks " + game.characters[positions[activeCharacter.action[3]][activeCharacter.action[4]].occupied].name + " and deals " + Damage + " damage!");
 
                 // Bar animation! (Cowboy moment)
                 if (game.characters[positions[activeCharacter.action[3]][activeCharacter.action[4]].occupied].HP < 1) {
@@ -805,11 +807,14 @@ scenes.fight = () => {
                 setTimeout(() => executeActions(), ACTIONDELAY);
                 break;
             case "defend": // defend
+                changeEmo(pos[0] + (pos[1] * 3), "block");
                 positions[pos[0]][pos[1]].shield = 1.5;
 
                 endOfExecute(pos);
                 break;
             case "item": // item
+                changeEmo(pos[0] + (pos[1] * 3), "useitem");
+
                 items[activeCharacter.action[1]]({
                     user: game.characters[positions[activeCharacter.action[2]][activeCharacter.action[3]].occupied], player: game.characters[positions[activeCharacter.action[4]][activeCharacter.action[5]].occupied],
                     anchor: positionControls[activeCharacter.action[2] + (activeCharacter.action[3] * 3)].anchor, offset: positionControls[pos[0] + (pos[1] * 3)].offset,
@@ -990,7 +995,7 @@ scenes.fight = () => {
                 if (positions[fpos1][fpos2].isOccupied != false) {
                     let HealthBefore = game.characters[positions[fpos1][fpos2].occupied].HP;
                     game.characters[positions[fpos1][fpos2].occupied].HP -= Damage;
-                    changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "hurt");
+                    changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), isCritical ? "hurt2" : "hurt");
 
                     epositions[pos[0]][pos[1]].action = false;
                     battleNumber(positionControls[fpos1 + (fpos2 * 3)].anchor, Damage * (-1), 0, positionControls[fpos1 + (fpos2 * 3)].offset, isCritical);
@@ -1035,6 +1040,7 @@ scenes.fight = () => {
             changeEmo(getPlayer(i + 1).pos[0] + getPlayer(i + 1).pos[1] * 3, "unassigned");
 
             if (getPlayer(i + 1).effect[0] == "acid") {
+                changeEmo(getPlayer(i + 1).pos[0] + getPlayer(i + 1).pos[1] * 3, "poison");
                 getPlayer(i + 1).HP -= Math.ceil(getStat(i + 1, "maxHP") / 15);
                 postLog(getPlayer(i + 1).name + " took " + Math.ceil(getStat(i + 1, "maxHP") / 15) + " damage from acid!");
 
@@ -1046,6 +1052,7 @@ scenes.fight = () => {
             }
 
             if (getPlayer(i + 1).effect[0] == "poison") {
+                changeEmo(getPlayer(i + 1).pos[0] + getPlayer(i + 1).pos[1] * 3, "poison");
                 getPlayer(i + 1).HP -= Math.ceil(getStat(i + 1, "maxHP") / 15);
                 postLog(getPlayer(i + 1).name + " took " + Math.ceil(getStat(i + 1, "maxHP") / 15) + " damage from poison!");
 
@@ -1057,6 +1064,7 @@ scenes.fight = () => {
             }
 
             if (getPlayer(i + 1).effect[0] == "burn") {
+                changeEmo(getPlayer(i + 1).pos[0] + getPlayer(i + 1).pos[1] * 3, "burn");
                 getPlayer(i + 1).HP -= Math.ceil(getStat(i + 1, "maxHP") / 10);
                 postLog(getPlayer(i + 1).name + " burns and took " + Math.ceil(getStat(i + 1, "maxHP") / 10) + " damage!");
 
@@ -1068,6 +1076,7 @@ scenes.fight = () => {
             }
 
             if (getPlayer(i + 1).effect[0] == "condemned") {
+                changeEmo(getPlayer(i + 1).pos[0] + getPlayer(i + 1).pos[1] * 3, "condemned");
                 postLog(getPlayer(i + 1).name + " is condemned!");
                 if (getPlayer(i + 1).effect[1] == 1) postLog(getPlayer(i + 1).name + " is going to die!");
 
@@ -2563,6 +2572,7 @@ scenes.fight = () => {
                     positions[this.pos1][this.pos2].counter = false;
 
                     if (game.characters[name].effect[0] == "paralysis" && positions[this.pos1][this.pos2].action == false) {
+                        changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "paralysis");
                         positions[this.pos1][this.pos2].action = ["nothing", this.pos1, this.pos2];
                         postLog(game.characters[name].name + " is paralysed!")
                         game.characters[name].effect[1] -= 1;
@@ -2572,6 +2582,7 @@ scenes.fight = () => {
                         }
                     }
                     if (fightaction == "none" && game.characters[name].effect[0] == "enraged") {
+                        changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "rage");
                         fightaction = "attack2";
                         selectedAlly = [this.pos1, this.pos2];
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
@@ -2594,9 +2605,7 @@ scenes.fight = () => {
                         fightaction = "none";
                         hideFightButtons();
                         hideFightActions();
-
                     }
-
 
                     // Select character
                     if (fightaction == "none" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true) {
@@ -2606,7 +2615,6 @@ scenes.fight = () => {
                         fightaction = "active";
                         showFightButtons();
                     }
-
 
                     if (fightaction == "item") {
                         let dude = positions[selectedAlly[0]][selectedAlly[1]].occupied;
@@ -2765,20 +2773,7 @@ scenes.fight = () => {
 
     function updatePositions() {
         for (j = 0; j < 3; j++) {
-            for (i = 0; i < 3; i++) {
-                if (positions[i]) {
-                    if (positions[i][j].isOccupied == true) {
-                        if (positionControls[i + j * 3].emo == "hurt" && Math.random() > 0.9) {
-                            changeEmo(i + j * 3, "hurt2");
-                        }
-                        else if (positionControls[i + j * 3].emo == "hurt2" && Math.random() > 0.9) {
-                            changeEmo(i + j * 3, "unassigned");
-                        }
-                    }
-                }
-        
-
-                        
+            for (i = 0; i < 3; i++) { 
                 // enemies! enemies!
                 if (epositions[i]) {
                     if (epositions[i][j].parent != undefined) {
@@ -2863,6 +2858,7 @@ scenes.fight = () => {
                 break;
         }
 
+        // update turn display
         turnDisplay.text = "Turn " + turn;
     }
 
@@ -3130,19 +3126,15 @@ scenes.fight = () => {
 
             ctx.scale(scal, scal);
 
-            ctx.drawImage(images.fight_bg, 0, 0, width * scale, height);
+            // draw background
+            ctx.drawImage(images["fight_bg"], 0, 0, width * scale, height);
 
             for (pcc in positionControls) {
                 let occ = positions[positionControls[pcc].pos1][positionControls[pcc].pos2].occupied;
                 if (occ != false && !fightWon) {
-                    if (game.characters[occ].HP > 0) {
-                        positionControls[pcc].source = occ + "_battle";
-                        positionControls[pcc].snip = battleAnimation(occ, positionControls[pcc].emo, Math.floor(globalFightAnimationTime));
-                    }
-                    else {
-                        positionControls[pcc].source = occ + "_dead";
-                        positionControls[pcc].snip = [0, 0, 32, 32];
-                    }
+                    positionControls[pcc].source = occ + "_battle";
+                    positionControls[pcc].snip = battleAnimation(occ, positionControls[pcc].emo, Math.floor(globalFightAnimationTime));
+
                 }
             }
 
@@ -3157,15 +3149,15 @@ scenes.fight = () => {
                             kokitoziParticles.offset[0] = positionControls[i + (j * 3)].offset[0];
                             kokitoziParticles.offset[1] = positionControls[i + (j * 3)].offset[1] + 64;
 
-                            let kokiboi = positionControls[i + (j * 3)];
+                            let kokigirl = positionControls[i + (j * 3)];
 
-                            if (kokiboi.flydir == 1) kokiboi.fly += (4 + Math.max(0, kokiboi.fly / 8) - (Math.max(0, 18 + kokiboi.fly) * 1.4)) / delta;
-                            if (kokiboi.fly >= -16) kokiboi.flydir = 0;
+                            if (kokigirl.flydir == 1) kokigirl.fly += (4 + Math.max(0, kokigirl.fly / 8) - (Math.max(0, 18 + kokigirl.fly) * 1.4)) / delta;
+                            if (kokigirl.fly >= -16) kokigirl.flydir = 0;
 
-                            if (kokiboi.flydir == 0) kokiboi.fly -= (4 + Math.max(0, (-16 - kokiboi.fly) / 8) - (Math.max(0, -28 + (kokiboi.fly * -1)) * 1.4)) / delta;
-                            if (kokiboi.fly <= -32) kokiboi.flydir = 1;
+                            if (kokigirl.flydir == 0) kokigirl.fly -= (4 + Math.max(0, (-16 - kokigirl.fly) / 8) - (Math.max(0, -28 + (kokigirl.fly * -1)) * 1.4)) / delta;
+                            if (kokigirl.fly <= -32) kokigirl.flydir = 1;
 
-                            kokiboi.offset[1] = (72 * kokiboi.pos2) + kokiboi.fly;
+                            kokigirl.offset[1] = (72 * kokigirl.pos2) + kokigirl.fly;
                         }
                     }
                 }
@@ -3180,9 +3172,11 @@ scenes.fight = () => {
                 fightStats[amountStats * i].text = "Lvl. " + getPlayer(i + 1).level;
                 if (getPlayer(i + 1).HP > 0) {
                     fightStats[1 + amountStats * i].source = getPlayer(i + 1).name.toLowerCase();
+                    fightStats[1 + amountStats * i].snip = [0, 0, 32, 32];
                 }
                 else {
-                    fightStats[1 + amountStats * i].source = getPlayer(i + 1).name.toLowerCase() + "_dead";
+                    fightStats[1 + amountStats * i].source = getPlayer(i + 1).name.toLowerCase() + "_battle";
+                    fightStats[1 + amountStats * i].snip = battleAnimation(getPlayer(i + 1).name.toLowerCase(), "dead");
                 }
                 if (getPlayer(i + 1).EP > 0) fightStats[8 + amountStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(i + 1).EP / getStat(getPlayer(i + 1).name.toLowerCase(), "maxEP"));
                 fightStats[10 + amountStats * i].text = getPlayer(i + 1).HP + "/" + getStat(i + 1, "maxHP");

@@ -201,8 +201,6 @@ function onCanvasPointerDown(e) {
         sizeX = con.sizeOffset[0] / red + con.sizeAnchor[0] * mainCanvas.width;
         sizeY = con.sizeOffset[1] / red + con.sizeAnchor[1] * mainCanvas.height;
 
-
-
         // Make buttons go pressed color
         if (!scene.controls[a].clickthrough &&
             pointerPos[0] >= offsetX && pointerPos[0] < offsetX + sizeX &&
@@ -252,7 +250,6 @@ function onCanvasPointerUp(e, keepHold=false) {
         // Without this you'd have to click somewhere else to "unclick" it
         if (scene.controls[a].fillTop != undefined) scene.controls[a].isPressed = false;
 
-
         if (!scene.controls[a].clickthrough && scene.controls[a].onClick &&
             pointerPos[0] >= offsetX && pointerPos[0] < offsetX + sizeX &&
             pointerPos[1] >= offsetY && pointerPos[1] < offsetY + sizeY &&
@@ -282,7 +279,6 @@ function onCanvasPointerUp(e, keepHold=false) {
         }
     }
 }
-
 
 let delta = 0;
 let time = Date.now();
@@ -533,6 +529,6 @@ function loadGame() {
     else {
         saveGame();
     }
-
-
 }
+
+// main end

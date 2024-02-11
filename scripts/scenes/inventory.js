@@ -190,10 +190,11 @@ scenes.inventory = () => {
 
                 if (getPlayer(i + 1).HP > 0) {
                     characterImages[i * 2].source = getPlayer(i + 1).name.toLowerCase();
-                    //characterImages[i * 2].snip = [0, 0, 32, 32];
+                    characterImages[i * 2].snip = [0, 0, 32, 32];
                 }
                 else {
-                    characterImages[i * 2].source = getPlayer(i + 1).name.toLowerCase() + "_dead";
+                    characterImages[i * 2].source = getPlayer(i + 1).name.toLowerCase() + "_battle";
+                    characterImages[i * 2].snip = battleAnimation(getPlayer(i + 1).name.toLowerCase(), "dead");
                 }
                 characterImages[i * 2].alpha = 1;
                 if (getPlayer(i + 1).effect[0] != "none") {
