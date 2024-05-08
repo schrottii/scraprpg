@@ -81,6 +81,8 @@ scenes.mapmaker = () => {
 
     let tilesMenuControls = [];
     let tilesMenuTiles = [];
+    let recentlyUsedTiles = [];
+    let recentlyUsedTilesList = [];
     let tilesMenuIcons = [];
 
     let createTileButtons = [];
@@ -98,7 +100,6 @@ scenes.mapmaker = () => {
     let createNPCLabels = [];
 
     let loadMapButtons = [];
-    let saveMapButtons = [];
     let expandMapButtons = [];
     let undoButtons = [];
     let mapInfoControls = [];
@@ -169,22 +170,20 @@ scenes.mapmaker = () => {
         fontSize: 16, text: "Game saved!", alpha: 0,
     });
 
+    // ------------------------------------------
+    // MODE BUTTONS - move+place, eraser, tile picker, undo, etc.
+    // all the stuff on the left side
+    // ------------------------------------------
     modeButtons.push(controls.rect({
-        anchor: [0, 0], sizeAnchor: [1, 0], sizeOffset: [0, 96],
+        anchor: [0, 0], sizeAnchor: [0, 1], sizeOffset: [72 * 6, 0],
         fill: "brown", alpha: 0.8,
         onClick(args) {
             if (!prot) protect();
         }
     }));
-    modeButtons.push(controls.rect({
-        anchor: [0, 0], sizeAnchor: [0.015, 0], sizeOffset: [72 * 3 - 5, 112], offset: [0, 96],
-        fill: "brown", alpha: 0.8,
-        onClick(args) {
-            if (!prot) protect();
-        }
-    }));
+
     undoButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 1, 120],
+        anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 1, 72 * 2],
         source: "undo", alpha: 0,
         onClick(args) {
             if (undoLog.length == 0) this.alpha = 0;
@@ -208,7 +207,7 @@ scenes.mapmaker = () => {
         }
     }));
     undoButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 2, 120],
+        anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 2, 72 * 2],
         source: "redo", alpha: 0,
         onClick(args) {
             if (redoLog.length == 0) this.alpha = 0;
@@ -232,10 +231,10 @@ scenes.mapmaker = () => {
         }
     }));
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [0, 120],
+        anchor: [0, 0.025], sizeOffset: [64, 64], offset: [0, 72 * 2],
         source: "mmzoom", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1) {
+            if (this.alpha == 1 && !prot) {
                 switch (zoom) {
                     case 1:
                         zoom = 1.25;
@@ -263,23 +262,23 @@ scenes.mapmaker = () => {
     }));
     for (i = 0; i < 3; i++) {
         modeButtons.push(controls.image({
-            anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * i, 0],
-            source: "layerbuttons", snip: [32 * i, 0, 32, 32], alpha: 1, i: i,
+            anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * i, 0],
+            source: "layerbuttons", snip: [32 * i, 0, 32, 32], alpha: 1, i: i, glowColor: "white",
             onClick(args) {
-                if (this.alpha == 1) {
+                if (this.alpha == 1 && !prot) {
                     editingLayer = this.i;
-                    modeButtons[3].glow = 0;
-                    modeButtons[5].glow = 0;
-                    modeButtons[7].glow = 0;
+                    modeButtons[2].glow = 0;
+                    modeButtons[4].glow = 0;
+                    modeButtons[6].glow = 0;
                     this.glow = 10;
                 }
             }
         }));
         modeButtons.push(controls.image({
-            anchor: [0.015, 0.025], sizeOffset: [48, 48], offset: [8 + 72 * i, 64],
+            anchor: [0, 0.025], sizeOffset: [48, 48], offset: [8 + 72 * i, 64],
             source: "eye", alpha: 1, i: i,
             onClick(args) {
-                if (this.alpha >= 0.3) {
+                if (this.alpha >= 0.3 && !prot) {
                     layerVisi[this.i] = layerVisi[this.i] == 0 ? 1 : 0;
                     this.alpha = layerVisi[this.i] == 0 ? 0.3 : 1;
                     updateTiles = true;
@@ -287,44 +286,42 @@ scenes.mapmaker = () => {
             }
         }));
     }
-    modeButtons[3].glow = 10;
-    modeButtons.push(controls.rect({
-        anchor: [0.015, 0], sizeOffset: [2, 96], offset: [72 * 3 - 5, 0],
-        fill: "white", alpha: 0.8,
-    }));
+    modeButtons[2].glow = 10;
+
+    // modes (move, erase, etc.)
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 3, 0],
+        anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 0, 72 * 3],
         source: "move", alpha: 0, setmode: "move",
         onClick(args) {
-            if (this.alpha == 1) moveMode();
+            if (this.alpha == 1 && !prot) moveMode();
         }
     }));
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 4, 0],
+        anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 1, 72 * 3],
         source: "place", alpha: 1, setmode: "place",
         onClick(args) {
-            if (this.alpha == 1) placeMode();
+            if (this.alpha == 1 && !prot) placeMode();
         }
     }));
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 5, 0],
+        anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 2, 72 * 3],
         source: "erase", alpha: 1, setmode: "erase",
         onClick(args) {
-            if (this.alpha == 1) eraseMode();
+            if (this.alpha == 1 && !prot) eraseMode();
         }
     }));
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 6, 0],
+        anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 3, 72 * 3],
         source: "movenplace", alpha: 1, setmode: "moveandplace",
         onClick(args) {
-            if (this.alpha == 1) moveAndPlaceMode();
+            if (this.alpha == 1 && !prot) moveAndPlaceMode();
         }
     }));
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 7, 0],
+        anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 4, 72 * 3],
         source: "tilemode", alpha: 1, setmode: "tile",
         onClick(args) {
-            if (this.alpha == 1) {
+            if (this.alpha == 1 && !prot) {
                 if (tilesMenuControls[0].alpha == 1) {
                     tileInfo(0, 0, 0, ttp);
                 }
@@ -334,15 +331,11 @@ scenes.mapmaker = () => {
             }
         }
     }));
-    modeButtons.push(controls.rect({
-        anchor: [0.015, 0], sizeOffset: [2, 96], offset: [72 * 8 - 5, 0],
-        fill: "white", alpha: 0.8,
-    }));
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 8, 0],
+        anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 5, 72 * 1],
         source: "tilesmenu", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1) {
+            if (this.alpha == 1 && !prot) {
                 if (tilesMenuControls[0].alpha == 0) {
                     prevmode = mode;
                     moveMode();
@@ -356,83 +349,47 @@ scenes.mapmaker = () => {
             }
         }
     }));
-    modeButtons.push(controls.rect({
-        anchor: [0.015, 0], sizeOffset: [2, 96], offset: [72 * 9 - 5, 0],
-        fill: "white", alpha: 0.8,
-    }));
+
+    // this is now load + save + delete in 1
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 9, 0],
+        anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 3, 72 * 1],
         source: "loadmap", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1) {
+            if (this.alpha == 1 && !prot) {
                 toggleLoadButtons();
             }
         }
     }));
+
+    // the maker buttons
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 10, 0],
-        source: "savemap", alpha: 1,
-        onClick(args) {
-            if (this.alpha == 1) toggleSaveButtons()
-        }
-    }));
-    modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 11, 0],
-        source: "newmap", alpha: 1,
-        onClick(args) {
-            if (this.alpha == 1) {
-                if (confirm("Do you really want to create a new map?") == true) {
-                    currentMap = "newMap";
-                    map = {
-                        id: "newMap",
-                        tiles: {
-                            empty: {
-                                sprite: "water1",
-                            },
-                        },
-                        map: ["---"],
-                        mapbg2: ["---"],
-                        mapfg: ["---"],
-                    }
-                    newMap();
-                }
-            }
-        }
-    }));
-    modeButtons.push(controls.rect({
-        anchor: [0.015, 0], sizeOffset: [2, 96], offset: [72 * 12 - 5, 0],
-        fill: "white", alpha: 0.8,
-    }));
-    modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 12, 0],
+        anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 3, 72 * 0],
         source: "tilemaker", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1) toggleCreateTileButtons();
+            if (this.alpha == 1 && !prot) toggleCreateTileButtons();
         }
     }));
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 13, 0],
+        anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 4, 72 * 0],
         source: "dialoguemaker", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1) toggleCreateDialogueButtons();
+            if (this.alpha == 1 && !prot) toggleCreateDialogueButtons();
         }
     }));
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 14, 0],
+        anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 5, 72 * 0],
         source: "npcmaker", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1) toggleCreateNPCButtons();
+            if (this.alpha == 1 && !prot) toggleCreateNPCButtons();
         }
     }));
-    modeButtons.push(controls.rect({
-        anchor: [0.015, 0], sizeOffset: [2, 96], offset: [72 * 15 - 5, 0],
-        fill: "white", alpha: 0.8,
-    }));
+
+    // copy, paste, fill
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 15, 0],
+        anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 3, 72 * 2],
         source: "copy", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1) {
+            if (this.alpha == 1 && !prot) {
                 let my = map[["map", "mapbg2", "mapfg"][editingLayer]][game.position[1]];
                 let x = game.position[0];
 
@@ -441,21 +398,17 @@ scenes.mapmaker = () => {
         }
     }));
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 16, 0],
+        anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 4, 72 * 2],
         source: "paste", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1) placeTile(game.position[0], game.position[1], ["map", "mapbg2", "mapfg"][editingLayer], ttp, "copy");
+            if (this.alpha == 1 && !prot) placeTile(game.position[0], game.position[1], ["map", "mapbg2", "mapfg"][editingLayer], ttp, "copy");
         }
     }));
-    modeButtons.push(controls.rect({
-        anchor: [0.015, 0], sizeOffset: [2, 96], offset: [72 * 17 - 5, 0],
-        fill: "white", alpha: 0.8,
-    }));
     modeButtons.push(controls.image({
-        anchor: [0.015, 0.025], sizeOffset: [64, 64], offset: [72 * 17, 0],
-        source: "fill", alpha: 1, glow: 0,
+        anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 5, 72 * 2],
+        source: "fill", alpha: 1, glow: 0, glowColor: "white",
         onClick(args) {
-            if (this.alpha == 1) {
+            if (this.alpha == 1 && !prot) {
                 if (doFill) {
                     doFill = false;
                     this.glow = 0;
@@ -467,6 +420,27 @@ scenes.mapmaker = () => {
             }
         }
     }));
+
+    // white lines
+    modeButtons.push(controls.rect({
+        anchor: [0, 0], sizeAnchor: [0, 1], sizeOffset: [2, 0], offset: [72 * 6, 0],
+        fill: "white", alpha: 0.8,
+    }));
+    modeButtons.push(controls.rect({
+        anchor: [0, 0.025], sizeOffset: [72 * 6, 2], offset: [0, 72 * 4],
+        fill: "white", alpha: 0.8,
+    }));
+    modeButtons.push(controls.rect({
+        anchor: [0, 0.025], sizeOffset: [72 * 6, 2], offset: [0, 72 * 8],
+        fill: "white", alpha: 0.8,
+    }));
+
+
+
+
+
+
+
 
     createTileBG.push(controls.rect({
         anchor: [0.25, 0.15], sizeAnchor: [0.725, 0.7],
@@ -760,7 +734,7 @@ scenes.mapmaker = () => {
     }));
 
     loadMapButtons.push(controls.button({
-        anchor: [0.3, 0.2], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
+        anchor: [0.3, 0.1], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
         text: "Load from file...", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -770,7 +744,7 @@ scenes.mapmaker = () => {
         }
     }));
     loadMapButtons.push(controls.button({
-        anchor: [0.3, 0.35], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
+        anchor: [0.3, 0.25], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
         text: "Load from name...", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -785,7 +759,7 @@ scenes.mapmaker = () => {
         }
     }));
     loadMapButtons.push(controls.button({
-        anchor: [0.3, 0.5], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
+        anchor: [0.3, 0.4], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
         text: "Play", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -807,9 +781,8 @@ scenes.mapmaker = () => {
             }
         }
     }));
-
-    saveMapButtons.push(controls.button({
-        anchor: [0.3, 0.2], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
+    loadMapButtons.push(controls.button({
+        anchor: [0.3, 0.55], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
         text: "Save as .sotrm", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -818,13 +791,37 @@ scenes.mapmaker = () => {
             }
         }
     }));
-    saveMapButtons.push(controls.button({
-        anchor: [0.3, 0.35], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
+    loadMapButtons.push(controls.button({
+        anchor: [0.3, 0.7], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
         text: "Save as .js", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
                 protect();
                 saveFile("js");
+            }
+        }
+    }));
+    loadMapButtons.push(controls.button({
+        anchor: [0.3, 0.85], sizeAnchor: [0.2, 0.1], offset: [72 * 11, -600],
+        text: "Delete", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                protect();
+                if (confirm("Do you really want to create a new map?") == true) {
+                    currentMap = "newMap";
+                    map = {
+                        id: "newMap",
+                        tiles: {
+                            empty: {
+                                sprite: "water1",
+                            },
+                        },
+                        map: ["---"],
+                        mapbg2: ["---"],
+                        mapfg: ["---"],
+                    }
+                    newMap();
+                }
             }
         }
     }));
@@ -1349,6 +1346,27 @@ scenes.mapmaker = () => {
         }
     }
 
+    for (t = 0; t < 24; t++) {
+        recentlyUsedTilesList.push(["gear", "gear", [0, 0, 64, 64]]);
+        recentlyUsedTiles.push(controls.image({
+            anchor: [0, 0.025], offset: [72 * (t % 6), 72 * Math.floor(t / 6) + 72 * 4 + 4], sizeOffset: [64, 64],
+            source: "gear", alpha: 1, glowColor: "white", glow: 0,
+            // tile: the tile, with sprite, occupied, etc.
+            // tileid: 001, 002, etc.
+            onClick(args) {
+                if (this.alpha == 1 && this.source != "gear") {
+                    console.log(this.tileid);
+                    updateTTP(this.tileid, false);
+
+                    for (t in recentlyUsedTiles) {
+                        recentlyUsedTiles[t].glow = 0;
+                    }
+                    this.glow = 25;
+                }
+            }
+        }));
+    }
+
     walkPad.push(controls.image({ // Up
         anchor: [.1, .9], offset: [0, -walkPadSize * 3], sizeOffset: [walkPadSize, walkPadSize],
         fontSize: 16, source: "mapbuttons", snip: [0, 0, 32, 32],
@@ -1442,8 +1460,9 @@ scenes.mapmaker = () => {
         }
     }));
 
+    // bottom left, leave map maker
     let backButton = controls.button({
-        anchor: [0.01, 0.96], sizeAnchor: [0.05, 0.045],
+        anchor: [0, 0.96], sizeAnchor: [0.05, 0.045],
         text: "<",
         onClick(args) {
             if (this.alpha == 1) {
@@ -1453,8 +1472,9 @@ scenes.mapmaker = () => {
         alpha: 1,
     });
 
+    // bottom left, very important, show map info, spawns, etc.
     let toggleMapInfoButton = controls.button({
-        anchor: [0.01, 0.9], sizeAnchor: [0.05, 0.045],
+        anchor: [0, 0.9], sizeAnchor: [0.05, 0.045],
         text: "(i)",
         onClick(args) {
             if (this.alpha == 1) {
@@ -1465,8 +1485,30 @@ scenes.mapmaker = () => {
         alpha: 1,
     });
 
+    // bottom left, toggle animations on or off (visual only)
+    let toggleAnimate = controls.button({
+        anchor: [0, 0.84], sizeAnchor: [0.05, 0.045],
+        text: "ani:off",
+        onClick(args) {
+            if (this.alpha == 1) {
+                protect();
+                if (this.text == "ani:off") {
+                    enableAnimations = true;
+                    this.text = "ani:on";
+                }
+                else {
+                    enableAnimations = false;
+                    this.text = "ani:off";
+                }
+                updateTiles = true;
+            }
+        },
+        alpha: 1,
+    });
+
+    // bottom left, hide/show UI
     let eyeButton = controls.image({
-        anchor: [0.0125, 0.625], sizeAnchor: [0.05, 0.045],
+        anchor: [0, 0.7], sizeAnchor: [0.05, 0.045],
         source: "eye",
         onClick(args) {
             protect();
@@ -1507,8 +1549,9 @@ scenes.mapmaker = () => {
         alpha: 1,
     });
 
+    // bottom left, show/hide collisions
     let collisionButton = controls.image({
-        anchor: [0.0125, 0.555], sizeAnchor: [0.05, 0.045],
+        anchor: [0, 0.655], sizeAnchor: [0.05, 0.045],
         source: "eye",
         onClick(args) {
             protect();
@@ -1520,28 +1563,9 @@ scenes.mapmaker = () => {
         alpha: 1,
     });
 
-    let toggleAnimate = controls.button({
-        anchor: [0.01, 0.84], sizeAnchor: [0.05, 0.045],
-        text: "ani:off",
-        onClick(args) {
-            if (this.alpha == 1) {
-                protect();
-                if (this.text == "ani:off") {
-                    enableAnimations = true;
-                    this.text = "ani:on";
-                }
-                else {
-                    enableAnimations = false;
-                    this.text = "ani:off";
-                }
-                updateTiles = true;
-            }
-        },
-        alpha: 1,
-    });
-
+    // bottom left, the current tile you got
     let currentTile = controls.image({
-        anchor: [0.015, 0.7], sizeOffset: [64, 64], offset: [0, -16],
+        anchor: [0, 0.775], sizeOffset: [64, 64], offset: [0, -16],
         source: "tiles/sand1", glow: 5, glowColor: "yellow",
         alpha: 1,
     });
@@ -1968,29 +1992,47 @@ scenes.mapmaker = () => {
         updateTiles = true;
     }
 
-    function updateTTP(newTTP) {
+    function updateTTP(newTTP, updateRecent = true) {
+        // TTP = tile to place
+        let newSource = "";
+        let newSnip = [0, 0, 32, 32];
+
         // Change the tile to place, and the current tile selected display
         ttp = newTTP;
 
         // Display
         if (map.tiles[ttp] != undefined) {
             if (map.tiles[ttp].sprite != undefined) {
-                currentTile.source = "tiles/" + map.tiles[ttp].sprite;
-                currentTile.snip = false;
+                newSource = "tiles/" + map.tiles[ttp].sprite;
+                newSnip = false;
             }
             else {
-                currentTile.source = "tilesets/" + map.tiles[ttp].set;
-                currentTile.snip = [map.tiles[ttp].snip[0] * 32, map.tiles[ttp].snip[1] * 32, 32, 32];
+                newSource = "tilesets/" + map.tiles[ttp].set;
+                newSnip = [map.tiles[ttp].snip[0] * 32, map.tiles[ttp].snip[1] * 32, 32, 32];
             }
         }
         else if (commontiles[ttp] != undefined) {
             if (commontiles[ttp].sprite != undefined) {
-                currentTile.source = "tiles/" + commontiles[ttp].sprite;
-                currentTile.snip = false;
+                newSource = "tiles/" + commontiles[ttp].sprite;
+                newSnip = false;
             }
             else {
-                currentTile.source = "tilesets/" + commontiles[ttp].set;
-                currentTile.snip = [commontiles[ttp].snip[0] * 32, commontiles[ttp].snip[1] * 32, 32, 32];
+                newSource = "tilesets/" + commontiles[ttp].set;
+                newSnip = [commontiles[ttp].snip[0] * 32, commontiles[ttp].snip[1] * 32, 32, 32];
+            }
+        }
+
+        currentTile.source = newSource;
+        currentTile.snip = newSnip;
+
+        // update recently used tiles (left)
+        if (updateRecent) {
+            recentlyUsedTilesList.unshift([newSource, newTTP, newSnip]);
+            if (recentlyUsedTilesList.length > 24) recentlyUsedTilesList.pop();
+            for (t = 0; t < recentlyUsedTilesList.length; t++) {
+                recentlyUsedTiles[t].source = recentlyUsedTilesList[t][0];
+                recentlyUsedTiles[t].tileid = recentlyUsedTilesList[t][1];
+                recentlyUsedTiles[t].snip = recentlyUsedTilesList[t][2];
             }
         }
     }
@@ -2479,54 +2521,6 @@ scenes.mapmaker = () => {
         }
     }
 
-    function toggleSaveButtons(mustclose = false) {
-        if (saveMapButtons[0].offset[1] != -600 && saveMapButtons[0].offset[1] != 0) {
-            animationOverlap = true;
-            return false;
-        }
-        if (saveMapButtons[0].alpha == 0 && !mustclose) {
-            // Open
-            closeAllMenus(3);
-            for (i in saveMapButtons) {
-                saveMapButtons[i].offset = [0, -600];
-                saveMapButtons[i].alpha = 1;
-            }
-            addAnimator(function (t) {
-                for (i in saveMapButtons) {
-                    saveMapButtons[i].offset[1] = -600 + t;
-                }
-                if (t > 599 || animationOverlap) {
-                    for (i in saveMapButtons) {
-                        saveMapButtons[i].offset[1] = 0;
-                    }
-                    animationOverlap = false;
-                    return true;
-                }
-                return false;
-            })
-        }
-        else {
-            // Close
-            for (i in saveMapButtons) {
-                saveMapButtons[i].offset = [0, 0];
-            }
-            addAnimator(function (t) {
-                for (i in saveMapButtons) {
-                    saveMapButtons[i].offset[1] = -t;
-                }
-                if (t > 599 || animationOverlap) {
-                    for (i in saveMapButtons) {
-                        saveMapButtons[i].offset[1] = -600;
-                        saveMapButtons[i].alpha = 0;
-                    }
-                    animationOverlap = false;
-                    return true;
-                }
-                return false;
-            })
-        }
-    }
-
     function hideOtherModes(thisMode) {
         for (m in modeButtons) {
             if ((modeButtons[m].setmode == undefined || modeButtons[m].setmode != thisMode) && (modeButtons[m].alpha == 0 || modeButtons[m].alpha == 1)) modeButtons[m].alpha = 1;
@@ -2675,7 +2669,7 @@ scenes.mapmaker = () => {
         if (i != 2) toggleLoadButtons(true);
 
         // Save
-        if (i != 3) toggleSaveButtons(true);
+        //if (i != 3) toggleSaveButtons(true);
 
         // Tile Maker
         if (i != 4) {
@@ -2975,7 +2969,7 @@ scenes.mapmaker = () => {
                         newMap();
                     }
                     else {
-                        // It does not hmm
+                        // It does not exist, hmm what do we do
                         map = eval(lmresult);
 
                         // Not sure about this . . .
@@ -3255,10 +3249,13 @@ scenes.mapmaker = () => {
         },
         // Controls
         controls: [
-            ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg, ...expandMapButtons,
-            ...walkPad, middlei, currentMapText, backButton, toggleMapInfoButton, eyeButton, collisionButton, toggleAnimate, ...modeButtons,
-            ...undoButtons, ...loadMapButtons, ...saveMapButtons, ...mapInfoControls, currentTile,
+            ...tiles_bg, ...tiles_bg2, ...titems, ...tnpcs, ...tiles_fg, ...expandMapButtons, // tiles / map
 
+            ...modeButtons, ...undoButtons, ...walkPad, middlei, currentMapText,
+            backButton, toggleMapInfoButton, eyeButton, collisionButton, toggleAnimate, currentTile, ...recentlyUsedTiles, // left side stuff, UI
+
+            // v various menus
+            ...loadMapButtons, ...mapInfoControls, 
             ...tilesMenuControls, ...tilesMenuTiles, ...tilesMenuIcons, 
             ...createTileBG, ...createTileInfoBG, ...createTileInfo, ...createTileButtons,
             ...createDialogueButtons, ...createDialogueLabels, ...createNPCButtons, ...createNPCLabels,
