@@ -121,7 +121,7 @@ scenes.mapmaker = () => {
     let curNPC = ""; // current dialogue
 
     var activenpcs = [];
-    var currentMap = "map2";
+    var currentMap = "newMap";
     var map = maps[currentMap];
     map.tiles = Object.assign({}, map.tiles, loadPacks(map));
 
@@ -587,7 +587,7 @@ scenes.mapmaker = () => {
         fillTop: "red", fillBottom: "darkred",
         onClick(args) {
             if (this.alpha == 1) {
-                tileSprite = prompt('New map tile sprite? (e. g. water1 - must be the name from resources)');
+                tileSprite = prompt('New map tile sprite? (e. g. water - must be the name from resources)');
                 updateTileLabels();
             }
         }
@@ -813,7 +813,7 @@ scenes.mapmaker = () => {
                         id: "newMap",
                         tiles: {
                             empty: {
-                                sprite: "water1",
+                                sprite: "water",
                             },
                         },
                         map: ["---"],
@@ -1682,7 +1682,7 @@ scenes.mapmaker = () => {
         text: "Empty sprite: " + map.tiles.empty.sprite, alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                let newSprite = prompt("New empty sprite? (e. g. water1)");
+                let newSprite = prompt("New empty sprite? (e. g. water)");
                 if (images["tiles/" + newSprite] != undefined) {
                     map.tiles.empty.sprite = newSprite;
                     this.text = "Empty sprite: " + newSprite;
@@ -1798,11 +1798,11 @@ scenes.mapmaker = () => {
 
     tileInfoControls.push(controls.image({
         anchor: [0.05, 0.15], sizeOffset: [64, 64], offset: [40, 40],
-        source: "tiles/water1", alpha: 0,
+        source: "tiles/water", alpha: 0,
     }));
     tileInfoControls.push(controls.label({
         anchor: [0.5, 0.15], offset: [0, 80],
-        text: "water1", alpha: 0,
+        text: "water", alpha: 0,
     }));
     for (t = 0; t < 8; t++) {
         tileInfoControls.push(controls.label({
@@ -1812,7 +1812,7 @@ scenes.mapmaker = () => {
     }
     tileInfoControls.push(controls.image({
         anchor: [0.05, 0.5], sizeOffset: [64, 64], offset: [40, 40],
-        source: "tiles/water1", alpha: 0,
+        source: "tiles/water", alpha: 0,
     }));
     tileInfoControls.push(controls.image({
         anchor: [0.05, 0.35], sizeOffset: [64, 64], offset: [40, 40],

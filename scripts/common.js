@@ -1,6 +1,6 @@
 var commontiles = {
     empty: {
-        sprite: "water1",
+        sprite: "water",
         },
 
     "000": {
@@ -32,7 +32,7 @@ var commontiles = {
             occupied: false,
         },
     "002": {
-        sprite: "water1",
+        sprite: "water",
             occupied: true,
         },
     "003": {

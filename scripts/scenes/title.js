@@ -19,7 +19,7 @@ scenes.title = () => {
     let infoLabel = controls.label({
         anchor: [.02, .98], offset: [5, -12],
         align: "left", baseline: "alphabetic", fontSize: 16, fill: "#7f7f7f", alpha: 0,
-        text: "©2023 Toast Technology Team / Schrottii",
+        text: "©2024 Toast Technology Team / Schrottii",
     });
     let verLabel = controls.label({
         anchor: [.98, .98], offset: [-5, -12],
@@ -219,14 +219,13 @@ scenes.title = () => {
             source: "saveimage" + Math.ceil(Math.random() * 5), alpha: 0,
             isPressed: false,
             onDown(args) {
-                saveButtons[a].clickthrough = true; //To avoid savegame loading when changing image (God tier code)
+                saveButtons[a].clickthrough = true; // To avoid savegame loading when changing image (God tier code)
             },
-            onClick(args) { //Change the image when clicked
-                console.log(saveButtons[a].clickthrough);
+            onClick(args) { // Change the image when clicked
                 saveNR = a;
                 stopMusic();
                 loadGame(saveNR);
-                if (game.pfp == 5) { //To avoid changing to a pic that does not exist
+                if (game.pfp == 5) { // To avoid changing to a pic that does not exist
                     game.pfp = 1;
                 }
                 else {

@@ -1,0 +1,1 @@
+maps["newMap"] = {"id":"newMap","tiles":{"empty":{"sprite":"water"}},"map":["---"],"mapbg2":["---"],"mapfg":["---"]}
