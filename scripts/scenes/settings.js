@@ -384,7 +384,7 @@ scenes.settings = () => {
                 }
             }
             categoryEntries[i].anchor[1] = baseY + (c * cY);
-            
+
             categoryEntries[i].alpha = 1;
             if (categoryEntries[i].tick != undefined) categoryEntries[i].tick();
         }
@@ -400,7 +400,7 @@ scenes.settings = () => {
         // Controls
         controls: [
             ...background,
-            ...menuSettings, ...menuSettingsGameplay, ...menuSettingsGraphics, ...menuSettingsControls, ...menuSettingsAudio, 
+            ...menuSettings, ...menuSettingsGameplay, ...menuSettingsGraphics, ...menuSettingsControls, ...menuSettingsAudio,
             settingsSaveText,
         ],
         name: "settings"

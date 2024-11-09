@@ -2,10 +2,12 @@
     font-family: DePixelKlein;
     src: url("../Fonts/DePixelKlein.ttf");
 }
+
 @font-face {
     font-family: DePixelHalbfett;
     src: url("../Fonts/DePixelHalbfett.ttf");
 }
+
 @font-face {
     font-family: DePixelBreit;
     src: url("../Fonts/DePixelBreit.ttf");

@@ -37,7 +37,7 @@ class Shop {
         this.clp = 0;
     }
 
-    
+
     // Function used to get the price to buy something
     getPrice(i) {
         if (this.offers[i].price != undefined) return this.offers[i].price;
@@ -53,7 +53,7 @@ class Shop {
     increaseCLP(item) {
         // clpi - the increase from the item
         let clpi = items[item]().clpi;
-        
+
         this.clp += Math.floor(Math.random() * clpi);
         this.clvUp();
     }

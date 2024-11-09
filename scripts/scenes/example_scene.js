@@ -9,7 +9,7 @@ scenes.SCENENAME = () => {
         },
         // Controls
         controls: [
-            
+
         ],
         name: "ex"
     }

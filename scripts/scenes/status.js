@@ -1,4 +1,4 @@
-scenes.status = (characterSelected="Bleu") => {
+scenes.status = (characterSelected = "Bleu") => {
     var background = [];
     var characterName = [];
     var characterStats = [];

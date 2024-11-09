@@ -205,7 +205,7 @@ scenes.formation = () => {
         controls: [
             ...background,
             ...positionGrid, ...positions, ...posInfos, ...macroControls, switchText,
-            
+
         ],
         name: "formation"
     }

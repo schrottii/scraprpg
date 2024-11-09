@@ -15,7 +15,7 @@ var filters = {
 }
 
 // Enables this - no need to re-run this
-function defFilter(){
+function defFilter() {
     bod = document.body.style;
 }
 

@@ -30,7 +30,7 @@ scenes.inventory = () => {
             text: ["Items", "Magic", "Equipment", "Formation", "Save Manager", "Settings", "Exit Menu"][i],
             onClick(args) {
                 playSound("buttonClickSound");
-                fadeOut(1000 / 3, true, (id=this.id) => {
+                fadeOut(1000 / 3, true, (id = this.id) => {
                     if (id == 0) setScene(scenes.itemscene());
                     if (id == 1) setScene(scenes.magicscene());
                     if (id == 2) setScene(scenes.equipment());

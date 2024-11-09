@@ -18,7 +18,7 @@ function battleNumber(pos, amount, type, offset = [0, 0], crit = false) {
     let fontSizeToUse = 24;
     let n = amount;
     if (n < 0) n = amount * (-1);
-    
+
     if (n > 50 && n < 200) fontToUse = "DePixelBreit";
     if (n > 199) fontToUse = "DePixelHalbfett";
 
@@ -2551,7 +2551,7 @@ scenes.fight = () => {
             alpha: 0,
         }))
     }
-    
+
     // Friendly pos (left)
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
@@ -2773,7 +2773,7 @@ scenes.fight = () => {
 
     function updatePositions() {
         for (j = 0; j < 3; j++) {
-            for (i = 0; i < 3; i++) { 
+            for (i = 0; i < 3; i++) {
                 // enemies! enemies!
                 if (epositions[i]) {
                     if (epositions[i][j].parent != undefined) {
@@ -2788,7 +2788,7 @@ scenes.fight = () => {
                             if (epositionControls[i + (j * 3)].bigoff == 0) {
                                 epositionControls[i + (j * 3)].bigoff = -72;
                                 epositionControls[i + (j * 3)].defoff = -(72 + (72 * i)) - 72;
-                                epositionControls[i + (j * 3)].offset = [-(72 + (72 * i)) -72, 72 * j];
+                                epositionControls[i + (j * 3)].offset = [-(72 + (72 * i)) - 72, 72 * j];
                             }
                         }
                         else {
@@ -2807,10 +2807,10 @@ scenes.fight = () => {
                         for (k = 0; k < 3; k++) {
                             for (l = 0; l < 3; l++) {
                                 if (enemyAmounts[k + (l * 3)] != undefined) if (enemyAmounts[k + (l * 3)] == enemyTypes[epositions[i][j].occupied].name) {
-                                    if(which == 0) which = k + (l * 3);
+                                    if (which == 0) which = k + (l * 3);
                                     doWeHaveThisOneDoWe += 1;
                                 }
-                                if (enemyTypes[epositions[k][l].occupied] != undefined )if (enemyTypes[epositions[k][l].occupied].name == enemyTypes[epositions[i][j].occupied].name) amount += 1;
+                                if (enemyTypes[epositions[k][l].occupied] != undefined) if (enemyTypes[epositions[k][l].occupied].name == enemyTypes[epositions[i][j].occupied].name) amount += 1;
                             }
                         }
                         if (doWeHaveThisOneDoWe == 0) {

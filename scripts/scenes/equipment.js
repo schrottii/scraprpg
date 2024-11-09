@@ -209,12 +209,12 @@ scenes.equipment = () => {
             if (game.characters[characterSelected].equipment[i] != "none") {
                 if (items[game.characters[characterSelected].equipment[i]]().stats.immune != undefined) {
                     for (e in items[game.characters[characterSelected].equipment[i]]().stats.immune) {
-                    immunes.push(items[game.characters[characterSelected].equipment[i]]().stats.immune[e]);
+                        immunes.push(items[game.characters[characterSelected].equipment[i]]().stats.immune[e]);
                     }
                 }
             }
         }
-        for (r = 1; r < 7; r++ ) {
+        for (r = 1; r < 7; r++) {
             if (immunes[r - 1] != undefined) immunityDisplay[r].text = immunes[r - 1];
             else immunityDisplay[r].text = "...";
         }

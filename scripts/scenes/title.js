@@ -233,7 +233,7 @@ scenes.title = () => {
                 }
                 saveGame();
             }
-        }))    
+        }))
     }
 
     saveButtons[3].fillTop = "#54d4ff";
@@ -308,7 +308,7 @@ scenes.title = () => {
         gameIcon.alpha = Math.min(Math.max(t / 300, 0), 1);
         contLabel.alpha = Math.min(Math.max((t - 100) / 300, 0), 1) * (Math.cos(time / 1000) + 3) / 4;
         infoLabel.alpha = verLabel.alpha = Math.min(Math.max((t - 200) / 300, 0), 1);
-        
+
         if (t > 500) {
             state = "title";
             return true;

@@ -159,11 +159,11 @@ let controls = {
                 if (this.blend != false) setBlend(this.blend);
                 else clearBlend();
 
-                if(this.isPressed) ctx.fillStyle = this.pressedTop;
+                if (this.isPressed) ctx.fillStyle = this.pressedTop;
                 else ctx.fillStyle = this.fillTop;
                 ctx.fillRect(x, y, w, h / 2 + 0.25);
 
-                if(this.isPressed) ctx.fillStyle = this.pressedBottom;
+                if (this.isPressed) ctx.fillStyle = this.pressedBottom;
                 else ctx.fillStyle = this.fillBottom;
                 ctx.fillRect(x, y + h / 2, w, h / 2);
 

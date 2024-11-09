@@ -213,7 +213,7 @@ scenes.game = () => {
     var activenpcs = [];
 
     var areaNameBox = [];
-    
+
     var currentFogAlpha = 2;
 
     var cutsceneElements = [];
@@ -323,8 +323,8 @@ scenes.game = () => {
         text: "",
         onClick(args) {
             //if (canMove == true) { // DISABLED DURING TESTING RE-ADD LATER
-                playSound("buttonClickSound");
-                fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
+            playSound("buttonClickSound");
+            fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
             //}
         }
     });
@@ -338,7 +338,7 @@ scenes.game = () => {
         anchor: [0, 0], sizeAnchor: [1, 1],
         alpha: 0,
         fill: "black",
-    }); 
+    });
 
     let dialogueNormalComponents = [];
     let dialogueInvisComponents = [];
@@ -758,7 +758,7 @@ scenes.game = () => {
         return false;
     }
 
-    function tryTeleport(map, x, y, l=1) {
+    function tryTeleport(map, x, y, l = 1) {
         if (isTeleport(map, x, y, l)) {
             let themap = getTile(map, x, y, l);
             let previousmap = game.map;
@@ -840,7 +840,7 @@ scenes.game = () => {
                 else ani = 0;
                 if (getTile(map, x, y, layer).set != undefined) ctx.drawImage(images["tilesets/" + getTile(map, x, y, layer).set], ani + getTile(map, x, y, layer).snip[0] * 32, getTile(map, x, y, layer).snip[1] * 32, 32, 32,
                     ((zoom * scale) * (x - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
-                    else ctx.drawImage(images["tiles/" + getTile(map, x, y, layer).sprite],
+                else ctx.drawImage(images["tiles/" + getTile(map, x, y, layer).sprite],
                     ((zoom * scale) * (x - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
             } else if (map.tiles.empty && layer == 1) {
                 ctx.drawImage(images["tiles/" + map.tiles.empty.sprite],
@@ -897,7 +897,7 @@ scenes.game = () => {
                     }
                     return false;
                 });
-        }, 500);
+            }, 500);
         }
     }
 
@@ -1061,7 +1061,7 @@ scenes.game = () => {
             return false;
         });
     }
-    
+
     function endCutscene() {
         canMove = true;
         cutsceneMode = false;
@@ -1341,7 +1341,7 @@ scenes.game = () => {
 
                     }
                 }
-                for (i = 0; i < enemies.length; i++) { 
+                for (i = 0; i < enemies.length; i++) {
                     enemies[i].movementTime += delta;
                     if (enemies[i].movementTime > enemies[i].walkingInterval * 1000 && !enemies[i].kofs[2]) {
                         enemies[i].movementTime = 0;
@@ -1459,8 +1459,8 @@ scenes.game = () => {
                     if ((isWalkable(map, game.position[0] + xo, game.position[1] + yo)
                         && isWalkable(map, game.position[0] + xo, game.position[1] + yo, 2))
                         || (getTile(map, game.position[0] + xo, game.position[1] + yo) == undefined &&
-                        getTile(map, game.position[0] + xo, game.position[1] + yo, 2) != undefined &&
-                        isWalkable(map, game.position[0] + xo, game.position[1] + yo, 2))) { //Direction-change-against-wall
+                            getTile(map, game.position[0] + xo, game.position[1] + yo, 2) != undefined &&
+                            isWalkable(map, game.position[0] + xo, game.position[1] + yo, 2))) { //Direction-change-against-wall
 
                         kofs = [xo, yo, 1];
                         game.position[0] += xo;
@@ -1482,7 +1482,7 @@ scenes.game = () => {
             let isInWater = 1;
             if (getTile(map, game.position[0], game.position[1]) != undefined) if (getTile(map, game.position[0], game.position[1]).swim == true) isInWater = 2;
 
-            kofs[2] = Math.max(kofs[2] - delta / 166  / isInWater, 0);
+            kofs[2] = Math.max(kofs[2] - delta / 166 / isInWater, 0);
             walkTime = (walkTime + delta * (kofs[2] ? 5 : 1) / 1000) % 2;
             animateTime = (animateTime + delta / 1000) % 2;
 

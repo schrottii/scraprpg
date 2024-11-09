@@ -45,7 +45,7 @@ function loadMap() {
         else {
             noid = true;
         }
-        if(noid) {
+        if (noid) {
             let toRemove = result.split('"] =')[0];
             result = result.replace(toRemove + '"] =', "");
 
@@ -2061,8 +2061,8 @@ scenes.mapmaker = () => {
                 delete map.tiles[tilesetTile];
             }
         }
-        
-        if(type == "sotrm") toExport = JSON.stringify(map);
+
+        if (type == "sotrm") toExport = JSON.stringify(map);
         if (type == "js") toExport = 'maps["' + currentMap + '"] = ' + JSON.stringify(map);
 
         var blob = new Blob([toExport], { type: "text/plain" });
@@ -2132,7 +2132,7 @@ scenes.mapmaker = () => {
         }
     }
 
-    function toggleCreateDialogueButtons(mustShow=false) {
+    function toggleCreateDialogueButtons(mustShow = false) {
         if (createDialogueButtons[0].alpha == 0 || mustShow) {
             closeAllMenus(5);
             if (curDia != "") {
@@ -2147,7 +2147,7 @@ scenes.mapmaker = () => {
             else {
                 createDialogueButtons[0].offset = [0, 0];
                 createDialogueButtons[0].alpha = 1;
-            } 
+            }
             for (i in createTileBG) {
                 createTileBG[i].alpha = 1;
             }
@@ -2347,7 +2347,7 @@ scenes.mapmaker = () => {
         updateTiles = true;
     }
 
-    function toggleMapInfoButtons(mustclose=false) {
+    function toggleMapInfoButtons(mustclose = false) {
         if (mapInfoControls[0].alpha == 0 && !mustclose) {
             for (u in undoButtons) {
                 undoButtons[u].al = undoButtons[u].alpha;
@@ -2467,7 +2467,7 @@ scenes.mapmaker = () => {
         }
     }
 
-    function toggleLoadButtons(mustclose=false) {
+    function toggleLoadButtons(mustclose = false) {
         if (loadMapButtons[0].offset[1] != -600 && loadMapButtons[0].offset[1] != 0) {
             animationOverlap = true;
             return false;
@@ -2617,7 +2617,7 @@ scenes.mapmaker = () => {
                         else tilesMenuTiles[nr].source = "gear";
                         tilesMenuTiles[nr].snip = [grb.snip[0] * 32, grb.snip[1] * 32, 32, 32];
                     }
-                    else{
+                    else {
                         if (images["tiles/" + grb.sprite] != undefined) tilesMenuTiles[nr].source = "tiles/" + grb.sprite;
                         else tilesMenuTiles[nr].source = "gear";
                         tilesMenuTiles[nr].snip = false;
@@ -2708,7 +2708,7 @@ scenes.mapmaker = () => {
         prott = 100;
     }
 
-    function placeTile(x, y, layer, tileToPlace="none", umode="default") {
+    function placeTile(x, y, layer, tileToPlace = "none", umode = "default") {
         if (x < 0 || y < 0) {
             return false;
         }
@@ -2724,7 +2724,7 @@ scenes.mapmaker = () => {
             }
 
             let rePlaced;
-            if(doFill) rePlaced = mp.substr(x * 4, 3);
+            if (doFill) rePlaced = mp.substr(x * 4, 3);
 
             if (mp == undefined) {
                 while (mp == undefined) {
@@ -2808,7 +2808,7 @@ scenes.mapmaker = () => {
                 x += 1;
             }
             // pom = plus or minus
-            if(pom == "-") y -= 1;
+            if (pom == "-") y -= 1;
             if (pom == "+") y += 1;
             mp = map[layer][y];
             x = temp[0];
@@ -3255,8 +3255,8 @@ scenes.mapmaker = () => {
             backButton, toggleMapInfoButton, eyeButton, collisionButton, toggleAnimate, currentTile, ...recentlyUsedTiles, // left side stuff, UI
 
             // v various menus
-            ...loadMapButtons, ...mapInfoControls, 
-            ...tilesMenuControls, ...tilesMenuTiles, ...tilesMenuIcons, 
+            ...loadMapButtons, ...mapInfoControls,
+            ...tilesMenuControls, ...tilesMenuTiles, ...tilesMenuIcons,
             ...createTileBG, ...createTileInfoBG, ...createTileInfo, ...createTileButtons,
             ...createDialogueButtons, ...createDialogueLabels, ...createNPCButtons, ...createNPCLabels,
             ...tileInfoControls, autoSaveText

@@ -5,7 +5,7 @@ function setScene(args) {
     previousScene = scene.name;
 
     scene = {
-        preRender: (ctx) => {},
+        preRender: (ctx) => { },
         controls: [],
         ...args || {},
     }

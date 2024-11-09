@@ -112,7 +112,7 @@ function Particles(args) {
             }
 
             if (this.life >= this.lifespan && this.lifespan != 0 && !this.lifeMode) {
-                if(!this.repeatMode) this.dead = true;
+                if (!this.repeatMode) this.dead = true;
                 this.onDeath(args);
                 if (this.repeatMode) {
                     this.life = 0;
@@ -129,7 +129,7 @@ function Particles(args) {
                     }
                 }
             }
-            if(this.lifeTickIdle || this.movable) this.life += (delta / 1000);
+            if (this.lifeTickIdle || this.movable) this.life += (delta / 1000);
 
             let red = 1;
             if (isLs() == true) red = 2;

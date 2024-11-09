@@ -23,7 +23,7 @@ function init() {
                 align: "right", baseline: "alphabetic", fontSize: 16, fill: "#7f7f7f",
                 text: "",
             }),
-    
+
             controls.rect({
                 anchor: [0, 0], sizeAnchor: [1, 1],
                 clickthrough: true, fontSize: 16, alpha: 0,
@@ -38,7 +38,7 @@ function init() {
                 align: "center", baseline: "alphabetic", fontSize: 16, fill: "white",
                 text: "Press A to start", alpha: 0,
             }),
-            
+
         ],
         name: "main"
     });
@@ -61,7 +61,7 @@ var isHolding = false;
 //  ----> Dusk: 15:00 - 17:59
 // Night: 18:00 - 5:59 (12 hours)
 
-function getTime(ti = game.time, am=16.667, di=1000, sc=false) {
+function getTime(ti = game.time, am = 16.667, di = 1000, sc = false) {
     let hours = Math.floor(ti / di);
     let minutes = Math.floor((ti % di) / am);
 
@@ -222,7 +222,7 @@ function onCanvasPointerMove(e) {
     }
 }
 
-function onCanvasPointerUp(e, keepHold=false) {
+function onCanvasPointerUp(e, keepHold = false) {
     if (!keepHold) isHolding = false;
 
     pointerActive = false;
@@ -244,7 +244,7 @@ function onCanvasPointerUp(e, keepHold=false) {
         offsetY = con.offset[1] / red + con.anchor[1] * mainCanvas.height;
         sizeX = con.sizeOffset[0] / red + con.sizeAnchor[0] * mainCanvas.width;
         sizeY = con.sizeOffset[1] / red + con.sizeAnchor[1] * mainCanvas.height;
-        
+
 
         // Makes button go unpressed color after you stop clicking it
         // Without this you'd have to click somewhere else to "unclick" it
@@ -290,7 +290,7 @@ var animationspeed = 100;
 let scale = window.innerHeight / 16;
 let width = window.innerWidth / scale;
 
-function image_animation(image, columns, rows, sizex, sizey, speed=100) {
+function image_animation(image, columns, rows, sizex, sizey, speed = 100) {
     animationtime = 0;
     animation = [image, columns - 1, rows - 1, sizex / columns, sizey / rows];
     animationspeed = speed;
@@ -381,8 +381,8 @@ function loop() {
         textProgress += delta / 1000;
     }
 
-    game.playTime += (delta/1000); // 1 = 1 sec
-    game.time += (delta/60);
+    game.playTime += (delta / 1000); // 1 = 1 sec
+    game.time += (delta / 60);
     if (game.time >= 24000) { // 1000 = 1 hour in-game.
         game.time = 0;
     }
@@ -497,17 +497,17 @@ function loadGame() {
         if (saveCopy.wrenches == undefined) saveCopy.wrenches = 0;
         if (saveCopy.bricks == undefined) saveCopy.bricks = 0;
         if (saveCopy.inventory == undefined) saveCopy.inventory = { "brickyleaf": 5, "potion": 3 };
-        if (saveCopy.shops == undefined) saveCopy.shops = { };
+        if (saveCopy.shops == undefined) saveCopy.shops = {};
 
         if (saveCopy.characters.bleu.equipment == undefined) {
             for (i in saveCopy.characters) {
                 saveCopy.characters[i].equipment = {
-                "head" : "none",
-                "body" : "none",
-                "lhand" : "none",
-                "rhand" : "none",
-                "acc1" : "none",
-                "acc2" : "none",
+                    "head": "none",
+                    "body": "none",
+                    "lhand": "none",
+                    "rhand": "none",
+                    "acc1": "none",
+                    "acc2": "none",
                 }
             }
         }

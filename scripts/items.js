@@ -45,7 +45,7 @@ let items = {
             max: 99,
             effect: () => {
                 let HealthBefore = args.player.HP;
-                if (args.player.HP > 0)  args.player.HP += 50;
+                if (args.player.HP > 0) args.player.HP += 50;
                 if (args.player.HP > getStat(args.player.name.toLowerCase(), "maxHP")) args.player.HP = getStat(args.player.name.toLowerCase(), "maxHP");
                 playSound("heal");
                 if (args.anchor != undefined) {
