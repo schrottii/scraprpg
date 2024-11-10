@@ -807,23 +807,27 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) {
                 protect();
                 if (confirm("Do you really want to create a new map?") == true) {
-                    currentMap = "newMap";
-                    map = {
-                        id: "newMap",
-                        tiles: {
-                            empty: {
-                                sprite: "water",
-                            },
-                        },
-                        map: ["---"],
-                        mapbg2: ["---"],
-                        mapfg: ["---"],
-                    }
-                    newMap();
+                    createNewMap("newMap");
                 }
             }
         }
     }));
+
+    function createNewMap(mapName) {
+        currentMap = mapName;
+        map = {
+            id: mapName,
+            tiles: {
+                empty: {
+                    sprite: "water",
+                },
+            },
+            map: ["---"],
+            mapbg2: ["---"],
+            mapfg: ["---"],
+        }
+        newMap();
+    }
 
     expandMapButtons.push(controls.image({
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
@@ -2968,21 +2972,8 @@ scenes.mapmaker = () => {
                         newMap();
                     }
                     else {
-                        // It does not exist, hmm what do we do
-                        map = eval(lmresult);
-
-                        // Not sure about this . . .
-
-                        /*if (map.map == undefined) {
-                            map.map = ["--- --- 001 001 001", "--- --- 001 001 001", "--- --- 001 001 001"];
-                        }
-                        if (map.mapbg2 == undefined) {
-                            map.mapbg2 = ["--- --- ---", "--- --- ---", "--- --- ---"];
-                        }
-                        if (map.mapfg == undefined) {
-                            map.mapfg = ["--- --- ---", "--- --- ---", "--- --- ---"];
-                        }*/
-                        newMap();
+                        // It does not exist, create a new empty map
+                        createNewMap(eval(lmresult));
                     }
                 }
 
@@ -3028,10 +3019,11 @@ scenes.mapmaker = () => {
 
             kofs[2] = Math.max(kofs[2] - delta / 166, 0);
 
+            // Update scaling
             let scale = window.innerHeight / 16;
             let width = window.innerWidth / scale;
 
-            // Why is this HERE?
+            // Update location/status text
             currentMapText.text = "Current Map: " + currentMap + " | Pos: x" + game.position[0] + " y" + game.position[1] + " z" + editingLayer + " | Mode: " + mode;
 
             ctx.imageSmoothingEnabled = false;

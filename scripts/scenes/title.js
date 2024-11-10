@@ -298,8 +298,6 @@ scenes.title = () => {
         clickthrough: true,
         fill: "#000000", alpha: 0,
         onClick(args) {
-            //console.log("click");
-            // ^ not needed anymore??
             return true;
         }
     });

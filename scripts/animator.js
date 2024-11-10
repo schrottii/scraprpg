@@ -10,7 +10,6 @@ function updateAnimators(delta) {
         animators[a].time += delta;
         let val = animators[a].func(animators[a].time)
         if (val) {
-            //console.log(val)
             animators.splice(a, 1);
             a--;
         }

@@ -322,10 +322,10 @@ scenes.game = () => {
         alpha: 0,
         text: "",
         onClick(args) {
-            //if (canMove == true) { // DISABLED DURING TESTING RE-ADD LATER
-            playSound("buttonClickSound");
-            fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
-            //}
+            if (canMove == true) {
+                playSound("buttonClickSound");
+                fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
+            }
         }
     });
     let inventoryImage = controls.image({
@@ -744,13 +744,14 @@ scenes.game = () => {
         // Is it a teleporter?
 
         let lay = ["map", "map", "mapbg2", "mapfg"][l];
-        if (map[lay][y] && map[lay][y][(x * 3) + 2]) { //Check if tile exists
+        if (map[lay][y] && map[lay][y][(x * 3) + 2]) { // Check if tile exists
             if (getTile(map, x, y, l) != undefined) {
-                if (getTile(map, x, y, l).teleport != undefined) { //Check if teleport exists
+                if (getTile(map, x, y, l).teleport != undefined) { // Check if teleport exists
                     //It exists! A miracle
                     return true;
                 }
                 else {
+                    // It does not exist
                     return false;
                 }
             }
@@ -1246,7 +1247,7 @@ scenes.game = () => {
                 else if (isDawn()) setNightEffect("#4c4241", 0.5, "fog");
             }
 
-            // Check if it's time for enemies to mov�
+            // Check if it's time for enemies to move
             if (canMove == true) {
                 for (i = 0; i < activenpcs.length; i++) {
                     activenpcs[i].movementTime += delta;
@@ -1288,6 +1289,7 @@ scenes.game = () => {
                                                 if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, 3) == undefined || (map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, 3).occupied != true) {
                                                     if (!creaturesOnTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo)) {
                                                         // "all layers" for getTile would be nice - remind me to add it later
+                                                        // edit: still not a thing huh? this nested if here sucks
                                                         activenpcs[i].position[0] += xo;
                                                         activenpcs[i].position[1] += yo;
                                                         activenpcs[i].head = head;

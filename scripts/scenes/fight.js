@@ -1032,7 +1032,7 @@ scenes.fight = () => {
 
             generateOrderDisplay();
             if (!fightLost) setTimeout(() => enemiesTurn(), ACTIONDELAY);
-        }, true); // very important true, bob
+        }, true); // very important true
     }
 
     function endOfTurnEvents() {
@@ -1419,7 +1419,6 @@ scenes.fight = () => {
 
         for (i in myElements) {
             for (j in theirElements) {
-                //console.log("i: " + i, "   j:" + j);
                 if (elementLogic(myElements[i], theirElements[j]) == "weak") damageBoost -= ELEMENTBOOST;
                 if (elementLogic(myElements[i], theirElements[j]) == "strong") damageBoost += ELEMENTBOOST;
             }
@@ -1667,14 +1666,11 @@ scenes.fight = () => {
         }
         peopleLeft -= 1; // you
 
-        //if (peopleLeft == 0) {
-        // Not a single protagonist exists anymore ! ! !
         let loss = Math.round(50 + (game.wrenches / 100)) * (-1);
         addWrenches(loss);
         fleeLoss.text = loss + "!";
         fleeLoss.alpha = 1;
         fleeIcon.alpha = 1;
-        //}
 
         hideFightButtons();
         hideFightActions();
@@ -1896,7 +1892,7 @@ scenes.fight = () => {
     }))
 
     function findNewEnemy(fpos1, fpos2, pos1, pos2) {
-        if (epositions[pos1][pos2].isOccupied == false) { // folso! Oh no
+        if (epositions[pos1][pos2].isOccupied == false) {
             let exists = 0;
             for (nj = 0; nj < 3; nj++) {
                 for (ni = 0; ni < 3; ni++) {
@@ -2187,7 +2183,7 @@ scenes.fight = () => {
     }));
 
     // Left side of the victory screen
-    for (i = 0; i < 6; i++) { // BARZ
+    for (i = 0; i < 6; i++) {
         winStats.push(controls.rect({
             anchor: [0.05, 0.1 + (i * 0.15)], sizeAnchor: [0.592, 0.025], offset: [-2000, 0],
             fill: "#aeaeae",
@@ -2667,10 +2663,6 @@ scenes.fight = () => {
                 pos2: j,
                 glow: 8,
                 onClick(args) {
-                    //epositions[this.pos1][this.pos2].occupied = "selected";
-                    // uhhh... no?F
-                    // but add fighting here at some point
-                    // THAT POINT IS NOW! Idiot
                     let dude = positions[selectedAlly[0]][selectedAlly[1]].occupied;
                     if (fightaction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
@@ -2801,6 +2793,7 @@ scenes.fight = () => {
                         }
 
                         // I hate this code here
+                        // edit: I still hate it, and honestly, not just this bit
                         let doWeHaveThisOneDoWe = 0;
                         let amount = 0;
                         let which = 0;
@@ -2838,7 +2831,6 @@ scenes.fight = () => {
         }
 
         // for actionDisplay (what do you want to do?)
-        // this used to be soooo long when it was 3 rows... but now...
         actionDisplay.text = "";
         switch (fightaction) {
             case "none":
