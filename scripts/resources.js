@@ -144,6 +144,7 @@ let images = {
     condemned: "data/images/effects/condemned.png",
 
     // Tiles
+    "tiles/empty": "data/images/tiles/empty.png",
     "tiles/water": "data/images/tiles/water.png",
     "tiles/border": "data/images/tiles/border.png",
     "tiles/border2": "data/images/tiles/border2.png",

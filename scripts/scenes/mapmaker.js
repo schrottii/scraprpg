@@ -86,8 +86,8 @@ scenes.mapmaker = () => {
 
     let createTileButtons = [];
     let createTileBG = [];
-    let createTileInfoBG = [];
-    let createTileInfo = [];
+    let makerInfo = [];
+    let makerInfoText = [];
     let createTileInfoPage = 0;
     let createTileInfoPageLength = 1;
     let createTileInfoprevM = "t";
@@ -457,98 +457,128 @@ scenes.mapmaker = () => {
         text: "Tile Maker", alpha: 0,
     }));
 
-    createTileInfoBG.push(controls.rect({
+    makerInfo.push(controls.rect({
         anchor: [0.05, 0.15], sizeAnchor: [0.2, 0.7],
         fill: colors.buttonbottom, alpha: 0,
         onClick(args) {
             if (this.alpha == 1) protect();
         }
     }));
-    createTileInfoBG.push(controls.rect({
+    makerInfo.push(controls.rect({
         anchor: [0.05, 0.15], sizeAnchor: [0.2, 0.7], offset: [8, 8], sizeOffset: [-16, -16],
         fill: colors.buttontop, alpha: 0,
     }));
-    createTileInfoBG.push(controls.label({
+    makerInfo.push(controls.label({
         anchor: [0.15, 0.15],
-        text: "Info", alpha: 0,
+        text: "Maker Info", alpha: 0,
     }));
 
-    createTileInfoBG.push(controls.button({
+    makerInfo.push(controls.button({
         anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 0],
         text: "Tiles", alpha: 0, align: "right",
         onClick(args) {
-            if (this.alpha == 1) renderInfo("t");
+            if (this.alpha == 1) {
+                protect();
+                renderInfo("t");
+            }
         }
     }));
-    createTileInfoBG.push(controls.button({
+    makerInfo.push(controls.button({
         anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 1],
         text: "Tilesets", alpha: 0, align: "right",
         onClick(args) {
-            if (this.alpha == 1) renderInfo("ts");
+            if (this.alpha == 1) {
+                protect();
+                renderInfo("ts");
+            }
         }
     }));
-    createTileInfoBG.push(controls.button({
+    makerInfo.push(controls.button({
         anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 2],
         text: "Sprite IDs", alpha: 0, align: "right",
         onClick(args) {
-            if (this.alpha == 1) renderInfo("id");
+            if (this.alpha == 1) {
+                protect();
+                renderInfo("id");
+            }
         }
     }));
-    createTileInfoBG.push(controls.button({
+    makerInfo.push(controls.button({
         anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 3],
         text: "Maps", alpha: 0, align: "right",
         onClick(args) {
-            if (this.alpha == 1) renderInfo("m");
+            if (this.alpha == 1) {
+                protect();
+                renderInfo("m");
+            }
         }
     }));
-    createTileInfoBG.push(controls.button({
+    makerInfo.push(controls.button({
         anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 4],
         text: "Enemies", alpha: 0, align: "right",
         onClick(args) {
-            if (this.alpha == 1) renderInfo("e");
+            if (this.alpha == 1) {
+                protect();
+                renderInfo("e");
+            }
         }
     }));
-    createTileInfoBG.push(controls.button({
+    makerInfo.push(controls.button({
         anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 5],
         text: "Enemy Spawns", alpha: 0, align: "right",
         onClick(args) {
-            if (this.alpha == 1) renderInfo("es");
+            if (this.alpha == 1) {
+                protect();
+                renderInfo("es");
+            }
         }
     }));
-    createTileInfoBG.push(controls.button({
+    makerInfo.push(controls.button({
         anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 6],
         text: "Dialogues", alpha: 0, align: "right",
         onClick(args) {
-            if (this.alpha == 1) renderInfo("d");
+            if (this.alpha == 1) {
+                protect();
+                renderInfo("d");
+            }
         }
     }));
-    createTileInfoBG.push(controls.button({
+    makerInfo.push(controls.button({
         anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 7],
         text: "Portraits", alpha: 0,
         onClick(args) {
-            if (this.alpha == 1) renderInfo("p");
+            if (this.alpha == 1) {
+                protect();
+                renderInfo("p");
+            }
         }
     }));
 
-    createTileInfoBG.push(controls.button({
+    makerInfo.push(controls.button({
         anchor: [0.25, 0.85], sizeOffset: [64, 32], offset: [-144, -32],
         text: "P-", alpha: 0,
         onClick(args) {
-            if (this.alpha == 1 && createTileInfoPage > 0) createTileInfoPage -= 1;
-            renderInfo("auto");
+            if (this.alpha == 1 && createTileInfoPage > 0) {
+                protect();
+                createTileInfoPage -= 1;
+                renderInfo("auto");
+            }
         }
     }));
-    createTileInfoBG.push(controls.button({
+    makerInfo.push(controls.button({
         anchor: [0.25, 0.85], sizeOffset: [64, 32], offset: [-64, -32],
         text: "P+", alpha: 0,
         onClick(args) {
-            if (this.alpha == 1) createTileInfoPage += 1;
-            renderInfo("auto");
+            if (this.alpha == 1) {
+                protect();
+                createTileInfoPage += 1;
+                renderInfo("auto");
+            }
         }
     }));
 
     for (i = 0; i < 40; i++) {
-        createTileInfo.push(controls.label({
+        makerInfoText.push(controls.label({
             anchor: [0.15, 0.2], offset: [0, 20 * i], fontSize: 18,
             text: "", alpha: 0,
         }));
@@ -665,7 +695,11 @@ scenes.mapmaker = () => {
     }));
     createTileButtons.push(controls.image({
         anchor: [0.25, 0.325], sizeOffset: [64, 64], offset: [72 * 16 - 32, -632],
-        source: "gear",
+        source: "gear", alpha: 0,
+    }));
+    createTileButtons.push(controls.image({
+        anchor: [0.7, 0], sizeAnchor: [0.3, 0.3],
+        source: "gear", alpha: 0,
     }));
     createTileButtons.push(controls.button({
         anchor: [0.3, 0.575], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
@@ -819,7 +853,7 @@ scenes.mapmaker = () => {
             id: mapName,
             tiles: {
                 empty: {
-                    sprite: "water",
+                    sprite: "empty",
                 },
             },
             map: ["---"],
@@ -1573,6 +1607,27 @@ scenes.mapmaker = () => {
         alpha: 1,
     });
 
+    // bottom right, maker info
+    let toggleMakerInfo = controls.button({
+        anchor: [0.95, 0.955], sizeAnchor: [0.05, 0.045],
+        text: "info",
+        onClick(args) {
+            if (this.alpha == 1) {
+                protect();
+                if (this.text == "info") {
+                    showInfo();
+                    this.text = "X";
+                }
+                else {
+                    hideInfo();
+                    this.text = "info";
+                }
+                updateTiles = true;
+            }
+        },
+        alpha: 1,
+    });
+
     mapInfoControls.push(controls.rect({
         anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.7],
         fill: colors.buttonbottompressed, alpha: 0,
@@ -1714,7 +1769,7 @@ scenes.mapmaker = () => {
         text: "Show/Hide Info", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                if (createTileInfo[0].alpha == 0) {
+                if (makerInfoText[0].alpha == 0) {
                     showInfo();
                     renderInfo("es");
                 }
@@ -1952,6 +2007,7 @@ scenes.mapmaker = () => {
             createTileButtons[8].text = "Swim";
 
             createTileButtons[9].source = "gear";
+            createTileButtons[10].source = "gear";
         }
         catch (e) {
             alert("An error occured!\n" + e);
@@ -2319,7 +2375,10 @@ scenes.mapmaker = () => {
             this.fillBottom = "darkred";
         }
         if (tileSet != "") {
-            if (images["tilesets/" + tileSet] != undefined) createTileButtons[9].source = "tilesets/" + tileSet;
+            if (images["tilesets/" + tileSet] != undefined) {
+                createTileButtons[9].source = "tilesets/" + tileSet;
+                createTileButtons[10].source = "tilesets/" + tileSet;
+            }
             else createTileButtons[9].source = "gear";
 
             tileSprite = "";
@@ -2393,13 +2452,13 @@ scenes.mapmaker = () => {
             undoButtons[u].alpha = 0;
         }
 
-        for (i in createTileInfoBG) {
-            createTileInfoBG[i].alpha = 1;
+        for (i in makerInfo) {
+            makerInfo[i].alpha = 1;
         }
-        for (i in createTileInfo) {
+        for (i in makerInfoText) {
             if (height * 0.6 * red > i * 20) {
                 createTileInfoPageLength += 1;
-                createTileInfo[i].alpha = 1;
+                makerInfoText[i].alpha = 1;
             }
         }
     }
@@ -2409,11 +2468,11 @@ scenes.mapmaker = () => {
             undoButtons[u].alpha = undoButtons[u].al;
         }
 
-        for (i in createTileInfoBG) {
-            createTileInfoBG[i].alpha = 0;
+        for (i in makerInfo) {
+            makerInfo[i].alpha = 0;
         }
-        for (i in createTileInfo) {
-            createTileInfo[i].alpha = 0;
+        for (i in makerInfoText) {
+            makerInfoText[i].alpha = 0;
         }
     }
 
@@ -2464,10 +2523,10 @@ scenes.mapmaker = () => {
         }
         for (g = 0; g < 40; g++) {
             if (grabFrom[g + (createTileInfoPage * createTileInfoPageLength)] != undefined) {
-                createTileInfo[g].text = grabFrom[g + (createTileInfoPage * createTileInfoPageLength)];
+                makerInfoText[g].text = grabFrom[g + (createTileInfoPage * createTileInfoPageLength)];
             }
             else {
-                createTileInfo[g].text = "";
+                makerInfoText[g].text = "";
             }
         }
     }
@@ -3116,17 +3175,18 @@ scenes.mapmaker = () => {
                                     tiles_bg[b].source = "tiles/" + getTile(map, x, y).sprite;
                                     tiles_bg[b].snip = false;
                                 }
-                            }
-                            // Animate stuff
-                            if (getTile(map, x, y).ani != undefined && enableAnimations) {
-                                tiles_bg[b].isnip = [getTile(map, x, y).snip[0] * 32, getTile(map, x, y).snip[1] * 32, 32, 32];
-                                tiles_bg[b].ani = getTile(map, x, y).ani;
-                            }
-                            else {
-                                tiles_bg[b].ani = undefined;
-                            }
-                            if (visibleCollision && !getTile(map, x, y).occupied) {
-                                tiles_bg[b].alpha -= 0.6;
+
+                                // Animate stuff
+                                if (getTile(map, x, y).ani != undefined && enableAnimations) {
+                                    tiles_bg[b].isnip = [getTile(map, x, y).snip[0] * 32, getTile(map, x, y).snip[1] * 32, 32, 32];
+                                    tiles_bg[b].ani = getTile(map, x, y).ani;
+                                }
+                                else {
+                                    tiles_bg[b].ani = undefined;
+                                }
+                                if (visibleCollision && !getTile(map, x, y).occupied) {
+                                    tiles_bg[b].alpha -= 0.6;
+                                }
                             }
                         }
                         else {
@@ -3248,8 +3308,9 @@ scenes.mapmaker = () => {
             // v various menus
             ...loadMapButtons, ...mapInfoControls,
             ...tilesMenuControls, ...tilesMenuTiles, ...tilesMenuIcons,
-            ...createTileBG, ...createTileInfoBG, ...createTileInfo, ...createTileButtons,
+            ...createTileBG, ...createTileButtons,
             ...createDialogueButtons, ...createDialogueLabels, ...createNPCButtons, ...createNPCLabels,
+            toggleMakerInfo, ...makerInfo, ...makerInfoText, 
             ...tileInfoControls, autoSaveText
         ],
         name: "mapmaker"
