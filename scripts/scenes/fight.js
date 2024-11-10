@@ -1,11 +1,29 @@
 var battleNumbers = [];
 var fightStats = [];
-const amountStats = 14;
+const amountFightStats = 14;
 var positions;
 var defeatType = "default"; // default or nogameover
 
 // Colors of the range indicator
 const rangeColors = ["red", "pink", "blue"];
+
+function healPlayer(player, amount, anchor = 0, offset = 0) {
+    let HealthBefore = player.HP;
+    if (player.HP > 0) player.HP += amount;
+    if (player.HP > getStat(player.name.toLowerCase(), "maxHP")) player.HP = getStat(player.name, "maxHP");
+    playSound("heal");
+
+    if (anchor != undefined && anchor != 0) {
+        battleNumber(anchor, amount, 0, offset);
+        updateBar(player.name.toLowerCase(), HealthBefore);
+    }
+}
+
+function healAllPlayers(amount, anchor = 0, offset = 0) {
+    for (let player in game.chars) {
+        healPlayer(game.characters[game.chars[player]], amount, anchor, offset);
+    }
+}
 
 function battleNumber(pos, amount, type, offset = [0, 0], crit = false) {
     // Type 0 is HP, 1 is EP
@@ -67,11 +85,12 @@ function battleNumber(pos, amount, type, offset = [0, 0], crit = false) {
 }
 
 function updateBar(charName, HealthBefore) {
-    let whichChar = characters.indexOf(charName);
-    let which = 5 + (whichChar * amountStats);
-    let row = Math.ceil((whichChar + 1) / 3); // 1 or 2
-
     if (game.characters[charName].HP < 0) game.characters[charName].HP = 0;
+    if (fightStats.length < 1) return false; // we are not in a fight - do not render!
+
+    let whichChar = characters.indexOf(charName);
+    let which = 5 + (whichChar * amountFightStats);
+    let row = Math.ceil((whichChar + 1) / 3); // 1 or 2
 
     let Leftend = 0.1960 * (Math.max(getPlayer(1 + whichChar).HP, 0) / getStat(1 + whichChar, "maxHP"));
     let Length = (0.1960 * (HealthBefore / getStat(1 + whichChar, "maxHP"))) - Leftend;
@@ -108,7 +127,6 @@ function updateBar(charName, HealthBefore) {
         fightStats[which].alpha = 1;
         addAnimator(function (t) {
             fightStats[which].sizeAnchor[0] = Length * Math.max(0.01, ((Math.min(t * 0.01, 0.5))));
-            //console.log(Length + "    " + Math.max(0.01, ((Math.min(t * 0.01, 0.5))))  + "   " + Length * Math.max(0.01, ((Math.min(t * 0.01, 0.5)))));
 
             if (t > 1400) {
                 fightStats[which].anchor[0] = 0.242 + Leftend;
@@ -123,12 +141,17 @@ function updateBar(charName, HealthBefore) {
 }
 
 
+
 scenes.fight = () => {
-    var fightaction = "none";
-    var turn = 1;
-    var put = 0; //positions update time
+    var fightAction = "none";
+    var turnCounter = 1;
+    var positionsUpdateTime = 0;
     var itemPage = 0;
     var alliesFled = 0;
+
+    // selected ally and character currently performing action (AKA whoAGI)
+    var selectedAlly = [0, 0];
+    var activeCharacter;
 
     // UI stuff
     var fightButtons = [];
@@ -155,10 +178,6 @@ scenes.fight = () => {
     var highlightGrid = [];
     var highlightChange = 0;
     var highlightAlpha = 1;
-
-    // selected ally and character currently performing action (AKA whoAGI)
-    var selectedAlly = [0, 0];
-    var activeCharacter;
 
     // some bools
     var fightWon = false;
@@ -732,7 +751,7 @@ scenes.fight = () => {
 
         // Stop if there is neveryone is done attacking, let's go to the enemies
         if (highestAGI == 0) {
-            fightaction = "enemiesturn";
+            fightAction = "enemiesturn";
             for (i in positionControls) {
                 if (positionControls[i].source != "gear") {
                     changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "unassigned");
@@ -755,7 +774,7 @@ scenes.fight = () => {
 
                 selectedAlly = [positions[pos[0]][pos[1]].action[1], positions[pos[0]][pos[1]].action[2]];
 
-                fightaction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
+                fightAction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
 
                 ret = findNewEnemy(selectedAlly[0], selectedAlly[1], pos1, pos2);
                 if (ret == false) {
@@ -953,8 +972,8 @@ scenes.fight = () => {
 
         // Stop if there is nobody (when is that?)
         if (highestAGI == 0) {
-            fightaction = "none";
-            turn += 1;
+            fightAction = "none";
+            turnCounter += 1;
             fightStarted = false;
             endOfTurnEvents();
 
@@ -1450,7 +1469,7 @@ scenes.fight = () => {
                 fill: "rgb(191, 137, 69)",
                 alpha: 1,
                 onClick(args) {
-                    if (this.alpha == 1 && fightaction == "active") {
+                    if (this.alpha == 1 && fightAction == "active") {
                         showActionButtons();
                         hideFightButtons();
                     }
@@ -1463,7 +1482,7 @@ scenes.fight = () => {
                 fill: "rgb(191, 137, 69)",
                 alpha: 1,
                 onClick(args) {
-                    if (this.alpha == 1 && fightaction == "active") {
+                    if (this.alpha == 1 && fightAction == "active") {
                         showFightActions();
                         showItems();
                         hideFightButtons();
@@ -1477,7 +1496,7 @@ scenes.fight = () => {
                 fill: "rgb(191, 137, 69)",
                 alpha: 1,
                 onClick(args) {
-                    if (this.alpha == 1 && fightaction == "active") {
+                    if (this.alpha == 1 && fightAction == "active") {
                         showFightActions();
                         showMagic();
                         hideFightButtons();
@@ -1505,8 +1524,8 @@ scenes.fight = () => {
                 fill: "rgb(191, 137, 69)",
                 alpha: 1,
                 onClick(args) {
-                    if (this.alpha == 1 && fightaction == "active") {
-                        fightaction = "none";
+                    if (this.alpha == 1 && fightAction == "active") {
+                        fightAction = "none";
                         let c = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied];
                         positions[selectedAlly[0]][selectedAlly[1]].action = [c.macro, selectedAlly[0], selectedAlly[1], 2, 1];
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
@@ -1522,10 +1541,10 @@ scenes.fight = () => {
                 fill: "rgb(191, 137, 69)",
                 alpha: 1,
                 onClick(args) {
-                    if (this.alpha == 1 && fightaction == "active") {
+                    if (this.alpha == 1 && fightAction == "active") {
                         changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "flee");
                         positions[selectedAlly[0]][selectedAlly[1]].action = ["flee", selectedAlly[0], selectedAlly[1], getStat(positions[selectedAlly[0]][selectedAlly[1]].occupied, "agi")];
-                        fightaction = "none";
+                        fightAction = "none";
                         hideFightButtons();
                     }
                 }
@@ -1557,11 +1576,11 @@ scenes.fight = () => {
             alpha: 1,
             i: i,
             onClick(args) {
-                if (this.alpha == 1 && (fightaction == "active" || (fightaction == "attack2" && this.i == 6))) {
+                if (this.alpha == 1 && (fightAction == "active" || (fightAction == "attack2" && this.i == 6))) {
                     switch (this.i) {
                         case 1:
                             positions[selectedAlly[0]][selectedAlly[1]].action = ["defend"];
-                            fightaction = "none";
+                            fightAction = "none";
 
                             changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "defend");
 
@@ -1569,34 +1588,34 @@ scenes.fight = () => {
                             break;
                         case 2:
                             positions[selectedAlly[0]][selectedAlly[1]].action = ["rally"];
-                            fightaction = "none";
+                            fightAction = "none";
                             positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                             break;
                         case 3:
-                            fightaction = "scan";
+                            fightAction = "scan";
                             break;
                         case 4:
                             positions[selectedAlly[0]][selectedAlly[1]].action = ["pray"];
-                            fightaction = "none";
+                            fightAction = "none";
                             positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                             break;
                         case 5:
                             positions[selectedAlly[0]][selectedAlly[1]].action = ["counterattack"];
-                            fightaction = "none";
+                            fightAction = "none";
                             positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                             break;
                         case 6:
                             positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "grid";
                             positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].blend = "mul";
-                            if (fightaction == "attack2" && this.i == 6) {
+                            if (fightAction == "attack2" && this.i == 6) {
                                 hideActionButtons(99);
-                                fightaction = "none";
+                                fightAction = "none";
                                 return true;
                             }
-                            fightaction = "none";
+                            fightAction = "none";
                             break;
                         default:
-                            fightaction = "attack2";
+                            fightAction = "attack2";
                             break;
                     }
                     hideFightButtons();
@@ -1772,7 +1791,7 @@ scenes.fight = () => {
                             if (positions[selectedAlly[0]][selectedAlly[1]].action == false && game.inventory[this.item.name] > 0) {
                                 if (this.item().story != true) {
                                     if (this.item().self != true) {
-                                        fightaction = "item";
+                                        fightAction = "item";
                                         selectedItem = this.item;
                                         hideFightButtons();
                                         hideFightActions();
@@ -1781,7 +1800,7 @@ scenes.fight = () => {
                                         selectedItem = this.item;
                                         positions[selectedAlly[0]][selectedAlly[1]].action = ["item", selectedItem.name, selectedAlly[0], selectedAlly[1], selectedAlly[0], selectedAlly[1]];
                                         removeItem(selectedItem.name, 1);
-                                        fightaction = "none";
+                                        fightAction = "none";
                                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "items/" + selectedItem().source;
                                         hideFightButtons();
                                         hideFightActions();
@@ -1791,7 +1810,7 @@ scenes.fight = () => {
                         }
                         if (this.type == "magic") {
                             if (positions[selectedAlly[0]][selectedAlly[1]].action == false && game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EP >= this.item().cost) {
-                                fightaction = "magic";
+                                fightAction = "magic";
                                 selectedItem = this.item;
                                 hideFightButtons();
                                 hideFightActions();
@@ -2089,7 +2108,7 @@ scenes.fight = () => {
             if (this.alpha == 1) {
                 playSound("buttonClickSound");
                 if (checkAllDead(true)) {
-                    fightaction = "victoryitems";
+                    fightAction = "victoryitems";
                     if (gainedItems.length > 0) {
                         let gain = {};
 
@@ -2234,7 +2253,7 @@ scenes.fight = () => {
             if (this.alpha == 1) {
                 playSound("buttonClickSound");
                 if (checkAllDead(true)) {
-                    if (fightaction == "victoryitems") {
+                    if (fightAction == "victoryitems") {
                         endFight();
                     }
                 }
@@ -2577,9 +2596,9 @@ scenes.fight = () => {
                             postLog(game.characters[name].name + "'s paralysis is over!")
                         }
                     }
-                    if (fightaction == "none" && game.characters[name].effect[0] == "enraged") {
+                    if (fightAction == "none" && game.characters[name].effect[0] == "enraged") {
                         changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "rage");
-                        fightaction = "attack2";
+                        fightAction = "attack2";
                         selectedAlly = [this.pos1, this.pos2];
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].blend = "add";
@@ -2593,57 +2612,57 @@ scenes.fight = () => {
                         }
                     }
                     // Attack teammate
-                    else if (fightaction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
+                    else if (fightAction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                         changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "attack");
                         positions[selectedAlly[0]][selectedAlly[1]].action = ["sattack", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
 
-                        fightaction = "none";
+                        fightAction = "none";
                         hideFightButtons();
                         hideFightActions();
                     }
 
                     // Select character
-                    if (fightaction == "none" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true) {
+                    if (fightAction == "none" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true) {
                         selectedAlly = [this.pos1, this.pos2];
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].blend = "add";
-                        fightaction = "active";
+                        fightAction = "active";
                         showFightButtons();
                     }
 
-                    if (fightaction == "item") {
+                    if (fightAction == "item") {
                         let dude = positions[selectedAlly[0]][selectedAlly[1]].occupied;
 
                         positions[selectedAlly[0]][selectedAlly[1]].action = ["item", selectedItem.name, selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
                         removeItem(selectedItem.name, 1);
-                        fightaction = "none";
+                        fightAction = "none";
 
                         changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "item");
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "items/" + selectedItem().source;
                     }
 
-                    if (fightaction == "magic") {
+                    if (fightAction == "magic") {
                         let dude = positions[selectedAlly[0]][selectedAlly[1]].occupied;
 
                         positions[selectedAlly[0]][selectedAlly[1]].action = ["magic", selectedItem.name, selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
                         game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EP -= selectedItem().cost;
-                        fightaction = "none";
+                        fightAction = "none";
 
                         changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "magic");
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = selectedItem().source;
                     }
 
-                    if (fightaction == "heal1" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true && game.characters[positions[this.pos1][this.pos2].occupied].HP > 0) {
+                    if (fightAction == "heal1" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true && game.characters[positions[this.pos1][this.pos2].occupied].HP > 0) {
                         selectedAlly = [this.pos1, this.pos2];
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].blend = "add";
-                        fightaction = "heal2";
+                        fightAction = "heal2";
                     }
-                    else if (fightaction == "heal2" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true && game.characters[positions[this.pos1][this.pos2].occupied].HP > 0) {
+                    else if (fightAction == "heal2" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true && game.characters[positions[this.pos1][this.pos2].occupied].HP > 0) {
                         positions[selectedAlly[0]][selectedAlly[1]].action = ["heal", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
-                        fightaction = "none";
+                        fightAction = "none";
                     }
                 }
             }));
@@ -2664,7 +2683,7 @@ scenes.fight = () => {
                 glow: 8,
                 onClick(args) {
                     let dude = positions[selectedAlly[0]][selectedAlly[1]].occupied;
-                    if (fightaction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
+                    if (fightAction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                         fightActions[6].offset[1] = -500;
                         changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "attack");
@@ -2673,12 +2692,12 @@ scenes.fight = () => {
                             let parent = epositions[this.pos1][this.pos2].parent;
                             positions[selectedAlly[0]][selectedAlly[1]].action = ["attack", selectedAlly[0], selectedAlly[1], parent[0], parent[1]];
                         }
-                        fightaction = "none";
+                        fightAction = "none";
                         hideFightButtons();
                         hideFightActions();
                         //attackEnemy(selectedAlly[0], selectedAlly[1], this.pos1, this.pos2); // direct attack, testing thing
                     }
-                    if (fightaction == "magic" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
+                    if (fightAction == "magic" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = selectedItem().source;
                         changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "magic");
                         if (epositions[this.pos1][this.pos2].parent == undefined) positions[selectedAlly[0]][selectedAlly[1]].action = ["magic", selectedItem.name, selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
@@ -2687,11 +2706,11 @@ scenes.fight = () => {
                             positions[selectedAlly[0]][selectedAlly[1]].action = ["magic", selectedItem.name, selectedAlly[0], selectedAlly[1], parent[0], parent[1]];
                         }
                         game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EP -= selectedItem().cost;
-                        fightaction = "none";
+                        fightAction = "none";
                         hideFightButtons();
                         hideFightActions();
                     }
-                    if (fightaction == "scan" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
+                    if (fightAction == "scan" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "scan";
 
                         if (epositions[this.pos1][this.pos2].parent == undefined) positions[selectedAlly[0]][selectedAlly[1]].action = ["scan", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
@@ -2700,7 +2719,7 @@ scenes.fight = () => {
                             positions[selectedAlly[0]][selectedAlly[1]].action = ["scan", selectedAlly[0], selectedAlly[1], parent[0], parent[1]];
                         }
 
-                        fightaction = "none";
+                        fightAction = "none";
                         hideFightButtons();
                         hideFightActions();
                     }
@@ -2832,7 +2851,7 @@ scenes.fight = () => {
 
         // for actionDisplay (what do you want to do?)
         actionDisplay.text = "";
-        switch (fightaction) {
+        switch (fightAction) {
             case "none":
                 actionDisplay.text = "Select a character before assigning a command.";
                 break;
@@ -2851,20 +2870,20 @@ scenes.fight = () => {
         }
 
         // update turn display
-        turnDisplay.text = "Turn " + turn;
+        turnDisplay.text = "Turn " + turnCounter;
     }
 
     // When the fight starts. How many chars do we have? Who exists? Show/Hide/Gray out stats
     for (i = 0; i < game.chars.length; i++) {
-        fightStats[amountStats * i].alpha = 1;
-        fightStats[1 + amountStats * i].alpha = 1;
-        fightStats[4 + amountStats * i].fill = "rgb(20, 204, 20)";
-        if (getPlayer(1 + i).HP > 0) fightStats[4 + amountStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(1 + i).HP / getStat(i + 1, "maxHP"));
-        fightStats[8 + amountStats * i].fill = "rgb(205, 0, 205)";
-        fightStats[10 + amountStats * i].alpha = 1;
-        fightStats[11 + amountStats * i].alpha = 1;
-        fightStats[12 + amountStats * i].alpha = 1;
-        if (getStat(characters[i], "element") != undefined) fightStats[12 + amountStats * i].source = getStat(characters[i], "element");
+        fightStats[amountFightStats * i].alpha = 1;
+        fightStats[1 + amountFightStats * i].alpha = 1;
+        fightStats[4 + amountFightStats * i].fill = "rgb(20, 204, 20)";
+        if (getPlayer(1 + i).HP > 0) fightStats[4 + amountFightStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(1 + i).HP / getStat(i + 1, "maxHP"));
+        fightStats[8 + amountFightStats * i].fill = "rgb(205, 0, 205)";
+        fightStats[10 + amountFightStats * i].alpha = 1;
+        fightStats[11 + amountFightStats * i].alpha = 1;
+        fightStats[12 + amountFightStats * i].alpha = 1;
+        if (getStat(characters[i], "element") != undefined) fightStats[12 + amountFightStats * i].source = getStat(characters[i], "element");
     }
 
     for (i in game.characters) {
@@ -2916,7 +2935,7 @@ scenes.fight = () => {
     function startCutscene() {
         canMove = false;
         cutsceneMode = true;
-        fightaction = "eajifjea";
+        fightAction = "eajifjea";
 
         addAnimator(function (t) {
             cutsceneElements[0].anchor[1] = -1 + (t / 1000);
@@ -2935,7 +2954,7 @@ scenes.fight = () => {
     function endCutscene() {
         canMove = true;
         cutsceneMode = false;
-        fightaction = "none";
+        fightAction = "none";
 
         addAnimator(function (t) {
             cutsceneElements[0].anchor[1] = 0 - (t / 1000);
@@ -2951,7 +2970,7 @@ scenes.fight = () => {
         });
     }
 
-    // calculate for attack order
+    // calculate for attack order (based on their agility)
     function calculateOrder() {
         let unsortedOrder = [];
         let sortedOrder = [];
@@ -2964,7 +2983,7 @@ scenes.fight = () => {
             }
         }
 
-        // Sort them
+        // Sort them: highest agility -> first turn
         while (unsortedOrder.length > 0) {
             let whoAGI = ["", "", 0, 0];
 
@@ -2976,7 +2995,7 @@ scenes.fight = () => {
                 }
             }
 
-            // add it to sorted and remove
+            // add it to sorted and remove from unsorted
             sortedOrder.push(whoAGI);
             unsortedOrder.splice(whoAGI[3], 1);
         }
@@ -3161,23 +3180,23 @@ scenes.fight = () => {
 
             // Update the stats stuff at the bottom
             for (i = 0; i < game.chars.length; i++) {
-                fightStats[amountStats * i].text = "Lvl. " + getPlayer(i + 1).level;
+                fightStats[amountFightStats * i].text = "Lvl. " + getPlayer(i + 1).level;
                 if (getPlayer(i + 1).HP > 0) {
-                    fightStats[1 + amountStats * i].source = getPlayer(i + 1).name.toLowerCase();
-                    fightStats[1 + amountStats * i].snip = [0, 0, 32, 32];
+                    fightStats[1 + amountFightStats * i].source = getPlayer(i + 1).name.toLowerCase();
+                    fightStats[1 + amountFightStats * i].snip = [0, 0, 32, 32];
                 }
                 else {
-                    fightStats[1 + amountStats * i].source = getPlayer(i + 1).name.toLowerCase() + "_battle";
-                    fightStats[1 + amountStats * i].snip = battleAnimation(getPlayer(i + 1).name.toLowerCase(), "dead");
+                    fightStats[1 + amountFightStats * i].source = getPlayer(i + 1).name.toLowerCase() + "_battle";
+                    fightStats[1 + amountFightStats * i].snip = battleAnimation(getPlayer(i + 1).name.toLowerCase(), "dead");
                 }
-                if (getPlayer(i + 1).EP > 0) fightStats[8 + amountStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(i + 1).EP / getStat(getPlayer(i + 1).name.toLowerCase(), "maxEP"));
-                fightStats[10 + amountStats * i].text = getPlayer(i + 1).HP + "/" + getStat(i + 1, "maxHP");
-                fightStats[10 + amountStats * i].fill = getHPFill(i);
-                fightStats[11 + amountStats * i].text = getPlayer(i + 1).EP + "/" + getStat(getPlayer(i + 1).name.toLowerCase(), "maxEP");
+                if (getPlayer(i + 1).EP > 0) fightStats[8 + amountFightStats * i].sizeAnchor[0] = 0.1960 * (getPlayer(i + 1).EP / getStat(getPlayer(i + 1).name, "maxEP"));
+                fightStats[10 + amountFightStats * i].text = getPlayer(i + 1).HP + "/" + getStat(i + 1, "maxHP");
+                fightStats[10 + amountFightStats * i].fill = getHPFill(i);
+                fightStats[11 + amountFightStats * i].text = getPlayer(i + 1).EP + "/" + getStat(getPlayer(i + 1).name, "maxEP");
 
-                if (getPlayer(i + 1).effect[0] != "none") fightStats[13 + amountStats * i].alpha = 1;
-                if (getPlayer(i + 1).effect[0] != "none") fightStats[13 + amountStats * i].source = getPlayer(i + 1).effect[0];
-                if (getPlayer(i + 1).effect[0] == "none") fightStats[13 + amountStats * i].alpha = 0;
+                if (getPlayer(i + 1).effect[0] != "none") fightStats[13 + amountFightStats * i].alpha = 1;
+                if (getPlayer(i + 1).effect[0] != "none") fightStats[13 + amountFightStats * i].source = getPlayer(i + 1).effect[0];
+                if (getPlayer(i + 1).effect[0] == "none") fightStats[13 + amountFightStats * i].alpha = 0;
             }
 
             // Update fightlog
@@ -3211,7 +3230,7 @@ scenes.fight = () => {
                     }
                 }
             }
-            else */if (fightaction == "attack2" || fightaction == "magic" || fightaction == "item") {
+            else */if (fightAction == "attack2" || fightAction == "magic" || fightAction == "item") {
                 for (i = 0; i < 9; i++) {
                     if (positionControls[i].source != "gear") highlightGrid[i].alpha = highlightAlpha;
                     if (epositionControls[i].source != "gear" || epositions[i % 3][Math.floor(i / 3)].parent != undefined) highlightGrid[i + 9].alpha = highlightAlpha;
@@ -3232,9 +3251,9 @@ scenes.fight = () => {
                 }
             }
 
-            put += delta;
-            if (put > 99) {
-                put = 0;
+            positionsUpdateTime += delta;
+            if (positionsUpdateTime > 99) {
+                positionsUpdateTime = 0;
                 updatePositions();
                 if (checkAllAction() && !fightStarted) {
                     fightStarted = true;

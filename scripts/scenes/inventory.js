@@ -204,15 +204,15 @@ scenes.inventory = () => {
 
                 // Barz
                 characterBars[2 + (i * 10)].fill = "rgb(20, 204, 20)";
-                if (getPlayer(1 + i).HP > 0) characterBars[2 + (i * 10)].sizeAnchor[0] = 0.1960 * (getPlayer(1 + i).HP / getStat(getPlayer(1 + i).name.toLowerCase(), "maxHP"));
+                if (getPlayer(1 + i).HP > 0) characterBars[2 + (i * 10)].sizeAnchor[0] = 0.1960 * (getPlayer(1 + i).HP / getStat(getPlayer(1 + i).name, "maxHP"));
                 else characterBars[2 + (i * 10)].sizeAnchor[0] = 0.00001;
                 characterBars[6 + (i * 10)].fill = "rgb(205, 0, 205)";
 
-                if (getPlayer(1 + i).EP > 0) characterBars[6 + (i * 10)].sizeAnchor[0] = 0.1960 * ((0.00001 + getPlayer(1 + i).EP) / getStat(getPlayer(1 + i).name.toLowerCase(), "maxEP"));
+                if (getPlayer(1 + i).EP > 0) characterBars[6 + (i * 10)].sizeAnchor[0] = 0.1960 * ((0.00001 + getPlayer(1 + i).EP) / getStat(getPlayer(1 + i).name, "maxEP"));
                 else characterBars[6 + (i * 10)].sizeAnchor[0] = 0.00001;
 
-                characterBars[8 + (i * 10)].text = getPlayer(1 + i).HP + "/" + getStat(getPlayer(1 + i).name.toLowerCase(), "maxHP");
-                characterBars[9 + (i * 10)].text = getPlayer(1 + i).EP + "/" + getStat(getPlayer(1 + i).name.toLowerCase(), "maxEP");
+                characterBars[8 + (i * 10)].text = getPlayer(1 + i).HP + "/" + getStat(getPlayer(1 + i).name, "maxHP");
+                characterBars[9 + (i * 10)].text = getPlayer(1 + i).EP + "/" + getStat(getPlayer(1 + i).name, "maxEP");
 
                 for (j = 0; j < 10; j++) {
                     if (j != 3 && j != 7) characterBars[(i * 10) + j].alpha = 1;

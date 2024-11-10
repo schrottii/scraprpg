@@ -44,14 +44,7 @@ let items = {
             type: "potion",
             max: 99,
             effect: () => {
-                let HealthBefore = args.player.HP;
-                if (args.player.HP > 0) args.player.HP += 50;
-                if (args.player.HP > getStat(args.player.name.toLowerCase(), "maxHP")) args.player.HP = getStat(args.player.name.toLowerCase(), "maxHP");
-                playSound("heal");
-                if (args.anchor != undefined) {
-                    battleNumber(args.anchor, 50, 0, args.offset);
-                    updateBar(args.player.name.toLowerCase(), HealthBefore);
-                }
+                healPlayer(args.player, 50, args.anchor, args.offset);
             },
 
             ...args || {},
@@ -123,7 +116,7 @@ let items = {
             max: 99,
             effect: () => {
                 let HealthBefore = args.player.HP
-                let amount = Math.ceil(getStat(args.player.name.toLowerCase(), "maxHP") / 4);
+                let amount = Math.ceil(getStat(args.player.name, "maxHP") / 4);
                 if (args.player.HP < 1) args.player.HP = amount;
                 playSound("heal");
                 if (args.player != undefined && positions != undefined) {

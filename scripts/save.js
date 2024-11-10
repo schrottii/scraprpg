@@ -124,5 +124,5 @@ let settings = {
 }
 
 for (c in game.characters) {
-    game.characters[c].HP = getStat(game.characters[c].name.toLowerCase(), "maxHP");
+    game.characters[c].HP = getStat(game.characters[c].name, "maxHP");
 }

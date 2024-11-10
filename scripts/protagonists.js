@@ -79,13 +79,15 @@ const cStats = {
 // Everything else, name, stats, here
 
 function getStat(prot, stat) {
-    if (typeof (prot) == "number") prot = characters[prot - 1]; // 1 = Bleu, etc. - like getPlayer()
+    if (typeof (prot) == "number") prot = characters[prot - 1]; // 1 -> Bleu, etc. - like getPlayer()
+    else prot = prot.toString().toLowerCase(); // Bleu -> bleu
+
     if (cStats[prot] == undefined) { // Pretty cool debug script. Error? Where! (It would normally not show where)
         console.trace();
         console.log([prot, stat]);
     }
 
-    // Items (jfc)
+    // include boosts from items
     let itemBonus = 0;
     for (EQ in game.characters[prot].equipment) {
         if (game.characters[prot].equipment[EQ] != "none") if (items[game.characters[prot].equipment[EQ]]().stats[stat] != undefined) itemBonus += items[game.characters[prot].equipment[EQ]]().stats[stat];

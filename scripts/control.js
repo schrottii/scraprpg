@@ -76,9 +76,6 @@ let controls = {
                 if (w > 0 && h > 0) ctx.fillRect(
                     this.offset[0] / red + this.anchor[0] * ctx.canvas.width,
                     this.offset[1] / red + this.anchor[1] * ctx.canvas.height, w, h);
-                else ctx.fillRect(
-                    this.offset[0] / red + this.anchor[0] * ctx.canvas.width,
-                    this.offset[1] / red + this.anchor[1] * ctx.canvas.height);
 
             },
             ...args || {},
