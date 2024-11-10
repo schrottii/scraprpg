@@ -25,7 +25,6 @@ function loadMap() {
     let reader = new FileReader();
     reader.readAsText(file);
     reader.onload = function (e) {
-        // Jesus sweet f***ing christ
         let result = e.target.result;
         let name = result.split('id":')[1];
         let name2 = result.split('id:')[1];
@@ -475,64 +474,64 @@ scenes.mapmaker = () => {
     }));
 
     createTileInfoBG.push(controls.button({
-        anchor: [0.05, 0.15], sizeOffset: [32, 32],
-        text: "T", alpha: 0,
+        anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 0],
+        text: "Tiles", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) renderInfo("t");
         }
     }));
     createTileInfoBG.push(controls.button({
-        anchor: [0.05, 0.15], sizeOffset: [32, 32], offset: [0, 48 * 1],
-        text: "TS", alpha: 0,
+        anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 1],
+        text: "Tilesets", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) renderInfo("ts");
         }
     }));
     createTileInfoBG.push(controls.button({
-        anchor: [0.05, 0.15], sizeOffset: [32, 32], offset: [0, 48 * 2],
-        text: "ID", alpha: 0,
+        anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 2],
+        text: "Sprite IDs", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) renderInfo("id");
         }
     }));
     createTileInfoBG.push(controls.button({
-        anchor: [0.05, 0.15], sizeOffset: [32, 32], offset: [0, 48 * 3],
-        text: "M", alpha: 0,
+        anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 3],
+        text: "Maps", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) renderInfo("m");
         }
     }));
     createTileInfoBG.push(controls.button({
-        anchor: [0.05, 0.15], sizeOffset: [32, 32], offset: [0, 48 * 4],
-        text: "E", alpha: 0,
+        anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 4],
+        text: "Enemies", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) renderInfo("e");
         }
     }));
     createTileInfoBG.push(controls.button({
-        anchor: [0.05, 0.15], sizeOffset: [32, 32], offset: [0, 48 * 5],
-        text: "ES", alpha: 0,
+        anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 5],
+        text: "Enemy Spawns", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) renderInfo("es");
         }
     }));
     createTileInfoBG.push(controls.button({
-        anchor: [0.05, 0.15], sizeOffset: [32, 32], offset: [0, 48 * 6],
-        text: "D", alpha: 0,
+        anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 6],
+        text: "Dialogues", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) renderInfo("d");
         }
     }));
     createTileInfoBG.push(controls.button({
-        anchor: [0.05, 0.15], sizeOffset: [32, 32], offset: [0, 48 * 7],
-        text: "P", alpha: 0,
+        anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 7],
+        text: "Portraits", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) renderInfo("p");
         }
     }));
 
     createTileInfoBG.push(controls.button({
-        anchor: [0.25, 0.85], sizeOffset: [32, 32], offset: [-80, -32],
+        anchor: [0.25, 0.85], sizeOffset: [64, 32], offset: [-144, -32],
         text: "P-", alpha: 0,
         onClick(args) {
             if (this.alpha == 1 && createTileInfoPage > 0) createTileInfoPage -= 1;
@@ -540,7 +539,7 @@ scenes.mapmaker = () => {
         }
     }));
     createTileInfoBG.push(controls.button({
-        anchor: [0.25, 0.85], sizeOffset: [32, 32], offset: [-32, -32],
+        anchor: [0.25, 0.85], sizeOffset: [64, 32], offset: [-64, -32],
         text: "P+", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) createTileInfoPage += 1;
@@ -2092,6 +2091,7 @@ scenes.mapmaker = () => {
             createTileInfoPageLength = 0;
 
             showInfo();
+            renderInfo("t");
 
             addAnimator(function (t) {
                 for (i in createTileButtons) {
@@ -2156,6 +2156,7 @@ scenes.mapmaker = () => {
             createTileInfoPageLength = 0;
 
             showInfo();
+            renderInfo("d");
 
             if (curDia != "") {
                 addAnimator(function (t) {
@@ -2716,8 +2717,6 @@ scenes.mapmaker = () => {
         let mp = map[layer][y];
         let def = "---";
 
-        //if (layer == "map") def = "002";
-
         if (mode == "place" || mode == "moveandplace" || umode == "undo" || umode == "copy") {
             if (tileToPlace == "none") {
                 tileToPlace = ttp;
@@ -2731,8 +2730,8 @@ scenes.mapmaker = () => {
                     map[layer].push(def);
                     mp = map[layer][y];
                 }
-                map[layer][y] = tileToPlace;
             }
+
             map[layer][y] = map[layer][y].replace(/\s{2,}/g, ' '); // remove double spaces
             mp = map[layer][y];
 
