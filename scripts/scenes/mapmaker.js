@@ -153,6 +153,7 @@ scenes.mapmaker = () => {
     let tileDia = "";
     let tileSwim = "";
     let tileOccupied = "";
+    var mapIdentifier = "C";
 
     let layerVisi = [1, 1, 1];
     let enableAnimations = false;
@@ -746,7 +747,17 @@ scenes.mapmaker = () => {
             }
         }
     }));
-    var mapIdentifier = "C";
+    createTileButtons.push(controls.button({
+        anchor: [0.25, 0.2], sizeAnchor: [0.05, 0.1], offset: [72 * 16, -600],
+        text: "DEL", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1 && tileSetSnip != "") {
+                clearTile();
+
+                updateTileLabels();
+            }
+        }
+    }));
 
     // X-
     createTileButtons.push(controls.button({
@@ -1995,6 +2006,7 @@ scenes.mapmaker = () => {
                 }
             }
 
+            // adjust and process variables
             if (tileOccupied.toLowerCase() == "yes" || tileOccupied.toLowerCase() == "true") ttc.occupied = true;
             else if ((tileOccupied.toLowerCase() != "no" || tileOccupied.toLowerCase() != "false") && tileOccupied.toLowerCase() != "") ttc.occupied = tileOccupied.split(".");
 
@@ -2006,40 +2018,47 @@ scenes.mapmaker = () => {
 
             if (tileSwim.toLowerCase() == "yes" || tileSwim.toLowerCase() == "true") ttc.swim = true;
 
+            // create the actual tile
             if (createType == "map") {
+                // CREATE button
                 map.tiles[tileID] = ttc;
             }
             if (createType == "copy") {
+                // Copy button
                 navigator.clipboard.writeText('"' + tileID + '": ' + JSON.stringify(ttc));
             }
 
-            tileID = "";
-            tileSprite = "";
-            tileOccupied = "";
-            tileSet = "";
-            tileSetSnip = "";
-            tileAni = "";
-            tileTele = "";
-            tileDia = "";
-            tileSwim = "";
-
-            createTileButtons[0].text = "Tile ID";
-            createTileButtons[1].text = "Tile Sprite";
-            createTileButtons[2].text = "Tile Occupied";
-            createTileButtons[3].text = "Tile Set";
-            createTileButtons[4].text = "Set Snip";
-            createTileButtons[5].text = "Animation";
-            createTileButtons[6].text = "Teleport";
-            createTileButtons[7].text = "Dialogue";
-            createTileButtons[8].text = "Swim";
-
-            createTileButtons[9].source = "gear";
-            createTileButtons[10].source = "gear";
+            // clearTile();
         }
         catch (e) {
             alert("An error occured!\n" + e);
         }
         toggleCreateTileButtons();
+    }
+
+    function clearTile() {
+        tileID = "";
+        tileSprite = "";
+        tileOccupied = "";
+        tileSet = "";
+        tileSetSnip = "";
+        tileAni = "";
+        tileTele = "";
+        tileDia = "";
+        tileSwim = "";
+
+        createTileButtons[0].text = "Tile ID";
+        createTileButtons[1].text = "Tile Sprite";
+        createTileButtons[2].text = "Tile Occupied";
+        createTileButtons[3].text = "Tile Set";
+        createTileButtons[4].text = "Set Snip";
+        createTileButtons[5].text = "Animation";
+        createTileButtons[6].text = "Teleport";
+        createTileButtons[7].text = "Dialogue";
+        createTileButtons[8].text = "Swim";
+
+        createTileButtons[9].source = "gear";
+        createTileButtons[10].source = "gear";
     }
 
     function loadNPCs() {
