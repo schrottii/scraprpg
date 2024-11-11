@@ -495,7 +495,7 @@ scenes.mapmaker = () => {
     }));
     makerInfo.push(controls.button({
         anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 2],
-        text: "Sprite IDs", alpha: 0, align: "right",
+        text: "Tile IDs", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) {
                 protect();
@@ -654,7 +654,7 @@ scenes.mapmaker = () => {
         }
     }));
     createTileButtons.push(controls.button({
-        anchor: [0.525, 0.7], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        anchor: [0.3, 0.575], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
         text: "Animation", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -702,7 +702,7 @@ scenes.mapmaker = () => {
         source: "gear", alpha: 0,
     }));
     createTileButtons.push(controls.button({
-        anchor: [0.3, 0.575], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        anchor: [0.3, 0.7], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
         text: "CREATE!", alpha: 0,
         fillTop: "red", fillBottom: "darkred",
         onClick(args) {
@@ -712,7 +712,7 @@ scenes.mapmaker = () => {
         }
     }));
     createTileButtons.push(controls.button({
-        anchor: [0.3, 0.7], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        anchor: [0.525, 0.7], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
         text: "Copy", alpha: 0,
         onClick(args) {
             if (this.alpha == 1 && tileSetSnip != "") {
@@ -720,6 +720,33 @@ scenes.mapmaker = () => {
             }
         }
     }));
+    createTileButtons.push(controls.button({
+        anchor: [0.75, 0.7], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "AutoID C00", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1 && tileSetSnip != "") {
+                let inputMI = prompt("new map identifier?");
+                if (inputMI != undefined && inputMI != null && inputMI != "") {
+                    mapIdentifier = inputMI.toString();
+                }
+
+                let cordX = parseInt(tileSetSnip.split(".")[0]);
+                let cordY = parseInt(tileSetSnip.split(".")[1]);
+                
+
+                let tempName = cordX + (cordY * 10);
+                tempName = tempName.toString();
+
+                if (tempName.length == 1) tileID = mapIdentifier + "0" + tempName;
+                else tileID = mapIdentifier + tempName.substr(0, 2);
+
+                // console.log(cordX, cordY, tempName, tileID);
+
+                updateTileLabels();
+            }
+        }
+    }));
+    var mapIdentifier = "C";
 
     // X-
     createTileButtons.push(controls.button({
@@ -2292,6 +2319,7 @@ scenes.mapmaker = () => {
             createTileInfoPageLength = 0;
 
             showInfo();
+            renderInfo("d");
 
             if (curNPC != "") {
                 addAnimator(function (t) {
@@ -2360,6 +2388,7 @@ scenes.mapmaker = () => {
         createTileButtons[6].text = "Teleport: " + tileTele;
         createTileButtons[7].text = "Dialogue: " + tileDia;
         createTileButtons[8].text = "Swim: " + tileSwim;
+        createTileButtons[13].text = "AutoID " + mapIdentifier + "00";
 
         if (images["tilesets/" + tileSet] != undefined) createTileButtons[9].snip = [parseInt(tileSetSnip.split(".")[0]) * 32, parseInt(tileSetSnip.split(".")[1]) * 32, 32, 32];
 
@@ -2499,6 +2528,9 @@ scenes.mapmaker = () => {
             case "m":
                 grabFrom = Object.keys(maps);
                 break;
+            case "e":
+                grabFrom = Object.keys(mapenemies);
+                break;
             case "es":
                 if (map.spawns != undefined) {
                     let j = 0;
@@ -2507,9 +2539,6 @@ scenes.mapmaker = () => {
                         j += 1;
                     }
                 }
-                break;
-            case "e":
-                grabFrom = Object.keys(mapenemies);
                 break;
             case "d":
                 if (map.dialogues != undefined) grabFrom = Object.keys(map.dialogues);
