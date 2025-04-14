@@ -80,7 +80,7 @@ scenes.magicscene = () => {
 
     // Coming from status
     if (globalSelectedCharacter != "") {
-        characterSelected == globalSelectedCharacter;
+        characterSelected = globalSelectedCharacter;
         theTop[3].text = game.characters[globalSelectedCharacter].name;
         globalSelectedCharacter = "";
     }

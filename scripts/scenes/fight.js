@@ -10,7 +10,7 @@ const rangeColors = ["red", "pink", "blue"];
 function healPlayer(player, amount, anchor = 0, offset = 0) {
     let HealthBefore = player.HP;
     if (player.HP > 0) player.HP += amount;
-    if (player.HP > getStat(player.name.toLowerCase(), "maxHP")) player.HP = getStat(player.name, "maxHP");
+    if (player.HP > getStat(player.name.toLowerCase(), "maxHP")) player.HP = getStat(player.name.toLowerCase(), "maxHP");
     playSound("heal");
 
     if (anchor != undefined && anchor != 0) {

@@ -132,7 +132,7 @@ scenes.itemscene = () => {
 
     // Coming from status
     if (globalSelectedCharacter != "") {
-        characterSelected == globalSelectedCharacter;
+        characterSelected = globalSelectedCharacter;
         theTop[5].text = game.characters[globalSelectedCharacter].name;
         globalSelectedCharacter = "";
     }

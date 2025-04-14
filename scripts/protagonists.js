@@ -12,62 +12,62 @@ const cStats = {
         maxHP: 20,
         strength: 4,
         agi: 60,
-        acc: 90,
-        int: 10,
-        wis: 10,
-        luk: 15,
+        acc: 80,
+        int: 40,
+        wis: 30,
+        luk: 30,
         element: "water",
         length: 1,
     },
     corelle: {
         name: "Corelle",
-        maxEP: 5,
-        maxHP: 14,
-        strength: 3,
-        agi: 80,
-        acc: 85,
-        int: 20,
+        maxEP: 6,
+        maxHP: 16,
+        strength: 2,
+        agi: 70,
+        acc: 80,
+        int: 50,
         wis: 30,
-        luk: 7,
+        luk: 40,
         element: "fire",
         length: 1,
     },
     gau: {
         name: "Gau",
         maxEP: 2,
-        maxHP: 8,
+        maxHP: 16,
         strength: 7,
         agi: 40,
-        acc: 85,
-        int: 5,
-        wis: 5,
-        luk: 10,
+        acc: 90,
+        int: 20,
+        wis: 20,
+        luk: 30,
         element: "physical",
         length: 1,
     },
     skro: {
         name: "Skro",
         maxEP: 8,
-        maxHP: 16,
+        maxHP: 10,
         strength: 12,
-        agi: 36,
-        acc: 90,
-        int: 10,
-        wis: 10,
-        luk: 10,
+        agi: 15,
+        acc: 70,
+        int: 100,
+        wis: 40,
+        luk: 30,
         element: "physical",
-        length: 3,
+        length: 2,
     },
     kokitozi: {
         name: "Kokitozi",
         maxEP: 20,
-        maxHP: 7,
+        maxHP: 8,
         strength: 4,
-        agi: 36,
-        acc: 90,
-        int: 10,
-        wis: 10,
-        luk: 10,
+        agi: 42,
+        acc: 80,
+        int: 60,
+        wis: 60,
+        luk: 40,
         element: "dark",
         length: 3,
     }
@@ -93,15 +93,21 @@ function getStat(prot, stat) {
         if (game.characters[prot].equipment[EQ] != "none") if (items[game.characters[prot].equipment[EQ]]().stats[stat] != undefined) itemBonus += items[game.characters[prot].equipment[EQ]]().stats[stat];
     }
 
-    if (stat == "strength") return Math.round(itemBonus + cStats[prot][stat] * (1 + 0.07 * game.characters[prot].level));
-    if (stat == "maxHP") return Math.round(itemBonus + cStats[prot][stat] * (1 + 0.1 * game.characters[prot].level));
-    if (stat == "maxEP") return Math.round(itemBonus + cStats[prot][stat] * (1 + 0.05 * game.characters[prot].level));
-    if (stat == "agi") return Math.round(itemBonus + cStats[prot][stat] * (1 + 0.005 * game.characters[prot].level));
-    if (stat == "def") return 0; // Placeholder
-    if (stat == "eva") return Math.round(10 + game.characters[prot].level / 5); // Placeholder
-    if (stat == "acc") return Math.min(200, Math.round(itemBonus + cStats[prot][stat] * (1 + 0.005 * game.characters[prot].level)));
-    if (stat == "int") return Math.round(itemBonus + cStats[prot][stat] * (1 + 0.005 * game.characters[prot].level));
-    if (stat == "wis") return Math.min(999, Math.round(itemBonus + cStats[prot][stat] * Math.pow(Math.log(game.characters[prot].level), 5)));
-    if (stat == "luk") return Math.min(100, Math.round(itemBonus + cStats[prot][stat] * (1 + 0.005 * game.characters[prot].level)));
+    let lvl = game.characters[prot].level - 1;
+
+    if (stat == "strength") return Math.round(itemBonus + cStats[prot][stat] * (1 + 0.07 * lvl));
+    if (stat == "maxHP") return Math.round(itemBonus + cStats[prot][stat] * (1 + 0.1 * lvl));
+    if (stat == "maxEP") return Math.round(itemBonus + cStats[prot][stat] * (1 + 0.05 * lvl));
+
+    if (stat == "agi") return Math.round(itemBonus + cStats[prot][stat] * (1 + 0.005 * lvl));
+    if (stat == "acc") return Math.min(100, Math.round(itemBonus + cStats[prot][stat] * (1 + 0.005 * lvl)));
+    if (stat == "int") return Math.round(itemBonus + cStats[prot][stat] * (1 + 0.005 * lvl));
+    if (stat == "wis") return Math.min(100, Math.round(itemBonus + cStats[prot][stat] * Math.pow(Math.log(lvl + Math.E), 3)));
+    if (stat == "luk") return Math.min(100, Math.round(itemBonus + cStats[prot][stat] * (1 + 0.005 * lvl)));
+
+    if (stat == "def") return 0 + lvl; // Placeholder
+    if (stat == "eva") return Math.round(10 + lvl / 5); // Placeholder
+    if (stat == "crt") return Math.round(10 + lvl / 5); // Placeholder
+
     return cStats[prot][stat];
 }
