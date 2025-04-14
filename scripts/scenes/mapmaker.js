@@ -133,8 +133,8 @@ scenes.mapmaker = () => {
 
     let autoSaveTime = 0;
 
-    var mode = "move";
-    var prevmode = "move";
+    var mode = "moveandplace";
+    var prevmode = "moveandplace";
     var doFill = false;
 
     var tiles_bg = [];
@@ -1422,7 +1422,6 @@ scenes.mapmaker = () => {
     }
 
     for (t = 0; t < 24; t++) {
-        recentlyUsedTilesList.push(["gear", "gear", [0, 0, 64, 64]]);
         recentlyUsedTiles.push(controls.image({
             anchor: [0, 0.025], offset: [72 * (t % 6), 72 * Math.floor(t / 6) + 72 * 4 + 4], sizeOffset: [64, 64],
             source: "gear", alpha: 1, glowColor: "white", glow: 0,
@@ -1430,7 +1429,6 @@ scenes.mapmaker = () => {
             // tileid: 001, 002, etc.
             onClick(args) {
                 if (this.alpha == 1 && this.source != "gear") {
-                    console.log(this.tileid);
                     updateTTP(this.tileid, false);
 
                     for (t in recentlyUsedTiles) {
@@ -1441,6 +1439,17 @@ scenes.mapmaker = () => {
             }
         }));
     }
+    function generateRecentlyUsed() {
+        recentlyUsedTilesList = [];
+
+        for (t = 0; t < 24; t++) {
+            recentlyUsedTilesList.push(["gear", "gear", [0, 0, 64, 64]]);
+            recentlyUsedTiles[t].source = "gear";
+            recentlyUsedTiles[t].snip = [0, 0, 64, 64];
+        }
+    }
+
+    generateRecentlyUsed();
 
     walkPad.push(controls.image({ // Up
         anchor: [.1, .9], offset: [0, -walkPadSize * 3], sizeOffset: [walkPadSize, walkPadSize],
@@ -2089,11 +2098,11 @@ scenes.mapmaker = () => {
         for (i in tnpcs) {
             tnpcs[i].alpha = 0;
         }
-
         loadNPCs();
 
         map.tiles = Object.assign({}, map.tiles, loadPacks(map));
 
+        generateRecentlyUsed();
         updateTiles = true;
     }
 
