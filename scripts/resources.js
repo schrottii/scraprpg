@@ -1,6 +1,8 @@
 let images = {
     // Misc.
     gear: "data/images/gear.png",
+    proud: "data/images/proud.png",
+
     paper: "data/images/paper.png",
     inventory: "data/images/inventory.png",
     wrench: "data/images/currencies/wrench.png",
@@ -75,6 +77,13 @@ let images = {
     fill: "data/images/mm/fill.png",
     tilepickerinfoicons: "data/images/mm/miniicons.png",
 
+    // Save images
+    saveimage1: "data/images/pfps/PFP-1.png",
+    saveimage2: "data/images/pfps/PFP-2.png",
+    saveimage3: "data/images/pfps/PFP-3.png",
+    saveimage4: "data/images/pfps/PFP-4.png",
+    saveimage5: "data/images/pfps/PFP-5.png",
+
     // Animations
     spawn: "data/images/animations/spawn_default.png",
     tokenattack: "data/images/animations/token-animation.png",
@@ -116,13 +125,6 @@ let images = {
     itsalive: "data/images/enemies/Map_ItsAlive.png",
     livingbarrel: "data/images/enemies/Map_LivingBarrel.png",
     nottoofresh: "data/images/enemies/NotTooFreshEnemy.png",
-
-    // Save images
-    saveimage1: "data/images/pfps/PFP-1.png",
-    saveimage2: "data/images/pfps/PFP-2.png",
-    saveimage3: "data/images/pfps/PFP-3.png",
-    saveimage4: "data/images/pfps/PFP-4.png",
-    saveimage5: "data/images/pfps/PFP-5.png",
 
     // Elements
     fire: "data/images/elements/fire_element.png",

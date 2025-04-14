@@ -19,7 +19,7 @@ scenes.title = () => {
     let infoLabel = controls.label({
         anchor: [.02, .98], offset: [5, -12],
         align: "left", baseline: "alphabetic", fontSize: 16, fill: "#7f7f7f", alpha: 0,
-        text: "©2024 Toast Technology Team / Schrottii",
+        text: "©2021-2025 Toast Technology Team / Schrottii",
     });
     let verLabel = controls.label({
         anchor: [.98, .98], offset: [-5, -12],

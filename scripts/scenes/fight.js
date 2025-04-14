@@ -2197,7 +2197,7 @@ scenes.fight = () => {
     }));
     winScreen.push(controls.image({
         anchor: [0.65, 0.6], offset: [32, -1000], sizeAnchor: [0.3, 0.25],
-        source: "gear",
+        source: "proud",
         alpha: 0,
     }));
 
@@ -2582,7 +2582,7 @@ scenes.fight = () => {
                 glow: 8,
                 onClick(args) {
                     let name = positions[this.pos1][this.pos2].occupied;
-                    if (name == false) return;
+                    if (name == false || fightWon) return;
 
                     positions[this.pos1][this.pos2].counter = false;
 
@@ -2682,6 +2682,8 @@ scenes.fight = () => {
                 pos2: j,
                 glow: 8,
                 onClick(args) {
+                    if (fightWon) return false;
+
                     let dude = positions[selectedAlly[0]][selectedAlly[1]].occupied;
                     if (fightAction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
