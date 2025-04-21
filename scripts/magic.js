@@ -45,6 +45,12 @@ let magic = {
             ...args || {},
         }
     },
+    fisinar(args) {
+        return magic.fisina({ args, name: "Fisinar", cost: 6, shopcost: 200, damage: 20 });
+    },
+    fisinago(args) {
+        return magic.fisina({ args, name: "Fisinago", cost: 10, shopcost: 500, damage: 50 });
+    },
     dasina(args) {
         return {
             ...magic.default(), cost: 3,
@@ -52,5 +58,11 @@ let magic = {
             battleonly: true, damage: 10, element: "dark",
             ...args || {},
         }
+    },
+    dasinar(args) {
+        return magic.fisina({ args, name: "Dasinar", cost: 6, shopcost: 200, damage: 20 });
+    },
+    dasinago(args) {
+        return magic.fisina({ args, name: "Dasinago", cost: 10, shopcost: 500, damage: 50 });
     },
 }
