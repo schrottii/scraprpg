@@ -273,18 +273,65 @@ const commonParticles = {
         movable: true, movable2: true, lifespan: 2, alpha: 1, amount: 20, spawnTime: 0.03
     },
     fire: {
-        anchor: [0.5, 0.5], sizeOffset: [4, 4], spreadOffset: [32, 8],
-        type: "rect", fill: "orange", blend: "add",
+        anchor: [0.5, 0.5], sizeOffset: [4, 4], spreadOffset: [32, 8], sizeOffsetVary: [1, 1],
+        type: "rect", fill: "orange",
         direction: 3, speedAnchor: 0.02,
-        offsetChange: [0.2, 0.2], lifeMode: false,
-        movable: true, movable2: true, lifespan: 2, alpha: 1, amount: 40, spawnTime: 0.04
+        lifeMode: false,
+        movable: true, lifespan: 2, alpha: 1, amount: 40, spawnTime: 0.04
     },
     dark: {
-        anchor: [0.5, 0.5], sizeOffset: [4, 4], spreadOffset: [32, 8],
+        anchor: [0.5, 0.5], sizeOffset: [4, 4], spreadOffset: [32, 8], sizeOffsetVary: [2, 2],
         type: "rect", fill: "black", blend: "mul",
         direction: 3, speedAnchor: 0.01,
-        offsetChange: [0.2, 0.2], lifeMode: false,
-        movable: true, movable2: true, lifespan: 3, alpha: 1, amount: 40, spawnTime: 0.04
+        lifeMode: false,
+        movable: true, lifespan: 3, alpha: 1, amount: 40, spawnTime: 0.06
+    },
+    light: {
+        anchor: [0.5, 0.5], offset: [0, -64], sizeOffset: [6, 6], spreadOffset: [32, 32],
+        type: "rect", fill: "white",
+        lifeMode: false,
+        movable: true, lifespan: 2, alpha: 1, amount: 20, spawnTime: 0.06
+    },
+    water: {
+        anchor: [0.5, 0.5], offset: [0, -64], sizeOffset: [4, 4], spreadOffset: [32, 4], sizeOffsetVary: [2, 2],
+        type: "rect", fill: "blue",
+        direction: 0, speedAnchor: 0.02,
+        lifeMode: false,
+        movable: true, lifespan: 1, alpha: 1, amount: 20, spawnTime: 0.02
+    },
+    electric: {
+        anchor: [0.5, 0.5], offset: [0, -64], sizeOffset: [6, 6], spreadOffset: [12, 4],
+        type: "rect", fill: "yellow", blend: "add",
+        direction: 0, speedAnchor: 0.07, alphaChange: 0.07,
+        lifeMode: false,
+        movable: true, lifespan: 0.5, alpha: 1, amount: 20, spawnTime: 0.02
+    },
+    wind: {
+        anchor: [0.5, 0.5], offset: [0, -64], sizeOffset: [4, 4], spreadOffset: [4, -64],
+        type: "rect", fill: "white",
+        direction: 2, speedAnchor: 0.1, alphaChange: 0.2,
+        lifeMode: false,
+        movable: true, lifespan: 1, alpha: 1, amount: 40, spawnTime: 0.02
+    },
+    earth: {
+        anchor: [0.5, 0.5], offset: [0, -64], sizeOffset: [8, 8], spreadOffset: [4, -64],
+        type: "rect", fill: "brown",
+        direction: 2, speedAnchor: 0.05, alphaChange: 0.2,
+        lifeMode: false,
+        movable: true, lifespan: 1, alpha: 1, amount: 40, spawnTime: 0.02
+    },
+    physical: {
+        anchor: [0.5, 0.5], offset: [0, -64], sizeOffset: [4, 4], spreadOffset: [32, 32],
+        type: "rect", fill: "gray",
+        lifeMode: false,
+        movable: true, lifespan: 0.75, alpha: 1, amount: 10, spawnTime: 0.05
+    },
+    ectoplasm: {
+        anchor: [0.5, 0.5], offset: [0, -64], sizeOffset: [4, 4], spreadOffset: [64, 64],
+        type: "rect", fill: "lime",
+        direction: 0, speedAnchor: 0.02, moveRandom: 0.04,
+        lifeMode: false,
+        movable: true, lifespan: 3, alpha: 1, amount: 60, spawnTime: 0.02
     },
 }
 

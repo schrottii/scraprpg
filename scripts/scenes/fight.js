@@ -851,29 +851,92 @@ scenes.fight = () => {
                 break;
             case "magic": // magic
                 // perform the spell (whatever that may be)
-                magic[activeCharacter.action[1]]({
-                    user: game.characters[positions[activeCharacter.action[2]][activeCharacter.action[3]].occupied], player: game.characters[positions[activeCharacter.action[4]][activeCharacter.action[5]].occupied], enemy: epositions[activeCharacter.action[4]][activeCharacter.action[5]],
-                    anchor: positionControls[activeCharacter.action[2] + (activeCharacter.action[3] * 3)].anchor, offset: positionControls[pos[0] + (pos[1] * 3)].offset,
-                    targetAnchor: positionControls[activeCharacter.action[4] + (activeCharacter.action[5] * 3)].anchor, targetOffset: positionControls[activeCharacter.action[4] + (activeCharacter.action[5] * 3)].offset,
-                    enemyAnchor: epositionControls[activeCharacter.action[4] + (activeCharacter.action[5] * 3)].anchor, enemyOffset: epositionControls[activeCharacter.action[4] + (activeCharacter.action[5] * 3)].offset
+                let a = activeCharacter.action; // action[]
+
+                let c = game.characters[positions[activeCharacter.action[2]][activeCharacter.action[3]].occupied];
+                let cC = positionControls[a[2] + (a[3] * 3)];
+
+                let e = epositions[a[4]][a[5]];
+                let eC = epositionControls[a[4] + (a[5] * 3)];
+
+                let p = game.characters[positions[a[4]][a[5]].occupied];
+                let pC = positionControls[a[4] + (a[5] * 3)];
+
+                // apply the magic's main effect
+                magic[a[1]]({
+                    user: c, player: p, enemy: e,
+                    anchor: cC.anchor, offset: cC.offset,
+                    enemyAnchor: eC.anchor, enemyOffset: eC.offset,
+                    targetAnchor: pC.anchor, targetOffset: pC.offset
                 }).effect();
 
-                if (magic[activeCharacter.action[1]]().damage != undefined) {
-                    // if it has a dmg attribute, deal damage (incl. element boost) and check if dead
-                    //console.log(epositions, activeCharacter.action, epositions[activeCharacter.action[4]][activeCharacter.action[5]].HP, magic[activeCharacter.action[1]]().damage, magic[activeCharacter.action[1]]().element, epositions[activeCharacter.action[4]][activeCharacter.action[5]].element);
-                    epositions[activeCharacter.action[4]][activeCharacter.action[5]].HP -= magic[activeCharacter.action[1]]().damage * getElementDamage(magic[activeCharacter.action[1]]().element, epositions[activeCharacter.action[4]][activeCharacter.action[5]].element);
-                    checkEnemyDead(activeCharacter.action[4], activeCharacter.action[5], activeCharacter.action[2], activeCharacter.action[3]);
+                // handle targets -- enemy / char / enemies / chars / global / random
+                // character (with HP), position controls, e | c, position (for prots)
+                let target = magic[a[1]]().target;
+                let targets = [];
+                let randomTargets = [];
 
-                    battleNumber(epositionControls[activeCharacter.action[4] + (activeCharacter.action[5] * 3)].anchor, 20, 0, epositionControls[activeCharacter.action[4] + (activeCharacter.action[5] * 3)].offset);
-                    addParticle(magic[activeCharacter.action[1]]().element, { anchor: epositionControls[activeCharacter.action[4] + (activeCharacter.action[5] * 3)].anchor, offset: [epositionControls[activeCharacter.action[4] + (activeCharacter.action[5] * 3)].offset[0], epositionControls[activeCharacter.action[4] + (activeCharacter.action[5] * 3)].offset[1] + 56] })
+                if (target == "enemy") {
+                    targets.push([e, eC, "e", 0]);
+                }
+                if (target == "char") {
+                    targets.push([p, pC, "c", positions[a[4]][a[5]]]);
+                }
+                if (target == "enemies" || target == "global" || target == "random") {
+                    for (j = 0; j < 3; j++) {
+                        for (i = 0; i < 3; i++) {
+                            if (epositions[i][j].isOccupied == true) {
+                                if (target == "random") randomTargets.push([epositions[i][j], epositionControls[i + (j * 3)], "e", [i, j]]);
+                                else targets.push([epositions[i][j], epositionControls[i + (j * 3)], "e", [i, j]]);
+                            }
+                        }
+                    }
+                }
+                if (target == "chars" || target == "global" || target == "random") {
+                    for (j = 0; j < 3; j++) {
+                        for (i = 0; i < 3; i++) {
+                            if (positions[i][j].isOccupied == true) {
+                                if (target == "random") randomTargets.push([game.characters[positions[i][j].occupied], positionControls[i + (j * 3)], "c", positions[i][j]]);
+                                else targets.push([game.characters[positions[i][j].occupied], positionControls[i + (j * 3)], "c", positions[i][j]]);
+                            }
+                        }
+                    }
+                }
+                if (target == "random") {
+                    targets.push(randomTargets[randomTargets.length * Math.floor(Math.random())]);
+                }
+
+                if (magic[a[1]]().damage != undefined) {
+                    // if it has a dmg attribute, deal damage (incl. element boost) and check if dead
+
+                    for (let t in targets) {
+                        targets[t][0].HP -= magic[a[1]]().damage * getElementDamage(magic[a[1]]().element, targets[t][0].element);
+
+                        battleNumber(targets[t][1].anchor, magic[a[1]]().damage, 0, targets[t][1].offset);
+                        addParticle(magic[a[1]]().element, { anchor: targets[t][1].anchor, offset: [targets[t][1].offset[0], targets[t][1].offset[1] /*+ 56*/] });
+
+                        if (targets[t][2] == "c") {
+                            // is a player
+                            if (targets[t][0].HP < 1) {
+                                targets[t][0].HP = 0;
+                                postLog(c.name + " killed " + targets[t][0].name + "!");
+                                targets[t][3].isOccupied = false;
+                                checkAllDead();
+                            }
+                        }
+                        else {
+                            // check if all the enemis are deadd
+                            checkEnemyDead(targets[t][3][0], targets[t][3][1], a[2], a[3]);
+                        }
+                    }
                 }
                 else {
                     // for spells that do not deal damage (like heal spells)
                     // check if ur dead, dunno why
-                    if (game.characters[positions[activeCharacter.action[4]][activeCharacter.action[5]].occupied].HP < 1) {
-                        game.characters[positions[activeCharacter.action[4]][activeCharacter.action[5]].occupied].HP = 0;
-                        postLog(positions[activeCharacter.action[2]][activeCharacter.action[3]].name + " killed " + game.characters[positions[activeCharacter.action[4]][activeCharacter.action[5]].occupied].name + "!");
-                        positions[activeCharacter.action[4]][activeCharacter.action[5]].isOccupied = false;
+                    if (p.HP < 1) {
+                        p.HP = 0;
+                        postLog(c.name + " killed " + p.name + "!");
+                        positions[a[4]][a[5]].isOccupied = false;
                         checkAllDead();
                     }
                 }

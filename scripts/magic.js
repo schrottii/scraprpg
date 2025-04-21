@@ -19,7 +19,7 @@ let magic = {
     },
     cuyua(args) {
         return {
-            ...magic.default(), cost: 4,
+            ...magic.default(), cost: 4, target: "char",
             source: "items/potion", name: "Cuyua", shopcost: 100,
             effect: () => {
                 healPlayer(args.player, 20, args.anchor, args.offset);
@@ -29,7 +29,7 @@ let magic = {
     },
     cutema(args) {
         return {
-            ...magic.default(), cost: 4,
+            ...magic.default(), cost: 4, target: "char",
             source: "items/potion", name: "Cutema", shopcost: 500,
             effect: () => {
                 healAllPlayers(20, args.anchor, args.offset);
@@ -39,7 +39,7 @@ let magic = {
     },
     fisina(args) {
         return {
-            ...magic.default(), cost: 3,
+            ...magic.default(), cost: 3, target: "enemy",
             source: "fire", name: "Fisina", shopcost: 100,
             battleonly: true, damage: 10, element: "fire",
             ...args || {},
@@ -52,8 +52,8 @@ let magic = {
         return magic.fisina({ args, name: "Fisinago", cost: 10, shopcost: 500, damage: 50 });
     },
     dasina(args) {
-        return {
-            ...magic.default(), cost: 3,
+        return { target: "enemy",
+            ...magic.default(), cost: 3, target: "enemy",
             source: "dark", name: "Dasina", shopcost: 100,
             battleonly: true, damage: 10, element: "dark",
             ...args || {},
@@ -64,5 +64,13 @@ let magic = {
     },
     dasinago(args) {
         return magic.fisina({ args, name: "Dasinago", cost: 10, shopcost: 500, damage: 50 });
+    },
+    lisina(args) {
+        return {
+            ...magic.default(), cost: 3, target: "enemy",
+            source: "light", name: "Lisina", shopcost: 100,
+            battleonly: true, damage: 10, element: "light",
+            ...args || {},
+        }
     },
 }
