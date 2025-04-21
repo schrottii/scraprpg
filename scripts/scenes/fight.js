@@ -850,6 +850,7 @@ scenes.fight = () => {
                 endOfExecute(pos);
                 break;
             case "magic": // magic
+                // perform the spell (whatever that may be)
                 magic[activeCharacter.action[1]]({
                     user: game.characters[positions[activeCharacter.action[2]][activeCharacter.action[3]].occupied], player: game.characters[positions[activeCharacter.action[4]][activeCharacter.action[5]].occupied], enemy: epositions[activeCharacter.action[4]][activeCharacter.action[5]],
                     anchor: positionControls[activeCharacter.action[2] + (activeCharacter.action[3] * 3)].anchor, offset: positionControls[pos[0] + (pos[1] * 3)].offset,
@@ -858,10 +859,17 @@ scenes.fight = () => {
                 }).effect();
 
                 if (magic[activeCharacter.action[1]]().damage != undefined) {
-                    epositions[activeCharacter.action[4]][activeCharacter.action[5]].HP -= magic[activeCharacter.action[1]]().damage;
+                    // if it has a dmg attribute, deal damage (incl. element boost) and check if dead
+                    //console.log(epositions, activeCharacter.action, epositions[activeCharacter.action[4]][activeCharacter.action[5]].HP, magic[activeCharacter.action[1]]().damage, magic[activeCharacter.action[1]]().element, epositions[activeCharacter.action[4]][activeCharacter.action[5]].element);
+                    epositions[activeCharacter.action[4]][activeCharacter.action[5]].HP -= magic[activeCharacter.action[1]]().damage * getElementDamage(magic[activeCharacter.action[1]]().element, epositions[activeCharacter.action[4]][activeCharacter.action[5]].element);
                     checkEnemyDead(activeCharacter.action[4], activeCharacter.action[5], activeCharacter.action[2], activeCharacter.action[3]);
+
+                    battleNumber(epositionControls[activeCharacter.action[4] + (activeCharacter.action[5] * 3)].anchor, 20, 0, epositionControls[activeCharacter.action[4] + (activeCharacter.action[5] * 3)].offset);
+                    addParticle(magic[activeCharacter.action[1]]().element, { anchor: epositionControls[activeCharacter.action[4] + (activeCharacter.action[5] * 3)].anchor, offset: [epositionControls[activeCharacter.action[4] + (activeCharacter.action[5] * 3)].offset[0], epositionControls[activeCharacter.action[4] + (activeCharacter.action[5] * 3)].offset[1] + 56] })
                 }
                 else {
+                    // for spells that do not deal damage (like heal spells)
+                    // check if ur dead, dunno why
                     if (game.characters[positions[activeCharacter.action[4]][activeCharacter.action[5]].occupied].HP < 1) {
                         game.characters[positions[activeCharacter.action[4]][activeCharacter.action[5]].occupied].HP = 0;
                         postLog(positions[activeCharacter.action[2]][activeCharacter.action[3]].name + " killed " + game.characters[positions[activeCharacter.action[4]][activeCharacter.action[5]].occupied].name + "!");
@@ -873,10 +881,12 @@ scenes.fight = () => {
                 endOfExecute(pos);
                 break;
             case "flee": // flee
+                // make the character attempt to flee
                 fleeAnimation(activeCharacter.action[1], activeCharacter.action[2]);
                 endOfExecute(pos);
                 break;
             case "rally": // rally attack
+                // you only deal 1/4 dmg but attack lotta targets
                 positions[pos[0]][pos[1]].atk = 0.25;
                 for (j = 0; j < 3; j++) {
                     for (i = 0; i < 3; i++) {
@@ -924,6 +934,7 @@ scenes.fight = () => {
                 endOfExecute(pos);
                 break;
             case "counterattack": // counter attack
+                // makes you deal dmg back if you get attacked
                 positions[pos[0]][pos[1]].counter = true;
 
                 endOfExecute(pos);

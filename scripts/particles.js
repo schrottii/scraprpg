@@ -279,6 +279,13 @@ const commonParticles = {
         offsetChange: [0.2, 0.2], lifeMode: false,
         movable: true, movable2: true, lifespan: 2, alpha: 1, amount: 40, spawnTime: 0.04
     },
+    dark: {
+        anchor: [0.5, 0.5], sizeOffset: [4, 4], spreadOffset: [32, 8],
+        type: "rect", fill: "black", blend: "mul",
+        direction: 3, speedAnchor: 0.01,
+        offsetChange: [0.2, 0.2], lifeMode: false,
+        movable: true, movable2: true, lifespan: 3, alpha: 1, amount: 40, spawnTime: 0.04
+    },
 }
 
 

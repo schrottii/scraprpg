@@ -1,63 +1,55 @@
 let magic = {
     default(args) {
         return {
+            cost: 1, //EP
+
             source: "",
             name: "none",
             shopcost: 200,
-            cost: 1, //EP
+
             battleonly: false,
+            // damage
+            // element
+
             effect: () => {
                 
             },
-
             ...args || {},
         }
     },
     cuyua(args) {
         return {
-            ...magic.default(),
-            source: "items/potion",
-            name: "Cuyua",
-            shopcost: 500,
+            ...magic.default(), cost: 4,
+            source: "items/potion", name: "Cuyua", shopcost: 100,
             effect: () => {
                 healPlayer(args.player, 20, args.anchor, args.offset);
             },
-
             ...args || {},
         }
     },
     cutema(args) {
         return {
-            ...magic.default(),
-            source: "items/potion",
-            name: "Cutema",
-            shopcost: 500,
-            cost: 4,
+            ...magic.default(), cost: 4,
+            source: "items/potion", name: "Cutema", shopcost: 500,
             effect: () => {
                 healAllPlayers(20, args.anchor, args.offset);
             },
-
             ...args || {},
         }
     },
     fisina(args) {
         return {
-            ...magic.default(),
-            source: "fire",
-            name: "Fisina",
-            shopcost: 500,
-            battleonly: true,
-            cost: 3,
-            damage: 20,
-            effect: () => {
-                if (args.enemyAnchor != undefined) {
-                    battleNumber(args.enemyAnchor, 20, 0, args.enemyOffset);
-                    //updateBar(args.player.name.toLowerCase(), HealthBefore);
-                }
-
-                addParticle("fire", { anchor: args.enemyAnchor, offset: [args.enemyOffset[0], args.enemyOffset[1] + 56] })
-            },
-
+            ...magic.default(), cost: 3,
+            source: "fire", name: "Fisina", shopcost: 100,
+            battleonly: true, damage: 10, element: "fire",
+            ...args || {},
+        }
+    },
+    dasina(args) {
+        return {
+            ...magic.default(), cost: 3,
+            source: "dark", name: "Dasina", shopcost: 100,
+            battleonly: true, damage: 10, element: "dark",
             ...args || {},
         }
     },
