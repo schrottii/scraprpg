@@ -139,9 +139,9 @@ scenes.magicscene = () => {
                 continue;
             }
             let mag = magic[inventory[i + itemOffset]];
+            itemsButtons[i].text = mag().name + " (" + mag().cost + " EP)";
             if (mag().battleonly != true) {
                 itemsButtons[i].item = inventory[i + itemOffset];
-                itemsButtons[i].text = mag().name + " (" + mag().cost + " EP)";
 
                 if (game.characters[characterSelected].EP >= mag().cost) itemsButtons[i].fill = "green";
                 else itemsButtons[i].fill = "gray";
@@ -156,10 +156,9 @@ scenes.magicscene = () => {
                 itemsImages[i].source = mag().source;
             }
             else {
-                itemsButtons[i + j].text = "---";
-                itemsButtons[i + j].fillTop = "lightgray";
-                itemsButtons[i + j].fillBottom = "gray";
-                itemsImages[i + j].alpha = 0;
+                itemsButtons[i].fillTop = "orange";
+                itemsButtons[i].fillBottom = "red";
+                itemsImages[i].alpha = 0;
                 //if (mag().story != storyonly) j -= 1;
             }
         }
