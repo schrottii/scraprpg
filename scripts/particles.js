@@ -299,7 +299,7 @@ const commonParticles = {
         lifeMode: false,
         movable: true, lifespan: 1, alpha: 1, amount: 20, spawnTime: 0.02
     },
-    electric: {
+    lightning: {
         anchor: [0.5, 0.5], offset: [0, -64], sizeOffset: [6, 6], spreadOffset: [12, 4],
         type: "rect", fill: "yellow", blend: "add",
         direction: 0, speedAnchor: 0.07, alphaChange: 0.07,

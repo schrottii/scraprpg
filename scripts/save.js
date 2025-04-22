@@ -117,6 +117,8 @@ let settings = {
     autosave: false,
     grid: true,
     particles: true,
+    blend: true,
+    glow: true,
     joystick: false,
     walkPadSize: 1,
     musicVolume: 0.5,

@@ -200,6 +200,44 @@ scenes.settings = () => {
                 }
             }
         }),
+        controls.button({
+            anchor: [0.55, 0], sizeAnchor: [0.2, 0.1],
+            text: "Blend Effects: ON", alpha: 0,
+            onClick(args) {
+                if (this.alpha == 1) {
+                    playSound("buttonClickSound");
+                    settings.blend = !settings.blend;
+                    showMenuSettings();
+                }
+            },
+            tick() {
+                if (settings.blend == true) {
+                    this.text = "Blend Effects: ON";
+                }
+                else {
+                    this.text = "Blend Effects: OFF";
+                }
+            }
+        }),
+        controls.button({
+            anchor: [0.55, 0], sizeAnchor: [0.2, 0.1],
+            text: "Glow: ON", alpha: 0,
+            onClick(args) {
+                if (this.alpha == 1) {
+                    playSound("buttonClickSound");
+                    settings.glow = !settings.glow;
+                    showMenuSettings();
+                }
+            },
+            tick() {
+                if (settings.glow == true) {
+                    this.text = "Glow: ON";
+                }
+                else {
+                    this.text = "Glow: OFF";
+                }
+            }
+        }),
     ]
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

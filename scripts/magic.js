@@ -172,7 +172,7 @@ let magic = {
     // it's light... lite... cheap but weak. multiple enemies is pretty good, global exceptionally bad
     lisina(args) {
         return {
-            ...magic.default(), name: "Lisina", source: "fire", element: "fire",
+            ...magic.default(), name: "Lisina", source: "light", element: "light",
             battleonly: true, target: "enemy",
             cost: 1, shopcost: 100, damage: 2,
             ...args || {},
@@ -223,7 +223,7 @@ let magic = {
     // weak, but multiple targets stuff is cheap
     wasina(args) {
         return {
-            ...magic.default(), name: "Wasina", source: "fire", element: "fire",
+            ...magic.default(), name: "Wasina", source: "water", element: "water",
             battleonly: true, target: "enemy",
             cost: 2, shopcost: 100, damage: 4,
             ...args || {},
@@ -274,7 +274,7 @@ let magic = {
     // normal values
     elsina(args) {
         return {
-            ...magic.default(), name: "Elsina", source: "fire", element: "fire",
+            ...magic.default(), name: "Elsina", source: "lightning", element: "lightning",
             battleonly: true, target: "enemy",
             cost: 3, shopcost: 100, damage: 6,
             ...args || {},
@@ -325,7 +325,7 @@ let magic = {
     // normal values
     wisina(args) {
         return {
-            ...magic.default(), name: "Wisina", source: "fire", element: "fire",
+            ...magic.default(), name: "Wisina", source: "wind", element: "wind",
             battleonly: true, target: "enemy",
             cost: 3, shopcost: 100, damage: 6,
             ...args || {},
@@ -376,7 +376,7 @@ let magic = {
     // normal values
     rosina(args) {
         return {
-            ...magic.default(), name: "Rosina", source: "fire", element: "fire",
+            ...magic.default(), name: "Rosina", source: "earth", element: "earth",
             battleonly: true, target: "enemy",
             cost: 3, shopcost: 100, damage: 6,
             ...args || {},
@@ -427,7 +427,7 @@ let magic = {
     // normal values
     pisina(args) {
         return {
-            ...magic.default(), name: "Pisina", source: "fire", element: "fire",
+            ...magic.default(), name: "Pisina", source: "physical", element: "physical",
             battleonly: true, target: "enemy",
             cost: 3, shopcost: 100, damage: 6,
             ...args || {},
@@ -478,7 +478,7 @@ let magic = {
     // higher cost
     ecsina(args) {
         return {
-            ...magic.default(), name: "Ecsina", source: "fire", element: "fire",
+            ...magic.default(), name: "Ecsina", source: "ectoplasm", element: "ectoplasm",
             battleonly: true, target: "enemy",
             cost: 5, shopcost: 100, damage: 6,
             ...args || {},

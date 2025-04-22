@@ -156,7 +156,7 @@ scenes.fight = () => {
     // UI stuff
     var fightButtons = [];
     var actionButtons = [];
-    var fightActions = [];
+    var fightInventory = [];
 
     var fightLogComponents = [];
     var enemyListComponents = [];
@@ -1380,87 +1380,93 @@ scenes.fight = () => {
     }
 
 
-    function showFightActions() {
+    function showfightInventory() {
         addAnimator(function (t) {
-            for (i = 0; i < fightActions.length; i++) {
-                fightActions[i].offset[1] = -500 + t;
-                if (fightActions[i].source != undefined) fightActions[i].offset[1] = -520 + t;
+            for (i = 0; i < fightInventory.length; i++) {
+                fightInventory[i].offset[1] = -500 + t;
+                if (fightInventory[i].source != undefined) fightInventory[i].offset[1] = -520 + t;
             }
             if (t > 499) {
-                for (i = 0; i < fightActions.length; i++) {
-                    fightActions[i].offset[1] = 0;
-                    if (fightActions[i].source != undefined) fightActions[i].offset[1] = -20;
+                for (i = 0; i < fightInventory.length; i++) {
+                    fightInventory[i].offset[1] = 0;
+                    if (fightInventory[i].source != undefined) fightInventory[i].offset[1] = -20;
                 }
                 return true;
             }
-        })
+        });
     }
 
-    function hideFightActions() {
-        if (fightActions[0].offset[1] != 0) return false;
+    function hidefightInventory() {
+        if (fightInventory[0].offset[1] != 0) return false;
         addAnimator(function (t) {
-            for (i = 0; i < fightActions.length; i++) {
-                fightActions[i].offset[1] = -t;
+            for (i = 0; i < fightInventory.length; i++) {
+                fightInventory[i].offset[1] = -t;
             }
             if (t > 499) {
-                for (i = 0; i < fightActions.length; i++) {
-                    fightActions[i].offset[1] = -500;
+                for (i = 0; i < fightInventory.length; i++) {
+                    fightInventory[i].offset[1] = -500;
                 }
                 return true;
             }
-        })
-    }
-
-    function showMagic() {
-        let itemOffset = itemPage * 12
-        let inventory = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].magic;
-        for (i = 0; i < ((fightActions.length / 4) - 9); i++) {
-            fightActions[(i * 4) + 3].alpha = 0;
-            fightActions[(i * 4)].type = "magic";
-            if (Object.keys(inventory)[i + itemOffset] == undefined) {
-                fightActions[(i * 4) + 2].text = "---";
-                fightActions[(i * 4) + 2].fill = "white";
-                continue;
-            }
-            let mag = magic[inventory[i + itemOffset]];
-            // We are in a battle, so it does not matter whether it's battleonly or not ;)
-            fightActions[(i * 4)].item = mag;
-            if (game.inventory[mag().name] > 1) fightActions[(i * 4) + 2].text = mag().name + " x" + inventory[mag];
-            else fightActions[(i * 4) + 2].text = mag().name;
-            if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EP >= mag().cost) fightActions[(i * 4) + 2].fill = "green";
-            else fightActions[(i * 4) + 2].fill = "gray";
-            fightActions[(i * 4) + 3].source = mag().source;
-            fightActions[(i * 4) + 3].alpha = 1;
-
-        }
+        });
     }
 
     function showItems() {
         let itemOffset = itemPage * 12
         let inventory = Object.keys(game.inventory);
-        for (i = 0; i < ((fightActions.length / 4) - 9); i++) {
-            fightActions[(i * 4) + 3].alpha = 0;
-            fightActions[(i * 4)].type = "item";
+
+        for (i = 0; i < (fightInventory.length - 9) / 4; i++) {
+            fightInventory[(i * 4) + 3].alpha = 0;
+            fightInventory[(i * 4)].type = "item";
+
             if (inventory[i + itemOffset] == undefined) {
-                fightActions[(i * 4) + 2].text = "---";
-                fightActions[(i * 4) + 2].fill = "white";
+                fightInventory[(i * 4) + 2].text = "---";
+                fightInventory[(i * 4) + 2].fill = "white";
                 continue;
             }
             if (game.inventory[items[inventory[i + itemOffset]].name] > 0) {
-                fightActions[(i * 4)].item = items[inventory[i + itemOffset]];
-                if (game.inventory[items[inventory[i + itemOffset]].name] > 1) fightActions[(i * 4) + 2].text = items[inventory[i + itemOffset]]().name + " x" + game.inventory[items[inventory[i + itemOffset]].name];
-                else fightActions[(i * 4) + 2].text = items[inventory[i + itemOffset]]().name;
-                if (items[inventory[i + itemOffset]]().story) fightActions[(i * 4) + 2].fill = "darkgray";
-                else fightActions[(i * 4) + 2].fill = "white";
-                fightActions[(i * 4) + 3].source = "items/" + items[inventory[i + itemOffset]]().source;
-                fightActions[(i * 4) + 3].alpha = 1;
+                fightInventory[(i * 4)].item = items[inventory[i + itemOffset]];
+                if (game.inventory[items[inventory[i + itemOffset]].name] > 1) fightInventory[(i * 4) + 2].text = items[inventory[i + itemOffset]]().name + " x" + game.inventory[items[inventory[i + itemOffset]].name];
+                else fightInventory[(i * 4) + 2].text = items[inventory[i + itemOffset]]().name;
+                if (items[inventory[i + itemOffset]]().story) fightInventory[(i * 4) + 2].fill = "darkgray";
+                else fightInventory[(i * 4) + 2].fill = "white";
+                fightInventory[(i * 4) + 3].source = "items/" + items[inventory[i + itemOffset]]().source;
+                fightInventory[(i * 4) + 3].alpha = 1;
             }
             else {
-                fightActions[(i * 4) + 2].text = "---";
-                fightActions[(i * 4) + 2].fill = "white";
+                fightInventory[(i * 4) + 2].text = "---";
+                fightInventory[(i * 4) + 2].fill = "white";
             }
         }
     }
+
+    function showMagic() {
+        let itemOffset = itemPage * 12
+        let inventory = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].magic;
+
+        for (i = 0; i < (fightInventory.length - 9) / 4; i++) {
+            fightInventory[(i * 4) + 3].alpha = 0;
+            fightInventory[(i * 4)].type = "magic";
+
+            if (Object.keys(inventory)[i + itemOffset] == undefined) {
+                fightInventory[(i * 4) + 2].text = "---";
+                fightInventory[(i * 4) + 2].fill = "white";
+                continue;
+            }
+            let mag = magic[inventory[i + itemOffset]];
+
+            // We are in a battle, so it does not matter whether it's battleonly or not ;)
+            fightInventory[(i * 4)].item = mag;
+            if (game.inventory[mag().name] > 1) fightInventory[(i * 4) + 2].text = mag().name + " x" + inventory[mag];
+            else fightInventory[(i * 4) + 2].text = mag().name;
+            if (game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EP >= mag().cost) fightInventory[(i * 4) + 2].fill = "green";
+            else fightInventory[(i * 4) + 2].fill = "gray";
+            fightInventory[(i * 4) + 3].source = mag().source;
+            fightInventory[(i * 4) + 3].alpha = 1;
+
+        }
+    }
+
 
 
     // Elements! Yay (ft. some rapper you have never heard of)
@@ -1557,7 +1563,7 @@ scenes.fight = () => {
                 alpha: 1,
                 onClick(args) {
                     if (this.alpha == 1 && fightAction == "active") {
-                        showFightActions();
+                        showfightInventory();
                         showItems();
                         hideFightButtons();
                     }
@@ -1571,7 +1577,7 @@ scenes.fight = () => {
                 alpha: 1,
                 onClick(args) {
                     if (this.alpha == 1 && fightAction == "active") {
-                        showFightActions();
+                        showfightInventory();
                         showMagic();
                         hideFightButtons();
                     }
@@ -1766,7 +1772,7 @@ scenes.fight = () => {
         fleeIcon.alpha = 1;
 
         hideFightButtons();
-        hideFightActions();
+        hidefightInventory();
 
         let runTime = 0;
         let runLaps = 0;
@@ -1852,9 +1858,10 @@ scenes.fight = () => {
         }));
     }
 
+    // fightInventory, this is for items and magic
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 6; i++) {
-            fightActions.push(controls.rect({
+            fightInventory.push(controls.rect({
                 anchor: [0.33 + (j * 0.17), 0 + (i * 0.055)], sizeAnchor: [0.17, 0.055], offset: [0, -500],
                 fill: "rgb(38, 52, 38)",
                 alpha: 1,
@@ -1868,7 +1875,7 @@ scenes.fight = () => {
                                         fightAction = "item";
                                         selectedItem = this.item;
                                         hideFightButtons();
-                                        hideFightActions();
+                                        hidefightInventory();
                                     }
                                     else {
                                         selectedItem = this.item;
@@ -1877,7 +1884,7 @@ scenes.fight = () => {
                                         fightAction = "none";
                                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "items/" + selectedItem().source;
                                         hideFightButtons();
-                                        hideFightActions();
+                                        hidefightInventory();
                                     }
                                 }
                             }
@@ -1887,98 +1894,103 @@ scenes.fight = () => {
                                 fightAction = "magic";
                                 selectedItem = this.item;
                                 hideFightButtons();
-                                hideFightActions();
+                                hidefightInventory();
                             }
                         }
                     }
                 }
-            }))
-            fightActions.push(controls.rect({
+            }));
+            fightInventory.push(controls.rect({
                 anchor: [0.3325 + (j * 0.17), 0.0025 + (i * 0.055)], sizeAnchor: [0.165, 0.05], offset: [0, -500],
                 fill: "rgb(42, 87, 44)",
                 alpha: 1,
-            }))
-            fightActions.push(controls.label({
+            }));
+            fightInventory.push(controls.label({
                 anchor: [0.48 + (j * 0.17), 0.025 + (i * 0.055)], offset: [-24, -500],
                 text: "---",
                 fontSize: 20, fill: "white", align: "right",
                 alpha: 1,
-            }))
-            fightActions.push(controls.image({
+            }));
+            fightInventory.push(controls.image({
                 anchor: [0.48 + (j * 0.17), 0.025 + (i * 0.055)], sizeOffset: [32, 32], offset: [0, -520],
                 source: "gear",
                 alpha: 0,
-            }))
+            }));
 
         }
     }
-    fightActions.push(controls.rect({
+    fightInventory.push(controls.rect({
         anchor: [0.67, 0.33], sizeAnchor: [0.17, 0.055], offset: [0, -500],
         fill: "rgb(38, 52, 38)",
         alpha: 1,
         item: "",
         onClick(args) {
+            // go back
             if (this.alpha == 1) {
-                hideFightActions();
+                hidefightInventory();
                 showFightButtons();
             }
         }
     }));
-    fightActions.push(controls.rect({
+    fightInventory.push(controls.rect({
         anchor: [0.6725, 0.3325], sizeAnchor: [0.165, 0.05], offset: [0, -500],
         fill: "rgb(42, 87, 44)",
         alpha: 1,
     }))
-    fightActions.push(controls.label({
-        anchor: [0.755, 0.355], offset: [-24, -500],
+    fightInventory.push(controls.label({
+        anchor: [0.67 + 0.17 / 2, 0.355], offset: [0, -500],
         text: "Back",
         fontSize: 20, fill: "white", align: "center",
         alpha: 1,
     }))
 
-    fightActions.push(controls.rect({
+    fightInventory.push(controls.rect({
         anchor: [0.67, 0.0], sizeAnchor: [0.17, 0.055], offset: [0, -500],
         fill: "rgb(38, 52, 38)",
         alpha: 1,
         item: "",
         onClick(args) {
+            // previous page
             if (this.alpha == 1 && itemPage > 0) {
                 itemPage -= 1;
-                showItems();
+                if (fightInventory[0].type == "item") showItems();
+                else showMagic();
             }
         }
     }));
-    fightActions.push(controls.rect({
+    fightInventory.push(controls.rect({
         anchor: [0.6725, 0.0025], sizeAnchor: [0.165, 0.05], offset: [0, -500],
         fill: "rgb(42, 87, 44)",
         alpha: 1,
     }))
-    fightActions.push(controls.label({
-        anchor: [0.755, 0.025], offset: [-24, -500],
+    fightInventory.push(controls.label({
+        anchor: [0.67 + 0.17 / 2, 0.025], offset: [0, -500],
         text: "Previous",
         fontSize: 20, fill: "white", align: "center",
         alpha: 1,
     }))
 
-    fightActions.push(controls.rect({
+    fightInventory.push(controls.rect({
         anchor: [0.67, 0.055], sizeAnchor: [0.17, 0.055], offset: [0, -500],
         fill: "rgb(38, 52, 38)",
         alpha: 1,
         item: "",
         onClick(args) {
+            // next page
             if (this.alpha == 1) {
                 itemPage += 1;
-                showItems();
+                if (fightInventory[0].type == "item") showItems();
+                else showMagic();
             }
         }
     }));
-    fightActions.push(controls.rect({
+    fightInventory.push(controls.rect({
         anchor: [0.6725, 0.0575], sizeAnchor: [0.165, 0.05], offset: [0, -500],
         fill: "rgb(42, 87, 44)",
         alpha: 1,
     }))
-    fightActions.push(controls.label({
-        anchor: [0.755, 0.075], offset: [-24, -500],
+    fightInventory.push(controls.label({
+        anchor: [0.67 + 0.17 / 2, 0.08], offset: [0, -500],
         text: "Next",
         fontSize: 20, fill: "white", align: "center",
         alpha: 1,
@@ -2693,7 +2705,7 @@ scenes.fight = () => {
 
                         fightAction = "none";
                         hideFightButtons();
-                        hideFightActions();
+                        hidefightInventory();
                     }
 
                     // Select character
@@ -2761,7 +2773,7 @@ scenes.fight = () => {
                     let dude = positions[selectedAlly[0]][selectedAlly[1]].occupied;
                     if (fightAction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
-                        fightActions[6].offset[1] = -500;
+                        fightInventory[6].offset[1] = -500;
                         changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "attack");
                         if (epositions[this.pos1][this.pos2].parent == undefined) positions[selectedAlly[0]][selectedAlly[1]].action = ["attack", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
                         else {
@@ -2770,7 +2782,7 @@ scenes.fight = () => {
                         }
                         fightAction = "none";
                         hideFightButtons();
-                        hideFightActions();
+                        hidefightInventory();
                         //attackEnemy(selectedAlly[0], selectedAlly[1], this.pos1, this.pos2); // direct attack, testing thing
                     }
                     if (fightAction == "magic" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
@@ -2784,7 +2796,7 @@ scenes.fight = () => {
                         game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EP -= selectedItem().cost;
                         fightAction = "none";
                         hideFightButtons();
-                        hideFightActions();
+                        hidefightInventory();
                     }
                     if (fightAction == "scan" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "scan";
@@ -2797,7 +2809,7 @@ scenes.fight = () => {
 
                         fightAction = "none";
                         hideFightButtons();
-                        hideFightActions();
+                        hidefightInventory();
                     }
                 }
             }));
@@ -3343,7 +3355,7 @@ scenes.fight = () => {
         // Controls
         controls: [
             // Load all the nice stuff
-            ...positionGrid, ...fightButtons, ...fightActions, ...actionButtons, turnDisplay, fleeLoss, fleeIcon, ...orderDisplay,
+            ...positionGrid, ...fightButtons, ...fightInventory, ...actionButtons, turnDisplay, fleeLoss, fleeIcon, ...orderDisplay,
             ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
             ...fightStats, actionDisplay, ...gameOverScreen,

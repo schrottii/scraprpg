@@ -17,6 +17,8 @@ function clearBlend() {
 }
 
 function setBlend(type) {
+    if (settings.blend == false) return false;
+
     let ctx = mainCanvas.getContext("2d");
 
     isClear = false;

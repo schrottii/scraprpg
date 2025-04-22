@@ -35,7 +35,7 @@ let controls = {
                 if (this.blend != false) setBlend(this.blend);
                 else clearBlend();
 
-                if (this.glow != 0) {
+                if (this.glow != 0 && settings.glow) {
                     ctx.shadowBlur = this.glow;
                     ctx.shadowColor = this.glowColor;
                 }
@@ -51,7 +51,7 @@ let controls = {
                     this.offset[0] / red + this.anchor[0] * ctx.canvas.width,
                     this.offset[1] / red + this.anchor[1] * ctx.canvas.height);
 
-                if (this.glow) ctx.shadowBlur = 0;
+                if (this.glow && settings.glow) ctx.shadowBlur = 0;
             },
             ...args || {},
         }
