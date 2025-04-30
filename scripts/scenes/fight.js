@@ -417,6 +417,22 @@ scenes.fight = () => {
                 addWrenches(wrenchGain);
                 addBricks(brickGain);
 
+                // temporary
+                if (game.monsterbook == undefined) game.monsterbook = {};
+
+                // monster book
+                for (let j = 0; j < 3; j++) {
+                    for (let i = 0; i < 3; i++) {
+                        let enemy = epositions[i][j];
+
+                        if (enemy.type != undefined) {
+                            if (game.monsterbook[enemy.type] != undefined) game.monsterbook[enemy.type] += 1;
+                            else game.monsterbook[enemy.type] = 1;
+                        }
+                    }
+                }
+                console.log(game.monsterbook);
+
                 // start rendering the win screen
                 winScreen[3].text = "You got " + EXPforAll + " XP!";
                 winScreen[6].text = "+" + formatNumber(wrenchGain);
@@ -2672,6 +2688,8 @@ scenes.fight = () => {
 
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].isOccupied = true;
             epositions[currentEnemies[i][1]][currentEnemies[i][2]].occupied = currentEnemies[i][0];
+            epositions[currentEnemies[i][1]][currentEnemies[i][2]].type = currentEnemies[i][0];
+
             if (currentEnemies[i][3] == "2x2") {
                 epositions[currentEnemies[i][1]][currentEnemies[i][2]].size = currentEnemies[i][3];
 

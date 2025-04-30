@@ -110,7 +110,9 @@ let game = {
 
     shops: {
 
-    }
+    },
+
+    monsterbook: {}
 }
 
 let settings = {

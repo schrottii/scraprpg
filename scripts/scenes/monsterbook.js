@@ -1,3 +1,8 @@
+function calcMonsterbookBoost() {
+    // in %
+    return Object.keys(game.monsterbook).length * 2;
+}
+
 scenes.monsterbook = () => {
     var background = [];
     var theTop = [];
@@ -64,8 +69,8 @@ scenes.monsterbook = () => {
     return {
         // Pre-render function
         preRender(ctx, delta) {
-            theTop[0].text = "Found: " + 0 + "/" + Object.keys(enemyTypes).length;
-            theTop[1].text = "Boost: " + 0 + "% more Wrenches";
+            theTop[0].text = "Found: " + Object.keys(game.monsterbook).length + "/" + Object.keys(enemyTypes).length;
+            theTop[1].text = "Boost: " + calcMonsterbookBoost() + "% more Wrenches";
         },
         // Controls
         controls: [
