@@ -339,10 +339,11 @@ scenes.fight = () => {
             }
         }
 
-        // start running!
+        // fight is over! dance & run away (animation)
         let runTime = 0;
         let runLaps = 0;
         addAnimator(function (t) {
+            // make existing and alive characters dance
             for (i = 0; i < positionControls.length; i++) {
                 if (positionControls[i].source != "gear") {
                     if (game.characters[positions[positionControls[i].pos1][positionControls[i].pos2].occupied].HP > 0) {
@@ -353,11 +354,14 @@ scenes.fight = () => {
                     }
                 }
             }
+
+            // hide fight stats and the like
             for (i = 0; i < fightStats.length; i++) {
                 fightStats[i].offset[1] = t / 4;
             }
+
             turnDisplay.offset[1] = 0 - (t / 4);
-            actionDisplay.offset[0] = 0 - (t / 4);
+            actionDisplay.offset[0] = 0 - (t / 2);
 
             for (i = 0; i < fightLogComponents.length; i++) {
                 fightLogComponents[i].offset[1] = (t / 4) + fightLogComponents[i].baseoffset[1];
@@ -366,22 +370,26 @@ scenes.fight = () => {
                 enemyListComponents[i].offset[1] = (t / 4) + enemyListComponents[i].baseoffset[1];
             }
 
+            // run run run run
             runTime += ((t - runLaps) / 250);
             if (runTime >= 2) {
                 runTime = 0;
                 runLaps = t;
             }
             if (t > 2000) {
+                // base numbers for what you get, they get increased below
                 let EXPforAll = 2;
                 let wrenchGain = 100;
                 let wrenchLUK = 1;
                 let brickGain = 10;
                 let brickLUK = 1;
 
+                // gather items
                 for (i in gainedItems) {
                     addItem(gainedItems[i], 1);
                 }
 
+                // get EXP based on enemy strength
                 for (j = 0; j < 3; j++) {
                     for (i = 0; i < 3; i++) {
                         if (epositions[i][j].strength != undefined) EXPforAll += epositions[i][j].strength / 3;
@@ -394,6 +402,8 @@ scenes.fight = () => {
                         if (epositions[i][j].maxHP != undefined) wrenchGain += epositions[i][j].maxHP / 3;
                     }
                 }
+
+                // get currencies based on luck
                 for (i in game.characters) {
                     wrenchLUK += Math.pow(1.2, getStat(game.characters[i].name.toLowerCase(), "luk"));
                     brickLUK += getStat(game.characters[i].name.toLowerCase(), "luk");
@@ -407,6 +417,7 @@ scenes.fight = () => {
                 addWrenches(wrenchGain);
                 addBricks(brickGain);
 
+                // start rendering the win screen
                 winScreen[3].text = "You got " + EXPforAll + " XP!";
                 winScreen[6].text = "+" + formatNumber(wrenchGain);
                 winScreen[8].text = "+" + formatNumber(brickGain);
@@ -419,7 +430,6 @@ scenes.fight = () => {
                 }
 
                 let a = 7;
-
                 for (i = 0; i < game.chars.length; i++) {
                     // This Player exists
                     if (getPlayer(1 + i).HP > 0) {
@@ -440,6 +450,7 @@ scenes.fight = () => {
                     winStats[6 + (i * a)].text = getPlayer(i + 1).preEXP + "/25";
                 }
 
+                // EXP bars slideeeeee
                 addAnimator(function (t) {
                     let am = (6 - Math.min((t - 3000) / 100, 5));
 
@@ -454,6 +465,7 @@ scenes.fight = () => {
                     return false;
                 });
 
+                // slide the win screen in
                 for (i = 1; i < winScreen.length; i++) {
                     winScreen[i].offset[1] = -1000;
                     if (i != 2) winScreen[i].alpha = 1;
@@ -465,6 +477,7 @@ scenes.fight = () => {
                     }
                 }
 
+                // and whatever this is
                 winScreen[0].alpha = 0;
                 winStats[0].offset[0] = 0;
                 addAnimator(function (t) {
@@ -1738,14 +1751,15 @@ scenes.fight = () => {
         alpha: 1,
     });
 
-
+    // FLEEING
     function fleeAnimation(x, y) {
         let p = x + (y * 3);
         positions[x][y].action[0] = "flee2";
+
         if ((getStat(positions[x][y].occupied, "agi") / 200) < Math.random()) {
+            // fleeing was not successful
             battleNumber(positionControls[p].anchor, "Failed!", 0, positionControls[p].offset);
             positions[x][y].action = false;
-            // fleeing was not successful
             return false;
         }
 
@@ -1763,7 +1777,6 @@ scenes.fight = () => {
                 if (positions[i][j].isOccupied == true) peopleLeft += 1;
             }
         }
-        peopleLeft -= 1; // you
 
         let loss = Math.round(50 + (game.wrenches / 100)) * (-1);
         addWrenches(loss);
@@ -1817,6 +1830,7 @@ scenes.fight = () => {
                 // Fleeing done - I do not exist anymore (bye bye)
                 if (positionControls[p].source != "gear") positionControls[p].offset[0] = -500;
                 if (positionControls[p].source != "gear") positionControls[p].anchor[0] = 0;
+                positionControls[p].source = "gear";
                 delete runTime;
                 delete runLaps;
 
@@ -1841,7 +1855,6 @@ scenes.fight = () => {
         fadeOut(1000, true, () => setScene(scenes.game()));
     }
 
-    // finally a non array
     turnDisplay = controls.label({
         anchor: [0.95, 0.07],
         fontSize: 36, fill: "lightblue", align: "right", outline: "black", outlineSize: 8,
@@ -2243,7 +2256,7 @@ scenes.fight = () => {
     }));
     winScreen.push(controls.label({
         anchor: [0.825, 0.225], offset: [0, -1000],
-        text: "(Divided for characters!)",
+        text: "(Divided for characters)",
         fontSize: 24, fill: "white", align: "center",
         alpha: 0,
     }));
@@ -2282,7 +2295,7 @@ scenes.fight = () => {
         alpha: 0,
     }));
     winScreen.push(controls.image({
-        anchor: [0.65, 0.6], offset: [32, -1000], sizeAnchor: [0.3, 0.25],
+        anchor: [0.65, 0.6], offset: [32, -1000], sizeAnchor: [0.2, 0.25],
         source: "proud",
         alpha: 0,
     }));
