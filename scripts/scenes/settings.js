@@ -41,16 +41,15 @@ scenes.settings = () => {
         alpha: 1,
         fill: colors.bottomcolor
     }));
-
     background.push(controls.rect({
         anchor: [0.45, 0.01], sizeAnchor: [0.01, 0.98],
         fill: colors.bottomcolor, alpha: 1,
     }));
-
-    menuSettings.push(controls.label({
-        anchor: [0.225, 0.1], offset: [0, -24],
-        align: "center", fontSize: 48, fill: "black",
-        text: "Settings", alpha: 0,
+    background.push(controls.label({
+        anchor: [0.105, 0.06],
+        text: "Settings",
+        align: "center", fontSize: 36, fill: "black",
+        alpha: 1,
     }));
 
     menuSettings.push(controls.button({

@@ -32,6 +32,12 @@ scenes.savemanager = () => {
         alpha: 1,
         fill: colors.bottomcolor
     }));
+    background.push(controls.label({
+        anchor: [0.105, 0.06],
+        text: "Save Manager",
+        align: "center", fontSize: 36, fill: "black",
+        alpha: 1,
+    }));
 
     // Generate our lovely buttons
     for (let a = 0; a < 3; a++) {

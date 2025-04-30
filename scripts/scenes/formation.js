@@ -62,6 +62,12 @@ scenes.formation = () => {
             alpha: 1,
         }));
     }
+    background.push(controls.label({
+        anchor: [0.105, 0.06],
+        text: "Formation",
+        align: "center", fontSize: 36, fill: "black",
+        alpha: 1,
+    }));
 
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 3; i++) {

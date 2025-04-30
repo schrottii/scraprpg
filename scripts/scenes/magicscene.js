@@ -40,6 +40,12 @@ scenes.magicscene = () => {
         alpha: 1,
         fill: colors.bottomcolor
     }));
+    background.push(controls.label({
+        anchor: [0.105, 0.06],
+        text: "Magic",
+        align: "center", fontSize: 36, fill: "black",
+        alpha: 1,
+    }));
 
     // The top
     theTop.push(controls.label({

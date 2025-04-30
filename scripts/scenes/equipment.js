@@ -56,6 +56,12 @@ scenes.equipment = () => {
         fill: colors.bottomcolor,
         alpha: 1
     }));
+    background.push(controls.label({
+        anchor: [0.105, 0.06],
+        text: "Equipment",
+        align: "center", fontSize: 36, fill: "black",
+        alpha: 1,
+    }));
 
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 6; j++) {

@@ -180,6 +180,7 @@ var scenes = {
     savemanager: "scripts/scenes/savemanager.js",
     settings: "scripts/scenes/settings.js",
     status: "scripts/scenes/status.js",
+    monsterbook: "scripts/scenes/monsterbook.js",
     shop: "scripts/scenes/shop.js",
 };
 

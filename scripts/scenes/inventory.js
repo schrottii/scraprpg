@@ -1,6 +1,7 @@
 scenes.inventory = () => {
     let background = [];
     let buttons = [];
+    let buttonPics = [];
 
     let characters = [];
     let characterNames = [];
@@ -23,11 +24,11 @@ scenes.inventory = () => {
     }));
 
     // Buttons on the right
-    for (i = 0; i < 7; i++) {
+    for (i = 0; i < 8; i++) {
         buttons.push(controls.button({
-            anchor: [0.7, 0.075 + (i * 0.125)], sizeAnchor: [0.2, 0.085], id: i,
+            anchor: [0.7, 0.0325 + (i * 0.12)], sizeAnchor: [0.2, 0.085], id: i,
             alpha: 1,
-            text: ["Items", "Magic", "Equipment", "Formation", "Save Manager", "Settings", "Exit Menu"][i],
+            text: ["Items", "Magic", "Equipment", "Formation", "Monster Book", "Save Manager", "Settings", "Exit Menu"][i],
             onClick(args) {
                 playSound("buttonClickSound");
                 fadeOut(1000 / 3, true, (id = this.id) => {
@@ -35,11 +36,18 @@ scenes.inventory = () => {
                     if (id == 1) setScene(scenes.magicscene());
                     if (id == 2) setScene(scenes.equipment());
                     if (id == 3) setScene(scenes.formation());
-                    if (id == 4) setScene(scenes.savemanager());
-                    if (id == 5) setScene(scenes.settings());
-                    if (id == 6) setScene(scenes.game());
+                    if (id == 4) setScene(scenes.monsterbook());
+                    if (id == 5) setScene(scenes.savemanager());
+                    if (id == 6) setScene(scenes.settings());
+                    if (id == 7) setScene(scenes.game());
                 });
             }
+        }));
+
+        buttonPics.push(controls.image({
+            anchor: [0.7, 0.0325 + (0.085 / 8) + (i * 0.12)], sizeOffset: [64, 64], id: i,
+            alpha: 1,
+            source: ["items/potion", "fire", "inventory", "grid", "proud", "save", "gear", "flee"][i],
         }));
     }
 
@@ -63,13 +71,13 @@ scenes.inventory = () => {
             }));
 
             characterNames.push(controls.label({
-                anchor: [0.06 + (0.3 * i), 0.09 + (0.3 * j)],
+                anchor: [0.06 + (0.3 * i), 0.08 + (0.3 * j)],
                 align: "left", baseline: "alphabetic", fontSize: 32, fill: "black",
                 text: "Bleu",
                 alpha: 0,
             }));
             characterNames.push(controls.label({
-                anchor: [0.075 + (0.3 * i), 0.09 + (0.3 * j)], anchorbase: 0.075 + (0.3 * i),
+                anchor: [0.075 + (0.3 * i), 0.08 + (0.3 * j)], anchorbase: 0.075 + (0.3 * i),
                 align: "left", baseline: "alphabetic", fontSize: 20, fill: "black",
                 text: "Lvl. 1",
                 alpha: 0,
@@ -164,7 +172,7 @@ scenes.inventory = () => {
     coolDisplays.push(controls.label({
         anchor: [0.02, 0.95],
         fill: "black", align: "left", fontSize: 20,
-        text: "Total time spent in this save: 0",
+        text: "Total time spent: 0",
         alpha: 1
     }))
 
@@ -223,12 +231,12 @@ scenes.inventory = () => {
                 emptyChars[i].alpha = 1;
             }
 
-            coolDisplays[0].text = getTime();
-            coolDisplays[2].text = "Total time spent in this save: " + getTime(game.playTime, 60, 3600, true);
+            coolDisplays[0].text = "Current time: " + getTime();
+            coolDisplays[2].text = "Total time spent: " + getTime(game.playTime, 60, 3600, true);
         },
         // Controls
         controls: [
-            ...background, ...buttons, ...characters, ...characterNames, ...characterImages, ...characterBars, ...emptyChars, ...coolDisplays, ...cl,
+            ...background, ...buttons, ...buttonPics, ...characters, ...characterNames, ...characterImages, ...characterBars, ...emptyChars, ...coolDisplays, ...cl,
         ],
         name: "inventory"
     }

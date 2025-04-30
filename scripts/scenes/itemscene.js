@@ -8,6 +8,7 @@ scenes.itemscene = () => {
 
     var itemPage = 0;
     var characterSelected = "bleu";
+
     // Background
     background.push(controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 1],
@@ -48,6 +49,12 @@ scenes.itemscene = () => {
         anchor: [0.6, 0.01], sizeAnchor: [0.005, 0.1],
         alpha: 1,
         fill: colors.bottomcolor
+    }));
+    background.push(controls.label({
+        anchor: [0.105, 0.06],
+        text: "Items",
+        align: "center", fontSize: 36, fill: "black",
+        alpha: 1,
     }));
 
     // The top
