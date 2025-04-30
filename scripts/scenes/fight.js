@@ -838,12 +838,6 @@ scenes.fight = () => {
                 positions[pos[0]][pos[1]].action = false;
                 setTimeout(() => executeActions(), ACTIONDELAY);
                 break;
-            case "defend": // defend
-                changeEmo(pos[0] + (pos[1] * 3), "block");
-                positions[pos[0]][pos[1]].shield = 1.5;
-
-                endOfExecute(pos);
-                break;
             case "item": // item
                 changeEmo(pos[0] + (pos[1] * 3), "useitem");
 
@@ -961,19 +955,11 @@ scenes.fight = () => {
                 fleeAnimation(activeCharacter.action[1], activeCharacter.action[2]);
                 endOfExecute(pos);
                 break;
-            case "rally": // rally attack
-                // you only deal 1/4 dmg but attack lotta targets
-                positions[pos[0]][pos[1]].atk = 0.25;
-                for (j = 0; j < 3; j++) {
-                    for (i = 0; i < 3; i++) {
-                        let dude = epositions[i][j];
-                        if (dude.occupied == false) continue;
-                        attackEnemy(selectedAlly[0], selectedAlly[1], i, j, () => {
-                            positions[pos[0]][pos[1]].atk = 1;
-                        });
-                        endOfExecute(pos);
-                    }
-                }
+            case "defend": // defend
+                changeEmo(pos[0] + (pos[1] * 3), "block");
+                positions[pos[0]][pos[1]].shield = 1.5;
+
+                endOfExecute(pos);
                 break;
             case "scan": // scan an enemy
                 let enemy = epositions[activeCharacter.action[3]][activeCharacter.action[4]];
@@ -996,6 +982,20 @@ scenes.fight = () => {
                 postLog("Strength: " + enemy.strength);
 
                 endOfExecute(pos);
+                break;
+            case "rally": // rally attack
+                // you only deal 1/4 dmg but attack lotta targets
+                positions[pos[0]][pos[1]].atk = 0.25;
+                for (j = 0; j < 3; j++) {
+                    for (i = 0; i < 3; i++) {
+                        let dude = epositions[i][j];
+                        if (dude.occupied == false) continue;
+                        attackEnemy(selectedAlly[0], selectedAlly[1], i, j, () => {
+                            positions[pos[0]][pos[1]].atk = 1;
+                        });
+                        endOfExecute(pos);
+                    }
+                }
                 break;
             case "pray": // pray action
                 let dude = game.characters[activeCharacter.occupied];
@@ -1331,15 +1331,27 @@ scenes.fight = () => {
         }
     }
 
+    function showActionButtons(ally) {
+        // for actionButtons like attack, defend, etc.
 
-    function showActionButtons() {
+        // enable if available for this char, set Y
+        let enabledActions = 0;
+        for (i = 0; i < actionButtons.length; i++) {
+            if (actionButtons[i].char == "all" || actionButtons[i].char == positions[ally[0]][ally[1]].occupied) {
+                actionButtons[i].anchor[1] = (enabledActions * 0.055) + [0, 0.0025, 0.025][i % 3];
+                actionButtons[i].enabled = true;
+                if (i % 3 == 2) enabledActions++;
+            }
+            else actionButtons[i].enabled = false;
+        }
+
         addAnimator(function (t) {
             for (i = 0; i < actionButtons.length; i++) {
-                actionButtons[i].offset[1] = -500 + t;
+                if (actionButtons[i].enabled) actionButtons[i].offset[1] = -500 + t;
             }
             if (t > 499) {
                 for (i = 0; i < actionButtons.length; i++) {
-                    actionButtons[i].offset[1] = 0;
+                    if (actionButtons[i].enabled) actionButtons[i].offset[1] = 0;
                 }
                 return true;
             }
@@ -1563,7 +1575,7 @@ scenes.fight = () => {
                 alpha: 1,
                 onClick(args) {
                     if (this.alpha == 1 && fightAction == "active") {
-                        showActionButtons();
+                        showActionButtons(selectedAlly);
                         hideFightButtons();
                     }
                 }
@@ -1664,14 +1676,16 @@ scenes.fight = () => {
     function normalActionsButton(i) {
         //if (i == 0) { // Normal Actions
         actionButtons.push(controls.rect({
-            anchor: [0.3, (i * 0.055)], sizeAnchor: [0.15, 0.055], offset: [0, -500],
+            anchor: [0.3, i * 0.055], sizeAnchor: [0.15, 0.055], offset: [0, -500],
             fill: "rgb(191, 137, 69)",
             alpha: 1,
             i: i,
+            char: ["all", "all", "all", "gau", "corelle", "grun", "all"][i],
             onClick(args) {
                 if (this.alpha == 1 && (fightAction == "active" || (fightAction == "attack2" && this.i == 6))) {
                     switch (this.i) {
                         case 1:
+                            // Defend
                             positions[selectedAlly[0]][selectedAlly[1]].action = ["defend"];
                             fightAction = "none";
 
@@ -1680,24 +1694,29 @@ scenes.fight = () => {
                             positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                             break;
                         case 2:
+                            // Scan
+                            fightAction = "scan";
+                            break;
+                        case 3:
+                            // Rally
                             positions[selectedAlly[0]][selectedAlly[1]].action = ["rally"];
                             fightAction = "none";
                             positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                             break;
-                        case 3:
-                            fightAction = "scan";
-                            break;
                         case 4:
+                            // Pray
                             positions[selectedAlly[0]][selectedAlly[1]].action = ["pray"];
                             fightAction = "none";
                             positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                             break;
                         case 5:
+                            // Counterattack
                             positions[selectedAlly[0]][selectedAlly[1]].action = ["counterattack"];
                             fightAction = "none";
                             positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                             break;
                         case 6:
+                            // Back
                             positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "grid";
                             positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].blend = "mul";
                             if (fightAction == "attack2" && this.i == 6) {
@@ -1708,6 +1727,7 @@ scenes.fight = () => {
                             fightAction = "none";
                             break;
                         default:
+                            // Attack
                             fightAction = "attack2";
                             break;
                     }
@@ -1719,27 +1739,23 @@ scenes.fight = () => {
         //}
     }
 
+    // creates the buttons for attack, defend, etc.
     for (i = 0; i < 7; i++) {
         normalActionsButton(i);
+
         actionButtons.push(controls.rect({
             anchor: [0.3025, 0.0025 + (i * 0.055)], sizeAnchor: [0.145, 0.05], offset: [0, -500],
             fill: "rgb(221, 155, 79)",
             alpha: 1,
-        }))
+            char: ["all", "all", "all", "gau", "corelle", "grun", "all"][i]
+        }));
+
         actionButtons.push(controls.label({
             anchor: [0.445, 0.025 + (i * 0.055)], offset: [0, -500],
-            text: ["Attack", "Defend", "Rally", "Scan", "Pray", "Counterattack", "Back"][i],
+            text: ["Attack", "Defend", "Scan", "Rally", "Pray", "Counterattack", "Back"][i],
             fontSize: 24, fill: "black", align: "right",
             alpha: 1,
-        }))
-
-    }
-
-    for (i = 0; i < 50; i++) {
-        fleeWrenches.push(controls.image({
-            anchor: [0.5, 0.5], offset: [10, 10], sizeOffset: [32, 32],
-            source: "wrench",
-            alpha: 0,
+            char: ["all", "all", "all", "gau", "corelle", "grun", "all"][i]
         }));
     }
 
@@ -1750,6 +1766,14 @@ scenes.fight = () => {
         text: "...",
         alpha: 1,
     });
+
+    for (i = 0; i < 50; i++) {
+        fleeWrenches.push(controls.image({
+            anchor: [0.5, 0.5], offset: [10, 10], sizeOffset: [32, 32],
+            source: "wrench",
+            alpha: 0,
+        }));
+    }
 
     // FLEEING
     function fleeAnimation(x, y) {

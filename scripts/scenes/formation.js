@@ -6,8 +6,8 @@ scenes.formation = () => {
     var macroControls = [];
     var selectedPos = [8, 8];
 
-    const macros = ["attack", "defend", "rally", "scan", "pray", "counterattack"];
-    const macroTexts = ["Attack", "Defend", "Rally", "Scan", "Pray", "Counter Attack"];
+    const macros = ["attack", "defend", "scan", "rally", "pray", "counterattack"];
+    const macroTexts = ["Attack", "Defend", "Scan", "Rally", "Pray", "Counter Attack"];
 
     // Background
     background.push(controls.rect({
