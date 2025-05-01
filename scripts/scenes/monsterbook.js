@@ -6,6 +6,9 @@ function calcMonsterbookBoost() {
 scenes.monsterbook = () => {
     var background = [];
     var theTop = [];
+    var disgustingMonsters = [];
+
+    var snipAnim = 0;
 
     // Background
     background.push(controls.rect({
@@ -64,6 +67,46 @@ scenes.monsterbook = () => {
         alpha: 1,
     }));
 
+    // there is a monster in my bed
+    let possibleEnm;
+    for (let ver = 0; ver < 5; ver++) {
+        for (let hor = 0; hor < 10; hor++) {
+            possibleEnm = Object.keys(enemyTypes)[hor + (ver * 10)] != undefined ? Object.keys(enemyTypes)[hor + (ver * 10)] : false;
+            //console.log(hor + (ver * 10), possibleEnm);
+
+            disgustingMonsters.push(controls.rect({
+                anchor: [0.033 + 0.1 * hor, 0.2 + 0.15 * ver], sizeOffset: [128, 128], offset: [-32, -32],
+                alpha: 1,
+                fill: colors.bottomcolor
+            }));
+            disgustingMonsters.push(controls.rect({
+                anchor: [0.033 + 0.1 * hor, 0.2 + 0.15 * ver], sizeOffset: [112, 112], offset: [-24, -24],
+                alpha: 1,
+                fill: colors.buttontoppressed
+            }));
+
+            disgustingMonsters.push(controls.image({
+                anchor: [0.033 + 0.1 * hor, 0.2 + 0.15 * ver], sizeOffset: [64, 64], enm: possibleEnm,
+                snip: [0, 0, 32, 32],
+                alpha: possibleEnm != false ? 1 : 0,
+                source: possibleEnm != false ? possibleEnm : "gear"
+            }));
+
+            disgustingMonsters.push(controls.label({
+                anchor: [0.033 + 0.1 * hor, 0.175 + 0.15 * ver], offset: [32, 0],
+                text: possibleEnm != false ? enemyTypes[possibleEnm].name : "???",
+                align: "center", fontSize: 12, fill: "black",
+                alpha: 1, font: "DePixelHalbfett"
+            }));
+            disgustingMonsters.push(controls.label({
+                anchor: [0.033 + 0.1 * hor, 0.225 + 0.15 * ver], offset: [32, 64],
+                text: game.monsterbook[possibleEnm] != undefined ? game.monsterbook[possibleEnm] : "0",
+                align: "center", fontSize: 16, fill: "black",
+                alpha: 1
+            }));
+        }
+    }
+
     fadeIn(1000 / 3, true);
 
     return {
@@ -71,10 +114,16 @@ scenes.monsterbook = () => {
         preRender(ctx, delta) {
             theTop[0].text = "Found: " + Object.keys(game.monsterbook).length + "/" + Object.keys(enemyTypes).length;
             theTop[1].text = "Boost: " + calcMonsterbookBoost() + "% more Wrenches";
+
+            // snip animations
+            snipAnim += delta;
+            for (let i = 2; i < disgustingMonsters.length; i += 5) {
+                if (disgustingMonsters[i].snip != undefined) disgustingMonsters[i].snip[1] = Math.floor(snipAnim / 1000) % 2;
+            }
         },
         // Controls
         controls: [
-            ...background, ...theTop
+            ...background, ...theTop, ...disgustingMonsters
         ],
         name: "monsterbook"
     }
