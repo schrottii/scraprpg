@@ -32,8 +32,10 @@ let controls = {
                 let w = this.sizeOffset[0] / red + this.sizeAnchor[0] * ctx.canvas.width;
                 let h = this.sizeOffset[1] / red + this.sizeAnchor[1] * ctx.canvas.height;
 
-                if (this.blend != false) setBlend(this.blend);
-                else clearBlend();
+                if (settings.blend) {
+                    if (this.blend != false) setBlend(this.blend);
+                    else clearBlend();
+                }
 
                 if (this.glow != 0 && settings.glow) {
                     ctx.shadowBlur = this.glow;

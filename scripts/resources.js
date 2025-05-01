@@ -119,6 +119,7 @@ let images = {
     Portraits_Kokitozi: "data/images/protagonists/portraits/Portraits_Kokitozi.png",
 
     // Enemies
+    black: "data/images/enemies/Map_Black.png",
     evil: "data/images/enemies/Map_Evil.png",
     weakhelter: "data/images/enemies/Map_Evil.png",
     stronghelter: "data/images/protagonists/map/Map_Corelle.png",
