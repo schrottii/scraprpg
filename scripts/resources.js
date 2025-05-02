@@ -1,8 +1,9 @@
 let images = {
-    // Misc.
+    // the most important files!!!
     gear: "data/images/gear.png",
     proud: "data/images/proud.png",
 
+    // Misc.
     paper: "data/images/paper.png",
     inventory: "data/images/inventory.png",
     wrench: "data/images/currencies/wrench.png",
@@ -25,19 +26,6 @@ let images = {
     talk: "data/images/talk.png",
     order: "data/images/order.png",
 
-    attackani0: "data/images/animations/attack/attackani0.png",
-    attackani1: "data/images/animations/attack/attackani1.png",
-    attackani2: "data/images/animations/attack/attackani2.png",
-    eattackani0: "data/images/animations/attack/eattackani0.png",
-    eattackani1: "data/images/animations/attack/eattackani1.png",
-    eattackani2: "data/images/animations/attack/eattackani2.png",
-
-    fog: "data/images/clouds/fog_cloud.png",
-    fog2: "data/images/clouds/fog_cloud2.png",
-    cloudshadow1: "data/images/clouds/scloud.png",
-    cloudshadow2: "data/images/clouds/scloud2.png",
-    cloudshadow3: "data/images/clouds/scloud3.png",
-
     rain: "data/images/rain.png",
     vignette: "data/images/screenvignette.png",
     star: "data/images/Icon_star.png",
@@ -51,6 +39,21 @@ let images = {
     shoptable: "data/images/shop/shop-table.png",
     pawn: "data/images/shop/pawn.png",
     hangingsign: "data/images/hanging-sign.png",
+
+    // attack animations (sword)
+    attackani0: "data/images/animations/attack/attackani0.png",
+    attackani1: "data/images/animations/attack/attackani1.png",
+    attackani2: "data/images/animations/attack/attackani2.png",
+    eattackani0: "data/images/animations/attack/eattackani0.png",
+    eattackani1: "data/images/animations/attack/eattackani1.png",
+    eattackani2: "data/images/animations/attack/eattackani2.png",
+
+    // weather
+    fog: "data/images/clouds/fog_cloud.png",
+    fog2: "data/images/clouds/fog_cloud2.png",
+    cloudshadow1: "data/images/clouds/scloud.png",
+    cloudshadow2: "data/images/clouds/scloud2.png",
+    cloudshadow3: "data/images/clouds/scloud3.png",
 
     // Map Maker
     place: "data/images/mm/mode-place.png",

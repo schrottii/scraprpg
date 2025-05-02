@@ -23,65 +23,6 @@ const CAMERA_LOCK_Y = -2;
 var CAM_OX = 0;
 var CAM_OY = 0;
 
-// Function used to create enemies
-function createEnemy(type) {
-    if (currentEnemies.length < 9) {
-        let pox = Math.floor(Math.random() * 3);
-        let poy = Math.floor(Math.random() * 3);
-        if (enemyTypes[type].size != undefined) {
-            let dup;
-            if (enemyTypes[type].size == "2x2") {
-                let ret = tryCreateAgain(pox, poy, true);
-                dup = ret[2];
-                pox = ret[0];
-                poy = ret[1];
-            }
-            else {
-                console.log("huhh????")
-            }
-            if (dup == 0) {
-                currentEnemies.push([type, pox, poy, "2x2"]);
-                currentEnemies.push(["child", pox + 1, poy]);
-                currentEnemies.push(["child", pox, poy + 1]);
-                currentEnemies.push(["child", pox + 1, poy + 1]);
-            }
-        }
-        else {
-            let dup;
-            let ret = tryCreateAgain(pox, poy);
-
-            dup = ret[2];
-            pox = ret[0];
-            poy = ret[1];
-
-            if (dup == 0) {
-                currentEnemies.push([type, pox, poy]);
-            }
-        }
-    }
-}
-
-function tryCreateAgain(pox, poy, big = false) {
-    for (i = 0; i < 25; i++) {
-        dup = 0;
-        for (e in currentEnemies) {
-            if ((currentEnemies[e][1] == pox || (big && currentEnemies[e][1] == pox + 1)) && // goofy || aah
-                (currentEnemies[e][2] == poy || (big && currentEnemies[e][2] == poy + 1))) {
-                dup += 1;
-            }
-        }
-        if (big && (pox == 2 || poy == 2)) dup += 1;
-        if (dup > 0) {
-            pox = Math.floor(Math.random() * 3);
-            poy = Math.floor(Math.random() * 3);
-        }
-        else {
-            return [pox, poy, dup];
-        }
-    }
-    return [0, 0, 9999];
-}
-
 // Function used to grab tiles
 function getTile(map, x, y, l = 1) {
     if (y < 0) return undefined;
@@ -171,30 +112,6 @@ function checkOverMax() {
     for (i in game.characters) {
         game.characters[i].HP = Math.min(game.characters[i].HP, getStat(game.characters[i].name, "maxHP"));
         game.characters[i].EP = Math.min(game.characters[i].EP, getStat(game.characters[i].name, "maxEP"));
-    }
-}
-
-function addItem(name, amount = 1) {
-    if (game.inventory[name] == undefined) {
-        game.inventory[name] = 0;
-    }
-    if (game.inventory[name] >= items[name]().max) {
-        return false;
-    }
-    if (game.inventory[name] + amount < items[name]().max) {
-        game.inventory[name] += amount;
-        return true;
-    }
-    else {
-        game.inventory[name] = items[name]().max;
-        return true;
-    }
-}
-
-function removeItem(name, amount = 1) {
-    game.inventory[name] -= amount;
-    if (game.inventory[name] < 1 || game.inventory[name] == undefined) {
-        delete game.inventory[name];
     }
 }
 

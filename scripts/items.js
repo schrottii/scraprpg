@@ -1,3 +1,29 @@
+function addItem(name, amount = 1) {
+    if (game.inventory[name] == undefined) {
+        game.inventory[name] = 0;
+    }
+    if (game.inventory[name] >= items[name]().max) {
+        return false;
+    }
+    if (game.inventory[name] + amount < items[name]().max) {
+        game.inventory[name] += amount;
+        return true;
+    }
+    else {
+        game.inventory[name] = items[name]().max;
+        return true;
+    }
+}
+
+function removeItem(name, amount = 1) {
+    game.inventory[name] -= amount;
+    if (game.inventory[name] < 1 || game.inventory[name] == undefined) {
+        delete game.inventory[name];
+    }
+}
+
+///////////////////////
+// items
 let items = {
     default(args) {
         return {

@@ -1,10 +1,15 @@
 ﻿## TODO:
-- 3 coding things left to do in this phase
-- (we are not always good at counting)
-- lots of uhh making maps and stories and chapters yea
+- Item images, items & equipment
+- Enemies
+- Map Enemies
+- Tilsets, images & adding tiles to MM
+- Making lots of maps
+
+- Monster Book: Enemy details
+- Credits scene (roles & contributons in the roles)
 
 ## Phase 1:
-The developing phase, Schrottii's phase, the essential features of the game, mostly coding (maybe a bad decision in hindsight, sigh).
+The developing phase, Schrottii's phase, the essential features of the game, mostly coding (DEFINITELY a bad decision in hindsight, sigh).
 Nov 13th 2021 - Nov 1st 2022!
 IT'S DONE!
 
@@ -35,15 +40,10 @@ There is still some coding, some new features, but not as much as in phase 1 (~~
 - Chapter 5
 - Chapter 6 (Boss: Astroturf)
 
-### Phase 2 coding:
-- Startup introduction
-- Add the remaining settings
-- Code improvements
-
 ## Phase 3
 The testing & publishing phase. This will be fun.
 
 - Test until we all die
 - Be proud of ourselves
-- Nerf Skro 🤔
+- Nerf Skro!!!
 - Publish the game
