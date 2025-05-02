@@ -463,7 +463,7 @@ scenes.fight = () => {
                         winStats[5 + (i * a)].source = getPlayer(i + 1).name.toLowerCase() + "_battle";
                         winStats[5 + (i * a)].snip = battleAnimation(getPlayer(i + 1).name.toLowerCase(), "dead");
                     }
-                    winStats[6 + (i * a)].text = getPlayer(i + 1).preEXP + "/25";
+                    winStats[6 + (i * a)].text = getPlayer(i + 1).preEXP + "/" + calcEXP(getPlayer(i + 1).name);
                 }
 
                 // EXP bars slideeeeee
@@ -471,8 +471,8 @@ scenes.fight = () => {
                     let am = (6 - Math.min((t - 3000) / 100, 5));
 
                     for (i = 0; i < game.chars.length; i++) {
-                        winStats[2 + (i * 7/* a */)].sizeAnchor[0] = 0.01 + (Math.min(0.588, 0.592 * (getPlayer(1 + i).EXP / 25)) / am/*getStat(i + 1, "maxHP")*/);
-                        winStats[6 + (i * 7)].text = Math.floor(Math.max(getPlayer(i + 1).preEXP, (getPlayer(i + 1).EXP / am))) + "/25";
+                        winStats[2 + (i * 7/* a */)].sizeAnchor[0] = 0.01 + (Math.min(0.588, 0.592 * (getPlayer(i + 1).EXP / calcEXP(getPlayer(i + 1).name))) / am/*getStat(i + 1, "maxHP")*/);
+                        winStats[6 + (i * 7)].text = Math.floor(Math.max(getPlayer(i + 1).preEXP, (getPlayer(i + 1).EXP / am))) + "/" + calcEXP(getPlayer(i + 1).name);
                     }
                     if (t > 3599) {
                         winScreen[2].alpha = 1;

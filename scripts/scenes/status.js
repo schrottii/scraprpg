@@ -296,12 +296,12 @@ scenes.status = (characterSelected = "Bleu") => {
             else characterBars[6].sizeAnchor[0] = 0.00001
 
 
-            if (getPlayer(nr).EXP > 0) characterBars[10].sizeAnchor[0] = 0.3960 * ((0.00001 + getPlayer(nr).EXP) / 25);
+            if (getPlayer(nr).EXP > 0) characterBars[10].sizeAnchor[0] = 0.3960 * ((0.00001 + getPlayer(nr).EXP) / calcEXP(getPlayer(nr).name));
             else characterBars[10].sizeAnchor[0] = 0.00001;
 
             characterBars[12].text = getPlayer(nr).HP + "/" + getStat(getPlayer(nr).name, "maxHP");
             characterBars[13].text = getPlayer(nr).EP + "/" + getStat(getPlayer(nr).name, "maxEP");
-            characterBars[14].text = getPlayer(nr).EXP + "/" + 25;
+            characterBars[14].text = getPlayer(nr).EXP + "/" + calcEXP(getPlayer(nr).name);
 
             // characterStats
             for (i in characterStats) {

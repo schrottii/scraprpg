@@ -73,6 +73,43 @@ const cStats = {
     }
 }
 
+// EXP stuff
+function calcEXP(prot, level = false){
+    // affected by wisdom (WIS) and current lvl
+    // leave level at false for current
+    // you start at level 1, this is used to calc exp needed for next level (2 means 2 -> 3)
+    // a lvl up resets your EXP
+    prot = prot.toLowerCase();
+
+    let protWIS = getStat(prot, "wis");
+    let protLVL = level != false ? level : game.characters[prot].level;
+    if (protLVL == undefined) protLVL = 1;
+
+    return Math.floor((50 * Math.floor(Math.pow(protLVL, 1.0563))) / (1 + protWIS / 50));
+}
+
+function logAllEXP(prot){
+    // debug only
+    let cum = 0;
+
+    for (let e = 1; e < 50; e++){
+        cum += calcEXP(prot, e);
+        console.log("LVL " + e + " -> " + (e + 1) + ": " + calcEXP(prot, e) + " (cum: " + cum + ")");
+    }
+}
+
+function checkLevelUps() {
+    for (i in game.chars) {
+        let I = game.chars[i];
+        while (game.characters[I].EXP >= calcEXP(I) && game.characters[I].level < 50) {
+            game.characters[I].EXP -= calcEXP(I);
+            game.characters[I].level += 1;
+
+            game.characters[I].HP = getStat(I, "maxHP");
+        }
+    }
+}
+
 // This function is used to get current stats of characters
 // Stuff like Max HP, LUK, etc. are calculated based on base stat for the char, level, equipment etc.
 // The game file itself (save.js) should only save non-static non-stats such as pos, effects, current HP, current EP

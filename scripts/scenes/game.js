@@ -96,18 +96,6 @@ function clearCurrentEnemies() {
     currentEnemies = [];
 }
 
-function checkLevelUps() {
-    for (i in game.chars) {
-        let I = game.chars[i];
-        while (game.characters[I].EXP > 24 && game.characters[I].level < 50) {
-            game.characters[I].EXP -= 25;
-            game.characters[I].level += 1;
-
-            game.characters[I].HP = getStat(I, "maxHP");
-        }
-    }
-}
-
 function checkOverMax() {
     for (i in game.characters) {
         game.characters[i].HP = Math.min(game.characters[i].HP, getStat(game.characters[i].name, "maxHP"));
