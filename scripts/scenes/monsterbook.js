@@ -89,7 +89,7 @@ scenes.monsterbook = () => {
             //console.log(hor + (ver * 10), possibleEnm);
 
             if (possibleEnm == false) continue; // enemy DOES NOT EXIST, do not render it all
-            killedEnm = game.monsterbook[possibleEnm] != undefined ? game.monsterbook[possibleEnm] : 0; // visible once you killed at least 1
+            killedEnm = game.monsterbook[possibleEnm] != undefined ? game.monsterbook[possibleEnm] : -1; // visible once you killed at least 1 or used scan
 
             disgustingMonsters.push(controls.rect({
                 anchor: [0.033 + 0.1 * hor, 0.2 + 0.15 * ver], sizeOffset: [128, 128], offset: [-32, -32],
@@ -106,18 +106,18 @@ scenes.monsterbook = () => {
                 anchor: [0.033 + 0.1 * hor, 0.2 + 0.15 * ver], sizeOffset: [64, 64], enm: possibleEnm,
                 snip: [0, 0, 32, 32],
                 alpha: 1,//killedEnm != 0 ? 1 : 0,
-                source: killedEnm != 0 ? possibleEnm : "black"
+                source: killedEnm != -1 ? possibleEnm : "black"
             }));
 
             disgustingMonsters.push(controls.label({
                 anchor: [0.033 + 0.1 * hor, 0.175 + 0.15 * ver], offset: [32, 0],
-                text: killedEnm != 0 ? enemyTypes[possibleEnm].name : "???",
+                text: killedEnm != -1 ? enemyTypes[possibleEnm].name : "???",
                 align: "center", fontSize: 12, fill: "black",
                 alpha: 1, font: "DePixelHalbfett"
             }));
             disgustingMonsters.push(controls.label({
                 anchor: [0.033 + 0.1 * hor, 0.225 + 0.15 * ver], offset: [32, 64],
-                text: killedEnm,
+                text: killedEnm != -1 ? killedEnm : "-",
                 align: "center", fontSize: 16, fill: "black",
                 alpha: 1
             }));

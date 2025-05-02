@@ -997,6 +997,9 @@ scenes.fight = () => {
                 postLog("HP: " + enemy.HP + "/" + enemySpecies.HP);
                 postLog("Strength: " + enemy.strength);
 
+                // scan once, see in monster book :eyes:
+                if (game.monsterbook[enemy.type] == undefined) game.monsterbook[enemy.type] = 0;
+
                 endOfExecute(pos);
                 break;
             case "rally": // rally attack
@@ -1390,6 +1393,14 @@ scenes.fight = () => {
     }
 
     function showFightButtons() {
+        let me = positions[selectedAlly[0]][selectedAlly[1]].occupied;
+        
+        // update texts based on items, spells and flee chance u got
+        fightButtons[5].text = "Items (" + Object.keys(game.inventory).length + ")";
+        fightButtons[8].text = "Magic (" + Object.keys(game.characters[me].magic).length + ")";
+        fightButtons[14].text = "Flee (" + (getStat(me, "agi") / 2) + "%)";
+        
+
         addAnimator(function (t) {
             for (i = 0; i < fightButtons.length; i++) {
                 fightButtons[i].offset[1] = -300 + t;
@@ -1682,7 +1693,7 @@ scenes.fight = () => {
         }))
         fightButtons.push(controls.label({
             anchor: [0.145, 0.025 + (i * 0.055)], offset: [0, -500],
-            text: ["Normal Actions", "Item Inventory", "Magic", "Macro", "Flee"][i],
+            text: ["Normal Actions", "Items", "Magic", "Macro", "Flee"][i],
             fontSize: 24, fill: "black", align: "right",
             alpha: 1,
         }))
