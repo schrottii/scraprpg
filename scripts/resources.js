@@ -221,6 +221,7 @@ var audio = {
 
 var maps = {
     "newMap": "scripts/maps/newMap.js",
+    "test": "scripts/maps/test.js",
 };
 
 var colors = {
