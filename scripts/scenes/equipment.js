@@ -84,8 +84,8 @@ scenes.equipment = () => {
                     let itemOffset = itemPage * 12;
                     let inventory = Object.keys(game.inventory);
                     if (items[inventory[this.idx + itemOffset]] != undefined) {
-                        let type = items[inventory[this.idx + itemOffset]]().type;
-                        if (inventory[this.idx + itemOffset] == game.characters[characterSelected].equipment[items[inventory[this.idx + itemOffset]]().type]) { // Equipped
+                        let type = items[inventory[this.idx + itemOffset]]().piece;
+                        if (inventory[this.idx + itemOffset] == game.characters[characterSelected].equipment[items[inventory[this.idx + itemOffset]]().piece]) { // Equipped
                             game.characters[characterSelected].equipment[type] = "none";
                         }
                         else {
@@ -196,8 +196,8 @@ scenes.equipment = () => {
                 if (game.inventory[items[inventory[i + itemOffset]].name] > 1) itemsText[i].text = items[inventory[i + itemOffset]]().name + " x" + game.inventory[items[inventory[i + itemOffset]].name];
                 else itemsText[i].text = items[inventory[i + itemOffset]]().name;
 
-                if (inventory[i + itemOffset] == game.characters[characterSelected].equipment[items[inventory[i + itemOffset]]().type]) itemsText[i].fill = "lightgreen"; // Equipped
-                else if (items[inventory[i + itemOffset]]().type != false) itemsText[i].fill = "black";
+                if (inventory[i + itemOffset] == game.characters[characterSelected].equipment[items[inventory[i + itemOffset]]().piece]) itemsText[i].fill = "lightgreen"; // Equipped
+                else if (items[inventory[i + itemOffset]]().piece != false) itemsText[i].fill = "black";
                 else itemsText[i].fill = "darkgray";
                 itemsText[i].source = "items/" + items[inventory[i + itemOffset]]().source;
                 itemsText[i].alpha = 1;

@@ -11,8 +11,8 @@ scenes.status = (characterSelected = "Bleu") => {
 
     //var masteryComp = [];
 
-    characterSelectedName = game.characters[characterSelected].name;
-    nr = game.chars.indexOf(characterSelected) + 1;
+    var characterSelectedName = game.characters[characterSelected].name;
+    var nr = game.chars.indexOf(characterSelected) + 1;
 
     // Background
     background.push(controls.rect({

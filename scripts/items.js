@@ -1,19 +1,26 @@
 let items = {
     default(args) {
         return {
+            // general
             source: "",
             name: "none",
-            shopcost: 200,
             type: "electronic",
-            clpi: 10,
-            max: 99,
-            story: false,
+            max: 99, // how many you can have at most
+
+            // shop
+            shopcost: 200,
+            clpi: 10, // customer level point increase
+
+            // optional bools
+            story: false, // key/story items
             self: false,
-            type: false, // Equipment:
+            
+            // Equipment:
             // head, body, lhand, rhand, acc1, acc2
+            piece: "none",
             stats: "none",
             effect: () => {
-                addWrenches(0);
+                //addWrenches(0); <-- example
             },
 
             ...args || {},
@@ -24,9 +31,9 @@ let items = {
             ...items.default(),
             source: "brickyleaf",
             name: "Bricky Leaf",
-            shopcost: 500,
             type: "flower",
             max: 99,
+            shopcost: 500,
             effect: () => {
                 if (args.player.effect[0] == "poison") causeEffect(i, "none", 0);
                 playSound("heal");
@@ -40,9 +47,9 @@ let items = {
             ...items.default(),
             source: "potion",
             name: "Small Potion",
-            shopcost: 250,
             type: "potion",
             max: 99,
+            shopcost: 250,
             effect: () => {
                 healPlayer(args.player, 50, args.anchor, args.offset);
             },
@@ -55,9 +62,9 @@ let items = {
             ...items.default(),
             source: "peppytincture",
             name: "Peppy Tincture",
-            shopcost: 2000,
             type: "potion",
             max: 99,
+            shopcost: 2000,
             effect: () => {
                 causeEffect(game.chars.indexOf(args.player.name.toLowerCase()), "none", 0);
                 playSound("heal");
@@ -71,9 +78,9 @@ let items = {
             ...items.default(),
             source: "scroll",
             name: "Scroll of Truth",
-            shopcost: 999999,
             type: "book",
             max: 1,
+            shopcost: 999999,
             story: true,
             effect: () => {
                 alert("This... should not happen.");
@@ -87,10 +94,10 @@ let items = {
             ...items.default(),
             source: "superswamp",
             name: "Super Swamp",
-            shopcost: 1000,
             type: "flower",
-            clpi: 60,
             max: 99,
+            shopcost: 1000,
+            clpi: 60,
             effect: () => {
                 /*
                 let HealthBefore = args.player.HP;
@@ -111,9 +118,9 @@ let items = {
             ...items.default(),
             source: "revive",
             name: "Revive Item",
-            shopcost: 2500,
             type: "potion",
             max: 99,
+            shopcost: 2500,
             effect: () => {
                 let HealthBefore = args.player.HP
                 let amount = Math.ceil(getStat(args.player.name, "maxHP") / 4);
@@ -138,10 +145,10 @@ let items = {
             ...items.default(),
             source: "scroll",
             name: "Chicago Pants",
-            shopcost: 200,
             type: "armor",
             max: 1,
-            type: "body",
+            shopcost: 200,
+            piece: "body",
             stats: {
                 "strength": 7,
                 "maxHP": 4,

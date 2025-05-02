@@ -1,14 +1,20 @@
 let game = {
+    // meta
     pfp: 1,
-    map: "test",
-    position: [4, 4],
-    chars: ["bleu", "corelle", "gau", "skro", "kokitozi"], // MAX 6!!!
-    leader: "bleu",
     time: 0,
     playTime: 0,
+
+    // map stuff
+    map: "test",
+    position: [4, 4],
+
+    // currencies
     wrenches: 0,
     bricks: 0,
-    inventory: {},
+
+    // your peoples
+    chars: ["bleu", "corelle", "gau", "skro", "kokitozi"], // MAX 6!!!
+    leader: "bleu",
 
     characters: {
         bleu: {
@@ -108,9 +114,10 @@ let game = {
         }
     },
 
-    shops: {
 
-    },
+    inventory: {},
+
+    shops: {},
 
     monsterbook: {}
 }
