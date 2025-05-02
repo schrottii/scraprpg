@@ -51,6 +51,16 @@ scenes.settings = () => {
         align: "center", fontSize: 36, fill: "black",
         alpha: 1,
     }));
+    background.push(controls.label({
+        anchor: [0.505, 0.06],
+        text: "Click a setting to get more info!",
+        align: "left", fontSize: 16, fill: "black",
+        alpha: 1,
+    }));
+
+    function settingDesc(text){
+        background[background.length - 1].text = text;
+    }
 
     menuSettings.push(controls.button({
         anchor: [0.1, 0.25], sizeAnchor: [0.25, 0.1],
@@ -137,6 +147,8 @@ scenes.settings = () => {
             onClick(args) {
                 if (this.alpha == 1) {
                     playSound("buttonClickSound");
+                    settingDesc("Saves the game every 15s on the map");
+
                     if (settings.autosave == true) {
                         settings.autosave = false;
                     }
@@ -167,6 +179,8 @@ scenes.settings = () => {
             onClick(args) {
                 if (this.alpha == 1) {
                     playSound("buttonClickSound");
+                    settingDesc("Shows squares on possible positions");
+
                     settings.grid = !settings.grid;
                     showMenuSettings();
                 }
@@ -186,6 +200,8 @@ scenes.settings = () => {
             onClick(args) {
                 if (this.alpha == 1) {
                     playSound("buttonClickSound");
+                    settingDesc("Toggles particles. Disable for better performance");
+
                     settings.particles = !settings.particles;
                     showMenuSettings();
                 }
@@ -205,6 +221,8 @@ scenes.settings = () => {
             onClick(args) {
                 if (this.alpha == 1) {
                     playSound("buttonClickSound");
+                    settingDesc("Toggles blend techniques. Disable for better performance");
+
                     settings.blend = !settings.blend;
                     showMenuSettings();
                 }
@@ -224,6 +242,8 @@ scenes.settings = () => {
             onClick(args) {
                 if (this.alpha == 1) {
                     playSound("buttonClickSound");
+                    settingDesc("Toggles glow effects. Disable for better performance");
+
                     settings.glow = !settings.glow;
                     showMenuSettings();
                 }
@@ -248,6 +268,8 @@ scenes.settings = () => {
             onClick(args) {
                 if (this.alpha == 1) {
                     playSound("buttonClickSound");
+                    settingDesc("Gives you a joystick to move on the map");
+
                     if (settings.joystick == true) {
                         settings.joystick = false;
                     }
@@ -279,6 +301,8 @@ scenes.settings = () => {
             onClick(args) {
                 if (this.alpha == 1) {
                     playSound("buttonClickSound");
+                    settingDesc("Adjust size of the walk pad");
+
                     settings.walkPadSize -= 1;
                     if (settings.walkPadSize < 0) settings.walkPadSize = 2;
                 }
@@ -290,6 +314,8 @@ scenes.settings = () => {
             onClick(args) {
                 if (this.alpha == 1) {
                     playSound("buttonClickSound");
+                    settingDesc("Adjust size of the walk pad");
+
                     settings.walkPadSize += 1;
                     if (settings.walkPadSize > 2) settings.walkPadSize = 0;
                 }
@@ -307,6 +333,7 @@ scenes.settings = () => {
             onClick(args) {
                 if (this.alpha == 1) {
                     playSound("buttonClickSound");
+                    settingDesc("Adjust music volume");
                 }
             },
             tick() {
@@ -318,6 +345,8 @@ scenes.settings = () => {
             text: "-", alpha: 0,
             onClick(args) {
                 if (this.alpha == 1) {
+                    settingDesc("Adjust music volume");
+
                     if (settings.musicVolume > 0.01) {
                         settings.musicVolume = settings.musicVolume - 0.05;
                         if (settings.musicVolume < 0) settings.musicVolume = 0;
@@ -331,6 +360,8 @@ scenes.settings = () => {
             text: "+", alpha: 0,
             onClick(args) {
                 if (this.alpha == 1) {
+                    settingDesc("Adjust music volume");
+
                     if (settings.musicVolume < 0.99) {
                         settings.musicVolume = settings.musicVolume + 0.05;
                         if (settings.musicVolume > 1) settings.musicVolume = 1;
@@ -346,6 +377,7 @@ scenes.settings = () => {
             onClick(args) {
                 if (this.alpha == 1) {
                     playSound("buttonClickSound");
+                    settingDesc("Adjust sound effect volume");
                 }
             },
             tick() {
@@ -357,6 +389,8 @@ scenes.settings = () => {
             text: "-", alpha: 0,
             onClick(args) {
                 if (this.alpha == 1) {
+                    settingDesc("Adjust sound effect volume");
+
                     if (settings.soundVolume > 0.01) {
                         settings.soundVolume = settings.soundVolume - 0.05;
                         if (settings.soundVolume < 0) settings.soundVolume = 0;
@@ -370,6 +404,8 @@ scenes.settings = () => {
             text: "+", alpha: 0,
             onClick(args) {
                 if (this.alpha == 1) {
+                    settingDesc("Adjust sound effect volume");
+                    
                     if (settings.soundVolume < 0.99) {
                         settings.soundVolume = settings.soundVolume + 0.05;
                         if (settings.soundVolume > 1) settings.soundVolume = 1;

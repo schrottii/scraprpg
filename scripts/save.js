@@ -123,13 +123,20 @@ let game = {
 }
 
 let settings = {
+    // gameplay
     autosave: false,
+
+    // graphics
     grid: true,
     particles: true,
     blend: true,
     glow: true,
+
+    // controls
     joystick: false,
     walkPadSize: 1,
+
+    // audio
     musicVolume: 0.5,
     soundVolume: 0.5
 }
