@@ -30,7 +30,11 @@ function getRandomSpell(charName, element, size){
 }
 
 function awardRandomSpell(charName, element, size){
-    game.characters[charName].magic.push(getRandomSpell(charName, element, size));
+    let randomSpell = getRandomSpell(charName, element, size);
+
+    if (randomSpell == undefined) return false;
+    game.characters[charName].magic.push(randomSpell);
+    return true;
 }
 
 function everySpell(who){

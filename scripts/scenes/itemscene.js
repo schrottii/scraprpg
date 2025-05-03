@@ -9,6 +9,7 @@ scenes.itemscene = () => {
 
     var itemPage = 0;
     var characterSelected = "bleu";
+    var useMode = "use";
 
     // Background
     background.push(controls.rect({
@@ -81,14 +82,16 @@ scenes.itemscene = () => {
         anchor: [0.25, 0.01], sizeAnchor: [0.15, 0.1],
         alpha: 0,
         onClick(args) {
-            playSound("no");
-            alert("Not available yet!");
+            if (useMode == "use") useMode = "drop";
+            else if (useMode == "drop") useMode = "dropall";
+            else if (useMode == "dropall") useMode = "use";
+            theTop[1].text = "Mode: " + useMode;
         },
         fill: "black"
     }));
     theTop.push(controls.label({
         anchor: [0.305, 0.06],
-        text: "Drop",
+        text: "Mode: use",
         align: "center", fontSize: 20, fill: "black",
         alpha: 1,
     }));
@@ -190,12 +193,23 @@ scenes.itemscene = () => {
                 pressedTop: "darkgray", pressedBottom: "gray",
                 alpha: 1,
                 onClick(args) {
+                    let item = this.item;
+
                     if (this.fillTop == "lightgray") {
                         playSound("no");
                     }
+                    else if (useMode == "drop"){
+                        // Drop 1
+                        map.items.push([game.position[0], game.position[1], item, 1, true]);
+                        removeItem(item, 1);
+                    }
+                    else if (useMode == "dropall"){
+                        // Drop All
+                        map.items.push([game.position[0], game.position[1], item, game.inventory[item], true]);
+                        removeItem(item, 9999);
+                    }
                     else {
                         let itemOffset = itemPage * 12;
-                        let item = this.item;
 
                         if (items[item] != undefined) {
                             if (items[item]().story != true) {
@@ -205,8 +219,9 @@ scenes.itemscene = () => {
                                 }
                             }
                         }
-                        showItems();
                     }
+                    
+                    showItems();
                 }
             }));
         }
