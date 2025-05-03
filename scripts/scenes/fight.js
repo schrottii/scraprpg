@@ -15,7 +15,6 @@ function healPlayer(player, amount, anchor = 0, offset = 0) {
 
     if (anchor != undefined && anchor != 0) {
         battleNumber(anchor, amount, 0, offset);
-        updateBar(player.name.toLowerCase(), HealthBefore);
     }
 }
 
@@ -84,60 +83,41 @@ function battleNumber(pos, amount, type, offset = [0, 0], crit = false) {
     })
 }
 
-function updateBar(charName, HealthBefore) {
-    if (game.characters[charName].HP < 0) game.characters[charName].HP = 0;
+function updateBar(charName, type, before, amount, max) {
+    // used to update the fightStats (bottom), those HP and EP bars, you know
+    // type 0 HP 1 EP
+    // now automated --> updatePositions()
+
+    // preparations
+    if (amount < 0) amount = 0;
     if (fightStats.length < 1) return false; // we are not in a fight - do not render!
 
     let whichChar = characters.indexOf(charName);
-    let which = 5 + (whichChar * amountFightStats);
+    let which = (type == 0 ? 5 : 9) + (whichChar * amountFightStats);
     let row = Math.ceil((whichChar + 1) / 3); // 1 or 2
 
-    let Leftend = 0.1960 * (Math.max(getPlayer(1 + whichChar).HP, 0) / getStat(1 + whichChar, "maxHP"));
-    let Length = (0.1960 * (HealthBefore / getStat(1 + whichChar, "maxHP"))) - Leftend;
+    let Leftend = 0.1960 * (Math.max(amount, 0) / max);
+    let Length = (0.1960 * (before / max)) - Leftend;
 
     fightStats[which].alpha = 1;
     fightStats[which - 1].alpha = 1;
-    if (Leftend > 0) {
-        if (getPlayer(1 + whichChar).HP > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (getPlayer(1 + whichChar).HP / getStat(1 + whichChar, "maxHP"));
-        fightStats[which].anchor[0] = 0.242 + Leftend + (0.35 * (row - 1));
-        fightStats[which].sizeAnchor[0] = Length;
-        addAnimator(function (t) {
-            if (t > 400) {
-                fightStats[which].sizeAnchor[0] = Length * Math.max(0.01, (1 - (Math.min((t - 399) * 0.01, 1))));
-            }
+    if (amount > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (amount / max);
+    fightStats[which].anchor[0] = 0.242 + Leftend + (0.35 * (row - 1));
+    fightStats[which].sizeAnchor[0] = Length;
+    addAnimator(function (t) {
+        if (t > 200) {
+            fightStats[which].sizeAnchor[0] = Length * Math.max(0.01, (1 - (Math.min((t - 199) * 1 / 600, 1))));
+        }
 
-            if (t > 1400) {
-                fightStats[which].alpha = 0;
-                if (charName.HP < 1) {
-                    fightStats[which - 1].alpha = 0;
-                    fightStats[which].alpha = 0;
-                }
-                return true;
-            }
-        });
-    }
-    else {
-        Leftend = 0.1960 * (HealthBefore / getStat(1 + whichChar, "maxHP"));
-        Length = (0.1960 * (getPlayer(1 + whichChar).HP / HealthBefore)) - Leftend;
-        fightStats[which].anchor[0] = 0.242 + Leftend + (0.35 * (row - 1));;
-        fightStats[which].sizeAnchor[0] = 0.00001;
-
-        if (!(Length >= 0.001)) Length = 0.001;
-
-        fightStats[which].alpha = 1;
-        addAnimator(function (t) {
-            fightStats[which].sizeAnchor[0] = Length * Math.max(0.01, ((Math.min(t * 0.01, 0.5))));
-
-            if (t > 1400) {
-                fightStats[which].anchor[0] = 0.242 + Leftend;
-                if (getPlayer(1 + whichChar).HP > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (getPlayer(1 + whichChar).HP / getStat(1 + whichChar, "maxHP"));
-                fightStats[which].alpha = 0;
+        if (t > 800) {
+            fightStats[which].alpha = 0;
+            if (amount < 1) {
                 fightStats[which - 1].alpha = 0;
-                return true;
+                fightStats[which].alpha = 0;
             }
-        });
-
-    }
+            return true;
+        }
+    });
 }
 
 
@@ -842,7 +822,6 @@ scenes.fight = () => {
                     positions[activeCharacter.action[3]][activeCharacter.action[4]].isOccupied = false;
                     checkAllDead();
                 }
-                updateBar(positions[activeCharacter.action[3]][activeCharacter.action[4]].occupied, HealthBefore);
 
                 endOfExecute(pos);
                 break;
@@ -1022,8 +1001,6 @@ scenes.fight = () => {
                 let before = dude.HP;
 
                 dude.HP = Math.min(getStat(name, "maxHP"), dude.HP + 50);
-                updateBar(name, before);
-
                 dude.EP = Math.min(getStat(name, "maxEP"), dude.EP + 50);
 
                 endOfExecute(pos);
@@ -1133,8 +1110,6 @@ scenes.fight = () => {
                         postLog("Element boost: x" + getElementDamage(epositions[pos[0]][pos[1]].element, getStat(positions[fpos1][fpos2].occupied)) + "!");
                     }
 
-                    // Bar animation! (Cowboy moment)
-                    updateBar(positions[fpos1][fpos2].occupied, HealthBefore);
                     if (game.characters[positions[fpos1][fpos2].occupied].HP < 1) {
                         game.characters[positions[fpos1][fpos2].occupied].HP = 0;
                         postLog(epositions[pos[0]][pos[1]].name + " killed " + game.characters[positions[fpos1][fpos2].occupied].name + "!");
@@ -3000,6 +2975,31 @@ scenes.fight = () => {
                 else {
                     epositionControls[i + (j * 3)].source = "gear";
                 }
+
+                // protagonists! !
+                if (positions[i][j].occupied != false){
+                    let char = game.characters[positions[i][j].occupied];
+                    if (positions[i][j].HPBefore == undefined) positions[i][j].HPBefore = char.HP;
+                    if (positions[i][j].EPBefore == undefined) positions[i][j].EPBefore = char.EP;
+                
+                    // get difference between prev n current hp
+                    positions[i][j].HPNow = char.HP;
+                    let HPdifference = positions[i][j].HPNow - positions[i][j].HPBefore;
+                    positions[i][j].EPNow = char.EP;
+                    let EPdifference = positions[i][j].EPNow - positions[i][j].EPBefore;
+
+                    // if you took damage, display dat
+                    if (HPdifference != 0){
+                        //console.log(HPdifference, positions[i][j].HPNow, positions[i][j].HPBefore);
+                        updateBar(char.name.toLowerCase(), 0, positions[i][j].HPBefore, char.HP, getStat(char.name.toLowerCase(), "maxHP"));
+                    }
+                    if (EPdifference != 0){
+                        updateBar(char.name.toLowerCase(), 1, positions[i][j].EPBefore, char.EP, getStat(char.name.toLowerCase(), "maxEP"));
+                    }
+
+                    positions[i][j].HPBefore = char.HP;
+                    positions[i][j].EPBefore = char.EP;
+                }
             }
         }
 
@@ -3040,6 +3040,7 @@ scenes.fight = () => {
         if (getStat(characters[i], "element") != undefined) fightStats[12 + amountFightStats * i].source = getStat(characters[i], "element");
     }
 
+    // insert characters into positions
     for (i in game.characters) {
         if (game.chars.includes(game.characters[i].name.toLowerCase())) { //only if he is in the party
             if (game.characters[i].pos != undefined) {
@@ -3060,6 +3061,7 @@ scenes.fight = () => {
         }
     }
 
+    // remove characters if dead
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             if (positions[i][j].occupied != undefined) {
@@ -3073,6 +3075,7 @@ scenes.fight = () => {
         }
     }
 
+    // cutscene stuff
     cutsceneElements.push(controls.rect({
         anchor: [0, -1], sizeAnchor: [1, 0.15],
         fill: "black",
@@ -3286,6 +3289,7 @@ scenes.fight = () => {
     return {
         // Pre-render function
         preRender(ctx, delta) {
+            // animation timer
             globalFightAnimationTime = Math.min(1.999, globalFightAnimationTime + (2.9325 / delta));
             if (globalFightAnimationTime == 1.999) globalFightAnimationTime = 0;
 
@@ -3294,6 +3298,7 @@ scenes.fight = () => {
             // draw background
             ctx.drawImage(images["fight_bg"], 0, 0, width * scale, height);
 
+            // go back to battle sheet
             for (pcc in positionControls) {
                 let occ = positions[positionControls[pcc].pos1][positionControls[pcc].pos2].occupied;
                 if (occ != false && !fightWon) {
@@ -3374,17 +3379,7 @@ scenes.fight = () => {
             if (highlightAlpha == 0.5) highlightChange = 0;
             if (highlightAlpha == 0) highlightChange = 1;
 
-            /*if (fightaction == "none") {
-                for (i = 0; i < 9; i++) {
-                    if (positionControls[i].source != "gear") highlightGrid[i].alpha = highlightAlpha;
-                }
-                if (highlightGrid[9].alpha != 0) {
-                    for (i = 0; i < 9; i++) {
-                        highlightGrid[i + 9].alpha = 0;
-                    }
-                }
-            }
-            else */if (fightAction == "attack2" || fightAction == "magic" || fightAction == "item") {
+            if (fightAction == "attack2" || fightAction == "magic" || fightAction == "item") {
                 for (i = 0; i < 9; i++) {
                     if (positionControls[i].source != "gear") highlightGrid[i].alpha = highlightAlpha;
                     if (epositionControls[i].source != "gear" || epositions[i % 3][Math.floor(i / 3)].parent != undefined) highlightGrid[i + 9].alpha = highlightAlpha;

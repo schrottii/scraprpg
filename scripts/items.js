@@ -130,7 +130,6 @@ let items = {
                 args.player.HP -= 999;
                 if (args.anchor != undefined) {
                     battleNumber(args.anchor, 999, 0, args.offset);
-                    updateBar(args.player.name.toLowerCase(), HealthBefore);
                 }
                 */
                 causeEffect(game.chars.indexOf(args.player.name.toLowerCase()), "condemned", 2);
@@ -157,7 +156,6 @@ let items = {
                 }
                 if (args.anchor != undefined) {
                     battleNumber(args.anchor, amount, 0, args.offset);
-                    updateBar(args.player.name.toLowerCase(), HealthBefore);
                 }
 
                 addParticle("revive", { anchor: args.targetAnchor, offset: [args.targetOffset[0], args.targetOffset[1] + 64] })
