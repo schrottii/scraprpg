@@ -4,6 +4,7 @@ scenes.magicscene = () => {
     var itemsImages = [];
     var itemsButtons = [];
     var theTop = [];
+    var pageButtons = [];
     var storyonly = false;
 
     var itemPage = 0;
@@ -84,6 +85,34 @@ scenes.magicscene = () => {
         alpha: 1,
     }));
 
+    // Page Buttons
+    pageButtons.push(controls.button({
+        anchor: [0, 0.9], sizeAnchor: [0.05, 0.1], fontSize: 60,
+        alpha: 1,
+        onClick(args) {
+            playSound("buttonClickSound");
+            if (itemPage > 0) {
+                itemPage--;
+                showItems();
+            }
+        },
+        text: "<-",
+        fill: "white"
+    }));
+    pageButtons.push(controls.button({
+        anchor: [0.95, 0.9], sizeAnchor: [0.05, 0.1], fontSize: 60,
+        alpha: 1,
+        onClick(args) {
+            playSound("buttonClickSound");
+            if (itemPage < Object.keys(game.characters[characterSelected].magic).length / 32) {
+                itemPage++;
+                showItems();
+            }
+        },
+        text: "->",
+        fill: "white"
+    }));
+
     // Coming from status
     if (globalSelectedCharacter != "") {
         characterSelected = globalSelectedCharacter;
@@ -95,7 +124,7 @@ scenes.magicscene = () => {
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 8; j++) {
             itemsImages.push(controls.image({
-                anchor: [0.04 + (0.2 * i), 0.205 + (0.1 * j)], sizeOffset: [64, 64], offset: [0, -32],
+                anchor: [0.075 + (0.21 * i), 0.205 + (0.1 * j)], sizeOffset: [64, 64], offset: [-32, -32],
                 source: "gear",
                 alpha: 0
             }));
@@ -181,7 +210,7 @@ scenes.magicscene = () => {
         },
         // Controls
         controls: [
-            ...background, ...itemsButtons, ...itemsImages, ...theTop,
+            ...background, ...itemsButtons, ...itemsImages, ...theTop, ...pageButtons
         ],
         name: "magic"
     }
