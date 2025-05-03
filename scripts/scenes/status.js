@@ -80,7 +80,7 @@ scenes.status = (characterSelected = "Bleu") => {
         }
     }
 
-
+    // HP
     characterBars.push(controls.rect({
         anchor: [0.05, 0.495], sizeAnchor: [0.4, 0.025],
         fill: "rgb(63, 127, 63)",
@@ -93,7 +93,7 @@ scenes.status = (characterSelected = "Bleu") => {
     }))
     characterBars.push(controls.rect({
         anchor: [0.052, 0.497], sizeAnchor: [0.3960, 0.0210],
-        fill: "rgb(128, 128, 128)",
+        fill: "rgb(20, 204, 20)",
         alpha: 1 // 1
     }))
     characterBars.push(controls.rect({ // Loss
@@ -102,6 +102,7 @@ scenes.status = (characterSelected = "Bleu") => {
         alpha: 0
     }))
 
+    // EP
     characterBars.push(controls.rect({
         anchor: [0.05, 0.535], sizeAnchor: [0.4, 0.025],
         fill: "rgb(30, 109, 30)",
@@ -114,7 +115,7 @@ scenes.status = (characterSelected = "Bleu") => {
     }))
     characterBars.push(controls.rect({
         anchor: [0.052, 0.537], sizeAnchor: [0.3960, 0.0210],
-        fill: "rgb(85, 85, 85)",
+        fill: "rgb(205, 0, 205)",
         alpha: 1 // 1
     }))
     characterBars.push(controls.rect({ // Loss
@@ -123,6 +124,7 @@ scenes.status = (characterSelected = "Bleu") => {
         alpha: 0
     }))
 
+    // EXP
     characterBars.push(controls.rect({
         anchor: [0.05, 0.575], sizeAnchor: [0.4, 0.025],
         fill: "rgb(154, 154, 12)",
@@ -135,7 +137,7 @@ scenes.status = (characterSelected = "Bleu") => {
     }))
     characterBars.push(controls.rect({
         anchor: [0.052, 0.577], sizeAnchor: [0.3960, 0.0210],
-        fill: "rgb(85, 85, 85)",
+        fill: "rgb(205, 205, 0)",
         alpha: 1 // 1
     }))
     characterBars.push(controls.rect({ // Loss
@@ -286,11 +288,8 @@ scenes.status = (characterSelected = "Bleu") => {
         // Pre-render function
         preRender(ctx, delta) {
             // Barz
-            characterBars[2].fill = "rgb(20, 204, 20)";
             if (getPlayer(nr).HP > 0) characterBars[2].sizeAnchor[0] = 0.3960 * (getPlayer(nr).HP / getStat(getPlayer(nr).name, "maxHP"));
             else characterBars[2].sizeAnchor[0] = 0.00001;
-            characterBars[6].fill = "rgb(205, 0, 205)";
-            characterBars[10].fill = "rgb(205, 205, 0)";
 
             if (getPlayer(nr).HP > 0) characterBars[6].sizeAnchor[0] = 0.3960 * ((0.00001 + getPlayer(nr).EP) / getStat(getPlayer(nr).name, "maxEP"));
             else characterBars[6].sizeAnchor[0] = 0.00001

@@ -8,6 +8,7 @@ scenes.formation = () => {
 
     const macros = ["attack", "defend", "scan", "rally", "pray", "counterattack"];
     const macroTexts = ["Attack", "Defend", "Scan", "Rally", "Pray", "Counter Attack"];
+    const macroUsers = ["all", "all", "all", "gau", "kokitozi", "grun"];
 
     // Background
     background.push(controls.rect({
@@ -81,8 +82,13 @@ scenes.formation = () => {
                         playSound("buttonClickSound");
                         let dude = game.characters[game.chars[this.i + (this.j * 3)]];
                         let current = macros.indexOf(dude.macro);
-                        dude.macro = macros[current + 1] != undefined ? macros[current + 1] : macros[0];
-                        this.text = macroTexts[current + 1] != undefined ? macroTexts[current + 1] : macroTexts[0];
+
+                        do {
+                            dude.macro = macros[current + 1] != undefined ? macros[current + 1] : macros[0];
+                            this.text = macroTexts[current + 1] != undefined ? macroTexts[current + 1] : macroTexts[0];
+                            current = macros.indexOf(dude.macro);
+                        }
+                        while (dude.name.toLowerCase() != macroUsers[current] && macroUsers[current] != "all"); // keep going while you are not allowed to use it
                     }
                 },
                 alpha: 1,

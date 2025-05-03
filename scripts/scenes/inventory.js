@@ -87,8 +87,8 @@ scenes.inventory = () => {
                 source: "bleu",
                 alpha: 0,
             }));
-            characterImages.push(controls.image({
-                anchor: [0.1 + (0.3 * i), 0.275 + (0.3 * j)], sizeOffset: [32, 32], offset: [0, -32],
+            characterImages.push(controls.image({ // effect, not element. heh
+                anchor: [0.15 + (0.3 * i), 0.275 + (0.3 * j)], sizeOffset: [64, 64], offset: [0, -64],
                 source: "poison",
                 alpha: 0,
             }))
@@ -99,6 +99,7 @@ scenes.inventory = () => {
                 alpha: 1,
             }));
 
+            // Health
             characterBars.push(controls.rect({
                 anchor: [0.06 + (i * 0.3), 0.095 + (0.3 * j)], sizeAnchor: [0.2, 0.025],
                 fill: "rgb(63, 127, 63)",
@@ -111,7 +112,7 @@ scenes.inventory = () => {
             }))
             characterBars.push(controls.rect({
                 anchor: [0.062 + (i * 0.3), 0.097 + (0.3 * j)], sizeAnchor: [0.1960, 0.0210],
-                fill: "rgb(128, 128, 128)",
+                fill: "rgb(20, 204, 20)",
                 alpha: 0 // 1
             }))
             characterBars.push(controls.rect({ // Loss
@@ -120,6 +121,7 @@ scenes.inventory = () => {
                 alpha: 0
             }))
 
+            // Mana
             characterBars.push(controls.rect({
                 anchor: [0.06 + (i * 0.3), 0.135 + (0.3 * j)], sizeAnchor: [0.2, 0.025],
                 fill: "rgb(30, 109, 30)",
@@ -132,7 +134,7 @@ scenes.inventory = () => {
             }))
             characterBars.push(controls.rect({
                 anchor: [0.062 + (i * 0.3), 0.137 + (0.3 * j)], sizeAnchor: [0.1960, 0.0210],
-                fill: "rgb(85, 85, 85)",
+                fill: "rgb(205, 0, 205)",
                 alpha: 0 // 1
             }))
             characterBars.push(controls.rect({ // Loss
@@ -141,6 +143,29 @@ scenes.inventory = () => {
                 alpha: 0
             }))
 
+            // EXP
+            characterBars.push(controls.rect({
+                anchor: [0.06 + (i * 0.3), 0.175 + (0.3 * j)], sizeAnchor: [0.2, 0.025],
+                fill: "rgb(154, 154, 12)",
+                alpha: 0 // 1
+            }))
+            characterBars.push(controls.rect({ // The bg behind the bar
+                anchor: [0.062 + (i * 0.3), 0.177 + (0.3 * j)], sizeAnchor: [0.1960, 0.0210],
+                fill: "rgb(51, 0, 51)",
+                alpha: 0 // 1
+            }))
+            characterBars.push(controls.rect({
+                anchor: [0.062 + (i * 0.3), 0.177 + (0.3 * j)], sizeAnchor: [0.1960, 0.0210],
+                fill: "rgb(205, 205, 0)",
+                alpha: 0 // 1
+            }))
+            characterBars.push(controls.rect({ // Loss
+                anchor: [0.062 + (i * 0.3), 0.177 + (0.3 * j)], sizeAnchor: [0.1960, 0.0210],
+                fill: "rgb(255, 255, 255)",
+                alpha: 0
+            }))
+
+            // bar... um... text
             characterBars.push(controls.label({
                 anchor: [0.26 + (i * 0.3), 0.109 + (0.3 * j)],
                 fill: "white", align: "right", fontSize: 20,
@@ -151,6 +176,12 @@ scenes.inventory = () => {
                 anchor: [0.26 + (i * 0.3), 0.149 + (0.3 * j)],
                 fill: "white", align: "right", fontSize: 20,
                 text: "5/5",
+                alpha: 0
+            }))
+            characterBars.push(controls.label({
+                anchor: [0.26 + (i * 0.3), 0.189 + (0.3 * j)],
+                fill: "white", align: "right", fontSize: 20,
+                text: "0/25",
                 alpha: 0
             }))
         }
@@ -211,19 +242,23 @@ scenes.inventory = () => {
                 }
 
                 // Barz
-                characterBars[2 + (i * 10)].fill = "rgb(20, 204, 20)";
-                if (getPlayer(1 + i).HP > 0) characterBars[2 + (i * 10)].sizeAnchor[0] = 0.1960 * (getPlayer(1 + i).HP / getStat(getPlayer(1 + i).name, "maxHP"));
-                else characterBars[2 + (i * 10)].sizeAnchor[0] = 0.00001;
-                characterBars[6 + (i * 10)].fill = "rgb(205, 0, 205)";
+                if (getPlayer(1 + i).HP > 0) characterBars[2 + (i * 15)].sizeAnchor[0] = 0.1960 * (getPlayer(1 + i).HP / getStat(getPlayer(1 + i).name, "maxHP"));
+                else characterBars[2 + (i * 15)].sizeAnchor[0] = 0.00001;
 
-                if (getPlayer(1 + i).EP > 0) characterBars[6 + (i * 10)].sizeAnchor[0] = 0.1960 * ((0.00001 + getPlayer(1 + i).EP) / getStat(getPlayer(1 + i).name, "maxEP"));
-                else characterBars[6 + (i * 10)].sizeAnchor[0] = 0.00001;
+                if (getPlayer(1 + i).EP > 0) characterBars[6 + (i * 15)].sizeAnchor[0] = 0.1960 * ((0.00001 + getPlayer(1 + i).EP) / getStat(getPlayer(1 + i).name, "maxEP"));
+                else characterBars[6 + (i * 15)].sizeAnchor[0] = 0.00001;
 
-                characterBars[8 + (i * 10)].text = getPlayer(1 + i).HP + "/" + getStat(getPlayer(1 + i).name, "maxHP");
-                characterBars[9 + (i * 10)].text = getPlayer(1 + i).EP + "/" + getStat(getPlayer(1 + i).name, "maxEP");
+                if (getPlayer(1 + i).EXP > 0) characterBars[10 + (i * 15)].sizeAnchor[0] = 0.1960 * ((0.00001 + getPlayer(1 + i).EXP) / calcEXP(getPlayer(1 + i).name));
+                else characterBars[10 + (i * 15)].sizeAnchor[0] = 0.00001;
 
-                for (j = 0; j < 10; j++) {
-                    if (j != 3 && j != 7) characterBars[(i * 10) + j].alpha = 1;
+                characterBars[12 + (i * 15)].text = getPlayer(1 + i).HP + "/" + getStat(getPlayer(1 + i).name, "maxHP");
+                characterBars[13 + (i * 15)].text = getPlayer(1 + i).EP + "/" + getStat(getPlayer(1 + i).name, "maxEP");
+                characterBars[14 + (i * 15)].text = getPlayer(1 + i).EXP + "/" + calcEXP(getPlayer(1 + i).name);
+
+
+                for (j = 0; j < 15; j++) {
+                    // all except loss
+                    if (j != 3 && j != 7 && j != 11) characterBars[(i * 15) + j].alpha = 1;
                 }
 
             }
