@@ -184,6 +184,7 @@ scenes.itemscene = () => {
     }
 
     function showItems() {
+        // this basically generates the items
         let itemOffset = itemPage * 32;
         let inventory = Object.keys(game.inventory);
 
@@ -199,7 +200,9 @@ scenes.itemscene = () => {
                 continue;
             }
             let item = items[inventory[i + itemOffset]];
-            if (game.inventory[items[inventory[i + itemOffset]].name] > 0 && ((item().story == false && storyonly == false) || (item().story == true && storyonly == true))) {
+            if (game.inventory[item.name] > 0
+                && ((item().story == false && storyonly == false) || (item().story == true && storyonly == true))) {
+                // item exists, show it
                 itemsButtons[i + j].item = inventory[i + itemOffset];
                 if (game.inventory[item.name] > 1) itemsButtons[i + j].text = item().name + " x" + game.inventory[item.name];
                 else itemsButtons[i + j].text = item().name;

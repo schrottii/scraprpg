@@ -144,8 +144,13 @@ scenes.magicscene = () => {
                 itemsImages[i].alpha = 0;
                 continue;
             }
+
             let mag = magic[inventory[i + itemOffset]];
             itemsButtons[i].text = mag().name + " (" + mag().cost + " EP)";
+            
+            itemsImages[i].alpha = 1;
+            itemsImages[i].source = mag().source;
+
             if (mag().battleonly != true) {
                 itemsButtons[i].item = inventory[i + itemOffset];
 
@@ -157,14 +162,10 @@ scenes.magicscene = () => {
                 itemsButtons[i].pressedTop = colors.buttontoppressed;
                 itemsButtons[i].pressedBottom = colors.buttonbottompressed;
                 itemsButtons[i].alpha = 1;
-
-                itemsImages[i].alpha = 1;
-                itemsImages[i].source = mag().source;
             }
             else {
                 itemsButtons[i].fillTop = "orange";
                 itemsButtons[i].fillBottom = "red";
-                itemsImages[i].alpha = 0;
                 //if (mag().story != storyonly) j -= 1;
             }
         }
