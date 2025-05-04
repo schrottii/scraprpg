@@ -15,7 +15,6 @@ function hideSelect() {
 }
 
 var lmresult = "none";
-var animationOverlap = false;
 
 function loadMap() {
     hideSelect();
@@ -70,6 +69,8 @@ function loadMap() {
     }
 }
 
+var map;
+
 scenes.mapmaker = () => {
 
     let walkPad = [];
@@ -121,7 +122,7 @@ scenes.mapmaker = () => {
 
     var activenpcs = [];
     var currentMap = "newMap";
-    var map = maps[currentMap];
+    map = maps[currentMap];
     map.tiles = Object.assign({}, map.tiles, loadPacks(map));
 
     let loadFromAutoSave = localStorage.getItem("SRPGMM");
@@ -393,6 +394,7 @@ scenes.mapmaker = () => {
                 let my = map[["map", "mapbg2", "mapfg"][editingLayer]][game.position[1]];
                 let x = game.position[0];
 
+                if (my == undefined) return false;
                 updateTTP(my[x * 4] + my[(x * 4) + 1] + my[(x * 4) + 2]);
             }
         }
@@ -475,7 +477,7 @@ scenes.mapmaker = () => {
     }));
 
     makerInfo.push(controls.button({
-        anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 0],
+        anchor: [0.05, 0.15], sizeOffset: [96, 56], offset: [-64, 0],
         text: "Tiles", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) {
@@ -485,7 +487,7 @@ scenes.mapmaker = () => {
         }
     }));
     makerInfo.push(controls.button({
-        anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 1],
+        anchor: [0.05, 0.15], sizeOffset: [96, 56], offset: [-64, 64 * 1],
         text: "Tilesets", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) {
@@ -495,7 +497,7 @@ scenes.mapmaker = () => {
         }
     }));
     makerInfo.push(controls.button({
-        anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 2],
+        anchor: [0.05, 0.15], sizeOffset: [96, 56], offset: [-64, 64 * 2],
         text: "Tile IDs", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) {
@@ -505,7 +507,7 @@ scenes.mapmaker = () => {
         }
     }));
     makerInfo.push(controls.button({
-        anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 3],
+        anchor: [0.05, 0.15], sizeOffset: [96, 56], offset: [-64, 64 * 3],
         text: "Maps", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) {
@@ -515,7 +517,7 @@ scenes.mapmaker = () => {
         }
     }));
     makerInfo.push(controls.button({
-        anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 4],
+        anchor: [0.05, 0.15], sizeOffset: [96, 56], offset: [-64, 64 * 4],
         text: "Enemies", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) {
@@ -525,7 +527,7 @@ scenes.mapmaker = () => {
         }
     }));
     makerInfo.push(controls.button({
-        anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 5],
+        anchor: [0.05, 0.15], sizeOffset: [96, 56], offset: [-64, 64 * 5],
         text: "Enemy Spawns", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) {
@@ -535,7 +537,7 @@ scenes.mapmaker = () => {
         }
     }));
     makerInfo.push(controls.button({
-        anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 6],
+        anchor: [0.05, 0.15], sizeOffset: [96, 56], offset: [-64, 64 * 6],
         text: "Dialogues", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) {
@@ -545,7 +547,7 @@ scenes.mapmaker = () => {
         }
     }));
     makerInfo.push(controls.button({
-        anchor: [0.05, 0.15], sizeOffset: [96, 32], offset: [-64, 48 * 7],
+        anchor: [0.05, 0.15], sizeOffset: [96, 56], offset: [-64, 64 * 7],
         text: "Portraits", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -556,7 +558,7 @@ scenes.mapmaker = () => {
     }));
 
     makerInfo.push(controls.button({
-        anchor: [0.25, 0.85], sizeOffset: [64, 32], offset: [-144, -32],
+        anchor: [0.25, 0.85], sizeOffset: [64, 56], offset: [-144, -32],
         text: "P-", alpha: 0,
         onClick(args) {
             if (this.alpha == 1 && createTileInfoPage > 0) {
@@ -567,7 +569,7 @@ scenes.mapmaker = () => {
         }
     }));
     makerInfo.push(controls.button({
-        anchor: [0.25, 0.85], sizeOffset: [64, 32], offset: [-64, -32],
+        anchor: [0.25, 0.85], sizeOffset: [64, 56], offset: [-64, -32],
         text: "P+", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -578,9 +580,9 @@ scenes.mapmaker = () => {
         }
     }));
 
-    for (i = 0; i < 40; i++) {
+    for (i = 0; i < 30; i++) {
         makerInfoText.push(controls.label({
-            anchor: [0.15, 0.2], offset: [0, 20 * i], fontSize: 18,
+            anchor: [0.15, 0.2], offset: [0, 26 * i], fontSize: 24,
             text: "", alpha: 0,
         }));
     }
@@ -1112,7 +1114,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newText = prompt("New text?");
-                if (newText != "") map.dialogues[curDia].lines[curLine].text = newText;
+                if (newText != undefined) map.dialogues[curDia].lines[curLine].text = newText;
                 updateDialogueLabels();
             }
         }
@@ -1124,7 +1126,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newText = prompt("New portrait? (e. g. Portraits_Bleu)");
-                if (newText != "") map.dialogues[curDia].lines[curLine].portrait = newText;
+                if (newText != undefined) map.dialogues[curDia].lines[curLine].portrait = newText;
                 updateDialogueLabels();
             }
         }
@@ -1168,7 +1170,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newText = prompt("New name? (e. g. Bleu)");
-                if (newText != "") map.dialogues[curDia].lines[curLine].name = newText;
+                if (newText != undefined) map.dialogues[curDia].lines[curLine].name = newText;
                 updateDialogueLabels();
             }
         }
@@ -1179,9 +1181,16 @@ scenes.mapmaker = () => {
         text: "Voice", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                let voices = [false, "male_young", "male_grown", "female_young", "female_grown"];
+                
+                if (map.dialogues[curDia].lines[curLine].voice == voices[voices.length - 1]) map.dialogues[curDia].lines[curLine].voice = voices[0];
+                else map.dialogues[curDia].lines[curLine].voice = voices[voices.indexOf(map.dialogues[curDia].lines[curLine].voice) + 1];
+
+                /*
                 let newText = prompt("New voice? (leave it empty for default voice)");
-                if (newText != "") map.dialogues[curDia].lines[curLine].voice = newText;
+                if (newText != undefined) map.dialogues[curDia].lines[curLine].voice = newText;
                 else map.dialogues[curDia].lines[curLine].voice = false;
+                */
                 updateDialogueLabels();
             }
         }
@@ -1193,7 +1202,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newText = prompt("New script? (advanced)");
-                if (newText != "") map.dialogues[curDia].lines[curLine].script = newText;
+                if (newText != undefined) map.dialogues[curDia].lines[curLine].script = newText;
                 updateDialogueLabels();
             }
         }
@@ -1233,7 +1242,7 @@ scenes.mapmaker = () => {
                 let newText = prompt("Dialogue name?");
 
                 if (map.dialogues[newText] != undefined) {
-                    if (newText != "") map.npcs[curNPC].dialogues["1"] = newText;
+                    if (newText != undefined) map.npcs[curNPC].dialogues["1"] = newText;
                     this.text = "Dialogue: " + newText;
                     updateNPCLabels();
                 }
@@ -1274,7 +1283,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newText = prompt("Path? 0 down 1 left 2 right 3 up (e. g. 0.1.2.2.2.3.2.1)");
-                if (newText != "") {
+                if (newText != undefined) {
                     newText = newText.split(".");
                     for (i in newText) {
                         newText[i] = parseInt(newText[i]);
@@ -1301,7 +1310,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newText = prompt("New position? (e. g. 4.4)");
-                if (newText != "") map.npcs[curNPC].position = [parseInt(newText.split(".")[0]), parseInt(newText.split(".")[1])];
+                if (newText != undefined) map.npcs[curNPC].position = [parseInt(newText.split(".")[0]), parseInt(newText.split(".")[1])];
                 updateNPCLabels();
             }
         }
@@ -1313,7 +1322,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newText = prompt("New alpha? (0 - 1)");
-                if (newText != "") map.npcs[curNPC].alpha = newText;
+                if (newText != undefined) map.npcs[curNPC].alpha = newText;
                 updateNPCLabels();
             }
         }
@@ -1325,7 +1334,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newText = prompt("New skin?");
-                if (newText != "") map.npcs[curNPC].skin = newText;
+                if (newText != undefined) map.npcs[curNPC].skin = newText;
                 updateNPCLabels();
             }
         }
@@ -1337,7 +1346,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newText = prompt("New interval? (default: 0.5)");
-                if (newText != "") map.npcs[curNPC].walkingInterval = newText;
+                if (newText != undefined) map.npcs[curNPC].walkingInterval = newText;
                 updateNPCLabels();
             }
         }
@@ -1349,7 +1358,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newText = prompt("New speed? (default: 1, in seconds)");
-                if (newText != "") map.npcs[curNPC].walkingSpeed = newText;
+                if (newText != undefined) map.npcs[curNPC].walkingSpeed = newText;
                 updateNPCLabels();
             }
         }
@@ -1708,7 +1717,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newIntro = prompt("New map music intro?");
-                map.intro = newIntro;
+                if (newIntro != undefined) map.intro = newIntro;
                 this.text = "Music intro: " + newIntro;
             }
         }
@@ -1719,7 +1728,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newLoop = prompt("New map music loop?");
-                map.music = newLoop;
+                if (newLoop != undefined) map.music = newLoop;
                 this.text = "Music loop: " + newLoop;
             }
         }
@@ -1745,7 +1754,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newWeather = prompt("New weather strength? (default is 1)");
-                map.weatherStrength = newWeather;
+                if (newWeather != undefined) map.weatherStrength = newWeather;
                 this.text = "Weather Strength: " + newWeather;
             }
         }
@@ -1833,7 +1842,7 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) {
                 let newSpawn = prompt("Name?");
                 let newSpawn2 = prompt("Chance? (e. g. 10)");
-                if (newSpawn != "" && newSpawn2 != "") {
+                if (newSpawn != undefined && newSpawn2 != undefined) {
                     if (map.spawns == undefined) map.spawns = {};
                     map.spawns[newSpawn] = newSpawn2;
                     renderInfo("es");
@@ -1859,8 +1868,8 @@ scenes.mapmaker = () => {
     let currentMapText = controls.label({
         anchor: [0.075, 0.95],
         text: "ERROR",
-        align: "left", fontSize: 24, fill: "black",
-        outline: "white", outlineSize: 4,
+        align: "left", fontSize: 33, fill: "black",
+        outline: "white", outlineSize: 13,
         alpha: 1,
     });
 
@@ -2208,18 +2217,9 @@ scenes.mapmaker = () => {
             showInfo();
             renderInfo("t");
 
-            addAnimator(function (t) {
-                for (i in createTileButtons) {
-                    createTileButtons[i].offset[1] = -600 + t;
-                }
-                if (t > 599) {
-                    for (i in createTileButtons) {
-                        createTileButtons[i].offset[1] = 0;
-                    }
-                    return true;
-                }
-                return false;
-            })
+            for (i in createTileButtons) {
+                createTileButtons[i].offset[1] = 0;
+            }
         }
         else {
             for (i in createTileButtons) {
@@ -2230,20 +2230,10 @@ scenes.mapmaker = () => {
             }
             hideInfo();
 
-            addAnimator(function (t) {
-                for (i in createTileButtons) {
-                    createTileButtons[i].offset[1] = -t;
-                }
-
-                if (t > 599) {
-                    for (i in createTileButtons) {
-                        createTileButtons[i].offset[1] = -600;
-                        createTileButtons[i].alpha = 0;
-                    }
-                    return true;
-                }
-                return false;
-            })
+            for (i in createTileButtons) {
+                createTileButtons[i].offset[1] = -600;
+                createTileButtons[i].alpha = 0;
+            }
         }
     }
 
@@ -2274,25 +2264,12 @@ scenes.mapmaker = () => {
             renderInfo("d");
 
             if (curDia != "") {
-                addAnimator(function (t) {
-                    for (i in createDialogueButtons) {
-                        createDialogueButtons[i].offset[1] = -600 + t;
-                    }
-                    for (i in createDialogueLabels) {
-                        createDialogueLabels[i].offset[1] = -600 + t;
-                    }
-
-                    if (t > 599) {
-                        for (i in createDialogueButtons) {
-                            createDialogueButtons[i].offset[1] = 0;
-                        }
-                        for (i in createDialogueLabels) {
-                            createDialogueLabels[i].offset[1] = 0;
-                        }
-                        return true;
-                    }
-                    return false;
-                })
+                for (i in createDialogueButtons) {
+                    createDialogueButtons[i].offset[1] = 0;
+                }
+                for (i in createDialogueLabels) {
+                    createDialogueLabels[i].offset[1] = 0;
+                }
             }
         }
         else {
@@ -2307,19 +2284,10 @@ scenes.mapmaker = () => {
             }
             hideInfo();
 
-            addAnimator(function (t) {
-                for (i in createDialogueButtons) {
-                    createDialogueButtons[i].offset[1] = -t;
-                }
-                if (t > 599) {
-                    for (i in createDialogueButtons) {
-                        createDialogueButtons[i].offset[1] = -600;
-                        createDialogueButtons[i].alpha = 0;
-                    }
-                    return true;
-                }
-                return false;
-            })
+            for (i in createDialogueButtons) {
+                createDialogueButtons[i].offset[1] = -600;
+                createDialogueButtons[i].alpha = 0;
+            }
         }
     }
 
@@ -2350,24 +2318,12 @@ scenes.mapmaker = () => {
             renderInfo("d");
 
             if (curNPC != "") {
-                addAnimator(function (t) {
-                    for (i in createNPCButtons) {
-                        createNPCButtons[i].offset[1] = -600 + t;
-                    }
-                    for (i in createNPCLabels) {
-                        createNPCLabels[i].offset[1] = -600 + t;
-                    }
-                    if (t > 599) {
-                        for (i in createNPCButtons) {
-                            createNPCButtons[i].offset[1] = 0;
-                        }
-                        for (i in createNPCLabels) {
-                            createNPCLabels[i].offset[1] = 0;
-                        }
-                        return true;
-                    }
-                    return false;
-                })
+                for (i in createNPCButtons) {
+                    createNPCButtons[i].offset[1] = 0;
+                }
+                for (i in createNPCLabels) {
+                    createNPCLabels[i].offset[1] = 0;
+                }
             }
         }
         else {
@@ -2382,27 +2338,14 @@ scenes.mapmaker = () => {
             }
             hideInfo();
 
-            addAnimator(function (t) {
-                for (i in createNPCButtons) {
-                    createNPCButtons[i].offset[1] = -t;
-                }
-                for (i in createNPCLabels) {
-                    createNPCLabels[i].offset[1] = -t;
-                }
-
-                if (t > 599) {
-                    for (i in createNPCButtons) {
-                        createNPCButtons[i].offset[1] = -600;
-                        createNPCButtons[i].alpha = 0;
-                    }
-                    for (i in createNPCLabels) {
-                        createNPCLabels[i].offset[1] = -600;
-                        createNPCLabels[i].alpha = 0;
-                    }
-                    return true;
-                }
-                return false;
-            })
+            for (i in createNPCButtons) {
+                createNPCButtons[i].offset[1] = -600;
+                createNPCButtons[i].alpha = 0;
+            }
+            for (i in createNPCLabels) {
+                createNPCLabels[i].offset[1] = -600;
+                createNPCLabels[i].alpha = 0;
+            }
         }
     }
 
@@ -2448,7 +2391,7 @@ scenes.mapmaker = () => {
     }
 
     function updateDialogueLabels() {
-        createDialogueLabels[0].text = curLine;
+        createDialogueLabels[0].text = (curLine + 1) + "/" + Object.keys(map.dialogues[curDia].lines).length;
         createDialogueLabels[1].text = map.dialogues[curDia].lines[curLine].text;
         createDialogueLabels[2].text = map.dialogues[curDia].lines[curLine].portrait;
         createDialogueLabels[3].text = map.dialogues[curDia].lines[curLine].emotion;
@@ -2469,6 +2412,8 @@ scenes.mapmaker = () => {
     }
 
     function toggleMapInfoButtons(mustclose = false) {
+        closeAllMenus(7);
+
         if (mapInfoControls[0].alpha == 0 && !mustclose) {
             for (u in undoButtons) {
                 undoButtons[u].al = undoButtons[u].alpha;
@@ -2578,7 +2523,7 @@ scenes.mapmaker = () => {
                 }
                 break;
         }
-        for (g = 0; g < 40; g++) {
+        for (g = 0; g < 30; g++) {
             if (grabFrom[g + (createTileInfoPage * createTileInfoPageLength)] != undefined) {
                 makerInfoText[g].text = grabFrom[g + (createTileInfoPage * createTileInfoPageLength)];
             }
@@ -2603,19 +2548,9 @@ scenes.mapmaker = () => {
                 loadMapButtons[i].offset = [0, -600];
                 loadMapButtons[i].alpha = 1;
             }
-            addAnimator(function (t) {
-                for (i in loadMapButtons) {
-                    loadMapButtons[i].offset[1] = -600 + t;
-                }
-                if (t > 599 || animationOverlap) {
-                    for (i in loadMapButtons) {
-                        loadMapButtons[i].offset[1] = 0;
-                    }
-                    animationOverlap = false;
-                    return true;
-                }
-                return false;
-            })
+            for (i in loadMapButtons) {
+                loadMapButtons[i].offset[1] = 0;
+            }
         }
         else {
             // Close
@@ -2625,20 +2560,10 @@ scenes.mapmaker = () => {
                 loadMapButtons[i].offset = [0, 0];
             }
             hideInfo();
-            addAnimator(function (t) {
-                for (i in loadMapButtons) {
-                    loadMapButtons[i].offset[1] = -t;
-                }
-                if (t > 599 || animationOverlap) {
-                    for (i in loadMapButtons) {
-                        loadMapButtons[i].offset[1] = -600;
-                        loadMapButtons[i].alpha = 0;
-                    }
-                    animationOverlap = false;
-                    return true;
-                }
-                return false;
-            })
+            for (i in loadMapButtons) {
+                loadMapButtons[i].offset[1] = -600;
+                loadMapButtons[i].alpha = 0;
+            }
         }
     }
 
@@ -3140,7 +3065,7 @@ scenes.mapmaker = () => {
             let width = window.innerWidth / scale;
 
             // Update location/status text
-            currentMapText.text = "Current Map: " + currentMap + " | Pos: x" + game.position[0] + " y" + game.position[1] + " z" + editingLayer + " | Mode: " + mode;
+            currentMapText.text = "Map: " + currentMap + "   |   Pos: x" + game.position[0] + " y" + game.position[1] + " z" + editingLayer + "   |   Mode: " + mode;
 
             ctx.imageSmoothingEnabled = false;
             ctx.globalAlpha = 1;
@@ -3148,12 +3073,9 @@ scenes.mapmaker = () => {
             let ofsX = game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5;
             let ofsY = game.position[1] - kofs[1] * kofs[2] - 7.5;
 
-            let wm = 1;
-
             if (map == undefined) return false;
-            if (map.worldmode == true) {
-                wm = 2;
-            }
+
+            let wm = map.worldmode == true ? 2 : 1;
             zswm = (zoom * scale) / wm;
 
             if (enableAnimations) {
