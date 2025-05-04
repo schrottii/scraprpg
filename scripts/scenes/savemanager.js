@@ -38,6 +38,12 @@ scenes.savemanager = () => {
         align: "center", fontSize: 36, fill: "black",
         alpha: 1,
     }));
+    background.push(controls.label({ // 5
+        anchor: [0.305, 0.06],
+        text: "",
+        align: "center", fontSize: 36, fill: "black",
+        alpha: 1,
+    }));
 
     // Generate our lovely buttons
     for (let a = 0; a < 3; a++) {
@@ -94,18 +100,19 @@ scenes.savemanager = () => {
             }));
 
             saveTexts.push(controls.label({
-                anchor: [0.25 + (0.225 * i), 0.225 + (a * 0.25)],
+                anchor: [0.225 + (0.225 * i), 0.225 + (a * 0.25)],
                 align: "left", fontSize: 32, fill: "black",
                 text: " ",
                 alpha: 1,
             }));
             saveTexts.push(controls.label({
-                anchor: [0.25 + (0.225 * i), 0.3 + (a * 0.25)],
+                anchor: [0.225 + (0.225 * i), 0.3 + (a * 0.25)],
                 align: "left", fontSize: 32, fill: "black",
                 text: " ",
                 alpha: 1,
             }));
         }
+
         saveTexts.push(controls.label({
             anchor: [0.875, 0.15 + (a * 0.25)],
             align: "right", fontSize: 32, fill: "black",
@@ -135,6 +142,23 @@ scenes.savemanager = () => {
             align: "left", fontSize: 32, fill: "black",
             text: "0",
             alpha: 1,
+        }));
+
+        saveTexts.push(controls.image({
+            anchor: [0.05, 0.225 + (a * 0.25)],
+            sizeOffset: [64, 64],
+            source: "gear", alpha: 0, a: a,
+            onClick(args) { // Change the image when clicked
+                if (saveNR == this.a) {
+                    if (game.pfp == 5) { // To avoid changing to a pic that does not exist
+                        game.pfp = 1;
+                    }
+                    else {
+                        game.pfp += 1;
+                    }
+                    saveGame();
+                }
+            }
         }));
     }
 
@@ -233,6 +257,8 @@ scenes.savemanager = () => {
     return {
         // Pre-render function
         preRender(ctx, delta) {
+            background[5].text = "Current save: " + ["1", "2", "3", "Auto"][saveNR];
+
             // Update buttons
             for (let a = 0; a < 3; a++) {
                 var tempsaveNR = a;
@@ -244,7 +270,10 @@ scenes.savemanager = () => {
                         saveGame();
                         var thisSave = JSON.parse(localStorage.getItem("SRPG" + tempsaveNR));
                     }
-                    let amount = 15;
+
+                    let amount = 16;
+
+                    saveButtons[a].text = "";
                     saveTexts[2 + (a * amount)].text = getPlayer(1, thisSave).name;
                     if (thisSave.chars.length > 1) saveTexts[3 + (a * amount)].text = getPlayer(2, thisSave).name;
                     saveTexts[4 + (a * amount)].text = "Lvl. " + getPlayer(1, thisSave).level;
@@ -259,13 +288,16 @@ scenes.savemanager = () => {
                     saveTexts[13 + (a * amount)].text = formatNumber(thisSave.wrenches);
                     saveTexts[14 + (a * amount)].text = formatNumber(thisSave.bricks);
 
+                    saveTexts[15 + (a * amount)].source = "saveimage" + thisSave.pfp;
+
                     for (i = 0; i < amount; i++) {
                         saveTexts[i + (a * amount)].alpha = 1;
                     }
                 }
                 else { // Save does not exist :(
                     saveButtons[a].text = "Empty";
-                    let amount = 15;
+
+                    let amount = 16;
                     for (i = 0; i < amount; i++) {
                         saveTexts[i + (a * amount)].alpha = 0;
                     }

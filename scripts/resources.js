@@ -266,6 +266,7 @@ function loadAllResources() {
             resLoad++;
             scene.controls[0].text = "Loading resources...";
             scene.controls[1].text = "images/" + image + " " + resLoad + "/" + resCount;
+            scene.controls[6].sizeAnchor[0] = 0.22 * (resLoad / resCount);
             finishedLoadingResources();
         }
         images[image] = img;
@@ -278,6 +279,7 @@ function loadAllResources() {
             resLoad++;
             scene.controls[0].text = "Loading resources...";
             scene.controls[1].text = "scenes/" + scn + " " + resLoad + "/" + resCount;
+            scene.controls[6].sizeAnchor[0] = 0.22 * (resLoad / resCount);
             finishedLoadingResources();
         }
         scenes[scn] = scr;
@@ -290,6 +292,7 @@ function loadAllResources() {
             resLoad++;
             scene.controls[0].text = "Loading resources...";
             scene.controls[1].text = "audio/" + snd + " " + resLoad + "/" + resCount;
+            scene.controls[6].sizeAnchor[0] = 0.22 * (resLoad / resCount);
             finishedLoadingResources();
         }
         audio[snd] = aud;
@@ -302,6 +305,7 @@ function loadAllResources() {
             resLoad++;
             scene.controls[0].text = "Loading resources...";
             scene.controls[1].text = "maps/" + map + " " + resLoad + "/" + resCount;
+            scene.controls[6].sizeAnchor[0] = 0.22 * (resLoad / resCount);
             finishedLoadingResources();
         }
         maps[map] = mp;

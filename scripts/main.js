@@ -14,19 +14,19 @@ function init() {
         },
         controls: [
             controls.label({
-                anchor: [.02, .98], offset: [5, -12],
-                align: "left", baseline: "alphabetic", fontSize: 16,
+                anchor: [0.02, 0.9], offset: [5, -12],
+                align: "left", baseline: "alphabetic", fontSize: 32,
                 text: "",
             }),
             controls.label({
-                anchor: [.98, .98], offset: [-5, -12],
-                align: "right", baseline: "alphabetic", fontSize: 16, fill: "#7f7f7f",
+                anchor: [0.98, .98], offset: [-5, -12],
+                align: "right", baseline: "alphabetic", fontSize: 32, fill: "#7f7f7f",
                 text: "",
             }),
 
             controls.rect({
                 anchor: [0, 0], sizeAnchor: [1, 1],
-                clickthrough: true, fontSize: 16, alpha: 0,
+                clickthrough: true, alpha: 0,
                 onClick() {
                     musicPlayer.loop = true;
                     setScene(scenes.pretitle());
@@ -34,9 +34,23 @@ function init() {
             }),
 
             controls.label({
-                anchor: [.5, .5],
+                anchor: [0.5, 0.5],
                 align: "center", baseline: "alphabetic", fontSize: 16, fill: "white",
                 text: "Press A to start", alpha: 0,
+            }),
+
+            // loading bar
+            controls.rect({
+                anchor: [0.2, 0.4], sizeAnchor: [0.6, 0.2],
+                fill: "rgb(0, 37, 6)"
+            }),
+            controls.rect({
+                anchor: [0.22, 0.42], sizeAnchor: [0.56, 0.16],
+                fill: "rgb(13, 62, 21)"
+            }),
+            controls.rect({
+                anchor: [0.22, 0.42], sizeAnchor: [0.56, 0.16],
+                fill: "rgb(113, 255, 42)"
             }),
 
         ],

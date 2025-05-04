@@ -6,30 +6,30 @@ scenes.title = () => {
     let hiddn = false;
 
     let gameIcon = controls.image({
-        anchor: [.5, .4], offset: [-277.5, -200], sizeOffset: [555, 300],
+        anchor: [0.5, 0.35], offset: [-277.5, -200], sizeOffset: [555, 300],
         alpha: 0,
         source: "gameicon",
     });
     let contLabel = controls.label({
-        anchor: [.5, .6], offset: [0, 75],
-        fontSize: 16, alpha: 0,
+        anchor: [0.5, 0.65], offset: [0, 75],
+        fontSize: 32, alpha: 0,
         text: "Click anywhere to continue...",
-        outline: "red", outlineAnchor: 0.001,
+        outline: "red", outlineAnchor: 0.002,
     });
     let infoLabel = controls.label({
-        anchor: [.02, .98], offset: [5, -12],
-        align: "left", baseline: "alphabetic", fontSize: 16, fill: "#7f7f7f", alpha: 0,
+        anchor: [0.02, 0.98], offset: [5, -12],
+        align: "left", baseline: "alphabetic", fontSize: 24, fill: "#7f7f7f", alpha: 0,
         text: "©2021-2025 Toast Technology Team / Schrottii",
     });
     let verLabel = controls.label({
-        anchor: [.98, .98], offset: [-5, -12],
-        align: "right", baseline: "alphabetic", fontSize: 16, fill: "#7f7f7f", alpha: 0,
+        anchor: [0.98, 0.98], offset: [-5, -12],
+        align: "right", baseline: "alphabetic", fontSize: 24, fill: "#7f7f7f", alpha: 0,
         text: "Phase 2",
     });
 
     let settingsSaveText = controls.label({
-        anchor: [.04, .98], offset: [12, -12],
-        fontSize: 16, text: "Settings saved!", alpha: 0,
+        anchor: [0.04, 0.98], offset: [12, -12],
+        fontSize: 20, text: "Settings saved!", alpha: 0,
     });
 
     function loadSave(id) {
@@ -125,7 +125,7 @@ scenes.title = () => {
 
     for (let a = 0; a < 4; a++) {
         saveButtons.push(controls.button({
-            anchor: [1.2, .3], offset: [0, -220 + 130 * a], sizeAnchor: [.5, 0], sizeOffset: [120, 120], clickthrough: false,
+            anchor: [1.2, 0.4], offset: [0, -220 + 130 * a], sizeAnchor: [.5, 0], sizeOffset: [120, 120], clickthrough: false,
             text: " ",
             onClick(args) {
                 if (mode == 0) {
@@ -143,13 +143,13 @@ scenes.title = () => {
             }
         }))
         saveTexts.push(controls.label({
-            anchor: [1.2, 0.3], offset: [72, -188 + 130 * a], defanch: 0.2,
+            anchor: [1.2, 0.4], offset: [72, -188 + 130 * a], defanch: 0.2,
             align: "left", fontSize: 48, fill: "black",
             text: "Save " + (a + 1),
             alpha: 1,
         }));
         saveTexts.push(controls.label({
-            anchor: [1.2, 0.3], offset: [120, -188 + 130 * a], defanch: 0.7,
+            anchor: [1.2, 0.4], offset: [120, -188 + 130 * a], defanch: 0.7,
             align: "right", fontSize: 24, fill: "black",
             text: "Chapter I: The Beginning",
             alpha: 1,
@@ -158,64 +158,64 @@ scenes.title = () => {
         for (i = 0; i < 2; i++) {
             // Names 1 2
             saveTexts.push(controls.label({
-                anchor: [1.2 + (0.225 * i), 0.305], offset: [0, -146 + 130 * a], defanch: 0.205 + (0.125 * i),
+                anchor: [1.2 + (0.225 * i), 0.405], offset: [0, -146 + 130 * a], defanch: 0.205 + (0.125 * i),
                 align: "left", fontSize: 20, fill: "black",
                 text: "",
                 alpha: 1,
             }));
             saveTexts.push(controls.label({
-                anchor: [1.2 + (0.225 * i), 0.305], offset: [0, -120 + 130 * a], defanch: 0.205 + (0.125 * i),
+                anchor: [1.2 + (0.225 * i), 0.405], offset: [0, -120 + 130 * a], defanch: 0.205 + (0.125 * i),
                 align: "left", fontSize: 20, fill: "black",
                 text: "",
                 alpha: 1,
             }));
             // Levels 1 2
             saveTexts.push(controls.label({
-                anchor: [1.2 + (0.225 * i), 0.305], offset: [0, -146 + 130 * a], defanch: 0.33 + (0.125 * i),
+                anchor: [1.15 + (0.225 * i), 0.405], offset: [0, -146 + 130 * a], defanch: 0.28 + (0.125 * i),
                 align: "right", fontSize: 16, fill: "black",
                 text: "",
                 alpha: 1,
             }));
             saveTexts.push(controls.label({
-                anchor: [1.2 + (0.225 * i), 0.305], offset: [0, -120 + 130 * a], defanch: 0.33 + (0.125 * i),
+                anchor: [1.15 + (0.225 * i), 0.405], offset: [0, -120 + 130 * a], defanch: 0.28 + (0.125 * i),
                 align: "right", fontSize: 16, fill: "black",
                 text: "",
                 alpha: 1,
             }));
         }
         saveTexts.push(controls.label({
-            anchor: [1.2, 0.3], offset: [120, -120 + 130 * a], defanch: 0.7,
+            anchor: [1.2, 0.4], offset: [120, -120 + 130 * a], defanch: 0.7,
             align: "right", fontSize: 32, fill: "black",
             text: "24:31:02",
             alpha: 1,
         }));
 
         saveTexts.push(controls.image({
-            anchor: [1.2, 0.3], sizeOffset: [32, 32], offset: [0, -164 + 130 * a], defanch: 0.55,
+            anchor: [1.2, 0.4], sizeOffset: [32, 32], offset: [0, -164 + 130 * a], defanch: 0.55,
             source: "wrench",
             alpha: 1,
         }));
         saveTexts.push(controls.image({
-            anchor: [1.2, 0.3], sizeOffset: [32, 32], offset: [0, -132 + 130 * a], defanch: 0.55,
+            anchor: [1.2, 0.4], sizeOffset: [32, 32], offset: [0, -132 + 130 * a], defanch: 0.55,
             source: "brick",
             alpha: 1,
         }));
 
         saveTexts.push(controls.label({
-            anchor: [1.2, 0.3], offset: [40, -150 + 130 * a], defanch: 0.55,
+            anchor: [1.2, 0.4], offset: [40, -150 + 130 * a], defanch: 0.55,
             align: "left", fontSize: 32, fill: "black",
             text: "0",
             alpha: 1,
         }));
         saveTexts.push(controls.label({
-            anchor: [1.2, 0.3], offset: [40, -116 + 130 * a], defanch: 0.55,
+            anchor: [1.2, 0.4], offset: [40, -116 + 130 * a], defanch: 0.55,
             align: "left", fontSize: 32, fill: "black",
             text: "0",
             alpha: 1,
         }));
 
         saveImages.push(controls.image({
-            anchor: [1.2, .3], offset: [0, -220 + 130 * a], sizeAnchor: [0, 0], sizeOffset: [60, 60],
+            anchor: [1.2, 0.4], offset: [0, -220 + 130 * a], sizeAnchor: [0, 0], sizeOffset: [60, 60],
             source: "saveimage" + Math.ceil(Math.random() * 5), alpha: 0,
             isPressed: false,
             onDown(args) {
@@ -240,8 +240,8 @@ scenes.title = () => {
     saveButtons[3].fillBottom = "#4fa1bc";
 
     let deleteButton = controls.button({
-        anchor: [-.8, .5], offset: [0, 170], sizeOffset: [150, 50],
-        fontSize: 16, text: "Delete",
+        anchor: [-0.8, 0.6], offset: [0, 170], sizeOffset: [250, 100],
+        fontSize: 32, text: "Delete",
         onClick(args) {
             playSound("buttonClickSound");
             if (mode == 1) {
@@ -277,8 +277,8 @@ scenes.title = () => {
         }
     });
     let optionButton = controls.button({
-        anchor: [-.2, .5], offset: [-30, 170], sizeOffset: [150, 50],
-        fontSize: 16, text: "Options",
+        anchor: [-0.2, 0.6], offset: [-130, 170], sizeOffset: [250, 100],
+        fontSize: 32, text: "Settings",
         onClick(args) {
             playSound("buttonClickSound");
             if (mode == 2) {
@@ -397,11 +397,11 @@ scenes.title = () => {
 
             if (mode == 0) {
                 deleteButton.text = "Delete";
-                optionButton.text = "Options";
+                optionButton.text = "Settings";
             }
             if (mode == 1) {
                 deleteButton.text = "SELECT . . ."
-                optionButton.text = "Options";
+                optionButton.text = "Settings";
             }
             if (mode == 2) {
                 deleteButton.text = "Reset All";
@@ -420,6 +420,7 @@ scenes.title = () => {
             controls.base({
                 anchor: [0, 0], sizeAnchor: [1, 1],
                 onClick() {
+                    // when you click and get to the second part of the title screen
                     loadSettings();
                     changeSoundVolume(settings.soundVolume);
                     playSound("titletransition");
@@ -429,10 +430,9 @@ scenes.title = () => {
                     state = "menu";
                     this.clickthrough = true;
                     addAnimator(function (t) {
-
-                        gameIcon.anchor[1] = .4 - .5 * Math.min(t / 800, 1) ** 4;
+                        gameIcon.anchor[1] = 0.35 - .5 * Math.min(t / 800, 1) ** 4;
                         gameIcon.offset[1] = -200 - 100 * Math.min(t / 800, 1) ** 4;
-                        contLabel.anchor[1] = .6 + .5 * Math.min(t / 800, 1) ** 4;
+                        contLabel.anchor[1] = 0.65 + .5 * Math.min(t / 800, 1) ** 4;
                         contLabel.alpha = (Math.cos(t / 20) + 1) / 2;
                         infoLabel.offset[1] = verLabel.offset[1] = -12 + 120 * (t / 800) ** 4;
 
