@@ -1443,14 +1443,14 @@ scenes.game = () => {
             }
 
             // draw player / formation leader
-            if (map.worldmode != true || images["wm" + game.leader] == undefined) {
+            if (map.worldmode != true || images["wm_" + game.leader] == undefined) {
                 ctx.drawImage(images[game.leader], 32 * Math.floor(walkTime), 32 * head, 32, 32 / isInWater,
                     scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5)),
                     scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zswm, zswm / isInWater)
                 ctx.imageSmoothingEnabled = false;
             }
             else {
-                ctx.drawImage(images["wm" + game.leader], 16 * Math.floor(walkTime), 16 * head, 16, 16 / isInWater,
+                ctx.drawImage(images["wm_" + game.leader], 16 * Math.floor(walkTime), 16 * head, 16, 16 / isInWater,
                     scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5)),
                     scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zswm, zswm / isInWater)
                 ctx.imageSmoothingEnabled = false;

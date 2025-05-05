@@ -100,8 +100,11 @@ let images = {
     skro: "data/images/protagonists/map/Map_Skro.png",
     kokitozi: "data/images/protagonists/map/Map_Koki.png",
 
-    wmbleu: "data/images/protagonists/worldmode/Worldmode_Bleu.png",
-    wmcorelle: "data/images/protagonists/worldmode/Worldmode_Corelle.png",
+    wm_bleu: "data/images/protagonists/worldmode/Worldmode_Bleu.png",
+    wm_corelle: "data/images/protagonists/worldmode/Worldmode_Corelle.png",
+    wm_gau: "data/images/protagonists/worldmode/Worldmode_Gau.png",
+    wm_skro: "data/images/protagonists/worldmode/Worldmode_Skro.png",
+    wm_kokitozi: "data/images/protagonists/worldmode/Worldmode_Koki.png",
 
     bleu_ani: "data/images/protagonists/other/Bleu_Sprite_Sheet_Other.png",
     corelle_ani: "data/images/protagonists/other/Corelle_Sprite_Sheet_Other.png",
@@ -113,7 +116,7 @@ let images = {
     corelle_battle: "data/images/protagonists/battle/Corelle_Battle_Sprite_Sheet.png",
     gau_battle: "data/images/protagonists/battle/Gau_Battle_Sprite_Sheet.png",
     skro_battle: "data/images/protagonists/battle/Skro_Battle_Sprite_Sheet.png",
-    kokitozi_battle: "data/images/protagonists/battle/Skro_Battle_Sprite_Sheet.png",
+    kokitozi_battle: "data/images/protagonists/battle/Kokitozi_Battle_Sprite_Sheet.png",
 
     Portraits_Bleu: "data/images/protagonists/portraits/Portraits_Bleu.png",
     Portraits_Corelle: "data/images/protagonists/portraits/Portraits_Corelle.png",
