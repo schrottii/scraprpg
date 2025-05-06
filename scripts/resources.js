@@ -165,6 +165,13 @@ let images = {
     "tilesets/teleport": "data/images/tilesets/teleport.png",
 
     // Items
+    "items/crystal_strength": "data/images/items/equipment/crystal_strength.png",
+    "items/crystal_defense": "data/images/items/equipment/crystal_defense.png",
+    "items/crystal_agility": "data/images/items/equipment/crystal_agility.png",
+    "items/crystal_evasion": "data/images/items/equipment/crystal_evasion.png",
+    "items/crystal_crit": "data/images/items/equipment/crystal_crit.png",
+    "items/crystal_luck": "data/images/items/equipment/crystal_luck.png",
+
     "items/book_any": "data/images/items/books/book_any.png",
     "items/book_dark": "data/images/items/books/book_dark.png",
     "items/book_earth": "data/images/items/books/book_earth.png",

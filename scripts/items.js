@@ -65,6 +65,78 @@ let items = {
 
 
     //////////////////////////////////////////////////////////////////////////////////
+    // EQUIPMENT
+    //////////////////////////////////////////////////////////////////////////////////
+    // CRYSTALS
+    crystalstrength(args) {
+        return {
+            ...items.default(),
+            source: "crystal_strength", name: "Strength Crystal",
+            shopcost: 1000, clpi: 33,
+            type: "armor", piece: "acc2",
+            stats: { "strength": 6 },
+            ...args || {},
+        }
+    },
+    
+    crystaldefense(args) {
+        return {
+            ...items.default(),
+            source: "crystal_defense", name: "Defense Crystal",
+            shopcost: 1000, clpi: 33,
+            type: "armor", piece: "acc2",
+            stats: { "def": 6 },
+            ...args || {},
+        }
+    },
+    
+    crystalagility(args) {
+        return {
+            ...items.default(),
+            source: "crystal_agility", name: "Agility Crystal",
+            shopcost: 1000, clpi: 33,
+            type: "armor", piece: "acc2",
+            stats: { "agi": 6 },
+            ...args || {},
+        }
+    },
+    
+    crystalevasion(args) {
+        return {
+            ...items.default(),
+            source: "crystal_evasion", name: "Evasion Crystal",
+            shopcost: 1000, clpi: 33,
+            type: "armor", piece: "acc2",
+            stats: { "eva": 6 },
+            ...args || {},
+        }
+    },
+    
+    crystalcrit(args) {
+        return {
+            ...items.default(),
+            source: "crystal_crit", name: "Crit Crystal",
+            shopcost: 1000, clpi: 33,
+            type: "armor", piece: "acc2",
+            stats: { "crt": 6 },
+            ...args || {},
+        }
+    },
+    
+    crystalluck(args) {
+        return {
+            ...items.default(),
+            source: "crystal_luck", name: "Luck Crystal",
+            shopcost: 1000, clpi: 33,
+            type: "armor", piece: "acc2",
+            stats: { "luk": 6 },
+            ...args || {},
+        }
+    },
+
+
+
+    //////////////////////////////////////////////////////////////////////////////////
     // ALL THE MANY SPELL BOOKS
     // any are worth most clpi (cuz random), M is best ratio. dark and ecto more expensive
     spellbookanys(args) {
