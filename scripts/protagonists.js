@@ -142,9 +142,9 @@ function getStat(prot, stat) {
     if (stat == "wis") return Math.min(100, Math.round(itemBonus + cStats[prot][stat] * Math.pow(Math.log(lvl + Math.E), 3)));
     if (stat == "luk") return Math.min(100, Math.round(itemBonus + cStats[prot][stat] * (1 + 0.005 * lvl)));
 
-    if (stat == "def") return 0 + lvl; // Placeholder
-    if (stat == "eva") return Math.round(10 + lvl / 5); // Placeholder
-    if (stat == "crt") return Math.round(10 + lvl / 5); // Placeholder
+    if (stat == "def") return Math.round(itemBonus + (1 + 0.1 * lvl));
+    if (stat == "eva") return Math.min(100, Math.round(itemBonus + (1 + 0.1 * lvl)));
+    if (stat == "crt") return Math.min(100, Math.round(itemBonus + (1 + 0.1 * lvl)));
 
     return cStats[prot][stat];
 }

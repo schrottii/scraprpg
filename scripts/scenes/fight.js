@@ -372,27 +372,28 @@ scenes.fight = () => {
                 // get EXP based on enemy strength
                 for (j = 0; j < 3; j++) {
                     for (i = 0; i < 3; i++) {
-                        if (epositions[i][j].strength != undefined) EXPforAll += epositions[i][j].strength / 3;
-                        if (epositions[i][j].maxHP != undefined) EXPforAll += epositions[i][j].maxHP / 14;
+                        if (epositions[i][j].strength != undefined) EXPforAll += epositions[i][j].strength / 4;
+                        if (epositions[i][j].maxHP != undefined) EXPforAll += epositions[i][j].maxHP / 24;
                     }
                 }
                 for (j = 0; j < 3; j++) {
                     for (i = 0; i < 3; i++) {
-                        if (epositions[i][j].strength != undefined) wrenchGain += epositions[i][j].strength * 16;
-                        if (epositions[i][j].maxHP != undefined) wrenchGain += epositions[i][j].maxHP / 3;
+                        if (epositions[i][j].strength != undefined) wrenchGain += epositions[i][j].strength * 4;
+                        if (epositions[i][j].maxHP != undefined) wrenchGain += epositions[i][j].maxHP / 4;
                     }
                 }
 
                 // get currencies based on luck
                 for (i in game.characters) {
-                    wrenchLUK += Math.pow(1.2, getStat(game.characters[i].name.toLowerCase(), "luk"));
-                    brickLUK += getStat(game.characters[i].name.toLowerCase(), "luk");
+                    wrenchLUK += getStat(game.characters[i].name.toLowerCase(), "luk");
+                    brickLUK += getStat(game.characters[i].name.toLowerCase(), "luk") / 4;
                 }
-                wrenchGain = wrenchGain * Math.ceil(wrenchLUK);
-                brickGain = brickGain * Math.ceil(brickLUK);
+                wrenchGain = wrenchGain * Math.ceil(wrenchLUK) / 64;
+                brickGain = brickGain * Math.ceil(brickLUK) / 128;
 
                 EXPforAll = Math.ceil(EXPforAll);
                 wrenchGain = Math.ceil(wrenchGain);
+                brickGain = Math.ceil(brickGain);
 
                 addWrenches(wrenchGain);
                 addBricks(brickGain);
