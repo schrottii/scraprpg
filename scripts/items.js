@@ -887,7 +887,7 @@ let items = {
             ...items.default(),
             source: "head_inferno", name: "INFERNO HEAD", element: "fire",
             shopcost: 99999, type: "armor", piece: "head",
-            stats: { "def": 40, "strength": 40 }, ...args || {},
+            stats: { "def": 40, "strength": 40, "immune": "burn" }, ...args || {},
         }
     },
     bodyinferno(args) {
@@ -895,7 +895,7 @@ let items = {
             ...items.default(),
             source: "body_inferno", name: "INFERNO BODY", element: "fire",
             shopcost: 99999, type: "armor", piece: "body",
-            stats: { "def": 40, "strength": 40 }, ...args || {},
+            stats: { "def": 40, "strength": 40, "immune": "burn" }, ...args || {},
         }
     },
     swordinferno(args) {
@@ -911,7 +911,7 @@ let items = {
             ...items.default(),
             source: "shield_inferno", name: "INFERNO SHIELD", element: "fire",
             shopcost: 99999, type: "armor", piece: "lhand",
-            stats: { "crt": 20, "strength": 40 }, ...args || {},
+            stats: { "crt": 20, "strength": 40, "immune": "burn" }, ...args || {},
         }
     },
     
@@ -920,7 +920,7 @@ let items = {
             ...items.default(),
             source: "head_neptune", name: "NEPTUNE HEAD", element: "water",
             shopcost: 99999, type: "armor", piece: "head",
-            stats: { "def": 30, "agi": 20 }, ...args || {},
+            stats: { "def": 30, "agi": 20, "immune": "enraged" }, ...args || {},
         }
     },
     bodyneptune(args) {
@@ -928,7 +928,7 @@ let items = {
             ...items.default(),
             source: "body_neptune", name: "NEPTUNE BODY", element: "water",
             shopcost: 99999, type: "armor", piece: "body",
-            stats: { "def": 30, "agi": 20 }, ...args || {},
+            stats: { "def": 30, "agi": 20, "immune": "enraged" }, ...args || {},
         }
     },
     swordneptune(args) {
@@ -944,7 +944,7 @@ let items = {
             ...items.default(),
             source: "shield_neptune", name: "NEPTUNE SHIELD", element: "water",
             shopcost: 99999, type: "armor", piece: "lhand",
-            stats: { "def": 20, "agi": 30 }, ...args || {},
+            stats: { "def": 20, "agi": 30, "immune": "enraged" }, ...args || {},
         }
     },
     
@@ -953,7 +953,7 @@ let items = {
             ...items.default(),
             source: "head_holy", name: "HOLY HEAD", element: "light",
             shopcost: 99999, type: "armor", piece: "head",
-            stats: { "def": 30, "eva": 20 }, ...args || {},
+            stats: { "def": 30, "eva": 20, "immune": "condemned" }, ...args || {},
         }
     },
     bodyholy(args) {
@@ -961,7 +961,7 @@ let items = {
             ...items.default(),
             source: "body_holy", name: "HOLY BODY", element: "light",
             shopcost: 99999, type: "armor", piece: "body",
-            stats: { "def": 30, "eva": 20 }, ...args || {},
+            stats: { "def": 30, "eva": 20, "immune": "condemned" }, ...args || {},
         }
     },
     swordholy(args) {
@@ -977,7 +977,7 @@ let items = {
             ...items.default(),
             source: "shield_holy", name: "HOLY SHIELD", element: "light",
             shopcost: 99999, type: "armor", piece: "lhand",
-            stats: { "def": 30, "eva": 30 }, ...args || {},
+            stats: { "def": 30, "eva": 30, "immune": "condemned" }, ...args || {},
         }
     },
 
@@ -985,6 +985,7 @@ let items = {
 
     //////////////////////////////////////////////////////////////////////////////////
     // REGULAR SETS
+    // wood: weakest armor
     headwood(args) {
         return {
             ...items.default(),
@@ -1015,6 +1016,142 @@ let items = {
             source: "shield_wood", name: "Wood Shield", element: "earth",
             shopcost: 600, type: "armor", piece: "lhand",
             stats: { "eva": 4 }, ...args || {},
+        }
+    },
+    
+    // chemical: good defense, acid immunity
+    headchemical(args) {
+        return {
+            ...items.default(),
+            source: "head_chemical", name: "Ch3mical H3ad", element: "ectoplasm",
+            shopcost: 6000, type: "armor", piece: "head",
+            stats: { "def": 10, "eva": 10, "immune": "acid" }, ...args || {},
+        }
+    },
+    bodychemical(args) {
+        return {
+            ...items.default(),
+            source: "body_chemical", name: "Ch3mical Body", element: "ectoplasm",
+            shopcost: 6000, type: "armor", piece: "body",
+            stats: { "def": 10, "eva": 10, "immune": "acid" }, ...args || {},
+        }
+    },
+    swordchemical(args) {
+        return {
+            ...items.default(),
+            source: "sword_chemical", name: "Ch3mical Sword", element: "ectoplasm",
+            shopcost: 8000, type: "armor", piece: "rhand",
+            stats: { "strength": 20, "crt": 30 }, ...args || {},
+        }
+    },
+    shieldchemical(args) {
+        return {
+            ...items.default(),
+            source: "shield_chemical", name: "Ch3mical Shi3ld", element: "ectoplasm",
+            shopcost: 6000, type: "armor", piece: "lhand",
+            stats: { "def": 15, "luk": -10, "immune": "acid" }, ...args || {},
+        }
+    },
+    
+    // literal glass cannon build
+    headglass(args) {
+        return {
+            ...items.default(),
+            source: "head_glass", name: "Glass Head", element: "physical",
+            shopcost: 3500, type: "armor", piece: "head",
+            stats: { "def": -10, "eva": 15 }, ...args || {},
+        }
+    },
+    bodyglass(args) {
+        return {
+            ...items.default(),
+            source: "body_glass", name: "Glass Body", element: "physical",
+            shopcost: 3500, type: "armor", piece: "body",
+            stats: { "def": -10, "eva": 15 }, ...args || {},
+        }
+    },
+    swordglass(args) {
+        return {
+            ...items.default(),
+            source: "sword_glass", name: "Glass Cannon", element: "physical",
+            shopcost: 5000, type: "armor", piece: "rhand",
+            stats: { "strength": 30, "def": -20 }, ...args || {},
+        }
+    },
+    shieldglass(args) {
+        return {
+            ...items.default(),
+            source: "shield_glass", name: "Glass Shield", element: "physical",
+            shopcost: 4000, type: "armor", piece: "lhand",
+            stats: { "def": -10, "eva": 15 }, ...args || {},
+        }
+    },
+
+    // pearl: some def and some luck
+    headpearl(args) {
+        return {
+            ...items.default(),
+            source: "head_pearl", name: "Pearl Head", element: "water",
+            shopcost: 2000, type: "armor", piece: "head",
+            stats: { "def": 4, "luk": 5 }, ...args || {},
+        }
+    },
+    bodypearl(args) {
+        return {
+            ...items.default(),
+            source: "body_pearl", name: "Pearl Body", element: "water",
+            shopcost: 2000, type: "armor", piece: "body",
+            stats: { "def": 4, "luk": 5 }, ...args || {},
+        }
+    },
+    swordpearl(args) {
+        return {
+            ...items.default(),
+            source: "sword_pearl", name: "Pearl Sword", element: "water",
+            shopcost: 2000, type: "armor", piece: "rhand",
+            stats: { "strength": 8, "luk": 5 }, ...args || {},
+        }
+    },
+    shieldpearl(args) {
+        return {
+            ...items.default(),
+            source: "shield_pearl", name: "Pearl Shield", element: "water",
+            shopcost: 2000, type: "armor", piece: "lhand",
+            stats: { "eva": 10, "luk": 10 }, ...args || {},
+        }
+    },
+    
+    // princess: makes you weaker, but ppl dont wanna hit u
+    headprincess(args) {
+        return {
+            ...items.default(),
+            source: "head_princess", name: "Princess Head", element: "light",
+            shopcost: 9000, type: "armor", piece: "head",
+            stats: { "def": 20, "strength": -10, "luk": 10, "eva": 10 }, ...args || {},
+        }
+    },
+    bodyprincess(args) {
+        return {
+            ...items.default(),
+            source: "body_princess", name: "Princess Body", element: "light",
+            shopcost: 9000, type: "armor", piece: "body",
+            stats: { "def": 10, "strength": -10, "luk": 15, "eva": 10 }, ...args || {},
+        }
+    },
+    swordprincess(args) {
+        return {
+            ...items.default(),
+            source: "sword_princess", name: "Princess Sword", element: "light",
+            shopcost: 9000, type: "armor", piece: "rhand",
+            stats: { "strength": 6, "luk": 10, "eva": 10 }, ...args || {},
+        }
+    },
+    shieldprincess(args) {
+        return {
+            ...items.default(),
+            source: "shield_princess", name: "Princess Shield", element: "light",
+            shopcost: 9000, type: "armor", piece: "lhand",
+            stats: { "def": 15, "strength": -10, "luk": 10, "eva": 20 }, ...args || {},
         }
     },
 
@@ -1070,6 +1207,22 @@ let items = {
             source: "sword_snake", name: "Snake Sword", element: "ectoplasm",
             shopcost: 1000, type: "armor", piece: "rhand",
             stats: { "strength": 10, "luk": 10, "eva": 5 }, ...args || {},
+        }
+    },
+    swordbee(args) {
+        return {
+            ...items.default(),
+            source: "sword_bee", name: "Bee Sword", element: "earth",
+            shopcost: 3000, type: "armor", piece: "rhand",
+            stats: { "strength": 16, "agi": 50 }, ...args || {},
+        }
+    },
+    swordburger(args) {
+        return {
+            ...items.default(),
+            source: "sword_burger", name: "Holy Burger Sword", element: "light",
+            shopcost: 6000, type: "armor", piece: "rhand",
+            stats: { "strength": 30, "agi": -100, "eva": -20 }, ...args || {},
         }
     },
 
