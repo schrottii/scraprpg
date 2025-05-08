@@ -1158,7 +1158,7 @@ let items = {
 
 
     //////////////////////////////////////////////////////////////////////////////////
-    // SINGLE SWORDS
+    // SINGLE SWORDS / ARMOR
     /*
     sword(args) {
         return {
@@ -1225,6 +1225,68 @@ let items = {
             stats: { "strength": 30, "agi": -100, "eva": -20 }, ...args || {},
         }
     },
+    swordbanana(args) {
+        return {
+            ...items.default(),
+            source: "sword_banana", name: "Banana Sword", element: "ectoplasm",
+            shopcost: 200, type: "armor", piece: "rhand",
+            stats: { "strength": 8, "crt": -10 }, ...args || {},
+        }
+    },
+    tophat(args) {
+        return {
+            ...items.default(),
+            source: "tophat", name: "Top Hat", element: "dark",
+            shopcost: 5000, type: "armor", piece: "head",
+            stats: { "luk": 40, "eva": 30 }, ...args || {},
+        }
+    },
+
+
+
+    //////////////////////////////////////////////////////////////////////////////////
+    // RANDOM ITEMS / CONSUMABLES
+    energydrink(args) {
+        return {
+            ...items.default(), source: "energy_drink", name: "Energy Drink",
+            type: "potion", max: 12, shopcost: 150,
+            effect: () => {
+                healPlayer(args.player, 10, args.anchor, args.offset);
+            },
+            ...args || {},
+        }
+    },
+    energydrink_white(args) {
+        return {
+            ...items.default(), source: "energy_drink_white", name: "Energy Drink",
+            type: "potion", max: 12, shopcost: 300,
+            effect: () => {
+                healPlayer(args.player, 20, args.anchor, args.offset);
+            },
+            ...args || {},
+        }
+    },
+    energydrink_green(args) {
+        return {
+            ...items.default(), source: "energy_drink_green", name: "Energy Drink",
+            type: "potion", max: 12, shopcost: 600,
+            effect: () => {
+                healPlayer(args.player, 40, args.anchor, args.offset);
+            },
+            ...args || {},
+        }
+    },
+    energydrink_pink(args) {
+        return {
+            ...items.default(), source: "energy_drink_pink", name: "Energy Drink",
+            type: "potion", max: 12, shopcost: 1200,
+            effect: () => {
+                healPlayer(args.player, 80, args.anchor, args.offset);
+            },
+            ...args || {},
+        }
+    },
+
 
 
     //////////////////////////////////////////////////////////////////////////////////

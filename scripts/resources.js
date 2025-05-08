@@ -186,6 +186,11 @@ let images = {
     "items/book_water": "data/images/items/books/book_water.png",
     "items/book_wind": "data/images/items/books/book_wind.png",
 
+    "items/energy_drink": "data/images/items/energy_drink.png",
+    "items/energy_drink_white": "data/images/items/energy_drink_white.png",
+    "items/energy_drink_green": "data/images/items/energy_drink_green.png",
+    "items/energy_drink_pink": "data/images/items/energy_drink_pink.png",
+
     "items/head_dark": "data/images/items/equipment/head_dark.png",
     "items/head_earth": "data/images/items/equipment/head_earth.png",
     "items/head_ectoplasm": "data/images/items/equipment/head_ectoplasm.png",
@@ -203,6 +208,7 @@ let images = {
     "items/head_glass": "data/images/items/equipment/head_glass.png",
     "items/head_pearl": "data/images/items/equipment/head_pearl.png",
     "items/head_princess": "data/images/items/equipment/head_princess.png",
+    "items/tophat": "data/images/items/equipment/tophat.png",
 
     "items/body_dark": "data/images/items/equipment/body_dark.png",
     "items/body_earth": "data/images/items/equipment/body_earth.png",
@@ -264,6 +270,7 @@ let images = {
     "items/sword_glass": "data/images/items/equipment/sword_glass.png",
     "items/sword_pearl": "data/images/items/equipment/sword_pearl.png",
     "items/sword_princess": "data/images/items/equipment/sword_princess.png",
+    "items/sword_banana": "data/images/items/equipment/sword_banana.png",
 
     "items/brickyleaf": "data/images/items/brickyleaf.png",
     "items/potion": "data/images/items/potion.png",
