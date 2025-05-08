@@ -1249,9 +1249,10 @@ let items = {
     energydrink(args) {
         return {
             ...items.default(), source: "energy_drink", name: "Energy Drink",
-            type: "potion", max: 12, shopcost: 150,
+            type: "potion", max: 12, shopcost: 150, battleonly: true,
             effect: () => {
-                healPlayer(args.player, 10, args.anchor, args.offset);
+                tempBuffAdd(args.player.name, "strength", 1.1, 3);
+                tempBuffAdd(args.player.name, "agi", 2, 3);
             },
             ...args || {},
         }
@@ -1259,9 +1260,10 @@ let items = {
     energydrink_white(args) {
         return {
             ...items.default(), source: "energy_drink_white", name: "Energy Drink",
-            type: "potion", max: 12, shopcost: 300,
+            type: "potion", max: 12, shopcost: 300, battleonly: true,
             effect: () => {
-                healPlayer(args.player, 20, args.anchor, args.offset);
+                tempBuffAdd(args.player.name, "strength", 1.2, 4);
+                tempBuffAdd(args.player.name, "agi", 3, 4);
             },
             ...args || {},
         }
@@ -1269,9 +1271,10 @@ let items = {
     energydrink_green(args) {
         return {
             ...items.default(), source: "energy_drink_green", name: "Energy Drink",
-            type: "potion", max: 12, shopcost: 600,
+            type: "potion", max: 12, shopcost: 600, battleonly: true,
             effect: () => {
-                healPlayer(args.player, 40, args.anchor, args.offset);
+                tempBuffAdd(args.player.name, "strength", 1.3, 5);
+                tempBuffAdd(args.player.name, "agi", 4, 5);
             },
             ...args || {},
         }
@@ -1279,9 +1282,10 @@ let items = {
     energydrink_pink(args) {
         return {
             ...items.default(), source: "energy_drink_pink", name: "Energy Drink",
-            type: "potion", max: 12, shopcost: 1200,
+            type: "potion", max: 12, shopcost: 1200, battleonly: true,
             effect: () => {
-                healPlayer(args.player, 80, args.anchor, args.offset);
+                tempBuffAdd(args.player.name, "strength", 1.5, 6);
+                tempBuffAdd(args.player.name, "agi", 5, 6);
             },
             ...args || {},
         }
@@ -1300,6 +1304,7 @@ let items = {
             max: 99,
             shopcost: 500,
             effect: () => {
+                // heals poison
                 if (args.player.effect[0] == "poison") causeEffect(i, "none", 0);
                 playSound("heal");
             },
@@ -1341,23 +1346,6 @@ let items = {
         }
     },
 
-    scroll(args) {
-        return {
-            ...items.default(),
-            source: "scroll",
-            name: "Scroll of Truth",
-            type: "book",
-            max: 1,
-            shopcost: 999999,
-            story: true,
-            effect: () => {
-                alert("This... should not happen.");
-            },
-
-            ...args || {},
-        }
-    },
-
     superswamp(args) {
         return {
             ...items.default(),
@@ -1376,6 +1364,7 @@ let items = {
                 }
                 */
                 causeEffect(game.chars.indexOf(args.player.name.toLowerCase()), "condemned", 2);
+                tempBuffAdd(args.player.name, "maxHP", 0.1, 10);
             },
 
             ...args || {},
@@ -1402,7 +1391,25 @@ let items = {
                     battleNumber(args.anchor, amount, 0, args.offset);
                 }
 
+                tempBuffAdd(args.player.name, "eva", 2, 3);
                 addParticle("revive", { anchor: args.targetAnchor, offset: [args.targetOffset[0], args.targetOffset[1] + 64] })
+            },
+
+            ...args || {},
+        }
+    },
+
+    scroll(args) {
+        return {
+            ...items.default(),
+            source: "scroll",
+            name: "Scroll of Truth",
+            type: "book",
+            max: 1,
+            shopcost: 999999,
+            story: true,
+            effect: () => {
+                alert("This... should not happen.");
             },
 
             ...args || {},

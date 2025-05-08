@@ -412,7 +412,7 @@ scenes.fight = () => {
                         }
                     }
                 }
-                console.log(game.monsterbook);
+                //console.log(game.monsterbook);
 
                 // start rendering the win screen
                 winScreen[3].text = "You got " + EXPforAll + " XP!";
@@ -1331,6 +1331,13 @@ scenes.fight = () => {
         }
     }
 
+
+    var filteredItems = [];
+    for (let i in Object.keys(game.inventory)){
+        if (items[Object.keys(game.inventory)[i]]().type == "armor") continue;
+        filteredItems.push(Object.keys(game.inventory)[i]);
+    }
+
     function showActionButtons(ally) {
         // for actionButtons like attack, defend, etc.
 
@@ -1377,7 +1384,7 @@ scenes.fight = () => {
         let me = positions[selectedAlly[0]][selectedAlly[1]].occupied;
         
         // update texts based on items, spells and flee chance u got
-        fightButtons[5].text = "Items (" + Object.keys(game.inventory).length + ")";
+        fightButtons[5].text = "Items (" + Object.keys(filteredItems).length + ")";
         fightButtons[8].text = "Magic (" + Object.keys(game.characters[me].magic).length + ")";
         fightButtons[14].text = "Flee (" + (getStat(me, "agi") / 2) + "%)";
         
@@ -1446,7 +1453,7 @@ scenes.fight = () => {
 
     function showItems() {
         let itemOffset = itemPage * 12
-        let inventory = Object.keys(game.inventory);
+        let inventory = filteredItems;
 
         for (i = 0; i < (fightInventory.length - 9) / 4; i++) {
             fightInventory[(i * 4) + 3].alpha = 0;
@@ -1461,8 +1468,6 @@ scenes.fight = () => {
                 fightInventory[(i * 4)].item = items[inventory[i + itemOffset]];
                 if (game.inventory[items[inventory[i + itemOffset]].name] > 1) fightInventory[(i * 4) + 2].text = items[inventory[i + itemOffset]]().name + " x" + game.inventory[items[inventory[i + itemOffset]].name];
                 else fightInventory[(i * 4) + 2].text = items[inventory[i + itemOffset]]().name;
-                if (items[inventory[i + itemOffset]]().story) fightInventory[(i * 4) + 2].fill = "darkgray";
-                else fightInventory[(i * 4) + 2].fill = "white";
                 fightInventory[(i * 4) + 3].source = "items/" + items[inventory[i + itemOffset]]().source;
                 fightInventory[(i * 4) + 3].alpha = 1;
             }

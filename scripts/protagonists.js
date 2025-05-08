@@ -113,6 +113,7 @@ function checkLevelUps() {
 function tempBuffAdd(char, stat, amount, dur){
     // looks like this: ["strength", 2, 999] -> x2 strength for rest of fight
     let hasBuff = -1;
+    char = char.toLowerCase();
 
     for (let x in game.characters[char].buffs){
         if (game.characters[char].buffs[x][0] == stat) hasBuff = x;
