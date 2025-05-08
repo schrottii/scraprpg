@@ -1056,9 +1056,12 @@ scenes.fight = () => {
 
         // Stop if there is nobody (when is that?)
         if (highestAGI == 0) {
+            // TURN IS OVER
+            // NEXT ROUND
             fightAction = "none";
             turnCounter += 1;
             fightStarted = false;
+
             endOfTurnEvents();
 
             for (j = 0; j < 3; j++) {
@@ -1194,6 +1197,8 @@ scenes.fight = () => {
                 positions[getPlayer(i + 1).pos[0]][getPlayer(i + 1).pos[1]].isOccupied = false;
                 checkAllDead();
             }
+
+            tempBuffTick(game.chars[i]);
         }
 
 
@@ -1879,6 +1884,10 @@ scenes.fight = () => {
 
     function endFight() {
         stopMusic();
+        for (let i in characters){
+            tempBuffRemoveAll(characters[i]);
+        }
+
         fadeOut(1000, true, () => setScene(scenes.game()));
     }
 

@@ -132,6 +132,7 @@ function tempBuffAdd(char, stat, amount, dur){
 
 function tempBuffTick(char){
     // ticks ALL temp buffs by 1 round
+    if (game.characters[char].buffs == []) return false;
 
     for (let x in game.characters[char].buffs){
         game.characters[char].buffs[x][2] -= 1;
@@ -144,6 +145,7 @@ function tempBuffTick(char){
 
 function tempBuffRemove(char, stat){
     // removes one temp buff
+    if (game.characters[char].buffs == []) return false;
     let index = -1;
 
     for (let x in game.characters[char].buffs){
