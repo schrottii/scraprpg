@@ -887,7 +887,7 @@ let items = {
             ...items.default(),
             source: "head_inferno", name: "INFERNO HEAD", element: "fire",
             shopcost: 99999, type: "armor", piece: "head",
-            stats: { "def": 40, "strength": 40, "immune": "burn" }, ...args || {},
+            stats: { "def": 40, "strength": 40, "immune": ["burn"] }, ...args || {},
         }
     },
     bodyinferno(args) {
@@ -895,7 +895,7 @@ let items = {
             ...items.default(),
             source: "body_inferno", name: "INFERNO BODY", element: "fire",
             shopcost: 99999, type: "armor", piece: "body",
-            stats: { "def": 40, "strength": 40, "immune": "burn" }, ...args || {},
+            stats: { "def": 40, "strength": 40, "immune": ["burn"] }, ...args || {},
         }
     },
     swordinferno(args) {
@@ -911,7 +911,7 @@ let items = {
             ...items.default(),
             source: "shield_inferno", name: "INFERNO SHIELD", element: "fire",
             shopcost: 99999, type: "armor", piece: "lhand",
-            stats: { "crt": 20, "strength": 40, "immune": "burn" }, ...args || {},
+            stats: { "crt": 20, "strength": 40, "immune": ["burn"] }, ...args || {},
         }
     },
     
@@ -920,7 +920,7 @@ let items = {
             ...items.default(),
             source: "head_neptune", name: "NEPTUNE HEAD", element: "water",
             shopcost: 99999, type: "armor", piece: "head",
-            stats: { "def": 30, "agi": 20, "immune": "enraged" }, ...args || {},
+            stats: { "def": 30, "agi": 20, "immune": ["enraged"] }, ...args || {},
         }
     },
     bodyneptune(args) {
@@ -928,7 +928,7 @@ let items = {
             ...items.default(),
             source: "body_neptune", name: "NEPTUNE BODY", element: "water",
             shopcost: 99999, type: "armor", piece: "body",
-            stats: { "def": 30, "agi": 20, "immune": "enraged" }, ...args || {},
+            stats: { "def": 30, "agi": 20, "immune": ["enraged"] }, ...args || {},
         }
     },
     swordneptune(args) {
@@ -944,7 +944,7 @@ let items = {
             ...items.default(),
             source: "shield_neptune", name: "NEPTUNE SHIELD", element: "water",
             shopcost: 99999, type: "armor", piece: "lhand",
-            stats: { "def": 20, "agi": 30, "immune": "enraged" }, ...args || {},
+            stats: { "def": 20, "agi": 30, "immune": ["enraged"] }, ...args || {},
         }
     },
     
@@ -953,7 +953,7 @@ let items = {
             ...items.default(),
             source: "head_holy", name: "HOLY HEAD", element: "light",
             shopcost: 99999, type: "armor", piece: "head",
-            stats: { "def": 30, "eva": 20, "immune": "condemned" }, ...args || {},
+            stats: { "def": 30, "eva": 20, "immune": ["condemned"] }, ...args || {},
         }
     },
     bodyholy(args) {
@@ -961,7 +961,7 @@ let items = {
             ...items.default(),
             source: "body_holy", name: "HOLY BODY", element: "light",
             shopcost: 99999, type: "armor", piece: "body",
-            stats: { "def": 30, "eva": 20, "immune": "condemned" }, ...args || {},
+            stats: { "def": 30, "eva": 20, "immune": ["condemned"] }, ...args || {},
         }
     },
     swordholy(args) {
@@ -977,7 +977,7 @@ let items = {
             ...items.default(),
             source: "shield_holy", name: "HOLY SHIELD", element: "light",
             shopcost: 99999, type: "armor", piece: "lhand",
-            stats: { "def": 30, "eva": 30, "immune": "condemned" }, ...args || {},
+            stats: { "def": 30, "eva": 30, "immune": ["condemned"] }, ...args || {},
         }
     },
 
@@ -1025,7 +1025,7 @@ let items = {
             ...items.default(),
             source: "head_chemical", name: "Ch3mical H3ad", element: "ectoplasm",
             shopcost: 6000, type: "armor", piece: "head",
-            stats: { "def": 10, "eva": 10, "immune": "acid" }, ...args || {},
+            stats: { "def": 10, "eva": 10, "immune": ["acid"] }, ...args || {},
         }
     },
     bodychemical(args) {
@@ -1033,7 +1033,7 @@ let items = {
             ...items.default(),
             source: "body_chemical", name: "Ch3mical Body", element: "ectoplasm",
             shopcost: 6000, type: "armor", piece: "body",
-            stats: { "def": 10, "eva": 10, "immune": "acid" }, ...args || {},
+            stats: { "def": 10, "eva": 10, "immune": ["acid"] }, ...args || {},
         }
     },
     swordchemical(args) {
@@ -1049,7 +1049,7 @@ let items = {
             ...items.default(),
             source: "shield_chemical", name: "Ch3mical Shi3ld", element: "ectoplasm",
             shopcost: 6000, type: "armor", piece: "lhand",
-            stats: { "def": 15, "luk": -10, "immune": "acid" }, ...args || {},
+            stats: { "def": 15, "luk": -10, "immune": ["acid"] }, ...args || {},
         }
     },
     

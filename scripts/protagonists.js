@@ -110,6 +110,55 @@ function checkLevelUps() {
     }
 }
 
+function tempBuffAdd(char, stat, amount, dur){
+    // looks like this: ["strength", 2, 999] -> x2 strength for rest of fight
+    let hasBuff = -1;
+
+    for (let x in game.characters[char].buffs){
+        if (game.characters[char].buffs[x][0] == stat) hasBuff = x;
+    }
+
+    if (hasBuff != -1){
+        // you already have this kinda buff
+        // set amount to what's higher, increase duration
+        game.characters[char].buffs[hasBuff][1] = Math.max(game.characters[char].buffs[hasBuff][1], amount);
+        game.characters[char].buffs[hasBuff][2] += dur;
+    }
+    else {
+        // you don't have buff, give i
+        game.characters[char].buffs.push([stat, amount, dur]);
+    }
+}
+
+function tempBuffTick(char){
+    // ticks ALL temp buffs by 1 round
+
+    for (let x in game.characters[char].buffs){
+        game.characters[char].buffs[x][2] -= 1;
+        if (game.characters[char].buffs[x][2] <= 0) {
+            // buff is over!
+            tempBuffRemove(char, game.characters[char].buffs[x][0]);
+        }
+    }
+}
+
+function tempBuffRemove(char, stat){
+    // removes one temp buff
+    let index = -1;
+
+    for (let x in game.characters[char].buffs){
+        if (game.characters[char].buffs[x][0] == stat) index = x;
+    }
+
+    if (index != -1){
+        game.characters[char].buffs.splice(index, 1);
+    }
+}
+
+function tempBuffRemoveAll(char){
+    game.characters[char].buffs = [];
+}
+
 // This function is used to get current stats of characters
 // Stuff like Max HP, LUK, etc. are calculated based on base stat for the char, level, equipment etc.
 // The game file itself (save.js) should only save non-static non-stats such as pos, effects, current HP, current EP
@@ -124,27 +173,33 @@ function getStat(prot, stat) {
         console.log([prot, stat]);
     }
 
-    // include boosts from items
+    // include boosts from items, and temporary buffs
     let itemBonus = 0;
     for (EQ in game.characters[prot].equipment) {
         if (game.characters[prot].equipment[EQ] != "none") if (items[game.characters[prot].equipment[EQ]]().stats[stat] != undefined) itemBonus += items[game.characters[prot].equipment[EQ]]().stats[stat];
     }
 
+    let tempBonus = 1;
+    if (game.characters[prot].buffs == undefined) game.characters[prot].buffs = [];
+    for (EQ in game.characters[prot].buffs) {
+        if (game.characters[prot].buffs[EQ][0] == stat) tempBonus = game.characters[prot].buffs[EQ][1];
+    }
+
     let lvl = game.characters[prot].level - 1;
 
-    if (stat == "strength") return Math.round(itemBonus + cStats[prot][stat] * (1 + 0.07 * lvl));
-    if (stat == "maxHP") return Math.round(itemBonus + cStats[prot][stat] * (1 + 0.1 * lvl));
-    if (stat == "maxEP") return Math.round(itemBonus + cStats[prot][stat] * (1 + 0.05 * lvl));
+    if (stat == "strength") return Math.round(tempBonus * (itemBonus + cStats[prot][stat] * (1 + 0.07 * lvl)));
+    if (stat == "maxHP") return Math.round(tempBonus * (itemBonus + cStats[prot][stat] * (1 + 0.1 * lvl)));
+    if (stat == "maxEP") return Math.round(tempBonus * (itemBonus + cStats[prot][stat] * (1 + 0.05 * lvl)));
 
-    if (stat == "agi") return Math.round(itemBonus + cStats[prot][stat] * (1 + 0.005 * lvl));
-    if (stat == "acc") return Math.min(100, Math.round(itemBonus + cStats[prot][stat] * (1 + 0.005 * lvl)));
-    if (stat == "int") return Math.round(itemBonus + cStats[prot][stat] * (1 + 0.005 * lvl));
-    if (stat == "wis") return Math.min(100, Math.round(itemBonus + cStats[prot][stat] * Math.pow(Math.log(lvl + Math.E), 3)));
-    if (stat == "luk") return Math.min(100, Math.round(itemBonus + cStats[prot][stat] * (1 + 0.005 * lvl)));
+    if (stat == "agi") return Math.round(tempBonus * (itemBonus + cStats[prot][stat] * (1 + 0.005 * lvl)));
+    if (stat == "acc") return Math.min(100, Math.round(tempBonus * (itemBonus + cStats[prot][stat] * (1 + 0.005 * lvl))));
+    if (stat == "int") return Math.round(tempBonus * (itemBonus + cStats[prot][stat] * (1 + 0.005 * lvl)));
+    if (stat == "wis") return Math.min(100, Math.round(tempBonus * (itemBonus + cStats[prot][stat] * Math.pow(Math.log(lvl + Math.E), 3))));
+    if (stat == "luk") return Math.min(100, Math.round(tempBonus * (itemBonus + cStats[prot][stat] * (1 + 0.005 * lvl))));
 
-    if (stat == "def") return Math.round(itemBonus + (1 + 0.1 * lvl));
-    if (stat == "eva") return Math.min(100, Math.round(itemBonus + (1 + 0.1 * lvl)));
-    if (stat == "crt") return Math.min(100, Math.round(itemBonus + (1 + 0.1 * lvl)));
+    if (stat == "def") return Math.round(tempBonus * (itemBonus + (1 + 0.1 * lvl)));
+    if (stat == "eva") return Math.min(100, Math.round(tempBonus * (itemBonus + (1 + 0.1 * lvl))));
+    if (stat == "crt") return Math.min(100, Math.round(tempBonus * (itemBonus + (1 + 0.1 * lvl))));
 
     return cStats[prot][stat];
 }

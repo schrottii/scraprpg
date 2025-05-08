@@ -533,7 +533,7 @@ function loadGame() {
         }
         if (saveCopy.characters.bleu.magic == undefined) {
             for (i in saveCopy.characters) {
-                saveCopy.characters[i].magic = ["cuyua", "cutema", "fisina"];
+                saveCopy.characters[i].magic = [];
             }
         }
         game = saveCopy;

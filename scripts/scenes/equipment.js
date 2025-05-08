@@ -1,11 +1,15 @@
 scenes.equipment = () => {
     var background = [];
     var itemsButtons = [];
-    var itemsText = [];
+    var itemsImages = [];
+    var pageButtons = [];
+
     var equipmentDisplay = [];
     var equipmentChangeDisplay = [];
     var finalStatsDisplay = [];
     var immunityDisplay = [];
+
+    var characterPreview = [];
     var itemPage = 0;
 
     var characterSelected = "bleu";
@@ -63,25 +67,17 @@ scenes.equipment = () => {
         alpha: 1,
     }));
 
-    for (i = 0; i < 2; i++) {
+    for (i = 0; i < 3; i++) {
         for (j = 0; j < 6; j++) {
-            itemsText.push(controls.label({
-                anchor: [0.65 + (0.2 * i), 0.15 + (0.1 * j)],
-                fill: "black",
-                align: "center", fontSize: 20, fill: "black",
-                alpha: 1
-            }));
-        }
-    }
-    for (i = 0; i < 2; i++) {
-        for (j = 0; j < 6; j++) {
-            itemsButtons.push(controls.rect({
-                anchor: [0.55 + (0.2 * i), 0.1 + (0.1 * j)], sizeAnchor: [0.2, 0.1],
+            itemsButtons.push(controls.button({
+                anchor: [0.4 + (0.2 * i), 0.1 + (0.1 * j)], sizeAnchor: [0.2, 0.1],
                 fill: "black",
                 idx: j + (i * 6),
-                alpha: 0,
+                fillTop: "lightgray", fillBottom: "gray",
+                pressedTop: "darkgray", pressedBottom: "gray",
+                alpha: 1,
                 onClick(args) {
-                    let itemOffset = itemPage * 12;
+                    let itemOffset = itemPage * 18;
                     let inventory = Object.keys(game.inventory);
                     if (items[inventory[this.idx + itemOffset]] != undefined) {
                         let type = items[inventory[this.idx + itemOffset]]().piece;
@@ -96,11 +92,46 @@ scenes.equipment = () => {
                     }
                 }
             }));
+            itemsImages.push(controls.image({
+                anchor: [0.4 + (0.2 * i), 0.1 + (0.1 * j)], sizeOffset: [32, 32], offset: [0, 32],
+                source: "gear",
+                alpha: 0
+            }));
         }
     }
 
+    // Page Buttons
+    pageButtons.push(controls.button({
+        anchor: [0, 0.9], sizeAnchor: [0.05, 0.1], fontSize: 60,
+        alpha: 1,
+        onClick(args) {
+            playSound("buttonClickSound");
+            if (itemPage > 0) {
+                itemPage--;
+                showItems();
+            }
+        },
+        text: "<-",
+        fill: "white"
+    }));
+    pageButtons.push(controls.button({
+        anchor: [0.95, 0.9], sizeAnchor: [0.05, 0.1], fontSize: 60,
+        alpha: 1,
+        onClick(args) {
+            playSound("buttonClickSound");
+            if (itemPage < Object.keys(game.inventory).length / 24) {
+                itemPage++;
+                showItems();
+            }
+        },
+        text: "->",
+        fill: "white"
+    }));
+
+
+
     equipmentDisplay.push(controls.label({
-        anchor: [0.26, 0.15],
+        anchor: [0.2, 0.15],
         text: "Blez",
         align: "center", fontSize: 32, fill: "black",
         alpha: 1
@@ -152,7 +183,7 @@ scenes.equipment = () => {
     }
 
     background.push(controls.button({
-        anchor: [0.11, 0.15], sizeAnchor: [0.05, 0.05], offset: [0, -24],
+        anchor: [0.05, 0.15], sizeAnchor: [0.05, 0.05], offset: [0, -24],
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
@@ -166,7 +197,7 @@ scenes.equipment = () => {
         fill: "white"
     }));
     background.push(controls.button({
-        anchor: [0.36, 0.15], sizeAnchor: [0.05, 0.05], offset: [0, -24],
+        anchor: [0.3, 0.15], sizeAnchor: [0.05, 0.05], offset: [0, -24],
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
@@ -180,31 +211,106 @@ scenes.equipment = () => {
         fill: "white"
     }));
 
+    // Character preview
+    // character, body, head, left hand, right hand
+    characterPreview.push(controls.image({
+        anchor: [0.3, 0.5], sizeOffset: [128, 128], offset: [-64, -64],
+        source: "bleu", snip: [0, 0, 32, 32],
+        alpha: 1
+    }));
+    characterPreview.push(controls.image({
+        anchor: [0.3, 0.5], sizeOffset: [128, 128], offset: [-64, -64],
+        source: "items/body_chemical",
+        alpha: 1
+    }));
+    characterPreview.push(controls.image({
+        anchor: [0.3, 0.5], sizeOffset: [128, 128], offset: [-64, -64],
+        source: "items/head_chemical",
+        alpha: 1
+    }));
+    characterPreview.push(controls.image({
+        anchor: [0.3, 0.5], sizeOffset: [64, 64], offset: [-80, 0],
+        source: "items/shield_chemical",
+        alpha: 1
+    }));
+    characterPreview.push(controls.image({
+        anchor: [0.3, 0.5], sizeOffset: [64, 64], offset: [16, 0],
+        source: "items/sword_chemical",
+        alpha: 1
+    }));
+    // acc 1. 2
+    characterPreview.push(controls.image({
+        anchor: [0.3, 0.5], sizeOffset: [64, 64], offset: [-80, -128],
+        source: "items/crystal_strength",
+        alpha: 1
+    }));
+    characterPreview.push(controls.image({
+        anchor: [0.3, 0.5], sizeOffset: [64, 64], offset: [16, -128],
+        source: "items/crystal_strength",
+        alpha: 1
+    }));
+
+
 
     function showItems() {
-        let itemOffset = itemPage * 12
+        let itemOffset = itemPage * 18
         let inventory = Object.keys(game.inventory);
+
         for (i = 0; i < itemsButtons.length; i++) {
-            itemsText[i].alpha = 0;
+            itemsButtons[i].alpha = 0;
+            itemsImages[i].alpha = 0;
+
             if (inventory[i + itemOffset] == undefined) {
-                itemsText[i].text = "---";
-                itemsText[i].fill = "white";
+                itemsButtons[i].text = "---";
+                itemsButtons[i].fill = "white";
                 continue;
             }
             if (game.inventory[items[inventory[i + itemOffset]].name] > 0) {
-                itemsText[i].item = items[inventory[i + itemOffset]];
-                if (game.inventory[items[inventory[i + itemOffset]].name] > 1) itemsText[i].text = items[inventory[i + itemOffset]]().name + " x" + game.inventory[items[inventory[i + itemOffset]].name];
-                else itemsText[i].text = items[inventory[i + itemOffset]]().name;
+                itemsButtons[i].item = items[inventory[i + itemOffset]];
+                if (game.inventory[items[inventory[i + itemOffset]].name] > 1) itemsButtons[i].text = items[inventory[i + itemOffset]]().name + " x" + game.inventory[items[inventory[i + itemOffset]].name];
+                else itemsButtons[i].text = items[inventory[i + itemOffset]]().name;
 
-                if (inventory[i + itemOffset] == game.characters[characterSelected].equipment[items[inventory[i + itemOffset]]().piece]) itemsText[i].fill = "lightgreen"; // Equipped
-                else if (items[inventory[i + itemOffset]]().piece != false) itemsText[i].fill = "black";
-                else itemsText[i].fill = "darkgray";
-                itemsText[i].source = "items/" + items[inventory[i + itemOffset]]().source;
-                itemsText[i].alpha = 1;
+                if (inventory[i + itemOffset] == game.characters[characterSelected].equipment[items[inventory[i + itemOffset]]().piece]) {
+                    // Equipped
+                    itemsButtons[i].fillTop = "lime";
+                    itemsButtons[i].fillBottom = "green";
+                }
+                else if (items[inventory[i + itemOffset]]().piece != "none") {
+                    // Can be equipped
+                    itemsButtons[i].fillTop = colors.buttontop;
+                    itemsButtons[i].fillBottom = colors.buttonbottom;
+                    itemsButtons[i].pressedTop = colors.buttontoppressed;
+                    itemsButtons[i].pressedBottom = colors.buttonbottompressed;
+                }
+                else {
+                    itemsButtons[i].fillTop = "lightgray";
+                    itemsButtons[i].fillBottom = "gray";
+                }
+
+                itemsImages[i].source = "items/" + items[inventory[i + itemOffset]]().source;
+                itemsButtons[i].alpha = 1;
+                itemsImages[i].alpha = 1;
             }
             else {
-                itemsText[i].text = "---";
-                itemsText[i].fill = "white";
+                itemsButtons[i].fillTop = "lightgray";
+                itemsButtons[i].fillBottom = "gray";
+            }
+        }
+
+        updateCharacterPreview();
+    }
+
+    function updateCharacterPreview(){
+        let equips = ["body", "head", "lhand", "rhand", "acc1", "acc2"]
+        characterPreview[0].source = characterSelected;
+
+        for (let x = 1; x <= 6; x++){
+            if (game.characters[characterSelected].equipment[equips[x - 1]] != "none") {
+                characterPreview[x].alpha = 1;
+                characterPreview[x].source = "items/" + items[game.characters[characterSelected].equipment[equips[x - 1]]]().source;
+            }
+            else {
+                characterPreview[x].alpha = 0;
             }
         }
     }
@@ -260,7 +366,9 @@ scenes.equipment = () => {
         },
         // Controls
         controls: [
-            ...background, ...itemsButtons, ...itemsText, ...equipmentDisplay, ...equipmentChangeDisplay, ...finalStatsDisplay, ...immunityDisplay,
+            ...background, ...pageButtons,
+            ...itemsButtons, ...itemsImages, ...characterPreview,
+            ...equipmentDisplay, ...equipmentChangeDisplay, ...finalStatsDisplay, ...immunityDisplay,
         ],
         name: "equipment"
     }
