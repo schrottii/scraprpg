@@ -191,6 +191,13 @@ let images = {
     "items/energy_drink_green": "data/images/items/energy_drink_green.png",
     "items/energy_drink_pink": "data/images/items/energy_drink_pink.png",
 
+    "items/syringe_agility": "data/images/items/syringe_agility.png",
+    "items/syringe_crit": "data/images/items/syringe_crit.png",
+    "items/syringe_defense": "data/images/items/syringe_defense.png",
+    "items/syringe_evasion": "data/images/items/syringe_evasion.png",
+    "items/syringe_luck": "data/images/items/syringe_luck.png",
+    "items/syringe_strength": "data/images/items/syringe_strength.png",
+
     "items/head_dark": "data/images/items/equipment/head_dark.png",
     "items/head_earth": "data/images/items/equipment/head_earth.png",
     "items/head_ectoplasm": "data/images/items/equipment/head_ectoplasm.png",
@@ -274,11 +281,17 @@ let images = {
 
     "items/brickyleaf": "data/images/items/brickyleaf.png",
     "items/potion": "data/images/items/potion.png",
+    "items/potion_medium": "data/images/items/potion_medium.png",
+    "items/potion_large": "data/images/items/potion_large.png",
     "items/scroll": "data/images/paper.png",
     "items/peppytincture": "data/images/items/peppy.png",
     "items/superswamp": "data/images/items/superswamp.png",
     "items/revive": "data/images/items/perfectangle.png",
+
     "items/hourglass": "data/images/items/hourglass.png",
+    "items/wing": "data/images/items/wing.png",
+    "items/instrument": "data/images/items/instrument.png",
+    "items/mirror": "data/images/items/mirror.png",
 };
 
 var scenes = {

@@ -1291,6 +1291,162 @@ let items = {
         }
     },
 
+    syringeagility(args) {
+        return {
+            ...items.default(), source: "syringe_agility", name: "Agility Syringe",
+            type: "potion", max: 30, shopcost: 500, battleonly: true,
+            effect: () => {
+                tempBuffAdd(args.player.name, "agi", 1.5, 10);
+            },
+            ...args || {},
+        }
+    },
+    syringecrit(args) {
+        return {
+            ...items.default(), source: "syringe_crit", name: "Crit Syringe",
+            type: "potion", max: 30, shopcost: 500, battleonly: true,
+            effect: () => {
+                tempBuffAdd(args.player.name, "crt", 1.5, 10);
+            },
+            ...args || {},
+        }
+    },
+    syringedefense(args) {
+        return {
+            ...items.default(), source: "syringe_defense", name: "Defense Syringe",
+            type: "potion", max: 30, shopcost: 500, battleonly: true,
+            effect: () => {
+                tempBuffAdd(args.player.name, "def", 1.5, 10);
+            },
+            ...args || {},
+        }
+    },
+    syringeevasion(args) {
+        return {
+            ...items.default(), source: "syringe_evasion", name: "Evasion Syringe",
+            type: "potion", max: 30, shopcost: 500, battleonly: true,
+            effect: () => {
+                tempBuffAdd(args.player.name, "eva", 1.5, 10);
+            },
+            ...args || {},
+        }
+    },
+    syringeluck(args) {
+        return {
+            ...items.default(), source: "syringe_luck", name: "Luck Syringe",
+            type: "potion", max: 30, shopcost: 500, battleonly: true,
+            effect: () => {
+                tempBuffAdd(args.player.name, "luk", 1.5, 10);
+            },
+            ...args || {},
+        }
+    },
+    syringestrength(args) {
+        return {
+            ...items.default(), source: "syringe_strength", name: "Strength Syringe",
+            type: "potion", max: 30, shopcost: 500, battleonly: true,
+            effect: () => {
+                tempBuffAdd(args.player.name, "strength", 1.5, 10);
+            },
+            ...args || {},
+        }
+    },
+    
+    angelwing(args) {
+        return {
+            ...items.default(),
+            source: "wing", name: "Angel Wing", type: "potion",
+            max: 99, shopcost: 2500,
+            effect: () => {
+                let HealthBefore = args.player.HP
+                let amount = Math.ceil(getStat(args.player.name, "maxHP") / 4);
+                if (args.player.HP < 1) args.player.HP = amount;
+                playSound("heal");
+                if (args.player != undefined && positions != undefined) {
+                    positions[args.player.pos[0]][args.player.pos[1]].isOccupied = true;
+                }
+                if (args.anchor != undefined) {
+                    battleNumber(args.anchor, amount, 0, args.offset);
+                }
+
+                tempBuffAdd(args.player.name, "eva", 2, 3);
+                addParticle("revive", { anchor: args.targetAnchor, offset: [args.targetOffset[0], args.targetOffset[1] + 64] })
+            },
+
+            ...args || {},
+        }
+    },
+
+    potion(args) {
+        return {
+            ...items.default(),
+            source: "potion", name: "Small Potion", type: "potion",
+            max: 99, shopcost: 200,
+            effect: () => {
+                healPlayer(args.player, 20, args.anchor, args.offset);
+            },
+            ...args || {},
+        }
+    },
+    potionmedium(args) {
+        return {
+            ...items.default(),
+            source: "potion_medium", name: "Medium Potion", type: "potion",
+            max: 99, shopcost: 600,
+            effect: () => {
+                healPlayer(args.player, 50, args.anchor, args.offset);
+            },
+            ...args || {},
+        }
+    },
+    potionlarge(args) {
+        return {
+            ...items.default(),
+            source: "potion_large", name: "Large Potion", type: "potion",
+            max: 99, shopcost: 1500,
+            effect: () => {
+                healPlayer(args.player, 100, args.anchor, args.offset);
+            },
+            ...args || {},
+        }
+    },
+
+    buffatone(args) {
+        return {
+            ...items.default(),
+            source: "instrument", name: "Buffatone", type: "potion",
+            max: 99, shopcost: 500,
+            effect: () => {
+                // heals you 10 HP, doubled for every buff you had, then gives def
+                let amount = Object.keys(args.player.buffs).length;
+                tempBuffRemoveAll(args.player.name);
+
+                healPlayer(args.player, 10 * Math.pow(2, amount), args.anchor, args.offset);
+                tempBuffAdd(args.player.name, "def", 1.25 + (0.25 * amount), 5 + amount);
+            },
+            ...args || {},
+        }
+    },
+    
+    mirrorevasion(args) {
+        return {
+            ...items.default(),
+            source: "mirror", name: "Mirror Of Evasion",
+            shopcost: 1000, type: "armor", piece: "acc1",
+            stats: { "eva": 10 },
+            ...args || {},
+        }
+    },
+    
+    swampbuddy(args) {
+        return {
+            ...items.default(),
+            source: "superswamp", name: "Swamp Buddy",
+            shopcost: 1000, type: "armor", piece: "acc1",
+            stats: { "luk": 10 },
+            ...args || {},
+        }
+    },
 
 
     //////////////////////////////////////////////////////////////////////////////////
@@ -1307,22 +1463,6 @@ let items = {
                 // heals poison
                 if (args.player.effect[0] == "poison") causeEffect(i, "none", 0);
                 playSound("heal");
-            },
-
-            ...args || {},
-        }
-    },
-
-    potion(args) {
-        return {
-            ...items.default(),
-            source: "potion",
-            name: "Small Potion",
-            type: "potion",
-            max: 99,
-            shopcost: 250,
-            effect: () => {
-                healPlayer(args.player, 50, args.anchor, args.offset);
             },
 
             ...args || {},
