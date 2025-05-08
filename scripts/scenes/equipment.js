@@ -10,6 +10,7 @@ scenes.equipment = () => {
     var immunityDisplay = [];
 
     var characterPreview = [];
+    var selectedItemStats = [];
     var itemPage = 0;
 
     var characterSelected = "bleu";
@@ -67,6 +68,37 @@ scenes.equipment = () => {
         alpha: 1,
     }));
 
+    var selectedItem = "";
+
+    function equipItem(item) {
+        let type = item().piece;
+        if (item.name == game.characters[characterSelected].equipment[type]) { // Equipped
+            // already has equipped, so unequip
+            game.characters[characterSelected].equipment[type] = "none";
+            selectedItem = "";
+            equipButton.alpha = 0;
+        }
+        else {
+            // equip
+            if (type != "none") game.characters[characterSelected].equipment[type] = item.name;
+        }
+
+        showItems();
+        updateImmunities();
+    }
+
+    var equipButton = controls.button({
+        anchor: [0.35, 0.875], sizeAnchor: [0.2, 0.1],
+        fill: "black",
+        text: "Equip", alpha: 0,
+        onClick(args) {
+            if (selectedItem != "") equipItem(selectedItem);
+
+            if (this.text == "Equip") this.text = "Unequip";
+            else if (this.text == "Unequip") this.text = "Equip";
+        }
+    });
+
     for (i = 0; i < 3; i++) {
         for (j = 0; j < 6; j++) {
             itemsButtons.push(controls.button({
@@ -77,18 +109,17 @@ scenes.equipment = () => {
                 pressedTop: "darkgray", pressedBottom: "gray",
                 alpha: 1,
                 onClick(args) {
-                    let itemOffset = itemPage * 18;
-                    let inventory = Object.keys(game.inventory);
-                    if (items[inventory[this.idx + itemOffset]] != undefined) {
-                        let type = items[inventory[this.idx + itemOffset]]().piece;
-                        if (inventory[this.idx + itemOffset] == game.characters[characterSelected].equipment[items[inventory[this.idx + itemOffset]]().piece]) { // Equipped
-                            game.characters[characterSelected].equipment[type] = "none";
+                    equipButton.alpha = 0;
+
+                    // consent feature: click again or click button to equip
+                    if (this.item != undefined) {
+                        if (selectedItem == "" || selectedItem.name != this.item.name) {
+                            selectedItem = this.item;
+                            equipButton.alpha = 1;
                         }
                         else {
-                            if (type != false) game.characters[characterSelected].equipment[type] = items[inventory[this.idx + itemOffset]].name;
+                            equipItem(this.item);
                         }
-                        showItems();
-                        updateImmunities();
                     }
                 }
             }));
@@ -143,11 +174,15 @@ scenes.equipment = () => {
             align: "left", fontSize: 20, fill: "black",
             alpha: 1
         }));
-    }
-    for (i = 0; i < 6; i++) {
         equipmentChangeDisplay.push(controls.label({
             anchor: [0.02, 0.44 + (0.04 * i)],
             text: "Total " + ["STR", "DEF", "AGI", "EVA", "CRT", "LUK"][i] + " changed: None",
+            align: "left", fontSize: 20, fill: "black",
+            alpha: 1
+        }));
+        selectedItemStats.push(controls.label({
+            anchor: [0.2, 0.78 + (0.04 * i)],
+            text: "",
             align: "left", fontSize: 20, fill: "black",
             alpha: 1
         }));
@@ -252,9 +287,15 @@ scenes.equipment = () => {
 
 
 
+    var filteredItems = [];
+    for (let i in Object.keys(game.inventory)){
+        if (items[Object.keys(game.inventory)[i]]().type != "armor") continue;
+        filteredItems.push(Object.keys(game.inventory)[i]);
+    }
+
     function showItems() {
         let itemOffset = itemPage * 18
-        let inventory = Object.keys(game.inventory);
+        let inventory = filteredItems;
 
         for (i = 0; i < itemsButtons.length; i++) {
             itemsButtons[i].alpha = 0;
@@ -267,7 +308,9 @@ scenes.equipment = () => {
             }
             if (game.inventory[items[inventory[i + itemOffset]].name] > 0) {
                 itemsButtons[i].item = items[inventory[i + itemOffset]];
-                if (game.inventory[items[inventory[i + itemOffset]].name] > 1) itemsButtons[i].text = items[inventory[i + itemOffset]]().name + " x" + game.inventory[items[inventory[i + itemOffset]].name];
+                if (game.inventory[items[inventory[i + itemOffset]].name] > 1) {
+                    itemsButtons[i].text = items[inventory[i + itemOffset]]().name + " x" + game.inventory[items[inventory[i + itemOffset]].name];
+                }
                 else itemsButtons[i].text = items[inventory[i + itemOffset]]().name;
 
                 if (inventory[i + itemOffset] == game.characters[characterSelected].equipment[items[inventory[i + itemOffset]]().piece]) {
@@ -283,8 +326,8 @@ scenes.equipment = () => {
                     itemsButtons[i].pressedBottom = colors.buttonbottompressed;
                 }
                 else {
-                    itemsButtons[i].fillTop = "lightgray";
-                    itemsButtons[i].fillBottom = "gray";
+                    // Not equippable, HIDEEE!!!
+                    continue;
                 }
 
                 itemsImages[i].source = "items/" + items[inventory[i + itemOffset]]().source;
@@ -363,11 +406,23 @@ scenes.equipment = () => {
                 finalStatsDisplay[i].text = part + " - " + getStat(characterSelected, partb);
                 if (i == 0) finalStatsDisplay[0].text = game.characters[characterSelected].name + " Final Stat Overview:";
             }
+
+            // update stats of selected item
+            for (let x in selectedItemStats){
+                if (selectedItem != "" && x == 0){
+                    selectedItemStats[x].text = selectedItem().name + (selectedItem().element != undefined ? " (" + selectedItem().element + ")" : "") + ": ";
+                }
+                else if (selectedItem != "" && selectedItem().stats != undefined && Object.keys(selectedItem().stats)[x - 1] != undefined) {
+                    selectedItemStats[x].text = selectedItem().stats[Object.keys(selectedItem().stats)[x - 1]] + " " + (Object.keys(selectedItem().stats)[x - 1]).toUpperCase();
+                }
+                else selectedItemStats[x].text = "";
+            }
         },
         // Controls
         controls: [
             ...background, ...pageButtons,
-            ...itemsButtons, ...itemsImages, ...characterPreview,
+            ...itemsButtons, ...itemsImages,
+            ...characterPreview, equipButton, ...selectedItemStats,
             ...equipmentDisplay, ...equipmentChangeDisplay, ...finalStatsDisplay, ...immunityDisplay,
         ],
         name: "equipment"
