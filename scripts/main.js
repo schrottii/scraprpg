@@ -536,8 +536,14 @@ function loadGame() {
                 saveCopy.characters[i].magic = [];
             }
         }
-        game = saveCopy;
 
+        // delete items that don't exist anymore
+        for (let i in saveCopy.inventory){
+            if (items[i] == undefined) delete saveCopy.inventory[i];
+            i -= 1;
+        }
+
+        game = saveCopy;
         checkOverMax();
     }
     else {

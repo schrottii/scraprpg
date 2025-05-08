@@ -275,7 +275,7 @@ scenes.itemscene = () => {
     return {
         // Pre-render function
         preRender(ctx, delta) {
-
+            background[7].text = "Items (" + Object.keys(game.inventory).length + "/" + Object.keys(items).length + ")";
         },
         // Controls
         controls: [

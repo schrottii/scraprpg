@@ -207,6 +207,9 @@ scenes.magicscene = () => {
         // Pre-render function
         preRender(ctx, delta) {
             theTop[1].text = game.characters[characterSelected].EP + "/" + getStat(characterSelected, "maxEP");
+        
+            background[5].text = "Magic (" + Object.keys(game.characters[characterSelected].magic).length + "/" + Object.keys(magic).length + ")";
+
         },
         // Controls
         controls: [
