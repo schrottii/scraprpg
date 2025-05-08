@@ -96,7 +96,7 @@ scenes.formation = () => {
             macroControls.push(controls.label({
                 anchor: [0.615 + (j * 0.225), 0.2235 + (0.15 * i)],
                 fontSize: 24, fill: "black", align: "center",
-                text: "Blez",
+                text: "",
                 alpha: 1,
             }));
         }

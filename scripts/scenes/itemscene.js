@@ -7,6 +7,8 @@ scenes.itemscene = () => {
     var pageButtons = [];
     var storyonly = false;
 
+    var selectedItem = "";
+    var selItem = [];
     var itemPage = 0;
     var characterSelected = "bleu";
     var useMode = "use";
@@ -61,6 +63,7 @@ scenes.itemscene = () => {
 
     // The top
     /*
+    R.I.P. cooking 2022-2025
     theTop.push(controls.rect({
         anchor: [0.05, 0.01], sizeAnchor: [0.15, 0.1],
         alpha: 0,
@@ -160,7 +163,7 @@ scenes.itemscene = () => {
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
-            if (itemPage < Object.keys(game.inventory).length / 32) {
+            if (itemPage + 1 < Object.keys(game.inventory).length / 32) {
                 itemPage++;
                 showItems();
             }
@@ -175,6 +178,34 @@ scenes.itemscene = () => {
         theTop[5].text = game.characters[globalSelectedCharacter].name;
         globalSelectedCharacter = "";
     }
+
+    selItem.push(controls.label({
+        anchor: [0.15, 0.15], offset: [0, -12],
+        text: "",
+        align: "left", fontSize: 24, fill: "black",
+        alpha: 1,
+    }));
+    selItem.push(controls.label({
+        anchor: [0.35, 0.15], offset: [0, -12],
+        text: "",
+        align: "left", fontSize: 20, fill: "black",
+        alpha: 1,
+    }));
+    selItem.push(controls.button({
+        anchor: [0.02, 0.11], sizeAnchor: [0.1, 0.06],
+        text: "Use",
+        alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                if (selectedItem == "" || selectedItem != item) {
+                }
+                else {
+                    // already selected
+                    useItem(selectedItem);
+                }
+            }
+        }
+    }));
 
     // Items n stuff
     for (i = 0; i < 4; i++) {
@@ -193,38 +224,56 @@ scenes.itemscene = () => {
                 pressedTop: "darkgray", pressedBottom: "gray",
                 alpha: 1,
                 onClick(args) {
-                    let item = this.item;
-
                     if (this.fillTop == "lightgray") {
                         playSound("no");
+                        return false;
                     }
-                    else if (useMode == "drop"){
-                        // Drop 1
-                        map.items.push([game.position[0], game.position[1], item, 1, true]);
-                        removeItem(item, 1);
-                    }
-                    else if (useMode == "dropall"){
-                        // Drop All
-                        map.items.push([game.position[0], game.position[1], item, game.inventory[item], true]);
-                        removeItem(item, 9999);
+
+                    let item = this.item;
+
+                    if (selectedItem == "" || selectedItem != item) {
+                        // consent
+                        selectedItem = item;
+                        
+                        selItem[0].text = items[item]().name;
+                        selItem[1].text = items[item]().desc;
+                        selItem[2].alpha = 1;
                     }
                     else {
-                        let itemOffset = itemPage * 12;
-
-                        if (items[item] != undefined) {
-                            if (items[item]().story != true) {
-                                if (game.inventory[item] > 0) {
-                                    items[item]({ player: game.characters[characterSelected] }).effect();
-                                    removeItem(item, 1);
-                                }
-                            }
-                        }
+                        // already selected
+                        useItem(item);
                     }
-                    
-                    showItems();
                 }
             }));
         }
+    }
+
+    function useItem(item){
+        if (useMode == "drop") {
+            // Drop 1
+            map.items.push([game.position[0], game.position[1], item, 1, true]);
+            removeItem(item, 1);
+        }
+        else if (useMode == "dropall") {
+            // Drop All
+            map.items.push([game.position[0], game.position[1], item, game.inventory[item], true]);
+            removeItem(item, 9999);
+        }
+        else {
+            let itemOffset = itemPage * 12;
+
+            if (items[item] != undefined) {
+                if (items[item]().story != true && items[item]().type != "armor" && items[item]().battleonly != true) {
+                    if (game.inventory[item] > 0) {
+                        // use item
+                        items[item]({ player: game.characters[characterSelected] }).effect();
+                        removeItem(item, 1);
+                    }
+                }
+            }
+        }
+
+        showItems();
     }
 
     function showItems() {
@@ -250,12 +299,18 @@ scenes.itemscene = () => {
                 if (game.inventory[item.name] > 1) itemsButtons[i].text = item().name + " x" + game.inventory[item.name];
                 else itemsButtons[i].text = item().name;
 
+                if (item().type != "armor" && item().battleonly != true){
                 itemsButtons[i].fillTop = colors.buttontop;
                 itemsButtons[i].fillBottom = colors.buttonbottom;
                 itemsButtons[i].pressedTop = colors.buttontoppressed;
                 itemsButtons[i].pressedBottom = colors.buttonbottompressed;
-                itemsButtons[i].alpha = 1;
+                }
+                else {
+                    itemsButtons[i].fillTop = "lightgray";
+                    itemsButtons[i].fillBottom = "gray";
+                }
 
+                itemsButtons[i].alpha = 1;
                 itemsImages[i].alpha = 1;
                 itemsImages[i].source = "items/" + item().source;
             }
@@ -279,7 +334,7 @@ scenes.itemscene = () => {
         },
         // Controls
         controls: [
-            ...background, ...itemsButtons, ...itemsImages, ...theTop, ...pageButtons
+            ...background, ...itemsButtons, ...itemsImages, ...theTop, ...pageButtons, ...selItem
         ],
         name: "items"
     }

@@ -104,7 +104,7 @@ scenes.magicscene = () => {
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
-            if (itemPage < Object.keys(game.characters[characterSelected].magic).length / 32) {
+            if (itemPage + 1 < Object.keys(game.characters[characterSelected].magic).length / 32) {
                 itemPage++;
                 showItems();
             }

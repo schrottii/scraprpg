@@ -392,7 +392,7 @@ scenes.fight = () => {
                 brickGain = brickGain * Math.ceil(brickLUK) / 128;
 
                 EXPforAll = Math.ceil(EXPforAll);
-                wrenchGain = Math.ceil(wrenchGain);
+                wrenchGain = Math.ceil(wrenchGain * (1 + Object.keys(game.monsterbook).length * 0.02));
                 brickGain = Math.ceil(brickGain);
 
                 addWrenches(wrenchGain);
@@ -2006,7 +2006,7 @@ scenes.fight = () => {
         onClick(args) {
             // previous page
             if (this.alpha == 1 && itemPage > 0) {
-                itemPage -= 1;
+                itemPage--;
                 if (fightInventory[0].type == "item") showItems();
                 else showMagic();
             }
@@ -2032,9 +2032,16 @@ scenes.fight = () => {
         onClick(args) {
             // next page
             if (this.alpha == 1) {
-                itemPage += 1;
-                if (fightInventory[0].type == "item") showItems();
-                else showMagic();
+                itemPage++;
+                if (fightInventory[0].type == "item") {
+                    if (itemPage + 1 > filteredItems.length / 12) itemPage = Math.floor(filteredItems.length / 12);
+                    showItems();
+                }
+                else {
+                    let mg = game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].magic;
+                    if (itemPage + 1 > mg.length / 12) itemPage = Math.floor(mg.length / 12);
+                    showMagic();
+                }
             }
         }
     }));

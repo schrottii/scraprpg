@@ -11,6 +11,8 @@ scenes.equipment = () => {
 
     var characterPreview = [];
     var selectedItemStats = [];
+
+    var selectedItem = "";
     var itemPage = 0;
 
     var characterSelected = "bleu";
@@ -67,8 +69,6 @@ scenes.equipment = () => {
         align: "center", fontSize: 36, fill: "black",
         alpha: 1,
     }));
-
-    var selectedItem = "";
 
     function equipItem(item) {
         let type = item().piece;
@@ -150,7 +150,7 @@ scenes.equipment = () => {
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
-            if (itemPage < Object.keys(game.inventory).length / 24) {
+            if (itemPage + 1 < Object.keys(filteredItems).length / 18) {
                 itemPage++;
                 showItems();
             }
@@ -163,8 +163,15 @@ scenes.equipment = () => {
 
     equipmentDisplay.push(controls.label({
         anchor: [0.2, 0.15],
-        text: "Blez",
+        text: "",
         align: "center", fontSize: 32, fill: "black",
+        alpha: 1
+    }));
+
+    selectedItemStats.push(controls.label({
+        anchor: [0.2, 0.74],
+        text: "",
+        align: "left", fontSize: 20, fill: "black",
         alpha: 1
     }));
     for (i = 0; i < 6; i++) {
@@ -187,10 +194,15 @@ scenes.equipment = () => {
             alpha: 1
         }));
     }
+    selectedItemStats.push(controls.image({
+        anchor: [0.15, 0.85], sizeOffset: [128, 128], offset: [-64, -64],
+        source: "gear",
+        alpha: 1
+    }));
 
     finalStatsDisplay.push(controls.label({
         anchor: [0.56, 0.725],
-        text: "Blez Final Stat Overview:",
+        text: " Final Stat Overview:",
         align: "left", fontSize: 20, fill: "black",
         alpha: 1
     }));
@@ -412,8 +424,14 @@ scenes.equipment = () => {
                 if (selectedItem != "" && x == 0){
                     selectedItemStats[x].text = selectedItem().name + (selectedItem().element != undefined ? " (" + selectedItem().element + ")" : "") + ": ";
                 }
-                else if (selectedItem != "" && selectedItem().stats != undefined && Object.keys(selectedItem().stats)[x - 1] != undefined) {
-                    selectedItemStats[x].text = selectedItem().stats[Object.keys(selectedItem().stats)[x - 1]] + " " + (Object.keys(selectedItem().stats)[x - 1]).toUpperCase();
+                else if (selectedItem != "" && x == 1){
+                    selectedItemStats[x].text = (selectedItem().desc != undefined ? selectedItem().desc : "");
+                }
+                else if (selectedItem != "" && x == 7){
+                    selectedItemStats[x].source = "items/" + selectedItem().source;
+                }
+                else if (selectedItem != "" && selectedItem().stats != undefined && Object.keys(selectedItem().stats)[x - 2] != undefined) {
+                    selectedItemStats[x].text = selectedItem().stats[Object.keys(selectedItem().stats)[x - 2]] + " " + (Object.keys(selectedItem().stats)[x - 2]).toUpperCase();
                 }
                 else selectedItemStats[x].text = "";
             }

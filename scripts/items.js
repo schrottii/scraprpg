@@ -39,6 +39,7 @@ let items = {
             // general
             source: "book_empty",
             name: "none",
+            desc: "",
             type: "electronic",
             max: 99, // how many you can have at most
 
@@ -72,6 +73,7 @@ let items = {
         return {
             ...items.default(),
             source: "crystal_strength", name: "Strength Crystal",
+            desc: "A crystal that provides strength.",
             shopcost: 1000, clpi: 33,
             type: "armor", piece: "acc2",
             stats: { "strength": 6 },
@@ -83,6 +85,7 @@ let items = {
         return {
             ...items.default(),
             source: "crystal_defense", name: "Defense Crystal",
+            desc: "A crystal that provides defense.",
             shopcost: 1000, clpi: 33,
             type: "armor", piece: "acc2",
             stats: { "def": 6 },
@@ -94,6 +97,7 @@ let items = {
         return {
             ...items.default(),
             source: "crystal_agility", name: "Agility Crystal",
+            desc: "A crystal that provides agility.",
             shopcost: 1000, clpi: 33,
             type: "armor", piece: "acc2",
             stats: { "agi": 6 },
@@ -105,6 +109,7 @@ let items = {
         return {
             ...items.default(),
             source: "crystal_evasion", name: "Evasion Crystal",
+            desc: "A crystal that provides evasion.",
             shopcost: 1000, clpi: 33,
             type: "armor", piece: "acc2",
             stats: { "eva": 6 },
@@ -116,6 +121,7 @@ let items = {
         return {
             ...items.default(),
             source: "crystal_crit", name: "Crit Crystal",
+            desc: "A crystal that provides crit chance.",
             shopcost: 1000, clpi: 33,
             type: "armor", piece: "acc2",
             stats: { "crt": 6 },
@@ -127,6 +133,7 @@ let items = {
         return {
             ...items.default(),
             source: "crystal_luck", name: "Luck Crystal",
+            desc: "A crystal that provides luck.",
             shopcost: 1000, clpi: 33,
             type: "armor", piece: "acc2",
             stats: { "luk": 6 },
@@ -1249,6 +1256,7 @@ let items = {
     energydrink(args) {
         return {
             ...items.default(), source: "energy_drink", name: "Energy Drink",
+            desc: "Drink in a battle for a short strength & AGI boost!",
             type: "potion", max: 12, shopcost: 150, battleonly: true,
             effect: () => {
                 tempBuffAdd(args.player.name, "strength", 1.1, 3);
@@ -1260,6 +1268,7 @@ let items = {
     energydrink_white(args) {
         return {
             ...items.default(), source: "energy_drink_white", name: "Energy Drink",
+            desc: "Drink in a battle for a short strength & AGI boost!",
             type: "potion", max: 12, shopcost: 300, battleonly: true,
             effect: () => {
                 tempBuffAdd(args.player.name, "strength", 1.2, 4);
@@ -1271,6 +1280,7 @@ let items = {
     energydrink_green(args) {
         return {
             ...items.default(), source: "energy_drink_green", name: "Energy Drink",
+            desc: "Drink in a battle for a short strength & AGI boost!",
             type: "potion", max: 12, shopcost: 600, battleonly: true,
             effect: () => {
                 tempBuffAdd(args.player.name, "strength", 1.3, 5);
@@ -1282,6 +1292,7 @@ let items = {
     energydrink_pink(args) {
         return {
             ...items.default(), source: "energy_drink_pink", name: "Energy Drink",
+            desc: "Drink in a battle for a short strength & AGI boost!",
             type: "potion", max: 12, shopcost: 1200, battleonly: true,
             effect: () => {
                 tempBuffAdd(args.player.name, "strength", 1.5, 6);
@@ -1294,6 +1305,7 @@ let items = {
     syringeagility(args) {
         return {
             ...items.default(), source: "syringe_agility", name: "Agility Syringe",
+            desc: "Use in a battle for an AGI boost",
             type: "potion", max: 30, shopcost: 500, battleonly: true,
             effect: () => {
                 tempBuffAdd(args.player.name, "agi", 1.5, 10);
@@ -1304,6 +1316,7 @@ let items = {
     syringecrit(args) {
         return {
             ...items.default(), source: "syringe_crit", name: "Crit Syringe",
+            desc: "Use in a battle for a crit boost",
             type: "potion", max: 30, shopcost: 500, battleonly: true,
             effect: () => {
                 tempBuffAdd(args.player.name, "crt", 1.5, 10);
@@ -1314,6 +1327,7 @@ let items = {
     syringedefense(args) {
         return {
             ...items.default(), source: "syringe_defense", name: "Defense Syringe",
+            desc: "Use in a battle for a defense boost",
             type: "potion", max: 30, shopcost: 500, battleonly: true,
             effect: () => {
                 tempBuffAdd(args.player.name, "def", 1.5, 10);
@@ -1324,6 +1338,7 @@ let items = {
     syringeevasion(args) {
         return {
             ...items.default(), source: "syringe_evasion", name: "Evasion Syringe",
+            desc: "Use in a battle for an EVA boost",
             type: "potion", max: 30, shopcost: 500, battleonly: true,
             effect: () => {
                 tempBuffAdd(args.player.name, "eva", 1.5, 10);
@@ -1334,6 +1349,7 @@ let items = {
     syringeluck(args) {
         return {
             ...items.default(), source: "syringe_luck", name: "Luck Syringe",
+            desc: "Use in a battle for a luck boost",
             type: "potion", max: 30, shopcost: 500, battleonly: true,
             effect: () => {
                 tempBuffAdd(args.player.name, "luk", 1.5, 10);
@@ -1344,6 +1360,7 @@ let items = {
     syringestrength(args) {
         return {
             ...items.default(), source: "syringe_strength", name: "Strength Syringe",
+            desc: "Use in a battle for a strength boost",
             type: "potion", max: 30, shopcost: 500, battleonly: true,
             effect: () => {
                 tempBuffAdd(args.player.name, "strength", 1.5, 10);
@@ -1356,6 +1373,7 @@ let items = {
         return {
             ...items.default(),
             source: "wing", name: "Angel Wing", type: "potion",
+            desc: "Used to revive a fallen protagonist.",
             max: 99, shopcost: 2500,
             effect: () => {
                 let HealthBefore = args.player.HP
@@ -1381,6 +1399,7 @@ let items = {
         return {
             ...items.default(),
             source: "potion", name: "Small Potion", type: "potion",
+            desc: "Heals 20 HP",
             max: 99, shopcost: 200,
             effect: () => {
                 healPlayer(args.player, 20, args.anchor, args.offset);
@@ -1392,6 +1411,7 @@ let items = {
         return {
             ...items.default(),
             source: "potion_medium", name: "Medium Potion", type: "potion",
+            desc: "Heals 50 HP",
             max: 99, shopcost: 600,
             effect: () => {
                 healPlayer(args.player, 50, args.anchor, args.offset);
@@ -1403,6 +1423,7 @@ let items = {
         return {
             ...items.default(),
             source: "potion_large", name: "Large Potion", type: "potion",
+            desc: "Heals 100 HP",
             max: 99, shopcost: 1500,
             effect: () => {
                 healPlayer(args.player, 100, args.anchor, args.offset);
@@ -1415,6 +1436,7 @@ let items = {
         return {
             ...items.default(),
             source: "instrument", name: "Buffatone", type: "potion",
+            desc: "Heals HP and gives a temp. DEF boost based on your active temp. boosts!",
             max: 99, shopcost: 500,
             effect: () => {
                 // heals you 10 HP, doubled for every buff you had, then gives def
@@ -1432,6 +1454,7 @@ let items = {
         return {
             ...items.default(),
             source: "mirror", name: "Mirror Of Evasion",
+            desc: "Look in the mirror and get more EVA!",
             shopcost: 1000, type: "armor", piece: "acc1",
             stats: { "eva": 10 },
             ...args || {},
@@ -1442,6 +1465,7 @@ let items = {
         return {
             ...items.default(),
             source: "superswamp", name: "Swamp Buddy",
+            desc: "A silly companion that increases your luck.",
             shopcost: 1000, type: "armor", piece: "acc1",
             stats: { "luk": 10 },
             ...args || {},
