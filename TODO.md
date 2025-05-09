@@ -1,9 +1,9 @@
 ﻿## TODO:
-- Item images, items & equipment
 - Enemies
 - Map Enemies
 - Tilsets, images & adding tiles to MM
 - Making lots of maps
+- Music
 
 - Monster Book: Enemy details
 - Credits scene (roles & contributons in the roles)

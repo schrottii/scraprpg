@@ -25,30 +25,37 @@ var CAM_OY = 0;
 
 // Function used to grab tiles
 function getTile(map, x, y, l = 1) {
+    //console.log(map, x, y, l)
+
     if (y < 0) return undefined;
+
+    let thetile;
     x = Math.floor(x);
     y = Math.floor(y);
+
     if (l == 1) {
         if (map.map[y] != undefined) {
-            let thetile = map.map[y][x * 4] + map.map[y][(x * 4) + 1] + map.map[y][(x * 4) + 2];
-            if (map.tiles[thetile] == undefined) return commontiles[thetile];
-            return map.tiles[thetile];
+            thetile = map.map[y][x * 4] + map.map[y][(x * 4) + 1] + map.map[y][(x * 4) + 2];
         }
     }
     if (l == 2) {
         if (map.mapbg2[y] != undefined) {
-            let thetile = map.mapbg2[y][x * 4] + map.mapbg2[y][(x * 4) + 1] + map.mapbg2[y][(x * 4) + 2];
-            if (map.tiles[thetile] == undefined) return commontiles[thetile];
-            return map.tiles[thetile];
+            thetile = map.mapbg2[y][x * 4] + map.mapbg2[y][(x * 4) + 1] + map.mapbg2[y][(x * 4) + 2];
         }
     }
     if (l == 3) {
         if (map.mapfg[y] != undefined) {
-            let thetile = map.mapfg[y][x * 4] + map.mapfg[y][(x * 4) + 1] + map.mapfg[y][(x * 4) + 2];
-            if (map.tiles[thetile] == undefined) return commontiles[thetile];
-            return map.tiles[thetile];
+            thetile = map.mapfg[y][x * 4] + map.mapfg[y][(x * 4) + 1] + map.mapfg[y][(x * 4) + 2];
         }
     }
+
+    if (map.tiles[thetile] != undefined) return map.tiles[thetile];
+    if (commontiles[thetile] != undefined) return commontiles[thetile];
+
+    let fallBack = map.tiles.empty;
+    if (l == 1) fallBack.occupied = true;
+    else fallBack.occupied = false;
+    return fallBack;
 }
 
 function startDialogue(cd) {
@@ -59,24 +66,6 @@ function startDialogue(cd) {
     dialogueProgress = 0;
     dialogueEmotion = currentDialogue[dialogueProgress].portrait;
     canMove = false;
-}
-
-function causeEffect(i, effect, rounds) {
-    // Immune?
-    for (j in getPlayer(i + 1).equipment) {
-        if (getPlayer(i + 1).equipment[j] != "none") {
-            if (items[getPlayer(i + 1).equipment[j]]().stats.immune != undefined) {
-                for (e in items[getPlayer(i + 1).equipment[j]]().stats.immune) {
-                    if (items[getPlayer(i + 1).equipment[j]]().stats.immune[e] == effect) {
-                        return false;
-                    }
-                }
-            }
-        }
-    }
-
-    // Not immune!
-    getPlayer(i + 1).effect = [effect, rounds];
 }
 
 function startFight(type = "default", enemies = "default") {
@@ -90,17 +79,6 @@ function startFight(type = "default", enemies = "default") {
     if (type == "nogameover") playMusic("bgm/boss");
     else playMusic("bgm/fight");
     setScene(scenes.fight());
-}
-
-function clearCurrentEnemies() {
-    currentEnemies = [];
-}
-
-function checkOverMax() {
-    for (i in game.characters) {
-        game.characters[i].HP = Math.min(game.characters[i].HP, getStat(game.characters[i].name, "maxHP"));
-        game.characters[i].EP = Math.min(game.characters[i].EP, getStat(game.characters[i].name, "maxEP"));
-    }
 }
 
 let autoSaveText = controls.label({
@@ -611,13 +589,15 @@ scenes.game = () => {
     // Function to check if a tile is, well, walkable
     // Define if a tile (e. g. water) is walkable in the sprites dict
     function isWalkable(map, x, y, l = 1) {
-        if (map.map[Math.round(y)] && getTile(map, x, y, l)) { //Check if tile exists
+        if (map.map[Math.round(y)] && getTile(map, x, y, l)) { // Check if tile exists
             for (i = 0; i < activenpcs.length; i++) {
                 if (activenpcs[i].position[0] == x && activenpcs[i].position[1] == y) return false;
             }
+
             x = Math.floor(x);
             y = Math.floor(y);
-            if (getTile(map, x, y, l).occupied != undefined) { //Check if occupied exists
+
+            if (getTile(map, x, y, l).occupied != undefined) { // Check if occupied exists
                 if (typeof (getTile(map, x, y, l).occupied) == "object") { // Config exists?
                     if (direction == "up" && getTile(map, x, y, l).occupied.includes("up")) {
                         return true;
@@ -872,9 +852,10 @@ scenes.game = () => {
         }
 
         // Spawn enemies (sometimes)
+        // hmkgjfvmgmf
         if (enemiesOnThisMap < maxEnemies) {
             for (possibleSpawns in map.spawns) {
-                if (map.spawns[possibleSpawns] > Math.random() * 100) { // For the stupid: Somewhat unlikely
+                if (map.spawns[possibleSpawns] > Math.random() * 100) {
                     if (mapenemies[possibleSpawns] != undefined) {
                         if (mapenemies[possibleSpawns]().time == "day" && !isDay()) return false;
                         if (mapenemies[possibleSpawns]().time == "dawn" && !isDawn()) return false;

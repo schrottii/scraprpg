@@ -735,7 +735,7 @@ scenes.mapmaker = () => {
 
                 let cordX = parseInt(tileSetSnip.split(".")[0]);
                 let cordY = parseInt(tileSetSnip.split(".")[1]);
-                
+
 
                 let tempName = cordX + (cordY * 10);
                 tempName = tempName.toString();
@@ -889,16 +889,23 @@ scenes.mapmaker = () => {
 
     function createNewMap(mapName) {
         currentMap = mapName;
-        map = {
+        map = { // CREATE NEW MAP
             id: mapName,
             tiles: {
                 empty: {
-                    sprite: "empty",
+                    sprite: "empty"
                 },
             },
             map: ["---"],
             mapbg2: ["---"],
             mapfg: ["---"],
+
+            // useful default values
+            name: "newMap",
+            maxEnemies: 8,
+            weather: "none",
+            weatherStrength: 1,
+            worldmode: false
         }
         newMap();
     }
@@ -1182,7 +1189,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let voices = [false, "male_young", "male_grown", "female_young", "female_grown"];
-                
+
                 if (map.dialogues[curDia].lines[curLine].voice == voices[voices.length - 1]) map.dialogues[curDia].lines[curLine].voice = voices[0];
                 else map.dialogues[curDia].lines[curLine].voice = voices[voices.indexOf(map.dialogues[curDia].lines[curLine].voice) + 1];
 
@@ -1706,9 +1713,12 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) {
                 let newName = prompt("New map name?");
                 map.name = newName;
-                this.text = "Map name: " + newName;
                 currentMap = newName;
+                this.uText();
             }
+        },
+        uText() {
+            this.text = "Map name: " + map.name;
         }
     }));
     mapInfoControls.push(controls.button({
@@ -1718,8 +1728,11 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) {
                 let newIntro = prompt("New map music intro?");
                 if (newIntro != undefined) map.intro = newIntro;
-                this.text = "Music intro: " + newIntro;
+                this.uText();
             }
+        },
+        uText() {
+            this.text = "Music intro: " + map.intro;
         }
     }));
     mapInfoControls.push(controls.button({
@@ -1729,8 +1742,11 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) {
                 let newLoop = prompt("New map music loop?");
                 if (newLoop != undefined) map.music = newLoop;
-                this.text = "Music loop: " + newLoop;
+                this.uText();
             }
+        },
+        uText() {
+            this.text = "Music loop: " + map.music;
         }
     }));
     mapInfoControls.push(controls.button({
@@ -1744,8 +1760,11 @@ scenes.mapmaker = () => {
                 if (this.i >= weathers.length) this.i = 0;
 
                 map.weather = newWeather;
-                this.text = "Weather: " + newWeather;
+                this.uText();
             }
+        },
+        uText() {
+            this.text = "Weather: " + map.weather;
         }
     }));
     mapInfoControls.push(controls.button({
@@ -1754,9 +1773,12 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newWeather = prompt("New weather strength? (default is 1)");
-                if (newWeather != undefined) map.weatherStrength = newWeather;
-                this.text = "Weather Strength: " + newWeather;
+                if (newWeather != undefined) map.weatherStrength = parseInt(newWeather);
+                this.uText();
             }
+        },
+        uText() {
+            this.text = "Weather Strength: " + map.weatherStrength;
         }
     }));
     mapInfoControls.push(controls.button({
@@ -1764,17 +1786,19 @@ scenes.mapmaker = () => {
         text: "Worldmode: OFF", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                if (this.text == "Worldmode: OFF") {
-                    this.text = "Worldmode: ON";
+                if (map.worldmode != true) {
                     map.worldmode = true;
                 }
                 else {
-                    this.text = "Worldmode: OFF";
                     map.worldmode = false;
                     game.position[0] = Math.ceil(game.position[0]);
                     game.position[1] = Math.ceil(game.position[1]);
                 }
+                this.uText();
             }
+        },
+        uText() {
+            this.text = "Worldmode: " + (map.worldmode ? "ON" : "OFF");
         }
     }));
     mapInfoControls.push(controls.button({
@@ -1799,13 +1823,16 @@ scenes.mapmaker = () => {
                 let newSprite = prompt("New empty sprite? (e. g. water)");
                 if (images["tiles/" + newSprite] != undefined) {
                     map.tiles.empty.sprite = newSprite;
-                    this.text = "Empty sprite: " + newSprite;
                     updateTiles = true;
+                    this.uText();
                 }
                 else {
                     alert("Error: Does not exist!")
                 }
             }
+        },
+        uText() {
+            this.text = "Empty sprite: " + map.tiles.empty.sprite;
         }
     }));
     mapInfoControls.push(controls.button({
@@ -1815,9 +1842,13 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) {
                 if (this.alpha == 1) {
                     map.maxEnemies = Math.max(0, Math.round(prompt("New max.? (e. g. 8)")));
-                    this.text = "Max. enemies: " + map.maxEnemies;
+
+                    this.uText();
                 }
             }
+        },
+        uText() {
+            this.text = "Max. enemies: " + map.maxEnemies;
         }
     }));
     mapInfoControls.push(controls.button({
@@ -2423,7 +2454,9 @@ scenes.mapmaker = () => {
             for (w in walkPad) {
                 walkPad[w].alpha = 0;
             }
+            // update their texts and show
             for (mi in mapInfoControls) {
+                if (mapInfoControls[mi].uText != undefined) mapInfoControls[mi].uText();
                 mapInfoControls[mi].alpha = 1;
             }
         }
@@ -3289,7 +3322,7 @@ scenes.mapmaker = () => {
             ...tilesMenuControls, ...tilesMenuTiles, ...tilesMenuIcons,
             ...createTileBG, ...createTileButtons,
             ...createDialogueButtons, ...createDialogueLabels, ...createNPCButtons, ...createNPCLabels,
-            toggleMakerInfo, ...makerInfo, ...makerInfoText, 
+            toggleMakerInfo, ...makerInfo, ...makerInfoText,
             ...tileInfoControls, autoSaveText
         ],
         name: "mapmaker"

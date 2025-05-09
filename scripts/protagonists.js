@@ -110,6 +110,31 @@ function checkLevelUps() {
     }
 }
 
+function causeEffect(i, effect, rounds) {
+    // Immune?
+    for (j in getPlayer(i + 1).equipment) {
+        if (getPlayer(i + 1).equipment[j] != "none") {
+            if (items[getPlayer(i + 1).equipment[j]]().stats.immune != undefined) {
+                for (e in items[getPlayer(i + 1).equipment[j]]().stats.immune) {
+                    if (items[getPlayer(i + 1).equipment[j]]().stats.immune[e] == effect) {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+    // Not immune!
+    getPlayer(i + 1).effect = [effect, rounds];
+}
+
+function checkOverMax() {
+    for (i in game.characters) {
+        game.characters[i].HP = Math.min(game.characters[i].HP, getStat(game.characters[i].name, "maxHP"));
+        game.characters[i].EP = Math.min(game.characters[i].EP, getStat(game.characters[i].name, "maxEP"));
+    }
+}
+
 function tempBuffAdd(char, stat, amount, dur){
     // looks like this: ["strength", 2, 999] -> x2 strength for rest of fight
     let hasBuff = -1;
