@@ -5,7 +5,7 @@ var positions;
 var defeatType = "default"; // default or nogameover
 
 // Colors of the range indicator
-const rangeColors = ["red", "pink", "blue"];
+const rangeColors = ["red", "#ff00ff", "blue"];
 
 function healPlayer(player, amount, anchor = 0, offset = 0) {
     let HealthBefore = player.HP;
@@ -24,7 +24,7 @@ function healAllPlayers(amount, anchor = 0, offset = 0) {
     }
 }
 
-function battleNumber(pos, amount, type, offset = [0, 0], crit = false) {
+function battleNumber(pos, displayText, type, offset = [0, 0], crit = false) {
     // Type 0 is HP, 1 is EP
     let bn;
     if (battleNumbers[0].alpha == 0) bn = 0;
@@ -33,8 +33,8 @@ function battleNumber(pos, amount, type, offset = [0, 0], crit = false) {
 
     let fontToUse = "DePixelKlein";
     let fontSizeToUse = 24;
-    let n = amount;
-    if (n < 0) n = amount * (-1);
+    let n = displayText;
+    if (n < 0) n = displayText * (-1);
 
     if (n > 50 && n < 200) fontToUse = "DePixelBreit";
     if (n > 199) fontToUse = "DePixelHalbfett";
@@ -48,18 +48,18 @@ function battleNumber(pos, amount, type, offset = [0, 0], crit = false) {
     battleNumbers[bn].anchor[1] = pos[1];
     battleNumbers[bn].offset[0] = offset[0];
     battleNumbers[bn].offset[1] = offset[1];
-    if (crit) battleNumbers[bn].text = amount + "!".repeat(amount.toString().length - 1);
-    else battleNumbers[bn].text = amount;
+    if (crit) battleNumbers[bn].text = displayText + "!".repeat(displayText.toString().length - 1);
+    else battleNumbers[bn].text = displayText;
     battleNumbers[bn].alpha = 1;
 
     // Arbitrary variables
     let bounceHeight = 0.4;
     let timeOffset = 0;
 
-    if (type == 0 && amount < 0) battleNumbers[bn].fill = "white";
-    if (type == 0 && amount > 0) battleNumbers[bn].fill = "green";
-    if (type == 1 && amount < 0) battleNumbers[bn].fill = "yellow";
-    if (type == 1 && amount > 0) battleNumbers[bn].fill = "pink";
+    if (type == 0 && displayText < 0) battleNumbers[bn].fill = "white";
+    if (type == 0 && displayText > 0) battleNumbers[bn].fill = "green";
+    if (type == 1 && displayText < 0) battleNumbers[bn].fill = "yellow";
+    if (type == 1 && displayText > 0) battleNumbers[bn].fill = "pink";
 
     addAnimator(function (t) {
         if (bounceHeight > 0.001) {
@@ -2831,10 +2831,25 @@ scenes.fight = () => {
                 pos2: j,
                 glow: 8,
                 onClick(args) {
+                    // ENEMY CLICK / SELECT ENEMY
                     if (fightWon) return false;
 
                     let dude = positions[selectedAlly[0]][selectedAlly[1]].occupied;
-                    if (fightAction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
+
+                    if (!canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])){
+                        // can't reach enemy :C
+                        battleNumber(this.anchor, "Too far! (" + (getStat(dude, "length") - 1) + "/" + getDistance("enemy", [this.pos1, this.pos2]) + ")", 1, this.offset);
+                        
+                        /*
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "grid";
+                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].blend = "mul";
+                        selectedAlly = [0, 0];
+                        fightAction = "none";
+                        */
+                        return false;
+                    }
+
+                    if (fightAction == "attack2" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "hasaction";
                         fightInventory[6].offset[1] = -500;
                         changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "attack");
@@ -2848,7 +2863,7 @@ scenes.fight = () => {
                         hidefightInventory();
                         //attackEnemy(selectedAlly[0], selectedAlly[1], this.pos1, this.pos2); // direct attack, testing thing
                     }
-                    if (fightAction == "magic" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
+                    if (fightAction == "magic" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = selectedItem().source;
                         changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "magic");
                         if (epositions[this.pos1][this.pos2].parent == undefined) positions[selectedAlly[0]][selectedAlly[1]].action = ["magic", selectedItem.name, selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
@@ -2861,7 +2876,7 @@ scenes.fight = () => {
                         hideFightButtons();
                         hidefightInventory();
                     }
-                    if (fightAction == "scan" && positions[selectedAlly[0]][selectedAlly[1]].action == false && canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])) {
+                    if (fightAction == "scan" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "scan";
 
                         if (epositions[this.pos1][this.pos2].parent == undefined) positions[selectedAlly[0]][selectedAlly[1]].action = ["scan", selectedAlly[0], selectedAlly[1], this.pos1, this.pos2];
