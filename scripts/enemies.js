@@ -74,7 +74,7 @@ let enemyTypes = {
         agi: 30,
         luk: 3,
         element: "physical",
-        items: ["potion", "brickyleaf", "peppytincture", "superswamp"],
+        items: { "potion": 25},
     },
 
     "stronghelter": {
@@ -98,7 +98,7 @@ let enemyTypes = {
         agi: 10,
         luk: 3,
         element: "wind",
-        items: ["potion"],
+        items: { "potion": 25},
     },
 
     "livingbarrel": {

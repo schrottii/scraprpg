@@ -783,6 +783,7 @@ scenes.fight = () => {
                 let pos2 = positions[pos[0]][pos[1]].action[4];
 
                 selectedAlly = [positions[pos[0]][pos[1]].action[1], positions[pos[0]][pos[1]].action[2]];
+                allyIsSelected();
 
                 fightAction = "attack4"; // To avoid being able to click over and over again to get duplicate damage / EXP
 
@@ -802,6 +803,7 @@ scenes.fight = () => {
                 break;
             case "sattack": // self attack
                 selectedAlly = [activeCharacter.action[1], activeCharacter.action[2]];
+                allyIsSelected();
 
                 let HealthBefore = game.characters[positions[activeCharacter.action[3]][activeCharacter.action[4]].occupied].HP;
                 let Damage = calculateDamage(3, activeCharacter.action[1], activeCharacter.action[2], activeCharacter.action[3], activeCharacter.action[4])[1];
@@ -828,6 +830,7 @@ scenes.fight = () => {
                 break;
             case "heal": // heal
                 selectedAlly = [activeCharacter.action[1], activeCharacter.action[2]];
+                allyIsSelected();
 
                 game.characters[positions[activeCharacter.action[3]][activeCharacter.action[4]].occupied].HP += getStat(positions[selectedAlly[0]][selectedAlly[1]].occupied, "strength");
 
@@ -1689,7 +1692,7 @@ scenes.fight = () => {
     function normalActionsButton(i) {
         //if (i == 0) { // Normal Actions
         actionButtons.push(controls.rect({
-            anchor: [0.3, i * 0.055], sizeAnchor: [0.15, 0.055], offset: [0, -500],
+            anchor: [0.17, i * 0.055], sizeAnchor: [0.15, 0.055], offset: [0, -500],
             fill: "rgb(191, 137, 69)",
             alpha: 1,
             i: i,
@@ -1757,14 +1760,14 @@ scenes.fight = () => {
         normalActionsButton(i);
 
         actionButtons.push(controls.rect({
-            anchor: [0.3025, 0.0025 + (i * 0.055)], sizeAnchor: [0.145, 0.05], offset: [0, -500],
+            anchor: [0.1725, 0.0025 + (i * 0.055)], sizeAnchor: [0.145, 0.05], offset: [0, -500],
             fill: "rgb(221, 155, 79)",
             alpha: 1,
             char: ["all", "all", "all", "gau", "corelle", "grun", "all"][i]
         }));
 
         actionButtons.push(controls.label({
-            anchor: [0.445, 0.025 + (i * 0.055)], offset: [0, -500],
+            anchor: [0.17 + 0.145, 0.025 + (i * 0.055)], offset: [0, -500],
             text: ["Attack", "Defend", "Scan", "Rally", "Pray", "Counterattack", "Back"][i],
             fontSize: 24, fill: "black", align: "right",
             alpha: 1,
@@ -1779,6 +1782,28 @@ scenes.fight = () => {
         text: "...",
         alpha: 1,
     });
+
+    var selectedStats = controls.label({
+        anchor: [0.69, 0.2],
+        fontSize: 24, fill: "rgb(125, 255, 0)", align: "left", outline: "darkgreen", outlineSize: 8,
+        text: "...",
+        alpha: 0,
+    });
+
+    function allyIsSelected(updateGrid = false) {
+        if (updateGrid) {
+            positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
+            positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].blend = "add";
+        }
+
+        let they = positions[selectedAlly[0]][selectedAlly[1]].occupied;
+        selectedStats.text = they.toUpperCase() + " >"
+        + " STR: " + getStat(they, "strength")
+        + " RCH: " + getStat(they, "length") + "/3"
+        + " ACC: " + getStat(they, "acc")
+        + " CRT: " + getStat(they, "crt");
+        selectedStats.alpha = 1;
+    }
 
     for (i = 0; i < 50; i++) {
         fleeWrenches.push(controls.image({
@@ -1916,7 +1941,7 @@ scenes.fight = () => {
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 6; i++) {
             fightInventory.push(controls.rect({
-                anchor: [0.33 + (j * 0.17), 0 + (i * 0.055)], sizeAnchor: [0.17, 0.055], offset: [0, -500],
+                anchor: [0.17 + (j * 0.17), 0 + (i * 0.055)], sizeAnchor: [0.17, 0.055], offset: [0, -500],
                 fill: "rgb(38, 52, 38)",
                 alpha: 1,
                 item: "", type: "item",
@@ -1955,18 +1980,18 @@ scenes.fight = () => {
                 }
             }));
             fightInventory.push(controls.rect({
-                anchor: [0.3325 + (j * 0.17), 0.0025 + (i * 0.055)], sizeAnchor: [0.165, 0.05], offset: [0, -500],
+                anchor: [0.1725 + (j * 0.17), 0.0025 + (i * 0.055)], sizeAnchor: [0.165, 0.05], offset: [0, -500],
                 fill: "rgb(42, 87, 44)",
                 alpha: 1,
             }));
             fightInventory.push(controls.label({
-                anchor: [0.48 + (j * 0.17), 0.025 + (i * 0.055)], offset: [-24, -500],
+                anchor: [0.17 + 0.15 + (j * 0.17), 0.025 + (i * 0.055)], offset: [-24, -500],
                 text: "---",
                 fontSize: 20, fill: "white", align: "right",
                 alpha: 1,
             }));
             fightInventory.push(controls.image({
-                anchor: [0.48 + (j * 0.17), 0.025 + (i * 0.055)], sizeOffset: [32, 32], offset: [0, -520],
+                anchor: [0.17 + 0.15 + (j * 0.17), 0.025 + (i * 0.055)], sizeOffset: [32, 32], offset: [0, -520],
                 source: "gear",
                 alpha: 0,
             }));
@@ -1974,7 +1999,7 @@ scenes.fight = () => {
         }
     }
     fightInventory.push(controls.rect({
-        anchor: [0.67, 0.33], sizeAnchor: [0.17, 0.055], offset: [0, -500],
+        anchor: [0.51, 0.33], sizeAnchor: [0.17, 0.055], offset: [0, -500],
         fill: "rgb(38, 52, 38)",
         alpha: 1,
         item: "",
@@ -1987,19 +2012,19 @@ scenes.fight = () => {
         }
     }));
     fightInventory.push(controls.rect({
-        anchor: [0.6725, 0.3325], sizeAnchor: [0.165, 0.05], offset: [0, -500],
+        anchor: [0.5125, 0.3325], sizeAnchor: [0.165, 0.05], offset: [0, -500],
         fill: "rgb(42, 87, 44)",
         alpha: 1,
     }))
     fightInventory.push(controls.label({
-        anchor: [0.67 + 0.17 / 2, 0.355], offset: [0, -500],
+        anchor: [0.51 + 0.17 / 2, 0.355], offset: [0, -500],
         text: "Back",
         fontSize: 20, fill: "white", align: "center",
         alpha: 1,
     }))
 
     fightInventory.push(controls.rect({
-        anchor: [0.67, 0.0], sizeAnchor: [0.17, 0.055], offset: [0, -500],
+        anchor: [0.51, 0.0], sizeAnchor: [0.17, 0.055], offset: [0, -500],
         fill: "rgb(38, 52, 38)",
         alpha: 1,
         item: "",
@@ -2013,19 +2038,19 @@ scenes.fight = () => {
         }
     }));
     fightInventory.push(controls.rect({
-        anchor: [0.6725, 0.0025], sizeAnchor: [0.165, 0.05], offset: [0, -500],
+        anchor: [0.5125, 0.0025], sizeAnchor: [0.165, 0.05], offset: [0, -500],
         fill: "rgb(42, 87, 44)",
         alpha: 1,
     }))
     fightInventory.push(controls.label({
-        anchor: [0.67 + 0.17 / 2, 0.025], offset: [0, -500],
+        anchor: [0.51 + 0.17 / 2, 0.025], offset: [0, -500],
         text: "Previous",
         fontSize: 20, fill: "white", align: "center",
         alpha: 1,
     }))
 
     fightInventory.push(controls.rect({
-        anchor: [0.67, 0.055], sizeAnchor: [0.17, 0.055], offset: [0, -500],
+        anchor: [0.51, 0.055], sizeAnchor: [0.17, 0.055], offset: [0, -500],
         fill: "rgb(38, 52, 38)",
         alpha: 1,
         item: "",
@@ -2046,12 +2071,12 @@ scenes.fight = () => {
         }
     }));
     fightInventory.push(controls.rect({
-        anchor: [0.6725, 0.0575], sizeAnchor: [0.165, 0.05], offset: [0, -500],
+        anchor: [0.5125, 0.0575], sizeAnchor: [0.165, 0.05], offset: [0, -500],
         fill: "rgb(42, 87, 44)",
         alpha: 1,
     }))
     fightInventory.push(controls.label({
-        anchor: [0.67 + 0.17 / 2, 0.08], offset: [0, -500],
+        anchor: [0.51 + 0.17 / 2, 0.08], offset: [0, -500],
         text: "Next",
         fontSize: 20, fill: "white", align: "center",
         alpha: 1,
@@ -2118,11 +2143,11 @@ scenes.fight = () => {
             epositions[pos1][pos2].action = false;
             enemyAmounts[pos1 + (pos2 * 3)] = "";
 
-            // Random item
+            // Get items from enemies
             if (epositions[pos1][pos2].items != "none") {
                 for (i in epositions[pos1][pos2].items) {
-                    if (Math.random() > 0.2) { // 80% chance
-                        gainedItems.push(epositions[pos1][pos2].items[i]);
+                    if (epositions[pos1][pos2].items[i] / 100 > Math.random()) {
+                        gainedItems.push(i);
                     }
                 }
             }
@@ -2748,9 +2773,9 @@ scenes.fight = () => {
                     if (fightAction == "none" && game.characters[name].effect[0] == "enraged") {
                         changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "rage");
                         fightAction = "attack2";
+
                         selectedAlly = [this.pos1, this.pos2];
-                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
-                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].blend = "add";
+                        allyIsSelected(true);
 
                         postLog(game.characters[name].name + " is very angry!")
 
@@ -2774,8 +2799,8 @@ scenes.fight = () => {
                     // Select character
                     if (fightAction == "none" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true) {
                         selectedAlly = [this.pos1, this.pos2];
-                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
-                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].blend = "add";
+                        allyIsSelected(true);
+
                         fightAction = "active";
                         showFightButtons();
                     }
@@ -2804,8 +2829,8 @@ scenes.fight = () => {
 
                     if (fightAction == "heal1" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true && game.characters[positions[this.pos1][this.pos2].occupied].HP > 0) {
                         selectedAlly = [this.pos1, this.pos2];
-                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "selected";
-                        positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].blend = "add";
+                        allyIsSelected();
+
                         fightAction = "heal2";
                     }
                     else if (fightAction == "heal2" && positions[this.pos1][this.pos2].action == false && positions[this.pos1][this.pos2].isOccupied == true && game.characters[positions[this.pos1][this.pos2].occupied].HP > 0) {
@@ -2838,7 +2863,7 @@ scenes.fight = () => {
 
                     if (!canReach(getStat(dude, "length"), "enemy", [this.pos1, this.pos2])){
                         // can't reach enemy :C
-                        battleNumber(this.anchor, "Too far! (" + (getStat(dude, "length") - 1) + "/" + getDistance("enemy", [this.pos1, this.pos2]) + ")", 1, this.offset);
+                        battleNumber(this.anchor, "Too far! (" + getStat(dude, "length") + "/" + (1 + getDistance("enemy", [this.pos1, this.pos2])) + ")", 1, this.offset);
                         
                         /*
                         positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "grid";
@@ -3453,7 +3478,8 @@ scenes.fight = () => {
         // Controls
         controls: [
             // Load all the nice stuff
-            ...positionGrid, ...fightButtons, ...fightInventory, ...actionButtons, turnDisplay, fleeLoss, fleeIcon, ...orderDisplay,
+            ...positionGrid, ...fightButtons, ...fightInventory, ...actionButtons, 
+            turnDisplay, selectedStats, fleeLoss, fleeIcon, ...orderDisplay,
             ...fightLogComponents, ...enemyListComponents,
             ...fightOverview,
             ...fightStats, actionDisplay, ...gameOverScreen,
