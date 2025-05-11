@@ -747,13 +747,22 @@ scenes.game = () => {
             // It automatically grabs the enemies that can appear in the fight
             // based on what is defined in the enemies dict of the map enemy
             // change in map_enemies.js
-            while (currentEnemies.length < 1) {
-                for (k = 0; k < 8; k++) {
-                    for (j in enemies[i].enemies) {
-                        if (enemies[i].enemies[j] > (Math.random() * 100)) {
-                            createEnemy(j);
+            if (enemies[i].gen == undefined) {
+                while (currentEnemies.length < 1) {
+                    for (let k = 0; k < 8; k++) {
+                        for (let j in enemies[i].enemies) {
+                            if (enemies[i].enemies[j] > (Math.random() * 100)) {
+                                createEnemy(j);
+                            }
                         }
                     }
+                }
+            }
+            else {
+                // already pre-generated
+                console.log("from pregen")
+                for (let j in enemies[i].gen){
+                    createEnemy(enemies[i].gen[j]);
                 }
             }
 
@@ -868,9 +877,30 @@ scenes.game = () => {
                             if (maps[game.map].map[i].length > mapWidth) mapWidth = maps[game.map].map[i].length;
                         }
                     }
+
+                    // generate map enemy
                     enemies.push(mapenemies[possibleSpawns]({
                         position: [Math.floor(Math.random() * mapWidth), Math.floor(Math.random() * maps[game.map].map.length)], map: game.map,
                     }));
+
+                    // sprite gen
+                    let latest = enemies[enemies.length - 1];
+                    if (latest.source == "gen") {
+                        latest.gen = [];
+                        while (latest.gen.length < 1) {
+                            for (let k = 0; k < 8; k++) {
+                                for (let j in latest.enemies) {
+                                    if (latest.enemies[j] > (Math.random() * 100)) {
+                                        latest.gen.push(j);
+                                    }
+                                }
+                            }
+                        }
+
+                        // set as source
+                        latest.source = "enemies/" + enemyTypes[latest.gen[Math.floor(Math.random() * latest.gen.length)]].source;
+                        //console.log("source set: " + latest.source);
+                        }
                 }
             }
         }
@@ -1291,7 +1321,7 @@ scenes.game = () => {
                                     enemies[i].position = [Math.floor(Math.random() * maps[game.map].map[0].length), Math.floor(Math.random() * maps[game.map].map.length)];
                                 }
                                 else {
-                                    enemies[i].alpha = enemies[i].opacity;
+                                    enemies[i].alpha = enemies[i].alpha;
                                 }
                             }
                         }

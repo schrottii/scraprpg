@@ -63,6 +63,15 @@ function tryCreateAgain(pox, poy, big = false) {
     return [0, 0, 9999];
 }
 
+function exampleFight() {
+    createEnemy("weakhelter");
+    createEnemy("ent_weak");
+    createEnemy("evil_peter");
+    createEnemy("home_runner");
+    createEnemy("slime_green");
+    createEnemy("postbox");
+}
+
 // All the enemies
 let enemyTypes = {
     // DEFAULT
@@ -73,18 +82,39 @@ let enemyTypes = {
         items: { "potion": 25 },
     },
 
-    // IDAHO IS GON KIL U!!
+    // Forest / starter enemies
     "ent_weak": {
         name: "Weak Ent", source: "ent", element: "earth",
         HP: 4, strength: 4,
         eva: 10, acc: 60, agi: 20, luk: 0,
-        items: { "headwood": 25, "bodywood": 25, "swordwood": 25, "shieldwood": 25 },
+        items: { "headwood": 15, "bodywood": 15, "swordwood": 15, "shieldwood": 15 },
     },
     
     "evil_peter": {
         name: "Evil Peter", source: "evilpeter", element: "physical",
         HP: 6, strength: 2,
-        eva: 10, acc: 50, agi: 60, luk: 20,
+        eva: 10, acc: 50, agi: 66, luk: 20,
+        items: "none",
+    },
+
+    "home_runner": {
+        name: "Home Runner", source: "homerunner", element: "physical",
+        HP: 12, strength: 3,
+        eva: 0, acc: 70, agi: 50, luk: 10,
+        items: { "baseballbat": 20 },
+    },
+    
+    "slime_green": {
+        name: "Green Slime", source: "slimegreen", element: "earth",
+        HP: 8, strength: 4,
+        eva: 0, acc: 80, agi: 24, luk: 0,
+        items: { "headearth": 5, "bodyearth": 5, "swordearth": 5, "shieldearth": 5 },
+    },
+
+    "postbox": {
+        name: "Postbox", source: "postbox", element: "physical",
+        HP: 15, strength: 2,
+        eva: 0, acc: 80, agi: 26, luk: 0,
         items: "none",
     },
 

@@ -39,7 +39,7 @@ scenes.equipment = () => {
         fill: "white"
     }));
     background.push(controls.rect({
-        anchor: [0.55, 0.1], sizeAnchor: [0.44, 0.6],
+        anchor: [0.4, 0.1], sizeAnchor: [0.59, 0.6],
         fill: colors.buttontoppressed,
         alpha: 1
     }));
@@ -48,8 +48,13 @@ scenes.equipment = () => {
         alpha: 1,
         fill: colors.bottomcolor
     }));
+    background.push(controls.rect({ // vert items
+        anchor: [0.4, 0.1], sizeAnchor: [0.005, 0.6],
+        fill: colors.bottomcolor,
+        alpha: 1
+    }));
     background.push(controls.rect({ // vert middle
-        anchor: [0.55, 0.1], sizeAnchor: [0.005, 0.9],
+        anchor: [0.55, 0.7], sizeAnchor: [0.005, 0.3],
         fill: colors.bottomcolor,
         alpha: 1
     }));
@@ -57,11 +62,6 @@ scenes.equipment = () => {
         anchor: [0.01, 0.7], sizeAnchor: [0.98, 0.01],
         alpha: 1,
         fill: colors.bottomcolor
-    }));
-    background.push(controls.rect({ // vert items
-        anchor: [0.75, 0.1], sizeAnchor: [0.005, 0.6],
-        fill: colors.bottomcolor,
-        alpha: 1
     }));
     background.push(controls.label({
         anchor: [0.105, 0.06],
@@ -261,27 +261,27 @@ scenes.equipment = () => {
     // Character preview
     // character, body, head, left hand, right hand
     characterPreview.push(controls.image({
-        anchor: [0.3, 0.5], sizeOffset: [128, 128], offset: [-64, -64],
+        anchor: [0.3, 0.5], sizeOffset: [256, 256], offset: [-128, -128],
         source: "bleu", snip: [0, 0, 32, 32],
         alpha: 1
     }));
     characterPreview.push(controls.image({
-        anchor: [0.3, 0.5], sizeOffset: [128, 128], offset: [-64, -64],
+        anchor: [0.3, 0.5], sizeOffset: [256, 256], offset: [-128, -128],
         source: "items/body_chemical",
         alpha: 1
     }));
     characterPreview.push(controls.image({
-        anchor: [0.3, 0.5], sizeOffset: [128, 128], offset: [-64, -64],
+        anchor: [0.3, 0.5], sizeOffset: [256, 256], offset: [-128, -128],
         source: "items/head_chemical",
         alpha: 1
     }));
     characterPreview.push(controls.image({
-        anchor: [0.3, 0.5], sizeOffset: [64, 64], offset: [-80, 0],
+        anchor: [0.3, 0.5], sizeOffset: [128, 128], offset: [-160, 0],
         source: "items/shield_chemical",
         alpha: 1
     }));
     characterPreview.push(controls.image({
-        anchor: [0.3, 0.5], sizeOffset: [64, 64], offset: [16, 0],
+        anchor: [0.3, 0.5], sizeOffset: [128, 128], offset: [16, 0],
         source: "items/sword_chemical",
         alpha: 1
     }));

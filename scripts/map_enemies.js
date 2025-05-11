@@ -3,24 +3,32 @@
 
 // All the map enemies
 let mapenemies = {
+    // DEFAULT
     default(args) {
         return {
-            position: [6, 6],
+            // movement stuff, not really relevant
+            position: [-64, -64],
             map: "",
-            alpha: 0,
-            opacity: 1,
-            head: 0,
-            source: "enemies/evil",
             kofs: [0, 0, 0],
-            time: "both",
-            spawntime: 0,
+            head: 0,
+            spawntime: 0, // ticks
+
+            // use these to adjust your sprite/skin and opacity (0-1)
+            source: "enemies/evil",
+            alpha: 1,
+
+            // set time when it spawns
+            time: "all", // day, dawn, noon, dusk, night
+
+            // contained enemies (chances 0-100)
             enemies: {
                 "weakhelter": 60,
                 "stronghelter": 10,
                 "livingbarrel": 2
             },
 
-            movementTime: 0,
+            // movement stuff
+            movementTime: 0, // offset, usually irrelevant
             walkingInterval: 0.5, // time between walks
             walkingSpeed: 1, // how long it takes to walk from one tile to another (in seconds)
 
@@ -57,47 +65,73 @@ let mapenemies = {
             ...args || {},
         }
     },
-    itsalivemap(args) {
-        return {
-            ...mapenemies.default(),
-            source: "enemies/itsalive",
-            opacity: 0.6,
-            enemies: {
-                "weakhelter": 20,
-                "itsalive": 60
-            },
-            walkingInterval: 2,
-            ...args || {},
 
-        }
-    },
-    livingbarrelmap(args) {
+    /*
+    bro(args) {
         return {
-            ...mapenemies.default(),
-            source: "enemies/livingbarrel",
+            ...mapenemies.default(), source: "enemies/bro", alpha: 0.5,
+            time: "night", walkingInterval: 0.12, walkingSpeed: 5,
             enemies: {
                 "livingbarrel": 70,
                 "itsalive": 30
             },
-            walkingInterval: 0.12,
-            walkingSpeed: 5,
-            time: "night",
             ...args || {},
+        }
+    },
+    */
 
+
+
+    // Forest / starter enemies
+    forest1(args) {
+        return {
+            ...mapenemies.default(), source: "gen",
+            time: "all", walkingInterval: 0.25, walkingSpeed: 0.5,
+            enemies: {
+                "weakhelter": 10,
+                "ent_weak": 2,
+                "evil_peter": 20,
+                "home_runner": 1,
+                "slime_green": 5,
+                "postbox": 20
+            },
+            ...args || {},
+        }
+    },
+
+
+    // OLDIES
+    itsalivemap(args) {
+        return {
+            ...mapenemies.default(), source: "enemies/itsalive", alpha: 0.6,
+            walkingInterval: 2,
+            enemies: {
+                "weakhelter": 20,
+                "itsalive": 60
+            },
+            ...args || {},
+        }
+    },
+    livingbarrelmap(args) {
+        return {
+            ...mapenemies.default(), source: "enemies/livingbarrel",
+            time: "night", walkingInterval: 0.12, walkingSpeed: 5,
+            enemies: {
+                "livingbarrel": 70,
+                "itsalive": 30
+            },
+            ...args || {},
         }
     },
     ntf(args) {
         return {
-            ...mapenemies.default(),
-            source: "enemies/nottoofresh",
+            ...mapenemies.default(), source: "enemies/nottoofresh",
+            walkingInterval: 0.24, walkingSpeed: 0.75,
             enemies: {
                 "nottoofresh": 90,
                 "itsalive": 40
             },
-            walkingInterval: 0.24,
-            walkingSpeed: 0.75,
             ...args || {},
-
         }
     },
 };

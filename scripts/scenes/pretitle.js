@@ -95,12 +95,7 @@ scenes.pretitle = () => {
                     loadGame();
                     loadSettings();
 
-                    createEnemy("weakhelter");
-                    createEnemy("weakhelter");
-                    createEnemy("ent_weak");
-                    createEnemy("ent_weak");
-                    createEnemy("evil_peter");
-                    createEnemy("evil_peter");
+                    exampleFight();
 
                     setScene(scenes.fight());
                 }

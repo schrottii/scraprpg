@@ -1240,6 +1240,14 @@ let items = {
             stats: { "strength": 8, "crt": -10 }, ...args || {},
         }
     },
+    baseballbat(args) {
+        return {
+            ...items.default(),
+            source: "baseballbat", name: "Baseball Bat", element: "physical",
+            shopcost: 300, type: "armor", piece: "rhand",
+            stats: { "strength": 3, "agi": 6 }, ...args || {},
+        }
+    },
     tophat(args) {
         return {
             ...items.default(),

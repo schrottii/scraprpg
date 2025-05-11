@@ -152,7 +152,10 @@ let images = {
     "enemies/livingbarrel": "data/images/enemies/Map_LivingBarrel.png",
     "enemies/nottoofresh": "data/images/enemies/NotTooFreshEnemy.png",
 
+    "enemies/postbox": "data/images/enemies/005_postbox.png",
     "enemies/ent": "data/images/enemies/179_ent.png",
+    "enemies/homerunner": "data/images/enemies/439_homerunner.png",
+    "enemies/slimegreen": "data/images/enemies/610_slime_green.png",
     "enemies/evilpeter": "data/images/enemies/661_evilpeter.png",
 
     // Tiles
@@ -281,6 +284,7 @@ let images = {
     "items/sword_pearl": "data/images/items/equipment/sword_pearl.png",
     "items/sword_princess": "data/images/items/equipment/sword_princess.png",
     "items/sword_banana": "data/images/items/equipment/sword_banana.png",
+    "items/baseballbat": "data/images/items/equipment/baseball_bat.png",
 
     "items/brickyleaf": "data/images/items/brickyleaf.png",
     "items/potion": "data/images/items/potion.png",
@@ -347,7 +351,7 @@ var audio = {
 };
 
 var maps = {
-    "newMap": "scripts/maps/newMap.js",
+    //"newMap": "scripts/maps/newMap.js",
     "test": "scripts/maps/test.js",
 };
 
