@@ -552,7 +552,7 @@ scenes.game = () => {
 
         npc.kofs[2] = Math.max(npc.kofs[2] - delta / 166, 0);
 
-        ctx.drawImage(images[npc.skin],
+        ctx.drawImage(images[npc.source],
             32 * Math.floor(walkTime), 32 * npc.head, 32, 32,
             ((zoom * scale) * (tileX - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (tileY - ofsY) - ((zoom - 1) * scale * 7),
             zswm, zswm)

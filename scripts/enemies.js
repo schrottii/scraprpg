@@ -65,64 +65,49 @@ function tryCreateAgain(pox, poy, big = false) {
 
 // All the enemies
 let enemyTypes = {
+    // DEFAULT
     "weakhelter": {
-        name: "Helter Skelter",
-        HP: 5,
-        strength: 2,
-        eva: 0,
-        acc: 80,
-        agi: 30,
-        luk: 3,
-        element: "physical",
-        items: { "potion": 25},
+        name: "Helter Skelter", source: "weakhelter", element: "physical",
+        HP: 5, strength: 2,
+        eva: 0, acc: 80, agi: 30, luk: 3,
+        items: { "potion": 25 },
     },
 
+    // IDAHO IS GON KIL U!!
+    "ent_weak": {
+        name: "Weak Ent", source: "ent", element: "earth",
+        HP: 4, strength: 4,
+        eva: 10, acc: 60, agi: 20, luk: 0,
+        items: { "potion": 25 },
+    },
+
+    // OLDIES
     "stronghelter": {
-        name: "Helter Skelter+",
-        HP: 9,
-        strength: 2,
-        eva: 0,
-        acc: 80,
-        agi: 25,
-        luk: 3,
-        element: "physical",
+        name: "Helter Skelter+", source: "weakhelter", element: "physical",
+        HP: 9, strength: 2,
+        eva: 0, acc: 80, agi: 25, luk: 3,
         items: "none",
     },
 
     "itsalive": {
-        name: "It's Alive",
-        HP: 20,
-        strength: 3,
-        eva: 20,
-        acc: 80,
-        agi: 10,
-        luk: 3,
-        element: "wind",
+        name: "It's Alive", source: "itsalive", element: "wind",
+        HP: 20, strength: 3,
+        eva: 20, acc: 80, agi: 10, luk: 3,
         items: { "potion": 25},
     },
 
     "livingbarrel": {
-        name: "Living Barrel",
-        HP: 20,
-        strength: 8,
-        eva: 5,
-        acc: 90,
-        agi: 23,
-        luk: 30,
-        element: "dark",
+        name: "Living Barrel", source: "livingbarrel", element: "dark",
+        HP: 20, strength: 8,
+        eva: 5, acc: 90, agi: 23, luk: 30,
         items: "none",
         size: "2x2",
     },
 
     "nottoofresh": {
-        name: "Not Too Fresh",
-        HP: 40,
-        strength: 11,
-        eva: 20,
-        acc: 60,
-        agi: 80,
-        luk: 20,
-        element: "wind",
+        name: "Not Too Fresh", source: "nottoofresh", element: "wind",
+        HP: 40, strength: 11,
+        eva: 20, acc: 60, agi: 80, luk: 20,
         items: "none",
     },
 }

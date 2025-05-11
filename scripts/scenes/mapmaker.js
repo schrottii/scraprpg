@@ -1341,7 +1341,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newText = prompt("New skin?");
-                if (newText != undefined) map.npcs[curNPC].skin = newText;
+                if (newText != undefined) map.npcs[curNPC].source = newText;
                 updateNPCLabels();
             }
         }
@@ -2434,7 +2434,7 @@ scenes.mapmaker = () => {
     function updateNPCLabels() {
         createNPCLabels[0].text = map.npcs[curNPC].position;
         createNPCLabels[1].text = map.npcs[curNPC].alpha;
-        createNPCLabels[2].text = map.npcs[curNPC].skin;
+        createNPCLabels[2].text = map.npcs[curNPC].source;
         createNPCLabels[3].text = map.npcs[curNPC].walkingInterval;
         createNPCLabels[4].text = map.npcs[curNPC].walkingSpeed;
 
@@ -3164,7 +3164,7 @@ scenes.mapmaker = () => {
                         let npc = activenpcs[i];
                         tnpcs[np].offset = [(((zoom * scale) * (npc.position[0] + kofs[0] * kofs[2] - (game.position[0] - width / 2 + 0.5))) - ((zoom - 1) * scale * (width / 2))) - ((width * scale) / 2), ((zoom * scale) * (npc.position[1] + kofs[1] * kofs[2] - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7)) - (height / 2)];
                         tnpcs[np].sizeOffset = [zswm, zswm];
-                        tnpcs[np].source = npc.skin;
+                        tnpcs[np].source = npc.source;
                         tnpcs[np].alpha = 1;
                         np += 1;
                     }

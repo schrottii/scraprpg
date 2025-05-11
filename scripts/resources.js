@@ -124,15 +124,6 @@ let images = {
     Portraits_Skro: "data/images/protagonists/portraits/Portraits_Skro.png",
     Portraits_Kokitozi: "data/images/protagonists/portraits/Portraits_Kokitozi.png",
 
-    // Enemies
-    black: "data/images/enemies/Map_Black.png",
-    evil: "data/images/enemies/Map_Evil.png",
-    weakhelter: "data/images/enemies/Map_Evil.png",
-    stronghelter: "data/images/protagonists/map/Map_Corelle.png",
-    itsalive: "data/images/enemies/Map_ItsAlive.png",
-    livingbarrel: "data/images/enemies/Map_LivingBarrel.png",
-    nottoofresh: "data/images/enemies/NotTooFreshEnemy.png",
-
     // Elements
     fire: "data/images/elements/fire_element.png",
     earth: "data/images/elements/earth_element.png",
@@ -151,6 +142,17 @@ let images = {
     enraged: "data/images/effects/berserk_shiny.png",
     paralysis: "data/images/effects/paralysis.png",
     condemned: "data/images/effects/condemned.png",
+
+    // Enemies
+    "enemies/black": "data/images/enemies/Map_Black.png",
+    "enemies/evil": "data/images/enemies/Map_Evil.png",
+    "enemies/weakhelter": "data/images/enemies/Map_Evil.png",
+    "enemies/stronghelter": "data/images/protagonists/map/Map_Corelle.png",
+    "enemies/itsalive": "data/images/enemies/Map_ItsAlive.png",
+    "enemies/livingbarrel": "data/images/enemies/Map_LivingBarrel.png",
+    "enemies/nottoofresh": "data/images/enemies/NotTooFreshEnemy.png",
+
+    "enemies/ent": "data/images/enemies/179_ent.png",
 
     // Tiles
     "tiles/empty": "data/images/tiles/empty.png",

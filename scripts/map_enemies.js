@@ -10,7 +10,7 @@ let mapenemies = {
             alpha: 0,
             opacity: 1,
             head: 0,
-            skin: "evil",
+            source: "enemies/evil",
             kofs: [0, 0, 0],
             time: "both",
             spawntime: 0,
@@ -35,7 +35,7 @@ let mapenemies = {
 
                 if (this.spawntime > 599) {
                     if (game.map == this.map) {
-                        ctx.drawImage(images[this.skin],
+                        ctx.drawImage(images[this.source],
                             32 * Math.floor(walkTime), 32 * this.head, 32, 32,
                             posX, posY,
                             zswm, zswm)
@@ -60,7 +60,7 @@ let mapenemies = {
     itsalivemap(args) {
         return {
             ...mapenemies.default(),
-            skin: "itsalive",
+            source: "enemies/itsalive",
             opacity: 0.6,
             enemies: {
                 "weakhelter": 20,
@@ -74,7 +74,7 @@ let mapenemies = {
     livingbarrelmap(args) {
         return {
             ...mapenemies.default(),
-            skin: "livingbarrel",
+            source: "enemies/livingbarrel",
             enemies: {
                 "livingbarrel": 70,
                 "itsalive": 30
@@ -89,7 +89,7 @@ let mapenemies = {
     ntf(args) {
         return {
             ...mapenemies.default(),
-            skin: "nottoofresh",
+            source: "enemies/nottoofresh",
             enemies: {
                 "nottoofresh": 90,
                 "itsalive": 40

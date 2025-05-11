@@ -2982,7 +2982,7 @@ scenes.fight = () => {
                         epositionControls[i + (j * 3)].alpha = 0;
                     }
                     if (epositions[i][j].isOccupied == true) {
-                        epositionControls[i + (j * 3)].source = epositions[i][j].occupied;
+                        epositionControls[i + (j * 3)].source = "enemies/" + enemyTypes[epositions[i][j].occupied].source;
                         epositionControls[i + (j * 3)].alpha = 1;
 
                         if (epositions[i][j].size == "2x2") {
@@ -3254,7 +3254,10 @@ scenes.fight = () => {
             orderDisplay[3 * o].alpha = 1;
             // characters
             orderDisplay[3 * o + 1].alpha = 1;
-            orderDisplay[3 * o + 1].source = sortedOrder[o][1];
+            
+            if (enemyTypes[sortedOrder[o][1]] != undefined) orderDisplay[3 * o + 1].source = "enemies/" + enemyTypes[sortedOrder[o][1]].source;
+            else orderDisplay[3 * o + 1].source = sortedOrder[o][1];
+            
             // hasaction
             if (sortedOrder[o][0]) orderDisplay[3 * o + 2].alpha = 1;
         }

@@ -11,7 +11,7 @@ let npcs = {
         map: "test",
         alpha: 1,
         head: 0,
-        skin: "evil",
+        source: "enemies/evil",
         kofs: [0, 0, 0],
         dialogues: {
             1: {
@@ -35,7 +35,7 @@ let npcs = {
     blue: {
         position: [5, 1],
         map: "map2",
-        skin: "bleu",
+        source: "bleu",
         dialogues: {
             1: {
                 "type": "normal",
@@ -54,7 +54,7 @@ let npcs = {
     evilskro: {
         position: [17, 1],
         map: "test",
-        skin: "skro",
+        source: "skro",
         dialogues: {
             1: {
                 "type": "normal",
@@ -78,7 +78,7 @@ let npcs = {
     cowboy: {
         position: [15, 1],
         map: "test",
-        skin: "skro",
+        source: "skro",
         dialogues: {
             1: {
                 "type": "normal",
@@ -99,7 +99,7 @@ let npcs = {
     placeholder3: {
         position: [3, 22],
         map: "test",
-        skin: "bleu",
+        source: "bleu",
         dialogues: {
             1: ["normal", ["Ey", "Portraits_Bleu", "happy", "Bleu"],
                 ["Ayo (+1 Potion!)", "Portraits_Bleu", "angry", "Bleu", () => {

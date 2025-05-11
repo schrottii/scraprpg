@@ -91,12 +91,13 @@ scenes.pretitle = () => {
                     playMusic("bgm/fight");
                     //^intro example - remove comment ^ there, add comment to setscene few lines below, set musicplayer muted to false above
                     saveNR = 3;
+
                     loadGame();
                     loadSettings();
+
                     createEnemy("weakhelter");
-                    createEnemy("weakhelter");
-                    createEnemy("weakhelter");
-                    createEnemy("weakhelter");
+                    createEnemy("ent_weak");
+
                     setScene(scenes.fight());
                 }
             }),
