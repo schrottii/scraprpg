@@ -72,15 +72,27 @@ scenes.equipment = () => {
 
     function equipItem(item) {
         let type = item().piece;
+
+        let hadEquipped = game.characters[characterSelected].equipment[type];
+
         if (item.name == game.characters[characterSelected].equipment[type]) { // Equipped
             // already has equipped, so unequip
             game.characters[characterSelected].equipment[type] = "none";
             selectedItem = "";
             equipButton.alpha = 0;
+
+            addItem(hadEquipped, 1);
+            showItems();
         }
         else {
             // equip
-            if (type != "none") game.characters[characterSelected].equipment[type] = item.name;
+            if (type != "none" && game.inventory[item.name] > 0) {
+                game.characters[characterSelected].equipment[type] = item.name;
+
+                if (hadEquipped != "none" && hadEquipped != undefined) addItem(hadEquipped, 1);
+                removeItem(item.name, 1);
+                showItems();
+            }
         }
 
         showItems();

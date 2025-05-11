@@ -238,7 +238,7 @@ function loop() {
 
     // Debug black bar
     ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, ctx.canvas.width * ((game.playTime / 15) % 1), ctx.canvas.height * 0.01);
+    ctx.fillRect(0, 0, ctx.canvas.width * ((game.playTime / 15) % 1) * 0.1, ctx.canvas.height * 0.01);
 
     // Draw FPS
     ctx.fillStyle = "white";
