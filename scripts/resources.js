@@ -153,6 +153,7 @@ let images = {
     "enemies/nottoofresh": "data/images/enemies/NotTooFreshEnemy.png",
 
     "enemies/ent": "data/images/enemies/179_ent.png",
+    "enemies/evilpeter": "data/images/enemies/661_evilpeter.png",
 
     // Tiles
     "tiles/empty": "data/images/tiles/empty.png",

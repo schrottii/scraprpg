@@ -3371,6 +3371,8 @@ scenes.fight = () => {
                     positionControls[pcc].snip = battleAnimation(occ, positionControls[pcc].emo, Math.floor(globalFightAnimationTime));
 
                 }
+
+                epositionControls[pcc].snip = [32 * Math.floor(globalFightAnimationTime), 32, 32, 32];
             }
 
             // kokitozi particles

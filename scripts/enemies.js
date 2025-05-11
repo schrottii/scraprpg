@@ -78,7 +78,14 @@ let enemyTypes = {
         name: "Weak Ent", source: "ent", element: "earth",
         HP: 4, strength: 4,
         eva: 10, acc: 60, agi: 20, luk: 0,
-        items: { "potion": 25 },
+        items: { "headwood": 25, "bodywood": 25, "swordwood": 25, "shieldwood": 25 },
+    },
+    
+    "evil_peter": {
+        name: "Evil Peter", source: "evilpeter", element: "physical",
+        HP: 6, strength: 2,
+        eva: 10, acc: 50, agi: 60, luk: 20,
+        items: "none",
     },
 
     // OLDIES

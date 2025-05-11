@@ -101,12 +101,11 @@ scenes.monsterbook = () => {
                 alpha: 1,
                 fill: colors.buttontoppressed
             }));
-
             disgustingMonsters.push(controls.image({
                 anchor: [0.033 + 0.1 * hor, 0.2 + 0.15 * ver], sizeOffset: [64, 64], enm: possibleEnm,
                 snip: [0, 0, 32, 32],
                 alpha: 1,//killedEnm != 0 ? 1 : 0,
-                source: killedEnm != -1 ? possibleEnm : "black"
+                source: killedEnm != -1 ? "enemies/" + enemyTypes[possibleEnm].source : "enemies/black"
             }));
 
             disgustingMonsters.push(controls.label({
