@@ -1,6 +1,10 @@
 // This is ALL protagonists in the game. Not only the ones you have equipped right now.
 const characters = ["bleu", "corelle", "gau", "skro", "kokitozi"];
 
+function getPlayer(character = 1, src = game) {
+    if (character > characters.length) character = 1;
+    return src.characters[game.chars[character - 1]];
+}
 
 
 
@@ -70,6 +74,19 @@ const cStats = {
         luk: 40,
         element: "dark",
         length: 3,
+    }
+}
+
+function addWrenches(amount = 0) {
+    if (game.wrenches != undefined) {
+        game.wrenches = Math.min(game.wrenches + amount, 999999999);
+    }
+}
+
+function addBricks(amount = 0) {
+    // only from boss fights and enemies from the "Scorched Planet"(Scrap Planet after Platinschrott Volcano eruption)
+    if (game.bricks != undefined) {
+        game.bricks = Math.min(game.bricks + amount, 999999);
     }
 }
 

@@ -181,3 +181,40 @@ function battleAnimation(char, emotion, anit = 0) {
     }
     return snip;
 }
+
+function createImageAnimation(image, columns, rows, sizex, sizey, speed = 100) {
+    animationtime = 0;
+    animation = [image, columns - 1, rows - 1, sizex / columns, sizey / rows];
+    animationspeed = speed;
+    canMove = false;
+}
+
+function updateImageAnimation(delta){
+    let ctx = mainCanvas.getContext("2d");
+    
+    // updating animators
+    if (animationtime > -1) {
+        let prog = Math.floor(animationtime / animationspeed);
+        let i = Math.floor(prog % (animation[1] + 1));
+        let j = Math.floor(prog / (animation[1] + 1));
+        if (i + (j * animation[1]) != animation[1] * (animation[2] + 1) + 2) {
+            ctx.drawImage(animation[0], animation[3] * i, animation[4] * j, animation[3], animation[4], 0, 0, width * scale, height);
+            animationtime += delta;
+        }
+        else {
+            // Finished
+            canMove = true;
+            animationtime = -1;
+        }
+    }
+}
+
+function animatedText(text, speed = 20) { // 8, 20, 24
+    if (textProgress == -1) textProgress = 0;
+    let prog = Math.floor(textProgress * speed);
+    if (prog < text.length) {
+        if (currentDialogue[dialogueProgress].voice == false || currentDialogue[dialogueProgress].voice == undefined) playSound("female_young");
+        else playSound(currentDialogue[dialogueProgress].voice);
+    }
+    return text.slice(0, prog);
+}

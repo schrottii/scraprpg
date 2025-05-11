@@ -775,7 +775,7 @@ scenes.game = () => {
             stopMusic();
             let previouszoom = zoom;
             setTimeout(() => {
-                image_animation(images.tokenattack, 10, 6, 4000, 1350, 50);
+                createImageAnimation(images.tokenattack, 10, 6, 4000, 1350, 50);
                 addAnimator(function (t) {
                     zoom = 1 + (t / 500);
                     if (t > 1799 && t < 2500) {

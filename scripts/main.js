@@ -1,3 +1,28 @@
+var currentKeys = {};
+var autoSaveTime = 0;
+var canMove = true;
+var isMapTestingMode = false;
+
+var textProgress = -1;
+var isHolding = false;
+
+var playAfterIntro = "none";
+var globalSelectedCharacter = "";
+
+let pointerActive = false;
+let pointerPos = [0, 0];
+
+let delta = 0;
+let time = Date.now();
+
+var animationtime = -1;
+var animation;
+var animationspeed = 100;
+
+let scale = window.innerHeight / 16;
+let width = window.innerWidth / scale;
+
+// init
 function init() {
     // Button detection
     mainCanvas.addEventListener("pointerdown", onCanvasPointerDown);
@@ -7,6 +32,8 @@ function init() {
     window.addEventListener("keyup", (e) => currentKeys[e.key.toLowerCase()] = false);
 
 
+
+    // the load scene
     setScene({
         // Pre-render function
         preRender(ctx, delta) {
@@ -61,138 +88,7 @@ function init() {
     loop();
 }
 
-var currentKeys = {};
-var autoSaveTime = 0;
-var canMove = true;
-var isMapTestingMode = false;
-
-var textProgress = -1;
-var isHolding = false;
-
-//   Day: 6:00 - 17:59 (12 hours)
-//  ----> Dawn: 6:00 - 8:59
-//  ----> Noon: 9:00 - 14:59
-//  ----> Dusk: 15:00 - 17:59
-// Night: 18:00 - 5:59 (12 hours)
-
-function getTime(ti = game.time, am = 16.667, di = 1000, sc = false) {
-    let hours = Math.floor(ti / di);
-    let minutes = Math.floor((ti % di) / am);
-
-    let seconds = "";
-    if (sc == true) seconds = ":" + Math.floor(ti % 60);
-    if (sc == true && seconds.length == 2) seconds = ":0" + seconds.slice(1, 2);
-
-    if (minutes == 60) return hours + 1 + ":00" + seconds;
-    if (minutes < 10) return hours + ":0" + minutes + seconds;
-    return hours + ":" + minutes + seconds;
-}
-
-function isDay() {
-    if (game.time > 5999 && game.time < 18000) {
-        return true;
-    }
-    return false;
-}
-
-function isDawn() {
-    if (game.time > 5999 && game.time < 9000) {
-        return true;
-    }
-    return false;
-}
-function isNoon() {
-    if (game.time > 8999 && game.time < 15000) {
-        return true;
-    }
-    return false;
-}
-function isDusk() {
-    if (game.time > 14999 && game.time < 18000) {
-        return true;
-    }
-    return false;
-}
-
-function isNight() {
-    if (game.time > 17999 || game.time < 6000) {
-        return true;
-    }
-    return false;
-}
-
-function formatNumber(number) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-var playAfterIntro = "none";
-var globalSelectedCharacter = "";
-
-function playMusic(name, intro = "none") {
-    if (musicPlayer.volume > 0 && musicPlayer.volume <= 1) {
-        if (audio[name].src != musicPlayer.src) {
-            if (intro == "none") musicPlayer.src = audio[name].src;
-            else {
-                playAfterIntro = name;
-                musicPlayer.src = audio[intro].src;
-                musicPlayer.loop = false;
-            }
-        }
-        musicPlayer.play();
-    }
-}
-
-function stopMusic() {
-    musicPlayer.pause();
-}
-
-// Generate 16 sound channels
-var soundPlayer = {};
-
-for (s = 1; s < 17; s++) {
-    soundPlayer["soundPlayer" + s] = new Audio();
-    let srcSoundPlayer = document.createElement("source");
-    srcSoundPlayer.type = "audio/mpeg";
-    srcSoundPlayer.preload = "auto";
-    srcSoundPlayer.src = audio.no;
-    soundPlayer["soundPlayer" + s].appendChild(srcSoundPlayer);
-}
-
-// play a sound - now supports sound channels!
-function playSound(name) {
-    let s = 1;
-    while (s < 17) { // If all 16 are occupied, it won't play any sound
-        if (soundPlayer["soundPlayer" + s].currentTime >= soundPlayer["soundPlayer" + s].duration || soundPlayer["soundPlayer" + s].src == "") {
-            if (soundPlayer["soundPlayer" + s].volume > 0 && soundPlayer["soundPlayer" + s].volume <= 1) {
-                //console.log(s);
-                soundPlayer["soundPlayer" + s].src = audio[name].src;
-                soundPlayer["soundPlayer" + s].play();
-                return true;
-            }
-        }
-        else { // Channel is occupied. (Angry sound channel sounds)
-            s += 1;
-        }
-    }
-}
-
-function changeSoundVolume(vol) {
-    if (vol <= 0) {
-        for (s = 1; s < 17; s++) {
-            soundPlayer["soundPlayer" + s].muted = true;
-        }
-        return;
-    }
-    if (vol > 1) return false;
-    for (s = 1; s < 17; s++) {
-        soundPlayer["soundPlayer" + s].muted = false;
-        soundPlayer["soundPlayer" + s].volume = vol;
-    }
-}
-
-let pointerActive = false;
-let pointerPos = [0, 0];
-
+// pointer handlers
 function onCanvasPointerDown(e) {
     isHolding = true;
 
@@ -294,38 +190,22 @@ function onCanvasPointerUp(e, keepHold = false) {
     }
 }
 
-let delta = 0;
-let time = Date.now();
-
-var animationtime = -1;
-var animation;
-var animationspeed = 100;
-
-let scale = window.innerHeight / 16;
-let width = window.innerWidth / scale;
-
-function image_animation(image, columns, rows, sizex, sizey, speed = 100) {
-    animationtime = 0;
-    animation = [image, columns - 1, rows - 1, sizex / columns, sizey / rows];
-    animationspeed = speed;
-    canMove = false;
-}
-
-function getPlayer(character = 1, src = game) {
-    if (character > characters.length) character = 1;
-    return src.characters[game.chars[character - 1]];
-}
-
+// FUNCTIONS
 function isLs() {
     // Somewhat
     if (scale < 32) return true;
     return false;
 }
 
+function formatNumber(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 function loop() {
     // Tick time
     delta = Date.now() - time;
     time = Date.now();
+
     // Resize the canvas
     mainCanvas.style.width = (mainCanvas.width = window.innerWidth) + "px";
     mainCanvas.style.height = (mainCanvas.height = window.innerHeight) + "px";
@@ -334,15 +214,16 @@ function loop() {
     scale = height / 16;
     width = window.innerWidth / scale;
 
-    // Finally, after 200 --years-- commits, this part is documented (by Schrottii)
     // this sets ctx to the canvas, just the usual stuff
     let ctx = mainCanvas.getContext("2d");
 
     ctx.imageSmoothingEnabled = false;
     ctx.globalAlpha = 1;
-    // pre-render the canvas
+
+    // pre-render the canvas (big one)
     scene.preRender(ctx, delta);
-    // Load every element that exists (Buttons, labels, images, everything)
+
+    // Render every element that exists (Buttons, labels, images, everything)
     for (let control of scene.controls) {
         if (control.alpha > 0 && (control.lifeMode == undefined || settings.particles)) { // If their alpha is above 0, "draw" them, with their alpha value
             // Alpha 1 = Max (100% opacity)
@@ -353,18 +234,15 @@ function loop() {
         }
     }
 
-    if (playAfterIntro != "none") {
-        if (musicPlayer.currentTime >= musicPlayer.duration) {
-            musicPlayer.src = audio[playAfterIntro].src;
-            playAfterIntro = "none";
-            musicPlayer.loop = true;
-            musicPlayer.play();
-        }
-    }
+    introToLoop();
+
+    // Debug black bar
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, ctx.canvas.width * ((game.playTime / 15) % 1), ctx.canvas.height * 0.01);
 
     // Draw FPS
-    ctx.font = "12px DePixelKlein, sans-serif";
     ctx.fillStyle = "white";
+    ctx.font = "12px DePixelKlein, sans-serif";
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
     ctx.globalAlpha = 1; //or else it's a bit transparent
@@ -377,178 +255,11 @@ function loop() {
         }
     }
 
-    if (animationtime > -1) {
-        let prog = Math.floor(animationtime / animationspeed);
-        let i = Math.floor(prog % (animation[1] + 1));
-        let j = Math.floor(prog / (animation[1] + 1));
-        if (i + (j * animation[1]) != animation[1] * (animation[2] + 1) + 2) {
-            ctx.drawImage(animation[0], animation[3] * i, animation[4] * j, animation[3], animation[4], 0, 0, width * scale, height);
-            animationtime += delta;
-        }
-        else {
-            // Finished
-            canMove = true;
-            animationtime = -1;
-        }
-    }
-    if (textProgress != -1) {
-        textProgress += delta / 1000;
-    }
-
-    game.playTime += (delta / 1000); // 1 = 1 sec
-    game.time += (delta / 60);
-    if (game.time >= 24000) { // 1000 = 1 hour in-game.
-        game.time = 0;
-    }
-
+    updateImageAnimation(delta);
     updateAnimators(delta);
+    timeTicker(delta);
 
     requestAnimationFrame(loop);
-}
-
-function animatedText(text, speed = 20) { // 8, 20, 24
-    if (textProgress == -1) textProgress = 0;
-    let prog = Math.floor(textProgress * speed);
-    if (prog < text.length) {
-        if (currentDialogue[dialogueProgress].voice == false || currentDialogue[dialogueProgress].voice == undefined) playSound("female_young");
-        else playSound(currentDialogue[dialogueProgress].voice);
-    }
-    return text.slice(0, prog);
-}
-
-function addWrenches(amount = 0) {
-    if (game.wrenches != undefined) {
-        game.wrenches = Math.min(game.wrenches + amount, 999999999);
-    }
-}
-
-function addBricks(amount = 0) {
-    // only from boss fights and enemies from the "Scorched Planet"(Scrap Planet after Platinschrott Volcano eruption)
-    if (game.bricks != undefined) {
-        game.bricks = Math.min(game.bricks + amount, 999999);
-    }
-}
-
-// I copied these almost 1:1 from legacy.
-// Got a problem with that? Huh?
-
-var saveNR = 0;
-
-function load(x, altx) {
-    return x !== undefined ? x : altx;
-}
-
-function saveGame(auto = false) {
-    let saveCopy = JSON.parse(JSON.stringify(game));
-    if (!auto) localStorage.setItem("SRPG" + saveNR, JSON.stringify(saveCopy));
-    else localStorage.setItem("SRPG3", JSON.stringify(saveCopy));
-}
-
-function saveSettings() {
-    let settingsCopy = JSON.parse(JSON.stringify(settings));
-    localStorage.setItem("SRPGSETTINGS", JSON.stringify(settingsCopy));
-}
-
-function loadSettings() {
-    // Load settings
-    let settingsCopy;
-    settingsCopy = localStorage.getItem("SRPGSETTINGS");
-    if (settingsCopy !== null && settingsCopy !== "null") {
-        try {
-            settingsCopy = JSON.parse(settingsCopy);
-        }
-
-        catch (e) {
-            alert("Error (Settings)");
-            return;
-        }
-        for (i in settings) {
-            if (settingsCopy[i] == undefined) settingsCopy[i] = settings[i];
-        }
-        settings = settingsCopy;
-    }
-}
-
-function loadGame() {
-    // Load saves
-    let saveCopy;
-    saveCopy = localStorage.getItem("SRPG" + saveNR);
-    if (saveCopy !== null && saveCopy !== "null") {
-        try {
-            saveCopy = JSON.parse(saveCopy);
-        }
-
-        catch (e) {
-            alert("Error");
-            return;
-        }
-
-        if (saveCopy.characters == undefined) {
-            saveCopy.characters = game.characters;
-        }
-        for (i in characters) {
-            if (saveCopy.characters[characters[i]] == undefined) {
-                saveCopy.characters[characters[i]] = game.characters[characters[i]];
-            }
-        }
-        if (saveCopy.chars == undefined) saveCopy.chars = [saveCopy.char1, saveCopy.char2];
-        if (saveCopy.characters.skro == undefined) saveCopy.characters.skro = game.characters.skro;
-        if (saveCopy.chars.length == 2) saveCopy.chars.push("gau");
-        if (saveCopy.chars.length == 3) saveCopy.chars.push("skro");
-        if (saveCopy.chars.length == 4) saveCopy.chars.push("kokitozi");
-        if (saveCopy.characters.bleu.pos == undefined) {
-            saveCopy.characters.bleu.pos = [0, 0];
-            saveCopy.characters.corelle.pos = [0, 1];
-            saveCopy.characters.gau.pos = [2, 2];
-            saveCopy.characters.koki.pos = [2, 1];
-        }
-        for (i in saveCopy.characters) {
-            saveCopy.characters[i].effect = ["none", 0];
-        }
-        if (saveCopy.time == undefined) saveCopy.time = 0;
-        if (saveCopy.playTime == undefined) saveCopy.playTime = 0;
-        if (saveCopy.leader == undefined) saveCopy.leader = "bleu";
-        if (saveCopy.wrenches == undefined) saveCopy.wrenches = 0;
-        if (saveCopy.bricks == undefined) saveCopy.bricks = 0;
-        if (saveCopy.inventory == undefined) saveCopy.inventory = { "brickyleaf": 5, "potion": 3 };
-        if (saveCopy.shops == undefined) saveCopy.shops = {};
-
-        if (saveCopy.characters.bleu.equipment == undefined) {
-            for (i in saveCopy.characters) {
-                saveCopy.characters[i].equipment = {
-                    "head": "none",
-                    "body": "none",
-                    "lhand": "none",
-                    "rhand": "none",
-                    "acc1": "none",
-                    "acc2": "none",
-                }
-            }
-        }
-
-        if (saveCopy.characters.bleu.macro == undefined) {
-            for (i in saveCopy.characters) {
-                saveCopy.characters[i].macro = "attack";
-            }
-        }
-        if (saveCopy.characters.bleu.magic == undefined) {
-            for (i in saveCopy.characters) {
-                saveCopy.characters[i].magic = [];
-            }
-        }
-
-        // delete items that don't exist anymore
-        for (let i in saveCopy.inventory){
-            if (items[i] == undefined) delete saveCopy.inventory[i];
-            i -= 1;
-        }
-
-        game = saveCopy;
-        checkOverMax();
-    }
-    else {
-        saveGame();
-    }
 }
 
 // main end

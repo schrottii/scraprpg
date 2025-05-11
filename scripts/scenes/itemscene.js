@@ -197,11 +197,16 @@ scenes.itemscene = () => {
         alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                if (selectedItem == "" || selectedItem != item) {
+                if (selectedItem == "") {
                 }
                 else {
                     // already selected
                     useItem(selectedItem);
+                    if (game.inventory[selectedItem] < 1 || game.inventory[selectedItem] == undefined){
+                        selItem[0].alpha = 0;
+                        selItem[1].alpha = 0;
+                        this.alpha = 0;
+                    }
                 }
             }
         }
