@@ -388,12 +388,13 @@ scenes.fight = () => {
                     wrenchLUK += getStat(game.characters[i].name.toLowerCase(), "luk");
                     brickLUK += getStat(game.characters[i].name.toLowerCase(), "luk") / 4;
                 }
+                wrenchGain = wrenchGain * (1 + Object.keys(game.monsterbook).length * 0.02);
                 wrenchGain = wrenchGain * Math.ceil(wrenchLUK) / 64;
                 brickGain = brickGain * Math.ceil(brickLUK) / 128;
 
-                EXPforAll = Math.ceil(EXPforAll);
-                wrenchGain = Math.ceil(wrenchGain * (1 + Object.keys(game.monsterbook).length * 0.02));
-                brickGain = Math.ceil(brickGain);
+                EXPforAll = Math.ceil(EXPforAll * [8, 1, 0.5][settings.difficulty]);
+                wrenchGain = Math.ceil(wrenchGain * [4, 1, 0.5][settings.difficulty]);
+                brickGain = Math.ceil(brickGain * [10, 1, 1][settings.difficulty]);
 
                 addWrenches(wrenchGain);
                 addBricks(brickGain);
@@ -2715,16 +2716,25 @@ scenes.fight = () => {
     if (currentEnemies.length > 0) {
         for (i = 0; i < currentEnemies.length; i++) {
             if (currentEnemies[i][0] == "child") continue;
+            let i1 = currentEnemies[i][1];
+            let i2 = currentEnemies[i][2];
+
+            // THIS HERE generates an enemy. does stuff like .strength =
+            // every "tiet" is a thing it has (strength, acc, etc.)
             for (tiet in enemyTypes[currentEnemies[i][0]]) {
-                epositions[currentEnemies[i][1]][currentEnemies[i][2]][tiet] = enemyTypes[currentEnemies[i][0]][tiet];
+                epositions[i1][i2][tiet] = enemyTypes[currentEnemies[i][0]][tiet];
             }
 
-            epositions[currentEnemies[i][1]][currentEnemies[i][2]].isOccupied = true;
-            epositions[currentEnemies[i][1]][currentEnemies[i][2]].occupied = currentEnemies[i][0];
-            epositions[currentEnemies[i][1]][currentEnemies[i][2]].type = currentEnemies[i][0];
+            // difficulties
+            epositions[i1][i2].HP = Math.floor(epositions[i1][i2].HP * [0.5, 1, 1.5][settings.difficulty]);
+            epositions[i1][i2].strength = Math.floor(epositions[i1][i2].strength * [0.25, 1, 4][settings.difficulty]);
+
+            epositions[i1][i2].isOccupied = true;
+            epositions[i1][i2].occupied = currentEnemies[i][0];
+            epositions[i1][i2].type = currentEnemies[i][0];
 
             if (currentEnemies[i][3] == "2x2") {
-                epositions[currentEnemies[i][1]][currentEnemies[i][2]].size = currentEnemies[i][3];
+                epositions[i1][i2].size = currentEnemies[i][3];
 
                 epositions[currentEnemies[i][1] + 1][currentEnemies[i][2]].parent = [currentEnemies[i][1], currentEnemies[i][2]];
                 epositions[currentEnemies[i][1]][currentEnemies[i][2] + 1].parent = [currentEnemies[i][1], currentEnemies[i][2]];

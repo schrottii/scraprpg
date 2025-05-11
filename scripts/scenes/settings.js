@@ -167,6 +167,23 @@ scenes.settings = () => {
                 }
             }
         }),
+        
+        controls.button({
+            anchor: [0.55, 0], sizeAnchor: [0.2, 0.1],
+            text: "Difficulty", alpha: 0,
+            onClick(args) {
+                if (this.alpha == 1) {
+                    playSound("buttonClickSound");
+                    settingDesc("Adjusts enemy power. Normal is the default and recommended");
+
+                    settings.difficulty = (settings.difficulty + 1) % 3;
+                    showMenuSettings();
+                }
+            },
+            tick() {
+                this.text = "Difficulty: " + ["Easy", "Normal", "Hard"][settings.difficulty];
+            }
+        }),
     ]
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

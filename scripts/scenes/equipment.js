@@ -299,12 +299,12 @@ scenes.equipment = () => {
     }));
     // acc 1. 2
     characterPreview.push(controls.image({
-        anchor: [0.3, 0.5], sizeOffset: [64, 64], offset: [-80, -128],
+        anchor: [0.3, 0.5], sizeOffset: [128, 128], offset: [-160, -256],
         source: "items/crystal_strength",
         alpha: 1
     }));
     characterPreview.push(controls.image({
-        anchor: [0.3, 0.5], sizeOffset: [64, 64], offset: [16, -128],
+        anchor: [0.3, 0.5], sizeOffset: [128, 128], offset: [32, -256],
         source: "items/crystal_strength",
         alpha: 1
     }));
@@ -447,6 +447,8 @@ scenes.equipment = () => {
                 }
                 else selectedItemStats[x].text = "";
             }
+
+            selectedItemStats[selectedItemStats.length - 1].alpha = (selectedItemStats[selectedItemStats.length - 1].source == "gear" ? 0 : 1);
         },
         // Controls
         controls: [

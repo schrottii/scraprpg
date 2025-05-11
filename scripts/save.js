@@ -125,6 +125,7 @@ let game = {
 let settings = {
     // gameplay
     autosave: false,
+    difficulty: 1,
 
     // graphics
     grid: true,
