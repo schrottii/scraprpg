@@ -117,6 +117,14 @@ let enemyTypes = {
         eva: 0, acc: 80, agi: 26, luk: 0,
         items: "none",
     },
+    
+    "boss_slime_king": {
+        size: "2x2",
+        name: "Slime King", source: "slimegreen", element: "earth",
+        HP: 100, strength: 5,
+        eva: 0, acc: 70, agi: 16, luk: 0,
+        items: { "spellbookearths": 100, "crystalluck": 100, "energydrink": 50, "smalldagger": 20, "throwable_daggers": 20 },
+    },
 
     // OLDIES
     "stronghelter": {

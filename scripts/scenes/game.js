@@ -748,9 +748,10 @@ scenes.game = () => {
             // based on what is defined in the enemies dict of the map enemy
             // change in map_enemies.js
             if (enemies[i].gen == undefined) {
-                while (currentEnemies.length < 1) {
+                while (currentEnemies.length < enemies[i].minSize) {
                     for (let k = 0; k < 8; k++) {
                         for (let j in enemies[i].enemies) {
+                            if (currentEnemies.length >= enemies[i].maxSize) break;
                             if (enemies[i].enemies[j] > (Math.random() * 100)) {
                                 createEnemy(j);
                             }
@@ -810,16 +811,6 @@ scenes.game = () => {
         map.tiles = Object.assign({}, map.tiles, loadPacks(map));
         // Everything performed when the player moves successfully
 
-        // Calculate how many enemies can still be spawned.
-        // The limit is now 8/map. This calculates how many are on the current map
-        let maxEnemies = map.maxEnemies;
-        let enemiesOnThisMap = 0;
-        for (i in enemies) {
-            if (enemies[i].map == game.map) {
-                enemiesOnThisMap += 1;
-            }
-        }
-
         // Poison
         for (i = 0; i < game.chars.length; i++) {
             if (getPlayer(i + 1).effect[0] == "poison" && getPlayer(i + 1).HP > 0) {
@@ -860,50 +851,7 @@ scenes.game = () => {
             }
         }
 
-        // Spawn enemies (sometimes)
-        // hmkgjfvmgmf
-        if (enemiesOnThisMap < maxEnemies) {
-            for (possibleSpawns in map.spawns) {
-                if (map.spawns[possibleSpawns] > Math.random() * 100) {
-                    if (mapenemies[possibleSpawns] != undefined) {
-                        if (mapenemies[possibleSpawns]().time == "day" && !isDay()) return false;
-                        if (mapenemies[possibleSpawns]().time == "dawn" && !isDawn()) return false;
-                        if (mapenemies[possibleSpawns]().time == "noon" && !isNoon()) return false;
-                        if (mapenemies[possibleSpawns]().time == "dusk" && !isDusk()) return false;
-                        if (mapenemies[possibleSpawns]().time == "night" && !isNight()) return false;
-                    }
-                    if (mapWidth == 0) {
-                        for (i = 0; i < maps[game.map].map.length; i++) {
-                            if (maps[game.map].map[i].length > mapWidth) mapWidth = maps[game.map].map[i].length;
-                        }
-                    }
-
-                    // generate map enemy
-                    enemies.push(mapenemies[possibleSpawns]({
-                        position: [Math.floor(Math.random() * mapWidth), Math.floor(Math.random() * maps[game.map].map.length)], map: game.map,
-                    }));
-
-                    // sprite gen
-                    let latest = enemies[enemies.length - 1];
-                    if (latest.source == "gen") {
-                        latest.gen = [];
-                        while (latest.gen.length < 1) {
-                            for (let k = 0; k < 8; k++) {
-                                for (let j in latest.enemies) {
-                                    if (latest.enemies[j] > (Math.random() * 100)) {
-                                        latest.gen.push(j);
-                                    }
-                                }
-                            }
-                        }
-
-                        // set as source
-                        latest.source = "enemies/" + enemyTypes[latest.gen[Math.floor(Math.random() * latest.gen.length)]].source;
-                        //console.log("source set: " + latest.source);
-                        }
-                }
-            }
-        }
+        checkEnemySpawnAttempt();
 
         for (i = 0; i < enemies.length; i++) {
             checkEnemyCollision(i);
@@ -927,6 +875,70 @@ scenes.game = () => {
         }
     }
 
+    function checkEnemySpawnAttempt() {
+        // Calculate how many enemies can still be spawned.
+        // The limit is now 8/map. This calculates how many are on the current map
+        let maxEnemies = map.maxEnemies;
+        let enemiesOnThisMap = 0;
+        for (i in enemies) {
+            if (enemies[i].map == game.map) {
+                enemiesOnThisMap += 1;
+            }
+        }
+
+        // Spawn enemies (sometimes)
+        // hmkgjfvmgmf
+        if (enemiesOnThisMap < maxEnemies) {
+            for (possibleSpawns in map.spawns) {
+                if (map.spawns[possibleSpawns] > Math.random() * 100) {
+                    if (mapenemies[possibleSpawns] != undefined) {
+                        if (mapenemies[possibleSpawns]().time == "day" && !isDay()) return false;
+                        if (mapenemies[possibleSpawns]().time == "dawn" && !isDawn()) return false;
+                        if (mapenemies[possibleSpawns]().time == "noon" && !isNoon()) return false;
+                        if (mapenemies[possibleSpawns]().time == "dusk" && !isDusk()) return false;
+                        if (mapenemies[possibleSpawns]().time == "night" && !isNight()) return false;
+                    }
+                    if (mapWidth == 0) {
+                        for (i = 0; i < maps[game.map].map.length; i++) {
+                            if (maps[game.map].map[i].length > mapWidth) mapWidth = maps[game.map].map[i].length;
+                        }
+                    }
+
+                    // generate map enemy
+                    let posX = Math.floor(Math.random() * mapWidth);
+                    let posY = Math.floor(Math.random() * maps[game.map].map.length);
+
+                    if (posX == game.position[0]) return false;
+                    if (posY == game.position[1]) return false;
+                    if (getTile(map, posX, posY).occupied == true) return false;
+
+                    enemies.push(mapenemies[possibleSpawns]({
+                        position: [posX, posY], map: game.map,
+                    }));
+                    let latest = enemies[enemies.length - 1];
+
+                    // sprite gen
+                    if (latest.source == "gen") {
+                        latest.gen = [];
+                        while (latest.gen.length < latest.minSize) {
+                            for (let k = 0; k < 8; k++) {
+                                for (let j in latest.enemies) {
+                                    if (currentEnemies.length >= latest.maxSize) break;
+                                    if (latest.enemies[j] > (Math.random() * 100)) {
+                                        latest.gen.push(j);
+                                    }
+                                }
+                            }
+                        }
+
+                        // set as source
+                        latest.source = "enemies/" + enemyTypes[latest.gen[Math.floor(Math.random() * latest.gen.length)]].source;
+                        console.log("source set: " + latest.source);
+                    }
+                }
+            }
+        }
+    }
 
     function loadNPCs() {
         activenpcs = [];

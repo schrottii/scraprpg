@@ -19,6 +19,9 @@ let mapenemies = {
 
             // set time when it spawns
             time: "all", // day, dawn, noon, dusk, night
+            // min. and max. amount of enemies (1-9)
+            minSize: 1,
+            maxSize: 9,
 
             // contained enemies (chances 0-100)
             enemies: {
@@ -86,14 +89,29 @@ let mapenemies = {
     forest1(args) {
         return {
             ...mapenemies.default(), source: "gen",
-            time: "all", walkingInterval: 0.25, walkingSpeed: 0.5,
+            time: "all", minSize: 3, maxSize: 6,
+            walkingInterval: 0.66, walkingSpeed: 0.66,
             enemies: {
-                "weakhelter": 10,
-                "ent_weak": 2,
-                "evil_peter": 20,
+                "weakhelter": 20,
+                "ent_weak": 1,
+                "evil_peter": 30,
                 "home_runner": 1,
-                "slime_green": 5,
-                "postbox": 20
+                "slime_green": 10,
+                "postbox": 30
+            },
+            ...args || {},
+        }
+    },
+
+    forestslimeking(args) {
+        return {
+            ...mapenemies.default(), source: "enemies/slimegreen",
+            time: "all", minSize: 3, maxSize: 6,
+            walkingInterval: 5, walkingSpeed: 3,
+            enemies: {
+                "boss_slime_king": 100,
+                "slime_green": 50,
+                "evil_peter": 20,
             },
             ...args || {},
         }
@@ -115,7 +133,8 @@ let mapenemies = {
     livingbarrelmap(args) {
         return {
             ...mapenemies.default(), source: "enemies/livingbarrel",
-            time: "night", walkingInterval: 0.12, walkingSpeed: 5,
+            time: "night",
+            walkingInterval: 0.12, walkingSpeed: 5,
             enemies: {
                 "livingbarrel": 70,
                 "itsalive": 30
