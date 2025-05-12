@@ -153,10 +153,15 @@ let images = {
     "enemies/nottoofresh": "data/images/enemies/NotTooFreshEnemy.png",
 
     "enemies/postbox": "data/images/enemies/005_postbox.png",
+    "enemies/luridlayered": "data/images/enemies/019_lurid_layered.png",
+    "enemies/zeropoint": "data/images/enemies/150_zero_point.png",
     "enemies/ent": "data/images/enemies/179_ent.png",
+    "enemies/cloudon": "data/images/enemies/210_cloudon.png",
     "enemies/homerunner": "data/images/enemies/439_homerunner.png",
     "enemies/slimegreen": "data/images/enemies/610_slime_green.png",
+    "enemies/slimewind": "data/images/enemies/610_slime_wind.png",
     "enemies/evilpeter": "data/images/enemies/661_evilpeter.png",
+    "enemies/futhark": "data/images/enemies/717_futhark.png",
 
     // Tiles
     "tiles/empty": "data/images/tiles/empty.png",

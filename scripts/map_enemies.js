@@ -102,7 +102,6 @@ let mapenemies = {
             ...args || {},
         }
     },
-
     forestslimeking(args) {
         return {
             ...mapenemies.default(), source: "enemies/slimegreen",
@@ -112,6 +111,26 @@ let mapenemies = {
                 "boss_slime_king": 100,
                 "slime_green": 50,
                 "evil_peter": 20,
+            },
+            ...args || {},
+        }
+    },
+
+    // Mountain (chapter 1)
+    mountain1(args) {
+        return {
+            ...mapenemies.default(), source: "gen",
+            time: "all", minSize: 2, maxSize: 6,
+            walkingInterval: 0.66, walkingSpeed: 0.66,
+            enemies: {
+                "weakhelter": 10,
+                "postbox": 10,
+                "futhark": 3,
+                "cloudon": 20,
+                "slime_wind": 10,
+                "lurid_layered": 40,
+                "itsalive": 40,
+                "zero_point": 3
             },
             ...args || {},
         }
