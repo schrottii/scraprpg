@@ -93,7 +93,7 @@ let mapenemies = {
             walkingInterval: 0.66, walkingSpeed: 0.66,
             enemies: {
                 "weakhelter": 20,
-                "ent_weak": 1,
+                "ent_weak": 5,
                 "evil_peter": 30,
                 "home_runner": 1,
                 "slime_green": 10,
@@ -121,7 +121,7 @@ let mapenemies = {
         return {
             ...mapenemies.default(), source: "gen",
             time: "all", minSize: 2, maxSize: 6,
-            walkingInterval: 0.66, walkingSpeed: 0.66,
+            walkingInterval: 1, walkingSpeed: 1,
             enemies: {
                 "weakhelter": 10,
                 "postbox": 10,
@@ -131,6 +131,39 @@ let mapenemies = {
                 "lurid_layered": 40,
                 "itsalive": 40,
                 "zero_point": 3
+            },
+            ...args || {},
+        }
+    },
+
+    // Chapter 2
+    forest2(args) {
+        return {
+            ...mapenemies.default(), source: "gen",
+            time: "all", minSize: 4, maxSize: 7,
+            walkingInterval: 0.66, walkingSpeed: 0.66,
+            enemies: {
+                "stronghelter": 20,
+                "ent_medium": 10,
+                "evil_peter": 30,
+                "nottoofresh": 1,
+                "housoo": 20
+            },
+            ...args || {},
+        }
+    },
+
+    cave1(args) {
+        return {
+            ...mapenemies.default(), source: "gen",
+            time: "all", minSize: 2, maxSize: 4,
+            walkingInterval: 1, walkingSpeed: 1,
+            enemies: {
+                "slime_earth": 20,
+                "coal": 10,
+                "sloper": 10,
+                "futhark": 10,
+                "nottoofresh": 5,
             },
             ...args || {},
         }
