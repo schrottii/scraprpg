@@ -99,7 +99,7 @@ scenes.monsterbook = () => {
             disgustingMonsters.push(controls.rect({
                 anchor: [0.033 + 0.1 * hor, 0.2 + 0.15 * ver], sizeOffset: [112, 112], offset: [-24, -24],
                 alpha: 1,
-                fill: colors.buttontoppressed
+                fill: killedEnm != -1 ? colors.buttontoppressed : colors.buttonbottompressed
             }));
             disgustingMonsters.push(controls.image({
                 anchor: [0.033 + 0.1 * hor, 0.2 + 0.15 * ver], sizeOffset: [64, 64], enm: possibleEnm,
@@ -135,7 +135,7 @@ scenes.monsterbook = () => {
             // snip animations
             snipAnim += delta;
             for (let i = 2; i < disgustingMonsters.length; i += 5) {
-                if (disgustingMonsters[i].snip != undefined) disgustingMonsters[i].snip[1] = Math.floor(snipAnim / 1000) % 2;
+                if (disgustingMonsters[i].snip != undefined) disgustingMonsters[i].snip[0] = 32 * (Math.floor(snipAnim / 1000) % 2);
             }
         },
         // Controls
