@@ -65,13 +65,10 @@ function tryCreateAgain(pox, poy, big = false) {
 
 function exampleFight() {
     createEnemy("ent_medium");
-    createEnemy("nottoofresh");
     createEnemy("housoo");
-    createEnemy("stronghelter");
-    createEnemy("livingbarrel");
-    createEnemy("slime_earth");
-    createEnemy("coal");
-    createEnemy("sloper");
+    createEnemy("cocnutnut");
+    createEnemy("cocnutnut");
+    createEnemy("cocnutnut");
 }
 
 // All the enemies
@@ -179,7 +176,7 @@ let enemyTypes = {
         name: "Not Too Fresh", source: "nottoofresh", element: "wind",
         HP: 40, strength: 6,
         eva: 20, acc: 70, agi: 10, luk: 0,
-        items: { "swordbanana": 3, "headectoplasm": 5, "bodyectoplasm": 5, "swordectoplasm": 5, "shieldectoplasm": 5 },
+        items: { "swordbanana": 3 },
     },
     "housoo": {
         name: "Housoo", source: "housoo", element: "physical",
@@ -203,7 +200,7 @@ let enemyTypes = {
     // Cave (chapter 2)
     "slime_earth": {
         name: "Earth Slime", source: "slimeearth", element: "earth",
-        HP: 8, strength: 4,
+        HP: 24, strength: 5,
         eva: 0, acc: 80, agi: 24, luk: 0,
         items: { "headearth": 5, "bodyearth": 5, "swordearth": 5, "shieldearth": 5 },
     },
@@ -218,6 +215,32 @@ let enemyTypes = {
         HP: 10, strength: 6,
         eva: 60, acc: 80, agi: 24, luk: 0,
         items: { "spellbookearths": 5 },
+    },
+
+    // Islands / water ruins (chapter 3)
+    "slime_water": {
+        name: "Water Slime", source: "slimewater", element: "water",
+        HP: 40, strength: 7,
+        eva: 0, acc: 80, agi: 24, luk: 0,
+        items: { "headwater": 5, "bodywater": 5, "swordwater": 5, "shieldwater": 5 },
+    },
+    "cocnutnut": {
+        name: "Cocnutnut", source: "cocnutnut", element: "water",
+        HP: 20, strength: 4,
+        eva: 0, acc: 80, agi: 18, luk: 10,
+        items: { "tropicalmilkshake": 100 },
+    },
+    "rhapsody": {
+        name: "Rhapsody", source: "rhapsody", element: "water",
+        HP: 44, strength: 8,
+        eva: 0, acc: 80, agi: 18, luk: 10,
+        items: { "potionmedium": 25 },
+    },
+    "adose": {
+        name: "A-Dose", source: "adose", element: "ectoplasm",
+        HP: 42, strength: 12,
+        eva: 10, acc: 70, agi: 21, luk: 30,
+        items: { "headectoplasm": 5, "bodyectoplasm": 5, "swordectoplasm": 5, "shieldectoplasm": 5 },
     },
 }
 

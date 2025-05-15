@@ -16,7 +16,7 @@ const cStats = {
         maxHP: 20,
         strength: 4,
         agi: 60,
-        acc: 80,
+        acc: 90,
         int: 40,
         wis: 30,
         luk: 30,
@@ -29,7 +29,7 @@ const cStats = {
         maxHP: 16,
         strength: 2,
         agi: 70,
-        acc: 80,
+        acc: 90,
         int: 50,
         wis: 30,
         luk: 40,
@@ -42,7 +42,7 @@ const cStats = {
         maxHP: 16,
         strength: 7,
         agi: 40,
-        acc: 90,
+        acc: 100,
         int: 20,
         wis: 20,
         luk: 30,
@@ -55,7 +55,7 @@ const cStats = {
         maxHP: 10,
         strength: 12,
         agi: 15,
-        acc: 70,
+        acc: 75,
         int: 100,
         wis: 40,
         luk: 30,
@@ -68,7 +68,7 @@ const cStats = {
         maxHP: 8,
         strength: 4,
         agi: 42,
-        acc: 80,
+        acc: 85,
         int: 60,
         wis: 60,
         luk: 40,
@@ -154,6 +154,7 @@ function checkOverMax() {
 
 function tempBuffAdd(char, stat, amount, dur){
     // looks like this: ["strength", 2, 999] -> x2 strength for rest of fight
+    // they are cleared *before and after* a fight (no pre-fight stack exploiting lul)
     let hasBuff = -1;
     char = char.toLowerCase();
 

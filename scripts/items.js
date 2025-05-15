@@ -1480,6 +1480,23 @@ let items = {
         }
     },
 
+    tropicalmilkshake(args) {
+        return {
+            ...items.default(),
+            source: "tropicalmilkshake", name: "Tropical Milkshake", type: "potion",
+            desc: "Heals HP, EP, increases LUK and EVA",
+            max: 99, shopcost: 1000,
+            effect: () => {
+                healPlayer(args.player, 20, args.anchor, args.offset);
+                args.player.EP = Math.min(getStat(args.player.name, "maxEP"), args.player.EP + 10);
+            
+                tempBuffAdd(args.player.name, "luk", 1.5, 5);
+                tempBuffAdd(args.player.name, "eva", 1.5, 5);
+            },
+            ...args || {},
+        }
+    },
+
 
     //////////////////////////////////////////////////////////////////////////////////
     // OLDIES

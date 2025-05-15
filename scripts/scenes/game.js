@@ -76,6 +76,10 @@ function startFight(type = "default", enemies = "default") {
         currentEnemies = enemies;
     }
 
+    for (let i in characters) {
+        tempBuffRemoveAll(characters[i]);
+    }
+
     if (type == "nogameover") playMusic("bgm/boss");
     else playMusic("bgm/fight");
     setScene(scenes.fight());

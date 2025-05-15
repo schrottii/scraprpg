@@ -156,13 +156,17 @@ let images = {
     "enemies/luridlayered": "data/images/enemies/019_lurid_layered.png",
     "enemies/coal": "data/images/enemies/067_coal.png",
     "enemies/zeropoint": "data/images/enemies/150_zero_point.png",
+    "enemies/rhapsody": "data/images/enemies/178_rhapsody.png",
     "enemies/ent": "data/images/enemies/179_ent.png",
     "enemies/cloudon": "data/images/enemies/210_cloudon.png",
+    "enemies/cocnutnut": "data/images/enemies/273_cocnutnut.png",
     "enemies/homerunner": "data/images/enemies/439_homerunner.png",
     "enemies/housoo": "data/images/enemies/500_housoo.png",
+    "enemies/adose": "data/images/enemies/523_adose.png",
     "enemies/slimegreen": "data/images/enemies/610_slime_green.png",
     "enemies/slimewind": "data/images/enemies/610_slime_wind.png",
     "enemies/slimeearth": "data/images/enemies/610_slime_earth.png",
+    "enemies/slimewater": "data/images/enemies/610_slime_water.png",
     "enemies/sloper": "data/images/enemies/650_sloper.png",
     "enemies/evilpeter": "data/images/enemies/661_evilpeter.png",
     "enemies/futhark": "data/images/enemies/717_futhark.png",
@@ -308,6 +312,7 @@ let images = {
     "items/wing": "data/images/items/wing.png",
     "items/instrument": "data/images/items/instrument.png",
     "items/mirror": "data/images/items/mirror.png",
+    "items/tropicalmilkshake": "data/images/items/tropicalmilkshake.png",
 };
 
 var scenes = {
