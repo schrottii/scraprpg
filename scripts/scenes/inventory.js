@@ -47,7 +47,7 @@ scenes.inventory = () => {
         buttonPics.push(controls.image({
             anchor: [0.7, 0.0325 + (0.085 / 8) + (i * 0.12)], sizeOffset: [64, 64], id: i,
             alpha: 1,
-            source: ["items/potion", "fire", "inventory", "grid", "proud", "save", "gear", "flee"][i],
+            source: ["items/potion", "fire", "inventory", "grid", "monsterbook", "save", "gear", "flee"][i],
         }));
     }
 

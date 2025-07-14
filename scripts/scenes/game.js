@@ -417,7 +417,6 @@ scenes.game = () => {
     }));
 
     // end of the dialogue stuff. lol.
-
     let actionButton = controls.image({
         anchor: [1, 0.8], sizeOffset: [256, 128], offset: [-312, 0],
         alpha: 1,
@@ -935,9 +934,9 @@ scenes.game = () => {
                             }
                         }
 
-                        // set as source
+                        // set as source (random enemy)
                         latest.source = "enemies/" + enemyTypes[latest.gen[Math.floor(Math.random() * latest.gen.length)]].source;
-                        console.log("source set: " + latest.source);
+                        //console.log("source set: " + latest.source);
                     }
                 }
             }
@@ -1672,6 +1671,11 @@ scenes.game = () => {
             }
 
             // Keybinds
+
+            // action
+            if (currentKeys[" "]) {
+                actionButton.onClick();
+            }
 
             // ...leave?
             if (currentKeys["q"]) {

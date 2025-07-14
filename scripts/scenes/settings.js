@@ -30,8 +30,8 @@ scenes.settings = () => {
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
-            if (previousScene == "inventory") fadeOut(500, true, () => setScene(scenes.inventory()));
-            if (previousScene == "title") fadeOut(750, false, () => setScene(scenes.title()));
+            if (previousScene == "inventory") fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
+            if (previousScene == "title") fadeOut(500, false, () => setScene(scenes.title()));
         },
         text: "X",
         fill: "white"
@@ -69,7 +69,7 @@ scenes.settings = () => {
             if (this.alpha == 1) {
                 playSound("buttonClickSound");
                 settingsCategory = "gameplay";
-                showMenuSettings();
+                showMenuSettings(false);
             }
         }
     }));
@@ -80,7 +80,7 @@ scenes.settings = () => {
             if (this.alpha == 1) {
                 playSound("buttonClickSound");
                 settingsCategory = "graphics";
-                showMenuSettings();
+                showMenuSettings(false);
             }
         }
     }));
@@ -91,7 +91,7 @@ scenes.settings = () => {
             if (this.alpha == 1) {
                 playSound("buttonClickSound");
                 settingsCategory = "controls";
-                showMenuSettings();
+                showMenuSettings(false);
             }
         }
     }));
@@ -102,7 +102,7 @@ scenes.settings = () => {
             if (this.alpha == 1) {
                 playSound("buttonClickSound");
                 settingsCategory = "audio";
-                showMenuSettings();
+                showMenuSettings(false);
             }
         }
     }));
@@ -112,15 +112,15 @@ scenes.settings = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 playSound("buttonClickSound");
-                if (previousScene == "inventory") fadeOut(500, true, () => setScene(scenes.inventory()));
-                if (previousScene == "title") fadeOut(750, false, () => setScene(scenes.title()));
+                if (previousScene == "inventory") fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
+                if (previousScene == "title") fadeOut(500, false, () => setScene(scenes.title()));
             }
         }
     }));
 
-    menuSettings.push(controls.button({
+    let saveChanges = controls.button({
         anchor: [0.675, 0.9], sizeAnchor: [0.1, 0.075],
-        text: "Save Changes", alpha: 0,
+        text: "Save Changes", alpha: 1,
         onClick(args) {
             if (this.alpha == 1) {
                 saveSettings();
@@ -135,7 +135,7 @@ scenes.settings = () => {
                 })
             }
         }
-    }));
+    });
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Gameplay
@@ -322,6 +322,7 @@ scenes.settings = () => {
 
                     settings.walkPadSize -= 1;
                     if (settings.walkPadSize < 0) settings.walkPadSize = 2;
+                    showMenuSettings();
                 }
             }
         }),
@@ -335,6 +336,7 @@ scenes.settings = () => {
 
                     settings.walkPadSize += 1;
                     if (settings.walkPadSize > 2) settings.walkPadSize = 0;
+                    showMenuSettings();
                 }
             }
         })
@@ -364,10 +366,11 @@ scenes.settings = () => {
                 if (this.alpha == 1) {
                     settingDesc("Adjust music volume");
 
-                    if (settings.musicVolume > 0.01) {
+                    if (settings.musicVolume > 0) {
                         settings.musicVolume = settings.musicVolume - 0.05;
                         if (settings.musicVolume < 0) settings.musicVolume = 0;
                         musicPlayer.volume = settings.musicVolume;
+                        showMenuSettings();
                     }
                 }
             }
@@ -383,6 +386,7 @@ scenes.settings = () => {
                         settings.musicVolume = settings.musicVolume + 0.05;
                         if (settings.musicVolume > 1) settings.musicVolume = 1;
                         musicPlayer.volume = settings.musicVolume;
+                        showMenuSettings();
                     }
                 }
             }
@@ -408,10 +412,11 @@ scenes.settings = () => {
                 if (this.alpha == 1) {
                     settingDesc("Adjust sound effect volume");
 
-                    if (settings.soundVolume > 0.01) {
+                    if (settings.soundVolume > 0) {
                         settings.soundVolume = settings.soundVolume - 0.05;
                         if (settings.soundVolume < 0) settings.soundVolume = 0;
                         changeSoundVolume(settings.soundVolume);
+                        showMenuSettings();
                     }
                 }
             }
@@ -427,6 +432,7 @@ scenes.settings = () => {
                         settings.soundVolume = settings.soundVolume + 0.05;
                         if (settings.soundVolume > 1) settings.soundVolume = 1;
                         changeSoundVolume(settings.soundVolume);
+                        showMenuSettings();
                     }
                 }
             }
@@ -435,11 +441,11 @@ scenes.settings = () => {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    for (i = 0; i < menuSettingsAudio.length; i++) {
+    for (i = 0; i < menuSettings.length; i++) {
         menuSettings[i].alpha = 1;
     }
 
-    function showMenuSettings() {
+    function showMenuSettings(blink = true) {
         for (i = 0; i < menuSettingsGameplay.length; i++) {
             menuSettingsGameplay[i].alpha = 0;
         }
@@ -472,20 +478,23 @@ scenes.settings = () => {
             categoryEntries[i].alpha = 1;
             if (categoryEntries[i].tick != undefined) categoryEntries[i].tick();
         }
+
+        if (blink && settingsSaveText.alpha == 0) blinkButton(saveChanges, () => settingsSaveText.alpha > 0);
     }
 
+    showMenuSettings(false);
     fadeIn(1000 / 3, true);
 
     return {
         // Pre-render function
         preRender(ctx, delta) {
-            showMenuSettings();
+            
         },
         // Controls
         controls: [
             ...background,
             ...menuSettings, ...menuSettingsGameplay, ...menuSettingsGraphics, ...menuSettingsControls, ...menuSettingsAudio,
-            settingsSaveText,
+            settingsSaveText, saveChanges
         ],
         name: "settings"
     }

@@ -35,6 +35,8 @@ let images = {
     delete: "data/images/delete.png",
     autosave: "data/images/autosave.png",
     mapbuttons: "data/images/mapbuttons.png",
+    monsterbook: "data/images/monsterbook.png",
+
     shopbg: "data/images/shop/shop-bg.png",
     shoptable: "data/images/shop/shop-table.png",
     pawn: "data/images/shop/pawn.png",

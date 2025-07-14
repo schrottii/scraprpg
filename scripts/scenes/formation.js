@@ -185,7 +185,7 @@ scenes.formation = () => {
         posInfos.push(controls.label({
             anchor: [0.075, 0.175], offset: [0, 144 * (3.5 + (i / 3))],
             fontSize: 32, fill: ["blue", "pink", "red"][i], align: "left",
-            text: ["Back: " + (1 - ROWBOOST).toFixed(2) + "x STR, " + (1 + ROWBOOST).toFixed(2) + "x DEF", "Mid: 1x STR, 1x DEF", "Front: " + (1 + ROWBOOST).toFixed(2) + "STR, " + (1 - ROWBOOST).toFixed(2) + "x DEF"][i],
+            text: ["Back: " + (1 - ROWBOOST).toFixed(2) + "x STR, " + (1 + ROWBOOST).toFixed(2) + "x DEF", "Mid: 1x STR, 1x DEF", "Front: " + (1 + ROWBOOST).toFixed(2) + "x STR, " + (1 - ROWBOOST).toFixed(2) + "x DEF"][i],
             alpha: 1,
         }));
     }

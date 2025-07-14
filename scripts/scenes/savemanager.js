@@ -1,3 +1,16 @@
+function blinkButton(who, condition) {
+    addAnimator(function (t) {
+        who.fillTop = t % 600 > 300 ? "red" : colors.buttontop;
+        who.fillBottom = t % 600 > 300 ? "darkred" : colors.buttonbottom;
+
+        if (condition()) {
+            who.fillTop = colors.buttontop;
+            who.fillBottom = colors.buttonbottom;
+            return true;
+        }
+    });
+}
+
 scenes.savemanager = () => {
     let background = [];
     let saveButtons = [];
@@ -177,6 +190,7 @@ scenes.savemanager = () => {
         text: " ",
         onClick(args) {
             mode = "save";
+            blinkButton(buttons[1], () => mode != "save");
         }
     }));
     buttons.push(controls.label({
@@ -192,6 +206,7 @@ scenes.savemanager = () => {
         text: " ",
         onClick(args) {
             mode = "load";
+            blinkButton(buttons[3], () => mode != "load");
         }
     }));
     buttons.push(controls.label({
@@ -207,6 +222,7 @@ scenes.savemanager = () => {
         text: " ",
         onClick(args) {
             mode = "delete";
+            blinkButton(buttons[5], () => mode != "delete");
         }
     }));
     buttons.push(controls.label({
@@ -221,7 +237,7 @@ scenes.savemanager = () => {
         fill: "black",
         text: " ",
         onClick(args) {
-            saveNR = 3; // Auto save
+            saveNR = 3; // load auto save immediately
             loadGame(3);
         }
     }));

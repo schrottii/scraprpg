@@ -19,7 +19,7 @@ scenes.title = () => {
     let infoLabel = controls.label({
         anchor: [0.02, 0.98], offset: [5, -12],
         align: "left", baseline: "alphabetic", fontSize: 24, fill: "#7f7f7f", alpha: 0,
-        text: "©2021-2025 Toast Technology Team / Schrottii",
+        text: "©2021-2025 Schrottii & Toast Technology Team / ScrapRPG team / Schrott Games",
     });
     let verLabel = controls.label({
         anchor: [0.98, 0.98], offset: [-5, -12],
@@ -86,7 +86,7 @@ scenes.title = () => {
             }
 
             if (t > 599) {
-                fadeOut(400, true, () => setScene(scenes.settings()));
+                fadeOut(500, true, () => setScene(scenes.settings()));
                 return true;
             }
             return false;
@@ -321,9 +321,10 @@ scenes.title = () => {
             let h = ctx.canvas.height;
             for (let a = 0; a < particles.length; a++) {
                 let par = particles[a];
-                let scale = 1 / ((20000 - par[2]) / 500);
-                par[2] += delta;
-                if (par[2] > 20000) {
+                let scale = 2 / ((20000 - par[2]) / 2000); // size
+
+                par[2] += delta; // age
+                if (par[2] > 20000) { // lifetime
                     particles.splice(a, 1);
                     a--;
                 } else {
@@ -333,7 +334,7 @@ scenes.title = () => {
                 }
                 ctx.fill();
             }
-            for (let a = 0; a < delta; a += 200) {
+            for (let a = 0; a < delta; a += 2) { // last number is for how often one spawns
                 particles.push(
                     [Math.random() * w * 2 - w, Math.random() * h * 2 - h, delta - a],
                 );
@@ -367,6 +368,7 @@ scenes.title = () => {
                     for (i = 0; i < amount; i++) {
                         saveTexts[i + (a * amount)].alpha = 1;
                     }
+
                     // Current party with levels texts, e. g. Skro Lvl. 4
                     saveTexts[2 + (a * amount)].text = getPlayer(1, thisSave).name;
                     saveTexts[4 + (a * amount)].text = "Lvl. " + getPlayer(1, thisSave).level;

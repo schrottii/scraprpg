@@ -6,4 +6,4 @@ List of people from the community added or referenced in the game
 ## Requested
 - Star: million star barrel (after peter) as secret/mini boss, ectoplasm element
 - Rudolf: barrel 124 (we wish you a...)
-- tomekbet: ...
+- tomekbet: :3 coin dropped after you hit maxed level, used to increase it (too hard/much to add?)
