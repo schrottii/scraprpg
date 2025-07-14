@@ -24,7 +24,7 @@ scenes.savemanager = () => {
             playSound("buttonClickSound");
             fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
         },
-        text: ">",
+        text: "X",
         fill: "white"
     }));
     background.push(controls.rect({

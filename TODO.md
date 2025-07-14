@@ -1,12 +1,16 @@
 ﻿## TODO:
 - Enemies
 - Map Enemies
+
 - Tilsets, images & adding tiles to MM
-- Making lots of maps
+- Making lots of maps, npcs, story
 - Music
 
 - Monster Book: Enemy details
 - Credits scene (roles & contributons in the roles)
+- Export/import for saves
+
+
 
 ## Phase 1:
 The developing phase, Schrottii's phase, the essential features of the game, mostly coding (DEFINITELY a bad decision in hindsight, sigh).

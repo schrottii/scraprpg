@@ -33,7 +33,7 @@ scenes.settings = () => {
             if (previousScene == "inventory") fadeOut(500, true, () => setScene(scenes.inventory()));
             if (previousScene == "title") fadeOut(750, false, () => setScene(scenes.title()));
         },
-        text: ">",
+        text: "X",
         fill: "white"
     }));
     background.push(controls.rect({

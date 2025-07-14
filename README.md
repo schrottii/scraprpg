@@ -19,7 +19,7 @@ Progress was fast in November of 2021, early 2022 and that year's Summer. Howeve
 - Discord Server Owner
 - Motivator
 
-## Staff
+## Staff (old roles)
 ### Barduzzi (*Salveeny* in GitHub)
 - Map Maker
 - Idea Planner
