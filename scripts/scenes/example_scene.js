@@ -11,6 +11,6 @@ scenes.SCENENAME = () => {
         controls: [
 
         ],
-        name: "ex"
+        name: "SCENENAME"
     }
 }

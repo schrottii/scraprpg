@@ -33,24 +33,30 @@ Progress was fast in November of 2021, early 2022 and that year's Summer. Howeve
 - Story Writer
 - Lead Composer
 
-### DaGame
-- Game Tester
-- Graphic Designer
-
-### Niko (Lun4-R)
+### Citrine
 - Graphic Designer
 - Idea Planner
 - Composer
-
-### Daem S. (TheKingofTrash)
-- Graphic Designer
-- Story Writer
-- Game Tester
-- Idea Planner
 
 ### Zedoreku
 - Composer
 
+### TheKingofTrash
+- Graphic Designer
+- Idea Planner
+
+### elmenda452
+- Motivator
+
+### KGod
+- Game Tester
+
+### DaGame
+- Game Tester
+- Motivator
+
 ### ducdat0507
-- Inactive
+- Programmer
+
+### ziemniakbiznesu
 - Programmer

@@ -106,6 +106,20 @@ scenes.settings = () => {
             }
         }
     }));
+
+
+
+    menuSettings.push(controls.button({
+        anchor: [0.175, 0.8], sizeAnchor: [0.1, 0.075],
+        text: "Credits", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                playSound("buttonClickSound");
+                fadeOut(750, true, () => setScene(scenes.credits()));
+            }
+        }
+    }));
+
     menuSettings.push(controls.button({
         anchor: [0.175, 0.9], sizeAnchor: [0.1, 0.075],
         text: "Back", alpha: 0,

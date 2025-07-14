@@ -331,8 +331,9 @@ var scenes = {
     savemanager: "scripts/scenes/savemanager.js",
     settings: "scripts/scenes/settings.js",
     status: "scripts/scenes/status.js",
-    monsterbook: "scripts/scenes/monsterbook.js",
     shop: "scripts/scenes/shop.js",
+    monsterbook: "scripts/scenes/monsterbook.js",
+    credits: "scripts/scenes/credits.js",
 };
 
 var audio = {
@@ -385,9 +386,9 @@ var resLoad = 0;
 
 function finishedLoadingResources() {
     if (resLoad == resCount) {
-        scene.controls[0].text = "Everything good to go!";
-        scene.controls[2].clickthrough = false;
-        scene.controls[0].alpha = scene.controls[1].alpha = scene.controls[3].alpha = 1;
+        scene.controls[1].text = "Everything good to go!";
+        scene.controls[3].clickthrough = false;
+        scene.controls[1].alpha = scene.controls[2].alpha = scene.controls[4].alpha = 1;
     }
 }
 
@@ -397,9 +398,9 @@ function loadAllResources() {
         img.src = images[image];
         img.onload = () => {
             resLoad++;
-            scene.controls[0].text = "Loading resources...";
-            scene.controls[1].text = "images/" + image + " " + resLoad + "/" + resCount;
-            scene.controls[6].sizeAnchor[0] = 0.22 * (resLoad / resCount);
+            scene.controls[1].text = "Loading resources...";
+            scene.controls[2].text = "images/" + image + " " + resLoad + "/" + resCount;
+            scene.controls[7].sizeAnchor[0] = 0.22 * (resLoad / resCount);
             finishedLoadingResources();
         }
         images[image] = img;
@@ -410,9 +411,9 @@ function loadAllResources() {
         scr.src = scenes[scn];
         scr.onload = () => {
             resLoad++;
-            scene.controls[0].text = "Loading resources...";
-            scene.controls[1].text = "scenes/" + scn + " " + resLoad + "/" + resCount;
-            scene.controls[6].sizeAnchor[0] = 0.22 * (resLoad / resCount);
+            scene.controls[1].text = "Loading resources...";
+            scene.controls[2].text = "scenes/" + scn + " " + resLoad + "/" + resCount;
+            scene.controls[7].sizeAnchor[0] = 0.22 * (resLoad / resCount);
             finishedLoadingResources();
         }
         scenes[scn] = scr;
@@ -423,9 +424,9 @@ function loadAllResources() {
         let aud = new Audio(audio[snd]);
         aud.onloadeddata = () => {
             resLoad++;
-            scene.controls[0].text = "Loading resources...";
-            scene.controls[1].text = "audio/" + snd + " " + resLoad + "/" + resCount;
-            scene.controls[6].sizeAnchor[0] = 0.22 * (resLoad / resCount);
+            scene.controls[1].text = "Loading resources...";
+            scene.controls[2].text = "audio/" + snd + " " + resLoad + "/" + resCount;
+            scene.controls[7].sizeAnchor[0] = 0.22 * (resLoad / resCount);
             finishedLoadingResources();
         }
         audio[snd] = aud;
@@ -436,9 +437,9 @@ function loadAllResources() {
         mp.src = maps[map];
         mp.onload = () => {
             resLoad++;
-            scene.controls[0].text = "Loading resources...";
-            scene.controls[1].text = "maps/" + map + " " + resLoad + "/" + resCount;
-            scene.controls[6].sizeAnchor[0] = 0.22 * (resLoad / resCount);
+            scene.controls[1].text = "Loading resources...";
+            scene.controls[2].text = "maps/" + map + " " + resLoad + "/" + resCount;
+            scene.controls[7].sizeAnchor[0] = 0.22 * (resLoad / resCount);
             finishedLoadingResources();
         }
         maps[map] = mp;

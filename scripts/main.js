@@ -37,9 +37,15 @@ function init() {
     setScene({
         // Pre-render function
         preRender(ctx, delta) {
-            if (scene.controls[3].alpha == 1) scene.controls[2].onClick();
+            if (scene.controls[4].alpha == 1) scene.controls[3].onClick();
         },
         controls: [
+            // BG
+            controls.rect({
+                anchor: [0, 0], sizeAnchor: [1, 1],
+                fill: "rgb(0, 0, 0)"
+            }),
+
             controls.label({
                 anchor: [0.02, 0.9], offset: [5, -12],
                 align: "left", baseline: "alphabetic", fontSize: 32,

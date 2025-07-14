@@ -5,6 +5,11 @@ scenes.title = () => {
     let saveTexts = [];
     let hiddn = false;
 
+    let BG = controls.rect({
+        anchor: [0, 0], sizeAnchor: [1, 1],
+        fill: "rgb(0, 0, 0)"
+    })
+
     let gameIcon = controls.image({
         anchor: [0.5, 0.35], offset: [-277.5, -200], sizeOffset: [555, 300],
         alpha: 0,
@@ -21,6 +26,12 @@ scenes.title = () => {
         align: "left", baseline: "alphabetic", fontSize: 24, fill: "#7f7f7f", alpha: 0,
         text: "©2021-2025 Schrottii & Toast Technology Team / ScrapRPG team / Schrott Games",
     });
+    let creditHitbox = controls.rect({
+        anchor: [0, 0.9], sizeAnchor: [0.2, 0.1], alpha: 0,
+        onClick(args) {
+            setScene(scenes.credits());
+        }
+    })
     let verLabel = controls.label({
         anchor: [0.98, 0.98], offset: [-5, -12],
         align: "right", baseline: "alphabetic", fontSize: 24, fill: "#7f7f7f", alpha: 0,
@@ -406,8 +417,8 @@ scenes.title = () => {
                 optionButton.text = "Settings";
             }
             if (mode == 2) {
-                deleteButton.text = "Reset All";
-                optionButton.text = "Go Back";
+                //deleteButton.text = "Reset All";
+                //optionButton.text = "Go Back";
             }
 
             if (previousScene == "settings" && hiddn == false) {
@@ -418,7 +429,8 @@ scenes.title = () => {
 
         // Controls
         controls: [
-            gameIcon, contLabel, infoLabel, verLabel,
+            BG,
+            gameIcon, contLabel, infoLabel, creditHitbox, verLabel,
             controls.base({
                 anchor: [0, 0], sizeAnchor: [1, 1],
                 onClick() {
