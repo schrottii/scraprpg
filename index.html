@@ -41,11 +41,19 @@
 <body onload="init()">
     <audio id="musicPlayer" type="audio/ogg" preload="auto"></audio>
     <canvas id="mainCanvas"></canvas>
+    <!-- Map Maker -->
     <div class="loadiv" style="display: none">
         <div id="myFileDiv" style="left: 70vw; top: 70vh;" type="file"></div>
         <input id="myFile" style="margin-left: 50%; margin-right: 50%;" type="file">
         <button onclick="loadMap()">Load!</button><br />
         <button onclick="lmresult = 'justhide'; hideSelect();">Cancel</button>
+    </div>
+    <!-- Save Import -->
+    <div class="loadiv2" style="display: none">
+        <div id="myFileDiv2" style="left: 70vw; top: 70vh;" type="file"></div>
+        <input id="myFile2" style="margin-left: 50%; margin-right: 50%;" type="file">
+        <button onclick="loadSaveFromFile()">Load!</button><br />
+        <button onclick="lmresult = 'justhide'; hideSelect2();">Cancel</button>
     </div>
 </body>
 </html>

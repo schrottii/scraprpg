@@ -7,8 +7,6 @@
 - Music
 
 - Monster Book: Enemy details
-- Credits scene (roles & contributons in the roles)
-- Export/import for saves
 
 
 

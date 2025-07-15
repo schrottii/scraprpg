@@ -11,13 +11,48 @@ function blinkButton(who, condition) {
     });
 }
 
+let toImportTo = -1;
+
+function loadSaveFromFile() {
+    if (toImportTo == -1) return false;
+
+    let file = document.getElementById("myFile2").files[0];
+
+    let reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = function (e) {
+        let result = e.target.result;
+
+        // unwrap the file
+        result = result.replace("svmgnaer", "=");
+        result = atob(result);
+        result = JSON.parse(result);
+
+        // save it onto that slot
+        let prevnr = saveNR;
+        saveNR = toImportTo;
+        saveGame();
+        saveNR = prevnr;
+    }
+    hideSelect2();
+}
+
+
+function hideSelect2() {
+    let dif = document.querySelector("div.loadiv2");
+    dif.style.display = "none";
+
+    let canvas = document.querySelector("canvas");
+    canvas.style.display = "block";
+}
+
 scenes.savemanager = () => {
     let background = [];
     let saveButtons = [];
     let saveTexts = [];
     let buttons = [];
 
-    var mode = 0;
+    var mode = "none";
 
     // Background
     background.push(controls.rect({
@@ -37,8 +72,7 @@ scenes.savemanager = () => {
             playSound("buttonClickSound");
             fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
         },
-        text: "X",
-        fill: "white"
+        text: "X"
     }));
     background.push(controls.rect({
         anchor: [0.01, 0.1], sizeAnchor: [0.98, 0.01],
@@ -58,19 +92,41 @@ scenes.savemanager = () => {
         alpha: 1,
     }));
 
+    background.push(controls.button({
+        anchor: [0.5, 0.01], sizeAnchor: [0.1, 0.1], fontSize: 60,
+        alpha: 1,
+        onClick(args) {
+            mode = "export";
+            blinkButton(background[6], () => mode != "export");
+        },
+        text: "Export"
+    }));
+    background.push(controls.button({
+        anchor: [0.61, 0.01], sizeAnchor: [0.1, 0.1], fontSize: 60,
+        alpha: 1,
+        onClick(args) {
+            mode = "import";
+            blinkButton(background[7], () => mode != "import");
+        },
+        text: "Import"
+    }));
+
     // Generate our lovely buttons
     for (let a = 0; a < 3; a++) {
         saveButtons.push(controls.button({
             anchor: [0.1, 0.125 + (a * 0.25)], sizeAnchor: [0.8, 0.225],
             text: "",
             onClick(args) {
+                // main save button function
                 playSound("buttonClickSound");
                 if (mode == "save") {
+                    let prevnr = saveNR;
                     saveNR = a;
                     saveGame();
+                    saveNR = prevnr;
                 }
                 if (mode == "load") {
-                    saveNR = a;
+                    saveNR = a; // loads the save
                     loadGame(a);
 
                     fadeOut(1000 / 3, true, (id = this.id) => {
@@ -78,9 +134,40 @@ scenes.savemanager = () => {
                     });
                 }
                 if (mode == "delete") {
-                    saveNR = a;
-                    localStorage["SRPG" + saveNR] = "null";
-                    mode = 0;
+                    localStorage["SRPG" + a] = "null";
+                    mode = "none";
+                }
+                if (mode == "export") {
+                    if (localStorage["SRPG" + a] == "null") return false; // don't export if it's empty xd
+
+                    let exporter = localStorage["SRPG" + a];
+
+                    if (confirm("Do you want to export this save with " + getTime(exporter.playTime, 60, 3600, true) + " play time?")) {
+                        exporter = JSON.stringify(exporter);
+                        exporter = btoa(exporter);
+                        exporter = exporter.replace("=", "svmgnaer");
+
+                        var temporaryFile = document.createElement('a');
+                        temporaryFile.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(exporter));
+                        temporaryFile.setAttribute('download', "SPRG" + (a + 1) + ".txt");
+
+                        temporaryFile.style.display = 'none';
+                        document.body.appendChild(temporaryFile);
+
+                        temporaryFile.click();
+
+                        document.body.removeChild(temporaryFile);
+                    }
+                }
+                if (mode == "import") {
+                    // done via loadiv2 in index.html and the functions at the top
+                    toImportTo = a;
+
+                    let dif = document.querySelector("div.loadiv2");
+                    dif.style.display = "block";
+
+                    let canvas = document.querySelector("canvas");
+                    canvas.style.display = "none";
                 }
             }
         }))
@@ -319,9 +406,14 @@ scenes.savemanager = () => {
                     }
                 }
             }
+
+            // current mode text
+            if (mode == "none") buttons[0].text = "No mode";
             if (mode == "save") buttons[0].text = "Mode: Save";
             if (mode == "load") buttons[0].text = "Mode: Load";
             if (mode == "delete") buttons[0].text = "Mode: Delete";
+            if (mode == "export") buttons[0].text = "Mode: Export";
+            if (mode == "import") buttons[0].text = "Mode: Import";
         },
         // Controls
         controls: [
