@@ -136,7 +136,8 @@ scenes.mapmaker = () => {
 
     var mode = "moveandplace";
     var prevmode = "moveandplace";
-    var doFill = false;
+    var fillToolActive = false;
+    var tilesFilled = 0;
 
     var tiles_bg = [];
     var tiles_bg2 = [];
@@ -411,12 +412,13 @@ scenes.mapmaker = () => {
         source: "fill", alpha: 1, glow: 0, glowColor: "white",
         onClick(args) {
             if (this.alpha == 1 && !prot) {
-                if (doFill) {
-                    doFill = false;
+                tilesFilled = 0;
+                if (fillToolActive) {
+                    fillToolActive = false;
                     this.glow = 0;
                 }
                 else {
-                    doFill = true;
+                    fillToolActive = true;
                     this.glow = 10;
                 }
             }
@@ -2792,6 +2794,7 @@ scenes.mapmaker = () => {
             return false;
         }
 
+        if (map[layer][y] == undefined) map[layer][y] = "---"; // jesus line
         let mp = map[layer][y];
         let def = "---";
 
@@ -2801,7 +2804,7 @@ scenes.mapmaker = () => {
             }
 
             let rePlaced;
-            if (doFill) rePlaced = mp.substr(x * 4, 3);
+            if (fillToolActive) rePlaced = mp.substr(x * 4, 3);
 
             if (mp == undefined) {
                 while (mp == undefined) {
@@ -2831,15 +2834,19 @@ scenes.mapmaker = () => {
             mp = map[layer][y];
 
             // Fill thing
-            if (doFill) {
+            if (fillToolActive && tilesFilled == 0) {
                 // Fill ON - multiple tiles
                 let temp = [x, y];
+
                 replaceY("+", mp, x, y, layer, rePlaced, tileToPlace, temp);
                 x = temp[0];
                 y = temp[1];
+
                 replaceY("-", mp, x, y, layer, rePlaced, tileToPlace, temp);
                 x = temp[0];
                 y = temp[1];
+
+                tilesFilled = 0; // done, reset back
             }
             else {
                 // FILL OFF - single tile
@@ -2863,33 +2870,49 @@ scenes.mapmaker = () => {
         let startX = 0;
         let startY = y;
 
-        while (map[layer][y] != undefined && y - 100 < startY) {
+        while (map[layer][y] != undefined && y - 100 < startY && tilesFilled < 5000) { // start row must exist, and max. 100 tiles in that direction
+            //console.log(tilesFilled);
             if (mp.substr(x * 4, 3) != rePlaced) {
                 // Nope (limit Y)
+                console.log("y limiter");
                 break;
             }
+
+            // go to the left
             startX = x;
-            while (mp.substr(0, x * 4) != undefined && x - 100 < startX) {
-                if (mp.substr(x * 4, 3) == rePlaced) map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
+            while (mp.substr(0, x * 4) != undefined && x > startX - 100) {
+                if (mp.substr(x * 4, 3) == rePlaced) {
+                    map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
+                    tilesFilled++;
+                }
                 else break;
                 mp = map[layer][y];
                 x -= 1;
             }
+
             x = temp[0] + 1;
             mp = map[layer][y];
+
+            // go to the right
             startX = x;
             while (mp.substr(0, x * 4) != undefined && x - 100 < startX) {
-                if (mp.substr(x * 4, 3) == rePlaced) map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
+                if (mp.substr(x * 4, 3) == rePlaced) {
+                    map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
+                    tilesFilled++;
+                }
                 else break;
                 mp = map[layer][y];
                 x += 1;
             }
+
+            // adjust the y
             // pom = plus or minus
             if (pom == "-") y -= 1;
             if (pom == "+") y += 1;
             mp = map[layer][y];
             x = temp[0];
         }
+        console.log("fill while, end");
     }
 
     function eraseTile(x, y, layer) {
