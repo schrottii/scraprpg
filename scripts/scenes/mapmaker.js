@@ -176,11 +176,11 @@ scenes.mapmaker = () => {
     // MODE BUTTONS - move+place, eraser, tile picker, undo, etc.
     // all the stuff on the left side
     // ------------------------------------------
-    modeButtons.push(controls.rect({
+    modeButtons.push(controls.rect({ // the big bg rect
         anchor: [0, 0], sizeAnchor: [0, 1], sizeOffset: [72 * 6, 0],
         fill: "brown", alpha: 0.8,
         onClick(args) {
-            if (!prot) protect();
+            if (!prot && this.alpha > 0) protect();
         }
     }));
 
@@ -755,7 +755,7 @@ scenes.mapmaker = () => {
         anchor: [0.25, 0.2], sizeAnchor: [0.05, 0.1], offset: [72 * 16, -600],
         text: "DEL", alpha: 0,
         onClick(args) {
-            if (this.alpha == 1 && tileSetSnip != "") {
+            if (this.alpha == 1) {
                 clearTile();
 
                 updateTileLabels();
@@ -1343,7 +1343,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newText = prompt("New skin?");
-                if (newText != undefined) map.npcs[curNPC].source = newText;
+                if (newText != undefined && images[newText] != undefined) map.npcs[curNPC].source = newText;
                 updateNPCLabels();
             }
         }
@@ -2059,7 +2059,8 @@ scenes.mapmaker = () => {
 
             // adjust and process variables
             if (tileOccupied.toLowerCase() == "yes" || tileOccupied.toLowerCase() == "true") ttc.occupied = true;
-            else if ((tileOccupied.toLowerCase() != "no" || tileOccupied.toLowerCase() != "false") && tileOccupied.toLowerCase() != "") ttc.occupied = tileOccupied.split(".");
+            else if (tileOccupied.toLowerCase() == "no" || tileOccupied.toLowerCase() == "false") ttc.occupied = false;
+            else if (tileOccupied.toLowerCase() != "" && tileOccupied != undefined) ttc.occupied = tileOccupied.split(".");
 
             if (tileAni != "") ttc.ani = [parseInt(tileAni.split(".")[0]), parseInt(tileAni.split(".")[1])];
 
@@ -2119,9 +2120,11 @@ scenes.mapmaker = () => {
                 activenpcs.push(npcs[i]);
             }
         }
-        if (map.npcs != undefined) for (i in map.npcs) {
-            if (map.npcs[i].alpha != 0) {
-                activenpcs.push(map.npcs[i]);
+        if (map.npcs != undefined) {
+            for (i in map.npcs) {
+                if (map.npcs[i].alpha != 0) {
+                    activenpcs.push(map.npcs[i]);
+                }
             }
         }
         for (i in activenpcs) {
