@@ -169,6 +169,39 @@ let mapenemies = {
         }
     },
 
+    // Chapter 3
+    beach1(args) {
+        return {
+            ...mapenemies.default(), source: "gen",
+            time: "all", minSize: 2, maxSize: 4,
+            walkingInterval: 0.5, walkingSpeed: 1,
+            enemies: {
+                "stronghelter": 10,
+                "slime_water": 20,
+                "cocnutnut": 50,
+                "rhapsody": 10,
+                "adose": 1
+            },
+            ...args || {},
+        }
+    },
+
+    underwater1(args) {
+        return {
+            ...mapenemies.default(), source: "gen",
+            time: "all", minSize: 2, maxSize: 3,
+            walkingInterval: 2, walkingSpeed: 2,
+            enemies: {
+                "slime_water": 10,
+                "rhapsody": 10,
+                "adose": 10,
+                "eldritch": 20,
+                "water_shadow": 3,
+                "ectoplasm_shadow": 1
+            },
+            ...args || {},
+        }
+    },
 
     // OLDIES
     itsalivemap(args) {

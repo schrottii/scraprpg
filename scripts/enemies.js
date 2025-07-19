@@ -64,11 +64,10 @@ function tryCreateAgain(pox, poy, big = false) {
 }
 
 function exampleFight() {
-    createEnemy("ent_medium");
-    createEnemy("housoo");
     createEnemy("cocnutnut");
-    createEnemy("cocnutnut");
-    createEnemy("cocnutnut");
+    createEnemy("ectoplasm_shadow");
+    createEnemy("eldritch");
+    createEnemy("water_shadow");
 }
 
 // All the enemies
@@ -241,6 +240,26 @@ let enemyTypes = {
         HP: 42, strength: 12,
         eva: 10, acc: 70, agi: 21, luk: 30,
         items: { "headectoplasm": 5, "bodyectoplasm": 5, "swordectoplasm": 5, "shieldectoplasm": 5 },
+    },
+
+    // water ruins (chapter 3)
+    "eldritch": {
+        name: "Eldritch", source: "eldritch", element: "water",
+        HP: 32, strength: 8,
+        eva: 0, acc: 90, agi: 26, luk: 40,
+        items: { "spellbookwaters": 5 },
+    },
+    "water_shadow": {
+        name: "Water Shadow", source: "water_shadow", element: "water",
+        HP: 26, strength: 7,
+        eva: 30, acc: 80, agi: 40, luk: 20,
+        items: { "swordwater": 10 },
+    },
+    "ectoplasm_shadow": {
+        name: "Ectoplasm Shadow", source: "ectoplasm_shadow", element: "ectoplasm",
+        HP: 36, strength: 20,
+        eva: 30, acc: 60, agi: 38, luk: 16,
+        items: { "swordectoplasm": 10, "spellbookectoplasms": 5, "headchemical": 5, "bodychemical": 5, "swordchemical": 5, "shieldchemical": 5 },
     },
 }
 
