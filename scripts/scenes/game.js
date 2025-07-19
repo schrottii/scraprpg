@@ -890,56 +890,61 @@ scenes.game = () => {
         }
 
         // Spawn enemies (sometimes)
-        // hmkgjfvmgmf
         if (enemiesOnThisMap < maxEnemies) {
             for (possibleSpawns in map.spawns) {
                 if (map.spawns[possibleSpawns] > Math.random() * 100) {
-                    if (mapenemies[possibleSpawns] != undefined) {
-                        if (mapenemies[possibleSpawns]().time == "day" && !isDay()) return false;
-                        if (mapenemies[possibleSpawns]().time == "dawn" && !isDawn()) return false;
-                        if (mapenemies[possibleSpawns]().time == "noon" && !isNoon()) return false;
-                        if (mapenemies[possibleSpawns]().time == "dusk" && !isDusk()) return false;
-                        if (mapenemies[possibleSpawns]().time == "night" && !isNight()) return false;
-                    }
-                    if (mapWidth == 0) {
-                        for (i = 0; i < maps[game.map].map.length; i++) {
-                            if (maps[game.map].map[i].length > mapWidth) mapWidth = maps[game.map].map[i].length;
+                    spawnMapEnemy(possibleSpawns);
+                }
+            }
+        }
+    }
+
+    function spawnMapEnemy(possibleSpawns) {
+        if (mapenemies[possibleSpawns] != undefined) {
+            if (mapenemies[possibleSpawns]().time == "day" && !isDay()) return false;
+            if (mapenemies[possibleSpawns]().time == "dawn" && !isDawn()) return false;
+            if (mapenemies[possibleSpawns]().time == "noon" && !isNoon()) return false;
+            if (mapenemies[possibleSpawns]().time == "dusk" && !isDusk()) return false;
+            if (mapenemies[possibleSpawns]().time == "night" && !isNight()) return false;
+        }
+        else return false;
+
+        if (mapWidth == 0) {
+            for (i = 0; i < maps[game.map].map.length; i++) {
+                if (maps[game.map].map[i].length > mapWidth) mapWidth = maps[game.map].map[i].length;
+            }
+        }
+
+        // generate map enemy
+        let posX = Math.floor(Math.random() * mapWidth);
+        let posY = Math.floor(Math.random() * maps[game.map].map.length);
+
+        if (posX == game.position[0]) return false;
+        if (posY == game.position[1]) return false;
+        if (getTile(map, posX, posY).occupied == true) return false;
+
+        enemies.push(mapenemies[possibleSpawns]({
+            position: [posX, posY], map: game.map,
+        }));
+        let latest = enemies[enemies.length - 1];
+
+        // sprite gen
+        if (latest.source == "gen") {
+            latest.gen = [];
+            while (latest.gen.length < latest.minSize) {
+                for (let k = 0; k < 8; k++) {
+                    for (let j in latest.enemies) {
+                        if (currentEnemies.length >= latest.maxSize) break;
+                        if (latest.enemies[j] > (Math.random() * 100)) {
+                            latest.gen.push(j);
                         }
-                    }
-
-                    // generate map enemy
-                    let posX = Math.floor(Math.random() * mapWidth);
-                    let posY = Math.floor(Math.random() * maps[game.map].map.length);
-
-                    if (posX == game.position[0]) return false;
-                    if (posY == game.position[1]) return false;
-                    if (getTile(map, posX, posY).occupied == true) return false;
-
-                    enemies.push(mapenemies[possibleSpawns]({
-                        position: [posX, posY], map: game.map,
-                    }));
-                    let latest = enemies[enemies.length - 1];
-
-                    // sprite gen
-                    if (latest.source == "gen") {
-                        latest.gen = [];
-                        while (latest.gen.length < latest.minSize) {
-                            for (let k = 0; k < 8; k++) {
-                                for (let j in latest.enemies) {
-                                    if (currentEnemies.length >= latest.maxSize) break;
-                                    if (latest.enemies[j] > (Math.random() * 100)) {
-                                        latest.gen.push(j);
-                                    }
-                                }
-                            }
-                        }
-
-                        // set as source (random enemy)
-                        latest.source = "enemies/" + enemyTypes[latest.gen[Math.floor(Math.random() * latest.gen.length)]].source;
-                        //console.log("source set: " + latest.source);
                     }
                 }
             }
+
+            // set as source (random enemy)
+            latest.source = "enemies/" + enemyTypes[latest.gen[Math.floor(Math.random() * latest.gen.length)]].source;
+            //console.log("source set: " + latest.source);
         }
     }
 

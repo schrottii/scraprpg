@@ -175,6 +175,7 @@ let images = {
     "enemies/sloper": "data/images/enemies/650_sloper.png",
     "enemies/evilpeter": "data/images/enemies/661_evilpeter.png",
     "enemies/futhark": "data/images/enemies/717_futhark.png",
+    "enemies/shapeward": "data/images/enemies/758_shapeward.png",
 
     // Tiles
     "tiles/empty": "data/images/tiles/empty.png",

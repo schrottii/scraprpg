@@ -261,6 +261,19 @@ let enemyTypes = {
         eva: 30, acc: 60, agi: 38, luk: 16,
         items: { "swordectoplasm": 10, "spellbookectoplasms": 5, "headchemical": 5, "bodychemical": 5, "swordchemical": 5, "shieldchemical": 5 },
     },
+    "shapeward": {
+        name: "Shapeward", source: "shapeward", element: "water",
+        HP: 33, strength: 10,
+        eva: 20, acc: 80, agi: 30, luk: 0,
+        items: { "potionmedium": 10 },
+    },
+    "boss_ectoxoxo": {
+        size: "2x2",
+        name: "Ectoxoxo", source: "ectoplasm_shadow", element: "ectoplasm",
+        HP: 200, strength: 30,
+        eva: 0, acc: 50, agi: 28, luk: 50,
+        items: { "spellectoplasms": 100, "crystalcrit": 100, "swampbuddy": 50, "energydrink_white": 25 },
+    },
 }
 
 let currentEnemies = [];

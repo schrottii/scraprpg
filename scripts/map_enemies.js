@@ -102,7 +102,7 @@ let mapenemies = {
             ...args || {},
         }
     },
-    forestslimeking(args) {
+    boss_slime_king(args) {
         return {
             ...mapenemies.default(), source: "enemies/slimegreen",
             time: "all", minSize: 3, maxSize: 6,
@@ -135,6 +135,19 @@ let mapenemies = {
             ...args || {},
         }
     },
+    boss_ooo_point(args) {
+        return {
+            ...mapenemies.default(), source: "enemies/zeropoint",
+            time: "all", minSize: 3, maxSize: 6,
+            walkingInterval: 5, walkingSpeed: 3,
+            enemies: {
+                "boss_ooo_point": 100,
+                "slime_wind": 50,
+                "cloudon": 20,
+            },
+            ...args || {},
+        }
+    },
 
     // Chapter 2
     forest2(args) {
@@ -152,7 +165,6 @@ let mapenemies = {
             ...args || {},
         }
     },
-
     cave1(args) {
         return {
             ...mapenemies.default(), source: "gen",
@@ -185,7 +197,6 @@ let mapenemies = {
             ...args || {},
         }
     },
-
     underwater1(args) {
         return {
             ...mapenemies.default(), source: "gen",
@@ -196,8 +207,37 @@ let mapenemies = {
                 "rhapsody": 10,
                 "adose": 10,
                 "eldritch": 20,
-                "water_shadow": 3,
+                "water_shadow": 1,
                 "ectoplasm_shadow": 1
+            },
+            ...args || {},
+        }
+    },
+    underwater2(args) {
+        return {
+            ...mapenemies.default(), source: "gen",
+            time: "all", minSize: 2, maxSize: 5,
+            walkingInterval: 2, walkingSpeed: 2,
+            enemies: {
+                "slime_water": 10,
+                "adose": 20,
+                "eldritch": 10,
+                "water_shadow": 3,
+                "ectoplasm_shadow": 1,
+                "shapeward": 10
+            },
+            ...args || {},
+        }
+    },
+    boss_ectoxoxo(args) {
+        return {
+            ...mapenemies.default(), source: "enemies/ectoplasm_shadow",
+            time: "all", minSize: 3, maxSize: 6,
+            walkingInterval: 5, walkingSpeed: 3,
+            enemies: {
+                "boss_ectoxoxo": 100,
+                "water_shadow": 50,
+                "adose": 20,
             },
             ...args || {},
         }
