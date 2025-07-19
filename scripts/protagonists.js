@@ -1,5 +1,5 @@
 // This is ALL protagonists in the game. Not only the ones you have equipped right now.
-const characters = ["bleu", "corelle", "gau", "skro", "kokitozi"];
+const characters = ["bleu", "corelle", "gau", "skro", "kokitozi", "docaspen"];
 
 function getPlayer(character = 1, src = game) {
     if (character > characters.length) character = 1;
@@ -74,6 +74,19 @@ const cStats = {
         luk: 40,
         element: "dark",
         length: 3,
+    },
+    docaspen: {
+        name: "DocAspen",
+        maxEP: 16,
+        maxHP: 20,
+        strength: 2,
+        agi: 20,
+        acc: 90,
+        int: 70,
+        wis: 30,
+        luk: 50,
+        element: "light",
+        length: 2,
     }
 }
 

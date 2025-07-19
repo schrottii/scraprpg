@@ -13,7 +13,7 @@ let game = {
     bricks: 0,
 
     // your peoples
-    chars: ["bleu", "corelle", "gau", "skro", "kokitozi"], // MAX 6!!!
+    chars: ["bleu", "corelle", "gau", "skro", "kokitozi", "docaspen"], // MAX 6!!!
     leader: "bleu",
 
     characters: {
@@ -81,7 +81,7 @@ let game = {
             EP: 8,
             HP: 18,
             effect: ["none", 0],
-            pos: [0, 1],
+            pos: [2, 1],
             macro: "attack",
             equipment: {
                 "head": "none",
@@ -100,7 +100,26 @@ let game = {
             EP: 20,
             HP: 8,
             effect: ["none", 0],
-            pos: [2, 1],
+            pos: [2, 2],
+            macro: "attack",
+            equipment: {
+                "head": "none",
+                "body": "none",
+                "lhand": "none",
+                "rhand": "none",
+                "acc1": "none",
+                "acc2": "none",
+            },
+            magic: [],
+        },
+        docaspen: {
+            name: "DocAspen",
+            level: 1,
+            EXP: 0,
+            EP: 16,
+            HP: 20,
+            effect: ["none", 0],
+            pos: [0, 2],
             macro: "attack",
             equipment: {
                 "head": "none",
@@ -219,6 +238,7 @@ function loadGame() {
             saveCopy.characters.gau.pos = [2, 2];
             saveCopy.characters.koki.pos = [2, 1];
         }
+        if (saveCopy.chars.length == 5) saveCopy.chars.push("docaspen");
         for (i in saveCopy.characters) {
             saveCopy.characters[i].effect = ["none", 0];
         }
@@ -230,18 +250,19 @@ function loadGame() {
         if (saveCopy.inventory == undefined) saveCopy.inventory = { "brickyleaf": 5, "potion": 3 };
         if (saveCopy.shops == undefined) saveCopy.shops = {};
 
-        if (saveCopy.characters.bleu.equipment == undefined) {
-            for (i in saveCopy.characters) {
-                saveCopy.characters[i].equipment = {
-                    "head": "none",
-                    "body": "none",
-                    "lhand": "none",
-                    "rhand": "none",
-                    "acc1": "none",
-                    "acc2": "none",
-                }
+        saveCopy.leader = "docaspen";
+
+        for (i in saveCopy.characters) {
+            if (saveCopy.characters[i].equipment == undefined) saveCopy.characters[i].equipment = {
+                "head": "none",
+                "body": "none",
+                "lhand": "none",
+                "rhand": "none",
+                "acc1": "none",
+                "acc2": "none",
             }
         }
+
 
         if (saveCopy.characters.bleu.macro == undefined) {
             for (i in saveCopy.characters) {

@@ -1697,7 +1697,7 @@ scenes.fight = () => {
             fill: "rgb(191, 137, 69)",
             alpha: 1,
             i: i,
-            char: ["all", "all", "all", "gau", "corelle", "grun", "all"][i],
+            char: ["all", "all", "all", "gau", "corelle", "grun", "all"][i], // special attacks
             onClick(args) {
                 if (this.alpha == 1 && (fightAction == "active" || (fightAction == "attack2" && this.i == 6))) {
                     switch (this.i) {

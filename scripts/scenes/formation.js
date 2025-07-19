@@ -8,7 +8,7 @@ scenes.formation = () => {
 
     const macros = ["attack", "defend", "scan", "rally", "pray", "counterattack"];
     const macroTexts = ["Attack", "Defend", "Scan", "Rally", "Pray", "Counter Attack"];
-    const macroUsers = ["all", "all", "all", "gau", "kokitozi", "grun"];
+    const macroUsers = ["all", "all", "all", "gau", "kokitozi", "grun"]; // special attacks
 
     // Background
     background.push(controls.rect({
