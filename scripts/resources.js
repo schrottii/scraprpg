@@ -95,7 +95,7 @@ let images = {
     schrottgamesanimation: "data/images/animations/sganimation.png",
     tttanimation: "data/images/animations/Toast_Tech_Team_Animation.png",
 
-    // Characters
+    // Characters (images by Decastar and Schrottii)
     bleu: "data/images/protagonists/map/Map_Bleu.png",
     corelle: "data/images/protagonists/map/Map_Corelle.png",
     gau: "data/images/protagonists/map/Map_Gau.png",
@@ -142,7 +142,7 @@ let images = {
     physical: "data/images/elements/physical_element.png",
     ectoplasm: "data/images/elements/ectoplasm_element.png",
 
-    // Effects
+    // Effects (images by TheKingofTrash)
     acid: "data/images/effects/acid.png",
     poison: "data/images/effects/poison.png",
     burn: "data/images/elements/fire_element.png",
@@ -150,11 +150,11 @@ let images = {
     paralysis: "data/images/effects/paralysis.png",
     condemned: "data/images/effects/condemned.png",
 
-    // Enemies
+    // Enemies (images by Schrottii)
     "enemies/black": "data/images/enemies/Map_Black.png",
     "enemies/evil": "data/images/enemies/Map_Evil.png",
     "enemies/weakhelter": "data/images/enemies/Map_Evil.png",
-    "enemies/stronghelter": "data/images/protagonists/map/Map_Corelle.png",
+    "enemies/stronghelter": "data/images/enemies/Map_Evil.png",
     "enemies/itsalive": "data/images/enemies/Map_ItsAlive.png",
     "enemies/livingbarrel": "data/images/enemies/Map_LivingBarrel.png",
     "enemies/nottoofresh": "data/images/enemies/NotTooFreshEnemy.png",
@@ -167,15 +167,18 @@ let images = {
     "enemies/ent": "data/images/enemies/179_ent.png",
     "enemies/cloudon": "data/images/enemies/210_cloudon.png",
     "enemies/cocnutnut": "data/images/enemies/273_cocnutnut.png",
+    "enemies/flash": "data/images/enemies/438_flash.png",
     "enemies/homerunner": "data/images/enemies/439_homerunner.png",
     "enemies/housoo": "data/images/enemies/500_housoo.png",
     "enemies/adose": "data/images/enemies/523_adose.png",
+    "enemies/smoker": "data/images/enemies/576_smoker.png",
     "enemies/water_shadow": "data/images/enemies/591_water_shadow.png",
     "enemies/ectoplasm_shadow": "data/images/enemies/591_ectoplasm_shadow.png",
     "enemies/slimegreen": "data/images/enemies/610_slime_green.png",
     "enemies/slimewind": "data/images/enemies/610_slime_wind.png",
     "enemies/slimeearth": "data/images/enemies/610_slime_earth.png",
     "enemies/slimewater": "data/images/enemies/610_slime_water.png",
+    "enemies/slimedesert": "data/images/enemies/610_slime_desert.png",
     "enemies/eldritch": "data/images/enemies/639_eldritch.png",
     "enemies/sloper": "data/images/enemies/650_sloper.png",
     "enemies/evilpeter": "data/images/enemies/661_evilpeter.png",
@@ -194,7 +197,7 @@ let images = {
     "tilesets/castle": "data/images/tilesets/castle.png",
     "tilesets/teleport": "data/images/tilesets/teleport.png",
 
-    // Items
+    // Items (images by Schrottii)
     "items/crystal_strength": "data/images/items/equipment/crystal_strength.png",
     "items/crystal_defense": "data/images/items/equipment/crystal_defense.png",
     "items/crystal_agility": "data/images/items/equipment/crystal_agility.png",

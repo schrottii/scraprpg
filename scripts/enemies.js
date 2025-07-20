@@ -64,10 +64,11 @@ function tryCreateAgain(pox, poy, big = false) {
 }
 
 function exampleFight() {
-    createEnemy("cocnutnut");
-    createEnemy("ectoplasm_shadow");
-    createEnemy("eldritch");
-    createEnemy("water_shadow");
+    createEnemy("slime_desert");
+    createEnemy("flash");
+    createEnemy("strong_zero_point");
+    createEnemy("smoker");
+    createEnemy("smoker");
 }
 
 // All the enemies
@@ -272,8 +273,51 @@ let enemyTypes = {
         name: "Ectoxoxo", source: "ectoplasm_shadow", element: "ectoplasm",
         HP: 200, strength: 30,
         eva: 0, acc: 50, agi: 28, luk: 50,
-        items: { "spellectoplasms": 100, "crystalcrit": 100, "swampbuddy": 50, "energydrink_white": 25 },
+        items: { "spellbookectoplasms": 100, "crystalcrit": 100, "swampbuddy": 50, "energydrink_white": 25 },
     },
+
+    // desert (chapter 4)
+    "slime_desert": {
+        name: "Desert Slime", source: "slimedesert", element: "lightning",
+        HP: 60, strength: 10,
+        eva: 10, acc: 80, agi: 30, luk: 20,
+        items: { "energydrink_white": 50, "energydrink_green": 50 },
+    },
+    "flash": {
+        name: "Flash", source: "flash", element: "lightning",
+        HP: 50, strength: 12,
+        eva: 30, acc: 70, agi: 80, luk: 20,
+        items: { "headlightning": 5, "bodylightning": 5, "swordlightning": 5, "shieldlightning": 5 },
+    },
+    "strong_zero_point": {
+        name: "Strong Zero Point", source: "zeropoint", element: "lightning",
+        HP: 33, strength: 33,
+        eva: 0, acc: 20, agi: 44, luk: 50,
+        items: { "spellbooklightnings": 25 },
+    },
+    "smoker": {
+        name: "Smoker", source: "smoker", element: "fire",
+        HP: 60, strength: 20,
+        eva: 10, acc: 60, agi: 80, luk: 20,
+        items: { "spellbookfires": 25, "spellbookfirem": 1, "headinferno": 0.03, "bodyinferno": 0.03, "swordinferno": 0.02, "shieldinferno": 0.02 },
+    },
+
+
+
+    // nulon (chapter 4)
+
+
+
+    // chapter 5
+
+
+
+    // dorado (chapter 6)
+
+
+
+
+    // platinschrott volcano (chapter 6)
 }
 
 let currentEnemies = [];

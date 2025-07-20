@@ -75,6 +75,8 @@ scenes.monsterbook = () => {
         alpha: 1,
     }));
 
+    if (game.monsterbook == undefined) game.monsterbook = [];
+
     // calculate total kills
     for (let enm in game.monsterbook) {
         totalKills += game.monsterbook[enm];

@@ -249,6 +249,7 @@ function loadGame() {
         if (saveCopy.bricks == undefined) saveCopy.bricks = 0;
         if (saveCopy.inventory == undefined) saveCopy.inventory = { "brickyleaf": 5, "potion": 3 };
         if (saveCopy.shops == undefined) saveCopy.shops = {};
+        if (saveCopy.monsterbook == undefined) saveCopy.monsterbook = [];
 
         saveCopy.leader = "docaspen";
 
