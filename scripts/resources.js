@@ -114,22 +114,22 @@ let images = {
     corelle_ani: "data/images/protagonists/other/Corelle_Sprite_Sheet_Other.png",
     gau_ani: "data/images/protagonists/other/Gau_Sprite_Sheet_Other.png",
     skro_ani: "data/images/protagonists/other/Skro_Sprite_Sheet_Other.png",
-    kokitozi_ani: "data/images/protagonists/other/Skro_Sprite_Sheet_Other.png",
-    docaspen_ani: "data/images/protagonists/other/Skro_Sprite_Sheet_Other.png",
+    kokitozi_ani: "data/images/protagonists/other/Kokitozi_Sprite_Sheet_Other.png",
+    docaspen_ani: "data/images/protagonists/other/DocAspen_Sprite_Sheet_Other.png",
 
     bleu_battle: "data/images/protagonists/battle/Bleu_Battle_Sprite_Sheet.png",
     corelle_battle: "data/images/protagonists/battle/Corelle_Battle_Sprite_Sheet.png",
     gau_battle: "data/images/protagonists/battle/Gau_Battle_Sprite_Sheet.png",
     skro_battle: "data/images/protagonists/battle/Skro_Battle_Sprite_Sheet.png",
     kokitozi_battle: "data/images/protagonists/battle/Kokitozi_Battle_Sprite_Sheet.png",
-    docaspen_battle: "data/images/protagonists/battle/Kokitozi_Battle_Sprite_Sheet.png",
+    docaspen_battle: "data/images/protagonists/battle/DocAspen_Battle_Sprite_Sheet.png",
 
     Portraits_Bleu: "data/images/protagonists/portraits/Portraits_Bleu.png",
     Portraits_Corelle: "data/images/protagonists/portraits/Portraits_Corelle.png",
     Portraits_Gau: "data/images/protagonists/portraits/Portraits_Gau.png",
     Portraits_Skro: "data/images/protagonists/portraits/Portraits_Skro.png",
     Portraits_Kokitozi: "data/images/protagonists/portraits/Portraits_Kokitozi.png",
-    Portraits_DocAspen: "data/images/protagonists/portraits/Portraits_Kokitozi.png",
+    Portraits_DocAspen: "data/images/protagonists/portraits/Portraits_DocAspen.png",
 
     // Elements
     fire: "data/images/elements/fire_element.png",
