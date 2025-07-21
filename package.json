@@ -1,0 +1,39 @@
+{
+  "name": "scraprpg",
+  "version": "1.0.0",
+  "description": "web version of ScrapRPG",
+  "main": "scripts\\main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/schrottii/scraprpg.git"
+  },
+  "keywords": [
+    "scraprpg"
+  ],
+  "author": "schrottii",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/schrottii/scraprpg/issues"
+  },
+  "homepage": "https://github.com/schrottii/scraprpg#readme",
+  "devDependencies": {
+    "@electron-forge/cli": "^7.8.1",
+    "@electron-forge/maker-deb": "^7.8.1",
+    "@electron-forge/maker-rpm": "^7.8.1",
+    "@electron-forge/maker-squirrel": "^7.8.1",
+    "@electron-forge/maker-zip": "^7.8.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.8.1",
+    "@electron-forge/plugin-fuses": "^7.8.1",
+    "@electron/fuses": "^1.8.0",
+    "electron": "^37.2.3"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.1"
+  }
+}

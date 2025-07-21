@@ -19,8 +19,39 @@ var animationtime = -1;
 var animation;
 var animationspeed = 100;
 
-let scale = window.innerHeight / 16;
-let width = window.innerWidth / scale;
+let scale = 1080 / 16;// window.innerHeight / 16;
+let width = 1920 / scale;// window.innerWidth / scale;
+
+// electron
+const { app, BrowserWindow } = require('electron');
+
+const createWindow = () => {
+    const win = new BrowserWindow({
+        width: 1920,
+        height: 1080,
+        icon: "data/images/ico.ico",
+    })
+
+    win.setMenuBarVisibility(false);
+    win.loadFile('index.html');
+}
+
+app.whenReady().then(() => {
+    createWindow();
+
+    app.on('activate', () => {
+        if (BrowserWindow.getAllWindows().length === 0) {
+            createWindow();
+        }
+    });
+});
+/*
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+        app.quit();
+    }
+});
+*/
 
 // init
 function init() {

@@ -9,4 +9,6 @@ function setScene(args) {
         controls: [],
         ...args || {},
     }
+
+    document.title = "ScrapRPG (" + scene.name + ")";
 }
