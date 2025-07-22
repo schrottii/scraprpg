@@ -155,7 +155,7 @@ scenes.mapmaker = () => {
     let tileDia = "";
     let tileSwim = "";
     let tileOccupied = "";
-    var mapIdentifier = "C";
+    var mapIdentifier = "";
 
     let layerVisi = [1, 1, 1];
     let enableAnimations = false;
@@ -558,6 +558,16 @@ scenes.mapmaker = () => {
             }
         }
     }));
+    makerInfo.push(controls.button({
+        anchor: [0.05, 0.15], sizeOffset: [96, 56], offset: [-64, 64 * 8],
+        text: "NPCs", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                protect();
+                renderInfo("npcs");
+            }
+        }
+    }));
 
     makerInfo.push(controls.button({
         anchor: [0.25, 0.85], sizeOffset: [64, 56], offset: [-144, -32],
@@ -730,14 +740,15 @@ scenes.mapmaker = () => {
         text: "AutoID C00", alpha: 0,
         onClick(args) {
             if (this.alpha == 1 && tileSetSnip != "") {
-                let inputMI = prompt("new map identifier?");
-                if (inputMI != undefined && inputMI != null && inputMI != "") {
-                    mapIdentifier = inputMI.toString();
+                if (mapIdentifier == "") {
+                    let inputMI = prompt("new map identifier?");
+                    if (inputMI != undefined && inputMI != null && inputMI != "") {
+                        mapIdentifier = inputMI.toString();
+                    }
                 }
 
                 let cordX = parseInt(tileSetSnip.split(".")[0]);
                 let cordY = parseInt(tileSetSnip.split(".")[1]);
-
 
                 let tempName = cordX + (cordY * 10);
                 tempName = tempName.toString();
@@ -825,8 +836,10 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) {
                 protect();
                 let newMapn = prompt("Map name? (e. g. test)");
-                if (maps[newMapn] != undefined) currentMap = newMapn;
-                map = maps[currentMap];
+                if (maps[newMapn] != undefined) {
+                    currentMap = newMapn;
+                    map = maps[currentMap];
+                }
                 if (loadMapButtons[0].alpha == 1) toggleLoadButtons();
                 hideInfo();
                 newMap();
@@ -1297,6 +1310,7 @@ scenes.mapmaker = () => {
                     for (i in newText) {
                         newText[i] = parseInt(newText[i]);
                     }
+                    this.text = newText;
                     map.npcs[curNPC].path = newText;
                 }
                 updateNPCLabels();
@@ -1715,7 +1729,6 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) {
                 let newName = prompt("New map name?");
                 map.name = newName;
-                currentMap = newName;
                 this.uText();
             }
         },
@@ -1725,6 +1738,21 @@ scenes.mapmaker = () => {
     }));
     mapInfoControls.push(controls.button({
         anchor: [0.1, 0.325], sizeAnchor: [0.2, 0.1],
+        text: "Map ID: " + map.name, alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let newName = prompt("New map ID?");
+                map.id = newName;
+                currentMap = newName;
+                this.uText();
+            }
+        },
+        uText() {
+            this.text = "Map ID: " + map.id;
+        }
+    }));
+    mapInfoControls.push(controls.button({
+        anchor: [0.1, 0.45], sizeAnchor: [0.2, 0.1],
         text: "Music intro: " + map.intro, alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -1738,7 +1766,7 @@ scenes.mapmaker = () => {
         }
     }));
     mapInfoControls.push(controls.button({
-        anchor: [0.1, 0.45], sizeAnchor: [0.2, 0.1],
+        anchor: [0.1, 0.575], sizeAnchor: [0.2, 0.1],
         text: "Music loop: " + map.music, alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -2058,8 +2086,8 @@ scenes.mapmaker = () => {
             }
 
             // adjust and process variables
-            if (tileOccupied.toLowerCase() == "yes" || tileOccupied.toLowerCase() == "true") ttc.occupied = true;
-            else if (tileOccupied.toLowerCase() == "no" || tileOccupied.toLowerCase() == "false") ttc.occupied = false;
+            if (tileOccupied.toLowerCase().substr(0, 1) == "y" || tileOccupied.toLowerCase() == "true") ttc.occupied = true;
+            else if (tileOccupied.toLowerCase().substr(0, 1) == "n" || tileOccupied.toLowerCase() == "false") ttc.occupied = false;
             else if (tileOccupied.toLowerCase() != "" && tileOccupied != undefined) ttc.occupied = tileOccupied.split(".");
 
             if (tileAni != "") ttc.ani = [parseInt(tileAni.split(".")[0]), parseInt(tileAni.split(".")[1])];
@@ -2098,6 +2126,8 @@ scenes.mapmaker = () => {
         tileTele = "";
         tileDia = "";
         tileSwim = "";
+
+        mapIdentifier = "";
 
         createTileButtons[0].text = "Tile ID";
         createTileButtons[1].text = "Tile Sprite";
@@ -2558,6 +2588,13 @@ scenes.mapmaker = () => {
             case "p":
                 for (i in Object.keys(images)) {
                     if (Object.keys(images)[i].substr(0, 10) == "Portraits_") grabFrom.push(Object.keys(images)[i]);
+                }
+                break;
+            case "npcs":
+                if (map.npcs != undefined) {
+                    for (let n in map.npcs) {
+                        grabFrom.push(n);
+                    }
                 }
                 break;
         }
@@ -3069,6 +3106,8 @@ scenes.mapmaker = () => {
                         // The map you have loaded already exists :)
                         currentMap = lmresult.id;
                         map = maps[lmresult];
+
+                        console.log("loaded: " + currentMap);
                         newMap();
                     }
                     else {

@@ -149,7 +149,7 @@ scenes.savemanager = () => {
 
                         var temporaryFile = document.createElement('a');
                         temporaryFile.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(exporter));
-                        temporaryFile.setAttribute('download', "SPRG" + (a + 1) + ".txt");
+                        temporaryFile.setAttribute('download', "SRPG" + (a + 1) + ".txt");
 
                         temporaryFile.style.display = 'none';
                         document.body.appendChild(temporaryFile);

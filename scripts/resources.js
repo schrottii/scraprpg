@@ -382,6 +382,7 @@ var audio = {
 var maps = {
     "newMap": "scripts/maps/newMap.js",
     "test": "scripts/maps/test.js",
+    "testCastle": "scripts/maps/testCastle.js",
 };
 
 var colors = {
