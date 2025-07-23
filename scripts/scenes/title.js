@@ -50,7 +50,7 @@ scenes.title = () => {
         }
 
         addAnimator(function (t) {
-            for (let a = 0; a < 4; a++) {
+            for (let a = 0; a < 3; a++) {
                 if (a == id) {
                     saveButtons[a].offset[1] = (-160 + 130 * a) * Math.max(1 - t / 600, 0) ** 2 - 60;
                     saveImages[a].offset[1] = (-160 + 130 * a) * Math.max(1 - t / 600, 0) ** 2 - 60;
@@ -262,8 +262,8 @@ scenes.title = () => {
                     saveButtons[i].fillTop = colors.buttontop;
                     saveButtons[i].fillBottom = colors.buttonbottom;
                 }
-                saveButtons[3].fillTop = "#54d4ff";
-                saveButtons[3].fillBottom = "#4fa1bc";
+                //saveButtons[3].fillTop = "#54d4ff";
+                //saveButtons[3].fillBottom = "#4fa1bc";
             }
             else if (mode == 0) {
                 mode = 1;
@@ -273,16 +273,16 @@ scenes.title = () => {
                             saveButtons[i].fillTop = colors.buttontop;
                             saveButtons[i].fillBottom = colors.buttonbottom;
                         }
-                        saveButtons[3].fillTop = "#54d4ff";
-                        saveButtons[3].fillBottom = "#4fa1bc";
+                        //saveButtons[3].fillTop = "#54d4ff";
+                        //saveButtons[3].fillBottom = "#4fa1bc";
                         return true;
                     }
                     for (i = 0; i < 3; i++) {
                         saveButtons[i].fillTop = t % 800 > 400 ? "red" : colors.buttontop;
                         saveButtons[i].fillBottom = t % 800 > 400 ? "darkred" : colors.buttonbottom;
                     }
-                    saveButtons[3].fillTop = t % 800 > 400 ? "purple" : "#54d4ff";
-                    saveButtons[3].fillBottom = t % 800 > 400 ? "rebeccapurple" : "#4fa1bc";
+                    //saveButtons[3].fillTop = t % 800 > 400 ? "purple" : "#54d4ff";
+                    //saveButtons[3].fillBottom = t % 800 > 400 ? "rebeccapurple" : "#4fa1bc";
                     return false;
                 });
             }

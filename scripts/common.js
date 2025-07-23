@@ -2,8 +2,564 @@ var commontiles = {
     empty: {
         sprite: "empty",
     },
-    "C00": { "set": "common", "snip": [0, 0] },
-    // Do not remove this } here. Make sure there's a } right above this too
+
+    "C00": {
+        "set": "common",
+        "snip": [
+            0,
+            0
+        ],
+        "occupied": true
+    },
+    "C01": {
+        "set": "common",
+        "snip": [
+            1,
+            0
+        ],
+        "occupied": false
+    },
+    "C02": {
+        "set": "common",
+        "snip": [
+            2,
+            0
+        ],
+        "occupied": false
+    },
+    "C12": {
+        "set": "common",
+        "snip": [
+            2,
+            1
+        ],
+        "occupied": true
+    },
+    "C03": {
+        "set": "common",
+        "snip": [
+            3,
+            0
+        ],
+        "occupied": true
+    },
+    "C13": {
+        "set": "common",
+        "snip": [
+            3,
+            1
+        ],
+        "occupied": false
+    },
+    "C04": {
+        "set": "common",
+        "snip": [
+            4,
+            0
+        ],
+        "occupied": false
+    },
+    "C14": {
+        "set": "common",
+        "snip": [
+            4,
+            1
+        ],
+        "occupied": true
+    },
+    "C05": {
+        "set": "common",
+        "snip": [
+            5,
+            0
+        ],
+        "occupied": true
+    },
+    "C15": {
+        "set": "common",
+        "snip": [
+            5,
+            1
+        ],
+        "occupied": false
+    },
+    "C06": {
+        "set": "common",
+        "snip": [
+            6,
+            0
+        ],
+        "occupied": false
+    },
+    "C16": {
+        "set": "common",
+        "snip": [
+            6,
+            1
+        ],
+        "occupied": true
+    },
+    "C07": {
+        "set": "common",
+        "snip": [
+            7,
+            0
+        ],
+        "occupied": true
+    },
+    "C17": {
+        "set": "common",
+        "snip": [
+            7,
+            1
+        ],
+        "occupied": false
+    },
+    "C08": {
+        "set": "common",
+        "snip": [
+            8,
+            0
+        ],
+        "occupied": false
+    },
+    "C18": {
+        "set": "common",
+        "snip": [
+            8,
+            1
+        ],
+        "occupied": true
+    },
+    "C09": {
+        "set": "common",
+        "snip": [
+            9,
+            0
+        ],
+        "occupied": true
+    },
+    "C19": {
+        "set": "common",
+        "snip": [
+            9,
+            1
+        ],
+        "occupied": false
+    },
+    "C10": {
+        "set": "common",
+        "snip": [
+            0,
+            1
+        ],
+        "occupied": true
+    },
+    "C11": {
+        "set": "common",
+        "snip": [
+            1,
+            1
+        ],
+        "occupied": true
+    },
+    "C20": {
+        "set": "common",
+        "snip": [
+            0,
+            2
+        ],
+        "occupied": true
+    },
+    "C21": {
+        "set": "common",
+        "snip": [
+            1,
+            2
+        ],
+        "occupied": true
+    },
+    "C24": {
+        "set": "common",
+        "snip": [
+            4,
+            2
+        ],
+        "occupied": true
+    },
+    "C25": {
+        "set": "common",
+        "snip": [
+            5,
+            2
+        ],
+        "occupied": true
+    },
+    "C26": {
+        "set": "common",
+        "snip": [
+            6,
+            2
+        ],
+        "occupied": false
+    },
+    "C27": {
+        "set": "common",
+        "snip": [
+            7,
+            2
+        ],
+        "occupied": true
+    },
+    "C28": {
+        "set": "common",
+        "snip": [
+            8,
+            2
+        ],
+        "occupied": true
+    },
+    "C29": {
+        "set": "common",
+        "snip": [
+            9,
+            2
+        ],
+        "occupied": true
+    },
+    "C30": {
+        "set": "common",
+        "snip": [
+            0,
+            3
+        ],
+        "occupied": true
+    },
+    "C31": {
+        "set": "common",
+        "snip": [
+            1,
+            3
+        ],
+        "occupied": true
+    },
+    "C32": {
+        "set": "common",
+        "snip": [
+            2,
+            3
+        ],
+        "occupied": true
+    },
+    "C33": {
+        "set": "common",
+        "snip": [
+            3,
+            3
+        ],
+        "occupied": true
+    },
+    "C22": {
+        "set": "common",
+        "snip": [
+            2,
+            2
+        ],
+        "occupied": true
+    },
+    "C23": {
+        "set": "common",
+        "snip": [
+            3,
+            2
+        ],
+        "occupied": true
+    },
+    "NAN": {
+        "set": "common",
+        "snip": [
+            3,
+            6
+        ],
+        "occupied": true
+    },
+    "C34": {
+        "set": "common",
+        "snip": [
+            4,
+            3
+        ],
+        "occupied": true
+    },
+    "C35": {
+        "set": "common",
+        "snip": [
+            5,
+            3
+        ],
+        "occupied": true
+    },
+    "C36": {
+        "set": "common",
+        "snip": [
+            6,
+            3
+        ],
+        "occupied": true
+    },
+    "C37": {
+        "set": "common",
+        "snip": [
+            7,
+            3
+        ],
+        "occupied": false
+    },
+    "C38": {
+        "set": "common",
+        "snip": [
+            8,
+            3
+        ],
+        "occupied": false
+    },
+    "C39": {
+        "set": "common",
+        "snip": [
+            9,
+            3
+        ],
+        "occupied": false
+    },
+    "C40": {
+        "set": "common",
+        "snip": [
+            0,
+            4
+        ],
+        "occupied": true
+    },
+    "C41": {
+        "set": "common",
+        "snip": [
+            1,
+            4
+        ],
+        "occupied": true
+    },
+    "C42": {
+        "set": "common",
+        "snip": [
+            2,
+            4
+        ],
+        "occupied": false
+    },
+    "C43": {
+        "set": "common",
+        "snip": [
+            3,
+            4
+        ],
+        "occupied": false
+    },
+    "C52": {
+        "set": "common",
+        "snip": [
+            2,
+            5
+        ],
+        "occupied": false
+    },
+    "C53": {
+        "set": "common",
+        "snip": [
+            3,
+            5
+        ],
+        "occupied": false
+    },
+    "C44": {
+        "set": "common",
+        "snip": [
+            4,
+            4
+        ],
+        "occupied": false
+    },
+    "C54": {
+        "set": "common",
+        "snip": [
+            4,
+            5
+        ],
+        "occupied": false
+    },
+    "C57": {
+        "set": "common",
+        "snip": [
+            7,
+            5
+        ],
+        "occupied": false
+    },
+    "C47": {
+        "set": "common",
+        "snip": [
+            7,
+            4
+        ],
+        "occupied": false
+    },
+    "C58": {
+        "set": "common",
+        "snip": [
+            8,
+            5
+        ],
+        "occupied": false
+    },
+    "C48": {
+        "set": "common",
+        "snip": [
+            8,
+            4
+        ],
+        "occupied": false
+    },
+    "C59": {
+        "set": "common",
+        "snip": [
+            9,
+            5
+        ],
+        "occupied": false
+    },
+    "C49": {
+        "set": "common",
+        "snip": [
+            9,
+            4
+        ],
+        "occupied": false
+    },
+    "C45": {
+        "set": "common",
+        "snip": [
+            5,
+            4
+        ],
+        "occupied": false
+    },
+    "C46": {
+        "set": "common",
+        "snip": [
+            6,
+            4
+        ],
+        "occupied": false
+    },
+    "C55": {
+        "set": "common",
+        "snip": [
+            5,
+            5
+        ],
+        "occupied": false
+    },
+    "C56": {
+        "set": "common",
+        "snip": [
+            6,
+            5
+        ],
+        "occupied": false
+    },
+    "C50": {
+        "set": "common",
+        "snip": [
+            0,
+            5
+        ],
+        "occupied": true
+    },
+    "C51": {
+        "set": "common",
+        "snip": [
+            1,
+            5
+        ],
+        "occupied": true
+    },
+    "C68": {
+        "set": "common",
+        "snip": [
+            8,
+            6
+        ],
+        "occupied": false
+    },
+    "C69": {
+        "set": "common",
+        "snip": [
+            9,
+            6
+        ],
+        "occupied": false
+    },
+    "C79": {
+        "set": "common",
+        "snip": [
+            9,
+            7
+        ],
+        "occupied": false
+    },
+    "C78": {
+        "set": "common",
+        "snip": [
+            8,
+            7
+        ],
+        "occupied": false
+    },
+    "C60": {
+        "set": "common",
+        "snip": [
+            0,
+            6
+        ],
+        "occupied": false,
+        "ani": [
+            3,
+            1
+        ]
+    },
+    "C64": {
+        "set": "common",
+        "snip": [
+            4,
+            6
+        ],
+        "occupied": false,
+        "ani": [
+            2,
+            1
+        ]
+    },
+    "C70": {
+        "set": "common",
+        "snip": [
+            0,
+            7
+        ],
+        "occupied": false,
+        "ani": [
+            8,
+            1
+        ]
+    }
+
 }
 
 /*

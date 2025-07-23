@@ -2245,11 +2245,13 @@ scenes.mapmaker = () => {
     function saveFile(type) {
         let toExport;
 
+        /*
         for (let tilesetTile in map.tiles) {
             if (map.tiles[tilesetTile].set != undefined) {
                 delete map.tiles[tilesetTile];
             }
         }
+        */
 
         if (type == "sotrm") toExport = JSON.stringify(map);
         if (type == "js") toExport = 'maps["' + currentMap + '"] = ' + JSON.stringify(map);
