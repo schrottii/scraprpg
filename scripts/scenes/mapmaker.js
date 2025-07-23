@@ -1839,7 +1839,7 @@ scenes.mapmaker = () => {
                 if (map.packs == undefined) {
                     map.packs = [];
                 }
-                let newPack = prompt("Name? (e. g. tiles_forest)");
+                let newPack = prompt("Name? (e. g. castle)");
                 map.packs.push(newPack);
                 map.tiles = Object.assign({}, map.tiles, loadPacks({ packs: [newPack] }));
             }

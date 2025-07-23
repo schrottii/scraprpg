@@ -195,6 +195,8 @@ let images = {
     // Tilesets
     "tilesets/common": "data/images/tilesets/common.png",
     "tilesets/castle": "data/images/tilesets/castle.png",
+    "tilesets/desert": "data/images/tilesets/desert.png",
+
     "tilesets/teleport": "data/images/tilesets/teleport.png",
 
     // Items (images by Schrottii)

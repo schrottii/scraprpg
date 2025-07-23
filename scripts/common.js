@@ -1024,6 +1024,409 @@ var packs = {
             ],
             "occupied": false
         }
-    }
+    },
 
+    desert: 
+    {
+        "D01": {
+            "set": "desert",
+            "snip": [
+                1,
+                0
+            ],
+            "occupied": false
+        },
+        "D02": {
+            "set": "desert",
+            "snip": [
+                2,
+                0
+            ],
+            "occupied": false
+        },
+        "D03": {
+            "set": "desert",
+            "snip": [
+                3,
+                0
+            ],
+            "occupied": false
+        },
+        "D04": {
+            "set": "desert",
+            "snip": [
+                4,
+                0
+            ],
+            "occupied": false
+        },
+        "D05": {
+            "set": "desert",
+            "snip": [
+                5,
+                0
+            ],
+            "occupied": false
+        },
+        "D06": {
+            "set": "desert",
+            "snip": [
+                6,
+                0
+            ],
+            "occupied": false
+        },
+        "D10": {
+            "set": "desert",
+            "snip": [
+                0,
+                1
+            ],
+            "occupied": false
+        },
+        "D20": {
+            "set": "desert",
+            "snip": [
+                0,
+                2
+            ],
+            "occupied": true
+        },
+        "D11": {
+            "set": "desert",
+            "snip": [
+                1,
+                1
+            ],
+            "occupied": false
+        },
+        "D21": {
+            "set": "desert",
+            "snip": [
+                1,
+                2
+            ],
+            "occupied": true
+        },
+        "D12": {
+            "set": "desert",
+            "snip": [
+                2,
+                1
+            ],
+            "occupied": true
+        },
+        "D22": {
+            "set": "desert",
+            "snip": [
+                2,
+                2
+            ],
+            "occupied": true
+        },
+        "D13": {
+            "set": "desert",
+            "snip": [
+                3,
+                1
+            ],
+            "occupied": true
+        },
+        "D23": {
+            "set": "desert",
+            "snip": [
+                3,
+                2
+            ],
+            "occupied": true
+        },
+        "D14": {
+            "set": "desert",
+            "snip": [
+                4,
+                1
+            ],
+            "occupied": true
+        },
+        "D15": {
+            "set": "desert",
+            "snip": [
+                5,
+                1
+            ],
+            "occupied": true
+        },
+        "D24": {
+            "set": "desert",
+            "snip": [
+                4,
+                2
+            ],
+            "occupied": true
+        },
+        "D25": {
+            "set": "desert",
+            "snip": [
+                5,
+                2
+            ],
+            "occupied": true
+        },
+        "D16": {
+            "set": "desert",
+            "snip": [
+                6,
+                1
+            ],
+            "occupied": true
+        },
+        "D26": {
+            "set": "desert",
+            "snip": [
+                6,
+                2
+            ],
+            "occupied": true
+        },
+        "D30": {
+            "set": "desert",
+            "snip": [
+                0,
+                3
+            ],
+            "occupied": false,
+            "ani": [
+                2,
+                2
+            ]
+        },
+        "D40": {
+            "set": "desert",
+            "snip": [
+                0,
+                4
+            ],
+            "occupied": true,
+            "ani": [
+                2,
+                2
+            ]
+        },
+        "D50": {
+            "set": "desert",
+            "snip": [
+                0,
+                5
+            ],
+            "occupied": true,
+            "ani": [
+                2,
+                2
+            ]
+        },
+        "D31": {
+            "set": "desert",
+            "snip": [
+                1,
+                3
+            ],
+            "occupied": false,
+            "ani": [
+                2,
+                2
+            ]
+        },
+        "D41": {
+            "set": "desert",
+            "snip": [
+                1,
+                4
+            ],
+            "occupied": true,
+            "ani": [
+                2,
+                2
+            ]
+        },
+        "D51": {
+            "set": "desert",
+            "snip": [
+                1,
+                5
+            ],
+            "occupied": true,
+            "ani": [
+                2,
+                2
+            ]
+        },
+        "D34": {
+            "set": "desert",
+            "snip": [
+                4,
+                3
+            ],
+            "occupied": false
+        },
+        "D35": {
+            "set": "desert",
+            "snip": [
+                5,
+                3
+            ],
+            "occupied": false
+        },
+        "D36": {
+            "set": "desert",
+            "snip": [
+                6,
+                3
+            ],
+            "occupied": false
+        },
+        "D44": {
+            "set": "desert",
+            "snip": [
+                4,
+                4
+            ],
+            "occupied": false
+        },
+        "D45": {
+            "set": "desert",
+            "snip": [
+                5,
+                4
+            ],
+            "occupied": false
+        },
+        "D46": {
+            "set": "desert",
+            "snip": [
+                6,
+                4
+            ],
+            "occupied": false
+        },
+        "D49": {
+            "set": "desert",
+            "snip": [
+                9,
+                4
+            ],
+            "occupied": true
+        },
+        "D47": {
+            "set": "desert",
+            "snip": [
+                7,
+                4
+            ],
+            "occupied": false
+        },
+        "D57": {
+            "set": "desert",
+            "snip": [
+                7,
+                5
+            ],
+            "occupied": true
+        },
+        "D48": {
+            "set": "desert",
+            "snip": [
+                8,
+                4
+            ],
+            "occupied": false
+        },
+        "D58": {
+            "set": "desert",
+            "snip": [
+                8,
+                5
+            ],
+            "occupied": true
+        },
+        "D08": {
+            "set": "desert",
+            "snip": [
+                8,
+                0
+            ],
+            "occupied": false
+        },
+        "D17": {
+            "set": "desert",
+            "snip": [
+                7,
+                1
+            ],
+            "occupied": false
+        },
+        "D18": {
+            "set": "desert",
+            "snip": [
+                8,
+                1
+            ],
+            "occupied": false
+        },
+        "D19": {
+            "set": "desert",
+            "snip": [
+                9,
+                1
+            ],
+            "occupied": false
+        },
+        "D27": {
+            "set": "desert",
+            "snip": [
+                7,
+                2
+            ],
+            "occupied": true
+        },
+        "D28": {
+            "set": "desert",
+            "snip": [
+                8,
+                2
+            ],
+            "occupied": true
+        },
+        "D29": {
+            "set": "desert",
+            "snip": [
+                9,
+                2
+            ],
+            "occupied": true
+        },
+        "D37": {
+            "set": "desert",
+            "snip": [
+                7,
+                3
+            ],
+            "occupied": false
+        },
+        "D38": {
+            "set": "desert",
+            "snip": [
+                8,
+                3
+            ],
+            "occupied": true
+        },
+        "D39": {
+            "set": "desert",
+            "snip": [
+                9,
+                3
+            ],
+            "occupied": true
+        }
+    }
 };
