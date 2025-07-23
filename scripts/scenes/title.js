@@ -134,7 +134,7 @@ scenes.title = () => {
     let saveImages = [];
     let mode = 0;
 
-    for (let a = 0; a < 4; a++) {
+    for (let a = 0; a < 3; a++) {
         saveButtons.push(controls.button({
             anchor: [1.2, 0.4], offset: [0, -220 + 130 * a], sizeAnchor: [.5, 0], sizeOffset: [120, 120], clickthrough: false,
             text: " ",
@@ -247,8 +247,9 @@ scenes.title = () => {
         }))
     }
 
-    saveButtons[3].fillTop = "#54d4ff";
-    saveButtons[3].fillBottom = "#4fa1bc";
+    // auto save
+    //saveButtons[3].fillTop = "#54d4ff";
+    //saveButtons[3].fillBottom = "#4fa1bc";
 
     let deleteButton = controls.button({
         anchor: [-0.8, 0.6], offset: [0, 170], sizeOffset: [250, 100],
@@ -356,7 +357,7 @@ scenes.title = () => {
             }
 
 
-            for (let a = 0; a < 4; a++) {
+            for (let a = 0; a < 3; a++) {
                 var tempsaveNR = a;
                 if (localStorage.getItem("SRPG" + tempsaveNR) != undefined && localStorage.getItem("SRPG" + tempsaveNR) != "null") { // It exists
                     try {
@@ -453,7 +454,7 @@ scenes.title = () => {
                         saveButtons[0].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4);
                         saveButtons[1].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 850) / 800, 1), 0)) ** 4);
                         saveButtons[2].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
-                        if (localStorage.getItem("SRPG3") != undefined) saveButtons[3].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
+                        //if (localStorage.getItem("SRPG3") != undefined) saveButtons[3].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
 
                         for (i in saveTexts) {
                             saveTexts[i].anchor[0] = saveButtons[Math.floor(i / 15)].anchor[0] + saveTexts[i].defanch - 0.2;
@@ -462,7 +463,7 @@ scenes.title = () => {
                         saveImages[0].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4);
                         saveImages[1].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 850) / 800, 1), 0)) ** 4);
                         saveImages[2].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
-                        if (localStorage.getItem("SRPG3") != undefined) saveImages[3].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
+                        //if (localStorage.getItem("SRPG3") != undefined) saveImages[3].anchor[0] = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
 
                         deleteButton.anchor[0] = -.8 + (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
                         optionButton.anchor[0] = -.3 + (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4);

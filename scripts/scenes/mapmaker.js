@@ -853,7 +853,7 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) {
                 let toPos = [game.position[0], game.position[1]];
 
-                saveNR = 3;
+                saveNR = 0;
                 loadGame();
                 loadSettings();
 

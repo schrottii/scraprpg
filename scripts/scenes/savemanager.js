@@ -126,6 +126,8 @@ scenes.savemanager = () => {
                     saveNR = prevnr;
                 }
                 if (mode == "load") {
+                    if (localStorage["SRPG" + a] == "null") return false; // don't load if it's empty xd
+
                     saveNR = a; // loads the save
                     loadGame(a);
 
@@ -318,6 +320,7 @@ scenes.savemanager = () => {
         text: "Delete",
         alpha: 1,
     }));
+    /*
     buttons.push(controls.button({ // Auto
         anchor: [0.7, 0.86], sizeAnchor: [0.1, 0.075],
         alpha: 1,
@@ -334,6 +337,7 @@ scenes.savemanager = () => {
         text: "Load auto save",
         alpha: 1,
     }));
+    */
     buttons.push(controls.image({ // Save
         anchor: [0.15, 0.86], sizeOffset: [64, 64], offset: [-32, 0],
         source: "save",
@@ -349,11 +353,13 @@ scenes.savemanager = () => {
         source: "delete",
         alpha: 1,
     }));
+    /*
     buttons.push(controls.image({ // Auto
         anchor: [0.75, 0.86], sizeOffset: [64, 64], offset: [-32, 0],
         source: "autosave",
         alpha: 1,
     }));
+    */
 
     fadeIn(1000 / 3, true);
 

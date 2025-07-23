@@ -67,7 +67,7 @@ scenes.pretitle = () => {
                     stopMusic();
                     //playMusic("bgm/boss", "bgm/placeholder");
                     //^intro example - remove comment ^ there, add comment to setscene few lines below, set musicplayer muted to false above
-                    saveNR = 3;
+                    saveNR = 0;
                     loadGame();
                     loadSettings();
                     canMove = true;
@@ -91,7 +91,7 @@ scenes.pretitle = () => {
                     stopMusic();
                     playMusic("bgm/fight");
                     //^intro example - remove comment ^ there, add comment to setscene few lines below, set musicplayer muted to false above
-                    saveNR = 3;
+                    saveNR = 0;
 
                     loadGame();
                     loadSettings();
