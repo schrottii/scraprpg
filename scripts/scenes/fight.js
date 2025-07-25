@@ -978,7 +978,7 @@ scenes.fight = () => {
 
                 postLog("-== Scanning " + enemySpecies.name + " ==-");
                 postLog("Element: " + enemy.element);
-                postLog("HP: " + enemy.HP + "/" + enemySpecies.HP);
+                postLog("HP: " + enemy.HP + "/" + enemy.maxHP);
                 postLog("Strength: " + enemy.strength);
 
                 // scan once, see in monster book :eyes:
@@ -2714,7 +2714,8 @@ scenes.fight = () => {
         ];
 
     if (currentEnemies.length > 0) {
-        for (i = 0; i < currentEnemies.length; i++) {
+        // GENERATES ENEMIES
+        for (let i = 0; i < currentEnemies.length; i++) { // ADDS THE ENEMIES
             if (currentEnemies[i][0] == "child") continue;
             let i1 = currentEnemies[i][1];
             let i2 = currentEnemies[i][2];
@@ -2725,9 +2726,14 @@ scenes.fight = () => {
                 epositions[i1][i2][tiet] = enemyTypes[currentEnemies[i][0]][tiet];
             }
 
+            // applyEnemyLevels
+            let myLvl = getEnemyLevel(currentEnemies[i][0]);
+            if (myLvl > 1) epositions[i1][i2].name = epositions[i1][i2].name + " L" + myLvl;
+
             // difficulties
-            epositions[i1][i2].HP = Math.floor(epositions[i1][i2].HP * [0.5, 1, 1.5][settings.difficulty]);
-            epositions[i1][i2].strength = Math.floor(epositions[i1][i2].strength * [0.25, 1, 4][settings.difficulty]);
+            epositions[i1][i2].HP = Math.floor(epositions[i1][i2].HP * [0.5, 1, 1.5][settings.difficulty] * Math.pow(1.07, myLvl - 1));
+            epositions[i1][i2].strength = Math.floor(epositions[i1][i2].strength * [0.25, 1, 4][settings.difficulty] * Math.pow(1.07, myLvl - 1));
+            epositions[i1][i2].maxHP = epositions[i1][i2].HP;
 
             epositions[i1][i2].isOccupied = true;
             epositions[i1][i2].occupied = currentEnemies[i][0];
@@ -3019,19 +3025,19 @@ scenes.fight = () => {
                         let which = 0;
                         for (k = 0; k < 3; k++) {
                             for (l = 0; l < 3; l++) {
-                                if (enemyAmounts[k + (l * 3)] != undefined) if (enemyAmounts[k + (l * 3)] == enemyTypes[epositions[i][j].occupied].name) {
+                                if (enemyAmounts[k + (l * 3)] != undefined) if (enemyAmounts[k + (l * 3)] == epositions[i][j].name) {
                                     if (which == 0) which = k + (l * 3);
                                     doWeHaveThisOneDoWe += 1;
                                 }
-                                if (enemyTypes[epositions[k][l].occupied] != undefined) if (enemyTypes[epositions[k][l].occupied].name == enemyTypes[epositions[i][j].occupied].name) amount += 1;
+                                if (enemyTypes[epositions[k][l].occupied] != undefined) if (epositions[k][l].name == epositions[i][j].name) amount += 1;
                             }
                         }
                         if (doWeHaveThisOneDoWe == 0) {
-                            enemyListComponents[(i + (j * 3)) + 2].text = enemyTypes[epositions[i][j].occupied].name + " x" + amount;
-                            enemyAmounts[i + (j * 3)] = enemyTypes[epositions[i][j].occupied].name;
+                            enemyListComponents[(i + (j * 3)) + 2].text = epositions[i][j].name + (amount > 1 ? " x" + amount : "");
+                            enemyAmounts[i + (j * 3)] = epositions[i][j].name;
                         }
                         else if (doWeHaveThisOneDoWe == 1 && which == i + (j * 3)) {
-                            enemyListComponents[(i + (j * 3)) + 2].text = enemyTypes[epositions[i][j].occupied].name + " x" + amount;
+                            enemyListComponents[(i + (j * 3)) + 2].text = epositions[i][j].name + (amount > 1 ? " x" + amount : "");
                         }
                         else {
                             enemyListComponents[(i + (j * 3)) + 2].text = "";

@@ -2,7 +2,7 @@
 - Enemies
 - Map Enemies
 
-- Tilsets, images & adding tiles to MM
+- Tilesets, images & adding tiles to MM
 - Making lots of maps, npcs, story
 - Music
 

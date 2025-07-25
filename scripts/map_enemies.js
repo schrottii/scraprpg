@@ -102,6 +102,18 @@ let mapenemies = {
             ...args || {},
         }
     },
+    forestsmall(args) {
+        return {
+            ...mapenemies.default(), source: "gen",
+            time: "all", minSize: 2, maxSize: 4,
+            walkingInterval: 1, walkingSpeed: 1,
+            enemies: {
+                "weakhelter": 20,
+                "evil_peter": 20
+            },
+            ...args || {},
+        }
+    },
     boss_slime_king(args) {
         return {
             ...mapenemies.default(), source: "enemies/slimegreen",

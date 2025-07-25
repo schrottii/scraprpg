@@ -903,9 +903,9 @@ scenes.mapmaker = () => {
     }));
 
     function createNewMap(mapName) {
-        currentMap = mapName;
+        currentMap = mapName.id != undefined ? mapName.id : mapName;
         map = { // CREATE NEW MAP
-            id: mapName,
+            id: currentMap,
             tiles: {
                 empty: {
                     sprite: "empty"
@@ -1883,15 +1883,12 @@ scenes.mapmaker = () => {
     }));
     mapInfoControls.push(controls.button({
         anchor: [0.7, 0.45], sizeAnchor: [0.2, 0.1],
-        text: "Show/Hide Info", alpha: 0,
+        text: "Level Range", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                if (makerInfoText[0].alpha == 0) {
-                    showInfo();
-                    renderInfo("es");
-                }
-                else {
-                    hideInfo();
+                let neww = prompt("What range? (ie 1-10) (from 1 to 50)");
+                if (neww.includes("-") && neww.split("-")[0] > 0 && neww.split("-")[2] <= 50) {
+                    map.levelRange = [neww.split("-")[0], neww.split("-")[2]];
                 }
             }
         }
@@ -3114,7 +3111,8 @@ scenes.mapmaker = () => {
                     }
                     else {
                         // It does not exist, create a new empty map
-                        createNewMap(eval(lmresult));
+                        //createNewMap(eval(lmresult));
+                        map = eval(lmresult);
                     }
                 }
 

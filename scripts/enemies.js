@@ -63,12 +63,28 @@ function tryCreateAgain(pox, poy, big = false) {
     return [0, 0, 9999];
 }
 
+function getMapLevelRange(mmap = map) {
+    if (mmap == undefined) mmap = maps[game.map];
+
+    // if it's not defined, set range to 1 - 1
+    if (mmap.levelRange == undefined || mmap.levelRange.length < 2) {
+        mmap.levelRange = [1, 1];
+    }
+
+    return mmap.levelRange;
+}
+
+function getEnemyLevel(enemy) {
+    if (enemyTypes[enemy] != undefined && enemyTypes[enemy].level != undefined) return enemyTypes[enemy].level; // you can have a fixed level
+    // random level based on map's range
+    return Math.ceil(Math.random() * (getMapLevelRange()[1] - getMapLevelRange()[0])) + getMapLevelRange()[0];
+    // also see: applyEnemyLevels comment
+}
+
 function exampleFight() {
-    createEnemy("slime_desert");
-    createEnemy("flash");
-    createEnemy("strong_zero_point");
-    createEnemy("smoker");
-    createEnemy("smoker");
+    createEnemy("ent_weak");
+    createEnemy("ent_weak");
+    createEnemy("ent_weak");
 }
 
 // All the enemies

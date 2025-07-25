@@ -17,7 +17,8 @@ var commontiles = {
             1,
             0
         ],
-        "occupied": false
+        "occupied": false,
+        "swim": true
     },
     "C02": {
         "set": "common",
@@ -524,10 +525,10 @@ var commontiles = {
         "occupied": false
     },
     "C60": {
-        "set": "common",
+        "set": "teleport",
         "snip": [
             0,
-            6
+            0
         ],
         "occupied": false,
         "ani": [
