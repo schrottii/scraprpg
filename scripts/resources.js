@@ -63,6 +63,7 @@ let images = {
     erase: "data/images/mm/mode-erase.png",
     movenplace: "data/images/mm/mode-movenplace.png",
     tilesmenu: "data/images/mm/tiles-menu.png",
+    autolayer: "data/images/mm/autolayer.png",
     loadmap: "data/images/mm/loadm.png",
     savemap: "data/images/mm/save.png",
     newmap: "data/images/mm/delete.png",
@@ -196,6 +197,7 @@ let images = {
     "tilesets/common": "data/images/tilesets/common.png",
     "tilesets/castle": "data/images/tilesets/castle.png",
     "tilesets/desert": "data/images/tilesets/desert.png",
+    "tilesets/forest": "data/images/tilesets/forest.png",
 
     "tilesets/teleport": "data/images/tilesets/teleport.png",
 
