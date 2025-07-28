@@ -9,7 +9,8 @@ var commontiles = {
             0,
             0
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "map"
     },
     "C01": {
         "set": "common",
@@ -18,7 +19,8 @@ var commontiles = {
             0
         ],
         "occupied": false,
-        "swim": true
+        "swim": true,
+        "layer": "map"
     },
     "C02": {
         "set": "common",
@@ -26,7 +28,8 @@ var commontiles = {
             2,
             0
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "map"
     },
     "C12": {
         "set": "common",
@@ -34,7 +37,8 @@ var commontiles = {
             2,
             1
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "map"
     },
     "C03": {
         "set": "common",
@@ -42,7 +46,8 @@ var commontiles = {
             3,
             0
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "map"
     },
     "C13": {
         "set": "common",
@@ -50,7 +55,8 @@ var commontiles = {
             3,
             1
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "map"
     },
     "C04": {
         "set": "common",
@@ -58,7 +64,8 @@ var commontiles = {
             4,
             0
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "map"
     },
     "C14": {
         "set": "common",
@@ -66,7 +73,8 @@ var commontiles = {
             4,
             1
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "map"
     },
     "C05": {
         "set": "common",
@@ -74,7 +82,8 @@ var commontiles = {
             5,
             0
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "map"
     },
     "C15": {
         "set": "common",
@@ -82,7 +91,8 @@ var commontiles = {
             5,
             1
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "map"
     },
     "C06": {
         "set": "common",
@@ -90,7 +100,8 @@ var commontiles = {
             6,
             0
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "map"
     },
     "C16": {
         "set": "common",
@@ -98,7 +109,8 @@ var commontiles = {
             6,
             1
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "map"
     },
     "C07": {
         "set": "common",
@@ -106,7 +118,8 @@ var commontiles = {
             7,
             0
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "map"
     },
     "C17": {
         "set": "common",
@@ -114,7 +127,8 @@ var commontiles = {
             7,
             1
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "map"
     },
     "C08": {
         "set": "common",
@@ -122,7 +136,8 @@ var commontiles = {
             8,
             0
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "map"
     },
     "C18": {
         "set": "common",
@@ -130,7 +145,8 @@ var commontiles = {
             8,
             1
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "map"
     },
     "C09": {
         "set": "common",
@@ -138,7 +154,8 @@ var commontiles = {
             9,
             0
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "map"
     },
     "C19": {
         "set": "common",
@@ -146,7 +163,8 @@ var commontiles = {
             9,
             1
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "map"
     },
     "C10": {
         "set": "common",
@@ -154,7 +172,8 @@ var commontiles = {
             0,
             1
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "map"
     },
     "C11": {
         "set": "common",
@@ -162,7 +181,8 @@ var commontiles = {
             1,
             1
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "map"
     },
     "C20": {
         "set": "common",
@@ -170,7 +190,8 @@ var commontiles = {
             0,
             2
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "map"
     },
     "C21": {
         "set": "common",
@@ -178,7 +199,8 @@ var commontiles = {
             1,
             2
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "map"
     },
     "C24": {
         "set": "common",
@@ -186,7 +208,8 @@ var commontiles = {
             4,
             2
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "map"
     },
     "C25": {
         "set": "common",
@@ -194,7 +217,8 @@ var commontiles = {
             5,
             2
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "map"
     },
     "C26": {
         "set": "common",
@@ -202,7 +226,8 @@ var commontiles = {
             6,
             2
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapbg2"
     },
     "C27": {
         "set": "common",
@@ -210,7 +235,8 @@ var commontiles = {
             7,
             2
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "map"
     },
     "C28": {
         "set": "common",
@@ -218,7 +244,8 @@ var commontiles = {
             8,
             2
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "map"
     },
     "C29": {
         "set": "common",
@@ -226,7 +253,8 @@ var commontiles = {
             9,
             2
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "map"
     },
     "C30": {
         "set": "common",
@@ -234,7 +262,8 @@ var commontiles = {
             0,
             3
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "mapbg2"
     },
     "C31": {
         "set": "common",
@@ -242,7 +271,8 @@ var commontiles = {
             1,
             3
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "mapbg2"
     },
     "C32": {
         "set": "common",
@@ -250,7 +280,8 @@ var commontiles = {
             2,
             3
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "mapbg2"
     },
     "C33": {
         "set": "common",
@@ -258,7 +289,8 @@ var commontiles = {
             3,
             3
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "mapbg2"
     },
     "C22": {
         "set": "common",
@@ -266,7 +298,8 @@ var commontiles = {
             2,
             2
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "mapbg2"
     },
     "C23": {
         "set": "common",
@@ -274,7 +307,8 @@ var commontiles = {
             3,
             2
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "mapbg2"
     },
     "NAN": {
         "set": "common",
@@ -282,7 +316,8 @@ var commontiles = {
             3,
             6
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "mapbg2"
     },
     "C34": {
         "set": "common",
@@ -290,7 +325,8 @@ var commontiles = {
             4,
             3
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "mapbg2"
     },
     "C35": {
         "set": "common",
@@ -298,7 +334,8 @@ var commontiles = {
             5,
             3
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "mapbg2"
     },
     "C36": {
         "set": "common",
@@ -306,7 +343,8 @@ var commontiles = {
             6,
             3
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "mapbg2"
     },
     "C37": {
         "set": "common",
@@ -314,7 +352,8 @@ var commontiles = {
             7,
             3
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "map"
     },
     "C38": {
         "set": "common",
@@ -322,7 +361,8 @@ var commontiles = {
             8,
             3
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "map"
     },
     "C39": {
         "set": "common",
@@ -330,7 +370,8 @@ var commontiles = {
             9,
             3
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "map"
     },
     "C40": {
         "set": "common",
@@ -338,7 +379,8 @@ var commontiles = {
             0,
             4
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "mapbg2"
     },
     "C41": {
         "set": "common",
@@ -346,7 +388,8 @@ var commontiles = {
             1,
             4
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "mapbg2"
     },
     "C42": {
         "set": "common",
@@ -354,7 +397,8 @@ var commontiles = {
             2,
             4
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapbg2"
     },
     "C43": {
         "set": "common",
@@ -362,7 +406,8 @@ var commontiles = {
             3,
             4
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapbg2"
     },
     "C52": {
         "set": "common",
@@ -370,7 +415,8 @@ var commontiles = {
             2,
             5
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapbg2"
     },
     "C53": {
         "set": "common",
@@ -378,7 +424,8 @@ var commontiles = {
             3,
             5
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapbg2"
     },
     "C44": {
         "set": "common",
@@ -386,7 +433,8 @@ var commontiles = {
             4,
             4
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapfg"
     },
     "C54": {
         "set": "common",
@@ -394,7 +442,8 @@ var commontiles = {
             4,
             5
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapfg"
     },
     "C57": {
         "set": "common",
@@ -402,7 +451,8 @@ var commontiles = {
             7,
             5
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapbg2"
     },
     "C47": {
         "set": "common",
@@ -410,7 +460,8 @@ var commontiles = {
             7,
             4
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapbg2"
     },
     "C58": {
         "set": "common",
@@ -418,7 +469,8 @@ var commontiles = {
             8,
             5
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapbg2"
     },
     "C48": {
         "set": "common",
@@ -426,7 +478,8 @@ var commontiles = {
             8,
             4
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapbg2"
     },
     "C59": {
         "set": "common",
@@ -434,7 +487,8 @@ var commontiles = {
             9,
             5
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapbg2"
     },
     "C49": {
         "set": "common",
@@ -442,7 +496,8 @@ var commontiles = {
             9,
             4
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapbg2"
     },
     "C45": {
         "set": "common",
@@ -450,7 +505,8 @@ var commontiles = {
             5,
             4
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapbg2"
     },
     "C46": {
         "set": "common",
@@ -458,7 +514,8 @@ var commontiles = {
             6,
             4
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapbg2"
     },
     "C55": {
         "set": "common",
@@ -466,7 +523,8 @@ var commontiles = {
             5,
             5
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapbg2"
     },
     "C56": {
         "set": "common",
@@ -474,7 +532,8 @@ var commontiles = {
             6,
             5
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapbg2"
     },
     "C50": {
         "set": "common",
@@ -482,7 +541,8 @@ var commontiles = {
             0,
             5
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "mapbg2"
     },
     "C51": {
         "set": "common",
@@ -490,7 +550,8 @@ var commontiles = {
             1,
             5
         ],
-        "occupied": true
+        "occupied": true,
+        "layer": "mapbg2"
     },
     "C68": {
         "set": "common",
@@ -498,7 +559,8 @@ var commontiles = {
             8,
             6
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapbg2"
     },
     "C69": {
         "set": "common",
@@ -506,7 +568,8 @@ var commontiles = {
             9,
             6
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapbg2"
     },
     "C79": {
         "set": "common",
@@ -514,7 +577,8 @@ var commontiles = {
             9,
             7
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapbg2"
     },
     "C78": {
         "set": "common",
@@ -522,7 +586,8 @@ var commontiles = {
             8,
             7
         ],
-        "occupied": false
+        "occupied": false,
+        "layer": "mapbg2"
     },
     "C60": {
         "set": "teleport",
@@ -534,7 +599,8 @@ var commontiles = {
         "ani": [
             3,
             1
-        ]
+        ],
+        "layer": "mapfg"
     },
     "C64": {
         "set": "common",
@@ -546,7 +612,8 @@ var commontiles = {
         "ani": [
             2,
             1
-        ]
+        ],
+        "layer": "mapbg2"
     },
     "C70": {
         "set": "common",
@@ -558,7 +625,8 @@ var commontiles = {
         "ani": [
             8,
             1
-        ]
+        ],
+        "layer": "mapbg2"
     }
 
 }
@@ -603,7 +671,8 @@ var packs = {
                 0,
                 0
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "map"
         },
         "R01": {
             "set": "castle",
@@ -611,7 +680,8 @@ var packs = {
                 1,
                 0
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "map"
         },
         "R02": {
             "set": "castle",
@@ -619,7 +689,8 @@ var packs = {
                 2,
                 0
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "map"
         },
         "R03": {
             "set": "castle",
@@ -627,7 +698,8 @@ var packs = {
                 3,
                 0
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "map"
         },
         "R06": {
             "set": "castle",
@@ -635,7 +707,8 @@ var packs = {
                 6,
                 0
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "map"
         },
         "R07": {
             "set": "castle",
@@ -643,7 +716,8 @@ var packs = {
                 7,
                 0
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "map"
         },
         "R08": {
             "set": "castle",
@@ -651,7 +725,8 @@ var packs = {
                 8,
                 0
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "map"
         },
         "R09": {
             "set": "castle",
@@ -659,7 +734,8 @@ var packs = {
                 9,
                 0
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "map"
         },
         "R10": {
             "set": "castle",
@@ -667,7 +743,8 @@ var packs = {
                 0,
                 1
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "map"
         },
         "R11": {
             "set": "castle",
@@ -675,7 +752,8 @@ var packs = {
                 1,
                 1
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "R13": {
             "set": "castle",
@@ -683,7 +761,8 @@ var packs = {
                 3,
                 1
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapfg"
         },
         "R14": {
             "set": "castle",
@@ -691,7 +770,8 @@ var packs = {
                 4,
                 1
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapfg"
         },
         "R15": {
             "set": "castle",
@@ -699,7 +779,8 @@ var packs = {
                 5,
                 1
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapfg"
         },
         "R16": {
             "set": "castle",
@@ -707,7 +788,8 @@ var packs = {
                 6,
                 1
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "map"
         },
         "R17": {
             "set": "castle",
@@ -715,7 +797,8 @@ var packs = {
                 7,
                 1
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "map"
         },
         "R18": {
             "set": "castle",
@@ -723,7 +806,8 @@ var packs = {
                 8,
                 1
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "map"
         },
         "R19": {
             "set": "castle",
@@ -731,7 +815,8 @@ var packs = {
                 9,
                 1
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "map"
         },
         "R20": {
             "set": "castle",
@@ -739,7 +824,8 @@ var packs = {
                 0,
                 2
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "R21": {
             "set": "castle",
@@ -747,7 +833,8 @@ var packs = {
                 1,
                 2
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "R2X": {
             "set": "castle",
@@ -759,7 +846,8 @@ var packs = {
             "ani": [
                 2,
                 1
-            ]
+            ],
+            "layer": "mapbg2"
         },
         "R22": {
             "set": "castle",
@@ -767,7 +855,8 @@ var packs = {
                 2,
                 2
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "R23": {
             "set": "castle",
@@ -775,7 +864,8 @@ var packs = {
                 3,
                 2
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "R24": {
             "set": "castle",
@@ -783,7 +873,8 @@ var packs = {
                 4,
                 2
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "R25": {
             "set": "castle",
@@ -791,7 +882,8 @@ var packs = {
                 5,
                 2
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "R26": {
             "set": "castle",
@@ -799,7 +891,8 @@ var packs = {
                 6,
                 2
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapfg"
         },
         "R27": {
             "set": "castle",
@@ -807,7 +900,8 @@ var packs = {
                 7,
                 2
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapfg"
         },
         "R36": {
             "set": "castle",
@@ -815,7 +909,8 @@ var packs = {
                 6,
                 3
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "R37": {
             "set": "castle",
@@ -823,7 +918,8 @@ var packs = {
                 7,
                 3
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "R28": {
             "set": "castle",
@@ -831,7 +927,8 @@ var packs = {
                 8,
                 2
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapfg"
         },
         "R29": {
             "set": "castle",
@@ -839,7 +936,8 @@ var packs = {
                 9,
                 2
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapfg"
         },
         "R38": {
             "set": "castle",
@@ -847,7 +945,8 @@ var packs = {
                 8,
                 3
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "R39": {
             "set": "castle",
@@ -855,7 +954,8 @@ var packs = {
                 9,
                 3
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "R30": {
             "set": "castle",
@@ -863,7 +963,8 @@ var packs = {
                 0,
                 3
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "R31": {
             "set": "castle",
@@ -871,7 +972,8 @@ var packs = {
                 1,
                 3
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "R32": {
             "set": "castle",
@@ -879,7 +981,8 @@ var packs = {
                 2,
                 3
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "R33": {
             "set": "castle",
@@ -887,7 +990,8 @@ var packs = {
                 3,
                 3
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "R40": {
             "set": "castle",
@@ -899,7 +1003,8 @@ var packs = {
             "ani": [
                 2,
                 1
-            ]
+            ],
+            "layer": "mapbg2"
         },
         "R50": {
             "set": "castle",
@@ -911,7 +1016,8 @@ var packs = {
             "ani": [
                 2,
                 1
-            ]
+            ],
+            "layer": "mapbg2"
         },
         "R42": {
             "set": "castle",
@@ -923,7 +1029,8 @@ var packs = {
             "ani": [
                 2,
                 1
-            ]
+            ],
+            "layer": "mapbg2"
         },
         "R52": {
             "set": "castle",
@@ -935,7 +1042,8 @@ var packs = {
             "ani": [
                 2,
                 1
-            ]
+            ],
+            "layer": "mapbg2"
         },
         "R44": {
             "set": "castle",
@@ -947,7 +1055,8 @@ var packs = {
             "ani": [
                 2,
                 1
-            ]
+            ],
+            "layer": "mapbg2"
         },
         "R54": {
             "set": "castle",
@@ -959,7 +1068,8 @@ var packs = {
             "ani": [
                 2,
                 1
-            ]
+            ],
+            "layer": "mapbg2"
         },
         "R46": {
             "set": "castle",
@@ -971,7 +1081,8 @@ var packs = {
             "ani": [
                 2,
                 1
-            ]
+            ],
+            "layer": "mapbg2"
         },
         "R56": {
             "set": "castle",
@@ -983,7 +1094,8 @@ var packs = {
             "ani": [
                 2,
                 1
-            ]
+            ],
+            "layer": "mapbg2"
         },
         "R60": {
             "set": "castle",
@@ -991,7 +1103,8 @@ var packs = {
                 0,
                 6
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "R61": {
             "set": "castle",
@@ -999,7 +1112,8 @@ var packs = {
                 1,
                 6
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "R62": {
             "set": "castle",
@@ -1007,7 +1121,8 @@ var packs = {
                 2,
                 6
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "R63": {
             "set": "castle",
@@ -1015,7 +1130,8 @@ var packs = {
                 3,
                 6
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "R64": {
             "set": "castle",
@@ -1023,7 +1139,8 @@ var packs = {
                 4,
                 6
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         }
     },
 
@@ -1035,7 +1152,8 @@ var packs = {
                 1,
                 0
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "map"
         },
         "D02": {
             "set": "desert",
@@ -1043,7 +1161,8 @@ var packs = {
                 2,
                 0
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "map"
         },
         "D03": {
             "set": "desert",
@@ -1051,7 +1170,8 @@ var packs = {
                 3,
                 0
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "map"
         },
         "D04": {
             "set": "desert",
@@ -1059,7 +1179,8 @@ var packs = {
                 4,
                 0
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "map"
         },
         "D05": {
             "set": "desert",
@@ -1067,7 +1188,8 @@ var packs = {
                 5,
                 0
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "map"
         },
         "D06": {
             "set": "desert",
@@ -1075,7 +1197,8 @@ var packs = {
                 6,
                 0
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "map"
         },
         "D10": {
             "set": "desert",
@@ -1083,7 +1206,8 @@ var packs = {
                 0,
                 1
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapfg"
         },
         "D20": {
             "set": "desert",
@@ -1091,7 +1215,8 @@ var packs = {
                 0,
                 2
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         },
         "D11": {
             "set": "desert",
@@ -1099,7 +1224,8 @@ var packs = {
                 1,
                 1
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapfg"
         },
         "D21": {
             "set": "desert",
@@ -1107,7 +1233,8 @@ var packs = {
                 1,
                 2
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         },
         "D12": {
             "set": "desert",
@@ -1115,7 +1242,8 @@ var packs = {
                 2,
                 1
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         },
         "D22": {
             "set": "desert",
@@ -1123,7 +1251,8 @@ var packs = {
                 2,
                 2
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         },
         "D13": {
             "set": "desert",
@@ -1131,7 +1260,8 @@ var packs = {
                 3,
                 1
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         },
         "D23": {
             "set": "desert",
@@ -1139,7 +1269,8 @@ var packs = {
                 3,
                 2
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         },
         "D14": {
             "set": "desert",
@@ -1147,7 +1278,8 @@ var packs = {
                 4,
                 1
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         },
         "D15": {
             "set": "desert",
@@ -1155,7 +1287,8 @@ var packs = {
                 5,
                 1
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         },
         "D24": {
             "set": "desert",
@@ -1163,7 +1296,8 @@ var packs = {
                 4,
                 2
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         },
         "D25": {
             "set": "desert",
@@ -1171,7 +1305,8 @@ var packs = {
                 5,
                 2
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         },
         "D16": {
             "set": "desert",
@@ -1179,7 +1314,8 @@ var packs = {
                 6,
                 1
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         },
         "D26": {
             "set": "desert",
@@ -1187,7 +1323,8 @@ var packs = {
                 6,
                 2
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         },
         "D30": {
             "set": "desert",
@@ -1199,7 +1336,8 @@ var packs = {
             "ani": [
                 2,
                 2
-            ]
+            ],
+            "layer": "mapfg"
         },
         "D40": {
             "set": "desert",
@@ -1211,7 +1349,8 @@ var packs = {
             "ani": [
                 2,
                 2
-            ]
+            ],
+            "layer": "mapbg2"
         },
         "D50": {
             "set": "desert",
@@ -1223,7 +1362,8 @@ var packs = {
             "ani": [
                 2,
                 2
-            ]
+            ],
+            "layer": "mapbg2"
         },
         "D31": {
             "set": "desert",
@@ -1235,7 +1375,8 @@ var packs = {
             "ani": [
                 2,
                 2
-            ]
+            ],
+            "layer": "mapfg"
         },
         "D41": {
             "set": "desert",
@@ -1247,7 +1388,8 @@ var packs = {
             "ani": [
                 2,
                 2
-            ]
+            ],
+            "layer": "mapbg2"
         },
         "D51": {
             "set": "desert",
@@ -1259,7 +1401,8 @@ var packs = {
             "ani": [
                 2,
                 2
-            ]
+            ],
+            "layer": "mapbg2"
         },
         "D34": {
             "set": "desert",
@@ -1267,7 +1410,8 @@ var packs = {
                 4,
                 3
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "D35": {
             "set": "desert",
@@ -1275,7 +1419,8 @@ var packs = {
                 5,
                 3
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "D36": {
             "set": "desert",
@@ -1283,7 +1428,8 @@ var packs = {
                 6,
                 3
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "D44": {
             "set": "desert",
@@ -1291,7 +1437,8 @@ var packs = {
                 4,
                 4
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "D45": {
             "set": "desert",
@@ -1299,7 +1446,8 @@ var packs = {
                 5,
                 4
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "D46": {
             "set": "desert",
@@ -1307,7 +1455,8 @@ var packs = {
                 6,
                 4
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "D49": {
             "set": "desert",
@@ -1315,7 +1464,8 @@ var packs = {
                 9,
                 4
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         },
         "D47": {
             "set": "desert",
@@ -1323,7 +1473,8 @@ var packs = {
                 7,
                 4
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapfg"
         },
         "D57": {
             "set": "desert",
@@ -1331,7 +1482,8 @@ var packs = {
                 7,
                 5
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         },
         "D48": {
             "set": "desert",
@@ -1339,7 +1491,8 @@ var packs = {
                 8,
                 4
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapfg"
         },
         "D58": {
             "set": "desert",
@@ -1347,7 +1500,8 @@ var packs = {
                 8,
                 5
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         },
         "D08": {
             "set": "desert",
@@ -1355,7 +1509,8 @@ var packs = {
                 8,
                 0
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapfg"
         },
         "D17": {
             "set": "desert",
@@ -1363,7 +1518,8 @@ var packs = {
                 7,
                 1
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapfg"
         },
         "D18": {
             "set": "desert",
@@ -1371,7 +1527,8 @@ var packs = {
                 8,
                 1
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapfg"
         },
         "D19": {
             "set": "desert",
@@ -1379,7 +1536,8 @@ var packs = {
                 9,
                 1
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapfg"
         },
         "D27": {
             "set": "desert",
@@ -1387,7 +1545,8 @@ var packs = {
                 7,
                 2
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         },
         "D28": {
             "set": "desert",
@@ -1395,7 +1554,8 @@ var packs = {
                 8,
                 2
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         },
         "D29": {
             "set": "desert",
@@ -1403,7 +1563,8 @@ var packs = {
                 9,
                 2
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         },
         "D37": {
             "set": "desert",
@@ -1411,7 +1572,8 @@ var packs = {
                 7,
                 3
             ],
-            "occupied": false
+            "occupied": false,
+            "layer": "mapbg2"
         },
         "D38": {
             "set": "desert",
@@ -1419,7 +1581,8 @@ var packs = {
                 8,
                 3
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         },
         "D39": {
             "set": "desert",
@@ -1427,7 +1590,8 @@ var packs = {
                 9,
                 3
             ],
-            "occupied": true
+            "occupied": true,
+            "layer": "mapbg2"
         }
     },
 
@@ -1826,7 +1990,7 @@ var packs = {
                 4
             ],
             "occupied": false,
-            "layer": "mapbg2"
+            "layer": "mapfg"
         },
         "F47": {
             "set": "forest",
@@ -1835,7 +1999,7 @@ var packs = {
                 4
             ],
             "occupied": false,
-            "layer": "mapbg2"
+            "layer": "mapfg"
         },
         "F48": {
             "set": "forest",
@@ -1970,7 +2134,7 @@ var packs = {
                 5
             ],
             "occupied": false,
-            "layer": "mapbg2"
+            "layer": "mapfg"
         },
         "F58": {
             "set": "forest",
@@ -1979,7 +2143,7 @@ var packs = {
                 5
             ],
             "occupied": false,
-            "layer": "mapbg2"
+            "layer": "mapfg"
         },
         "F59": {
             "set": "forest",
@@ -1988,7 +2152,7 @@ var packs = {
                 5
             ],
             "occupied": false,
-            "layer": "mapbg2"
+            "layer": "mapfg"
         },
         "F5l": {
             "set": "forest",
@@ -1997,7 +2161,7 @@ var packs = {
                 5
             ],
             "occupied": false,
-            "layer": "mapbg2"
+            "layer": "mapfg"
         },
         "F5m": {
             "set": "forest",
