@@ -240,6 +240,11 @@ function formatNumber(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function isValid(vVar) {
+    // is this var valid? 
+    return vVar != undefined && vVar != null && vVar != "" && vVar != false;
+}
+
 function loop() {
     // Tick time
     delta = Date.now() - time;

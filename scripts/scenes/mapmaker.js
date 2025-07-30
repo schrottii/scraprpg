@@ -619,21 +619,26 @@ scenes.mapmaker = () => {
         fillTop: "red", fillBottom: "darkred",
         onClick(args) {
             if (this.alpha == 1) {
-                tileID = prompt('New map tile ID? (e. g. 001)');
+                let p = prompt('New map tile ID? (e. g. 001)');
+                if (isValid(p)) tileID = p;
 
-                if (map.tiles[tileID] != undefined || commontiles[tileID] != undefined) {
+                if (tileID.length != 3) {
+                    alert("Tile ID needs to be 3 long! (ie R31)");
+                    return false;
+                }
+                if (isValid(tileID) && (map.tiles[tileID] != undefined || commontiles[tileID] != undefined)) {
                     let thisTile;
-                    if (map.tiles[tileID] != undefined) thisTile = map.tiles[tileID];
-                    if (commontiles[tileID] != undefined) thisTile = commontiles[tileID];
+                    if (isValid(map.tiles[tileID])) thisTile = map.tiles[tileID];
+                    if (isValid(commontiles[tileID])) thisTile = commontiles[tileID];
 
-                    if (thisTile.sprite != undefined) tileSprite = thisTile.sprite;
-                    if (thisTile.occupied != undefined) tileOccupied = thisTile.occupied.toString();
-                    if (thisTile.set != undefined) tileSet = thisTile.set;
-                    if (thisTile.snip != undefined) tileSetSnip = thisTile.snip.toString().replace(",", ".");
-                    if (thisTile.ani != undefined) tileAni = thisTile.ani.toString().replace(",", ".");
-                    if (thisTile.teleport != undefined) tileTele = thisTile.teleport.toString().replace(",", ".").toString().replace(",", ".");
-                    if (thisTile.dialogue != undefined) tileDia = thisTile.dialogue;
-                    if (thisTile.swim != undefined) tileSwim = thisTile.swim.toString();
+                    if (isValid(thisTile.sprite)) tileSprite = thisTile.sprite;
+                    if (isValid(thisTile.occupied)) tileOccupied = thisTile.occupied.toString();
+                    if (isValid(thisTile.set)) tileSet = thisTile.set;
+                    if (isValid(thisTile.snip)) tileSetSnip = thisTile.snip.toString().replace(",", ".");
+                    if (isValid(thisTile.ani)) tileAni = thisTile.ani.toString().replace(",", ".");
+                    if (isValid(thisTile.teleport)) tileTele = thisTile.teleport.toString().replace(",", ".").toString().replace(",", ".");
+                    if (isValid(thisTile.dialogue)) tileDia = thisTile.dialogue;
+                    if (isValid(thisTile.swim)) tileSwim = thisTile.swim.toString();
                 }
                 updateTileLabels();
             }
@@ -645,7 +650,8 @@ scenes.mapmaker = () => {
         fillTop: "red", fillBottom: "darkred",
         onClick(args) {
             if (this.alpha == 1) {
-                tileSprite = prompt('New map tile sprite? (e. g. water - must be the name from resources)');
+                let p = prompt('New map tile sprite? (e. g. water - must be the name from resources)');
+                if (isValid(p)) tileSprite = p;
                 updateTileLabels();
             }
         }
@@ -655,7 +661,8 @@ scenes.mapmaker = () => {
         text: "Tile Occupied", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                tileOccupied = prompt('New map tile occupied? YES / NO / up.right.left.down');
+                let p = prompt('New map tile occupied? YES / NO / up.right.left.down');
+                if (isValid(p)) tileOccupied = p;
                 updateTileLabels();
             }
         }
@@ -666,7 +673,8 @@ scenes.mapmaker = () => {
         fillTop: "red", fillBottom: "darkred",
         onClick(args) {
             if (this.alpha == 1) {
-                tileSet = prompt('New map tile set? (e. g. castle - must be the name from resources)');
+                let p = prompt('New map tile set? (e. g. castle - must be the name from resources)');
+                if (isValid(p)) tileSet = p;
                 updateTileLabels();
             }
         }
@@ -687,7 +695,8 @@ scenes.mapmaker = () => {
         text: "Animation", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                tileAni = prompt('New map tile animation? amount.distance (e. g. 1.1)');
+                let p = prompt('New map tile animation? amount.distance (e. g. 1.1)');
+                if (isValid(p)) tileAni = p;
                 updateTileLabels();
             }
         }
@@ -697,7 +706,8 @@ scenes.mapmaker = () => {
         text: "Teleport", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                tileTele = prompt('Teleport to? map.x.y (e. g. original.7.8 or map2.0.0)');
+                let p = prompt('Teleport to? map.x.y (e. g. original.7.8 or map2.0.0)');
+                if (isValid(p)) tileTele = p;
                 updateTileLabels();
             }
         }
@@ -707,7 +717,8 @@ scenes.mapmaker = () => {
         text: "Dialogue", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                tileDia = prompt('Dialogue?');
+                let p = prompt('Dialogue?');
+                if (isValid(p)) tileDia = p;
                 updateTileLabels();
             }
         }
@@ -717,7 +728,8 @@ scenes.mapmaker = () => {
         text: "Swim", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                tileSwim = prompt('Swim? (YES / NO)');
+                let p = prompt('Swim? (YES / NO)');
+                if (isValid(p)) tileSwim = p;
                 updateTileLabels();
             }
         }
@@ -756,7 +768,7 @@ scenes.mapmaker = () => {
             if (this.alpha == 1 && tileSetSnip != "") {
                 if (mapIdentifier == "") {
                     let inputMI = prompt("new map identifier?");
-                    if (inputMI != undefined && inputMI != null && inputMI != "") {
+                    if (isValid(inputMI)) {
                         mapIdentifier = inputMI.toString();
                     }
                 }
@@ -1278,7 +1290,9 @@ scenes.mapmaker = () => {
         text: "Create New / Load", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                curNPC = prompt('NPC ID? (e. g. mrbeast)');
+                curNPC = prompt('NPC ID? (e. g. JohnDoe)');
+                if (!isValid(curNPC)) return false;
+
                 if (map.npcs == undefined) {
                     map.npcs = {};
                 }
@@ -1291,6 +1305,7 @@ scenes.mapmaker = () => {
                 for (j in npcs.default) {
                     if (map.npcs[curNPC][j] == undefined) map.npcs[curNPC][j] = npcs.default[j];
                 }
+
                 this.text = "NPC: " + curNPC;
                 toggleCreateNPCButtons(true);
                 updateNPCLabels();
@@ -1305,7 +1320,7 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) {
                 let newText = prompt("Dialogue name?");
 
-                if (map.dialogues[newText] != undefined) {
+                if (map.dialogues[newText] != undefined && isValid(newText)) {
                     if (newText != undefined) map.npcs[curNPC].dialogues["1"] = newText;
                     this.text = "Dialogue: " + newText;
                     updateNPCLabels();
@@ -1347,7 +1362,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newText = prompt("Path? 0 down 1 left 2 right 3 up (e. g. 0.1.2.2.2.3.2.1)");
-                if (newText != undefined) {
+                if (isValid(newText)) {
                     newText = newText.split(".");
                     for (i in newText) {
                         newText[i] = parseInt(newText[i]);
@@ -1375,7 +1390,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newText = prompt("New position? (e. g. 4.4)");
-                if (newText != undefined) map.npcs[curNPC].position = [parseInt(newText.split(".")[0]), parseInt(newText.split(".")[1])];
+                if (isValid(newText) && newText.split(".").length == 2 && newText.split(".")[0] != "" && newText.split(".")[1] != "") map.npcs[curNPC].position = [parseInt(newText.split(".")[0]), parseInt(newText.split(".")[1])];
                 updateNPCLabels();
             }
         }
@@ -1387,7 +1402,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newText = prompt("New alpha? (0 - 1)");
-                if (newText != undefined) map.npcs[curNPC].alpha = newText;
+                if (isValid(newText)) map.npcs[curNPC].alpha = newText;
                 updateNPCLabels();
             }
         }
@@ -1399,7 +1414,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newText = prompt("New skin?");
-                if (newText != undefined && images[newText] != undefined) map.npcs[curNPC].source = newText;
+                if (isValid(newText) && images[newText] != undefined) map.npcs[curNPC].source = newText;
                 updateNPCLabels();
             }
         }
@@ -1411,7 +1426,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newText = prompt("New interval? (default: 0.5)");
-                if (newText != undefined) map.npcs[curNPC].walkingInterval = newText;
+                if (isValid(newText)) map.npcs[curNPC].walkingInterval = newText;
                 updateNPCLabels();
             }
         }
@@ -1423,7 +1438,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newText = prompt("New speed? (default: 1, in seconds)");
-                if (newText != undefined) map.npcs[curNPC].walkingSpeed = newText;
+                if (isValid(newText)) map.npcs[curNPC].walkingSpeed = newText;
                 updateNPCLabels();
             }
         }
@@ -1770,7 +1785,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newName = prompt("New map name?");
-                map.name = newName;
+                if (isValid(newName)) map.name = newName;
                 this.uText();
             }
         },
@@ -1784,8 +1799,10 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newName = prompt("New map ID?");
-                map.id = newName;
-                currentMap = newName;
+                if (isValid(newName)) {
+                    map.id = newName;
+                    currentMap = newName;
+                }
                 this.uText();
             }
         },
@@ -1845,7 +1862,10 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 let newWeather = prompt("New weather strength? (default is 1)");
-                if (newWeather != undefined) map.weatherStrength = parseInt(newWeather);
+                if (newWeather != undefined) {
+                    if (newWeather == "" || newWeather == false) newWeather = 1;
+                    map.weatherStrength = parseInt(newWeather);
+                }
                 this.uText();
             }
         },
@@ -1882,7 +1902,7 @@ scenes.mapmaker = () => {
                     map.packs = [];
                 }
                 let newPack = prompt("Name? (e. g. castle)");
-                if (newPack != null && newPack != undefined) {
+                if (isValid(newPack)) {
                     map.packs.push(newPack);
                     map.tiles = Object.assign({}, map.tiles, loadPacks({ packs: [newPack] }));
                 }
@@ -1944,7 +1964,7 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) {
                 let newSpawn = prompt("Name?");
                 let newSpawn2 = prompt("Chance? (e. g. 10)");
-                if (newSpawn != undefined && newSpawn2 != undefined) {
+                if (isValid(newSpawn) && isValid(newSpawn2)) {
                     if (map.spawns == undefined) map.spawns = {};
                     map.spawns[newSpawn] = newSpawn2;
                     renderInfo("es");
