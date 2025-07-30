@@ -267,7 +267,7 @@ scenes.inventory = () => {
             }
 
             coolDisplays[0].text = "Current time: " + getTime();
-            coolDisplays[2].text = "Total time spent: " + getTime(game.playTime, 60, 3600, true);
+            coolDisplays[2].text = "Total time spent: " + getTime(game.stats.playTime, 60, 3600, true);
         },
         // Controls
         controls: [

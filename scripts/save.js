@@ -2,7 +2,6 @@ let game = {
     // meta
     pfp: 1,
     time: 0,
-    playTime: 0,
 
     // map stuff
     map: "test",
@@ -11,6 +10,19 @@ let game = {
     // currencies
     wrenches: 0,
     bricks: 0,
+
+    // stats
+    stats: {
+        playTime: 0,
+        wrenches: 0,
+        bricks: 0,
+        walk: 0,
+        tp: 0,
+        fights: 0,
+        fightsFled: 0,
+        fightsLost: 0,
+        fightsWon: 0,
+    },
 
     // your peoples
     chars: ["bleu", "corelle", "gau", "skro", "kokitozi", "docaspen"], // MAX 6!!!

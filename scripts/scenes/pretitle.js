@@ -68,8 +68,11 @@ scenes.pretitle = () => {
                     //playMusic("bgm/boss", "bgm/placeholder");
                     //^intro example - remove comment ^ there, add comment to setscene few lines below, set musicplayer muted to false above
                     saveNR = 0;
+
                     loadGame();
                     loadSettings();
+
+                    if (maps[game.map] == undefined) game.map = "test";
                     canMove = true;
                     setScene(scenes.game());
                     //openShop("placeholder");

@@ -82,6 +82,8 @@ function startFight(type = "default", enemies = "default") {
 
     if (type == "nogameover") playMusic("bgm/boss");
     else playMusic("bgm/fight");
+
+    game.stats.fights++;
     setScene(scenes.fight());
 }
 
@@ -691,6 +693,9 @@ scenes.game = () => {
                 loadNPCs();
                 loadAreaMusic(previousmap);
                 instantEffect = true;
+
+                game.stats.tp++;
+
                 game.position[0] = themap.teleport[1];
                 game.position[1] = themap.teleport[2];
 
@@ -1394,6 +1399,7 @@ scenes.game = () => {
 
                     tryTalk(xo, yo);
 
+                    // WALKING
                     if ((isWalkable(map, game.position[0] + xo, game.position[1] + yo)
                         && isWalkable(map, game.position[0] + xo, game.position[1] + yo, 2))
                         || (getTile(map, game.position[0] + xo, game.position[1] + yo) == undefined &&
@@ -1403,6 +1409,7 @@ scenes.game = () => {
                         kofs = [xo, yo, 1];
                         game.position[0] += xo;
                         game.position[1] += yo;
+                        game.stats.walk++;
 
                         ActionsOnMove();
                         tryTeleport(map, Math.floor(game.position[0]), Math.floor(game.position[1]));
@@ -1417,9 +1424,11 @@ scenes.game = () => {
                 }
             }
 
+            // water
             let isInWater = 1;
             if (getTile(map, game.position[0], game.position[1]) != undefined) if (getTile(map, game.position[0], game.position[1]).swim == true) isInWater = 2;
 
+            // anim
             kofs[2] = Math.max(kofs[2] - delta / 166 / isInWater, 0);
             walkTime = (walkTime + delta * (kofs[2] ? 5 : 1) / 1000) % 2;
             animateTime = (animateTime + delta / 1000) % 2;

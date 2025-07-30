@@ -144,7 +144,7 @@ scenes.savemanager = () => {
 
                     let exporter = localStorage["SRPG" + a];
 
-                    if (confirm("Do you want to export this save with " + getTime(exporter.playTime, 60, 3600, true) + " play time?")) {
+                    if (confirm("Do you want to export this save with " + getTime(exporter.stats.playTime, 60, 3600, true) + " play time?")) {
                         exporter = JSON.stringify(exporter);
                         exporter = btoa(exporter);
                         exporter = exporter.replace("=", "svmgnaer");
@@ -392,7 +392,7 @@ scenes.savemanager = () => {
                     if (thisSave.chars.length > 2) saveTexts[8 + (a * amount)].text = "Lvl. " + getPlayer(3, thisSave).level;
                     if (thisSave.chars.length > 3) saveTexts[9 + (a * amount)].text = "Lvl. " + getPlayer(4, thisSave).level;
 
-                    saveTexts[10 + (a * amount)].text = getTime(thisSave.playTime, 60, 3600);
+                    saveTexts[10 + (a * amount)].text = getTime(thisSave.stats.playTime, 60, 3600);
 
                     saveTexts[13 + (a * amount)].text = formatNumber(thisSave.wrenches);
                     saveTexts[14 + (a * amount)].text = formatNumber(thisSave.bricks);

@@ -23,35 +23,37 @@ let scale = 1080 / 16;// window.innerHeight / 16;
 let width = 1920 / scale;// window.innerWidth / scale;
 
 // electron
-const { app, BrowserWindow } = require('electron');
+if (document == undefined) {
+    const { app, BrowserWindow } = require('electron');
 
-const createWindow = () => {
-    const win = new BrowserWindow({
-        width: 1920,
-        height: 1080,
-        icon: "data/images/ico.ico",
-    })
+    const createWindow = () => {
+        const win = new BrowserWindow({
+            width: 1920,
+            height: 1080,
+            icon: "data/images/ico.ico",
+        })
 
-    win.setMenuBarVisibility(false);
-    win.loadFile('index.html');
-}
+        win.setMenuBarVisibility(false);
+        win.loadFile('index.html');
+    }
 
-app.whenReady().then(() => {
-    createWindow();
+    app.whenReady().then(() => {
+        createWindow();
 
-    app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) {
-            createWindow();
+        app.on('activate', () => {
+            if (BrowserWindow.getAllWindows().length === 0) {
+                createWindow();
+            }
+        });
+    });
+    /*
+    app.on('window-all-closed', () => {
+        if (process.platform !== 'darwin') {
+            app.quit();
         }
     });
-});
-/*
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit();
-    }
-});
-*/
+    */
+}
 
 // init
 function init() {
@@ -275,7 +277,7 @@ function loop() {
 
     // Debug black bar
     ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, ctx.canvas.width * ((game.playTime / 15) % 1) * 0.1, ctx.canvas.height * 0.01);
+    ctx.fillRect(0, 0, ctx.canvas.width * ((game.stats.playTime / 15) % 1) * 0.1, ctx.canvas.height * 0.01);
 
     // Draw FPS
     ctx.fillStyle = "white";

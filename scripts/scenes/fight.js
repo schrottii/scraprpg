@@ -304,6 +304,7 @@ scenes.fight = () => {
         else if (alliesAlive == 0) {
             // No allies are left, some of them dead, but some fled so no GAME OVER
             fightLost = true;
+            game.stats.fightsFled++;
             endFight();
         }
     }
@@ -503,6 +504,7 @@ scenes.fight = () => {
 
     function deathScreen() {
         // GAME OVER
+        game.stats.fightsLost++;
         stopMusic();
 
         addAnimator(function (t) {
@@ -1903,7 +1905,9 @@ scenes.fight = () => {
 
                 fleeLoss.alpha = 0;
                 fleeIcon.alpha = 0;
+
                 if (peopleLeft == 0) {
+                    game.stats.fightsFled++;
                     endFight();
                 }
 
@@ -2313,6 +2317,8 @@ scenes.fight = () => {
                         }
                     }
                     else {
+                        // no items, directly end fight
+                        game.stats.fightsWon++;
                         endFight();
                     }
 
@@ -2427,6 +2433,8 @@ scenes.fight = () => {
                 playSound("buttonClickSound");
                 if (checkAllDead(true)) {
                     if (fightAction == "victoryitems") {
+                        // got items, end fight now
+                        game.stats.fightsWon++;
                         endFight();
                     }
                 }

@@ -19,7 +19,7 @@ function getTime(ti = game.time, am = 16.667, di = 1000, sc = false) {
 
 function timeTicker(delta){
     // ticking the playTime stat and the ingame clock
-    game.playTime += (delta / 1000); // 1 = 1 sec
+    game.stats.playTime += (delta / 1000); // 1 = 1 sec
     game.time += (delta / 60);
     if (game.time >= 24000) { // 1000 = 1 hour in-game.
         game.time = 0;

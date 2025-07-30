@@ -93,6 +93,7 @@ const cStats = {
 function addWrenches(amount = 0) {
     if (game.wrenches != undefined) {
         game.wrenches = Math.min(game.wrenches + amount, 999999999);
+        game.stats.wrenches += amount;
     }
 }
 
@@ -100,6 +101,7 @@ function addBricks(amount = 0) {
     // only from boss fights and enemies from the "Scorched Planet"(Scrap Planet after Platinschrott Volcano eruption)
     if (game.bricks != undefined) {
         game.bricks = Math.min(game.bricks + amount, 999999);
+        game.stats.bricks += amount;
     }
 }
 
