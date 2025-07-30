@@ -128,8 +128,10 @@ scenes.savemanager = () => {
                 if (mode == "load") {
                     if (localStorage["SRPG" + a] == "null") return false; // don't load if it's empty xd
 
+                    let changedSave = saveNR != a;
                     saveNR = a; // loads the save
-                    loadGame(a);
+                    loadGame(a); 
+                    if (changedSave) game.stats.opened++;
 
                     fadeOut(1000 / 3, true, (id = this.id) => {
                         setScene(scenes.game());

@@ -295,35 +295,35 @@ scenes.mapmaker = () => {
     // modes (move, erase, etc.)
     modeButtons.push(controls.image({
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 0, 72 * 3],
-        source: "move", alpha: 0, setmode: "move",
+        source: "move", alpha: 1, setmode: "move", glowColor: "white", glow: 10, // default selected
         onClick(args) {
             if (this.alpha == 1 && !prot) moveMode();
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 1, 72 * 3],
-        source: "place", alpha: 1, setmode: "place",
+        source: "place", alpha: 1, setmode: "place", glowColor: "white",
         onClick(args) {
             if (this.alpha == 1 && !prot) placeMode();
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 2, 72 * 3],
-        source: "erase", alpha: 1, setmode: "erase",
+        source: "erase", alpha: 1, setmode: "erase", glowColor: "white",
         onClick(args) {
             if (this.alpha == 1 && !prot) eraseMode();
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 3, 72 * 3],
-        source: "movenplace", alpha: 1, setmode: "moveandplace",
+        source: "movenplace", alpha: 1, setmode: "moveandplace", glowColor: "white",
         onClick(args) {
             if (this.alpha == 1 && !prot) moveAndPlaceMode();
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 4, 72 * 3],
-        source: "tilemode", alpha: 1, setmode: "tile",
+        source: "tilemode", alpha: 1, setmode: "tile", glowColor: "white",
         onClick(args) {
             if (this.alpha == 1 && !prot) {
                 if (tilesMenuControls[0].alpha == 1) {
@@ -981,7 +981,7 @@ scenes.mapmaker = () => {
 
     expandMapButtons.push(controls.image({
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
-        source: "senza", alpha: 1, ri: true,
+        source: "plus", alpha: 1, ri: true,
         onClick(args) {
             if (this.alpha == 1 && !prot) {
                 for (x in map.map) {
@@ -1000,7 +1000,7 @@ scenes.mapmaker = () => {
 
     expandMapButtons.push(controls.image({
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
-        source: "senza", alpha: 1, ri: true,
+        source: "plus", alpha: 1, ri: true,
         onClick(args) {
             if (this.alpha == 1 && !prot) {
                 map.map.unshift("---");
@@ -1014,7 +1014,7 @@ scenes.mapmaker = () => {
 
     expandMapButtons.push(controls.image({
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
-        source: "senza", alpha: 1, ri: true,
+        source: "minus", alpha: 1, ri: true,
         onClick(args) {
             if (this.alpha == 1 && !prot) {
                 for (x in map.map) {
@@ -1033,7 +1033,7 @@ scenes.mapmaker = () => {
 
     expandMapButtons.push(controls.image({
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
-        source: "senza", alpha: 1, ri: true,
+        source: "minus", alpha: 1, ri: true,
         onClick(args) {
             if (this.alpha == 1 && !prot) {
                 map.map.shift();
@@ -1534,6 +1534,7 @@ scenes.mapmaker = () => {
         for (t = 0; t < 24; t++) {
             recentlyUsedTilesList.push(["gear", "gear", [0, 0, 64, 64]]);
             recentlyUsedTiles[t].source = "gear";
+            recentlyUsedTiles[t].alpha = 0;
             recentlyUsedTiles[t].snip = [0, 0, 64, 64];
         }
     }
@@ -2287,12 +2288,22 @@ scenes.mapmaker = () => {
         currentTile.source = newSource;
         currentTile.snip = newSnip;
 
-        // update recently used tiles (left)
+        // update recently used tiles AKA prepicker (left)
         if (updateRecent) {
-            recentlyUsedTilesList.unshift([newSource, newTTP, newSnip]);
-            if (recentlyUsedTilesList.length > 24) recentlyUsedTilesList.pop();
+            let alreadyPrepicked = false; 
+            for (let p in recentlyUsedTilesList) {
+                if (recentlyUsedTilesList[p][1] == newTTP) alreadyPrepicked = true;
+            }
+
+            if (!alreadyPrepicked) {
+                recentlyUsedTilesList.unshift([newSource, newTTP, newSnip]); // add
+                if (recentlyUsedTilesList.length > 24) recentlyUsedTilesList.pop(); // keep it at bay
+            }
+
+            // update le list
             for (t = 0; t < recentlyUsedTilesList.length; t++) {
                 recentlyUsedTiles[t].source = recentlyUsedTilesList[t][0];
+                recentlyUsedTiles[t].alpha = recentlyUsedTilesList[t][0] == "gear" ? 0 : 1;
                 recentlyUsedTiles[t].tileid = recentlyUsedTilesList[t][1];
                 recentlyUsedTiles[t].snip = recentlyUsedTilesList[t][2];
             }
@@ -2713,10 +2724,10 @@ scenes.mapmaker = () => {
         }
     }
 
-    function hideOtherModes(thisMode) {
+    function modeHighlighter(thisMode) {
         for (m in modeButtons) {
-            if ((modeButtons[m].setmode == undefined || modeButtons[m].setmode != thisMode) && (modeButtons[m].alpha == 0 || modeButtons[m].alpha == 1)) modeButtons[m].alpha = 1;
-            else if (modeButtons[m].alpha == 0 || modeButtons[m].alpha == 1) modeButtons[m].alpha = 0;
+            if ((modeButtons[m].setmode == undefined || modeButtons[m].setmode != thisMode) && (modeButtons[m].alpha == 0 || modeButtons[m].alpha == 1)) modeButtons[m].glow = 0;
+            else if (modeButtons[m].alpha == 0 || modeButtons[m].alpha == 1) modeButtons[m].glow = 10;
         }
     }
 
@@ -2725,7 +2736,7 @@ scenes.mapmaker = () => {
         for (w in walkPad) {
             walkPad[w].alpha = 1;
         }
-        hideOtherModes("move");
+        modeHighlighter("move");
     }
 
     function placeMode() {
@@ -2733,7 +2744,7 @@ scenes.mapmaker = () => {
         for (w in walkPad) {
             walkPad[w].alpha = 0;
         }
-        hideOtherModes("place");
+        modeHighlighter("place");
     }
 
     function eraseMode() {
@@ -2741,7 +2752,7 @@ scenes.mapmaker = () => {
         for (w in walkPad) {
             walkPad[w].alpha = 0;
         }
-        hideOtherModes("erase");
+        modeHighlighter("erase");
     }
 
     function moveAndPlaceMode() {
@@ -2749,7 +2760,7 @@ scenes.mapmaker = () => {
         for (w in walkPad) {
             walkPad[w].alpha = 1;
         }
-        hideOtherModes("moveandplace");
+        modeHighlighter("moveandplace");
     }
 
     function tileMode() {
@@ -2757,7 +2768,7 @@ scenes.mapmaker = () => {
         for (w in walkPad) {
             walkPad[w].alpha = 1;
         }
-        hideOtherModes("tile");
+        modeHighlighter("tile");
     }
 
     function openTilesMenu() {

@@ -22,6 +22,9 @@ let game = {
         fightsFled: 0,
         fightsLost: 0,
         fightsWon: 0,
+        saves: 0,
+        autoSaves: 0,
+        opened: 0,
     },
 
     // your peoples
@@ -187,6 +190,9 @@ function load(x, altx) {
 }
 
 function saveGame(auto = false) {
+    if (!auto) game.stats.saves++; 
+    if (auto) game.stats.autoSaves++; 
+
     let saveCopy = JSON.parse(JSON.stringify(game));
     localStorage.setItem("SRPG" + saveNR, JSON.stringify(saveCopy));
 }

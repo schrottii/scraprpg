@@ -69,6 +69,8 @@ let images = {
     newmap: "data/images/mm/delete.png",
     layerbuttons: "data/images/mm/layerbuttons.png",
     senza: "data/images/mm/Senza titolo.png",
+    plus: "data/images/mm/plus.png",
+    minus: "data/images/mm/minus.png",
     tilemaker: "data/images/mm/tilemaker.png",
     dialoguemaker: "data/images/mm/dialoguemaker.png",
     npcmaker: "data/images/mm/npcmaker.png",
