@@ -197,9 +197,9 @@ let images = {
 
     // Tilesets
     "tilesets/common": "data/images/tilesets/common.png",
-    "tilesets/castle": "data/images/tilesets/castle.png",
     "tilesets/desert": "data/images/tilesets/desert.png",
     "tilesets/forest": "data/images/tilesets/forest.png",
+    "tilesets/interior": "data/images/tilesets/interior.png",
 
     "tilesets/teleport": "data/images/tilesets/teleport.png",
 

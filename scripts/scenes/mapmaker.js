@@ -293,7 +293,7 @@ scenes.mapmaker = () => {
     modeButtons[2].glow = 10;
 
     // modes (move, erase, etc.)
-    modeButtons.push(controls.image({
+    modeButtons.push(controls.image({ // 8
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 0, 72 * 3],
         source: "move", alpha: 1, setmode: "move", glowColor: "white", glow: 10, // default selected
         onClick(args) {
@@ -2725,7 +2725,7 @@ scenes.mapmaker = () => {
     }
 
     function modeHighlighter(thisMode) {
-        for (m in modeButtons) {
+        for (let m = 8; m <= 8 + 5; m++) {
             if ((modeButtons[m].setmode == undefined || modeButtons[m].setmode != thisMode) && (modeButtons[m].alpha == 0 || modeButtons[m].alpha == 1)) modeButtons[m].glow = 0;
             else if (modeButtons[m].alpha == 0 || modeButtons[m].alpha == 1) modeButtons[m].glow = 10;
         }

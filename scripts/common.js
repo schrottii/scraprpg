@@ -2598,5 +2598,504 @@ var packs = {
             "occupied": true,
             "layer": "mapbg2"
         }
+    },
+
+    interior: 
+    {
+        "I00": {
+            "set": "interior",
+            "snip": [
+                0,
+                0
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I01": {
+            "set": "interior",
+            "snip": [
+                1,
+                0
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I02": {
+            "set": "interior",
+            "snip": [
+                2,
+                0
+            ],
+            "occupied": false,
+            "layer": "map"
+        },
+        "I03": {
+            "set": "interior",
+            "snip": [
+                3,
+                0
+            ],
+            "occupied": false,
+            "layer": "map"
+        },
+        "I10": {
+            "set": "interior",
+            "snip": [
+                0,
+                1
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I20": {
+            "set": "interior",
+            "snip": [
+                0,
+                2
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I11": {
+            "set": "interior",
+            "snip": [
+                1,
+                1
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I21": {
+            "set": "interior",
+            "snip": [
+                1,
+                2
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I12": {
+            "set": "interior",
+            "snip": [
+                2,
+                1
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I22": {
+            "set": "interior",
+            "snip": [
+                2,
+                2
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I13": {
+            "set": "interior",
+            "snip": [
+                3,
+                1
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I23": {
+            "set": "interior",
+            "snip": [
+                3,
+                2
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I14": {
+            "set": "interior",
+            "snip": [
+                4,
+                1
+            ],
+            "occupied": false,
+            "layer": "mapfg"
+        },
+        "I15": {
+            "set": "interior",
+            "snip": [
+                5,
+                1
+            ],
+            "occupied": false,
+            "layer": "mapfg"
+        },
+        "I24": {
+            "set": "interior",
+            "snip": [
+                4,
+                2
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I25": {
+            "set": "interior",
+            "snip": [
+                5,
+                2
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I18": {
+            "set": "interior",
+            "snip": [
+                8,
+                1
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I28": {
+            "set": "interior",
+            "snip": [
+                8,
+                2
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I19": {
+            "set": "interior",
+            "snip": [
+                9,
+                1
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I29": {
+            "set": "interior",
+            "snip": [
+                9,
+                2
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I30": {
+            "set": "interior",
+            "snip": [
+                0,
+                3
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I31": {
+            "set": "interior",
+            "snip": [
+                1,
+                3
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I32": {
+            "set": "interior",
+            "snip": [
+                2,
+                3
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I34": {
+            "set": "interior",
+            "snip": [
+                4,
+                3
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I35": {
+            "set": "interior",
+            "snip": [
+                5,
+                3
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I36": {
+            "set": "interior",
+            "snip": [
+                6,
+                3
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I37": {
+            "set": "interior",
+            "snip": [
+                7,
+                3
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I38": {
+            "set": "interior",
+            "snip": [
+                8,
+                3
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I40": {
+            "set": "interior",
+            "snip": [
+                0,
+                4
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I41": {
+            "set": "interior",
+            "snip": [
+                1,
+                4
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I42": {
+            "set": "interior",
+            "snip": [
+                2,
+                4
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I43": {
+            "set": "interior",
+            "snip": [
+                3,
+                4
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I53": {
+            "set": "interior",
+            "snip": [
+                3,
+                5
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I44": {
+            "set": "interior",
+            "snip": [
+                4,
+                4
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I56": {
+            "set": "interior",
+            "snip": [
+                6,
+                5
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I57": {
+            "set": "interior",
+            "snip": [
+                7,
+                5
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I48": {
+            "set": "interior",
+            "snip": [
+                8,
+                4
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I58": {
+            "set": "interior",
+            "snip": [
+                8,
+                5
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I49": {
+            "set": "interior",
+            "snip": [
+                9,
+                4
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I59": {
+            "set": "interior",
+            "snip": [
+                9,
+                5
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I60": {
+            "set": "interior",
+            "snip": [
+                0,
+                6
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I70": {
+            "set": "interior",
+            "snip": [
+                0,
+                7
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I61": {
+            "set": "interior",
+            "snip": [
+                1,
+                6
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I71": {
+            "set": "interior",
+            "snip": [
+                1,
+                7
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I62": {
+            "set": "interior",
+            "snip": [
+                2,
+                6
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I72": {
+            "set": "interior",
+            "snip": [
+                2,
+                7
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I63": {
+            "set": "interior",
+            "snip": [
+                3,
+                6
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I64": {
+            "set": "interior",
+            "snip": [
+                4,
+                6
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I74": {
+            "set": "interior",
+            "snip": [
+                4,
+                7
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I65": {
+            "set": "interior",
+            "snip": [
+                5,
+                6
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I66": {
+            "set": "interior",
+            "snip": [
+                6,
+                6
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I67": {
+            "set": "interior",
+            "snip": [
+                7,
+                6
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I75": {
+            "set": "interior",
+            "snip": [
+                5,
+                7
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I76": {
+            "set": "interior",
+            "snip": [
+                6,
+                7
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "I77": {
+            "set": "interior",
+            "snip": [
+                7,
+                7
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        }
     }
 };

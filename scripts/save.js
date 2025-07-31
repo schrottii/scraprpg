@@ -244,6 +244,9 @@ function loadGame() {
                 saveCopy.characters[characters[i]] = game.characters[characters[i]];
             }
         }
+
+        if (saveCopy.stats == undefined) saveCopy.stats = game.stats;
+
         if (saveCopy.chars == undefined) saveCopy.chars = [saveCopy.char1, saveCopy.char2];
         if (saveCopy.characters.skro == undefined) saveCopy.characters.skro = game.characters.skro;
         if (saveCopy.chars.length == 2) saveCopy.chars.push("gau");
@@ -260,7 +263,6 @@ function loadGame() {
             saveCopy.characters[i].effect = ["none", 0];
         }
         if (saveCopy.time == undefined) saveCopy.time = 0;
-        if (saveCopy.playTime == undefined) saveCopy.playTime = 0;
         if (saveCopy.leader == undefined) saveCopy.leader = "bleu";
         if (saveCopy.wrenches == undefined) saveCopy.wrenches = 0;
         if (saveCopy.bricks == undefined) saveCopy.bricks = 0;

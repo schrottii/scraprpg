@@ -28,6 +28,10 @@ let controls = {
             render(ctx) {
                 let red = 1;
                 if (isLs() == true && !this.ri) red = 2;
+                if (images[this.source] == undefined) {
+                    console.log("Image does not exist: " + this.source);
+                    return false;
+                }
 
                 let w = this.sizeOffset[0] / red + this.sizeAnchor[0] * ctx.canvas.width;
                 let h = this.sizeOffset[1] / red + this.sizeAnchor[1] * ctx.canvas.height;
