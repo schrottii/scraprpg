@@ -1141,7 +1141,27 @@ var packs = {
             ],
             "occupied": false,
             "layer": "mapbg2"
-        }
+        },
+        "R68": {
+
+            "set": "castle",
+            "snip": [
+                8,
+                6
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "R69": {
+
+            "set": "castle",
+            "snip": [
+                9,
+                6
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
     },
 
     desert: 

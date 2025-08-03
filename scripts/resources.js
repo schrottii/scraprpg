@@ -194,9 +194,11 @@ let images = {
     "tiles/border": "data/images/tiles/border.png",
     "tiles/border2": "data/images/tiles/border2.png",
     "tiles/sand1": "data/images/tiles/sand1.png",
+    "tiles/grass1": "data/images/tiles/grass1.png",
 
     // Tilesets
     "tilesets/common": "data/images/tilesets/common.png",
+    "tilesets/castle": "data/images/tilesets/castle.png",
     "tilesets/desert": "data/images/tilesets/desert.png",
     "tilesets/forest": "data/images/tilesets/forest.png",
     "tilesets/interior": "data/images/tilesets/interior.png",
@@ -386,9 +388,17 @@ var audio = {
 };
 
 var maps = {
-    "newMap": "scripts/maps/newMap.js",
-    "test": "scripts/maps/test.js",
-    "testCastle": "scripts/maps/testCastle.js",
+    // test
+    "newMap": "scripts/maps/test/newMap.js",
+    "test": "scripts/maps/test/test.js",
+    "testCastle": "scripts/maps/test/testCastle.js",
+    "testForest": "scripts/maps/test/testForest.js",
+
+    // chapter 1
+    "castleL1": "scripts/maps/chapter1/castleL1.js",
+    "castleL2": "scripts/maps/chapter1/castleL2.js",
+    "castleOutside": "scripts/maps/chapter1/castleOutside.js",
+    //"": "scripts/maps/chapter1/.js",
 };
 
 var colors = {

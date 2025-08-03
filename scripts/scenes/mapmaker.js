@@ -1485,6 +1485,33 @@ scenes.mapmaker = () => {
         text: "Tile Picker", alpha: 0,
     }));
 
+    // pages
+    var tileMenuPage = 0;
+    tilesMenuControls.push(controls.button({
+        anchor: [0.05, 0.9], sizeAnchor: [0.15, 0.05],
+        text: "<--",
+        alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                protect();
+                if (tileMenuPage > 0) tileMenuPage--;
+                openTilesMenu();
+            }
+        }
+    }));
+    tilesMenuControls.push(controls.button({
+        anchor: [0.8, 0.9], sizeAnchor: [0.15, 0.05],
+        text: "-->",
+        alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                protect();
+                tileMenuPage++;
+                openTilesMenu();
+            }
+        }
+    }));
+
     for (t = 0; t < 200; t++) {
         tilesMenuTiles.push(controls.image({
             anchor: [0.05, 0.2], offset: [32 + (72 * (t % 25)), 32 + (72 * Math.floor(t / 25))], sizeOffset: [64, 64],
@@ -2797,12 +2824,15 @@ scenes.mapmaker = () => {
         for (r = 0; r < 8; r++) {
             if (tilesMenuTiles[r * 25].offset[1] / red <= height * 0.6) pageSize = pageWidth * (r + 1);
         }
+
         let nr = 0;
         let til;
         let grb;
-        let i = 0;
+        let starti = 0 + Math.floor(tileMenuPage * pageSize / 2);
+        let i = starti;
 
-        while (i < pageSize) {
+        // actual generation inside the tile picker!
+        while (i <= pageSize + starti) {
             if ((nr % 25) % pageWidth == 0 && nr > 0) nr += (25 - pageWidth);
             if (tileSource == "common") {
                 til = Object.keys(commontiles)[i];

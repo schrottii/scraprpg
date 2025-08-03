@@ -394,7 +394,7 @@ scenes.title = () => {
                     if (thisSave.chars.length > 3) saveTexts[7 + (a * amount)].text = getPlayer(4, thisSave).name;
                     if (thisSave.chars.length > 3) saveTexts[9 + (a * amount)].text = "Lvl. " + getPlayer(4, thisSave).level;
 
-                    saveTexts[10 + (a * amount)].text = getTime(thisSave.stats.playTime, 60, 3600);
+                    if (thisSave.stats != undefined) saveTexts[10 + (a * amount)].text = getTime(thisSave.stats.playTime, 60, 3600);
 
                     saveTexts[13 + (a * amount)].text = formatNumber(thisSave.wrenches);
                     saveTexts[14 + (a * amount)].text = formatNumber(thisSave.bricks);

@@ -4,8 +4,8 @@ let game = {
     time: 0,
 
     // map stuff
-    map: "test",
-    position: [4, 4],
+    map: "castleL2",
+    position: [48, 14],
 
     // currencies
     wrenches: 0,
