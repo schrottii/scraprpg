@@ -1806,11 +1806,6 @@ scenes.mapmaker = () => {
                 updateTiles = true;
             }
         },
-        onClick(args) {
-            if (this.alpha == 1) {
-                protect();
-            }
-        },
         onHold(args) {
             if (this.alpha == 1) {
                 protect();
@@ -2057,6 +2052,9 @@ scenes.mapmaker = () => {
         alpha: 1,
     });
 
+
+
+    // TILE INFO
     tileInfoControls.push(controls.rect({
         anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.6],
         fill: colors.buttonbottompressed, alpha: 0,
@@ -2086,18 +2084,17 @@ scenes.mapmaker = () => {
         anchor: [0.5, 0.15],
         text: "Tile Info", alpha: 0,
     }));
-
     tileInfoControls.push(controls.image({
         anchor: [0.05, 0.15], sizeOffset: [64, 64], offset: [40, 40],
         source: "tiles/water", alpha: 0,
     }));
     tileInfoControls.push(controls.label({
-        anchor: [0.5, 0.15], offset: [0, 80],
+        anchor: [0.5, 0.125], offset: [0, 80],
         text: "water", alpha: 0,
     }));
     for (t = 0; t < 8; t++) {
         tileInfoControls.push(controls.label({
-            anchor: [0.5, 0.2 + (0.05 * t)], offset: [0, 80],
+            anchor: [0.5, 0.175 + (0.05 * t)], offset: [0, 80],
             text: "ERROR", alpha: 0,
         }));
     }
@@ -2129,9 +2126,8 @@ scenes.mapmaker = () => {
             }
         }
     }));
-
     tileInfoControls.push(controls.button({
-        anchor: [0.2, 0.625], sizeAnchor: [0.2, 0.1],
+        anchor: [0.1, 0.625], sizeAnchor: [0.2, 0.1],
         text: "Place item here", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -2154,7 +2150,7 @@ scenes.mapmaker = () => {
         }
     }));
     tileInfoControls.push(controls.button({
-        anchor: [0.6, 0.625], sizeAnchor: [0.2, 0.1],
+        anchor: [0.4, 0.625], sizeAnchor: [0.2, 0.1],
         text: "Remove item", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -2176,6 +2172,22 @@ scenes.mapmaker = () => {
             }
         }
     }));
+    tileInfoControls.push(controls.button({
+        anchor: [0.7, 0.625], sizeAnchor: [0.2, 0.1],
+        text: "Copy for TP", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let myTile = tileInfoControls[15].pos; // [x, y, l]
+
+                let theString = map.id + "." + myTile[0] + "." + myTile[1];
+
+                navigator.clipboard.writeText(theString);
+                alert("Copied: " + theString);
+            }
+        }
+    }));
+
+
 
     function createTile(createType) {
         if (images["tiles/" + tileSprite] == undefined && images["tilesets/" + tileSet] == undefined) {
@@ -3143,8 +3155,6 @@ scenes.mapmaker = () => {
             selectedTileID = selected;
         }
 
-        tileInfoControls[15].pos = currInfo;
-
         if (selectedTile.set != undefined) {
             tileInfoControls[4].source = "tilesets/" + selectedTile.set;
             tileInfoControls[4].snip = [selectedTile.snip[0] * 32, selectedTile.snip[1] * 32, 32, 32];
@@ -3177,6 +3187,9 @@ scenes.mapmaker = () => {
         for (tic in tileInfoControls) {
             tileInfoControls[tic].alpha = 1;
         }
+
+        tileInfoControls[15].pos = currInfo;
+        tileInfoControls[15].alpha = selectedTile.teleport == true;
     }
 
     // MAKE ZE TILES
