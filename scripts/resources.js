@@ -84,6 +84,8 @@ let images = {
     tilemode: "data/images/mm/tilemode.png",
     fill: "data/images/mm/fill.png",
     tilepickerinfoicons: "data/images/mm/miniicons.png",
+    hideUI: "data/images/mm/hideUI.png",
+    darkPaths: "data/images/mm/darkPaths.png",
 
     // Save images
     saveimage1: "data/images/pfps/PFP-1.png",

@@ -1457,7 +1457,7 @@ scenes.mapmaker = () => {
         fill: colors.buttontop, alpha: 0,
     }));
     tilesMenuControls.push(controls.button({
-        anchor: [0.05, 0.15], sizeAnchor: [0.15, 0.05],
+        anchor: [0.05, 0.15], sizeAnchor: [0.3, 0.05],
         text: "Common",
         alpha: 0,
         onClick(args) {
@@ -1469,7 +1469,7 @@ scenes.mapmaker = () => {
         }
     }));
     tilesMenuControls.push(controls.button({
-        anchor: [0.8, 0.15], sizeAnchor: [0.15, 0.05],
+        anchor: [0.65, 0.15], sizeAnchor: [0.3, 0.05],
         text: "Map",
         alpha: 0,
         onClick(args) {
@@ -1710,7 +1710,7 @@ scenes.mapmaker = () => {
     // bottom left, hide/show UI
     let eyeButton = controls.image({
         anchor: [0, 0.7], sizeAnchor: [0.05, 0.045],
-        source: "eye",
+        source: "hideUI",
         onClick(args) {
             protect();
             if (this.alpha == 1) {
@@ -1729,6 +1729,10 @@ scenes.mapmaker = () => {
                 backButton.alpha = 0;
                 toggleAnimate.alpha = 0;
                 this.alpha = 0.5;
+
+                for (let prep in recentlyUsedTiles) {
+                    recentlyUsedTiles[prep].alpha = 0;
+                }
             }
             else {
                 for (m in modeButtons) {
@@ -1745,6 +1749,10 @@ scenes.mapmaker = () => {
                 backButton.alpha = 1;
                 toggleAnimate.alpha = 1;
                 this.alpha = 1;
+
+                for (let prep in recentlyUsedTiles) {
+                    if (recentlyUsedTiles[prep].source != "gear") recentlyUsedTiles[prep].alpha = 1;
+                }
             }
         },
         alpha: 1,
@@ -1753,7 +1761,7 @@ scenes.mapmaker = () => {
     // bottom left, show/hide collisions
     let collisionButton = controls.image({
         anchor: [0, 0.655], sizeAnchor: [0.05, 0.045],
-        source: "eye",
+        source: "darkPaths",
         onClick(args) {
             protect();
             visibleCollision = !visibleCollision;
@@ -2018,8 +2026,8 @@ scenes.mapmaker = () => {
     let currentMapText = controls.label({
         anchor: [0.075, 0.95],
         text: "ERROR",
-        align: "left", fontSize: 33, fill: "black",
-        outline: "white", outlineSize: 13,
+        align: "left", fontSize: 33, fill: "white",
+        outline: "black", outlineSize: 13,
         alpha: 1,
     });
 
@@ -2603,6 +2611,10 @@ scenes.mapmaker = () => {
                 if (mapInfoControls[mi].uText != undefined) mapInfoControls[mi].uText();
                 mapInfoControls[mi].alpha = 1;
             }
+
+            for (let prep in recentlyUsedTiles) {
+                recentlyUsedTiles[prep].alpha = 0;
+            }
         }
         else if (mapInfoControls[0].alpha == 1) {
             if (!mustclose) closeAllMenus(7);
@@ -2614,10 +2626,14 @@ scenes.mapmaker = () => {
             for (mi in mapInfoControls) {
                 mapInfoControls[mi].alpha = 0;
             }
-            if (mode == "move" || mode == "moveandplace") {
+            if (mode != "place") {
                 for (w in walkPad) {
                     walkPad[w].alpha = 1;
                 }
+            }
+
+            for (let prep in recentlyUsedTiles) {
+                if (recentlyUsedTiles[prep].source != "gear") recentlyUsedTiles[prep].alpha = 1;
             }
         }
     }
@@ -3233,7 +3249,7 @@ scenes.mapmaker = () => {
             }
 
 
-            if (!kofs[2] && canMove == true && (mode == "move" || mode == "moveandplace" || mode == "tile")) {
+            if (!kofs[2] && canMove == true && (mode != "place")) {
                 let xo;
                 let yo;
                 if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up")) {
@@ -3276,7 +3292,7 @@ scenes.mapmaker = () => {
             let width = window.innerWidth / scale;
 
             // Update location/status text
-            currentMapText.text = "Map: " + currentMap + "   |   Pos: x" + game.position[0] + " y" + game.position[1] + " z" + editingLayer + "   |   Mode: " + mode;
+            currentMapText.text = "Map: " + currentMap + "   |   Pos: x" + game.position[0] + " y" + game.position[1] + " z" + editingLayer + "   |   Mode: " + mode + "   |   Tile: " + ttp;
 
             ctx.imageSmoothingEnabled = false;
             ctx.globalAlpha = 1;
