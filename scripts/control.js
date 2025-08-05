@@ -15,6 +15,7 @@ let controls = {
             render(ctx) { },
 
             onClick(args) { },
+            onHold(args) { },
 
             ...args || {},
         }

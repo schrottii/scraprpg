@@ -3160,13 +3160,14 @@ scenes.mapmaker = () => {
         }
     }
 
+    // MAKE ZE TILES
     for (i = 0; i < 800; i++) {
         tiles_bg.push(controls.image({
             offset: [-1000, -1000], sizeOffset: [2, 2],
             pos: [-999999999, -999999999],
             source: "gear",
             alpha: 0, ri: true,
-            onClick(args) {
+            onHold(args) {
                 if (!prot) {
                     if (editingLayer == 0) {
                         if (mode == "erase") eraseTile(this.pos[0], this.pos[1], "map");
@@ -3180,7 +3181,7 @@ scenes.mapmaker = () => {
             offset: [-1000, -1000], sizeOffset: [2, 2],
             source: "gear",
             alpha: 0, ri: true,
-            onClick(args) {
+            onHold(args) {
                 if (!prot) {
                     if (editingLayer == 1) {
                         if (mode == "erase") eraseTile(this.pos[0], this.pos[1], "mapbg2");
@@ -3194,7 +3195,7 @@ scenes.mapmaker = () => {
             offset: [-1000, -1000], sizeOffset: [2, 2],
             source: "gear",
             alpha: 0, ri: true,
-            onClick(args) {
+            onHold(args) {
                 if (!prot) {
                     if (editingLayer == 2) {
                         if (mode == "erase") eraseTile(this.pos[0], this.pos[1], "mapfg");

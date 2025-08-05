@@ -28,4 +28,10 @@ body {
     background-color: sandybrown;
     color: black;
     text-align: center;
+    font-size: 36px;
+}
+
+canvas {
+    -webkit-user-drag: none;
+    user-select: none;
 }

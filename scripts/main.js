@@ -202,10 +202,11 @@ function onCanvasPointerUp(e, keepHold = false) {
         if (!scene.controls[a].clickthrough && scene.controls[a].onClick &&
             pointerPos[0] >= offsetX && pointerPos[0] < offsetX + sizeX &&
             pointerPos[1] >= offsetY && pointerPos[1] < offsetY + sizeY &&
-            scene.controls[a].onClick()) {
+            (keepHold ? scene.controls[a].onHold() : scene.controls[a].onClick())) { // triggers the click
             return;
         }
         else {
+            // particles
             if (!scene.controls[a].clickthrough && scene.controls[a].p != undefined && scene.controls[a].p != 0) {
                 for (n in scene.controls[a].p) {
                     let p = scene.controls[a].p[n];
