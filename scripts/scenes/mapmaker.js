@@ -183,6 +183,9 @@ scenes.mapmaker = () => {
         fill: "brown", alpha: 0.8,
         onClick(args) {
             if (!prot && this.alpha > 0) protect();
+        },
+        onHold(args) {
+            if (!prot && this.alpha > 0) protect();
         }
     }));
 
@@ -465,6 +468,9 @@ scenes.mapmaker = () => {
         fill: colors.buttonbottom, alpha: 0,
         onClick(args) {
             if (this.alpha == 1) protect();
+        },
+        onHold(args) {
+            if (this.alpha == 1) protect();
         }
     }));
     createTileBG.push(controls.rect({
@@ -480,6 +486,9 @@ scenes.mapmaker = () => {
         anchor: [0.05, 0.15], sizeAnchor: [0.2, 0.7],
         fill: colors.buttonbottom, alpha: 0,
         onClick(args) {
+            if (this.alpha == 1) protect();
+        },
+        onHold(args) {
             if (this.alpha == 1) protect();
         }
     }));
@@ -1795,6 +1804,16 @@ scenes.mapmaker = () => {
                     this.text = "info";
                 }
                 updateTiles = true;
+            }
+        },
+        onClick(args) {
+            if (this.alpha == 1) {
+                protect();
+            }
+        },
+        onHold(args) {
+            if (this.alpha == 1) {
+                protect();
             }
         },
         alpha: 1,
@@ -3175,7 +3194,8 @@ scenes.mapmaker = () => {
                         else placeTile(this.pos[0], this.pos[1], "map");
                     }
                 }
-            }
+            },
+            onClick(args) { this.onHold(args) }
         }));
         tiles_bg2.push(controls.image({
             offset: [-1000, -1000], sizeOffset: [2, 2],
@@ -3189,7 +3209,8 @@ scenes.mapmaker = () => {
                         else placeTile(this.pos[0], this.pos[1], "mapbg2");
                     }
                 }
-            }
+            },
+            onClick(args) { this.onHold(args) }
         }));
         tiles_fg.push(controls.image({
             offset: [-1000, -1000], sizeOffset: [2, 2],
@@ -3203,14 +3224,15 @@ scenes.mapmaker = () => {
                         else placeTile(this.pos[0], this.pos[1], "mapfg");
                     }
                 }
-            }
+            },
+            onClick(args) { this.onHold(args) }
         }));
-        titems.push(controls.image({
+        titems.push(controls.image({ // item(?)
             offset: [-1000, -1000], sizeOffset: [2, 2],
             source: "gear",
             alpha: 0, ri: true,
         }));
-        tnpcs.push(controls.image({
+        tnpcs.push(controls.image({ // npc
             offset: [-1000, -1000], sizeOffset: [2, 2], snip: [0, 0, 32, 32],
             source: "gear",
             alpha: 0, ri: true,
@@ -3224,7 +3246,7 @@ scenes.mapmaker = () => {
     return {
         // Pre-render function
         preRender(ctx, delta) {
-            prott -= delta;
+            if (!isHolding) prott -= delta;
             if (prott <= 0) prot = false;
 
             if (lmresult != "none") {

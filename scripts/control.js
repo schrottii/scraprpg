@@ -180,3 +180,107 @@ let controls = {
         }
     },
 }
+
+
+
+// pointer handlers
+function onCanvasPointerDown(e) {
+    isHolding = true;
+
+    pointerActive = true;
+    pointerPos = [e.clientX, e.clientY];
+    for (let a = scene.controls.length - 1; a >= 0; a--) {
+
+        if (scene.controls[a].fillTop == undefined && scene.controls[a].isPressed == undefined) continue;
+
+        let con = scene.controls[a];
+        if (con == undefined) return;
+        let offsetX, offsetY, sizeX, sizeY;
+        let red = 1;
+        //if (con.offset == undefined) console.trace();
+
+        if (isLs() && !scene.controls[a].ri) red = 2;
+
+        offsetX = con.offset[0] / red + con.anchor[0] * mainCanvas.width;
+        offsetY = con.offset[1] / red + con.anchor[1] * mainCanvas.height;
+        sizeX = con.sizeOffset[0] / red + con.sizeAnchor[0] * mainCanvas.width;
+        sizeY = con.sizeOffset[1] / red + con.sizeAnchor[1] * mainCanvas.height;
+
+        // Make buttons go pressed color
+        if (!scene.controls[a].clickthrough &&
+            pointerPos[0] >= offsetX && pointerPos[0] < offsetX + sizeX &&
+            pointerPos[1] >= offsetY && pointerPos[1] < offsetY + sizeY) {
+            scene.controls[a].isPressed = true;
+            if (scene.controls[a].onDown) scene.controls[a].onDown();
+        }
+        else {
+            scene.controls[a].isPressed = false;
+        }
+    }
+}
+
+function onCanvasPointerMove(e) {
+    pointerPos = [e.clientX, e.clientY];
+
+    if (isHolding && scene.name == "mapmaker") {
+        onCanvasPointerUp(e, true);
+    }
+}
+
+function onCanvasPointerUp(e, keepHold = false) {
+    if (!keepHold) isHolding = false;
+
+    pointerActive = false;
+    pointerPos = [e.clientX, e.clientY];
+    for (let a = scene.controls.length - 1; a >= 0; a--) {
+        let con = scene.controls[a];
+        if (con == undefined) return;
+        //console.log("   X: " + mouseX + " Y: " + mouseY);
+
+        // offset - Get the position where the element starts. size - How big. Combine them to define the clickable area!
+        // calculations
+        let offsetX, offsetY, sizeX, sizeY
+        let red = 1;
+        if (con.offset == undefined) console.trace();
+
+        if (isLs() && !scene.controls[a].ri) red = 2;
+
+        offsetX = con.offset[0] / red + con.anchor[0] * mainCanvas.width;
+        offsetY = con.offset[1] / red + con.anchor[1] * mainCanvas.height;
+        sizeX = con.sizeOffset[0] / red + con.sizeAnchor[0] * mainCanvas.width;
+        sizeY = con.sizeOffset[1] / red + con.sizeAnchor[1] * mainCanvas.height;
+
+        // Makes button go unpressed color after you stop clicking it, without this you'd have to click somewhere else to "unclick" it
+        if (scene.controls[a].fillTop != undefined) scene.controls[a].isPressed = false;
+
+        // handle the events on a click
+        if (!con.clickthrough && scene.controls[a].onClick &&
+            pointerPos[0] >= offsetX && pointerPos[0] < offsetX + sizeX &&
+            pointerPos[1] >= offsetY && pointerPos[1] < offsetY + sizeY &&
+            (keepHold ? con.onHold() : con.onClick())) { // triggers the click
+            return;
+        }
+        else {
+            // particles
+            if (!scene.controls[a].clickthrough && scene.controls[a].p != undefined && scene.controls[a].p != 0) {
+                for (n in scene.controls[a].p) {
+                    let p = scene.controls[a].p[n];
+                    offsetX = p[1][0] / red + p[0][0] * mainCanvas.width;
+                    offsetY = p[1][1] / red + p[0][1] * mainCanvas.height;
+                    sizeX = p[3][0] / red + p[2][0] * mainCanvas.width;
+                    sizeY = p[3][1] / red + p[2][1] * mainCanvas.height;
+                    if (pointerPos[0] >= offsetX && pointerPos[0] < offsetX + sizeX &&
+                        pointerPos[1] >= offsetY && pointerPos[1] < offsetY + sizeY &&
+                        scene.controls[a].onClick()) {
+                        return;
+                    }
+                    if (pointerPos[0] >= offsetX && pointerPos[0] < offsetX + sizeX &&
+                        pointerPos[1] >= offsetY && pointerPos[1] < offsetY + sizeY &&
+                        scene.controls[a].onParticleClick(n)) {
+                        return;
+                    }
+                }
+            }
+        }
+    }
+}
