@@ -3116,6 +3116,585 @@ var packs = {
             ],
             "occupied": false,
             "layer": "mapbg2"
+        },
+        "I0l": {
+            "set": "interior",
+            "snip": [
+                10,
+                0
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I0m": {
+            "set": "interior",
+            "snip": [
+                11,
+                0
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I0n": {
+            "set": "interior",
+            "snip": [
+                12,
+                0
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I1l": {
+            "set": "interior",
+            "snip": [
+                10,
+                1
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I1n": {
+            "set": "interior",
+            "snip": [
+                12,
+                1
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I2l": {
+            "set": "interior",
+            "snip": [
+                10,
+                2
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I2m": {
+            "set": "interior",
+            "snip": [
+                11,
+                2
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I2n": {
+            "set": "interior",
+            "snip": [
+                12,
+                2
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I1m": {
+            "set": "interior",
+            "snip": [
+                11,
+                1
+            ],
+            "occupied": false,
+            "layer": "map"
+        },
+        "I3l": {
+            "set": "interior",
+            "snip": [
+                10,
+                3
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I3m": {
+            "set": "interior",
+            "snip": [
+                11,
+                3
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I3n": {
+            "set": "interior",
+            "snip": [
+                12,
+                3
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I4l": {
+            "set": "interior",
+            "snip": [
+                10,
+                4
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I4n": {
+            "set": "interior",
+            "snip": [
+                12,
+                4
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I5l": {
+            "set": "interior",
+            "snip": [
+                10,
+                5
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I5m": {
+            "set": "interior",
+            "snip": [
+                11,
+                5
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I5n": {
+            "set": "interior",
+            "snip": [
+                12,
+                5
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I4m": {
+            "set": "interior",
+            "snip": [
+                11,
+                4
+            ],
+            "occupied": false,
+            "layer": "map"
+        },
+        "I6l": {
+            "set": "interior",
+            "snip": [
+                10,
+                6
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I6m": {
+            "set": "interior",
+            "snip": [
+                11,
+                6
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I6n": {
+            "set": "interior",
+            "snip": [
+                12,
+                6
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I7l": {
+            "set": "interior",
+            "snip": [
+                10,
+                7
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I7n": {
+            "set": "interior",
+            "snip": [
+                12,
+                7
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I8l": {
+            "set": "interior",
+            "snip": [
+                10,
+                8
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I8m": {
+            "set": "interior",
+            "snip": [
+                11,
+                8
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I8n": {
+            "set": "interior",
+            "snip": [
+                12,
+                8
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
+        "I7m": {
+            "set": "interior",
+            "snip": [
+                11,
+                7
+            ],
+            "occupied": false,
+            "layer": "map"
+        }
+    },
+
+    village: {
+        "V01": {
+            "set": "village",
+            "snip": [
+                1,
+                0
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V02": {
+            "set": "village",
+            "snip": [
+                2,
+                0
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V03": {
+            "set": "village",
+            "snip": [
+                3,
+                0
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V10": {
+            "set": "village",
+            "snip": [
+                0,
+                1
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V20": {
+            "set": "village",
+            "snip": [
+                0,
+                2
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V11": {
+            "set": "village",
+            "snip": [
+                1,
+                1
+            ],
+            "occupied": true,
+            "layer": "map"
+        },
+        "V21": {
+            "set": "village",
+            "snip": [
+                1,
+                2
+            ],
+            "occupied": true,
+            "layer": "map"
+        },
+        "V12": {
+            "set": "village",
+            "snip": [
+                2,
+                1
+            ],
+            "occupied": true,
+            "layer": "map"
+        },
+        "V22": {
+            "set": "village",
+            "snip": [
+                2,
+                2
+            ],
+            "occupied": true,
+            "layer": "map"
+        },
+        "V13": {
+            "set": "village",
+            "snip": [
+                3,
+                1
+            ],
+            "occupied": true,
+            "layer": "map"
+        },
+        "V23": {
+            "set": "village",
+            "snip": [
+                3,
+                2
+            ],
+            "occupied": true,
+            "layer": "map"
+        },
+        "V14": {
+            "set": "village",
+            "snip": [
+                4,
+                1
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V24": {
+            "set": "village",
+            "snip": [
+                4,
+                2
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V15": {
+            "set": "village",
+            "snip": [
+                5,
+                1
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V25": {
+            "set": "village",
+            "snip": [
+                5,
+                2
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V16": {
+            "set": "village",
+            "snip": [
+                6,
+                1
+            ],
+            "occupied": true,
+            "layer": "map"
+        },
+        "V26": {
+            "set": "village",
+            "snip": [
+                6,
+                2
+            ],
+            "occupied": true,
+            "layer": "map"
+        },
+        "V17": {
+            "set": "village",
+            "snip": [
+                7,
+                1
+            ],
+            "occupied": true,
+            "layer": "map"
+        },
+        "V27": {
+            "set": "village",
+            "snip": [
+                7,
+                2
+            ],
+            "occupied": true,
+            "layer": "map"
+        },
+        "V18": {
+            "set": "village",
+            "snip": [
+                8,
+                1
+            ],
+            "occupied": true,
+            "layer": "map"
+        },
+        "V28": {
+            "set": "village",
+            "snip": [
+                8,
+                2
+            ],
+            "occupied": true,
+            "layer": "map"
+        },
+        "V19": {
+            "set": "village",
+            "snip": [
+                9,
+                1
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V29": {
+            "set": "village",
+            "snip": [
+                9,
+                2
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V30": {
+            "set": "village",
+            "snip": [
+                0,
+                3
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V31": {
+            "set": "village",
+            "snip": [
+                1,
+                3
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V32": {
+            "set": "village",
+            "snip": [
+                2,
+                3
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V40": {
+            "set": "village",
+            "snip": [
+                0,
+                4
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V41": {
+            "set": "village",
+            "snip": [
+                1,
+                4
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V50": {
+            "set": "village",
+            "snip": [
+                0,
+                5
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V52": {
+            "set": "village",
+            "snip": [
+                2,
+                5
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V33": {
+            "set": "village",
+            "snip": [
+                3,
+                3
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V34": {
+            "set": "village",
+            "snip": [
+                4,
+                3
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V35": {
+            "set": "village",
+            "snip": [
+                5,
+                3
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V43": {
+            "set": "village",
+            "snip": [
+                3,
+                4
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V44": {
+            "set": "village",
+            "snip": [
+                4,
+                4
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V53": {
+            "set": "village",
+            "snip": [
+                3,
+                5
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
+        },
+        "V55": {
+            "set": "village",
+            "snip": [
+                5,
+                5
+            ],
+            "occupied": false,
+            "layer": "mapbg2"
         }
     }
 };

@@ -204,6 +204,7 @@ let images = {
     "tilesets/desert": "data/images/tilesets/desert.png",
     "tilesets/forest": "data/images/tilesets/forest.png",
     "tilesets/interior": "data/images/tilesets/interior.png",
+    "tilesets/village": "data/images/tilesets/village.png",
 
     "tilesets/teleport": "data/images/tilesets/teleport.png",
 

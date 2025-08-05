@@ -300,35 +300,35 @@ scenes.mapmaker = () => {
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 0, 72 * 3],
         source: "move", alpha: 1, setmode: "move", glowColor: "white", glow: 10, // default selected
         onClick(args) {
-            if (this.alpha == 1) moveMode();
+            if (this.alpha == 1 && !prot) moveMode();
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 1, 72 * 3],
         source: "place", alpha: 1, setmode: "place", glowColor: "white",
         onClick(args) {
-            if (this.alpha == 1) placeMode();
+            if (this.alpha == 1 && !prot) placeMode();
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 2, 72 * 3],
         source: "erase", alpha: 1, setmode: "erase", glowColor: "white",
         onClick(args) {
-            if (this.alpha == 1) eraseMode();
+            if (this.alpha == 1 && !prot) eraseMode();
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 3, 72 * 3],
         source: "movenplace", alpha: 1, setmode: "moveandplace", glowColor: "white",
         onClick(args) {
-            if (this.alpha == 1) moveAndPlaceMode();
+            if (this.alpha == 1 && !prot) moveAndPlaceMode();
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 4, 72 * 3],
         source: "tilemode", alpha: 1, setmode: "tile", glowColor: "white",
         onClick(args) {
-            if (this.alpha == 1) {
+            if (this.alpha == 1 && !prot) {
                 if (tilesMenuControls[0].alpha == 1) {
                     tileInfo(0, 0, 0, ttp);
                 }
@@ -342,7 +342,7 @@ scenes.mapmaker = () => {
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 5, 72 * 1],
         source: "tilesmenu", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1) {
+            if (this.alpha == 1 && !prot) {
                 if (tilesMenuControls[0].alpha == 0) {
                     prevmode = mode;
                     moveMode();
@@ -362,7 +362,7 @@ scenes.mapmaker = () => {
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 3, 72 * 1],
         source: "autolayer", alpha: 1, glow: 10, glowColor: "white",
         onClick(args) {
-            if (this.alpha == 1) {
+            if (this.alpha == 1 && !prot) {
                 autoLayer = !autoLayer;
                 this.glow = autoLayer ? 10 : 0;
             }
@@ -374,7 +374,7 @@ scenes.mapmaker = () => {
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 4, 72 * 1],
         source: "loadmap", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1) {
+            if (this.alpha == 1 && !prot) {
                 toggleLoadButtons();
             }
         }
@@ -2986,7 +2986,7 @@ scenes.mapmaker = () => {
 
     function protect() {
         prot = true;
-        prott = 100;
+        prott = 60;
     }
 
     function placeTile(x, y, layer, tileToPlace = "none", umode = "default") {
