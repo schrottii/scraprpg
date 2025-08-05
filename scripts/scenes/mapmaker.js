@@ -241,7 +241,7 @@ scenes.mapmaker = () => {
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [0, 72 * 2],
         source: "mmzoom", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1 && !prot) {
+            if (this.alpha == 1) {
                 switch (zoom) {
                     case 1:
                         zoom = 1.25;
@@ -272,7 +272,7 @@ scenes.mapmaker = () => {
             anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * i, 0],
             source: "layerbuttons", snip: [32 * i, 0, 32, 32], alpha: 1, i: i, glowColor: "white",
             onClick(args) {
-                if (this.alpha == 1 && !prot) {
+                if (this.alpha == 1) {
                     editingLayer = this.i;
                     modeButtons[2].glow = 0;
                     modeButtons[4].glow = 0;
@@ -285,7 +285,7 @@ scenes.mapmaker = () => {
             anchor: [0, 0.025], sizeOffset: [48, 48], offset: [8 + 72 * i, 64],
             source: "eye", alpha: 1, i: i,
             onClick(args) {
-                if (this.alpha >= 0.3 && !prot) {
+                if (this.alpha >= 0.3) {
                     layerVisi[this.i] = layerVisi[this.i] == 0 ? 1 : 0;
                     this.alpha = layerVisi[this.i] == 0 ? 0.3 : 1;
                     updateTiles = true;
@@ -300,35 +300,35 @@ scenes.mapmaker = () => {
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 0, 72 * 3],
         source: "move", alpha: 1, setmode: "move", glowColor: "white", glow: 10, // default selected
         onClick(args) {
-            if (this.alpha == 1 && !prot) moveMode();
+            if (this.alpha == 1) moveMode();
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 1, 72 * 3],
         source: "place", alpha: 1, setmode: "place", glowColor: "white",
         onClick(args) {
-            if (this.alpha == 1 && !prot) placeMode();
+            if (this.alpha == 1) placeMode();
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 2, 72 * 3],
         source: "erase", alpha: 1, setmode: "erase", glowColor: "white",
         onClick(args) {
-            if (this.alpha == 1 && !prot) eraseMode();
+            if (this.alpha == 1) eraseMode();
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 3, 72 * 3],
         source: "movenplace", alpha: 1, setmode: "moveandplace", glowColor: "white",
         onClick(args) {
-            if (this.alpha == 1 && !prot) moveAndPlaceMode();
+            if (this.alpha == 1) moveAndPlaceMode();
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 4, 72 * 3],
         source: "tilemode", alpha: 1, setmode: "tile", glowColor: "white",
         onClick(args) {
-            if (this.alpha == 1 && !prot) {
+            if (this.alpha == 1) {
                 if (tilesMenuControls[0].alpha == 1) {
                     tileInfo(0, 0, 0, ttp);
                 }
@@ -342,7 +342,7 @@ scenes.mapmaker = () => {
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 5, 72 * 1],
         source: "tilesmenu", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1 && !prot) {
+            if (this.alpha == 1) {
                 if (tilesMenuControls[0].alpha == 0) {
                     prevmode = mode;
                     moveMode();
@@ -362,7 +362,7 @@ scenes.mapmaker = () => {
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 3, 72 * 1],
         source: "autolayer", alpha: 1, glow: 10, glowColor: "white",
         onClick(args) {
-            if (this.alpha == 1 && !prot) {
+            if (this.alpha == 1) {
                 autoLayer = !autoLayer;
                 this.glow = autoLayer ? 10 : 0;
             }
@@ -374,7 +374,7 @@ scenes.mapmaker = () => {
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 4, 72 * 1],
         source: "loadmap", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1 && !prot) {
+            if (this.alpha == 1) {
                 toggleLoadButtons();
             }
         }
@@ -385,21 +385,21 @@ scenes.mapmaker = () => {
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 3, 72 * 0],
         source: "tilemaker", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1 && !prot) toggleCreateTileButtons();
+            if (this.alpha == 1) toggleCreateTileButtons();
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 4, 72 * 0],
         source: "dialoguemaker", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1 && !prot) toggleCreateDialogueButtons();
+            if (this.alpha == 1) toggleCreateDialogueButtons();
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 5, 72 * 0],
         source: "npcmaker", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1 && !prot) toggleCreateNPCButtons();
+            if (this.alpha == 1) toggleCreateNPCButtons();
         }
     }));
 
@@ -408,7 +408,7 @@ scenes.mapmaker = () => {
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 3, 72 * 2],
         source: "copy", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1 && !prot) {
+            if (this.alpha == 1) {
                 let my = map[["map", "mapbg2", "mapfg"][editingLayer]][game.position[1]];
                 let x = game.position[0];
 
@@ -421,14 +421,14 @@ scenes.mapmaker = () => {
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 4, 72 * 2],
         source: "paste", alpha: 1,
         onClick(args) {
-            if (this.alpha == 1 && !prot) placeTile(game.position[0], game.position[1], ["map", "mapbg2", "mapfg"][editingLayer], ttp, "copy");
+            if (this.alpha == 1) placeTile(game.position[0], game.position[1], ["map", "mapbg2", "mapfg"][editingLayer], ttp, "copy");
         }
     }));
     modeButtons.push(controls.image({
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 5, 72 * 2],
         source: "fill", alpha: 1, glow: 0, glowColor: "white",
         onClick(args) {
-            if (this.alpha == 1 && !prot) {
+            if (this.alpha == 1) {
                 tilesFilled = 0;
                 if (fillToolActive) {
                     fillToolActive = false;
@@ -861,7 +861,7 @@ scenes.mapmaker = () => {
             anchor: [0.525, 0.2], sizeOffset: [64, 64], offset: [72 * i, -600],
             source: i == 3 ? "tilesets/common" : "layerbuttons", snip: [32 * i, 0, 32, 32], alpha: 1, i: i, glowColor: "white", glow: i == 3 ? 10 : 0,
             onClick(args) {
-                if (this.alpha == 1 && !prot) {
+                if (this.alpha == 1) {
                     tileRecommendedLayer = ["map", "mapbg2", "mapfg", "none"][this.i];
 
                     createTileButtons[19].glow = 0;
@@ -992,7 +992,7 @@ scenes.mapmaker = () => {
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
         source: "plus", alpha: 1, ri: true,
         onClick(args) {
-            if (this.alpha == 1 && !prot) {
+            if (this.alpha == 1) {
                 for (x in map.map) {
                     map.map[x] = "--- " + map.map[x];
                 }
@@ -1011,7 +1011,7 @@ scenes.mapmaker = () => {
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
         source: "plus", alpha: 1, ri: true,
         onClick(args) {
-            if (this.alpha == 1 && !prot) {
+            if (this.alpha == 1) {
                 map.map.unshift("---");
                 map.mapbg2.unshift("---");
                 map.mapfg.unshift("---");
@@ -1025,7 +1025,7 @@ scenes.mapmaker = () => {
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
         source: "minus", alpha: 1, ri: true,
         onClick(args) {
-            if (this.alpha == 1 && !prot) {
+            if (this.alpha == 1) {
                 for (x in map.map) {
                     map.map[x] = map.map[x].slice(4);
                 }
@@ -1044,7 +1044,7 @@ scenes.mapmaker = () => {
         anchor: [0, 0], sizeOffset: [64, 64], offset: [0, 0],
         source: "minus", alpha: 1, ri: true,
         onClick(args) {
-            if (this.alpha == 1 && !prot) {
+            if (this.alpha == 1) {
                 map.map.shift();
                 map.mapbg2.shift();
                 map.mapfg.shift();
@@ -2069,7 +2069,7 @@ scenes.mapmaker = () => {
         fill: colors.buttontoppressed, alpha: 0,
     }));
     tileInfoControls.push(controls.button({
-        anchor: [0.95, 0.15], sizeOffset: [64, 40], offset: [-64, 0],
+        anchor: [0.95, 0.15], sizeOffset: [128, 90], offset: [-128, 0],
         text: "X", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -2871,15 +2871,16 @@ scenes.mapmaker = () => {
         for (r = 0; r < 8; r++) {
             if (tilesMenuTiles[r * 25].offset[1] / red <= height * 0.6) pageSize = pageWidth * (r + 1);
         }
+        pageSize += 1;
 
         let nr = 0;
         let til;
         let grb;
-        let starti = 0 + Math.floor(tileMenuPage * pageSize / 2);
+        let starti = 0 + Math.ceil(tileMenuPage * pageSize / 2);
         let i = starti;
 
         // actual generation inside the tile picker!
-        while (i <= pageSize + starti) {
+        while (i < pageSize + starti) {
             if ((nr % 25) % pageWidth == 0 && nr > 0) nr += (25 - pageWidth);
             if (tileSource == "common") {
                 til = Object.keys(commontiles)[i];
@@ -3192,7 +3193,7 @@ scenes.mapmaker = () => {
         tileInfoControls[15].alpha = selectedTile.teleport == true;
     }
 
-    // MAKE ZE TILES
+    // YOU WILL EAT ZE TILES AND BE HAPPY
     for (i = 0; i < 800; i++) {
         tiles_bg.push(controls.image({
             offset: [-1000, -1000], sizeOffset: [2, 2],
