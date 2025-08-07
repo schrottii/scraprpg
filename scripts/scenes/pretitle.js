@@ -7,6 +7,8 @@ scenes.pretitle = () => {
         alpha: 0,
     });
 
+    playMusic("bgm/intro");
+
     // image animations (schrott games)
     createImageAnimation(images.schrottgamesanimation, 5, 15, 2000, 3375, 50);
     setTimeout(() => {
@@ -26,7 +28,6 @@ scenes.pretitle = () => {
     }, 3650 + 2625);
     setTimeout(() => {
         if (!cancel) {
-            musicPlayer.loop = true;
             setScene(scenes.title());
         }
     }, 5150 + 2625);

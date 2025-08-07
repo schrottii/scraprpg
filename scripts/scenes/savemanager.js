@@ -394,7 +394,7 @@ scenes.savemanager = () => {
                     if (thisSave.chars.length > 2) saveTexts[8 + (a * amount)].text = "Lvl. " + getPlayer(3, thisSave).level;
                     if (thisSave.chars.length > 3) saveTexts[9 + (a * amount)].text = "Lvl. " + getPlayer(4, thisSave).level;
 
-                    saveTexts[10 + (a * amount)].text = getTime(thisSave.stats.playTime, 60, 3600);
+                    saveTexts[10 + (a * amount)].text = thisSave.stats != undefined ? getTime(thisSave.stats.playTime, 60, 3600) : "-";
 
                     saveTexts[13 + (a * amount)].text = formatNumber(thisSave.wrenches);
                     saveTexts[14 + (a * amount)].text = formatNumber(thisSave.bricks);
@@ -427,6 +427,6 @@ scenes.savemanager = () => {
         controls: [
             ...background, ...saveButtons, ...saveTexts, ...buttons,
         ],
-        name: "saves"
+        name: "savemanager"
     }
 }

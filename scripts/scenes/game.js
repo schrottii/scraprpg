@@ -1,4 +1,4 @@
-var zoom = 1;
+﻿var zoom = 1;
 var zswm = 1;
 var kofs = [0, 0, 0];
 var walkTime = 0;
@@ -935,7 +935,10 @@ scenes.game = () => {
 
         // sprite gen
         if (latest.source == "gen") {
+            let genSource = "";
             latest.gen = [];
+
+            // grab the enemies in this map enemy, so we can then pick a random one
             while (latest.gen.length < latest.minSize) {
                 for (let k = 0; k < 8; k++) {
                     for (let j in latest.enemies) {
@@ -947,9 +950,17 @@ scenes.game = () => {
                 }
             }
 
-            // set as source (random enemy)
-            latest.source = "enemies/" + enemyTypes[latest.gen[Math.floor(Math.random() * latest.gen.length)]].source;
-            //console.log("source set: " + latest.source);
+            // set a random as source (random enemy)
+            genSource = "enemies/" + enemyTypes[latest.gen[Math.floor(Math.random() * latest.gen.length)]].source;
+
+            if (images[genSource] == undefined) {
+                console.log("| ⚠️ | Enemy Sprite (gen) undefined: " + genSource);
+                latest.source = "enemies/black";
+            }
+            else {
+                // works fine
+                latest.source = genSource;
+            }
         }
     }
 

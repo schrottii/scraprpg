@@ -10,7 +10,7 @@ scenes.status = (characterSelected = "Bleu") => {
     var immunityDisplay = [];
 
     //var masteryComp = [];
-
+    characterSelected = characterSelected.split("_")[0]
     var characterSelectedName = game.characters[characterSelected].name;
     var nr = game.chars.indexOf(characterSelected) + 1;
 

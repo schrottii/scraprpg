@@ -6,7 +6,6 @@ var isMapTestingMode = false;
 var textProgress = -1;
 var isHolding = false;
 
-var playAfterIntro = "none";
 var globalSelectedCharacter = "";
 
 let pointerActive = false;
@@ -120,7 +119,7 @@ function init() {
             }),
 
         ],
-        name: "main"
+        name: "loading"
     });
     loadAllResources();
     defFilter();

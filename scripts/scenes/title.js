@@ -82,7 +82,7 @@ scenes.title = () => {
     function loadOptions() {
         fadeOverlay.clickthrough = true;
         addAnimator(function (t) {
-            for (let a = 0; a < 4; a++) {
+            for (let a = 0; a < 3; a++) {
                 id = a;
                 saveButtons[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
                 saveButtons[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
@@ -107,7 +107,7 @@ scenes.title = () => {
     function hideOptions() {
         fadeOverlay.clickthrough = true;
         addAnimator(function (t) {
-            for (let a = 0; a < 4; a++) {
+            for (let a = 0; a < 3; a++) {
                 id = a;
                 saveButtons[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(t / 600, 0) ** 2);
                 saveButtons[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(t / 600, 0)) ** 2);
@@ -443,8 +443,8 @@ scenes.title = () => {
                     changeSoundVolume(settings.soundVolume);
                     playSound("titletransition");
 
-                    musicPlayer.volume = settings.musicVolume;
                     playMusic("bgm/title");
+
                     state = "menu";
                     this.clickthrough = true;
                     addAnimator(function (t) {

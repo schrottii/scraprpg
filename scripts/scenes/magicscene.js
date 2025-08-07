@@ -215,6 +215,6 @@ scenes.magicscene = () => {
         controls: [
             ...background, ...itemsButtons, ...itemsImages, ...theTop, ...pageButtons
         ],
-        name: "magic"
+        name: "magicscene"
     }
 }

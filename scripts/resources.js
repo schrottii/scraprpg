@@ -360,30 +360,59 @@ var scenes = {
 };
 
 var audio = {
-    "bgm/title": "data/bgm/Title_OST.mp3",
+    // MUSIC
+    "bgm/forest/loop": "data/bgm/lun_SOTR__Desperate_Forest.mp3",
+
+    "bgm/town/intro": "data/bgm/dec_SOTR__Town_Intro.ogg",
+    "bgm/town/loop": "data/bgm/dec_SOTR__Town_Loop.ogg",
+
+    "bgm/evilcastle/intro": "data/bgm/lun_SOTR__Warmonger_Walls_Intro.mp3",
+    "bgm/evilcastle/loop": "data/bgm/lun_SOTR__Warmonger_Walls_Loop.mp3",
+
+    "bgm/cave": "data/bgm/zed_SOTR__Frigid_Caverns_v3.ogg",
+
+    "bgm/mountain": "data/bgm/zed_SOTR__Cloudier_Blue_II_v2.ogg",
+
+    "bgm/water": "data/bgm/zed_SOTR__Azure_Waves.ogg",
+
+    "bgm/fight": "data/bgm/dec_SOTR__Battle_Theme.ogg",
+
+    "bgm/boss/intro": "data/bgm/dec_SOTR__Boss_Battle_Intro.ogg",
+    "bgm/boss/loop": "data/bgm/dec_SOTR__Boss_Battle_Full.ogg",
+
+    "bgm/intro": "data/bgm/lun_SOTR__Introer.mp3",
+
+    "bgm/title": "data/bgm/dec_SOTR__Title_OST.mp3",
+
+    "bgm/eerie": "data/bgm/zed_SOTR__Eerie.ogg",
+
     "bgm/placeholder": "data/bgm/field03.mp3",
-    "bgm/fight": "data/bgm/battle.ogg",
-    "bgm/boss": "data/bgm/boss_battle_full.ogg",
 
-    "bgm/town/intro": "data/bgm/Town_intro.ogg",
-    "bgm/town/loop": "data/bgm/town_loop.ogg",
+    // SOUNDS
+    // clicks
+    "buttonClickSound": "data/sounds/click/sound_ok.wav",
+    "yes": "data/sounds/click/sound_ok.wav",
+    "no": "data/sounds/click/sound_no.wav",
+    "cancel": "data/sounds/click/sound_cancel.wav",
 
-    "bgm/forest/loop": "data/bgm/desperate-forest.mp3",
+    // fight
+    "encounter": "data/sounds/fight/fight_encounter.ogg",
+    "damage": "data/sounds/fight/damage.wav",
+    "critdamage": "data/sounds/fight/critical_damage.wav",
+    "miss": "data/sounds/fight/miss.ogg",
+    "heal": "data/sounds/fight/heal.wav",
 
+    "victory": "data/sounds/fight/victory_jingle.mp3",
+    "gameover": "data/sounds/fight/game_over_jingle.wav",
+
+    // other
     "titletransition": "data/sounds/Title_screen_transition.mp3",
-    "buttonClickSound": "data/sounds/sound_ok.wav",
-    "no": "data/sounds/sound_no.wav",
-    "cancel": "data/sounds/sound_cancel.wav",
     "keyitem": "data/sounds/important_item.wav",
-    "damage": "data/sounds/damage.wav",
-    "critdamage": "data/sounds/critical_damage.wav",
-    "teleport": "data/sounds/move area.wav",
-    "victory": "data/sounds/jingle03.mp3",
-    "miss": "data/sounds/miss.ogg",
-    "encounter": "data/sounds/enc_sound.ogg",
-    "gameover": "data/sounds/fall_land.wav",
-    "heal": "data/sounds/heal.wav",
+    "achievement": "data/sounds/achievement.ogg",
+    "movearea": "data/sounds/move_area.wav",
+    "teleport": "data/sounds/teleport.ogg",
 
+    // TALK
     "male_young": "data/sounds/voices/dialogue_voice_male_young.ogg",
     "male_grown": "data/sounds/voices/dialogue_voice_male_grown.ogg",
     "female_young": "data/sounds/voices/dialogue_voice_female_young.ogg",
@@ -401,6 +430,8 @@ var maps = {
     "castleL1": "scripts/maps/chapter1/castleL1.js",
     "castleL2": "scripts/maps/chapter1/castleL2.js",
     "castleOutside": "scripts/maps/chapter1/castleOutside.js",
+    "castleSplit": "scripts/maps/chapter1/castleSplit.js",
+    "brickyTown": "scripts/maps/chapter1/brickyTown.js",
     //"": "scripts/maps/chapter1/.js",
 };
 

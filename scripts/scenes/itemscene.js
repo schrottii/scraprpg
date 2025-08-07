@@ -341,6 +341,6 @@ scenes.itemscene = () => {
         controls: [
             ...background, ...itemsButtons, ...itemsImages, ...theTop, ...pageButtons, ...selItem
         ],
-        name: "items"
+        name: "itemscene"
     }
 }
