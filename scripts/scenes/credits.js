@@ -9,7 +9,7 @@ scenes.credits = () => {
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
-            if (previousScene == "inventory") fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
+            if (previousScene == "settings") fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
             if (previousScene == "title") fadeOut(500, false, () => setScene(scenes.title()));
         },
         text: "X",
@@ -589,6 +589,9 @@ scenes.credits = () => {
         fontSize: 24, fill: "white", alpha: 1,
     }));
 
+
+
+    playMusic("bgm/credits");
 
     fadeIn(1000 / 3, true);
 

@@ -58,7 +58,7 @@ scenes.pretitle = () => {
                 text: "Dev Mode",
                 onClick() {
                     cancel = true;
-                    musicPlayer.muted = true; // false?
+                    //musicPlayer.muted = true; // false?
                     soundPlayer.muted = false;
 
                     loadSettings();

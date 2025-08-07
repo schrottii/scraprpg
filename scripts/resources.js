@@ -361,13 +361,15 @@ var scenes = {
 
 var audio = {
     // MUSIC
-    "bgm/forest/loop": "data/bgm/lun_SOTR__Desperate_Forest.mp3",
+    "bgm/forest": "data/bgm/lun_SOTR__Desperate_Forest.mp3",
 
     "bgm/town/intro": "data/bgm/dec_SOTR__Town_Intro.ogg",
-    "bgm/town/loop": "data/bgm/dec_SOTR__Town_Loop.ogg",
+    "bgm/town": "data/bgm/dec_SOTR__Town_Loop.ogg",
+
+    "bgm/castle": "data/bgm/lun_SOTR__Lex_Alfred.mp3",
 
     "bgm/evilcastle/intro": "data/bgm/lun_SOTR__Warmonger_Walls_Intro.mp3",
-    "bgm/evilcastle/loop": "data/bgm/lun_SOTR__Warmonger_Walls_Loop.mp3",
+    "bgm/evilcastle": "data/bgm/lun_SOTR__Warmonger_Walls_Loop.mp3",
 
     "bgm/cave": "data/bgm/zed_SOTR__Frigid_Caverns_v3.ogg",
 
@@ -378,11 +380,13 @@ var audio = {
     "bgm/fight": "data/bgm/dec_SOTR__Battle_Theme.ogg",
 
     "bgm/boss/intro": "data/bgm/dec_SOTR__Boss_Battle_Intro.ogg",
-    "bgm/boss/loop": "data/bgm/dec_SOTR__Boss_Battle_Full.ogg",
+    "bgm/boss": "data/bgm/dec_SOTR__Boss_Battle_Full.ogg",
 
     "bgm/intro": "data/bgm/lun_SOTR__Introer.mp3",
 
     "bgm/title": "data/bgm/dec_SOTR__Title_OST.mp3",
+
+    "bgm/credits": "data/bgm/lun_SOTR__Crewdiss.mp3",
 
     "bgm/eerie": "data/bgm/zed_SOTR__Eerie.ogg",
 
