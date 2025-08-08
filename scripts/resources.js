@@ -361,7 +361,10 @@ var scenes = {
 
 var audio = {
     // MUSIC
-    "bgm/forest": "data/bgm/lun_SOTR__Desperate_Forest.mp3",
+    "bgm/forest/intro": "data/bgm/lun_SOTR__Ugliest_Tree_Alive_Intro.mp3",
+    "bgm/forest": "data/bgm/lun_SOTR__Ugliest_Tree_Alive_Loop.mp3",
+
+    "bgm/forest2": "data/bgm/lun_SOTR__Desperate_Forest.mp3",
 
     "bgm/town/intro": "data/bgm/dec_SOTR__Town_Intro.ogg",
     "bgm/town": "data/bgm/dec_SOTR__Town_Loop.ogg",
@@ -372,6 +375,9 @@ var audio = {
     "bgm/evilcastle": "data/bgm/lun_SOTR__Warmonger_Walls_Loop.mp3",
 
     "bgm/cave": "data/bgm/zed_SOTR__Frigid_Caverns_v3.ogg",
+
+    "bgm/icecave/intro": "data/bgm/lun_SOTR__Subzero_Ooga_Intro.mp3",
+    "bgm/icecave": "data/bgm/lun_SOTR__Subzero_Ooga_Loop.mp3",
 
     "bgm/mountain": "data/bgm/zed_SOTR__Cloudier_Blue_II_v2.ogg",
 
@@ -390,7 +396,7 @@ var audio = {
 
     "bgm/eerie": "data/bgm/zed_SOTR__Eerie.ogg",
 
-    "bgm/placeholder": "data/bgm/field03.mp3",
+    "bgm/placeholder": "data/bgm/theme05_(ScrapRPG_Mix).mp3",
 
     // SOUNDS
     // clicks

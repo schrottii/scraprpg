@@ -72,7 +72,6 @@ function loadMap() {
 var map;
 
 scenes.mapmaker = () => {
-
     let walkPad = [];
     let walkPadSize = Math.max(32, 64 * settings.walkPadSize);
     let pad;
@@ -89,9 +88,6 @@ scenes.mapmaker = () => {
     let createTileBG = [];
     let makerInfo = [];
     let makerInfoText = [];
-    let createTileInfoPage = 0;
-    let createTileInfoPageLength = 1;
-    let createTileInfoprevM = "t";
 
     let createDialogueButtons = [];
     let createDialogueLabels = [];
@@ -161,6 +157,11 @@ scenes.mapmaker = () => {
 
     let layerVisi = [1, 1, 1];
     let enableAnimations = false;
+
+    let createTileInfoPage = 0;
+    let createTileInfoPageLength = 1;
+    let createTileInfoprevM = "t";
+    var selectedInfo = "";
 
     var undoLog = [];
     var redoLog = [];
@@ -615,10 +616,19 @@ scenes.mapmaker = () => {
         }
     }));
 
-    for (i = 0; i < 30; i++) {
-        makerInfoText.push(controls.label({
-            anchor: [0.15, 0.2], offset: [0, 26 * i], fontSize: 24,
-            text: "", alpha: 0,
+    for (i = 0; i < 25; i++) { // the buttons (used to be text, now buttons) in the maker info
+        makerInfoText.push(controls.button({
+            anchor: [0.075, 0.2], offset: [0, 26 * i], sizeAnchor: [0.15, 0], sizeOffset: [0, 24], fontSize: 24,
+            text: "", alpha: 0, g: "",
+            onClick(args) {
+                if (this.alpha == 1) {
+                    selectedInfo = this.g;
+                    console.log(selectedInfo);
+
+                    this.fillTop = colors.buttontoppressed;
+                    this.fillBottom = colors.buttonbottompressed;
+                }
+            }
         }));
     }
 
@@ -1864,11 +1874,7 @@ scenes.mapmaker = () => {
         anchor: [0.1, 0.45], sizeAnchor: [0.2, 0.1],
         text: "Music intro: " + map.intro, alpha: 0,
         onClick(args) {
-            if (this.alpha == 1) {
-                let newIntro = prompt("New map music intro?");
-                if (newIntro != undefined) map.intro = newIntro;
-                this.uText();
-            }
+            mapInfoControls[6].onClick();
         },
         uText() {
             this.text = "Music intro: " + map.intro;
@@ -1879,9 +1885,20 @@ scenes.mapmaker = () => {
         text: "Music loop: " + map.music, alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                let newLoop = prompt("New map music loop?");
-                if (newLoop != undefined) map.music = newLoop;
-                this.uText();
+                if (audio[selectedInfo] != undefined) {
+                    map.music = selectedInfo;
+                    if (audio[selectedInfo + "/intro"] != undefined) map.intro = selectedInfo + "/intro";
+                    else map.intro = undefined;
+                    selectedInfo = "";
+
+                    hideInfo();
+                    mapInfoControls[5].uText();
+                    this.uText();
+                }
+                else {
+                    showInfo();
+                    renderInfo("music");
+                }
             }
         },
         uText() {
@@ -2681,6 +2698,7 @@ scenes.mapmaker = () => {
         for (i in makerInfo) {
             makerInfo[i].alpha = 1;
         }
+        createTileInfoPageLength = 0;
         for (i in makerInfoText) {
             if (height * 0.6 * red > i * 20) {
                 createTileInfoPageLength += 1;
@@ -2703,18 +2721,20 @@ scenes.mapmaker = () => {
     }
 
     function renderInfo(type) {
-        let grabFrom = [];
+        let grabFrom;
 
         if (type == "auto") type = createTileInfoprevM;
         else createTileInfoprevM = type;
 
         switch (type) {
             case "t":
+                grabFrom = [];
                 for (i in Object.keys(images)) {
                     if (Object.keys(images)[i].substr(0, 6) == "tiles/") grabFrom.push(Object.keys(images)[i].substr(6));
                 }
                 break;
             case "ts":
+                grabFrom = [];
                 for (i in Object.keys(images)) {
                     if (Object.keys(images)[i].substr(0, 9) == "tilesets/") grabFrom.push(Object.keys(images)[i].substr(9));
                 }
@@ -2729,6 +2749,7 @@ scenes.mapmaker = () => {
                 grabFrom = Object.keys(mapenemies);
                 break;
             case "es":
+                grabFrom = [];
                 if (map.spawns != undefined) {
                     let j = 0;
                     for (i in map.spawns) {
@@ -2742,24 +2763,34 @@ scenes.mapmaker = () => {
                 else grabFrom = [];
                 break;
             case "p":
+                grabFrom = [];
                 for (i in Object.keys(images)) {
                     if (Object.keys(images)[i].substr(0, 10) == "Portraits_") grabFrom.push(Object.keys(images)[i]);
                 }
                 break;
             case "npcs":
+                grabFrom = [];
                 if (map.npcs != undefined) {
                     for (let n in map.npcs) {
                         grabFrom.push(n);
                     }
                 }
                 break;
+            case "music":
+                // for selecting the music in map info (est 2025)
+                grabFrom = [];
+                for (let m in audio) {
+                    if (m.substr(0, 4) == "bgm/" && !m.includes("intro")) grabFrom.push(m); // exclude intro, we auto pick that later
+                }
         }
-        for (g = 0; g < 30; g++) {
+        for (g = 0; g < 25; g++) {
             if (grabFrom[g + (createTileInfoPage * createTileInfoPageLength)] != undefined) {
                 makerInfoText[g].text = grabFrom[g + (createTileInfoPage * createTileInfoPageLength)];
+                makerInfoText[g].g = grabFrom[g + (createTileInfoPage * createTileInfoPageLength)];
             }
             else {
                 makerInfoText[g].text = "";
+                makerInfoText[g].onClick = () => { };
             }
         }
     }
