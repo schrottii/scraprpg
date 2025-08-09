@@ -198,11 +198,11 @@ scenes.game = () => {
 
     let nightEffect = controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 1],
-        alpha: 0, fill: "white",
+        alpha: 0, fill: "white", clickStop: false
     });
     let nightEffect2 = controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 1],
-        alpha: 0, fill: "white",
+        alpha: 0, fill: "white", clickStop: false
     });
 
     // This is for the inventory button. In the TOP RIGHT.
@@ -220,7 +220,7 @@ scenes.game = () => {
     let inventoryImage = controls.image({
         anchor: [1, 0], offset: [-128, 0], sizeOffset: [128, 128],
         alpha: 1,
-        source: "inventory",
+        source: "inventory", clickstop: false
     });
 
     let poisonBlack = controls.rect({

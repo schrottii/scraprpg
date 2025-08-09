@@ -6,7 +6,7 @@
             sizeOffset: [0, 0],
             sizeAnchor: [0, 0],
             clickthrough: false, // this means, if true, you click THROUGH IT (onClick stops working)
-            clickstop: false, // this should have been added way earlier... makes it so that no click can be triggered after it (breaks)
+            clickstop: true, // this should have been added way earlier... makes it so that no click can be triggered after it (breaks)
             blend: false,
             glow: 0,
             glowColor: "black",
