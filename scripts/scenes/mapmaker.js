@@ -105,7 +105,6 @@ scenes.mapmaker = () => {
     let pageSize = 1;
     let tileSource = "common";
     let prot = false;
-    let prott = 0;
 
     let ttp = "001"; // tile to place
     let editingLayer = 0;
@@ -181,13 +180,7 @@ scenes.mapmaker = () => {
     // ------------------------------------------
     modeButtons.push(controls.rect({ // the big bg rect
         anchor: [0, 0], sizeAnchor: [0, 1], sizeOffset: [72 * 6, 0],
-        fill: "brown", alpha: 0.8,
-        onClick(args) {
-            if (!prot && this.alpha > 0) protect();
-        },
-        onHold(args) {
-            if (!prot && this.alpha > 0) protect();
-        }
+        fill: "brown", alpha: 0.8
     }));
 
     undoButtons.push(controls.image({
@@ -466,13 +459,7 @@ scenes.mapmaker = () => {
 
     createTileBG.push(controls.rect({
         anchor: [0.25, 0.15], sizeAnchor: [0.725, 0.7],
-        fill: colors.buttonbottom, alpha: 0,
-        onClick(args) {
-            if (this.alpha == 1) protect();
-        },
-        onHold(args) {
-            if (this.alpha == 1) protect();
-        }
+        fill: colors.buttonbottom, alpha: 0
     }));
     createTileBG.push(controls.rect({
         anchor: [0.25, 0.15], sizeAnchor: [0.725, 0.7], offset: [8, 8], sizeOffset: [-16, -16],
@@ -485,13 +472,7 @@ scenes.mapmaker = () => {
 
     makerInfo.push(controls.rect({
         anchor: [0.05, 0.15], sizeAnchor: [0.2, 0.7], offset: [-64, 0], sizeOffset: [64, 0],
-        fill: colors.buttonbottom, alpha: 0, clickstop: true,
-        onClick(args) {
-            if (this.alpha == 1) protect();
-        },
-        onHold(args) {
-            if (this.alpha == 1) protect();
-        }
+        fill: colors.buttonbottom, alpha: 0, clickstop: true
     }));
     makerInfo.push(controls.rect({
         anchor: [0.05, 0.15], sizeAnchor: [0.2, 0.7], offset: [8 -64, 8], sizeOffset: [-16 +64, -16],
@@ -507,7 +488,6 @@ scenes.mapmaker = () => {
         text: "Tiles", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 renderInfo("t");
             }
         }
@@ -517,7 +497,6 @@ scenes.mapmaker = () => {
         text: "Tilesets", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 renderInfo("ts");
             }
         }
@@ -527,7 +506,6 @@ scenes.mapmaker = () => {
         text: "Tile IDs", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 renderInfo("id");
             }
         }
@@ -537,7 +515,6 @@ scenes.mapmaker = () => {
         text: "Maps", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 renderInfo("m");
             }
         }
@@ -547,7 +524,6 @@ scenes.mapmaker = () => {
         text: "Enemies", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 renderInfo("e");
             }
         }
@@ -557,7 +533,6 @@ scenes.mapmaker = () => {
         text: "Enemy Spawns", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 renderInfo("es");
             }
         }
@@ -567,7 +542,6 @@ scenes.mapmaker = () => {
         text: "Dialogues", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 renderInfo("d");
             }
         }
@@ -577,7 +551,6 @@ scenes.mapmaker = () => {
         text: "Portraits", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 renderInfo("p");
             }
         }
@@ -587,7 +560,6 @@ scenes.mapmaker = () => {
         text: "NPCs", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 renderInfo("npcs");
             }
         }
@@ -598,7 +570,6 @@ scenes.mapmaker = () => {
         text: "P-", alpha: 0,
         onClick(args) {
             if (this.alpha == 1 && createTileInfoPage > 0) {
-                protect();
                 createTileInfoPage -= 1;
                 renderInfo("auto");
             }
@@ -609,7 +580,6 @@ scenes.mapmaker = () => {
         text: "P+", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 createTileInfoPage += 1;
                 renderInfo("auto");
             }
@@ -901,7 +871,6 @@ scenes.mapmaker = () => {
         text: "Load from file...", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 showSelect();
             }
         }
@@ -911,8 +880,6 @@ scenes.mapmaker = () => {
         text: "Load from name...", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
-
                 // get the name thru info or asking
                 let newMapn;
                 if (selectedInfo != "" && maps[selectedInfo] != undefined) newMapn = selectedInfo;
@@ -958,7 +925,6 @@ scenes.mapmaker = () => {
         text: "Save as .sotrm", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 saveFile("sotrm");
             }
         }
@@ -968,7 +934,6 @@ scenes.mapmaker = () => {
         text: "Save as .js", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 saveFile("js");
             }
         }
@@ -978,7 +943,6 @@ scenes.mapmaker = () => {
         text: "Delete", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 if (confirm("Do you really want to create a new map?") == true) {
                     createNewMap("newMap");
                 }
@@ -1477,10 +1441,7 @@ scenes.mapmaker = () => {
     // Tiles menu ahahyahahaaaa
     tilesMenuControls.push(controls.rect({
         anchor: [0.05, 0.2], sizeAnchor: [0.9, 0.7],
-        fill: colors.buttonbottom, alpha: 0,
-        onClick(args) {
-            if (this.alpha == 1) protect();
-        }
+        fill: colors.buttonbottom, alpha: 0
     }));
     tilesMenuControls.push(controls.rect({
         anchor: [0.05, 0.2], sizeAnchor: [0.9, 0.7], offset: [8, 8], sizeOffset: [-16, -16],
@@ -1492,7 +1453,6 @@ scenes.mapmaker = () => {
         alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 tileSource = "common";
                 openTilesMenu();
             }
@@ -1504,7 +1464,6 @@ scenes.mapmaker = () => {
         alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 tileSource = "map";
                 openTilesMenu();
             }
@@ -1523,7 +1482,6 @@ scenes.mapmaker = () => {
         alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 if (tileMenuPage > 0) tileMenuPage--;
                 openTilesMenu();
             }
@@ -1535,7 +1493,6 @@ scenes.mapmaker = () => {
         alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 tileMenuPage++;
                 openTilesMenu();
             }
@@ -1604,14 +1561,12 @@ scenes.mapmaker = () => {
         isPressed: false,
         onDown(args) {
             if (this.alpha == 1 && prot == false) {
-                protect();
                 this.snip[0] = 32;
                 pad = "up";
             }
         },
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 this.snip[0] = 0;
                 pad = "";
             }
@@ -1623,13 +1578,7 @@ scenes.mapmaker = () => {
         isPressed: false,
         onDown(args) {
             if (this.alpha == 1 && tilesMenuControls[0].alpha == 0) {
-                protect();
                 pad = "";
-            }
-        },
-        onClick(args) {
-            if (this.alpha == 1) {
-                protect();
             }
         }
     }));
@@ -1646,7 +1595,6 @@ scenes.mapmaker = () => {
         },
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 this.snip[0] = 0;
                 pad = "";
             }
@@ -1658,14 +1606,12 @@ scenes.mapmaker = () => {
         isPressed: false,
         onDown(args) {
             if (this.alpha == 1 && tilesMenuControls[0].alpha == 0) {
-                protect();
                 this.snip[0] = 32;
                 pad = "left";
             }
         },
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 this.snip[0] = 0;
                 pad = "";
             }
@@ -1684,7 +1630,6 @@ scenes.mapmaker = () => {
         },
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 this.snip[0] = 0;
                 pad = "";
             }
@@ -1709,7 +1654,6 @@ scenes.mapmaker = () => {
         text: "(i)",
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 toggleMapInfoButtons();
             }
         },
@@ -1722,7 +1666,6 @@ scenes.mapmaker = () => {
         text: "ani:off",
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 if (this.text == "ani:off") {
                     enableAnimations = true;
                     this.text = "ani:on";
@@ -1742,7 +1685,6 @@ scenes.mapmaker = () => {
         anchor: [0, 0.7], sizeAnchor: [0.05, 0.045],
         source: "hideUI",
         onClick(args) {
-            protect();
             if (this.alpha == 1) {
                 for (m in modeButtons) {
                     modeButtons[m].va = modeButtons[m].alpha;
@@ -1793,7 +1735,6 @@ scenes.mapmaker = () => {
         anchor: [0, 0.655], sizeAnchor: [0.05, 0.045],
         source: "darkPaths",
         onClick(args) {
-            protect();
             visibleCollision = !visibleCollision;
             if (visibleCollision) this.alpha = 0.3;
             else this.alpha = 1;
@@ -1815,7 +1756,6 @@ scenes.mapmaker = () => {
         text: "info",
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 if (this.text == "info") {
                     showInfo();
                     this.text = "X";
@@ -1827,20 +1767,12 @@ scenes.mapmaker = () => {
                 updateTiles = true;
             }
         },
-        onHold(args) {
-            if (this.alpha == 1) {
-                protect();
-            }
-        },
         alpha: 1,
     });
 
     mapInfoControls.push(controls.rect({
         anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.7],
-        fill: colors.buttonbottompressed, alpha: 0,
-        onClick(args) {
-            if (this.alpha == 1) protect();
-        }
+        fill: colors.buttonbottompressed, alpha: 0
     }));
     mapInfoControls.push(controls.rect({
         anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.7], offset: [8, 8], sizeOffset: [-16, -16],
@@ -2085,12 +2017,7 @@ scenes.mapmaker = () => {
     // TILE INFO
     tileInfoControls.push(controls.rect({
         anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.6],
-        fill: colors.buttonbottompressed, alpha: 0,
-        onClick(args) {
-            if (this.alpha == 1) {
-                protect();
-            }
-        }
+        fill: colors.buttonbottompressed, alpha: 0
     }));
     tileInfoControls.push(controls.rect({
         anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.6], offset: [8, 8], sizeOffset: [-16, -16],
@@ -2101,7 +2028,6 @@ scenes.mapmaker = () => {
         text: "X", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                protect();
                 for (tic in tileInfoControls) {
                     tileInfoControls[tic].alpha = 0;
                 }
@@ -3029,11 +2955,6 @@ scenes.mapmaker = () => {
         hideInfo();
     }
 
-    function protect() {
-        prot = true;
-        prott = 60;
-    }
-
     function placeTile(x, y, layer, tileToPlace = "none", umode = "default") {
         if (x < 0 || y < 0) {
             return false;
@@ -3305,9 +3226,6 @@ scenes.mapmaker = () => {
     return {
         // Pre-render function
         preRender(ctx, delta) {
-            if (!isHolding) prott -= delta;
-            if (prott <= 0) prot = false;
-
             if (lmresult != "none") {
                 if (loadMapButtons[0].alpha == 1) toggleLoadButtons();
                 hideInfo();
