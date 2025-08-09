@@ -484,8 +484,8 @@ scenes.mapmaker = () => {
     }));
 
     makerInfo.push(controls.rect({
-        anchor: [0.05, 0.15], sizeAnchor: [0.2, 0.7],
-        fill: colors.buttonbottom, alpha: 0,
+        anchor: [0.05, 0.15], sizeAnchor: [0.2, 0.7], offset: [-64, 0], sizeOffset: [64, 0],
+        fill: colors.buttonbottom, alpha: 0, clickstop: true,
         onClick(args) {
             if (this.alpha == 1) protect();
         },
@@ -494,7 +494,7 @@ scenes.mapmaker = () => {
         }
     }));
     makerInfo.push(controls.rect({
-        anchor: [0.05, 0.15], sizeAnchor: [0.2, 0.7], offset: [8, 8], sizeOffset: [-16, -16],
+        anchor: [0.05, 0.15], sizeAnchor: [0.2, 0.7], offset: [8 -64, 8], sizeOffset: [-16 +64, -16],
         fill: colors.buttontop, alpha: 0,
     }));
     makerInfo.push(controls.label({
@@ -619,7 +619,7 @@ scenes.mapmaker = () => {
     for (i = 0; i < 25; i++) { // the buttons (used to be text, now buttons) in the maker info
         makerInfoText.push(controls.button({ // maker info button
             anchor: [0.075, 0.2], offset: [0, 26 * i], sizeAnchor: [0.15, 0], sizeOffset: [0, 24], fontSize: 24,
-            text: "", alpha: 0, g: "",
+            text: "", alpha: 0, g: "", clickstop: true,
             onClick(args) {
                 if (this.alpha == 1) {
                     selectedInfo = this.g;
