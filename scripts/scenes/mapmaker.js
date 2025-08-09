@@ -160,7 +160,9 @@ scenes.mapmaker = () => {
     let createTileInfoPage = 0;
     let createTileInfoPageLength = 1;
     let createTileInfoprevM = "t";
+
     var selectedInfo = "";
+    var selectedInfoType = "";
 
     var undoLog = [];
     var redoLog = [];
@@ -334,17 +336,18 @@ scenes.mapmaker = () => {
     }));
     modeButtons.push(controls.image({
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 5, 72 * 1],
-        source: "tilesmenu", alpha: 1,
+        source: "tilesmenu", alpha: 1, // tile maker
         onClick(args) {
             if (this.alpha == 1 && !prot) {
                 if (tilesMenuControls[0].alpha == 0) {
                     prevmode = mode;
-                    moveMode();
+                    //moveMode();
                     openTilesMenu();
                 }
                 else {
-                    if (prevmode == "moveandplace") moveAndPlaceMode();
-                    else placeMode();
+                    // leave the maker menu
+                    //if (prevmode == "moveandplace") moveAndPlaceMode();
+                    //else placeMode();
                     closeTilesMenu();
                 }
             }
@@ -571,6 +574,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1 && createTileInfoPage > 0) {
                 createTileInfoPage -= 1;
+                makerInfo[makerInfo.length - 2].text = createTileInfoPage + 1;
                 renderInfo("auto");
             }
         }
@@ -581,9 +585,18 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 createTileInfoPage += 1;
+                makerInfo[makerInfo.length - 2].text = createTileInfoPage + 1;
                 renderInfo("auto");
             }
         }
+    }));
+    makerInfo.push(controls.label({
+        anchor: [0.2, 0.85], offset: [-64, 0],
+        text: "1", alpha: 0,
+    }));
+    makerInfo.push(controls.label({
+        anchor: [0.2, 0.85], offset: [-256, 0],
+        text: "", alpha: 0,
     }));
 
     for (i = 0; i < 25; i++) { // the buttons (used to be text, now buttons) in the maker info
@@ -593,7 +606,7 @@ scenes.mapmaker = () => {
             onClick(args) {
                 if (this.alpha == 1) {
                     selectedInfo = this.g;
-                    console.log(selectedInfo);
+                    makerInfo[makerInfo.length - 1].text = selectedInfo;
 
                     for (g = 0; g < 25; g++) {
                         makerInfoText[g].fillTop = colors.buttontop;
@@ -612,8 +625,13 @@ scenes.mapmaker = () => {
         fillTop: "red", fillBottom: "darkred",
         onClick(args) {
             if (this.alpha == 1) {
-                let p = prompt('New map tile ID? (e. g. 001)');
-                if (isValid(p)) tileID = p;
+                if (isValid(selectedInfo) && selectedInfoType == "id" && selectedInfo.length == 3) {
+                    tileID = selectedInfo;
+                }
+                else {
+                    let p = prompt('New map tile ID? (e. g. 001)');
+                    if (isValid(p)) tileID = p;
+                }
 
                 if (tileID.length != 3) {
                     alert("Tile ID needs to be 3 long! (ie R31)");
@@ -643,8 +661,15 @@ scenes.mapmaker = () => {
         fillTop: "red", fillBottom: "darkred",
         onClick(args) {
             if (this.alpha == 1) {
-                let p = prompt('New map tile sprite? (e. g. water - must be the name from resources)');
-                if (isValid(p)) tileSprite = p;
+                if (isValid(selectedInfo) && selectedInfoType == "t") {
+                    tileSprite = selectedInfo;
+                }
+                else {
+                    let p = prompt('New map tile sprite? (e. g. water - must be the name from resources)');
+                    if (isValid(p)) tileSprite = p;
+                }
+
+                tileSet = "";
                 updateTileLabels();
             }
         }
@@ -666,8 +691,15 @@ scenes.mapmaker = () => {
         fillTop: "red", fillBottom: "darkred",
         onClick(args) {
             if (this.alpha == 1) {
-                let p = prompt('New map tile set? (e. g. castle - must be the name from resources)');
-                if (isValid(p)) tileSet = p;
+                if (isValid(selectedInfo) && selectedInfoType == "ts") {
+                    tileSet = selectedInfo;
+                }
+                else {
+                    let p = prompt('New map tile set? (e. g. castle - must be the name from resources)');
+                    if (isValid(p)) tileSet = p;
+                }
+
+                tileSprite = "";
                 updateTileLabels();
             }
         }
@@ -2386,7 +2418,7 @@ scenes.mapmaker = () => {
             createTileInfoPageLength = 0;
 
             showInfo();
-            renderInfo("t");
+            renderInfo("id");
 
             for (i in createTileButtons) {
                 createTileButtons[i].offset[1] = 0;
@@ -2539,8 +2571,8 @@ scenes.mapmaker = () => {
             createTileButtons[3].text = "Tile Set";
             createTileButtons[3].fillTop = "darkgray";
             createTileButtons[3].fillBottom = "gray";
-            this.fillTop = "red";
-            this.fillBottom = "darkred";
+            createTileButtons[1].fillTop = "red";
+            createTileButtons[1].fillBottom = "darkred";
         }
         if (tileSet != "") {
             if (images["tilesets/" + tileSet] != undefined) {
@@ -2553,8 +2585,8 @@ scenes.mapmaker = () => {
             createTileButtons[1].text = "Tile Sprite";
             createTileButtons[1].fillTop = "darkgray";
             createTileButtons[1].fillBottom = "gray";
-            this.fillTop = "red";
-            this.fillBottom = "darkred";
+            createTileButtons[3].fillTop = "red";
+            createTileButtons[3].fillBottom = "darkred";
         }
     }
 
@@ -2624,6 +2656,9 @@ scenes.mapmaker = () => {
     }
 
     function showInfo() {
+        createTileInfoPage = 0;
+        selectedInfo = "";
+
         let red = 1;
         if (isLs()) red = 2;
 
@@ -2645,6 +2680,8 @@ scenes.mapmaker = () => {
     }
 
     function hideInfo() {
+        selectedInfo = "";
+
         for (u in undoButtons) {
             undoButtons[u].alpha = undoButtons[u].al;
         }
@@ -2659,6 +2696,7 @@ scenes.mapmaker = () => {
 
     function renderInfo(type) {
         let grabFrom;
+        selectedInfoType = type;
 
         if (type == "auto") type = createTileInfoprevM;
         else createTileInfoprevM = type;
@@ -2720,17 +2758,19 @@ scenes.mapmaker = () => {
                     if (m.substr(0, 4) == "bgm/" && !m.includes("intro")) grabFrom.push(m); // exclude intro, we auto pick that later
                 }
         }
+
+        let pageAdd = createTileInfoPage * createTileInfoPageLength;
         for (g = 0; g < 25; g++) {
             makerInfoText[g].fillTop = colors.buttontop;
             makerInfoText[g].fillBottom = colors.buttonbottom;
 
-            if (grabFrom[g + (createTileInfoPage * createTileInfoPageLength)] != undefined) {
-                makerInfoText[g].text = grabFrom[g + (createTileInfoPage * createTileInfoPageLength)];
-                makerInfoText[g].g = grabFrom[g + (createTileInfoPage * createTileInfoPageLength)];
+            if (grabFrom[g + pageAdd] != undefined) {
+                makerInfoText[g].text = grabFrom[g + pageAdd];
+                makerInfoText[g].g = grabFrom[g + pageAdd];
             }
             else {
                 makerInfoText[g].text = "";
-                makerInfoText[g].onClick = () => { };
+                //makerInfoText[g].onClick = () => { };
             }
         }
     }
