@@ -126,7 +126,7 @@ scenes.mapmaker = () => {
     if (loadFromAutoSave != undefined && loadFromAutoSave != "empty") {
         map = JSON.parse(loadFromAutoSave);
         map.tiles = Object.assign({}, map.tiles, loadPacks(map));
-        currentMap = map.id;
+        currentMap = map.id; // on boot, from cache
     }
 
     let autoSaveTime = 0;
@@ -617,7 +617,7 @@ scenes.mapmaker = () => {
     }));
 
     for (i = 0; i < 25; i++) { // the buttons (used to be text, now buttons) in the maker info
-        makerInfoText.push(controls.button({
+        makerInfoText.push(controls.button({ // maker info button
             anchor: [0.075, 0.2], offset: [0, 26 * i], sizeAnchor: [0.15, 0], sizeOffset: [0, 24], fontSize: 24,
             text: "", alpha: 0, g: "",
             onClick(args) {
@@ -625,6 +625,10 @@ scenes.mapmaker = () => {
                     selectedInfo = this.g;
                     console.log(selectedInfo);
 
+                    for (g = 0; g < 25; g++) {
+                        makerInfoText[g].fillTop = colors.buttontop;
+                        makerInfoText[g].fillBottom = colors.buttonbottom;
+                    }
                     this.fillTop = colors.buttontoppressed;
                     this.fillBottom = colors.buttonbottompressed;
                 }
@@ -908,11 +912,18 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 protect();
-                let newMapn = prompt("Map name? (e. g. test)");
+
+                // get the name thru info or asking
+                let newMapn;
+                if (selectedInfo != "" && maps[selectedInfo] != undefined) newMapn = selectedInfo;
+                else newMapn = prompt("Map name? (e. g. test)");
+
+                // load
                 if (maps[newMapn] != undefined) {
-                    currentMap = newMapn;
+                    currentMap = newMapn; // from name
                     map = maps[currentMap];
                 }
+
                 if (loadMapButtons[0].alpha == 1) toggleLoadButtons();
                 hideInfo();
                 newMap();
@@ -976,7 +987,7 @@ scenes.mapmaker = () => {
     }));
 
     function createNewMap(mapName) {
-        currentMap = mapName.id != undefined ? mapName.id : mapName;
+        currentMap = mapName.id != undefined ? mapName.id : mapName; // creating new map
         map = { // CREATE NEW MAP
             id: currentMap,
             tiles: {
@@ -1861,7 +1872,7 @@ scenes.mapmaker = () => {
                 let newName = prompt("New map ID?");
                 if (isValid(newName)) {
                     map.id = newName;
-                    currentMap = newName;
+                    currentMap = newName; // changing ID
                 }
                 this.uText();
             }
@@ -2129,7 +2140,7 @@ scenes.mapmaker = () => {
                 if (selectedTile != undefined) {
                     if (selectedTile.teleport != undefined) {
                         if (confirm("Do you really want to teleport? Unsaved changes are lost!")) {
-                            currentMap = selectedTile.teleport[0];
+                            currentMap = selectedTile.teleport[0]; // teleporting to a map
                             map = maps[currentMap];
                             game.position = [selectedTile.teleport[1], selectedTile.teleport[2]];
                             newMap();
@@ -2784,6 +2795,9 @@ scenes.mapmaker = () => {
                 }
         }
         for (g = 0; g < 25; g++) {
+            makerInfoText[g].fillTop = colors.buttontop;
+            makerInfoText[g].fillBottom = colors.buttonbottom;
+
             if (grabFrom[g + (createTileInfoPage * createTileInfoPageLength)] != undefined) {
                 makerInfoText[g].text = grabFrom[g + (createTileInfoPage * createTileInfoPageLength)];
                 makerInfoText[g].g = grabFrom[g + (createTileInfoPage * createTileInfoPageLength)];
@@ -3300,7 +3314,7 @@ scenes.mapmaker = () => {
                 if (lmresult != "justhide") {
                     if (typeof (lmresult) == "string" && lmresult.id != undefined) {
                         // The map you have loaded already exists :)
-                        currentMap = lmresult.id;
+                        currentMap = lmresult.id; // from file
                         map = maps[lmresult];
 
                         console.log("loaded: " + currentMap);

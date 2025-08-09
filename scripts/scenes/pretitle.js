@@ -1,6 +1,14 @@
 scenes.pretitle = () => {
-
     let cancel = false;
+
+    let BG = controls.rect({
+        anchor: [0, 0], sizeAnchor: [1, 1],
+        fill: "rgb(0, 0, 0)",
+        onClick(args) {
+            if (musicPlayer.paused) playMusic("bgm/intro");
+        }
+    })
+
     let tokenStay = controls.image({
         anchor: [0, 0], sizeAnchor: [1, 1],
         source: "tttanimation", snip: [3200, 9000, 800, 450],
@@ -39,7 +47,7 @@ scenes.pretitle = () => {
         },
         // Controls
         controls: [
-            tokenStay,
+            BG, tokenStay,
             controls.button({
                 anchor: [.5, .5], offset: [-100, 5], sizeOffset: [200, 50],
                 clickthrough: true, fontSize: 16, alpha: 0,
