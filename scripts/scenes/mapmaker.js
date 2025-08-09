@@ -524,19 +524,19 @@ scenes.mapmaker = () => {
     }));
     makerInfo.push(controls.button({
         anchor: [0.05, 0.15], sizeOffset: [96, 56], offset: [-64, 64 * 4],
-        text: "Enemies", alpha: 0, align: "right",
+        text: "Map Enemies", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) {
-                renderInfo("e");
+                renderInfo("mapEnemies");
             }
         }
     }));
     makerInfo.push(controls.button({
         anchor: [0.05, 0.15], sizeOffset: [96, 56], offset: [-64, 64 * 5],
-        text: "Enemy Spawns", alpha: 0, align: "right",
+        text: "Spawns", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) {
-                renderInfo("es");
+                renderInfo("spawns");
             }
         }
     }));
@@ -545,21 +545,12 @@ scenes.mapmaker = () => {
         text: "Dialogues", alpha: 0, align: "right",
         onClick(args) {
             if (this.alpha == 1) {
-                renderInfo("d");
+                renderInfo("dialogues");
             }
         }
     }));
     makerInfo.push(controls.button({
         anchor: [0.05, 0.15], sizeOffset: [96, 56], offset: [-64, 64 * 7],
-        text: "Portraits", alpha: 0,
-        onClick(args) {
-            if (this.alpha == 1) {
-                renderInfo("p");
-            }
-        }
-    }));
-    makerInfo.push(controls.button({
-        anchor: [0.05, 0.15], sizeOffset: [96, 56], offset: [-64, 64 * 8],
         text: "NPCs", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -1077,7 +1068,11 @@ scenes.mapmaker = () => {
         text: "Create New / Load", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                curDia = prompt('Dialogue ID? (e. g. 1)');
+                if (isValid(selectedInfo)) {
+                    curDia = selectedInfo;
+                }
+                else curDia = prompt('Dialogue ID? (e. g. 1)');
+
                 if (map.dialogues == undefined) {
                     map.dialogues = {};
                 }
@@ -1227,9 +1222,14 @@ scenes.mapmaker = () => {
         text: "Portrait", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                let newText = prompt("New portrait? (e. g. Portraits_Bleu)");
-                if (newText != undefined) map.dialogues[curDia].lines[curLine].portrait = newText;
-                updateDialogueLabels();
+                if (selectedInfoType == "portraits" && isValid(selectedInfo)) {
+                    map.dialogues[curDia].lines[curLine].portrait = selectedInfo;
+                    updateDialogueLabels();
+                }
+                else {
+                    showInfo();
+                    renderInfo("portraits");
+                }
             }
         }
     }));
@@ -1316,7 +1316,11 @@ scenes.mapmaker = () => {
         text: "Create New / Load", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                curNPC = prompt('NPC ID? (e. g. JohnDoe)');
+                if (isValid(selectedInfo)) {
+                    curNPC = selectedInfo;
+                }
+                else curNPC = prompt('NPC ID? (e. g. JohnDoe)');
+
                 if (!isValid(curNPC)) return false;
 
                 if (map.npcs == undefined) {
@@ -1344,15 +1348,21 @@ scenes.mapmaker = () => {
         text: "Dialogue", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                let newText = prompt("Dialogue name?");
+                if (selectedInfoType == "dialogues" && isValid(selectedInfo)) {
+                    if (map.dialogues[selectedInfo] != undefined && isValid(selectedInfo)) {
+                        map.npcs[curNPC].dialogues["1"] = selectedInfo;
+                        this.text = "Dialogue: " + selectedInfo;
 
-                if (map.dialogues[newText] != undefined && isValid(newText)) {
-                    if (newText != undefined) map.npcs[curNPC].dialogues["1"] = newText;
-                    this.text = "Dialogue: " + newText;
-                    updateNPCLabels();
+                        hideInfo();
+                        updateNPCLabels();
+                    }
+                    else {
+                        alert("Does not exist!");
+                    }
                 }
                 else {
-                    alert("Does not exist!");
+                    showInfo();
+                    renderInfo("dialogues")
                 }
             }
         }
@@ -1439,9 +1449,17 @@ scenes.mapmaker = () => {
         text: "Skin", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                let newText = prompt("New skin?");
-                if (isValid(newText) && images[newText] != undefined) map.npcs[curNPC].source = newText;
-                updateNPCLabels();
+                if (selectedInfoType == "characterImages" && isValid(selectedInfo)) {
+                    if (images[selectedInfo] != undefined) {
+                        map.npcs[curNPC].source = selectedInfo;
+                        updateNPCLabels();
+                        hideInfo();
+                    }
+                }
+                else {
+                    showInfo();
+                    renderInfo("characterImages");
+                }
             }
         }
     }));
@@ -1790,6 +1808,7 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) {
                 if (this.text == "info") {
                     showInfo();
+                    renderInfo("auto");
                     this.text = "X";
                 }
                 else {
@@ -1943,10 +1962,20 @@ scenes.mapmaker = () => {
                 if (map.packs == undefined) {
                     map.packs = [];
                 }
-                let newPack = prompt("Name? (e. g. castle)");
-                if (isValid(newPack)) {
-                    map.packs.push(newPack);
-                    map.tiles = Object.assign({}, map.tiles, loadPacks({ packs: [newPack] }));
+
+                if (selectedInfoType == "mapPacks" && isValid(selectedInfo)) {
+                    if (packs[selectedInfo] != undefined) {
+                        map.packs.push(selectedInfo);
+                        map.tiles = Object.assign({}, map.tiles, loadPacks({ packs: [selectedInfo] }));
+                        hideInfo();
+                    }
+                    else {
+                        alert("Not a valid pack!");
+                    }
+                }
+                else {
+                    showInfo();
+                    renderInfo("mapPacks");
                 }
             }
         }
@@ -1956,14 +1985,18 @@ scenes.mapmaker = () => {
         text: "Empty sprite: " + map.tiles.empty.sprite, alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                let newSprite = prompt("New empty sprite? (e. g. water)");
-                if (images["tiles/" + newSprite] != undefined) {
-                    map.tiles.empty.sprite = newSprite;
-                    updateTiles = true;
-                    this.uText();
+                if (selectedInfoType == "t" && isValid(selectedInfo)) {
+                    if (images["tiles/" + selectedInfo] != undefined) {
+                        map.tiles.empty.sprite = selectedInfo;
+                        updateTiles = true;
+
+                        hideInfo();
+                        this.uText();
+                    }
                 }
                 else {
-                    alert("Error: Does not exist!")
+                    showInfo();
+                    renderInfo("t");
                 }
             }
         },
@@ -2004,12 +2037,18 @@ scenes.mapmaker = () => {
         text: "Add spawn", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                let newSpawn = prompt("Name?");
-                let newSpawn2 = prompt("Chance? (e. g. 10)");
-                if (isValid(newSpawn) && isValid(newSpawn2)) {
-                    if (map.spawns == undefined) map.spawns = {};
-                    map.spawns[newSpawn] = newSpawn2;
-                    renderInfo("es");
+                if (map.spawns == undefined) map.spawns = {};
+
+                if (selectedInfoType == "mapEnemies" && isValid(selectedInfo)) {
+                    let spawnChance = prompt("Chance? (e. g. 10)");
+                    if (isValid(spawnChance)) {
+                        map.spawns[selectedInfo] = spawnChance;
+                        hideInfo();
+                    }
+                }
+                else {
+                    showInfo();
+                    renderInfo("mapEnemies");
                 }
             }
         }
@@ -2019,11 +2058,13 @@ scenes.mapmaker = () => {
         text: "Remove spawn", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                let killThis = prompt("KILL who?");
-
-                if (map.spawns[killThis] != undefined) {
-                    delete map.spawns[killThis];
-                    renderInfo("es");
+                if (selectedInfoType == "spawns" && isValid(selectedInfo)) {
+                    delete map.spawns[selectedInfo.split(" |")[0]];
+                    hideInfo();
+                }
+                else {
+                    showInfo();
+                    renderInfo("spawns");
                 }
             }
         }
@@ -2060,9 +2101,11 @@ scenes.mapmaker = () => {
         text: "X", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                mode = "move";
                 for (tic in tileInfoControls) {
                     tileInfoControls[tic].alpha = 0;
                 }
+                setTimeout(() => { mode = "tile"; }, 100);
             }
         }
     }));
@@ -2117,20 +2160,20 @@ scenes.mapmaker = () => {
         text: "Place item here", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                let itemToPlace = prompt("Desired item name? (the one defined in items, e. g. revive)");
-                let amount = prompt("Desired item amount? (e. g. 1)");
-                if (items[itemToPlace] == undefined) {
-                    alert("Does not exist!");
-                }
-                else {
-                    if (amount == "") amount = 1;
-                    if (map.items == undefined) {
-                        map.items = [];
-                    }
-                    map.items.push([currInfo[0], currInfo[1], itemToPlace, parseInt(amount), true]);
-                    // Update
+                if (map.items == undefined) map.items = [];
+                if (selectedInfoType == "items" && isValid(selectedInfo)) {
+                    let amount = prompt("Desired item amount? (e. g. 1)");
+                    if (!isValid(amount)) amount = 1;
+
+                    map.items.push([currInfo[0], currInfo[1], selectedInfo, parseInt(amount), true]);
+
                     tileInfo(currInfo[0], currInfo[1], ["map", "mapbg2", "mapfg"][currInfo[2] - 1]);
                     updateTiles = true;
+                    hideInfo();
+                }
+                else {
+                    showInfo();
+                    renderInfo("items");
                 }
             }
         }
@@ -2461,7 +2504,7 @@ scenes.mapmaker = () => {
             createTileInfoPageLength = 0;
 
             showInfo();
-            renderInfo("d");
+            renderInfo("dialogues");
 
             if (curDia != "") {
                 for (i in createDialogueButtons) {
@@ -2515,7 +2558,7 @@ scenes.mapmaker = () => {
             createTileInfoPageLength = 0;
 
             showInfo();
-            renderInfo("d");
+            renderInfo("npcs");
 
             if (curNPC != "") {
                 for (i in createNPCButtons) {
@@ -2696,7 +2739,7 @@ scenes.mapmaker = () => {
 
     function renderInfo(type) {
         let grabFrom;
-        selectedInfoType = type;
+        if (type != "auto") selectedInfoType = type;
 
         if (type == "auto") type = createTileInfoprevM;
         else createTileInfoprevM = type;
@@ -2720,10 +2763,10 @@ scenes.mapmaker = () => {
             case "m":
                 grabFrom = Object.keys(maps);
                 break;
-            case "e":
+            case "mapEnemies":
                 grabFrom = Object.keys(mapenemies);
                 break;
-            case "es":
+            case "spawns":
                 grabFrom = [];
                 if (map.spawns != undefined) {
                     let j = 0;
@@ -2733,11 +2776,11 @@ scenes.mapmaker = () => {
                     }
                 }
                 break;
-            case "d":
+            case "dialogues":
                 if (map.dialogues != undefined) grabFrom = Object.keys(map.dialogues);
                 else grabFrom = [];
                 break;
-            case "p":
+            case "portraits":
                 grabFrom = [];
                 for (i in Object.keys(images)) {
                     if (Object.keys(images)[i].substr(0, 10) == "Portraits_") grabFrom.push(Object.keys(images)[i]);
@@ -2756,6 +2799,24 @@ scenes.mapmaker = () => {
                 grabFrom = [];
                 for (let m in audio) {
                     if (m.substr(0, 4) == "bgm/" && !m.includes("intro")) grabFrom.push(m); // exclude intro, we auto pick that later
+                }
+                break;
+            case "mapPacks":
+                grabFrom = [];
+                for (let p in packs) {
+                    grabFrom.push(p);
+                }
+                break;
+            case "characterImages":
+                grabFrom = [];
+                for (let im in images) {
+                    if (im.substr(0, 8) == "enemies/" || im.substr(0, 5) == "npcs/" || characters.includes(im)) grabFrom.push(im);
+                }
+                break;
+            case "items":
+                grabFrom = [];
+                for (let it in items) {
+                    if (it != "default") grabFrom.push(it);
                 }
         }
 
@@ -3556,8 +3617,9 @@ scenes.mapmaker = () => {
             ...tilesMenuControls, ...tilesMenuTiles, ...tilesMenuIcons,
             ...createTileBG, ...createTileButtons,
             ...createDialogueButtons, ...createDialogueLabels, ...createNPCButtons, ...createNPCLabels,
+            ...tileInfoControls,
             toggleMakerInfo, ...makerInfo, ...makerInfoText,
-            ...tileInfoControls, autoSaveText
+            autoSaveText
         ],
         name: "mapmaker"
     }
