@@ -159,6 +159,9 @@ let images = {
     "npcs/cow": "data/images/npcs/658_cow.png",
     "npcs/peter": "data/images/npcs/661_peter.png",
 
+    Portraits_NAN: "data/images/npcs/Portraits_NAN.png",
+    Portraits_Endte: "data/images/npcs/Portraits_Endte.png",
+
     // Enemies (images by Schrottii)
     "enemies/black": "data/images/enemies/Map_Black.png",
     "enemies/evil": "data/images/enemies/Map_Evil.png",
@@ -446,6 +449,7 @@ var maps = {
     "castleOutside": "scripts/maps/chapter1/castleOutside.js",
     "castleSplit": "scripts/maps/chapter1/castleSplit.js",
     "brickyTown": "scripts/maps/chapter1/brickyTown.js",
+    "brickyTownInside": "scripts/maps/chapter1/brickyTownInside.js",
     //"": "scripts/maps/chapter1/.js",
 };
 

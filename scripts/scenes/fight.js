@@ -677,10 +677,10 @@ scenes.fight = () => {
 
             return [isCritical, Math.round(getStat(positions[pos1][pos2].occupied, "strength")
                 * (1 - ROWBOOST + (ROWBOOST * pos1))
-                * (1 + ROWBOOST + (ROWBOOST * enpos1))
+                * (1 + ROWBOOST + (ROWBOOST * enpos1)
                 * positions[pos1][pos2].atk
                 * getElementDamage(getStat(positions[pos1][pos2].occupied, "element"), epositions[enpos1][enpos2].element))
-                * critBonus];
+                * critBonus)];
         }
 
         if (type == 2) { // Evil attack ally
@@ -693,19 +693,19 @@ scenes.fight = () => {
 
             return [isCritical, Math.round(epositions[pos1][pos2].strength
                 * (1 + ROWBOOST - (ROWBOOST * pos1))
-                * (1 - ROWBOOST + (ROWBOOST * enpos1))
+                * (1 - ROWBOOST + (ROWBOOST * enpos1)
                 / (positions[enpos1][enpos2].shield != undefined ? positions[enpos1][enpos2].shield : 1)
                 * getElementDamage(epositions[pos1][pos2].element, getStat(positions[enpos1][enpos2].occupied, "element").element))
-                * critBonus];
+                * critBonus)];
         }
 
         if (type == 3) { // Ally attack ally
             return [isCritical, Math.round(getStat(positions[pos1][pos2].occupied, "strength")
                 * (1 + ROWBOOST - (ROWBOOST * pos1))
-                * (1 - ROWBOOST + (ROWBOOST * enpos1))
+                * (1 - ROWBOOST + (ROWBOOST * enpos1)
                 * positions[enpos1][enpos2].atk
                 * getElementDamage(positions[pos1][pos2].element, getStat(positions[enpos1][enpos2].occupied, "element").element))
-                * critBonus];
+                * critBonus)];
         }
     }
 
@@ -1681,13 +1681,13 @@ scenes.fight = () => {
         fightButtons.push(controls.rect({
             anchor: [0.0025, 0.0025 + (i * 0.055)], sizeAnchor: [0.145, 0.05], offset: [0, -500],
             fill: "rgb(221, 155, 79)",
-            alpha: 1,
+            alpha: 1, clickstop: false
         }))
         fightButtons.push(controls.label({
             anchor: [0.145, 0.025 + (i * 0.055)], offset: [0, -500],
             text: ["Normal Actions", "Items", "Magic", "Macro", "Flee"][i],
             fontSize: 24, fill: "black", align: "right",
-            alpha: 1,
+            alpha: 1, clickstop: false
         }))
 
     }
@@ -1765,7 +1765,7 @@ scenes.fight = () => {
         actionButtons.push(controls.rect({
             anchor: [0.1725, 0.0025 + (i * 0.055)], sizeAnchor: [0.145, 0.05], offset: [0, -500],
             fill: "rgb(221, 155, 79)",
-            alpha: 1,
+            alpha: 1, clickstop: false,
             char: ["all", "all", "all", "gau", "corelle", "grun", "all"][i]
         }));
 
@@ -1773,7 +1773,7 @@ scenes.fight = () => {
             anchor: [0.17 + 0.145, 0.025 + (i * 0.055)], offset: [0, -500],
             text: ["Attack", "Defend", "Scan", "Rally", "Pray", "Counterattack", "Back"][i],
             fontSize: 24, fill: "black", align: "right",
-            alpha: 1,
+            alpha: 1, clickstop: false,
             char: ["all", "all", "all", "gau", "corelle", "grun", "all"][i]
         }));
     }
@@ -1987,18 +1987,18 @@ scenes.fight = () => {
             fightInventory.push(controls.rect({
                 anchor: [0.1725 + (j * 0.17), 0.0025 + (i * 0.055)], sizeAnchor: [0.165, 0.05], offset: [0, -500],
                 fill: "rgb(42, 87, 44)",
-                alpha: 1,
+                alpha: 1, clickstop: false
             }));
             fightInventory.push(controls.label({
                 anchor: [0.17 + 0.15 + (j * 0.17), 0.025 + (i * 0.055)], offset: [-24, -500],
                 text: "---",
                 fontSize: 20, fill: "white", align: "right",
-                alpha: 1,
+                alpha: 1, clickstop: false
             }));
             fightInventory.push(controls.image({
                 anchor: [0.17 + 0.15 + (j * 0.17), 0.025 + (i * 0.055)], sizeOffset: [32, 32], offset: [0, -520],
                 source: "gear",
-                alpha: 0,
+                alpha: 0, clickstop: false
             }));
 
         }
@@ -2019,13 +2019,13 @@ scenes.fight = () => {
     fightInventory.push(controls.rect({
         anchor: [0.5125, 0.3325], sizeAnchor: [0.165, 0.05], offset: [0, -500],
         fill: "rgb(42, 87, 44)",
-        alpha: 1,
+        alpha: 1, clickstop: false
     }))
     fightInventory.push(controls.label({
         anchor: [0.51 + 0.17 / 2, 0.355], offset: [0, -500],
         text: "Back",
         fontSize: 20, fill: "white", align: "center",
-        alpha: 1,
+        alpha: 1, clickstop: false
     }))
 
     fightInventory.push(controls.rect({
@@ -2045,13 +2045,13 @@ scenes.fight = () => {
     fightInventory.push(controls.rect({
         anchor: [0.5125, 0.0025], sizeAnchor: [0.165, 0.05], offset: [0, -500],
         fill: "rgb(42, 87, 44)",
-        alpha: 1,
+        alpha: 1, clickstop: false
     }))
     fightInventory.push(controls.label({
         anchor: [0.51 + 0.17 / 2, 0.025], offset: [0, -500],
         text: "Previous",
         fontSize: 20, fill: "white", align: "center",
-        alpha: 1,
+        alpha: 1, clickstop: false
     }))
 
     fightInventory.push(controls.rect({
@@ -2078,13 +2078,13 @@ scenes.fight = () => {
     fightInventory.push(controls.rect({
         anchor: [0.5125, 0.0575], sizeAnchor: [0.165, 0.05], offset: [0, -500],
         fill: "rgb(42, 87, 44)",
-        alpha: 1,
+        alpha: 1, clickstop: false
     }))
     fightInventory.push(controls.label({
         anchor: [0.51 + 0.17 / 2, 0.08], offset: [0, -500],
         text: "Next",
         fontSize: 20, fill: "white", align: "center",
-        alpha: 1,
+        alpha: 1, clickstop: false
     }))
 
     function findNewEnemy(fpos1, fpos2, pos1, pos2) {
@@ -2739,8 +2739,8 @@ scenes.fight = () => {
             if (myLvl > 1) epositions[i1][i2].name = epositions[i1][i2].name + " L" + myLvl;
 
             // difficulties
-            epositions[i1][i2].HP = Math.floor(epositions[i1][i2].HP * [0.5, 1, 1.5][settings.difficulty] * Math.pow(1.07, myLvl - 1));
-            epositions[i1][i2].strength = Math.floor(epositions[i1][i2].strength * [0.25, 1, 4][settings.difficulty] * Math.pow(1.07, myLvl - 1));
+            epositions[i1][i2].HP = Math.max(1, Math.floor(epositions[i1][i2].HP * [0.75, 1, 1.5][settings.difficulty] * Math.pow(1.07, myLvl - 1)));
+            epositions[i1][i2].strength = Math.max(1, Math.floor(epositions[i1][i2].strength * [0.5, 1, 4][settings.difficulty] * Math.pow(1.07, myLvl - 1)));
             epositions[i1][i2].maxHP = epositions[i1][i2].HP;
 
             epositions[i1][i2].isOccupied = true;
@@ -2950,17 +2950,17 @@ scenes.fight = () => {
                 anchor: [0.025, 0.4], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
                 source: "grid",
                 blend: "mul",
-                alpha: 1,
+                alpha: 1, clickstop: false
             }));
             positionGrid2.push(controls.image({
                 anchor: [0.025, 0.4], offset: [(72 * i) + 32, (72 * j) + 32], sizeOffset: [32, 32],
                 source: "grid",
-                alpha: 1,
+                alpha: 1, clickstop: false
             }));
             highlightGrid.push(controls.rect({
                 anchor: [0.025, 0.4], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
                 fill: "white",
-                alpha: 0,
+                alpha: 0, clickstop: false
             }));
         }
     }
@@ -2971,17 +2971,17 @@ scenes.fight = () => {
                 anchor: [0.975, 0.4], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
                 source: "grid",
                 blend: "mul",
-                alpha: 1,
+                alpha: 1, clickstop: false
             }));
             positionGrid2.push(controls.image({
                 anchor: [0.975, 0.4], offset: [-(72 + (72 * i)), (72 * j) + 32], sizeOffset: [32, 32],
                 source: "grid",
-                alpha: 1,
+                alpha: 1, clickstop: false
             }));
             highlightGrid.push(controls.rect({
                 anchor: [0.975, 0.4], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
                 fill: "white",
-                alpha: 0,
+                alpha: 0, clickstop: false
             }));
         }
     }

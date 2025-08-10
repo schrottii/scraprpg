@@ -249,6 +249,7 @@ function getStat(prot, stat) {
         if (game.characters[prot].buffs[EQ][0] == stat) tempBonus = game.characters[prot].buffs[EQ][1];
     }
 
+    // le return
     let lvl = game.characters[prot].level - 1;
 
     if (stat == "strength") return Math.round(tempBonus * (itemBonus + cStats[prot][stat] * (1 + 0.07 * lvl)));

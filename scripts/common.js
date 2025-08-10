@@ -3397,7 +3397,7 @@ var packs = {
                 1
             ],
             "occupied": false,
-            "layer": "mapbg2"
+            "layer": "mapfg"
         },
         "V20": {
             "set": "village",
@@ -3406,7 +3406,7 @@ var packs = {
                 2
             ],
             "occupied": false,
-            "layer": "mapbg2"
+            "layer": "mapfg"
         },
         "V11": {
             "set": "village",
@@ -3469,7 +3469,7 @@ var packs = {
                 1
             ],
             "occupied": false,
-            "layer": "mapbg2"
+            "layer": "mapfg"
         },
         "V24": {
             "set": "village",
@@ -3478,7 +3478,7 @@ var packs = {
                 2
             ],
             "occupied": false,
-            "layer": "mapbg2"
+            "layer": "mapfg"
         },
         "V15": {
             "set": "village",

@@ -326,7 +326,7 @@ scenes.game = () => {
     }));
     dialogueNormalComponents.push(controls.image({
         anchor: [0.01, 1.01], offset: [0, -192], defoff: [0, -192], sizeOffset: [128, 128], snip: [0, 0, 64, 64], at: 0,
-        source: "Portraits_Bleu",
+        source: "Portraits_NAN",
         alpha: 0, falpha: 1, clickstop: false,
     }));
     dialogueNormalComponents.push(controls.label({ // 6
@@ -354,7 +354,7 @@ scenes.game = () => {
     }));
     dialogueInvisComponents.push(controls.rect({
         anchor: [0.01, 1.01], offset: [0, -200], defoff: [0, -200], sizeOffset: [0, 180], sizeAnchor: [0.98, 0], at: 0,
-        clickthrough: false,
+        clickthrough: false, clickstop: false,
         fill: colors.topcolor,
         alpha: 0, falpha: 1,
     }));
@@ -362,12 +362,12 @@ scenes.game = () => {
         anchor: [0.02, 1], offset: [0, -168], defoff: [0, -168], at: 0,
         align: "left", fontSize: 16, fill: "black",
         text: "...",
-        alpha: 0, falpha: 1,
+        alpha: 0, falpha: 1, clickstop: false,
     }));
     dialogueInvisComponents.push(controls.image({
         anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96], defoff: [0, -96], at: 0,
         source: "star",
-        alpha: 0, falpha: 0,
+        alpha: 0, falpha: 0, clickstop: false,
     }));
 
 
@@ -386,12 +386,12 @@ scenes.game = () => {
         anchor: [0.5, 0.5],
         align: "center", fontSize: 16, fill: "white",
         text: "...",
-        alpha: 0, falpha: 1,
+        alpha: 0, falpha: 1, clickstop: false,
     }));
     dialogueNarratorComponents.push(controls.image({
         anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96], defoff: [0, -96], at: 0,
         source: "star",
-        alpha: 0, falpha: 0,
+        alpha: 0, falpha: 0, clickstop: false,
     }));
 
 
@@ -410,12 +410,12 @@ scenes.game = () => {
         anchor: [0.01, 1], offset: [0, -96], defoff: [0, -96], at: 0,
         align: "left", fontSize: 16, fill: "white",
         text: "...",
-        alpha: 0, falpha: 1,
+        alpha: 0, falpha: 1, clickstop: false,
     }));
     dialogueCutsceneComponents.push(controls.image({
         anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96], defoff: [0, -96], at: 0,
         source: "star",
-        alpha: 0, falpha: 0,
+        alpha: 0, falpha: 0, clickstop: false,
     }));
 
     // end of the dialogue stuff. lol.
@@ -497,7 +497,7 @@ scenes.game = () => {
     // Weather time thing
     function setNightEffect(color, al = 0.5, type = "none") {
         //console.log(nightEffect.alpha, color, al, type, instantEffect);
-        let transitionDuration = 15000; // Roughly how long it lasts. 1000 = 1 sec
+        let transitionDuration = 12000; // Roughly how long it lasts. 1000 = 1 sec
         let fogAlphaChangeIntensity = 10; // How much the opacity during fog changes. Higher number = less
         // Speed in preRender
 
@@ -517,11 +517,24 @@ scenes.game = () => {
             //nightEffect.alpha = al;
         }
 
-        if (color == "none" && nightEffect.alpha == 0.35) {
+        if (color != "none" && nightEffect.alpha == 0) {
+            // changing from nothing
+            addAnimator(function (t) {
+                nightEffect.alpha = al * t / transitionDuration;
+
+                if (t > transitionDuration) {
+                    nightEffect.alpha = al;
+                    return true;
+                }
+                return false;
+            });
+        }
+        else if (color == "none" && nightEffect.alpha == 0.35) {
+            // changing to nothing
             addAnimator(function (t) {
                 nightEffect.alpha = al - t / transitionDuration;
 
-                if (t > (al * transitionDuration) - 1) {
+                if (t > al * transitionDuration) {
                     nightEffect.alpha = 0;
                     return true;
                 }
@@ -534,11 +547,12 @@ scenes.game = () => {
             nightEffect2.alpha = al;
             nightEffect.alpha = 0;
 
+            // smooth transition
             addAnimator(function (t) {
                 nightEffect.alpha = 0 + t / transitionDuration;
                 nightEffect2.alpha = al - t / transitionDuration;
 
-                if (t > (al * transitionDuration) - 1) {
+                if (t > al * transitionDuration) {
                     nightEffect2.alpha = 0;
                     nightEffect.alpha = al;
                     return true;
@@ -569,17 +583,19 @@ scenes.game = () => {
     }
 
     // Function used to figure out if anyone (player, NPCs, enemies) is on a tile
-    function creaturesOnTile(map, x, y, player = true) {
+    function isSomeoneOnTile(map, x, y, source = "") {
         // Set player to false if you want to ignore the player
         // This functions returns true if anyone is there - false if nobody is there
-        // do !creaturesOnTile(...) to check if nobody is there
+        // do !isSomeoneOnTile(...) to check if nobody is there
 
-        if (game.position[0] == x && game.position[1] == y && player == true) {
+        if (game.position[0] == x && game.position[1] == y && source == "npc") {
             return true;
         }
-        for (cot in enemies) {
-            if (enemies[cot].position[0] == x && enemies[cot].position[1] == y) {
-                return true;
+        if (source != "player") {
+            for (cot in enemies) {
+                if (enemies[cot].position[0] == x && enemies[cot].position[1] == y) {
+                    return true;
+                }
             }
         }
         for (cot in activenpcs) {
@@ -593,17 +609,20 @@ scenes.game = () => {
 
     // Function to check if a tile is, well, walkable
     // Define if a tile (e. g. water) is walkable in the sprites dict
-    function isWalkable(map, x, y, l = 1) {
+    function isWalkable(map, x, y, l = 1, source = "player") {
         if (map.map[Math.round(y)] && getTile(map, x, y, l)) { // Check if tile exists
-            for (i = 0; i < activenpcs.length; i++) {
-                if (activenpcs[i].position[0] == x && activenpcs[i].position[1] == y) return false;
-            }
-
+            // rounding cuz world mode
             x = Math.floor(x);
             y = Math.floor(y);
 
+            // block collision for non-player if there is a teleport
+            if (source != "player") {
+                if (isTeleport(map, x, y, l)) return false;
+            }
+
+            // occupied, let's see how
             if (getTile(map, x, y, l).occupied != undefined) { // Check if occupied exists
-                if (typeof (getTile(map, x, y, l).occupied) == "object") { // Config exists?
+                if (source == "player" && typeof (getTile(map, x, y, l).occupied) == "object") { // Config exists?
                     if (direction == "up" && getTile(map, x, y, l).occupied.includes("up")) {
                         return true;
                     }
@@ -622,12 +641,21 @@ scenes.game = () => {
                 }
                 return !getTile(map, x, y, l).occupied // No config, is it occupied?
             }
+
             // Unoccupied, you can pass!
             return true;
         } else {
             if (l == 1) return false;
             return true;
         }
+    }
+
+    function getTileAllLayersWalkable(map, x, y, source) {
+        // checks if u can walk on all layers and no ppl there
+        return isWalkable(map, x, y, 1, source)
+            && isWalkable(map, x, y, 2, source)
+            && isWalkable(map, x, y, 3, source)
+            && !isSomeoneOnTile(map, x, y, source);
     }
 
     function isTeleport(map, x, y, l = 1) {
@@ -637,7 +665,7 @@ scenes.game = () => {
         if (map[lay][y] && map[lay][y][(x * 3) + 2]) { // Check if tile exists
             if (getTile(map, x, y, l) != undefined) {
                 if (getTile(map, x, y, l).teleport != undefined) { // Check if teleport exists
-                    //It exists! A miracle
+                    // It exists! A miracle
                     return true;
                 }
                 else {
@@ -1115,14 +1143,205 @@ scenes.game = () => {
         alpha: (isMapTestingMode ? 1 : 0),
     });
 
+    function renderWeather() {
+        if (map.worldmode) {
+            darkCloud.dead = false;
+            darkCloud.speedAnchor = 0.01 * map.weatherStrength;
+            darkCloud.speedAnchor2 = 0.01 * map.weatherStrength;
+        }
+        else {
+            darkCloud.dead = true;
+        }
+
+        if (map.weather != undefined) {
+            if (map.weather == "rain") {
+                fallingRain.dead = false;
+                fallingRain.speedAnchor = 0.3 * map.weatherStrength;
+                fallingRain.speedAnchor2 = 0.05 * map.weatherStrength;
+            }
+            else {
+                fallingRain.dead = true;
+            }
+            if (map.weather == "fog") {
+                currentFogAlpha -= 0.0003 * delta; // Adjust how quickly the fog opacity changes here! Lower = slower
+                if (currentFogAlpha < 0) currentFogAlpha = 2;
+                fogCloud.dead = false;
+                fogCloud.speedAnchor = 0.02 * map.weatherStrength;
+            }
+            else {
+                fogCloud.dead = true;
+            }
+            if (map.weather == "dust") {
+                dustParticles.dead = false;
+                dustParticles.speedAnchor = 0.1 * map.weatherStrength;
+            }
+            else {
+                dustParticles.dead = true;
+            }
+        }
+
+        if (map.weather == "none" || map.weather == undefined) {
+            if (isNoon()) setNightEffect("#d92200", 0);
+            else if (isDusk()) setNightEffect("#ff8c1a", 0.35);
+            else if (isNight()) setNightEffect("#481365", 0.35);
+            else if (isDawn()) setNightEffect("#d92200", 0.35);
+        }
+        if (map.weather == "rain") {
+            if (isNoon()) setNightEffect("#cccccc", 0.4);
+            else if (isDusk()) setNightEffect("#bf854c", 0.4);
+            else if (isNight()) setNightEffect("#37293f", 0.4);
+            else if (isDawn()) setNightEffect("#894337", 0.4);
+        }
+        if (map.weather == "fog" || map.weather == "dust") {
+            if (isNoon()) setNightEffect("#b2b2b2", 0.5, "fog");
+            else if (isDusk()) setNightEffect("#998572", 0.5, "fog");
+            else if (isNight()) setNightEffect("#221c26", 0.5, "fog");
+            else if (isDawn()) setNightEffect("#4c4241", 0.5, "fog");
+        }
+    }
+
+    function walkNPCs() {
+        if (canMove == true) {
+            for (i = 0; i < activenpcs.length; i++) {
+                activenpcs[i].movementTime += delta;
+                let xo = 0;
+                let yo = 0;
+                let head;
+
+                // movement 0: none, 1: random, 2: path
+                if (activenpcs[i].movement == 1 && activenpcs[i].talk == false && activenpcs[i].movementTime > activenpcs[i].walkingInterval * 1000 && !activenpcs[i].kofs[2]) {
+                    activenpcs[i].movementTime = 0;
+                    // Random moving
+                    if (Math.random() > 0.40) { // Down
+                        xo = 0;
+                        yo = 1;
+                        head = 0;
+                    }
+                    else if (Math.random() > 0.40) { // Left
+                        xo = -1;
+                        yo = 0;
+                        head = 1;
+                    }
+                    else if (Math.random() > 0.40) { // Right
+                        xo = 1;
+                        yo = 0;
+                        head = 2;
+                    }
+                    else if (Math.random() > 0.40) { // Up
+                        xo = 0;
+                        yo = -1;
+                        head = 3;
+                    }
+
+                }
+
+                if (activenpcs[i].movement == 2 && activenpcs[i].talk == false && activenpcs[i].movementTime > activenpcs[i].walkingInterval * 1000) {
+                    activenpcs[i].movementTime = 0;
+                    if (activenpcs[i].pathProgress > activenpcs[i].path.length) {
+                        activenpcs[i].pathProgress = 0;
+                    }
+
+                    if (activenpcs[i].path[activenpcs[i].pathProgress] == 0) yo = 1; // Down
+                    if (activenpcs[i].path[activenpcs[i].pathProgress] == 1) xo = -1; // Left
+                    if (activenpcs[i].path[activenpcs[i].pathProgress] == 2) xo = 1; // Right
+                    if (activenpcs[i].path[activenpcs[i].pathProgress] == 3) yo = -1; // Up
+                }
+
+                // walk npc
+                if (xo != 0 || yo != 00) {
+                    if (getTileAllLayersWalkable(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, "npc")) {
+                        activenpcs[i].position[0] += xo;
+                        activenpcs[i].position[1] += yo;
+                        activenpcs[i].head = head;
+                        activenpcs[i].kofs = [xo, yo, activenpcs[i].walkingSpeed];
+                    }
+                }
+            }
+        }
+    }
+
+    function walkEnemies() {
+        for (i = 0; i < enemies.length; i++) {
+            enemies[i].movementTime += delta;
+            if (enemies[i].movementTime > enemies[i].walkingInterval * 1000 && !enemies[i].kofs[2]) {
+                enemies[i].movementTime = 0;
+
+                if (enemies[i].spawntime > 899) {
+                    // Random moving
+                    let xo;
+                    let yo;
+                    let headTo;
+                    if (Math.random() > 0.40) { // Down
+                        xo = 0;
+                        yo = 1;
+                        headTo = 0;
+                    }
+                    if (Math.random() > 0.40) { // Left
+                        xo = -1;
+                        yo = 0;
+                        headTo = 1;
+                    }
+                    if (Math.random() > 0.40) { // Right
+                        xo = 1;
+                        yo = 0;
+                        headTo = 2;
+                    }
+                    if (Math.random() > 0.40) { // Up
+                        xo = 0;
+                        yo = -1;
+                        headTo = 3;
+                    }
+
+                    // walk enemy
+                    if (xo != 0 || yo != 00) {
+                        if (getTileAllLayersWalkable(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, "enemy")) {
+                            enemies[i].position[0] += xo;
+                            enemies[i].position[1] += yo;
+                            enemies[i].head = headTo;
+                            enemies[i].kofs = [xo, yo, enemies[i].walkingSpeed];
+                        }
+                    }
+                }
+
+                // Respawn if on ocean or occupied
+                if (map.map[enemies[i].position[1]] != undefined) {
+                    if (getTile(map, enemies[i].position[0], enemies[i].position[1]) == undefined) { // Undefined
+                        enemies[i].alpha = 0;
+                        enemies[i].position = [Math.floor(Math.random() * maps[game.map].map[0].length), Math.floor(Math.random() * maps[game.map].map.length)];
+                    }
+                    else {
+                        if (getTile(map, enemies[i].position[0], enemies[i].position[1]).occupied == true) { // occupied
+                            enemies[i].alpha = 0;
+                            enemies[i].position = [Math.floor(Math.random() * maps[game.map].map[0].length), Math.floor(Math.random() * maps[game.map].map.length)];
+                        }
+                        else {
+                            enemies[i].alpha = enemies[i].alpha;
+                        }
+                    }
+                }
+                else { // Undefined
+                    enemies[i].alpha = 0;
+                    enemies[i].position = [Math.floor(Math.random() * maps[game.map].map[0].length), Math.floor(Math.random() * maps[game.map].map.length)];
+                }
+
+                // Don't put this in a for loop. lol
+                checkEnemyCollision(i);
+            }
+        }
+    }
+
+    // enter game scene, fade in
     let tTime = 1000 / 3;
     if (previousScene == "main" || previousScene == "title" || previousScene == undefined) tTime = 1500; // Not inventory or fight
     fadeIn(tTime, true);
 
+
+
+    // le pre rendero
     return {
         preRender(ctx, delta) {
             scale = window.innerHeight / 16;
-            let map = maps[game.map];
+            map = maps[game.map];
             map.tiles = Object.assign({}, map.tiles, loadPacks(map));
 
             // Auto Save & Auto Save Text
@@ -1142,237 +1361,12 @@ scenes.game = () => {
                 autoSaveTime = -3; // To prevent saving multiple times!
             }
 
-            // Weather
-            if (map.worldmode) {
-                darkCloud.dead = false;
-                darkCloud.speedAnchor = 0.01 * map.weatherStrength;
-                darkCloud.speedAnchor2 = 0.01 * map.weatherStrength;
-            }
-            else {
-                darkCloud.dead = true;
-            }
+            renderWeather();
 
-            if (map.weather != undefined) {
-                if (map.weather == "rain") {
-                    fallingRain.dead = false;
-                    fallingRain.speedAnchor = 0.3 * map.weatherStrength;
-                    fallingRain.speedAnchor2 = 0.05 * map.weatherStrength;
-                }
-                else {
-                    fallingRain.dead = true;
-                }
-                if (map.weather == "fog") {
-                    currentFogAlpha -= 0.0003 * delta; // Adjust how quickly the fog opacity changes here! Lower = slower
-                    if (currentFogAlpha < 0) currentFogAlpha = 2;
-                    fogCloud.dead = false;
-                    fogCloud.speedAnchor = 0.02 * map.weatherStrength;
-                }
-                else {
-                    fogCloud.dead = true;
-                }
-                if (map.weather == "dust") {
-                    dustParticles.dead = false;
-                    dustParticles.speedAnchor = 0.1 * map.weatherStrength;
-                }
-                else {
-                    dustParticles.dead = true;
-                }
-            }
+            walkNPCs();
+            walkEnemies();
 
-
-            if (map.weather == "none" || map.weather == undefined) {
-                if (isNoon()) setNightEffect("#d92200", 0);
-                else if (isDusk()) setNightEffect("#ff8c1a", 0.35);
-                else if (isNight()) setNightEffect("#481365", 0.35);
-                else if (isDawn()) setNightEffect("#d92200", 0.35);
-            }
-            if (map.weather == "rain") {
-                if (isNoon()) setNightEffect("#cccccc", 0.4);
-                else if (isDusk()) setNightEffect("#bf854c", 0.4);
-                else if (isNight()) setNightEffect("#37293f", 0.4);
-                else if (isDawn()) setNightEffect("#894337", 0.4);
-            }
-            if (map.weather == "fog" || map.weather == "dust") {
-                if (isNoon()) setNightEffect("#b2b2b2", 0.5, "fog");
-                else if (isDusk()) setNightEffect("#998572", 0.5, "fog");
-                else if (isNight()) setNightEffect("#221c26", 0.5, "fog");
-                else if (isDawn()) setNightEffect("#4c4241", 0.5, "fog");
-            }
-
-            // Check if it's time for enemies to move
-            if (canMove == true) {
-                for (i = 0; i < activenpcs.length; i++) {
-                    activenpcs[i].movementTime += delta;
-                    if (activenpcs[i].movement == 1 && activenpcs[i].talk == false && activenpcs[i].movementTime > activenpcs[i].walkingInterval * 1000 && !activenpcs[i].kofs[2]) {
-                        activenpcs[i].movementTime = 0;
-                        // Random moving
-                        let xo;
-                        let yo;
-                        let head;
-
-                        if (Math.random() > 0.40) { // Down
-                            xo = 0;
-                            yo = 1;
-                            head = 0;
-                        }
-                        else if (Math.random() > 0.40) { // Left
-                            xo = -1;
-                            yo = 0;
-                            head = 1;
-                        }
-                        else if (Math.random() > 0.40) { // Right
-                            xo = 1;
-                            yo = 0;
-                            head = 2;
-                        }
-                        else if (Math.random() > 0.40) { // Up
-                            xo = 0;
-                            yo = -1;
-                            head = 3;
-                        }
-
-                        if (xo != undefined) {
-                            if (map.map[activenpcs[i].position[1] + yo] != undefined) {
-                                if (map.map[activenpcs[i].position[1] + yo][activenpcs[i].position[0] + xo] != undefined) {
-                                    if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo) != undefined) {
-                                        if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo).occupied != true
-                                            && getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo).teleport == undefined) {
-                                            if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, 2) == undefined || (map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, 2).occupied != true) {
-                                                if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, 3) == undefined || (map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, 3).occupied != true) {
-                                                    if (!creaturesOnTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo)) {
-                                                        // "all layers" for getTile would be nice - remind me to add it later
-                                                        // edit: still not a thing huh? this nested if here sucks
-                                                        activenpcs[i].position[0] += xo;
-                                                        activenpcs[i].position[1] += yo;
-                                                        activenpcs[i].head = head;
-                                                        activenpcs[i].kofs = [xo, yo, activenpcs[i].walkingSpeed];
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-
-                    if (activenpcs[i].movement == 2 && activenpcs[i].talk == false && activenpcs[i].movementTime > activenpcs[i].walkingInterval * 1000) {
-                        activenpcs[i].movementTime = 0;
-                        if (activenpcs[i].pathProgress > activenpcs[i].path.length) {
-                            activenpcs[i].pathProgress = 0;
-                        }
-
-                        // Look at how amazingly optimized this is now YAY (xo & yo, more like that's awesome yo)
-                        let xo = 0;
-                        let yo = 0;
-                        if (activenpcs[i].path[activenpcs[i].pathProgress] == 0) yo = 1; // Down
-                        if (activenpcs[i].path[activenpcs[i].pathProgress] == 1) xo = -1; // Left
-                        if (activenpcs[i].path[activenpcs[i].pathProgress] == 2) xo = 1; // Right
-                        if (activenpcs[i].path[activenpcs[i].pathProgress] == 3) yo = -1; // Up
-
-
-                        if (map.map[activenpcs[i].position[1]] != undefined) {
-                            if (map.map[activenpcs[i].position[1]][activenpcs[i].position[0] + xo] != undefined) {
-                                if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo) != undefined) {
-                                    if (getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo).occupied != true
-                                        && getTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo).teleport == undefined) {
-                                        if (!creaturesOnTile(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo) || xo == 0 && yo == 0) {
-                                            activenpcs[i].position[0] += xo;
-                                            activenpcs[i].position[1] += yo;
-                                            activenpcs[i].pathProgress += 1; // only increase it if something happens. lol
-                                            if (activenpcs[i].path[activenpcs[i].pathProgress] != undefined) activenpcs[i].head = activenpcs[i].path[activenpcs[i].pathProgress];
-                                            else activenpcs[i].head = activenpcs[i].path[activenpcs[i].pathProgress - 1];
-                                            activenpcs[i].kofs = [xo, yo, activenpcs[i].walkingSpeed];
-                                        }
-                                    }
-                                    else {
-                                        activenpcs[i].pathProgress += 1; // or when you run against smth
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-                }
-                for (i = 0; i < enemies.length; i++) {
-                    enemies[i].movementTime += delta;
-                    if (enemies[i].movementTime > enemies[i].walkingInterval * 1000 && !enemies[i].kofs[2]) {
-                        enemies[i].movementTime = 0;
-
-                        if (enemies[i].spawntime > 899) {
-                            // Random moving
-                            let xo;
-                            let yo;
-                            let headTo;
-                            if (Math.random() > 0.40) { // Down
-                                xo = 0;
-                                yo = 1;
-                                headTo = 0;
-                            }
-                            if (Math.random() > 0.40) { // Left
-                                xo = -1;
-                                yo = 0;
-                                headTo = 1;
-                            }
-                            if (Math.random() > 0.40) { // Right
-                                xo = 1;
-                                yo = 0;
-                                headTo = 2;
-                            }
-                            if (Math.random() > 0.40) { // Up
-                                xo = 0;
-                                yo = -1;
-                                headTo = 3;
-                            }
-                            if (map.map[enemies[i].position[1] + xo] != undefined && xo != undefined) {
-                                if (map.map[enemies[i].position[1] + xo][enemies[i].position[0] + yo] != undefined) {
-                                    if (getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo) != undefined) {
-                                        if (getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo).occupied != true
-                                            && getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo).teleport == undefined) {
-                                            if (getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, 2) == undefined || getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, 2).occupied != true) {
-                                                if (getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, 3) == undefined || getTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, 3).occupied != true) {
-                                                    if (!creaturesOnTile(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, false)) {
-                                                        enemies[i].position[0] += xo;
-                                                        enemies[i].position[1] += yo;
-                                                        enemies[i].head = headTo;
-                                                        enemies[i].kofs = [xo, yo, enemies[i].walkingSpeed];
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        // Respawn if on ocean or occupied
-                        if (map.map[enemies[i].position[1]] != undefined) {
-                            if (getTile(map, enemies[i].position[0], enemies[i].position[1]) == undefined) { // Undefined
-                                enemies[i].alpha = 0;
-                                enemies[i].position = [Math.floor(Math.random() * maps[game.map].map[0].length), Math.floor(Math.random() * maps[game.map].map.length)];
-                            }
-                            else {
-                                if (getTile(map, enemies[i].position[0], enemies[i].position[1]).occupied == true) { // occupied
-                                    enemies[i].alpha = 0;
-                                    enemies[i].position = [Math.floor(Math.random() * maps[game.map].map[0].length), Math.floor(Math.random() * maps[game.map].map.length)];
-                                }
-                                else {
-                                    enemies[i].alpha = enemies[i].alpha;
-                                }
-                            }
-                        }
-                        else { // Undefined
-                            enemies[i].alpha = 0;
-                            enemies[i].position = [Math.floor(Math.random() * maps[game.map].map[0].length), Math.floor(Math.random() * maps[game.map].map.length)];
-                        }
-
-                        // Don't put this in a for loop. lol
-                        checkEnemyCollision(i);
-                    }
-                }
-            }
-
-            // This is literally walking
+            // This is literally player walking
             if (!kofs[2] && canMove == true) {
                 let xo;
                 let yo;
@@ -1411,12 +1405,8 @@ scenes.game = () => {
                     tryTalk(xo, yo);
 
                     // WALKING
-                    if ((isWalkable(map, game.position[0] + xo, game.position[1] + yo)
-                        && isWalkable(map, game.position[0] + xo, game.position[1] + yo, 2))
-                        || (getTile(map, game.position[0] + xo, game.position[1] + yo) == undefined &&
-                            getTile(map, game.position[0] + xo, game.position[1] + yo, 2) != undefined &&
-                            isWalkable(map, game.position[0] + xo, game.position[1] + yo, 2))) { //Direction-change-against-wall
-
+                    // walk player
+                    if (getTileAllLayersWalkable(map, game.position[0] + xo, game.position[1] + yo, "player")) {
                         kofs = [xo, yo, 1];
                         game.position[0] += xo;
                         game.position[1] += yo;

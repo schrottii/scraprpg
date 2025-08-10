@@ -77,7 +77,7 @@ function getMapLevelRange(mmap = map) {
 function getEnemyLevel(enemy) {
     if (enemyTypes[enemy] != undefined && enemyTypes[enemy].level != undefined) return enemyTypes[enemy].level; // you can have a fixed level
     // random level based on map's range
-    return Math.ceil(Math.random() * (getMapLevelRange()[1] - getMapLevelRange()[0])) + getMapLevelRange()[0];
+    return Math.min(50, Math.max(1, Math.ceil(Math.random() * (getMapLevelRange()[1] - getMapLevelRange()[0])) + getMapLevelRange()[0]));
     // also see: applyEnemyLevels comment
 }
 

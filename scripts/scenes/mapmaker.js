@@ -1083,9 +1083,9 @@ scenes.mapmaker = () => {
                     map.dialogues[curDia] = {
                         "type": "normal", "lines": [{
                             "text": "",
-                            "portrait": "Portraits_Bleu",
+                            "portrait": "Portraits_NAN",
                             "emotion": "neutral",
-                            "name": "Bleu",
+                            "name": "",
                             "voice": false
                         }]
                     };
@@ -1135,9 +1135,9 @@ scenes.mapmaker = () => {
                 map.dialogues[curDia].lines.push(
                     {
                         "text": "",
-                        "portrait": "Portraits_Bleu",
+                        "portrait": "Portraits_NAN",
                         "emotion": "neutral",
-                        "name": "Bleu",
+                        "name": "",
                         "voice": false
                     });
                 curLine = map.dialogues[curDia].lines.length - 1;
@@ -1157,9 +1157,9 @@ scenes.mapmaker = () => {
                     map.dialogues[curDia].lines.push(
                         {
                             "text": "",
-                            "portrait": "Portraits_Bleu",
+                            "portrait": "Portraits_NAN",
                             "emotion": "neutral",
-                            "name": "Bleu",
+                            "name": "",
                             "voice": false
                         });
                     curLine = 0;
@@ -1311,6 +1311,11 @@ scenes.mapmaker = () => {
                 updateDialogueLabels();
             }
         }
+    }));
+
+    createDialogueButtons.push(controls.image({ // portrait preview
+        anchor: [0.9, 0.75], sizeOffset: [128, 128], offset: [-128, -128],
+        alpha: 0, source: "Portraits_NAN"
     }));
 
     // Create NPC
@@ -2652,6 +2657,9 @@ scenes.mapmaker = () => {
         createDialogueLabels[4].text = map.dialogues[curDia].lines[curLine].name;
         createDialogueLabels[5].text = map.dialogues[curDia].lines[curLine].voice;
         createDialogueLabels[6].text = map.dialogues[curDia].lines[curLine].script;
+
+        createDialogueButtons[12].source = map.dialogues[curDia].lines[curLine].portrait;
+        createDialogueButtons[12].snip = getEmotion(map.dialogues[curDia].lines[curLine].emotion);
     }
 
     function updateNPCLabels() {

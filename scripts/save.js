@@ -270,8 +270,6 @@ function loadGame() {
         if (saveCopy.shops == undefined) saveCopy.shops = {};
         if (saveCopy.monsterbook == undefined) saveCopy.monsterbook = [];
 
-        saveCopy.leader = "docaspen";
-
         for (i in saveCopy.characters) {
             if (saveCopy.characters[i].equipment == undefined) saveCopy.characters[i].equipment = {
                 "head": "none",
