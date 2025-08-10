@@ -155,6 +155,10 @@ let images = {
     paralysis: "data/images/effects/paralysis.png",
     condemned: "data/images/effects/condemned.png",
 
+    // NPCs
+    "npcs/cow": "data/images/npcs/658_cow.png",
+    "npcs/peter": "data/images/npcs/661_peter.png",
+
     // Enemies (images by Schrottii)
     "enemies/black": "data/images/enemies/Map_Black.png",
     "enemies/evil": "data/images/enemies/Map_Evil.png",

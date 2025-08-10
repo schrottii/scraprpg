@@ -3293,7 +3293,7 @@ scenes.mapmaker = () => {
         tiles_bg2.push(controls.image({
             offset: [-1000, -1000], sizeOffset: [2, 2],
             source: "gear",
-            alpha: 0, ri: true,
+            alpha: 0, ri: true, clickstop: false,
             onHold(args) {
                 if (!prot) {
                     if (editingLayer == 1) {
@@ -3308,7 +3308,7 @@ scenes.mapmaker = () => {
         tiles_fg.push(controls.image({
             offset: [-1000, -1000], sizeOffset: [2, 2],
             source: "gear",
-            alpha: 0, ri: true,
+            alpha: 0, ri: true, clickstop: false,
             onHold(args) {
                 if (!prot) {
                     if (editingLayer == 2) {
@@ -3323,12 +3323,12 @@ scenes.mapmaker = () => {
         titems.push(controls.image({ // item(?)
             offset: [-1000, -1000], sizeOffset: [2, 2],
             source: "gear",
-            alpha: 0, ri: true,
+            alpha: 0, ri: true, clickstop: false,
         }));
         tnpcs.push(controls.image({ // npc
             offset: [-1000, -1000], sizeOffset: [2, 2], snip: [0, 0, 32, 32],
             source: "gear",
-            alpha: 0, ri: true,
+            alpha: 0, ri: true, clickstop: false,
         }));
     }
 

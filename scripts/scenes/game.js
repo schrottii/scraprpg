@@ -302,13 +302,13 @@ scenes.game = () => {
     }));
     dialogueNormalComponents.push(controls.rect({
         anchor: [0.01, 1.01], offset: [0, -200], defoff: [0, -200], sizeOffset: [136, 136], at: 0,
-        clickthrough: false,
+        clickthrough: false, clickstop: false,
         fill: colors.topcolor,
         alpha: 0, falpha: 1,
     }));
     dialogueNormalComponents.push(controls.rect({
         anchor: [0.01, 1.01], offset: [0, -54], defoff: [0, -54], sizeOffset: [128, 32], at: 0,
-        clickthrough: false,
+        clickthrough: false, clickstop: false,
         fill: colors.topcolor,
         alpha: 0, falpha: 1,
     }));
@@ -316,29 +316,29 @@ scenes.game = () => {
         anchor: [0.01, 1.01], offset: [64, -34], defoff: [64, -34], at: 0,
         align: "center", fontSize: 20, fill: "black",
         text: "Bleu",
-        alpha: 0, falpha: 1,
+        alpha: 0, falpha: 1, clickstop: false,
     }));
     dialogueNormalComponents.push(controls.rect({
         anchor: [0.01, 1.01], offset: [164, -200], defoff: [164, -200], sizeOffset: [0, 178], sizeAnchor: [0.8, 0], at: 0,
-        clickthrough: false,
+        clickthrough: false, clickstop: false,
         fill: colors.topcolor,
         alpha: 0, falpha: 1,
     }));
     dialogueNormalComponents.push(controls.image({
         anchor: [0.01, 1.01], offset: [0, -192], defoff: [0, -192], sizeOffset: [128, 128], snip: [0, 0, 64, 64], at: 0,
         source: "Portraits_Bleu",
-        alpha: 0, falpha: 1,
+        alpha: 0, falpha: 1, clickstop: false,
     }));
     dialogueNormalComponents.push(controls.label({ // 6
         anchor: [0, 1], offset: [196, -168], defoff: [196, -168], at: 0,
         align: "left", fontSize: 16, fill: "black",
         text: "...",
-        alpha: 0, falpha: 1,
+        alpha: 0, falpha: 1, clickstop: false,
     }));
     dialogueNormalComponents.push(controls.image({
         anchor: [0.81, 1], sizeOffset: [64, 64], offset: [100, -96], defoff: [100, -96], at: 0,
         source: "star",
-        alpha: 0, falpha: 0,
+        alpha: 0, falpha: 0, clickstop: false,
     }));
 
     dialogueInvisComponents.push(controls.rect({
