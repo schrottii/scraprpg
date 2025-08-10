@@ -189,22 +189,23 @@ scenes.mapmaker = () => {
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 1, 72 * 2],
         source: "undo", alpha: 0,
         onClick(args) {
+            // UNDO
             if (undoLog.length == 0) this.alpha = 0;
             else if (this.alpha == 1 && tilesMenuControls[0].alpha == 0) {
                 let shifterCoords = [undoLog[0][0], undoLog[0][1], undoLog[0][2], undoLog[0][3]];
-                while (undoLog[0][0] == shifterCoords[0]
+                while (undoLog.length > 0 && undoLog[0][0] == shifterCoords[0]
                     && undoLog[0][1] == shifterCoords[1]
                     && undoLog[0][2] == shifterCoords[2]
                     && undoLog[0][3] == shifterCoords[3]) {
                     placeTile(undoLog[0][0], undoLog[0][1], undoLog[0][2], undoLog[0][3], "undo");
                     undoLog.shift();
                 }
-                if (undoLog[0][0] == shifterCoords[0]
-                    && undoLog[0][1] == shifterCoords[1]
-                    && undoLog[0][2] == shifterCoords[2]) {
-                    placeTile(undoLog[0][0], undoLog[0][1], undoLog[0][2], undoLog[0][3], "undo");
-                    undoLog.shift();
+
+                // fill undo
+                if (undoLog.length > 0 && undoLog[0][4] != undefined && (undoLog[1] == undefined || undoLog[0][4] == undoLog[1][4])) {
+                    this.onClick();
                 }
+
                 if (undoLog.length == 0) this.alpha = 0;
             }
         }
@@ -213,22 +214,24 @@ scenes.mapmaker = () => {
         anchor: [0, 0.025], sizeOffset: [64, 64], offset: [72 * 2, 72 * 2],
         source: "redo", alpha: 0,
         onClick(args) {
+            // REDO
             if (redoLog.length == 0) this.alpha = 0;
             else if (this.alpha == 1 && tilesMenuControls[0].alpha == 0) {
                 let shifterCoords = [redoLog[0][0], redoLog[0][1], redoLog[0][2], redoLog[0][3]];
-                while (redoLog[0][0] == shifterCoords[0]
+                while (redoLog.length > 0 && redoLog[0][0] == shifterCoords[0]
                     && redoLog[0][1] == shifterCoords[1]
                     && redoLog[0][2] == shifterCoords[2]
                     && redoLog[0][3] == shifterCoords[3]) {
-                    placeTile(redoLog[0][0], redoLog[0][1], redoLog[0][2], redoLog[0][3]);
+                    placeTile(redoLog[0][0], redoLog[0][1], redoLog[0][2], redoLog[0][3], "redo");
                     redoLog.shift();
                 }
-                if (redoLog[0][0] == shifterCoords[0]
-                    && redoLog[0][1] == shifterCoords[1]
-                    && redoLog[0][2] == shifterCoords[2]) {
-                    placeTile(redoLog[0][0], redoLog[0][1], redoLog[0][2], redoLog[0][3]);
-                    redoLog.shift();
+
+                // fill redo
+                if (redoLog.length > 0 && redoLog[0][4] != undefined && (redoLog[1][4] == undefined || redoLog[0][4] == redoLog[1][4])) {
+                    console.log("it's a repeat")
+                    this.onClick();
                 }
+
                 if (redoLog.length == 0) this.alpha = 0;
             }
         }
@@ -1638,7 +1641,6 @@ scenes.mapmaker = () => {
         isPressed: false,
         onDown(args) {
             if (this.alpha == 1 && tilesMenuControls[0].alpha == 0) {
-                protect();
                 this.snip[0] = 32;
                 pad = "down";
             }
@@ -1673,7 +1675,6 @@ scenes.mapmaker = () => {
         isPressed: false,
         onDown(args) {
             if (this.alpha == 1 && tilesMenuControls[0].alpha == 0) {
-                protect();
                 this.snip[0] = 32;
                 pad = "right";
             }
@@ -2080,7 +2081,7 @@ scenes.mapmaker = () => {
 
     let middlei = controls.image({
         anchor: [0.5, 0.5], sizeOffset: [zswm, zswm],
-        ri: true,
+        ri: true, clickstop: false,
         source: "selectedtile",
         alpha: 1,
     });
@@ -2405,17 +2406,27 @@ scenes.mapmaker = () => {
         }
     }
 
-    function postUndoLog(x, y, layer, prevContent) {
+    function postLog(src, x, y, layer, prevContent, fill = undefined) {
+        if (src == "default") {
+            postUndoLog(x, y, layer, prevContent, fill);
+        }
+        if (src == "undo") {
+            postRedoLog(x, y, layer, prevContent, fill);
+        }
+    }
+
+    function postUndoLog(x, y, layer, prevContent, fill) {
         // Add something to the undo log
-        undoLog.unshift([x, y, layer, prevContent])
+        undoLog.unshift([x, y, layer, prevContent, fill])
         undoButtons[0].alpha = 1;
+        console.log(undoLog.length);
         if (undoLog.length > 2048) undoLog.pop();
         //console.log(undoLog.length, undoLog);
     }
 
-    function postRedoLog(x, y, layer, prevContent) {
+    function postRedoLog(x, y, layer, prevContent, fill) {
         // Add something to the redo log
-        redoLog.unshift([x, y, layer, prevContent])
+        redoLog.unshift([x, y, layer, prevContent, fill])
         undoButtons[1].alpha = 1;
         if (undoLog.length > 2048) redoLog.pop();
         //console.log(undoLog.length, undoLog);
@@ -3090,18 +3101,11 @@ scenes.mapmaker = () => {
                 }
             }
 
-            if (umode == "default") {
-                postUndoLog(x, y, layer, mp.substr(x * 4, 3));
-            }
-            if (umode == "undo") {
-                postRedoLog(x, y, layer, mp.substr(x * 4, 3));
-            }
-
             map[layer][y] = map[layer][y].replace(/  /gi, " ");
             mp = map[layer][y];
 
-            // Fill thing
-            if (fillToolActive && tilesFilled == 0) {
+            // Fill thing - only for move and m+p, not for redo (it spams)
+            if (fillToolActive && tilesFilled == 0 && umode == "default" && (mode == "place" || mode == "moveandplace")) {
                 // Fill ON - multiple tiles
                 let temp = [x, y];
 
@@ -3117,7 +3121,7 @@ scenes.mapmaker = () => {
             }
             else {
                 // FILL OFF - single tile
-                if (x * 4 > mp.length) {
+                if (x * 4 > mp.length && umode != "undo") {
                     // Expand map!
                     map[layer][y] = mp + " " + tileToPlace;
                 }
@@ -3125,6 +3129,10 @@ scenes.mapmaker = () => {
                     // Somewhere in the middle of the map
                     map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
                 }
+
+                // add to undo or redo log, and if undo, give the ID
+                if (umode == "undo") postLog(umode, x, y, layer, mp.substr(x * 4, 3), undoLog[0][4]);
+                else postLog(umode, x, y, layer, mp.substr(x * 4, 3));
             }
 
             map[layer][y] = map[layer][y].replace(/  /gi, " ");
@@ -3133,6 +3141,8 @@ scenes.mapmaker = () => {
     }
 
     function replaceY(pom, mp, x, y, layer, rePlaced, tileToPlace, temp) {
+        let fillID = "F" + Math.ceil(Math.random() * Math.pow(2, 20));
+
         if (rePlaced == "") return false;
         let startX = 0;
         let startY = y;
@@ -3150,6 +3160,7 @@ scenes.mapmaker = () => {
             while (mp.substr(0, x * 4) != undefined && x > startX - 100) {
                 if (mp.substr(x * 4, 3) == rePlaced) {
                     map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
+                    postLog("default", x, y, layer, mp.substr(x * 4, 3), fillID);
                     tilesFilled++;
                 }
                 else break;
@@ -3165,6 +3176,7 @@ scenes.mapmaker = () => {
             while (mp.substr(0, x * 4) != undefined && x - 100 < startX) {
                 if (mp.substr(x * 4, 3) == rePlaced) {
                     map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
+                    postLog("default", x, y, layer, mp.substr(x * 4, 3), fillID);
                     tilesFilled++;
                 }
                 else break;
