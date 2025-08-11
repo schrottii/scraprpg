@@ -106,7 +106,7 @@ let mapenemies = {
         return {
             ...mapenemies.default(), source: "gen",
             time: "all", minSize: 2, maxSize: 4,
-            walkingInterval: 1, walkingSpeed: 1,
+            walkingInterval: 0.66, walkingSpeed: 1,
             enemies: {
                 "weakhelter": 20,
                 "evil_peter": 20
@@ -118,7 +118,7 @@ let mapenemies = {
         return {
             ...mapenemies.default(), source: "enemies/livinghay",
             time: "all", minSize: 1, maxSize: 2,
-            walkingInterval: 4, walkingSpeed: 0.2,
+            walkingInterval: 1, walkingSpeed: 0.2,
             enemies: {
                 "living_hay": 60,
                 "evil_peter": 10
@@ -130,7 +130,7 @@ let mapenemies = {
         return {
             ...mapenemies.default(), source: "enemies/slimegreen",
             time: "all", minSize: 3, maxSize: 6,
-            walkingInterval: 5, walkingSpeed: 3,
+            walkingInterval: 2, walkingSpeed: 3,
             enemies: {
                 "boss_slime_king": 100,
                 "slime_green": 50,
@@ -145,7 +145,7 @@ let mapenemies = {
         return {
             ...mapenemies.default(), source: "gen",
             time: "all", minSize: 2, maxSize: 6,
-            walkingInterval: 1, walkingSpeed: 1,
+            walkingInterval: 0.5, walkingSpeed: 1,
             enemies: {
                 "weakhelter": 10,
                 "postbox": 10,
@@ -163,7 +163,7 @@ let mapenemies = {
         return {
             ...mapenemies.default(), source: "enemies/zeropoint",
             time: "all", minSize: 3, maxSize: 6,
-            walkingInterval: 5, walkingSpeed: 3,
+            walkingInterval: 1, walkingSpeed: 3,
             enemies: {
                 "boss_ooo_point": 100,
                 "slime_wind": 50,
@@ -178,7 +178,7 @@ let mapenemies = {
         return {
             ...mapenemies.default(), source: "gen",
             time: "all", minSize: 4, maxSize: 7,
-            walkingInterval: 0.66, walkingSpeed: 0.66,
+            walkingInterval: 0.5, walkingSpeed: 0.66,
             enemies: {
                 "stronghelter": 20,
                 "ent_medium": 10,
@@ -193,7 +193,7 @@ let mapenemies = {
         return {
             ...mapenemies.default(), source: "gen",
             time: "all", minSize: 2, maxSize: 4,
-            walkingInterval: 1, walkingSpeed: 1,
+            walkingInterval: 0.7, walkingSpeed: 1,
             enemies: {
                 "slime_earth": 20,
                 "coal": 10,
@@ -210,7 +210,7 @@ let mapenemies = {
         return {
             ...mapenemies.default(), source: "gen",
             time: "all", minSize: 2, maxSize: 4,
-            walkingInterval: 0.5, walkingSpeed: 1,
+            walkingInterval: 0.3, walkingSpeed: 1,
             enemies: {
                 "stronghelter": 10,
                 "slime_water": 20,
@@ -225,7 +225,7 @@ let mapenemies = {
         return {
             ...mapenemies.default(), source: "gen",
             time: "all", minSize: 2, maxSize: 3,
-            walkingInterval: 2, walkingSpeed: 2,
+            walkingInterval: 0.66, walkingSpeed: 2,
             enemies: {
                 "slime_water": 10,
                 "rhapsody": 10,
@@ -241,7 +241,7 @@ let mapenemies = {
         return {
             ...mapenemies.default(), source: "gen",
             time: "all", minSize: 2, maxSize: 5,
-            walkingInterval: 2, walkingSpeed: 2,
+            walkingInterval: 0.66, walkingSpeed: 2,
             enemies: {
                 "slime_water": 10,
                 "adose": 20,
@@ -257,7 +257,7 @@ let mapenemies = {
         return {
             ...mapenemies.default(), source: "enemies/ectoplasm_shadow",
             time: "all", minSize: 3, maxSize: 6,
-            walkingInterval: 5, walkingSpeed: 3,
+            walkingInterval: 1, walkingSpeed: 3,
             enemies: {
                 "boss_ectoxoxo": 100,
                 "water_shadow": 50,
@@ -271,7 +271,7 @@ let mapenemies = {
     itsalivemap(args) {
         return {
             ...mapenemies.default(), source: "enemies/itsalive", alpha: 0.6,
-            walkingInterval: 2,
+            walkingInterval: 0.5,
             enemies: {
                 "weakhelter": 20,
                 "itsalive": 60

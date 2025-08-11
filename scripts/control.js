@@ -217,7 +217,7 @@ function onCanvasPointerDown(e) {
             if (canDowned) scene.controls[a].isPressed = true;
 
             if (scene.controls[a].onDown) scene.controls[a].onDown();
-            if (scene.controls[a].alpha > 0 && scene.controls[a].clickstop == true) return;
+            if (scene.controls[a].alpha != undefined && scene.controls[a].alpha > 0 && scene.controls[a].clickstop == true) return;
         }
         else if (canDowned) {
             scene.controls[a].isPressed = false;
@@ -269,7 +269,7 @@ function onCanvasPointerUp(e, keepHold = false) {
             else {
                 if (scene.controls[a].onClick) scene.controls[a].onClick();
             }
-            if (scene.controls[a].alpha > 0 && scene.controls[a].clickstop == true) return;
+            if (scene.controls[a].alpha != undefined && scene.controls[a].alpha > 0 && scene.controls[a].clickstop == true) return;
         }
         else {
             // particles

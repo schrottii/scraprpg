@@ -1,8 +1,11 @@
 ﻿var zoom = 1;
 var zswm = 1;
 var kofs = [0, 0, 0];
-var walkTime = 0;
+
 var mapWidth = 0;
+var map;
+
+var walkTime = 0;
 var animateTime = 0;
 var direction = "none";
 var inDialogue = false;
@@ -447,7 +450,6 @@ scenes.game = () => {
             }
 
             if (inDialogue == false) {
-                let map = maps[game.map];
                 map.tiles = Object.assign({}, map.tiles, loadPacks(map));
                 if (getTile(map, xpos + xo, ypos + yo) != undefined) {
                     if (getTile(map, xpos + xo, ypos + yo).action != undefined) {
@@ -716,10 +718,15 @@ scenes.game = () => {
 
                 enemies = [];
                 mapWidth = 0;
+
                 game.map = themap.teleport[0];
+                map = maps[game.map];
                 game.map.tiles = Object.assign({}, game.map.tiles, loadPacks());
+
                 loadNPCs();
                 loadAreaMusic(previousmap);
+                trySpawnEnemy(42);
+
                 instantEffect = true;
 
                 game.stats.tp++;
@@ -865,7 +872,6 @@ scenes.game = () => {
     }
 
     function ActionsOnMove() {
-        let map = maps[game.map];
         map.tiles = Object.assign({}, map.tiles, loadPacks(map));
         // Everything performed when the player moves successfully
 
@@ -909,7 +915,7 @@ scenes.game = () => {
             }
         }
 
-        checkEnemySpawnAttempt();
+        trySpawnEnemy();
 
         for (i = 0; i < enemies.length; i++) {
             checkEnemyCollision(i);
@@ -933,22 +939,26 @@ scenes.game = () => {
         }
     }
 
-    function checkEnemySpawnAttempt() {
+    function trySpawnEnemy(amount = 1) {
         // Calculate how many enemies can still be spawned.
-        // The limit is now 8/map. This calculates how many are on the current map
-        let maxEnemies = map.maxEnemies;
+        let maxEnemies = maps[game.map].maxEnemies;
         let enemiesOnThisMap = 0;
+        let spawned = false;
+
         for (i in enemies) {
-            if (enemies[i].map == game.map) {
+            if (enemies[i].map == maps[game.map]) {
                 enemiesOnThisMap += 1;
             }
         }
 
         // Spawn enemies (sometimes)
-        if (enemiesOnThisMap < maxEnemies) {
-            for (possibleSpawns in map.spawns) {
-                if (map.spawns[possibleSpawns] > Math.random() * 100) {
-                    spawnMapEnemy(possibleSpawns);
+        for (let e = 0; e < amount; e++) {
+            for (possibleSpawns in maps[game.map].spawns) {
+                if (enemiesOnThisMap < maxEnemies) {
+                    if (maps[game.map].spawns[possibleSpawns] > Math.random() * 100) {
+                        spawned = spawnMapEnemy(possibleSpawns);
+                        if (spawned == true) enemiesOnThisMap++;
+                    }
                 }
             }
         }
@@ -1012,6 +1022,8 @@ scenes.game = () => {
                 latest.source = genSource;
             }
         }
+
+        return true; // it spawned
     }
 
     function loadNPCs() {
@@ -1117,7 +1129,6 @@ scenes.game = () => {
 
 
     function loadAreaMusic(prev = "none") {
-        let map = maps[game.map];
         map.tiles = Object.assign({}, map.tiles, loadPacks(map));
         if (maps[prev] != undefined) {
             if (maps[prev].music != map.music) {
@@ -1136,8 +1147,10 @@ scenes.game = () => {
         }
     }
 
+    map = maps[game.map];
     loadNPCs();
     loadAreaMusic();
+    trySpawnEnemy(42);
 
     /*let fallingLeaves = Particles({
         anchor: [0, -0.1], spreadAnchor: [1, 0], sizeOffset: [64, 64], spreadOffset: [0, -256], sizeOffsetVary: [1.5, 1.5], quadraticVary: true,
@@ -1283,39 +1296,48 @@ scenes.game = () => {
     }
 
     function walkEnemies() {
+        let px = game.position[0];
+        let py = game.position[1];
+
         for (i = 0; i < enemies.length; i++) {
             enemies[i].movementTime += delta;
+
             if (enemies[i].movementTime > enemies[i].walkingInterval * 1000 && !enemies[i].kofs[2]) {
                 enemies[i].movementTime = 0;
 
                 if (enemies[i].spawntime > 899) {
-                    // Random moving
-                    let xo;
-                    let yo;
+                    let x = enemies[i].position[0];
+                    let y = enemies[i].position[1];
+
+                    // semi - random moving
+                    let xo = 0;
+                    let yo = 0;
                     let headTo;
-                    if (Math.random() > 0.40) { // Down
-                        xo = 0;
-                        yo = 1;
+
+                    if (Math.random() > (y > py ? 0.8 : 0.2)) { // Down
+                        xo += 0;
+                        yo += 1;
                         headTo = 0;
                     }
-                    if (Math.random() > 0.40) { // Left
-                        xo = -1;
-                        yo = 0;
-                        headTo = 1;
-                    }
-                    if (Math.random() > 0.40) { // Right
-                        xo = 1;
-                        yo = 0;
-                        headTo = 2;
-                    }
-                    if (Math.random() > 0.40) { // Up
-                        xo = 0;
-                        yo = -1;
+                    else if (Math.random() > (y < py ? 0.8 : 0.3)) { // Up
+                        xo += 0;
+                        yo += -1;
                         headTo = 3;
                     }
 
+                    if (Math.random() > (x > px ? 0.8 : 0.2)) { // Left
+                        xo += 1;
+                        yo += 0;
+                        headTo = 2;
+                    }
+                    else if (Math.random() > (x < px ? 0.8 : 0.3)) { // Right
+                        xo += -1;
+                        yo += 0;
+                        headTo = 1;
+                    }
+
                     // walk enemy
-                    if (xo != 0 || yo != 00) {
+                    if (xo != 0 || yo != 0) {
                         if (getTileAllLayersWalkable(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, "enemy")) {
                             enemies[i].position[0] += xo;
                             enemies[i].position[1] += yo;
@@ -1329,12 +1351,12 @@ scenes.game = () => {
                 if (map.map[enemies[i].position[1]] != undefined) {
                     if (getTile(map, enemies[i].position[0], enemies[i].position[1]) == undefined) { // Undefined
                         enemies[i].alpha = 0;
-                        enemies[i].position = [Math.floor(Math.random() * maps[game.map].map[0].length), Math.floor(Math.random() * maps[game.map].map.length)];
+                        enemies[i].position = [Math.floor(Math.random() * mapWidth), Math.floor(Math.random() * maps[game.map].map.length)];
                     }
                     else {
                         if (getTile(map, enemies[i].position[0], enemies[i].position[1]).occupied == true) { // occupied
                             enemies[i].alpha = 0;
-                            enemies[i].position = [Math.floor(Math.random() * maps[game.map].map[0].length), Math.floor(Math.random() * maps[game.map].map.length)];
+                            enemies[i].position = [Math.floor(Math.random() * mapWidth), Math.floor(Math.random() * maps[game.map].map.length)];
                         }
                         else {
                             enemies[i].alpha = enemies[i].alpha;
@@ -1343,7 +1365,7 @@ scenes.game = () => {
                 }
                 else { // Undefined
                     enemies[i].alpha = 0;
-                    enemies[i].position = [Math.floor(Math.random() * maps[game.map].map[0].length), Math.floor(Math.random() * maps[game.map].map.length)];
+                    enemies[i].position = [Math.floor(Math.random() * mapWidth), Math.floor(Math.random() * maps[game.map].map.length)];
                 }
 
                 // Don't put this in a for loop. lol
@@ -1452,7 +1474,7 @@ scenes.game = () => {
             if (getTile(map, game.position[0], game.position[1]) != undefined) if (getTile(map, game.position[0], game.position[1]).swim == true) isInWater = 2;
 
             // anim
-            kofs[2] = Math.max(kofs[2] - delta / 166 / isInWater, 0);
+            kofs[2] = Math.max(kofs[2] - delta / 166 / 1.5 / isInWater, 0);
             walkTime = (walkTime + delta * (kofs[2] ? 5 : 1) / 1000) % 2;
             animateTime = (animateTime + delta / 1000) % 2;
 

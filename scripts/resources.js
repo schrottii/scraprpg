@@ -205,6 +205,7 @@ let images = {
     "tiles/border2": "data/images/tiles/border2.png",
     "tiles/sand1": "data/images/tiles/sand1.png",
     "tiles/grass1": "data/images/tiles/grass1.png",
+    "tiles/grass2": "data/images/tiles/grass2.png",
 
     // Tilesets
     "tilesets/common": "data/images/tilesets/common.png",
@@ -453,6 +454,7 @@ var maps = {
     "brickyTownInside": "scripts/maps/chapter1/brickyTownInside.js",
     "brfr1": "scripts/maps/chapter1/brfr1.js",
     "brfr2": "scripts/maps/chapter1/brfr2.js",
+    "brfr3": "scripts/maps/chapter1/brfr3.js",
     //"": "scripts/maps/chapter1/.js",
 };
 
