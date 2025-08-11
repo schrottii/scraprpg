@@ -751,23 +751,36 @@ scenes.game = () => {
         map.tiles = Object.assign({}, map.tiles, loadPacks(map));
 
         let ani = 0;
+        let tileSrc = "";
+        let tileSnip;
 
         let Ts = "map";
         if (layer == 2) Ts = "mapbg2";
         if (layer == 3) Ts = "mapfg";
 
         for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
+            ani = 0;
+            tileSrc = "tiles/" + map.tiles.empty.sprite; // fallback
+            tileSnip = [0, 0];
+
             if (map[Ts][y] && map[Ts][y][(x * 4) + 2] && map[Ts][y][(x * 4) + 2] != "-") {
                 if (getTile(map, x, y, layer).ani != undefined) ani = Math.floor(getTile(map, x, y, layer).ani[0] * (animateTime / 2)) * (32 * getTile(map, x, y, layer).ani[1]);
-                else ani = 0;
-                if (getTile(map, x, y, layer).set != undefined) ctx.drawImage(images["tilesets/" + getTile(map, x, y, layer).set], ani + getTile(map, x, y, layer).snip[0] * 32, getTile(map, x, y, layer).snip[1] * 32, 32, 32,
-                    ((zoom * scale) * (x - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
-                else ctx.drawImage(images["tiles/" + getTile(map, x, y, layer).sprite],
-                    ((zoom * scale) * (x - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
-            } else if (map.tiles.empty && layer == 1) {
-                ctx.drawImage(images["tiles/" + map.tiles.empty.sprite],
-                    (zoom * scale) * (x - ofsX) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7), zoom * scale + 1, zoom * scale + 1);
+
+                if (getTile(map, x, y, layer).set != undefined) tileSrc = "tilesets/" + getTile(map, x, y, layer).set;
+                if (getTile(map, x, y, layer).snip != undefined) tileSnip = getTile(map, x, y, layer).snip;
+                else tileSrc = "tiles/" + getTile(map, x, y, layer).sprite;
             }
+
+            if (tileSrc == "tiles/" + map.tiles.empty.sprite && layer != 1) continue; // empty tiles only on mapbg 1
+
+            // drawing
+            ctx.drawImage(images[tileSrc],
+                Math.floor(ani + tileSnip[0] * 32), Math.floor(tileSnip[1] * 32) + 0.1, 32, 32,
+                Math.ceil((zoom * scale) * (x - ofsX)) - ((zoom - 1) * scale * (width / 2)),
+                Math.ceil(zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7),
+                Math.ceil(zoom * scale + 1),
+                Math.ceil(zoom * scale + 1));
+
         }
     }
 
@@ -947,7 +960,6 @@ scenes.game = () => {
                 if (maps[game.map].map[i] != undefined && maps[game.map].map[i].length > mapWidth) mapWidth = maps[game.map].map[i].length;
             }
         }
-        console.log(mapWidth)
 
         // generate map enemy
         let posX = Math.floor(Math.random() * mapWidth);
@@ -1451,6 +1463,7 @@ scenes.game = () => {
             let ofsX = Math.max(CAMERA_LOCK_X, game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5);
             let ofsY = Math.max(CAMERA_LOCK_Y, game.position[1] - kofs[1] * kofs[2] - 7.5);
 
+            // items
             if (map.items != undefined) {
                 for (let item of map.items) {
                     if (item[4] == true) { // is visible

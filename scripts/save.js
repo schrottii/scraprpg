@@ -158,6 +158,7 @@ let game = {
 
 let settings = {
     // gameplay
+    FPS: 60,
     autosave: false,
     difficulty: 1,
 
@@ -200,6 +201,7 @@ function saveGame(auto = false) {
 function saveSettings() {
     let settingsCopy = JSON.parse(JSON.stringify(settings));
     localStorage.setItem("SRPGSETTINGS", JSON.stringify(settingsCopy));
+    FPS = settings.FPS;
 }
 
 function loadSettings() {
@@ -220,6 +222,8 @@ function loadSettings() {
         }
         settings = settingsCopy;
     }
+
+    FPS = settings.FPS;
 }
 
 function loadGame() {
@@ -297,6 +301,7 @@ function loadGame() {
 
         game = saveCopy;
         checkOverMax();
+        FPS = settings.FPS;
     }
     else {
         saveGame();

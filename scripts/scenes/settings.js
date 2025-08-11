@@ -157,6 +157,46 @@ scenes.settings = () => {
     menuSettingsGameplay = [
         controls.button({
             anchor: [0.55, 0], sizeAnchor: [0.2, 0.1],
+            text: "FPS", alpha: 0,
+            onClick(args) {
+                if (this.alpha == 1) {
+                    playSound("buttonClickSound");
+                    settingDesc("Screen updates per second. Affects battery");
+
+                    switch (settings.FPS) {
+                        case 999:
+                            settings.FPS = 6;
+                            break;
+                        case 6:
+                            settings.FPS = 15;
+                            break;
+                        case 15:
+                            settings.FPS = 30;
+                            break;
+                        case 30:
+                            settings.FPS = 60;
+                            break;
+                        case 60:
+                            settings.FPS = 120;
+                            break;
+                        case 120:
+                            settings.FPS = 999;
+                            break;
+                        default:
+                            settings.FPS = 999;
+                            break;
+                    }
+
+                    showMenuSettings();
+                }
+            },
+            tick() {
+                this.text = "FPS: " + (settings.FPS == 999 ? "Unlimited" : settings.FPS);
+            }
+        }),
+
+        controls.button({
+            anchor: [0.55, 0], sizeAnchor: [0.2, 0.1],
             text: "Autosave: ON", alpha: 0,
             onClick(args) {
                 if (this.alpha == 1) {
