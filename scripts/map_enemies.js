@@ -46,6 +46,11 @@ let mapenemies = {
 
                 if (this.spawntime > 599) {
                     if (game.map == this.map) {
+                        if (settings.circles == "all" || settings.circles == "enemies") {
+                            ctx.drawImage(images.enemyCircle,
+                                posX - (zswm / 4), posY - (zswm / 4),
+                                zswm * 1.5, zswm * 1.5);
+                        }
                         ctx.drawImage(images[this.source],
                             32 * Math.floor(walkTime), 32 * this.head, 32, 32,
                             posX, posY,

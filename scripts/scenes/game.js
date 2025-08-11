@@ -7,6 +7,8 @@ var map;
 
 var walkTime = 0;
 var animateTime = 0;
+var spaceBarTime = 0;
+
 var direction = "none";
 var inDialogue = false;
 var currentDialogue;
@@ -573,14 +575,19 @@ scenes.game = () => {
 
         npc.kofs[2] = Math.max(npc.kofs[2] - delta / 166, 0);
 
+        if (settings.circles == "all" || settings.circles == "npcs") {
+            ctx.drawImage(images.npcCircle,
+                ((zoom * scale) * (tileX - ofsX)) - ((zoom - 1) * scale * (width / 2)) - (zswm / 4), (zoom * scale) * (tileY - ofsY) - ((zoom - 1) * scale * 7) - (zswm / 4),
+                zswm * 1.5, zswm * 1.5);
+        }
         ctx.drawImage(images[npc.source],
             32 * Math.floor(walkTime), 32 * npc.head, 32, 32,
             ((zoom * scale) * (tileX - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (tileY - ofsY) - ((zoom - 1) * scale * 7),
-            zswm, zswm)
+            zswm, zswm);
         if (npc.talk == true) {
             ctx.drawImage(images.talk,
                 ((zoom * scale) * (tileX + (map.worldmode ? 0.5 : 1) - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (tileY - (map.worldmode ? 0.5 : 1) - ofsY) - ((zoom - 1) * scale * 7),
-                zswm, zswm)
+                zswm, zswm);
         }
     }
 
@@ -1477,6 +1484,7 @@ scenes.game = () => {
             kofs[2] = Math.max(kofs[2] - delta / 166 / 1.5 / isInWater, 0);
             walkTime = (walkTime + delta * (kofs[2] ? 5 : 1) / 1000) % 2;
             animateTime = (animateTime + delta / 1000) % 2;
+            spaceBarTime += delta;
 
             ctx.imageSmoothingEnabled = false;
             ctx.globalAlpha = 1;
@@ -1734,13 +1742,17 @@ scenes.game = () => {
             // Keybinds
 
             // action
-            if (currentKeys[" "]) {
+            if (currentKeys[" "] && spaceBarTime > 199) {
                 actionButton.onClick();
+                dialogueBox();
+                spaceBarTime = 0;
             }
 
             // ...leave?
             if (currentKeys["q"]) {
-                setScene(scenes.title());
+                if (confirm("Do you want to go back to the main menu?")) {
+                    setScene(scenes.title());
+                }
             }
             // open inventory
             if (currentKeys["e"]) {

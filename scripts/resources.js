@@ -2,6 +2,8 @@ let images = {
     // the most important files!!!
     gear: "data/images/gear.png",
     proud: "data/images/proud.png",
+    npcCircle: "data/images/npcCircle.png",
+    enemyCircle: "data/images/enemyCircle.png",
 
     // Misc.
     paper: "data/images/paper.png",

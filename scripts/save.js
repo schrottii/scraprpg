@@ -163,6 +163,7 @@ let settings = {
     FPS: 60,
     autosave: false,
     difficulty: 1,
+    circles: "npcs",
 
     // graphics
     grid: true,

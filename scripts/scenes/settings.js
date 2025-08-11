@@ -238,6 +238,40 @@ scenes.settings = () => {
                 this.text = "Difficulty: " + ["Easy", "Normal", "Hard"][settings.difficulty];
             }
         }),
+
+        controls.button({
+            anchor: [0.55, 0], sizeAnchor: [0.2, 0.1],
+            text: "Circles", alpha: 0,
+            onClick(args) {
+                if (this.alpha == 1) {
+                    playSound("buttonClickSound");
+                    settingDesc("Shows circles underneath NPCs/enemies (to tell them apart)");
+
+                    switch (settings.circles) {
+                        case "none":
+                            settings.circles = "npcs";
+                            break;
+                        case "npcs":
+                            settings.circles = "enemies";
+                            break;
+                        case "enemies":
+                            settings.circles = "all";
+                            break;
+                        case "all":
+                            settings.circles = "none";
+                            break;
+                        default:
+                            settings.circles = "none";
+                            break;
+                    }
+
+                    showMenuSettings();
+                }
+            },
+            tick() {
+                this.text = "Circles: " + settings.circles.substr(0, 1).toUpperCase() + settings.circles.substr(1);
+            }
+        }),
     ]
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
