@@ -3277,7 +3277,7 @@ scenes.mapmaker = () => {
         }
 
         tileInfoControls[15].pos = currInfo;
-        tileInfoControls[15].alpha = selectedTile.teleport == true;
+        tileInfoControls[15].alpha = (selectedTile.teleport != undefined);
     }
 
     // YOU WILL EAT ZE TILES AND BE HAPPY

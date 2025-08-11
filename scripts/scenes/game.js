@@ -944,9 +944,10 @@ scenes.game = () => {
 
         if (mapWidth == 0) {
             for (i = 0; i < maps[game.map].map.length; i++) {
-                if (maps[game.map].map[i].length > mapWidth) mapWidth = maps[game.map].map[i].length;
+                if (maps[game.map].map[i] != undefined && maps[game.map].map[i].length > mapWidth) mapWidth = maps[game.map].map[i].length;
             }
         }
+        console.log(mapWidth)
 
         // generate map enemy
         let posX = Math.floor(Math.random() * mapWidth);

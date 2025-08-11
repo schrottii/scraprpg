@@ -450,6 +450,7 @@ var maps = {
     "castleSplit": "scripts/maps/chapter1/castleSplit.js",
     "brickyTown": "scripts/maps/chapter1/brickyTown.js",
     "brickyTownInside": "scripts/maps/chapter1/brickyTownInside.js",
+    "brfr1": "scripts/maps/chapter1/brfr1.js",
     //"": "scripts/maps/chapter1/.js",
 };
 

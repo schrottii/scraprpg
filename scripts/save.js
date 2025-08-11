@@ -249,16 +249,12 @@ function loadGame() {
 
         if (saveCopy.chars == undefined) saveCopy.chars = [saveCopy.char1, saveCopy.char2];
         if (saveCopy.characters.skro == undefined) saveCopy.characters.skro = game.characters.skro;
-        if (saveCopy.chars.length == 2) saveCopy.chars.push("gau");
-        if (saveCopy.chars.length == 3) saveCopy.chars.push("skro");
-        if (saveCopy.chars.length == 4) saveCopy.chars.push("kokitozi");
         if (saveCopy.characters.bleu.pos == undefined) {
             saveCopy.characters.bleu.pos = [0, 0];
             saveCopy.characters.corelle.pos = [0, 1];
             saveCopy.characters.gau.pos = [2, 2];
             saveCopy.characters.koki.pos = [2, 1];
         }
-        if (saveCopy.chars.length == 5) saveCopy.chars.push("docaspen");
         for (i in saveCopy.characters) {
             saveCopy.characters[i].effect = ["none", 0];
         }
