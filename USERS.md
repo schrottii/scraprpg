@@ -2,6 +2,7 @@ List of people from the community added or referenced in the game
 
 ## Added
 - Docnutnut: Cocnutnut enemy
+- HaNy: Hayny in brfr2
 
 ## Requested
 - Star: million star barrel (after peter) as secret/mini boss, ectoplasm element

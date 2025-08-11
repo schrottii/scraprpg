@@ -110,6 +110,12 @@ let enemyTypes = {
         eva: 20, acc: 50, agi: 66, luk: 20,
         items: "none",
     },
+    "living_hay": {
+        name: "Living Hay", source: "livinghay", element: "earth",
+        HP: 3, strength: 2,
+        eva: 50, acc: 70, agi: 10, luk: 20,
+        items: "none",
+    },
     "home_runner": {
         name: "Home Runner", source: "homerunner", element: "physical",
         HP: 12, strength: 3,

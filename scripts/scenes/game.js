@@ -1475,7 +1475,7 @@ scenes.game = () => {
             // render items
             if (map.items != undefined) {
                 for (let item of map.items) {
-                    if (getItemDatName(map, item)) item[4] = false; // hide if you already got dat
+                    if (game.mItems.includes(getItemDatName(map, item))) item[4] = false; // hide if you already got dat
                     if (item[4] == true) { // is visible
                         if (images["items/" + items[item[2]]().source] != undefined) ctx.drawImage(images["items/" + items[item[2]]().source],
                             ((zoom * scale) * (item[0] - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (item[1] - ofsY) - ((zoom - 1) * scale * 7),

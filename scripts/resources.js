@@ -178,6 +178,7 @@ let images = {
     "enemies/rhapsody": "data/images/enemies/178_rhapsody.png",
     "enemies/ent": "data/images/enemies/179_ent.png",
     "enemies/cloudon": "data/images/enemies/210_cloudon.png",
+    "enemies/livinghay": "data/images/enemies/261_living_hay.png",
     "enemies/cocnutnut": "data/images/enemies/273_cocnutnut.png",
     "enemies/flash": "data/images/enemies/438_flash.png",
     "enemies/homerunner": "data/images/enemies/439_homerunner.png",
@@ -451,6 +452,7 @@ var maps = {
     "brickyTown": "scripts/maps/chapter1/brickyTown.js",
     "brickyTownInside": "scripts/maps/chapter1/brickyTownInside.js",
     "brfr1": "scripts/maps/chapter1/brfr1.js",
+    "brfr2": "scripts/maps/chapter1/brfr2.js",
     //"": "scripts/maps/chapter1/.js",
 };
 
