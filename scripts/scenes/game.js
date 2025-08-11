@@ -846,12 +846,21 @@ scenes.game = () => {
         }
     }
 
-    function checkItemCollision(map, i) {
-        if (Math.floor(game.position[0]) == map.items[i][0] &&
-            Math.floor(game.position[1]) == map.items[i][1]) {
-            // Collision!
+    function getItemDatName(map, item) {
+        return "" + map.id + item[0] + "." + item[1];
+    }
 
-            map.items[i][4] = !addItem(map.items[i][2], map.items[i][3]);
+    function checkItemCollision(map, i) {
+        // item is x, y, what, amount, visible
+        if (Math.floor(game.position[0]) == map.items[i][0] &&
+            Math.floor(game.position[1]) == map.items[i][1] &&
+            !game.mItems.includes(getItemDatName(map, map.items[i]))) {
+            // Collided! gimme item
+            let collected = addItem(map.items[i][2], map.items[i][3]);
+            map.items[i][4] = !collected;
+            if (collected) {
+                game.mItems.push(getItemDatName(map, map.items[i]));
+            }
         }
     }
 
@@ -1463,9 +1472,10 @@ scenes.game = () => {
             let ofsX = Math.max(CAMERA_LOCK_X, game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5);
             let ofsY = Math.max(CAMERA_LOCK_Y, game.position[1] - kofs[1] * kofs[2] - 7.5);
 
-            // items
+            // render items
             if (map.items != undefined) {
                 for (let item of map.items) {
+                    if (getItemDatName(map, item)) item[4] = false; // hide if you already got dat
                     if (item[4] == true) { // is visible
                         if (images["items/" + items[item[2]]().source] != undefined) ctx.drawImage(images["items/" + items[item[2]]().source],
                             ((zoom * scale) * (item[0] - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (item[1] - ofsY) - ((zoom - 1) * scale * 7),

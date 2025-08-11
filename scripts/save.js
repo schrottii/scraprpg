@@ -153,6 +153,8 @@ let game = {
 
     shops: {},
 
+    mItems: [],
+
     monsterbook: {}
 }
 
@@ -292,6 +294,8 @@ function loadGame() {
                 saveCopy.characters[i].magic = [];
             }
         }
+
+        if (saveCopy.mItems == undefined) saveCopy.mItems = [];
 
         // delete items that don't exist anymore
         for (let i in saveCopy.inventory){

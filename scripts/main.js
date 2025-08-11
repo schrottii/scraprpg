@@ -19,6 +19,7 @@ var animation;
 var animationspeed = 100;
 
 var FPS = 60;
+var FPSover = 0;
 
 let scale = 1080 / 16;// window.innerHeight / 16;
 let width = 1920 / scale;// window.innerWidth / scale;
@@ -146,9 +147,12 @@ function isValid(vVar) {
 
 function loop() {
     // Handle FPS && Tick time
-    if (FPS < 999 && Date.now() - time < 1000 / FPS) {
+    if (FPS < 999 && Date.now() - time + FPSover < 1000 / FPS) {
         requestAnimationFrame(loop);
         return false;
+    }
+    else {
+        FPSover = FPSover + Math.min(1000, (Date.now() - time) - (1000 / FPS));
     }
 
     delta = Date.now() - time;
