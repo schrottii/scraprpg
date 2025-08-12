@@ -3036,6 +3036,15 @@ var packs = {
             "occupied": true,
             "layer": "mapbg2"
         },
+        "I73": {
+            "set": "interior",
+            "snip": [
+                3,
+                7
+            ],
+            "occupied": true,
+            "layer": "mapbg2"
+        },
         "I63": {
             "set": "interior",
             "snip": [

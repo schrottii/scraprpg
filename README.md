@@ -1,13 +1,13 @@
 # ScrapRPG
 A *Scrap Clicker* RPG fan game. Despite the games it is based on, it is not an idle game. It is a full-blown RPG with maps, enemies, spells and all that stuff. But it plays in the Scrap universe and contains bits of official lore. 
 
-The game is approved and licensed by Schrott Games / Endte, and also copyrighted. Any other Scrap RPGs are fake. 
+The game is approved and licensed by Schrott Games / Endte, and also copyrighted (see license file). Any other Scrap RPGs are fake. 
 
 The game used to be made by a team of almost a dozen people, and some brought music, ideas and sprites to the table. But 98% of the game was made by the Schrottii, including 99.5% of the code, most enemies, maps, polishing, etc.
 
 ## Links
 - [License](LICENSE.md)
-- [Users added to the game](Users.md)
+- [Users added to the game](USERS.md)
 
 ## Backstory
 On November 2018, *Schrottii* would make the [very first concept of the game](https://media.discordapp.net/attachments/905449922634080347/1000433408536739952/scraprpg.png?width=439&height=675). However, her plans to create the game at that time was slim, and the idea faded out of obscurity. Not until four years in the future...
