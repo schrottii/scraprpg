@@ -1,12 +1,6 @@
 ﻿## TODO:
-- Enemies
-- Map Enemies
-
-- Tilesets, images & adding tiles to MM
-- Making lots of maps, npcs, story
-- Music
-
 - Monster Book: Enemy details
+- Stats scene
 
 
 
@@ -22,7 +16,18 @@ IT'S DONE!
 
 ## Phase 2
 The main focus of this phase is creating maps, enemies, the story, etc. - the stuff you play.
-There is still some coding, some new features, but not as much as in phase 1 (~~Schrottii can finally rest a bit~~ nope)
+There is still some coding, some new features, but not as much as in phase 1 (~~Schrottii can finally rest a bit~~ nope) 
+This is where the other members were meant to take over, but they failed completely.
+April 2025 - August 2025!
+IT'S ... done ?
+
+## Phase 3
+The testing & publishing phase. This will be fun.
+
+- Test until we all die
+- Be proud of ourselves
+- Nerf Skro!!!
+- Publish the game
 
 ### The 7 roles:
 - Programming
@@ -41,11 +46,3 @@ There is still some coding, some new features, but not as much as in phase 1 (~~
 - Chapter 4 (Boss: MD)
 - Chapter 5
 - Chapter 6 (Boss: Astroturf)
-
-## Phase 3
-The testing & publishing phase. This will be fun.
-
-- Test until we all die
-- Be proud of ourselves
-- Nerf Skro!!!
-- Publish the game

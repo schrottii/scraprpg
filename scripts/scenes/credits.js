@@ -9,12 +9,16 @@ scenes.credits = () => {
         alpha: 1,
         onClick(args) {
             playSound("buttonClickSound");
-            if (previousScene == "settings") fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
-            if (previousScene == "title") fadeOut(500, false, () => setScene(scenes.title()));
+            leaveCredits();
         },
         text: "X",
         fill: "white"
     });
+
+    function leaveCredits() {
+        if (previousScene == "settings") fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
+        if (previousScene == "title") fadeOut(500, false, () => setScene(scenes.title()));
+    }
 
 
 
@@ -127,50 +131,60 @@ scenes.credits = () => {
     }));
 
     creditTexts.push(controls.label({
-        text: "battle theme and more",
+        text: "many early core concepts and visions",
         anchor: [0.79, 1.1], align: "right",
         fontSize: 24, fill: "white", alpha: 1,
     }));
     creditTexts.push(controls.label({
-        text: "Lead Composer",
+        text: "the things that shaped ScrapRPG",
+        anchor: [0.79, 1.125], align: "right",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+    creditTexts.push(controls.label({
+        text: "Idea Planner",
         anchor: [0.81, 1.1], align: "left",
         fontSize: 24, fill: "white", alpha: 1,
     }));
 
     creditTexts.push(controls.label({
-        text: "many core concepts and visions",
+        text: "some designs, sprites, characters",
         anchor: [0.79, 1.15], align: "right",
         fontSize: 24, fill: "white", alpha: 1,
     }));
     creditTexts.push(controls.label({
-        text: "the things that made ScrapRPG what it is",
-        anchor: [0.79, 1.175], align: "right",
-        fontSize: 24, fill: "white", alpha: 1,
-    }));
-    creditTexts.push(controls.label({
-        text: "Idea Planner",
+        text: "Graphic Designer",
         anchor: [0.81, 1.15], align: "left",
         fontSize: 24, fill: "white", alpha: 1,
     }));
 
     creditTexts.push(controls.label({
-        text: "designs, sprites, characters",
+        text: "concepts and 20+ pages of story",
         anchor: [0.79, 1.2], align: "right",
         fontSize: 24, fill: "white", alpha: 1,
     }));
     creditTexts.push(controls.label({
-        text: "Graphic Designer",
+        text: "Story Writer",
         anchor: [0.81, 1.2], align: "left",
         fontSize: 24, fill: "white", alpha: 1,
     }));
 
     creditTexts.push(controls.label({
-        text: "concepts and 20+ pages of script",
+        text: "6 tracks:",
         anchor: [0.79, 1.25], align: "right",
         fontSize: 24, fill: "white", alpha: 1,
     }));
     creditTexts.push(controls.label({
-        text: "Story Writer",
+        text: "Battle Theme, Boss Battle*",
+        anchor: [0.79, 1.275], align: "right",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+    creditTexts.push(controls.label({
+        text: "Title OST, Town*",
+        anchor: [0.79, 1.3], align: "right",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+    creditTexts.push(controls.label({
+        text: "Lead Composer",
         anchor: [0.81, 1.25], align: "left",
         fontSize: 24, fill: "white", alpha: 1,
     }));
@@ -223,7 +237,7 @@ scenes.credits = () => {
         fontSize: 24, fill: "white", alpha: 1,
     }));
     creditTexts.push(controls.label({
-        text: "a few songs",
+        text: "-",
         anchor: [0.21, 1.7], align: "left",
         fontSize: 24, fill: "white", alpha: 1,
     }));
@@ -249,8 +263,23 @@ scenes.credits = () => {
     }));
 
     creditTexts.push(controls.label({
-        text: "multiple songs",
+        text: "6 tracks:",
         anchor: [0.79, 1.6], align: "right",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+    creditTexts.push(controls.label({
+        text: "Azure Waves, But a Mirage",
+        anchor: [0.79, 1.625], align: "right",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+    creditTexts.push(controls.label({
+        text: "Cloudier Blue II, Eerie",
+        anchor: [0.79, 1.65], align: "right",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+    creditTexts.push(controls.label({
+        text: "Frigid Caverns v3, Journeys Decision",
+        anchor: [0.79, 1.675], align: "right",
         fontSize: 24, fill: "white", alpha: 1,
     }));
     creditTexts.push(controls.label({
@@ -285,7 +314,7 @@ scenes.credits = () => {
         fontSize: 24, fill: "white", alpha: 1,
     }));
     creditTexts.push(controls.label({
-        text: "enemies, effects, elements",
+        text: "few enemies, all status effects, elements",
         anchor: [0.21, 2.1], align: "left",
         fontSize: 24, fill: "white", alpha: 1,
     }));
@@ -358,7 +387,7 @@ scenes.credits = () => {
         fontSize: 24, fill: "white", alpha: 1,
     }));
     creditTexts.push(controls.label({
-        text: "early testing and feedback",
+        text: "very early testing and feedback",
         anchor: [0.21, 2.6], align: "left",
         fontSize: 24, fill: "white", alpha: 1,
     }));
@@ -493,7 +522,7 @@ scenes.credits = () => {
         fontSize: 24, fill: "white", alpha: 1,
     }));
     creditTexts.push(controls.label({
-        text: "uhhhhh",
+        text: "many ideas and turning them into reality",
         anchor: [0.51, 3.6], align: "left",
         fontSize: 24, fill: "white", alpha: 1,
     }));
@@ -525,7 +554,7 @@ scenes.credits = () => {
         fontSize: 24, fill: "white", alpha: 1,
     }));
     creditTexts.push(controls.label({
-        text: "and in phase 1.5 the internal map maker (fully)",
+        text: "and since phase 1.5 the internal map maker (fully)",
         anchor: [0.51, 3.75], align: "left",
         fontSize: 24, fill: "white", alpha: 1,
     }));
@@ -569,24 +598,100 @@ scenes.credits = () => {
     }));
 
     creditTexts.push(controls.label({
-        text: "Developer and Content Creator",
+        text: "Developer",
         anchor: [0.49, 4.3], align: "right",
         fontSize: 24, fill: "white", alpha: 1,
     }));
     creditTexts.push(controls.label({
-        text: ">100 items, magic spells, enemies",
+        text: "plenty of minor improvements, polishing and qol",
         anchor: [0.51, 4.3], align: "left",
         fontSize: 24, fill: "white", alpha: 1,
     }));
     creditTexts.push(controls.label({
-        text: "plenty of minor improvements, polishing and qol",
+        text: "(procrastinating from maps by doing other stuff instead)",
         anchor: [0.51, 4.325], align: "left",
         fontSize: 24, fill: "white", alpha: 1,
     }));
     creditTexts.push(controls.label({
-        text: "credits scene",
+        text: "credits scene, monster book, quest system",
         anchor: [0.51, 4.35], align: "left",
         fontSize: 24, fill: "white", alpha: 1,
+    }));
+
+    creditTexts.push(controls.label({
+        text: "Map Maker",
+        anchor: [0.49, 4.4], align: "right",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+    creditTexts.push(controls.label({
+        text: "all maps in the game (so far)",
+        anchor: [0.51, 4.4], align: "left",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+
+    creditTexts.push(controls.label({
+        text: "Adding Content",
+        anchor: [0.49, 4.5], align: "right",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+    creditTexts.push(controls.label({
+        text: ">100 items, >100 magic spells",
+        anchor: [0.51, 4.5], align: "left",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+    creditTexts.push(controls.label({
+        text: "enemies, dialogues, tiles, etc.",
+        anchor: [0.51, 4.525], align: "left",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+
+    creditTexts.push(controls.label({
+        text: "Composer",
+        anchor: [0.49, 4.6], align: "right",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+    creditTexts.push(controls.label({
+        text: "13 tracks:",
+        anchor: [0.51, 4.6], align: "left",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+    creditTexts.push(controls.label({
+        text: "Crewdiss, Desperate Forest, Introer",
+        anchor: [0.51, 4.625], align: "left",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+    creditTexts.push(controls.label({
+        text: "Lex Alfred, Piasee*, Subzero Ooga*",
+        anchor: [0.51, 4.65], align: "left",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+    creditTexts.push(controls.label({
+        text: "Ugliest Tree Alive*, Warmonger Walls*, theme05",
+        anchor: [0.51, 4.675], align: "left",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+
+    // notes
+    creditTexts.push(controls.label({
+        text: "songs with * have an intro and loop version",
+        anchor: [0.5, 4.8],
+        fontSize: 32, fill: "white", alpha: 1,
+    }));
+    creditTexts.push(controls.label({
+        text: "I tried to give everyone proper credits, let me know if something is missing",
+        anchor: [0.5, 4.85],
+        fontSize: 32, fill: "white", alpha: 1,
+    }));
+    creditTexts.push(controls.label({
+        text: "After >500 hours of my time, it is finally there... I am free...",
+        anchor: [0.5, 4.9],
+        fontSize: 32, fill: "white", alpha: 1,
+    }));
+
+    creditTexts.push(controls.label({
+        text: "ScrapRPG",
+        anchor: [0.5, 5],
+        fontSize: 64, fill: "yellow", alpha: 1,
     }));
 
 
@@ -612,6 +717,8 @@ scenes.credits = () => {
                     creditTexts[ct].anchor[1] -= 0.0006 * delta; // x21
                 }
             }
+
+            if (creditTexts[creditTexts.length - 1].anchor[1] < 0) leaveCredits();
         },
         // Controls
         controls: [

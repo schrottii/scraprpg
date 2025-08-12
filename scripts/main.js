@@ -189,8 +189,10 @@ function loop() {
     introToLoop();
 
     // Debug black bar
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, ctx.canvas.width * ((game.stats.playTime / 15) % 1) * 0.1, ctx.canvas.height * 0.01);
+    if (isDevMode()) {
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, ctx.canvas.width * ((game.stats.playTime / 15) % 1) * 0.1, ctx.canvas.height * 0.01);
+    }
 
     // Draw FPS
     ctx.fillStyle = "white";
@@ -198,7 +200,8 @@ function loop() {
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
     ctx.globalAlpha = 1; //or else it's a bit transparent
-    ctx.fillText((1000 / delta).toFixed(0) + "fps   | w: " + width.toFixed(1) + "  scale: " + scale.toFixed(1) + "   h: " + height + (isLs() ? "  ls" : "  p"), 2, 12);
+    if (isDevMode()) ctx.fillText((1000 / delta).toFixed(0) + "fps   | w: " + width.toFixed(1) + "  scale: " + scale.toFixed(1) + "   h: " + height + (isLs() ? "  ls" : "  p"), 2, 12);
+    ctx.fillText((1000 / delta).toFixed(0) + "FPS", 2, 10);
 
     // Auto Save
     if (settings != undefined) {

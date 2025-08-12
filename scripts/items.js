@@ -22,9 +22,11 @@ function removeItem(name, amount = 1) {
     }
 }
 
-function everyItem(){
-    for (let item in items){
-        game.inventory[item] = items[item]().max;
+function everyItem() {
+    if (isDevMode()) {
+        for (let item in items) {
+            game.inventory[item] = items[item]().max;
+        }
     }
 }
 

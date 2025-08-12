@@ -17,5 +17,5 @@ function setScene(args) {
     }
 
     currentScene = scene.name;
-    document.title = "ScrapRPG (" + scene.name + ")";
+    document.title = "ScrapRPG (" + scene.name.substr(0, 1).toUpperCase() + scene.name.substr(1) + ")";
 }

@@ -3468,6 +3468,11 @@ scenes.mapmaker = () => {
         }));
     }
 
+    if (!isDevMode()) {
+        fadeIn(25000, true);
+        loop = () => { return false; };
+    }
+
     loadNPCs();
     fadeIn(250, true);
     canMove = true;

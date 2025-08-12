@@ -387,6 +387,7 @@ scenes.title = () => {
                     // Current party with levels texts, e. g. Skro Lvl. 4
                     saveTexts[2 + (a * amount)].text = getPlayer(1, thisSave).name;
                     saveTexts[4 + (a * amount)].text = "Lvl. " + getPlayer(1, thisSave).level;
+
                     if (thisSave.chars.length > 1) saveTexts[3 + (a * amount)].text = getPlayer(2, thisSave).name;
                     if (thisSave.chars.length > 1) saveTexts[5 + (a * amount)].text = "Lvl. " + getPlayer(2, thisSave).level;
                     if (thisSave.chars.length > 2) saveTexts[6 + (a * amount)].text = getPlayer(3, thisSave).name;

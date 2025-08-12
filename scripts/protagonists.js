@@ -2,7 +2,7 @@
 const characters = ["bleu", "corelle", "gau", "skro", "kokitozi", "docaspen"];
 
 function getPlayer(character = 1, src = game) {
-    if (character > characters.length) character = 1;
+    if (character > characters.length || !isValid(src.characters[game.chars[character - 1]])) character = 1;
     return src.characters[game.chars[character - 1]];
 }
 

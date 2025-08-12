@@ -28,7 +28,7 @@ let game = {
     },
 
     // your peoples
-    chars: ["bleu", "corelle", "gau", "skro", "kokitozi", "docaspen"], // MAX 6!!!
+    chars: ["bleu"], // MAX 6!!!
     leader: "bleu",
 
     characters: {
@@ -192,6 +192,10 @@ for (c in game.characters) {
 // Functions
 var saveNR = 0;
 
+function isDevMode() {
+    return true;
+}
+
 function load(x, altx) {
     return x !== undefined ? x : altx;
 }
@@ -240,12 +244,12 @@ function loadGame() {
         try {
             saveCopy = JSON.parse(saveCopy);
         }
-
         catch (e) {
-            alert("Error");
+            alert("Error while trying to load the save");
             return;
         }
 
+        // check for some stuff that might be missing
         if (saveCopy.characters == undefined) {
             saveCopy.characters = game.characters;
         }
@@ -257,8 +261,6 @@ function loadGame() {
 
         if (saveCopy.stats == undefined) saveCopy.stats = game.stats;
 
-        if (saveCopy.chars == undefined) saveCopy.chars = [saveCopy.char1, saveCopy.char2];
-        if (saveCopy.characters.skro == undefined) saveCopy.characters.skro = game.characters.skro;
         if (saveCopy.characters.bleu.pos == undefined) {
             saveCopy.characters.bleu.pos = [0, 0];
             saveCopy.characters.corelle.pos = [0, 1];
@@ -268,11 +270,7 @@ function loadGame() {
         for (i in saveCopy.characters) {
             saveCopy.characters[i].effect = ["none", 0];
         }
-        if (saveCopy.time == undefined) saveCopy.time = 0;
-        if (saveCopy.leader == undefined) saveCopy.leader = "bleu";
-        if (saveCopy.wrenches == undefined) saveCopy.wrenches = 0;
-        if (saveCopy.bricks == undefined) saveCopy.bricks = 0;
-        if (saveCopy.inventory == undefined) saveCopy.inventory = { "brickyleaf": 5, "potion": 3 };
+
         if (saveCopy.shops == undefined) saveCopy.shops = {};
         if (saveCopy.monsterbook == undefined) saveCopy.monsterbook = [];
 
@@ -286,7 +284,6 @@ function loadGame() {
                 "acc2": "none",
             }
         }
-
 
         if (saveCopy.characters.bleu.macro == undefined) {
             for (i in saveCopy.characters) {

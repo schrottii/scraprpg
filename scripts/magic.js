@@ -37,9 +37,11 @@ function awardRandomSpell(charName, element, size){
     return true;
 }
 
-function everySpell(who){
-    for (let spell in magic){
-        game.characters[who].magic.push(spell);
+function everySpell(who) {
+    if (isDevMode()) {
+        for (let spell in magic) {
+            game.characters[who].magic.push(spell);
+        }
     }
 }
 

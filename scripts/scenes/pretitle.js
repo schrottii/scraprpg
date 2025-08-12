@@ -48,94 +48,81 @@ scenes.pretitle = () => {
         // Controls
         controls: [
             BG, tokenStay,
-            controls.button({
-                anchor: [.5, .5], offset: [-100, 5], sizeOffset: [200, 50],
-                clickthrough: true, fontSize: 16, alpha: 0,
-                text: "Start Muted",
-                onClick() {
-                    playSound("buttonClickSound");
-                    musicPlayer.muted = true;
-                    soundPlayer.muted = true;
-                    setScene(scenes.title());
-                }
-            }),
 
             controls.button({
                 anchor: [.9, .8], sizeOffset: [100, 50],
-                clickthrough: false, fontSize: 16, alpha: 1,
+                clickthrough: false, fontSize: 16, alpha: isDevMode() ? 1 : 0,
                 text: "Dev Mode",
                 onClick() {
-                    cancel = true;
-                    //musicPlayer.muted = true; // false?
-                    soundPlayer.muted = false;
+                    if (this.alpha == 1) {
+                        cancel = true;
+                        //musicPlayer.muted = true; // false?
+                        soundPlayer.muted = false;
 
-                    loadSettings();
-                    changeSoundVolume(settings.soundVolume);
-                    playSound("titletransition");
+                        loadSettings();
+                        changeSoundVolume(settings.soundVolume);
+                        playSound("titletransition");
 
-                    stopMusic();
-                    //playMusic("bgm/boss", "bgm/placeholder");
-                    //^intro example - remove comment ^ there, add comment to setscene few lines below, set musicplayer muted to false above
-                    saveNR = 0;
+                        stopMusic();
+                        //playMusic("bgm/boss", "bgm/placeholder");
+                        //^intro example - remove comment ^ there, add comment to setscene few lines below, set musicplayer muted to false above
+                        saveNR = 0;
 
-                    loadGame();
-                    loadSettings();
+                        loadGame();
+                        loadSettings();
 
-                    if (maps[game.map] == undefined) game.map = "test";
-                    canMove = true;
-                    setScene(scenes.game());
-                    //openShop("placeholder");
+                        if (maps[game.map] == undefined) game.map = "test";
+                        canMove = true;
+                        setScene(scenes.game());
+                        //openShop("placeholder");
+                    }
                 }
             }),
             controls.button({
                 anchor: [.9, .9], sizeOffset: [100, 50],
-                clickthrough: false, fontSize: 16, alpha: 1,
+                clickthrough: false, fontSize: 16, alpha: isDevMode() ? 1 : 0,
                 text: "Fight",
                 onClick() {
-                    cancel = true;
-                    musicPlayer.muted = false; // false?
-                    soundPlayer.muted = false;
+                    if (this.alpha == 1) {
+                        cancel = true;
+                        musicPlayer.muted = false; // false?
+                        soundPlayer.muted = false;
 
-                    loadSettings();
-                    changeSoundVolume(settings.soundVolume);
-                    playSound("titletransition");
+                        loadSettings();
+                        changeSoundVolume(settings.soundVolume);
+                        playSound("titletransition");
 
-                    stopMusic();
-                    playMusic("bgm/fight");
-                    //^intro example - remove comment ^ there, add comment to setscene few lines below, set musicplayer muted to false above
-                    saveNR = 0;
+                        stopMusic();
+                        playMusic("bgm/fight");
+                        //^intro example - remove comment ^ there, add comment to setscene few lines below, set musicplayer muted to false above
+                        saveNR = 0;
 
-                    loadGame();
-                    loadSettings();
+                        loadGame();
+                        loadSettings();
 
-                    exampleFight();
+                        exampleFight();
 
-                    setScene(scenes.fight());
+                        setScene(scenes.fight());
+                    }
                 }
             }),
             controls.button({
                 anchor: [.9, .6], sizeOffset: [100, 50],
-                clickthrough: false, fontSize: 16, alpha: 1,
+                clickthrough: false, fontSize: 16, alpha: isDevMode() ? 1 : 0,
                 text: "Map Maker",
                 onClick() {
-                    cancel = true;
-                    musicPlayer.muted = true; // false?
-                    soundPlayer.muted = false;
+                    if (this.alpha == 1) {
+                        cancel = true;
+                        musicPlayer.muted = true; // false?
+                        soundPlayer.muted = false;
 
-                    loadSettings();
-                    changeSoundVolume(settings.soundVolume);
-                    playSound("titletransition");
+                        loadSettings();
+                        changeSoundVolume(settings.soundVolume);
+                        playSound("titletransition");
 
-                    stopMusic();
-                    setScene(scenes.mapmaker());
-                }
-            }),
-            controls.button({
-                anchor: [.9, .5], sizeOffset: [100, 50],
-                clickthrough: false, fontSize: 24, alpha: 0.5,
-                text: "Delete MM Cache",
-                onClick() {
-                    localStorage.removeItem("SRPGMM");
+                        stopMusic();
+                        setScene(scenes.mapmaker());
+                    }
                 }
             }),
         ],
