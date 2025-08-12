@@ -103,48 +103,24 @@ function isTeleport(map, x, y, l = 1) {
 
 function tryTeleport(map, x, y, l = 1) {
     if (map == undefined) map = maps[game.map];
-    if (isTeleport(map, x, y, l)) teleportPlayer(map, x, y);
+    let tele = getTile(map, x, y, l).teleport;
+    if (isTeleport(map, x, y, l)) teleportPlayer(tele[0], tele[1], tele[2]);
 }
 
 function teleportPlayer(mmap, x, y) {
     let previousmap = game.map;
-    if (mmap == undefined) mmap = maps[mmap];
 
     canMove = false;
     playSound("teleport");
     fadeOut(1000 / 3, true);
 
     setTimeout(() => {
-        if (mmap.name != undefined) { // The box stuff. Only if the map has a name
-            areaNameBox[1].text = mmap.name;
-            for (i in areaNameBox) {
-                areaNameBox[i].alpha = 1;
-                areaNameBox[i].offset = [0, 0];
-            }
-
-            setTimeout(() => { // Box disappear
-                addAnimator(function (t) {
-                    for (i in areaNameBox) {
-                        //areaNameBox[i].alpha = 1 - (t / 500);
-                        areaNameBox[i].offset[1] = t * (-0.5);
-                    }
-                    if (t > 999) {
-                        for (i in areaNameBox) {
-                            areaNameBox[i].alpha = 0;
-                        }
-                        return true;
-                    }
-                    return false;
-                });
-            }, 800);
-
-        }
-
         enemies = [];
         mapWidth = 0;
 
         game.map = mmap;
         map = maps[game.map];
+        console.log(game.map, map)
         game.map.tiles = Object.assign({}, game.map.tiles, loadPacks());
 
         loadNPCs();
@@ -183,7 +159,6 @@ function loadNPCs() {
 }
 
 function loadAreaMusic(prev = "none") {
-    map.tiles = Object.assign({}, map.tiles, loadPacks(map));
     if (maps[prev] != undefined) {
         if (maps[prev].music != map.music) {
             stopMusic();
@@ -346,6 +321,8 @@ scenes.game = () => {
     var tokenRunning = false;
 
     let dialogueObjects = [];
+
+    var previousMap = "";
 
     // Walk Pad
     let walkPad = [];
@@ -1182,6 +1159,7 @@ scenes.game = () => {
     })
 
     map = maps[game.map];
+    map.tiles = Object.assign({}, map.tiles, loadPacks(map));
     loadNPCs();
     loadAreaMusic();
     trySpawnEnemy(42);
@@ -1439,6 +1417,34 @@ scenes.game = () => {
                 autoSaveTime = -3; // To prevent saving multiple times!
             }
 
+            // map sign
+            if (previousMap != maps[game.map].name) {
+                previousMap = maps[game.map].name;
+                areaNameBox[1].text = maps[game.map].name;
+
+                for (i in areaNameBox) {
+                    areaNameBox[i].alpha = 1;
+                    areaNameBox[i].offset = [0, 0];
+                }
+
+                setTimeout(() => { // Box disappear
+                    addAnimator(function (t) {
+                        for (i in areaNameBox) {
+                            //areaNameBox[i].alpha = 1 - (t / 500);
+                            areaNameBox[i].offset[1] = t * (-0.5);
+                        }
+                        if (t > 999) {
+                            for (i in areaNameBox) {
+                                areaNameBox[i].alpha = 0;
+                            }
+                            return true;
+                        }
+                        return false;
+                    });
+                }, 800);
+            }
+
+            // stuffs
             renderWeather();
 
             walkNPCs();

@@ -5,6 +5,10 @@ The game is approved and licensed by Schrott Games / Endte, and also copyrighted
 
 The game used to be made by a team of almost a dozen people, and some brought music, ideas and sprites to the table. But 98% of the game was made by the Schrottii, including 99.5% of the code, most enemies, maps, polishing, etc.
 
+## Links
+- [License](LICENSE.md)
+- [Users added to the game](Users.md)
+
 ## Backstory
 On November 2018, *Schrottii* would make the [very first concept of the game](https://media.discordapp.net/attachments/905449922634080347/1000433408536739952/scraprpg.png?width=439&height=675). However, her plans to create the game at that time was slim, and the idea faded out of obscurity. Not until four years in the future...
 Decastar2819 was the second person to think of such concept of a *Scrap Clicker*-based role-playing game in February of 2021. At November of 2021, *Barduzzi* and him eventually brainstormed, forming the early ideas of the project. About a week later, *Schrottii* would make her debut in the game as the primary programmer, marking the birth of the game's GitHub repository.

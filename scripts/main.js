@@ -201,7 +201,7 @@ function loop() {
     ctx.textBaseline = "alphabetic";
     ctx.globalAlpha = 1; //or else it's a bit transparent
     if (isDevMode()) ctx.fillText((1000 / delta).toFixed(0) + "fps   | w: " + width.toFixed(1) + "  scale: " + scale.toFixed(1) + "   h: " + height + (isLs() ? "  ls" : "  p"), 2, 12);
-    ctx.fillText((1000 / delta).toFixed(0) + "FPS", 2, 10);
+    else ctx.fillText((1000 / delta).toFixed(0) + "FPS", 2, 10);
 
     // Auto Save
     if (settings != undefined) {
