@@ -151,8 +151,10 @@ scenes.mapmaker = () => {
     let tileDia = "";
     let tileSwim = "";
     let tileOccupied = "";
-    var mapIdentifier = "";
+    var tileAutoID = "";
     var tileRecommendedLayer = "";
+    var tileCondition = "";
+    var tileConditionInv = false;
 
     let layerVisi = [1, 1, 1];
     let enableAnimations = false;
@@ -614,7 +616,7 @@ scenes.mapmaker = () => {
     }
 
     createTileButtons.push(controls.button({
-        anchor: [0.3, 0.2], sizeAnchor: [0.2, 0.1], offset: [0, -600],
+        anchor: [0.3, 0.2], sizeAnchor: [0.15, 0.1], offset: [0, -600],
         text: "Tile ID", alpha: 0,
         fillTop: "red", fillBottom: "darkred",
         onClick(args) {
@@ -644,6 +646,8 @@ scenes.mapmaker = () => {
                     if (isValid(thisTile.teleport)) tileTele = thisTile.teleport.toString().replace(",", ".").toString().replace(",", ".");
                     if (isValid(thisTile.dialogue)) tileDia = thisTile.dialogue;
                     if (isValid(thisTile.swim)) tileSwim = thisTile.swim.toString();
+                    if (isValid(thisTile.condition)) tileCondition = thisTile.condition;
+                    if (isValid(thisTile.condinv)) tileConditionInv = thisTile.condinv;
                 }
                 updateTileLabels();
             }
@@ -669,7 +673,7 @@ scenes.mapmaker = () => {
         }
     }));
     createTileButtons.push(controls.button({
-        anchor: [0.3, 0.45], sizeAnchor: [0.2, 0.1], offset: [0, -600],
+        anchor: [0.75, 0.325], sizeAnchor: [0.2, 0.1], offset: [0, -600],
         text: "Tile Occupied", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -704,13 +708,14 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 tileSetSnip = prompt('New map tile set snip? X.Y (e. g. 1.2  - 0.0 for top left)');
+                if (!isValid(tileSetSnip)) tileSetSnip = "0.0";
 
                 updateTileLabels();
             }
         }
     }));
     createTileButtons.push(controls.button({
-        anchor: [0.3, 0.575], sizeAnchor: [0.2, 0.1], offset: [0, -600],
+        anchor: [0.3, 0.575], sizeAnchor: [0.15, 0.1], offset: [0, -600],
         text: "Animation", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -721,7 +726,7 @@ scenes.mapmaker = () => {
         }
     }));
     createTileButtons.push(controls.button({
-        anchor: [0.75, 0.325], sizeAnchor: [0.2, 0.1], offset: [0, -600],
+        anchor: [0.62, 0.575], sizeAnchor: [0.15, 0.1], offset: [0, -600],
         text: "Teleport", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -732,18 +737,30 @@ scenes.mapmaker = () => {
         }
     }));
     createTileButtons.push(controls.button({
-        anchor: [0.75, 0.45], sizeAnchor: [0.2, 0.1], offset: [0, -600],
+        anchor: [0.46, 0.575], sizeAnchor: [0.15, 0.1], offset: [0, -600],
         text: "Dialogue", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                let p = prompt('Dialogue?');
-                if (isValid(p)) tileDia = p;
-                updateTileLabels();
+                if (selectedInfoType == "dialogues" && isValid(selectedInfo)) {
+                    if (map.dialogues[selectedInfo] != undefined && isValid(selectedInfo)) {
+                        tileDia = selectedInfo;
+
+                        updateTileLabels();
+                        hideInfo();
+                    }
+                    else {
+                        alert("Does not exist!");
+                    }
+                }
+                else {
+                    showInfo();
+                    renderInfo("dialogues")
+                }
             }
         }
     }));
     createTileButtons.push(controls.button({
-        anchor: [0.75, 0.575], sizeAnchor: [0.2, 0.1], offset: [0, -600],
+        anchor: [0.78, 0.575], sizeAnchor: [0.15, 0.1], offset: [0, -600],
         text: "Swim", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -762,7 +779,7 @@ scenes.mapmaker = () => {
         source: "gear", alpha: 0,
     }));
     createTileButtons.push(controls.button({
-        anchor: [0.3, 0.7], sizeAnchor: [0.2, 0.1], offset: [0, -600],
+        anchor: [0.3, 0.7], sizeAnchor: [0.15, 0.1], offset: [0, -600],
         text: "CREATE!", alpha: 0,
         fillTop: "red", fillBottom: "darkred",
         onClick(args) {
@@ -772,7 +789,7 @@ scenes.mapmaker = () => {
         }
     }));
     createTileButtons.push(controls.button({
-        anchor: [0.525, 0.7], sizeAnchor: [0.2, 0.1], offset: [0, -600],
+        anchor: [0.45, 0.7], sizeAnchor: [0.05, 0.1], offset: [0, -600],
         text: "Copy", alpha: 0,
         onClick(args) {
             if (this.alpha == 1 && tileSetSnip != "") {
@@ -781,14 +798,14 @@ scenes.mapmaker = () => {
         }
     }));
     createTileButtons.push(controls.button({
-        anchor: [0.75, 0.7], sizeAnchor: [0.2, 0.1], offset: [0, -600],
+        anchor: [0.3, 0.45], sizeAnchor: [0.2, 0.1], offset: [0, -600],
         text: "AutoID C00", alpha: 0,
         onClick(args) {
             if (this.alpha == 1 && tileSetSnip != "") {
-                if (mapIdentifier == "") {
+                if (tileAutoID == "") {
                     let inputMI = prompt("new map identifier?");
                     if (isValid(inputMI)) {
-                        mapIdentifier = inputMI.toString();
+                        tileAutoID = inputMI.toString();
                     }
                 }
 
@@ -798,7 +815,7 @@ scenes.mapmaker = () => {
                 let cordX = parseInt(tileSetSnip.split(".")[0]);
                 let cordY = parseInt(tileSetSnip.split(".")[1]);
 
-                let tempName = mapIdentifier + chars[cordY] + "" + chars[cordX];
+                let tempName = tileAutoID + chars[cordY] + "" + chars[cordX];
 
                 if (tempName.length == 1) tileID = "0" + tempName;
                 else tileID = tempName.substr(0, 3);
@@ -810,7 +827,7 @@ scenes.mapmaker = () => {
         }
     }));
     createTileButtons.push(controls.button({
-        anchor: [0.25, 0.2], sizeAnchor: [0.05, 0.1], offset: [0, -600],
+        anchor: [0.45, 0.2], sizeAnchor: [0.05, 0.1], offset: [0, -600],
         text: "DEL", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -823,7 +840,7 @@ scenes.mapmaker = () => {
 
     // X-
     createTileButtons.push(controls.button({
-        anchor: [0.525, 0.575], sizeAnchor: [0.05, 0.1], offset: [0, -600],
+        anchor: [0.75, 0.45], sizeAnchor: [0.05, 0.1], offset: [0, -600],
         text: "X-", alpha: 0,
         onClick(args) {
             if (this.alpha == 1 && tileSetSnip != "" && tileSetSnip.split(".")[0] > 0) {
@@ -834,7 +851,7 @@ scenes.mapmaker = () => {
     }));
     // X+
     createTileButtons.push(controls.button({
-        anchor: [0.575, 0.575], sizeAnchor: [0.05, 0.1], offset: [0, -600],
+        anchor: [0.8, 0.45], sizeAnchor: [0.05, 0.1], offset: [0, -600],
         text: "X+", alpha: 0,
         onClick(args) {
             if (this.alpha == 1 && tileSetSnip != "") {
@@ -845,7 +862,7 @@ scenes.mapmaker = () => {
     }));
     // Y-
     createTileButtons.push(controls.button({
-        anchor: [0.625, 0.575], sizeAnchor: [0.05, 0.1], offset: [0, -600],
+        anchor: [0.85, 0.45], sizeAnchor: [0.05, 0.1], offset: [0, -600],
         text: "Y-", alpha: 0,
         onClick(args) {
             if (this.alpha == 1 && tileSetSnip != "" && tileSetSnip.split(".")[1] > 0) {
@@ -856,7 +873,7 @@ scenes.mapmaker = () => {
     }));
     // Y+
     createTileButtons.push(controls.button({
-        anchor: [0.675, 0.575], sizeAnchor: [0.05, 0.1], offset: [0, -600],
+        anchor: [0.9, 0.45], sizeAnchor: [0.05, 0.1], offset: [0, -600],
         text: "Y+", alpha: 0,
         onClick(args) {
             if (this.alpha == 1 && tileSetSnip != "") {
@@ -883,6 +900,26 @@ scenes.mapmaker = () => {
             }
         }));
     }
+
+    createTileButtons.push(controls.button({
+        anchor: [0.75, 0.7], sizeAnchor: [0.2, 0.1], offset: [0, -600],
+        text: "No Condition", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let cond = prompt("Condition? Write code... (no () =>)");
+                if (!isValid(cond)) return false;
+
+                let inv = confirm("Inverted?")
+                if (!isValid(inv)) inv = false;
+
+                //cond = "() => " + cond;
+                tileCondition = cond;
+                tileConditionInv = inv;
+
+                updateTileLabels();
+            }
+        }
+    }));
 
 
 
@@ -1227,6 +1264,12 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) {
                 if (selectedInfoType == "portraits" && isValid(selectedInfo)) {
                     map.dialogues[curDia].lines[curLine].portrait = selectedInfo;
+
+                    // update name too
+                    if (map.dialogues[curDia].lines[curLine].name == "" && selectedInfo != "Portraits_NAN") {
+                        map.dialogues[curDia].lines[curLine].name = selectedInfo.split("Portraits_")[1];
+                    }
+
                     updateDialogueLabels();
                 }
                 else {
@@ -1301,7 +1344,7 @@ scenes.mapmaker = () => {
         }
     }));
 
-    const dialogueScriptTypes = ["Add Quest", "Give Item", "Teleport"];
+    const dialogueScriptTypes = ["Add Quest", "Claim Quest", "Talk Quest Progress", "Give Item", "Teleport"];
     createDialogueButtons.push(controls.button({
         anchor: [0.3, 0.76], sizeAnchor: [0.05, 0.05], offset: [72 * 16, -600],
         text: "Script", alpha: 0, selected: "",
@@ -1323,6 +1366,21 @@ scenes.mapmaker = () => {
                                 renderInfo("quests");
                                 return;
                             }
+                            break;
+                        case "Claim Quest":
+                            if (selectedInfoType == "quests" && isValid(selectedInfo)) {
+                                result = "claimQuest('" + selectedInfo + "')";
+                            }
+                            else {
+                                showInfo();
+                                renderInfo("quests");
+                                return;
+                            }
+                            break;
+                        case "Talk Quest Progress":
+                            let talkID = prompt("talk ID for the progress event?");
+                            if (!isValid(talkID)) talkID = curDia;
+                            result = "questProgress('talk', '" + talkID + "')";
                             break;
                         case "Give Item":
                             if (selectedInfoType == "items" && isValid(selectedInfo)) {
@@ -1522,7 +1580,7 @@ scenes.mapmaker = () => {
         text: "Walking Interval", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                let newText = prompt("New interval? (default: 0.5)");
+                let newText = prompt("New interval? (default: 0.5 | secs between walks)");
                 if (isValid(newText)) map.npcs[curNPC].walkingInterval = newText;
                 updateNPCLabels();
             }
@@ -1534,7 +1592,7 @@ scenes.mapmaker = () => {
         text: "Walking Speed", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                let newText = prompt("New speed? (default: 1, in seconds)");
+                let newText = prompt("New speed? (default: 1 | secs it takes to walk from one tile to another)");
                 if (isValid(newText)) map.npcs[curNPC].walkingSpeed = newText;
                 updateNPCLabels();
             }
@@ -2309,6 +2367,11 @@ scenes.mapmaker = () => {
             if (tileRecommendedLayer != "") ttc.layer = tileRecommendedLayer;
             else ttc.layer = "none";
 
+            if (isValid(tileCondition)) {
+                ttc.condition = tileCondition;
+                if (isValid(tileConditionInv)) ttc.condinv = tileConditionInv;
+            }
+
             // create the actual tile
             if (createType == "map") {
                 // CREATE button
@@ -2338,7 +2401,9 @@ scenes.mapmaker = () => {
         tileDia = "";
         tileSwim = "";
 
-        mapIdentifier = "";
+        tileAutoID = "";
+        tileCondition = "";
+        tileConditionInv = "";
 
         createTileButtons[0].text = "Tile ID";
         createTileButtons[1].text = "Tile Sprite";
@@ -2665,6 +2730,8 @@ scenes.mapmaker = () => {
         createTileButtons[8].text = "Swim: " + tileSwim;
         //createTileButtons[13].text = "AutoID " + mapIdentifier + "00";
 
+        createTileButtons[23].text = isValid(tileCondition) ? (isValid(tileConditionInv) ? "!" : "") + tileCondition : "No Condition";
+
         if (images["tilesets/" + tileSet] != undefined) createTileButtons[9].snip = [parseInt(tileSetSnip.split(".")[0]) * 32, parseInt(tileSetSnip.split(".")[1]) * 32, 32, 32];
 
         if (tileSprite != "") {
@@ -2713,6 +2780,8 @@ scenes.mapmaker = () => {
         createNPCLabels[2].text = map.npcs[curNPC].source;
         createNPCLabels[3].text = map.npcs[curNPC].walkingInterval;
         createNPCLabels[4].text = map.npcs[curNPC].walkingSpeed;
+
+        createNPCButtons[1].text = "Dialogue: " + map.npcs[curNPC].dialogues["1"];
 
         loadNPCs();
         updateTiles = true;

@@ -63,6 +63,21 @@ function getTile(map, x, y, l = 1) {
     return fallBack;
 }
 
+function getTileCondition(map, x, y, l) {
+    let tile = getTile(map, x, y, l);
+
+    if (tile.condition == undefined || !isValid(tile.condition)) return true; // enabled
+
+    if (!isValid(tile.condinv)) {
+        // tile exists if condition, else it does not exist
+        return typeof (tile.condition) == "string" ? eval(tile.condition) : tile.condition();
+    }
+    else {
+        // invert, so it exists if condition false
+        return typeof (tile.condition) == "string" ? !eval(tile.condition) : !tile.condition();
+    }
+}
+
 var activeEnemies = [];
 var activeNPCs = [];
 
@@ -836,6 +851,8 @@ scenes.game = () => {
     // Define if a tile (e. g. water) is walkable in the sprites dict
     function isWalkable(map, x, y, l = 1, source = "player") {
         if (map.map[Math.round(y)] && getTile(map, x, y, l)) { // Check if tile exists
+            if (!getTileCondition(map, x, y, l)) return true;
+
             // rounding cuz world mode
             x = Math.floor(x);
             y = Math.floor(y);
@@ -913,7 +930,7 @@ scenes.game = () => {
             tileSrc = "tiles/" + map.tiles.empty.sprite; // fallback
             tileSnip = [0, 0];
 
-            if (map[Ts][y] && map[Ts][y][(x * 4) + 2] && map[Ts][y][(x * 4) + 2] != "-") {
+            if (map[Ts][y] && map[Ts][y][(x * 4) + 2] && map[Ts][y][(x * 4) + 2] != "-" && getTileCondition(map, x, y, layer)) {
                 if (getTile(map, x, y, layer).ani != undefined) ani = Math.floor(getTile(map, x, y, layer).ani[0] * (animateTime / 2)) * (32 * getTile(map, x, y, layer).ani[1]);
 
                 if (getTile(map, x, y, layer).set != undefined) tileSrc = "tilesets/" + getTile(map, x, y, layer).set;

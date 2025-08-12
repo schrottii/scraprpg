@@ -45,9 +45,12 @@ scenes.questscene = () => {
     for (let a = 0; a < 5; a++) {
         questButtons.push(controls.button({
             anchor: [0.1, 0.125 + (a * 0.16)], sizeAnchor: [0.8, 0.15],
-            text: "",
+            text: "", q: undefined,
             onClick(args) {
-                
+                // insta claim
+                if (this.q != undefined && quests[this.q].instaclaim && !isQuestClaimed(q)) {
+                    claimQuest(q);
+                }
             }
         }))
 
@@ -108,7 +111,13 @@ scenes.questscene = () => {
                     k = 6 * jj;
                     questText[0 + k].text = quest.name;
                     questText[1 + k].text = quest.description;
-                    questText[2 + k].text = game.quests[q][0] + "/" + quest.goal[2] + " (" + (getQuestProgress(q) * 100).toFixed(0) + "%)";
+
+                    if (!isQuestComplete(q)) questText[2 + k].text = game.quests[q][0] + "/" + quest.goal[2] + " (" + (getQuestProgress(q) * 100).toFixed(0) + "%)";
+                    else if (!isQuestClaimed(q)) {
+                        if (quest.instaclaim) questText[2 + k].text = "Complete. Click to claim" + (quests.items != undefined ? Object.keys(quest[q].items.length) + " items" : "");
+                        else questText[2 + k].text = "Complete. Go back to the NPC to claim";
+                    }
+                    else questText[2 + k].text = "* Claimed *";
 
                     questText[3 + k].text = "Nr." + quest.id;
                     questText[4 + k].text = getTime(calcQuestDuration(quest.id));
@@ -116,6 +125,7 @@ scenes.questscene = () => {
                     questText[5 + k].source = quest.source != undefined ? quest.source : "items/scroll";
                     questText[5 + k].alpha = 1;
 
+                    questButtons[jj].q = q;
                     if (isQuestComplete(q)) {
                         questButtons[jj].fillTop = colors.buttontopgreen;
                         questButtons[jj].fillBottom = colors.buttonbottomgreen;
@@ -136,6 +146,7 @@ scenes.questscene = () => {
                     questText[5 + k].source = "";
                     questText[5 + k].alpha = 0;
 
+                    questButtons[jj].q = undefined;
                     questButtons[jj].fillTop = colors.bottomcolor;
                     questButtons[jj].fillBottom = colors.topcolor;
                 }
