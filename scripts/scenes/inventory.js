@@ -24,30 +24,31 @@ scenes.inventory = () => {
     }));
 
     // Buttons on the right
-    for (i = 0; i < 8; i++) {
+    for (i = 0; i < 9; i++) {
         buttons.push(controls.button({
-            anchor: [0.7, 0.0325 + (i * 0.12)], sizeAnchor: [0.2, 0.085], id: i,
+            anchor: [0.7, 0.04 + (i * 0.1)], sizeAnchor: [0.2, 0.085], id: i,
             alpha: 1,
-            text: ["Items", "Magic", "Equipment", "Formation", "Monster Book", "Save Manager", "Settings", "Exit Menu"][i],
+            text: ["Quests", "Items", "Magic", "Equipment", "Formation", "Monster Book", "Save Manager", "Settings", "Exit Menu"][i],
             onClick(args) {
                 playSound("buttonClickSound");
                 fadeOut(1000 / 3, true, (id = this.id) => {
-                    if (id == 0) setScene(scenes.itemscene());
-                    if (id == 1) setScene(scenes.magicscene());
-                    if (id == 2) setScene(scenes.equipment());
-                    if (id == 3) setScene(scenes.formation());
-                    if (id == 4) setScene(scenes.monsterbook());
-                    if (id == 5) setScene(scenes.savemanager());
-                    if (id == 6) setScene(scenes.settings());
-                    if (id == 7) setScene(scenes.game());
+                    if (id == 0) setScene(scenes.questscene());
+                    if (id == 1) setScene(scenes.itemscene());
+                    if (id == 2) setScene(scenes.magicscene());
+                    if (id == 3) setScene(scenes.equipment());
+                    if (id == 4) setScene(scenes.formation());
+                    if (id == 5) setScene(scenes.monsterbook());
+                    if (id == 6) setScene(scenes.savemanager());
+                    if (id == 7) setScene(scenes.settings());
+                    if (id == 8) setScene(scenes.game());
                 });
             }
         }));
 
         buttonPics.push(controls.image({
-            anchor: [0.7, 0.0325 + (0.085 / 8) + (i * 0.12)], sizeOffset: [64, 64], id: i,
+            anchor: [0.7, 0.034 + (0.085 / 8) + (i * 0.1)], sizeOffset: [64, 64], id: i,
             alpha: 1,
-            source: ["items/potion", "fire", "inventory", "grid", "monsterbook", "save", "gear", "flee"][i],
+            source: ["items/scroll", "items/potion", "fire", "inventory", "grid", "monsterbook", "save", "gear", "flee"][i],
         }));
     }
 

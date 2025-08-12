@@ -265,6 +265,7 @@ scenes.itemscene = () => {
             removeItem(item, 9999);
         }
         else {
+            // Use
             let itemOffset = itemPage * 12;
 
             if (items[item] != undefined) {
@@ -272,6 +273,8 @@ scenes.itemscene = () => {
                     if (game.inventory[item] > 0) {
                         // use item
                         items[item]({ player: game.characters[characterSelected] }).effect();
+
+                        questProgress("useItem", item);
                         removeItem(item, 1);
                     }
                 }

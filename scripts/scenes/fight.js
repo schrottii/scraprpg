@@ -2143,6 +2143,8 @@ scenes.fight = () => {
     function checkEnemyDead(pos1, pos2, fpos1, fpos2) {
         if (epositions[pos1][pos2].HP < 1) { // Is dead?
             // Enemy is dead
+            questProgress("enemy", epositions[pos1][pos2].occupied);
+
             epositions[pos1][pos2].isOccupied = false;
             epositions[pos1][pos2].occupied = false;
             epositions[pos1][pos2].action = false;

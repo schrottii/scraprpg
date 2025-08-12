@@ -367,6 +367,7 @@ var scenes = {
     status: "scripts/scenes/status.js",
     shop: "scripts/scenes/shop.js",
     monsterbook: "scripts/scenes/monsterbook.js",
+    questscene: "scripts/scenes/questscene.js",
     credits: "scripts/scenes/credits.js",
 };
 
@@ -463,10 +464,13 @@ var maps = {
 var colors = {
     "topcolor": "#d49f52",
     "bottomcolor": "#b58542",
+
     "buttontop": "#ffae3b",
     "buttonbottom": "#d18822",
     "buttontoppressed": "#ca6100",
     "buttonbottompressed": "#8c3500",
+    "buttontopgreen": "#00de25",
+    "buttonbottomgreen": "#00bc16",
 }
 
 var resCount = 0;

@@ -63,6 +63,216 @@ function getTile(map, x, y, l = 1) {
     return fallBack;
 }
 
+var activeEnemies = [];
+var activeNPCs = [];
+
+function isTeleport(map, x, y, l = 1) {
+    // Is it a teleporter?
+    if (map == undefined) map = maps[game.map];
+
+    let lay = ["map", "map", "mapbg2", "mapfg"][l];
+    if (map[lay][y] && map[lay][y][(x * 3) + 2]) { // Check if tile exists
+        if (getTile(map, x, y, l) != undefined) {
+            if (getTile(map, x, y, l).teleport != undefined) { // Check if teleport exists
+                // It exists! A miracle
+                return true;
+            }
+            else {
+                // It does not exist
+                return false;
+            }
+        }
+    }
+    return false;
+}
+
+function tryTeleport(map, x, y, l = 1) {
+    if (map == undefined) map = maps[game.map];
+    if (isTeleport(map, x, y, l)) teleportPlayer(map, x, y);
+}
+
+function teleportPlayer(mmap, x, y) {
+    let previousmap = game.map;
+    if (mmap == undefined) mmap = maps[mmap];
+
+    canMove = false;
+    playSound("teleport");
+    fadeOut(1000 / 3, true);
+
+    setTimeout(() => {
+        if (mmap.name != undefined) { // The box stuff. Only if the map has a name
+            areaNameBox[1].text = mmap.name;
+            for (i in areaNameBox) {
+                areaNameBox[i].alpha = 1;
+                areaNameBox[i].offset = [0, 0];
+            }
+
+            setTimeout(() => { // Box disappear
+                addAnimator(function (t) {
+                    for (i in areaNameBox) {
+                        //areaNameBox[i].alpha = 1 - (t / 500);
+                        areaNameBox[i].offset[1] = t * (-0.5);
+                    }
+                    if (t > 999) {
+                        for (i in areaNameBox) {
+                            areaNameBox[i].alpha = 0;
+                        }
+                        return true;
+                    }
+                    return false;
+                });
+            }, 800);
+
+        }
+
+        enemies = [];
+        mapWidth = 0;
+
+        game.map = mmap;
+        map = maps[game.map];
+        game.map.tiles = Object.assign({}, game.map.tiles, loadPacks());
+
+        loadNPCs();
+        loadAreaMusic(previousmap);
+        trySpawnEnemy(42);
+
+        instantEffect = true;
+
+        game.stats.tp++;
+
+        game.position[0] = x;
+        game.position[1] = y;
+
+        fadeIn(1000 / 3, true);
+        if (!isValid(currentDialogue)) canMove = true;
+    }, 750);
+}
+
+function loadNPCs() {
+    activeNPCs = [];
+    for (i in npcs) {
+        if (npcs[i].alpha != 0 && npcs[i].map == game.map) {
+            activeNPCs.push(npcs[i]);
+        }
+    }
+    if (maps[game.map].npcs != undefined) for (i in maps[game.map].npcs) {
+        if (maps[game.map].npcs[i].alpha != 0) {
+            activeNPCs.push(maps[game.map].npcs[i]);
+        }
+    }
+    for (i in activeNPCs) {
+        for (j in npcs.default) {
+            if (activeNPCs[i][j] == undefined) activeNPCs[i][j] = npcs.default[j];
+        }
+    }
+}
+
+function loadAreaMusic(prev = "none") {
+    map.tiles = Object.assign({}, map.tiles, loadPacks(map));
+    if (maps[prev] != undefined) {
+        if (maps[prev].music != map.music) {
+            stopMusic();
+        }
+        if (map.music == undefined) return false;
+
+        if (map.intro != undefined) playMusic(map.music, map.intro);
+        else playMusic(map.music);
+    }
+    else {
+        if (map.music == undefined) return false;
+
+        if (map.intro != undefined) playMusic(map.music, map.intro);
+        else playMusic(map.music);
+    }
+}
+
+function trySpawnEnemy(amount = 1) {
+    // Calculate how many enemies can still be spawned.
+    let maxEnemies = maps[game.map].maxEnemies;
+    let enemiesOnThisMap = 0;
+    let spawned = false;
+
+    for (i in activeEnemies) {
+        if (activeEnemies[i].map == maps[game.map]) {
+            enemiesOnThisMap += 1;
+        }
+    }
+
+    // Spawn enemies (sometimes)
+    for (let e = 0; e < amount; e++) {
+        for (possibleSpawns in maps[game.map].spawns) {
+            if (enemiesOnThisMap < maxEnemies) {
+                if (maps[game.map].spawns[possibleSpawns] > Math.random() * 100) {
+                    spawned = spawnMapEnemy(possibleSpawns);
+                    if (spawned == true) enemiesOnThisMap++;
+                }
+            }
+        }
+    }
+}
+
+function spawnMapEnemy(possibleSpawns) {
+    if (mapenemies[possibleSpawns] != undefined) {
+        if (mapenemies[possibleSpawns]().time == "day" && !isDay()) return false;
+        if (mapenemies[possibleSpawns]().time == "dawn" && !isDawn()) return false;
+        if (mapenemies[possibleSpawns]().time == "noon" && !isNoon()) return false;
+        if (mapenemies[possibleSpawns]().time == "dusk" && !isDusk()) return false;
+        if (mapenemies[possibleSpawns]().time == "night" && !isNight()) return false;
+    }
+    else return false;
+
+    if (mapWidth == 0) {
+        for (i = 0; i < maps[game.map].map.length; i++) {
+            if (maps[game.map].map[i] != undefined && maps[game.map].map[i].length > mapWidth) mapWidth = maps[game.map].map[i].length;
+        }
+    }
+
+    // generate map enemy
+    let posX = Math.floor(Math.random() * mapWidth);
+    let posY = Math.floor(Math.random() * maps[game.map].map.length);
+
+    if (posX == game.position[0]) return false;
+    if (posY == game.position[1]) return false;
+    if (getTile(map, posX, posY).occupied == true) return false;
+
+    activeEnemies.push(mapenemies[possibleSpawns]({
+        position: [posX, posY], map: game.map,
+    }));
+    let latest = activeEnemies[activeEnemies.length - 1];
+
+    // sprite gen
+    if (latest.source == "gen") {
+        let genSource = "";
+        latest.gen = [];
+
+        // grab the enemies in this map enemy, so we can then pick a random one
+        while (latest.gen.length < latest.minSize) {
+            for (let k = 0; k < 8; k++) {
+                for (let j in latest.enemies) {
+                    if (currentEnemies.length >= latest.maxSize) break;
+                    if (latest.enemies[j] > (Math.random() * 100)) {
+                        latest.gen.push(j);
+                    }
+                }
+            }
+        }
+
+        // set a random as source (random enemy)
+        genSource = "enemies/" + enemyTypes[latest.gen[Math.floor(Math.random() * latest.gen.length)]].source;
+
+        if (images[genSource] == undefined) {
+            console.log("| ⚠️ | Enemy Sprite (gen) undefined: " + genSource);
+            latest.source = "enemies/black";
+        }
+        else {
+            // works fine
+            latest.source = genSource;
+        }
+    }
+
+    return true; // it spawned
+}
+
 function startDialogue(cd) {
     if (typeof (cd) == "string") cd = map.dialogues[cd];
     inDialogue = true;
@@ -70,7 +280,16 @@ function startDialogue(cd) {
     dialogueType = cd.type;
     dialogueProgress = 0;
     dialogueEmotion = currentDialogue[dialogueProgress].portrait;
+
     canMove = false;
+    dialogueScript();
+}
+
+function dialogueScript() {
+    if (isValid(currentDialogue[dialogueProgress].script)) {
+        if (typeof (currentDialogue[dialogueProgress].script) == "string") eval(currentDialogue[dialogueProgress].script);
+        else currentDialogue[dialogueProgress].script();
+    }
 }
 
 function startFight(type = "default", enemies = "default") {
@@ -102,9 +321,6 @@ scenes.game = () => {
     let pad = "";
 
     var scale;
-
-    var enemies = [];
-    var activenpcs = [];
 
     var areaNameBox = [];
 
@@ -273,10 +489,10 @@ scenes.game = () => {
                 }
                 if (canMove == true) inDialogue = false;
             }
-        } // Continue dialogue
-        else if (currentDialogue[dialogueProgress].script != undefined && currentDialogue[dialogueProgress].script != false) {
-            if (typeof (currentDialogue[dialogueProgress].script) == "string") eval(currentDialogue[dialogueProgress].script());
-            else currentDialogue[dialogueProgress].script();
+        }
+        else {
+            // it is not over yet
+            dialogueScript();
         }
     }
 
@@ -463,9 +679,9 @@ scenes.game = () => {
                         getTile(map, xpos + xo, ypos + yo, 2).action();
                     }
                 }
-                for (i in activenpcs) {
-                    if (activenpcs[i].position[0] == xpos + xo && activenpcs[i].position[1] == ypos + yo) {
-                        startDialogue(activenpcs[i].dialogues[1]);
+                for (i in activeNPCs) {
+                    if (activeNPCs[i].position[0] == xpos + xo && activeNPCs[i].position[1] == ypos + yo) {
+                        startDialogue(activeNPCs[i].dialogues[1]);
                     }
                 }
 
@@ -601,14 +817,14 @@ scenes.game = () => {
             return true;
         }
         if (source != "player") {
-            for (cot in enemies) {
-                if (enemies[cot].position[0] == x && enemies[cot].position[1] == y) {
+            for (cot in activeEnemies) {
+                if (activeEnemies[cot].position[0] == x && activeEnemies[cot].position[1] == y) {
                     return true;
                 }
             }
         }
-        for (cot in activenpcs) {
-            if (activenpcs[cot].position[0] == x && activenpcs[cot].position[1] == y) {
+        for (cot in activeNPCs) {
+            if (activeNPCs[cot].position[0] == x && activeNPCs[cot].position[1] == y) {
                 return true;
             }
         }
@@ -667,92 +883,12 @@ scenes.game = () => {
             && !isSomeoneOnTile(map, x, y, source);
     }
 
-    function isTeleport(map, x, y, l = 1) {
-        // Is it a teleporter?
-
-        let lay = ["map", "map", "mapbg2", "mapfg"][l];
-        if (map[lay][y] && map[lay][y][(x * 3) + 2]) { // Check if tile exists
-            if (getTile(map, x, y, l) != undefined) {
-                if (getTile(map, x, y, l).teleport != undefined) { // Check if teleport exists
-                    // It exists! A miracle
-                    return true;
-                }
-                else {
-                    // It does not exist
-                    return false;
-                }
-            }
-        }
-        return false;
-    }
-
-    function tryTeleport(map, x, y, l = 1) {
-        if (isTeleport(map, x, y, l)) {
-            let themap = getTile(map, x, y, l);
-            let previousmap = game.map;
-            // Set map and pos
-            let nmapname = maps[themap.teleport[0]].name;
-
-            canMove = false;
-            playSound("teleport");
-            fadeOut(1000 / 3, true);
-
-            setTimeout(() => {
-                if (nmapname != undefined) { // The box stuff. Only if the map has a name
-                    areaNameBox[1].text = nmapname;
-                    for (i in areaNameBox) {
-                        areaNameBox[i].alpha = 1;
-                        areaNameBox[i].offset = [0, 0];
-                    }
-
-                    setTimeout(() => { // Box disappear
-                        addAnimator(function (t) {
-                            for (i in areaNameBox) {
-                                //areaNameBox[i].alpha = 1 - (t / 500);
-                                areaNameBox[i].offset[1] = t * (-0.5);
-                            }
-                            if (t > 999) {
-                                for (i in areaNameBox) {
-                                    areaNameBox[i].alpha = 0;
-                                }
-                                return true;
-                            }
-                            return false;
-                        });
-                    }, 800);
-
-                }
-
-                enemies = [];
-                mapWidth = 0;
-
-                game.map = themap.teleport[0];
-                map = maps[game.map];
-                game.map.tiles = Object.assign({}, game.map.tiles, loadPacks());
-
-                loadNPCs();
-                loadAreaMusic(previousmap);
-                trySpawnEnemy(42);
-
-                instantEffect = true;
-
-                game.stats.tp++;
-
-                game.position[0] = themap.teleport[1];
-                game.position[1] = themap.teleport[2];
-
-                fadeIn(1000 / 3, true);
-                canMove = true;
-            }, 750);
-        }
-    }
-
     function tryTalk(xo, yo) {
-        for (i in activenpcs) {
-            activenpcs[i].talk = false;
-            if (activenpcs[i].position[0] == game.position[0] + xo && activenpcs[i].position[1] == game.position[1] + yo) {
+        for (i in activeNPCs) {
+            activeNPCs[i].talk = false;
+            if (activeNPCs[i].position[0] == game.position[0] + xo && activeNPCs[i].position[1] == game.position[1] + yo) {
                 actionButton.snip = [64, 32, 64, 32];
-                activenpcs[i].talk = true;
+                activeNPCs[i].talk = true;
             }
         }
     }
@@ -799,9 +935,9 @@ scenes.game = () => {
     }
 
     function checkEnemyCollision(i) {
-        if (game.position[0] == enemies[i].position[0] &&
-            game.position[1] == enemies[i].position[1] &&
-            enemies[i].map == game.map && canMove == true && tokenRunning == false) {
+        if (game.position[0] == activeEnemies[i].position[0] &&
+            game.position[1] == activeEnemies[i].position[1] &&
+            activeEnemies[i].map == game.map && canMove == true && tokenRunning == false) {
             // Fight !!!
             canMove = false;
             tokenRunning = true;
@@ -810,12 +946,12 @@ scenes.game = () => {
             // It automatically grabs the enemies that can appear in the fight
             // based on what is defined in the enemies dict of the map enemy
             // change in map_enemies.js
-            if (enemies[i].gen == undefined) {
-                while (currentEnemies.length < enemies[i].minSize) {
+            if (activeEnemies[i].gen == undefined) {
+                while (currentEnemies.length < activeEnemies[i].minSize) {
                     for (let k = 0; k < 8; k++) {
-                        for (let j in enemies[i].enemies) {
-                            if (currentEnemies.length >= enemies[i].maxSize) break;
-                            if (enemies[i].enemies[j] > (Math.random() * 100)) {
+                        for (let j in activeEnemies[i].enemies) {
+                            if (currentEnemies.length >= activeEnemies[i].maxSize) break;
+                            if (activeEnemies[i].enemies[j] > (Math.random() * 100)) {
                                 createEnemy(j);
                             }
                         }
@@ -825,8 +961,8 @@ scenes.game = () => {
             else {
                 // already pre-generated
                 console.log("from pregen")
-                for (let j in enemies[i].gen){
-                    createEnemy(enemies[i].gen[j]);
+                for (let j in activeEnemies[i].gen){
+                    createEnemy(activeEnemies[i].gen[j]);
                 }
             }
 
@@ -924,7 +1060,7 @@ scenes.game = () => {
 
         trySpawnEnemy();
 
-        for (i = 0; i < enemies.length; i++) {
+        for (i = 0; i < activeEnemies.length; i++) {
             checkEnemyCollision(i);
         }
 
@@ -942,112 +1078,6 @@ scenes.game = () => {
         if (getTile(map, game.position[0], game.position[1], 2) != undefined) {
             if (getTile(map, game.position[0], game.position[1], 2).dialogue != undefined) {
                 startDialogue(map.dialogues[getTile(map, game.position[0], game.position[1], 2).dialogue]);
-            }
-        }
-    }
-
-    function trySpawnEnemy(amount = 1) {
-        // Calculate how many enemies can still be spawned.
-        let maxEnemies = maps[game.map].maxEnemies;
-        let enemiesOnThisMap = 0;
-        let spawned = false;
-
-        for (i in enemies) {
-            if (enemies[i].map == maps[game.map]) {
-                enemiesOnThisMap += 1;
-            }
-        }
-
-        // Spawn enemies (sometimes)
-        for (let e = 0; e < amount; e++) {
-            for (possibleSpawns in maps[game.map].spawns) {
-                if (enemiesOnThisMap < maxEnemies) {
-                    if (maps[game.map].spawns[possibleSpawns] > Math.random() * 100) {
-                        spawned = spawnMapEnemy(possibleSpawns);
-                        if (spawned == true) enemiesOnThisMap++;
-                    }
-                }
-            }
-        }
-    }
-
-    function spawnMapEnemy(possibleSpawns) {
-        if (mapenemies[possibleSpawns] != undefined) {
-            if (mapenemies[possibleSpawns]().time == "day" && !isDay()) return false;
-            if (mapenemies[possibleSpawns]().time == "dawn" && !isDawn()) return false;
-            if (mapenemies[possibleSpawns]().time == "noon" && !isNoon()) return false;
-            if (mapenemies[possibleSpawns]().time == "dusk" && !isDusk()) return false;
-            if (mapenemies[possibleSpawns]().time == "night" && !isNight()) return false;
-        }
-        else return false;
-
-        if (mapWidth == 0) {
-            for (i = 0; i < maps[game.map].map.length; i++) {
-                if (maps[game.map].map[i] != undefined && maps[game.map].map[i].length > mapWidth) mapWidth = maps[game.map].map[i].length;
-            }
-        }
-
-        // generate map enemy
-        let posX = Math.floor(Math.random() * mapWidth);
-        let posY = Math.floor(Math.random() * maps[game.map].map.length);
-
-        if (posX == game.position[0]) return false;
-        if (posY == game.position[1]) return false;
-        if (getTile(map, posX, posY).occupied == true) return false;
-
-        enemies.push(mapenemies[possibleSpawns]({
-            position: [posX, posY], map: game.map,
-        }));
-        let latest = enemies[enemies.length - 1];
-
-        // sprite gen
-        if (latest.source == "gen") {
-            let genSource = "";
-            latest.gen = [];
-
-            // grab the enemies in this map enemy, so we can then pick a random one
-            while (latest.gen.length < latest.minSize) {
-                for (let k = 0; k < 8; k++) {
-                    for (let j in latest.enemies) {
-                        if (currentEnemies.length >= latest.maxSize) break;
-                        if (latest.enemies[j] > (Math.random() * 100)) {
-                            latest.gen.push(j);
-                        }
-                    }
-                }
-            }
-
-            // set a random as source (random enemy)
-            genSource = "enemies/" + enemyTypes[latest.gen[Math.floor(Math.random() * latest.gen.length)]].source;
-
-            if (images[genSource] == undefined) {
-                console.log("| ⚠️ | Enemy Sprite (gen) undefined: " + genSource);
-                latest.source = "enemies/black";
-            }
-            else {
-                // works fine
-                latest.source = genSource;
-            }
-        }
-
-        return true; // it spawned
-    }
-
-    function loadNPCs() {
-        activenpcs = [];
-        for (i in npcs) {
-            if (npcs[i].alpha != 0 && npcs[i].map == game.map) {
-                activenpcs.push(npcs[i]);
-            }
-        }
-        if (maps[game.map].npcs != undefined) for (i in maps[game.map].npcs) {
-            if (maps[game.map].npcs[i].alpha != 0) {
-                activenpcs.push(maps[game.map].npcs[i]);
-            }
-        }
-        for (i in activenpcs) {
-            for (j in npcs.default) {
-                if (activenpcs[i][j] == undefined) activenpcs[i][j] = npcs.default[j];
             }
         }
     }
@@ -1133,26 +1163,6 @@ scenes.game = () => {
         movable: true, movable2: true, lifespan: 5, alpha: 1, amount: 150, spawnTime: 0.02,
         dead: true, repeatMode: true,
     })
-
-
-    function loadAreaMusic(prev = "none") {
-        map.tiles = Object.assign({}, map.tiles, loadPacks(map));
-        if (maps[prev] != undefined) {
-            if (maps[prev].music != map.music) {
-                stopMusic();
-            }
-            if (map.music == undefined) return false;
-
-            if (map.intro != undefined) playMusic(map.music, map.intro);
-            else playMusic(map.music);
-        }
-        else {
-            if (map.music == undefined) return false;
-
-            if (map.intro != undefined) playMusic(map.music, map.intro);
-            else playMusic(map.music);
-        }
-    }
 
     map = maps[game.map];
     loadNPCs();
@@ -1244,15 +1254,15 @@ scenes.game = () => {
 
     function walkNPCs() {
         if (canMove == true) {
-            for (i = 0; i < activenpcs.length; i++) {
-                activenpcs[i].movementTime += delta;
+            for (i = 0; i < activeNPCs.length; i++) {
+                activeNPCs[i].movementTime += delta;
                 let xo = 0;
                 let yo = 0;
                 let head;
 
                 // movement 0: none, 1: random, 2: path
-                if (activenpcs[i].movement == 1 && activenpcs[i].talk == false && activenpcs[i].movementTime > activenpcs[i].walkingInterval * 1000 && !activenpcs[i].kofs[2]) {
-                    activenpcs[i].movementTime = 0;
+                if (activeNPCs[i].movement == 1 && activeNPCs[i].talk == false && activeNPCs[i].movementTime > activeNPCs[i].walkingInterval * 1000 && !activeNPCs[i].kofs[2]) {
+                    activeNPCs[i].movementTime = 0;
                     // Random moving
                     if (Math.random() > 0.40) { // Down
                         xo = 0;
@@ -1277,25 +1287,25 @@ scenes.game = () => {
 
                 }
 
-                if (activenpcs[i].movement == 2 && activenpcs[i].talk == false && activenpcs[i].movementTime > activenpcs[i].walkingInterval * 1000) {
-                    activenpcs[i].movementTime = 0;
-                    if (activenpcs[i].pathProgress > activenpcs[i].path.length) {
-                        activenpcs[i].pathProgress = 0;
+                if (activeNPCs[i].movement == 2 && activeNPCs[i].talk == false && activeNPCs[i].movementTime > activeNPCs[i].walkingInterval * 1000) {
+                    activeNPCs[i].movementTime = 0;
+                    if (activeNPCs[i].pathProgress > activeNPCs[i].path.length) {
+                        activeNPCs[i].pathProgress = 0;
                     }
 
-                    if (activenpcs[i].path[activenpcs[i].pathProgress] == 0) yo = 1; // Down
-                    if (activenpcs[i].path[activenpcs[i].pathProgress] == 1) xo = -1; // Left
-                    if (activenpcs[i].path[activenpcs[i].pathProgress] == 2) xo = 1; // Right
-                    if (activenpcs[i].path[activenpcs[i].pathProgress] == 3) yo = -1; // Up
+                    if (activeNPCs[i].path[activeNPCs[i].pathProgress] == 0) yo = 1; // Down
+                    if (activeNPCs[i].path[activeNPCs[i].pathProgress] == 1) xo = -1; // Left
+                    if (activeNPCs[i].path[activeNPCs[i].pathProgress] == 2) xo = 1; // Right
+                    if (activeNPCs[i].path[activeNPCs[i].pathProgress] == 3) yo = -1; // Up
                 }
 
                 // walk npc
                 if (xo != 0 || yo != 00) {
-                    if (getTileAllLayersWalkable(map, activenpcs[i].position[0] + xo, activenpcs[i].position[1] + yo, "npc")) {
-                        activenpcs[i].position[0] += xo;
-                        activenpcs[i].position[1] += yo;
-                        activenpcs[i].head = head;
-                        activenpcs[i].kofs = [xo, yo, activenpcs[i].walkingSpeed];
+                    if (getTileAllLayersWalkable(map, activeNPCs[i].position[0] + xo, activeNPCs[i].position[1] + yo, "npc")) {
+                        activeNPCs[i].position[0] += xo;
+                        activeNPCs[i].position[1] += yo;
+                        activeNPCs[i].head = head;
+                        activeNPCs[i].kofs = [xo, yo, activeNPCs[i].walkingSpeed];
                     }
                 }
             }
@@ -1306,15 +1316,15 @@ scenes.game = () => {
         let px = game.position[0];
         let py = game.position[1];
 
-        for (i = 0; i < enemies.length; i++) {
-            enemies[i].movementTime += delta;
+        for (i = 0; i < activeEnemies.length; i++) {
+            activeEnemies[i].movementTime += delta;
 
-            if (enemies[i].movementTime > enemies[i].walkingInterval * 1000 && !enemies[i].kofs[2]) {
-                enemies[i].movementTime = 0;
+            if (activeEnemies[i].movementTime > activeEnemies[i].walkingInterval * 1000 && !activeEnemies[i].kofs[2]) {
+                activeEnemies[i].movementTime = 0;
 
-                if (enemies[i].spawntime > 899) {
-                    let x = enemies[i].position[0];
-                    let y = enemies[i].position[1];
+                if (activeEnemies[i].spawntime > 899) {
+                    let x = activeEnemies[i].position[0];
+                    let y = activeEnemies[i].position[1];
 
                     // semi - random moving
                     let xo = 0;
@@ -1345,34 +1355,34 @@ scenes.game = () => {
 
                     // walk enemy
                     if (xo != 0 || yo != 0) {
-                        if (getTileAllLayersWalkable(map, enemies[i].position[0] + xo, enemies[i].position[1] + yo, "enemy")) {
-                            enemies[i].position[0] += xo;
-                            enemies[i].position[1] += yo;
-                            enemies[i].head = headTo;
-                            enemies[i].kofs = [xo, yo, enemies[i].walkingSpeed];
+                        if (getTileAllLayersWalkable(map, activeEnemies[i].position[0] + xo, activeEnemies[i].position[1] + yo, "enemy")) {
+                            activeEnemies[i].position[0] += xo;
+                            activeEnemies[i].position[1] += yo;
+                            activeEnemies[i].head = headTo;
+                            activeEnemies[i].kofs = [xo, yo, activeEnemies[i].walkingSpeed];
                         }
                     }
                 }
 
                 // Respawn if on ocean or occupied
-                if (map.map[enemies[i].position[1]] != undefined) {
-                    if (getTile(map, enemies[i].position[0], enemies[i].position[1]) == undefined) { // Undefined
-                        enemies[i].alpha = 0;
-                        enemies[i].position = [Math.floor(Math.random() * mapWidth), Math.floor(Math.random() * maps[game.map].map.length)];
+                if (map.map[activeEnemies[i].position[1]] != undefined) {
+                    if (getTile(map, activeEnemies[i].position[0], activeEnemies[i].position[1]) == undefined) { // Undefined
+                        activeEnemies[i].alpha = 0;
+                        activeEnemies[i].position = [Math.floor(Math.random() * mapWidth), Math.floor(Math.random() * maps[game.map].map.length)];
                     }
                     else {
-                        if (getTile(map, enemies[i].position[0], enemies[i].position[1]).occupied == true) { // occupied
-                            enemies[i].alpha = 0;
-                            enemies[i].position = [Math.floor(Math.random() * mapWidth), Math.floor(Math.random() * maps[game.map].map.length)];
+                        if (getTile(map, activeEnemies[i].position[0], activeEnemies[i].position[1]).occupied == true) { // occupied
+                            activeEnemies[i].alpha = 0;
+                            activeEnemies[i].position = [Math.floor(Math.random() * mapWidth), Math.floor(Math.random() * maps[game.map].map.length)];
                         }
                         else {
-                            enemies[i].alpha = enemies[i].alpha;
+                            activeEnemies[i].alpha = activeEnemies[i].alpha;
                         }
                     }
                 }
                 else { // Undefined
-                    enemies[i].alpha = 0;
-                    enemies[i].position = [Math.floor(Math.random() * mapWidth), Math.floor(Math.random() * maps[game.map].map.length)];
+                    activeEnemies[i].alpha = 0;
+                    activeEnemies[i].position = [Math.floor(Math.random() * mapWidth), Math.floor(Math.random() * maps[game.map].map.length)];
                 }
 
                 // Don't put this in a for loop. lol
@@ -1522,15 +1532,15 @@ scenes.game = () => {
             zswm = (zoom * scale) / wm;
 
             // draw NPCs
-            for (i in activenpcs) {
-                if (activenpcs[i].alpha > 0) {
-                    ctx.globalAlpha = activenpcs[i].alpha;
-                    renderNPC(ctx, activenpcs[i]);
+            for (i in activeNPCs) {
+                if (activeNPCs[i].alpha > 0) {
+                    ctx.globalAlpha = activeNPCs[i].alpha;
+                    renderNPC(ctx, activeNPCs[i]);
                 }
             }
 
             // draw enemies
-            for (let enemy of enemies) {
+            for (let enemy of activeEnemies) {
                 if (enemy.alpha > 0) {
                     ctx.globalAlpha = enemy.alpha;
                     enemy.render(ctx);

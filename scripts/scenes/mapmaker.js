@@ -116,7 +116,7 @@ scenes.mapmaker = () => {
 
     let curNPC = ""; // current dialogue
 
-    var activenpcs = [];
+    var activeNPCs = [];
     var currentMap = "newMap";
     map = maps[currentMap];
     map.tiles = Object.assign({}, map.tiles, loadPacks(map));
@@ -477,11 +477,11 @@ scenes.mapmaker = () => {
     }));
 
     makerInfo.push(controls.rect({
-        anchor: [0.05, 0.15], sizeAnchor: [0.2, 0.7], offset: [-64, 0], sizeOffset: [64, 0],
+        anchor: [0.05, 0.15], sizeAnchor: [0.2, 0.825], offset: [-64, 0], sizeOffset: [64, 0],
         fill: colors.buttonbottom, alpha: 0, clickstop: true
     }));
     makerInfo.push(controls.rect({
-        anchor: [0.05, 0.15], sizeAnchor: [0.2, 0.7], offset: [8 -64, 8], sizeOffset: [-16 +64, -16],
+        anchor: [0.05, 0.15], sizeAnchor: [0.2, 0.825], offset: [8 -64, 8], sizeOffset: [-16 +64, -16],
         fill: colors.buttontop, alpha: 0,
     }));
     makerInfo.push(controls.label({
@@ -563,7 +563,7 @@ scenes.mapmaker = () => {
     }));
 
     makerInfo.push(controls.button({
-        anchor: [0.25, 0.85], sizeOffset: [64, 56], offset: [-144, -32],
+        anchor: [0.25, 0.95], sizeOffset: [64, 56], offset: [-144, -32],
         text: "P-", alpha: 0,
         onClick(args) {
             if (this.alpha == 1 && createTileInfoPage > 0) {
@@ -574,7 +574,7 @@ scenes.mapmaker = () => {
         }
     }));
     makerInfo.push(controls.button({
-        anchor: [0.25, 0.85], sizeOffset: [64, 56], offset: [-64, -32],
+        anchor: [0.25, 0.95], sizeOffset: [64, 56], offset: [-64, -32],
         text: "P+", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
@@ -585,11 +585,11 @@ scenes.mapmaker = () => {
         }
     }));
     makerInfo.push(controls.label({
-        anchor: [0.2, 0.85], offset: [-64, 0],
+        anchor: [0.2, 0.95], offset: [-64, 0],
         text: "1", alpha: 0,
     }));
     makerInfo.push(controls.label({
-        anchor: [0.2, 0.85], offset: [-256, 0],
+        anchor: [0.2, 0.95], offset: [-256, 0],
         text: "", alpha: 0,
     }));
 
@@ -1301,14 +1301,59 @@ scenes.mapmaker = () => {
         }
     }));
 
+    const dialogueScriptTypes = ["Add Quest", "Give Item", "Teleport"];
     createDialogueButtons.push(controls.button({
         anchor: [0.3, 0.76], sizeAnchor: [0.05, 0.05], offset: [72 * 16, -600],
-        text: "Script", alpha: 0,
+        text: "Script", alpha: 0, selected: "",
         onClick(args) {
             if (this.alpha == 1) {
-                let newText = prompt("New script? (advanced)");
-                if (newText != undefined) map.dialogues[curDia].lines[curLine].script = newText;
-                updateDialogueLabels();
+                if ((selectedInfoType == "scripts" || this.selected != "") && isValid(selectedInfo)) {
+                    let result;
+
+                    // this.selected is for the first selection, selectedInfo for the second
+                    if (this.selected == "") this.selected = selectedInfo;
+
+                    switch (this.selected) {
+                        case "Add Quest":
+                            if (selectedInfoType == "quests" && isValid(selectedInfo)) {
+                                result = "addQuest('" + selectedInfo + "')";
+                            }
+                            else {
+                                showInfo();
+                                renderInfo("quests");
+                                return;
+                            }
+                            break;
+                        case "Give Item":
+                            if (selectedInfoType == "items" && isValid(selectedInfo)) {
+                                let amount = prompt("How many?");
+                                if (!isValid(amount)) amount = 1;
+                                result = "addItem('" + selectedInfo + "', " + amount + ")";
+                            }
+                            else {
+                                showInfo();
+                                renderInfo("items");
+                                return;
+                            }
+                            break;
+                        case "Teleport":
+                            let tpTo = prompt("Where? (map.x.y)");
+                            if (!isValid(tpTo) || !tpTo.includes(".")) return;
+
+                            tpTo = tpTo.split(".");
+
+                            result = "teleportPlayer('" + tpTo[0] + "', " + tpTo[1] + ", " + tpTo[2] + ")";
+                            break;
+                    }
+
+                    this.selected = "";
+                    map.dialogues[curDia].lines[curLine].script = result;
+                    updateDialogueLabels();
+                }
+                else {
+                    showInfo();
+                    renderInfo("scripts");
+                }
             }
         }
     }));
@@ -2310,22 +2355,22 @@ scenes.mapmaker = () => {
     }
 
     function loadNPCs() {
-        activenpcs = [];
+        activeNPCs = [];
         for (i in npcs) {
             if (npcs[i].alpha != 0 && npcs[i].map == currentMap) {
-                activenpcs.push(npcs[i]);
+                activeNPCs.push(npcs[i]);
             }
         }
         if (map.npcs != undefined) {
             for (i in map.npcs) {
                 if (map.npcs[i].alpha != 0) {
-                    activenpcs.push(map.npcs[i]);
+                    activeNPCs.push(map.npcs[i]);
                 }
             }
         }
-        for (i in activenpcs) {
+        for (i in activeNPCs) {
             for (j in npcs.default) {
-                if (activenpcs[i][j] == undefined) activenpcs[i][j] = npcs.default[j];
+                if (activeNPCs[i][j] == undefined) activeNPCs[i][j] = npcs.default[j];
             }
         }
     }
@@ -2335,7 +2380,7 @@ scenes.mapmaker = () => {
         game.position[0] = Math.round(game.position[0]);
         game.position[1] = Math.round(game.position[1]);
 
-        activenpcs = [];
+        activeNPCs = [];
         for (i in tnpcs) {
             tnpcs[i].alpha = 0;
         }
@@ -2837,6 +2882,20 @@ scenes.mapmaker = () => {
                 for (let it in items) {
                     if (it != "default") grabFrom.push(it);
                 }
+                break;
+            case "scripts":
+                // I am clinically insane
+                grabFrom = [];
+                for (let sc in dialogueScriptTypes) {
+                    grabFrom.push(dialogueScriptTypes[sc]);
+                }
+                break;
+            case "quests":
+                grabFrom = [];
+                for (let q in quests) {
+                    grabFrom.push(q);
+                }
+                break;
         }
 
         let pageAdd = createTileInfoPage * createTileInfoPageLength;
@@ -3474,9 +3533,9 @@ scenes.mapmaker = () => {
                         }
                     }
                 }
-                for (i in activenpcs) {
-                    if (activenpcs[i].alpha > 0) {
-                        let npc = activenpcs[i];
+                for (i in activeNPCs) {
+                    if (activeNPCs[i].alpha > 0) {
+                        let npc = activeNPCs[i];
                         tnpcs[np].offset = [(((zoom * scale) * (npc.position[0] + kofs[0] * kofs[2] - (game.position[0] - width / 2 + 0.5))) - ((zoom - 1) * scale * (width / 2))) - ((width * scale) / 2), ((zoom * scale) * (npc.position[1] + kofs[1] * kofs[2] - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7)) - (height / 2)];
                         tnpcs[np].sizeOffset = [zswm, zswm];
                         tnpcs[np].source = npc.source;

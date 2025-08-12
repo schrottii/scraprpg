@@ -94,6 +94,7 @@ function addWrenches(amount = 0) {
     if (game.wrenches != undefined) {
         game.wrenches = Math.min(game.wrenches + amount, 999999999);
         game.stats.wrenches += amount;
+        questProgress("wrenches", "");
     }
 }
 
@@ -102,6 +103,7 @@ function addBricks(amount = 0) {
     if (game.bricks != undefined) {
         game.bricks = Math.min(game.bricks + amount, 999999);
         game.stats.bricks += amount;
+        questProgress("bricks", "");
     }
 }
 

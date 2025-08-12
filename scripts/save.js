@@ -55,7 +55,7 @@ let game = {
             name: "Corelle",
             level: 1,
             EXP: 0,
-            EP: 5,
+            EP: 6,
             HP: 15,
             effect: ["none", 0],
             pos: [0, 1],
@@ -155,7 +155,9 @@ let game = {
 
     mItems: [],
 
-    monsterbook: {}
+    monsterbook: {},
+
+    quests: {}, // "test": [3, 15846, 16312] <-- progress, start time, finish time
 }
 
 let settings = {
@@ -182,6 +184,7 @@ let settings = {
 
 for (c in game.characters) {
     game.characters[c].HP = getStat(game.characters[c].name, "maxHP");
+    game.characters[c].EP = getStat(game.characters[c].name, "maxEP");
 }
 
 
@@ -297,6 +300,7 @@ function loadGame() {
         }
 
         if (saveCopy.mItems == undefined) saveCopy.mItems = [];
+        if (saveCopy.quests == undefined) saveCopy.quests = {};
 
         // delete items that don't exist anymore
         for (let i in saveCopy.inventory){
