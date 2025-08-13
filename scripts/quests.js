@@ -44,6 +44,11 @@ function claimQuest(name) {
         }
     }
 
+    // repeat ?
+    if (quests[name].repeatable != undefined && quests[name].repeatable == true) {
+        game.quests[name] = [0, game.stats.playTime, 0];
+    }
+
     return true;
 }
 
@@ -97,5 +102,12 @@ var quests = {
         description: "Jan Kin claims aliens are real. Can you find one?",
         goal: ["talk", "alien", 1],
         items: { "potion": 1 }
+    },
+    "rabbitPlague": {
+        name: "Rabbit Plague",
+        description: "Defeat 20 Evil Peters",
+        goal: ["enemy", "evil_peter", 1],
+        repeatable: true, instaclaim: false,
+        items: { "spellbookearths": 1 }
     },
 };

@@ -302,6 +302,7 @@ scenes.fight = () => {
             }
         }
         else if (alliesAlive == 0) {
+            // this is thru dying
             // No allies are left, some of them dead, but some fled so no GAME OVER
             fightLost = true;
             game.stats.fightsFled++;
@@ -627,17 +628,18 @@ scenes.fight = () => {
         return false;
     }
 
-    function getDistance(type, pos) {
+    function getDistance(targetType, targetPos) {
         // Used to get how many enemies are between the player and this enemy / the distance (output: 0, 1 or 2)
 
-        if (type == "enemy") { // Player attacks enemy
+        if (targetType == "enemy") { // Player attacks enemy
             // Keep in mind epos are swapped - 2 is left and not right
 
-            if (pos[0] == 2 && length > 0) return 0;
+            if (targetPos[0] == undefined || targetPos[1] == undefined) return 999;
+            if (targetPos[0] == 2 && length > 0) return 0;
 
             let inFrontOfMe = 0;
-            for (d = 2; d > pos[0]; d--) {
-                if (epositions[d][pos[1]].isOccupied == true) inFrontOfMe += 1;
+            for (d = 2; d > targetPos[0]; d--) {
+                if (epositions[d][targetPos[1]].isOccupied == true) inFrontOfMe += 1;
             }
 
             // Return 0, 1 or 2 depending on how many other enemies are between player and this enemy
@@ -645,13 +647,13 @@ scenes.fight = () => {
         }
     }
 
-    function canReach(length, type, pos) {
+    function canReach(length, targetType, targetPos) {
         // Used to determine whether the enemy is in range or not.
 
         // Length = 1, 2 or 3
         // pos is pos of enemy
-
-        if (length > getDistance(type, pos)) return true;
+        if (targetPos[0] == undefined || targetPos[1] == undefined) return false;
+        if (length > getDistance(targetType, targetPos)) return true;
         return false;
     }
 
@@ -660,11 +662,13 @@ scenes.fight = () => {
         positionControls[who].emo = to;
     }
 
-    function calculateDamage(type, pos1, pos2, enpos1, enpos2) {
+    function calcDamage(type, pos1, pos2, enpos1, enpos2) {
         // Calculate damage that will be dealt
 
         let isCritical = false;
         let critBonus = 1;
+
+        // calc crit for ally
         if (type == 1 || type == 3) {
             if (getStat(positions[pos1][pos2].occupied, "luk") > Math.random() * 100) {
                 // Critical hit!
@@ -672,6 +676,7 @@ scenes.fight = () => {
                 critBonus = CRITBOOST;
             }
         }
+
         if (type == 1) { // Ally attack evil
             if (positions[pos1][pos2].atk == undefined) positions[pos1][pos2].atk = 1;
 
@@ -685,13 +690,14 @@ scenes.fight = () => {
 
         if (type == 2) { // Evil attack ally
             if (positions[enpos1][enpos2].shield == undefined) positions[enpos1][enpos2].shield = 1;
+            // calc crit for evil
             if (epositions[pos1][pos2].luk > Math.random() * 100) {
                 // Critical hit!
                 isCritical = true;
                 critBonus = CRITBOOST;
             }
 
-            return [isCritical, Math.round(epositions[pos1][pos2].strength
+            return [isCritical, Math.ceil(epositions[pos1][pos2].strength
                 * (1 + ROWBOOST - (ROWBOOST * pos1))
                 * (1 - ROWBOOST + (ROWBOOST * enpos1)
                 / (positions[enpos1][enpos2].shield != undefined ? positions[enpos1][enpos2].shield : 1)
@@ -809,8 +815,8 @@ scenes.fight = () => {
                 allyIsSelected();
 
                 let HealthBefore = game.characters[positions[activeCharacter.action[3]][activeCharacter.action[4]].occupied].HP;
-                let Damage = calculateDamage(3, activeCharacter.action[1], activeCharacter.action[2], activeCharacter.action[3], activeCharacter.action[4])[1];
-                let isCritical = calculateDamage(3, activeCharacter.action[1], activeCharacter.action[2], activeCharacter.action[3], activeCharacter.action[4])[0];
+                let Damage = calcDamage(3, activeCharacter.action[1], activeCharacter.action[2], activeCharacter.action[3], activeCharacter.action[4])[1];
+                let isCritical = calcDamage(3, activeCharacter.action[1], activeCharacter.action[2], activeCharacter.action[3], activeCharacter.action[4])[0];
 
                 game.characters[positions[activeCharacter.action[3]][activeCharacter.action[4]].occupied].HP -= Damage;
 
@@ -1046,6 +1052,7 @@ scenes.fight = () => {
         if (fightLost) return false;
         let highestAGI = 0;
         let pos = [];
+        let charsRemaining = 0;
         // Look for the fastest man alive
         for (j = 0; j < 3; j++) {
             for (i = 0; i < 3; i++) {
@@ -1057,8 +1064,11 @@ scenes.fight = () => {
                         pos = [i, j];
                     }
                 }
+                if (positions[i][j].isOccupied != false) charsRemaining++;
             }
         }
+
+        if (charsRemaining == 0) return false;
 
         // Stop if there is nobody (when is that?)
         if (highestAGI == 0) {
@@ -1080,6 +1090,7 @@ scenes.fight = () => {
 
         // Select a random ally (protagonist)
         // The 75/75 is temporary. 75 = not selected yet, basically
+        if (fightLost || fightWon) return false;
         selectedAlly = [75, 75];
         while (selectedAlly[0] == 75) {
             let randyTheIdiot = Math.floor(Math.random() * 2.98);
@@ -1102,8 +1113,8 @@ scenes.fight = () => {
         // activeCharacter = the enemy attacking
         prepareAttackAnimation(selectedAlly[0], selectedAlly[1], pos[0], pos[1], (fpos1, fpos2, pos) => {
             if (epositions[pos[0]][pos[1]].acc - getStat(positions[fpos1][fpos2].occupied, "eva") > (Math.random() * 100)) {
-                let Damage = calculateDamage(2, pos[0], pos[1], selectedAlly[0], selectedAlly[1])[1];
-                let isCritical = calculateDamage(2, pos[0], pos[1], selectedAlly[0], selectedAlly[1])[0];
+                let Damage = calcDamage(2, pos[0], pos[1], selectedAlly[0], selectedAlly[1])[1];
+                let isCritical = calcDamage(2, pos[0], pos[1], selectedAlly[0], selectedAlly[1])[0];
                 if (positions[fpos1][fpos2].isOccupied != false) {
                     let HealthBefore = game.characters[positions[fpos1][fpos2].occupied].HP;
                     game.characters[positions[fpos1][fpos2].occupied].HP -= Damage;
@@ -1910,7 +1921,6 @@ scenes.fight = () => {
                     game.stats.fightsFled++;
                     endFight();
                 }
-
                 return true;
             }
             return false;
@@ -1919,7 +1929,7 @@ scenes.fight = () => {
 
     function endFight() {
         stopMusic();
-        for (let i in characters){
+        for (let i in game.chars){
             tempBuffRemoveAll(characters[i]);
         }
 
@@ -2088,11 +2098,12 @@ scenes.fight = () => {
     }))
 
     function findNewEnemy(fpos1, fpos2, pos1, pos2) {
-        if (epositions[pos1][pos2].isOccupied == false) {
+        // when you don't know who to attack; macro or clicking empty space
+        if (epositions[pos1][pos2].isOccupied == false || !canReach(getStat(positions[fpos1][fpos2].occupied, "length"), "enemy", [pos1, pos2])) {
             let exists = 0;
             for (nj = 0; nj < 3; nj++) {
                 for (ni = 0; ni < 3; ni++) {
-                    if (epositions[ni][nj].isOccupied == true && exists == 0 && canReach(getStat(positions[fpos1][fpos2].occupied, "length"), "enemy", [pos1, pos2])) {
+                    if (epositions[ni][nj].isOccupied == true && exists == 0 && canReach(getStat(positions[fpos1][fpos2].occupied, "length"), "enemy", [ni, nj])) {
                         exists = 1;
                         pos1 = ni;
                         pos2 = nj;
@@ -2100,7 +2111,9 @@ scenes.fight = () => {
                     }
                 }
             }
+
             if (exists == 0) {
+                // no more enemies?!
                 endOfExecute([fpos1, fpos2]);
                 return false;
             }
@@ -2114,8 +2127,8 @@ scenes.fight = () => {
             prepareAttackAnimation(fpos1, fpos2, pos1, pos2, (fpos1, fpos2, pos1, pos2) => {
 
                 if (getStat(positions[fpos1][fpos2].occupied, "acc") - epositions[pos1][pos2].eva > (Math.random() * 100)) {
-                    let Damage = calculateDamage(1, fpos1, fpos2, pos1, pos2)[1];
-                    let isCritical = calculateDamage(1, fpos1, fpos2, pos1, pos2)[0];
+                    let Damage = calcDamage(1, fpos1, fpos2, pos1, pos2)[1];
+                    let isCritical = calcDamage(1, fpos1, fpos2, pos1, pos2)[0];
 
                     epositions[pos1][pos2].HP -= Damage; // Deal damage
                     battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, Damage * (-1), 0, epositionControls[pos1 + (pos2 * 3)].offset, isCritical);
