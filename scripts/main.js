@@ -24,8 +24,27 @@ var FPSover = 0;
 let scale = 1080 / 16;// window.innerHeight / 16;
 let width = 1920 / scale;// window.innerWidth / scale;
 
+function isElectron() {
+    // Renderer process
+    if (typeof window !== 'undefined' && typeof window.process === 'object' && window.process.type === 'renderer') {
+        return true;
+    }
+
+    // Main process
+    if (typeof process !== 'undefined' && typeof process.versions === 'object' && !!process.versions.electron) {
+        return true;
+    }
+
+    // Detect the user agent when the `nodeIntegration` option is set to true
+    if (typeof navigator === 'object' && typeof navigator.userAgent === 'string' && navigator.userAgent.indexOf('Electron') >= 0) {
+        return true;
+    }
+
+    return false;
+}
+
 // electron
-if (document == undefined) {
+if (isElectron()) {
     const { app, BrowserWindow } = require('electron');
 
     const createWindow = () => {

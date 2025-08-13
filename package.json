@@ -1,7 +1,7 @@
 {
   "name": "scraprpg",
   "version": "1.0.0",
-  "description": "web version of ScrapRPG",
+  "description": "ScrapRPG",
   "main": "scripts\\main.js",
   "scripts": {
     "start": "electron-forge start",
@@ -13,11 +13,22 @@
     "type": "git",
     "url": "git+https://github.com/schrottii/scraprpg.git"
   },
+  "build": {
+    "appId": "com.schrottii.scraprpg",
+    "productName": "ScrapRPG",
+    "icon": "data/images/ico",
+    "win": {
+      "icon": "data/images/icon.ico"
+    },
+    "linux": {
+      "icon": "data/images/Icon_star.png"
+    }
+  },
   "keywords": [
     "scraprpg"
   ],
   "author": "schrottii",
-  "license": "UNLICENSED",
+  "license": "ScrapRPG License",
   "bugs": {
     "url": "https://github.com/schrottii/scraprpg/issues"
   },

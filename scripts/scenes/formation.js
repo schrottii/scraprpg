@@ -198,6 +198,10 @@ scenes.formation = () => {
         alpha: 0,
     });
 
+    for (let m in macroControls) {
+        macroControls[m].text = macroTexts[macros.indexOf(getPlayer(m + 1).macro)];
+    }
+
     fadeIn(1000 / 3, true);
 
     return {

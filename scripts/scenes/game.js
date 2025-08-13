@@ -125,6 +125,7 @@ function teleportPlayer(mmap, x, y) {
         loadNPCs();
         loadAreaMusic(previousmap);
         trySpawnEnemy(42);
+        checkTileDialogue();
 
         instantEffect = true;
 
@@ -136,6 +137,19 @@ function teleportPlayer(mmap, x, y) {
         fadeIn(1000 / 3, true);
         if (!isValid(currentDialogue)) canMove = true;
     }, 750);
+}
+
+function checkTileDialogue() {
+    if (getTile(map, game.position[0], game.position[1]) != undefined) {
+        if (getTile(map, game.position[0], game.position[1]).dialogue != undefined) {
+            startDialogue(map.dialogues[getTile(map, game.position[0], game.position[1]).dialogue]);
+        }
+    }
+    if (getTile(map, game.position[0], game.position[1], 2) != undefined) {
+        if (getTile(map, game.position[0], game.position[1], 2).dialogue != undefined) {
+            startDialogue(map.dialogues[getTile(map, game.position[0], game.position[1], 2).dialogue]);
+        }
+    }
 }
 
 function loadNPCs() {
@@ -981,7 +995,6 @@ scenes.game = () => {
                     if (t > 2999) {
                         startFight();
 
-                        console.log(enemyID)
                         activeEnemies.splice(enemyID, 1);
 
                         zoom = previouszoom;
@@ -1068,16 +1081,7 @@ scenes.game = () => {
             }
         }
 
-        if (getTile(map, game.position[0], game.position[1]) != undefined) {
-            if (getTile(map, game.position[0], game.position[1]).dialogue != undefined) {
-                startDialogue(map.dialogues[getTile(map, game.position[0], game.position[1]).dialogue]);
-            }
-        }
-        if (getTile(map, game.position[0], game.position[1], 2) != undefined) {
-            if (getTile(map, game.position[0], game.position[1], 2).dialogue != undefined) {
-                startDialogue(map.dialogues[getTile(map, game.position[0], game.position[1], 2).dialogue]);
-            }
-        }
+        checkTileDialogue();
     }
 
     cutsceneElements.push(controls.rect({
@@ -1167,6 +1171,7 @@ scenes.game = () => {
     loadNPCs();
     loadAreaMusic();
     trySpawnEnemy(42);
+    checkTileDialogue();
 
     /*let fallingLeaves = Particles({
         anchor: [0, -0.1], spreadAnchor: [1, 0], sizeOffset: [64, 64], spreadOffset: [0, -256], sizeOffsetVary: [1.5, 1.5], quadraticVary: true,
