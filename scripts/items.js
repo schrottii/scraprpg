@@ -1000,7 +1000,7 @@ let items = {
             ...items.default(),
             source: "head_wood", name: "Wood Head", element: "earth",
             shopcost: 600, type: "armor", piece: "head",
-            stats: { "def": 2 }, ...args || {},
+            stats: { "def": 1 }, ...args || {},
         }
     },
     bodywood(args) {
@@ -1008,7 +1008,7 @@ let items = {
             ...items.default(),
             source: "body_wood", name: "Wood Body", element: "earth",
             shopcost: 600, type: "armor", piece: "body",
-            stats: { "def": 2 }, ...args || {},
+            stats: { "def": 1 }, ...args || {},
         }
     },
     swordwood(args) {
@@ -1016,7 +1016,7 @@ let items = {
             ...items.default(),
             source: "sword_wood", name: "Wood Sword", element: "earth",
             shopcost: 600, type: "armor", piece: "rhand",
-            stats: { "strength": 4 }, ...args || {},
+            stats: { "strength": 2 }, ...args || {},
         }
     },
     shieldwood(args) {
@@ -1025,6 +1025,40 @@ let items = {
             source: "shield_wood", name: "Wood Shield", element: "earth",
             shopcost: 600, type: "armor", piece: "lhand",
             stats: { "eva": 4 }, ...args || {},
+        }
+    },
+
+    // hay: good for eva
+    headhay(args) {
+        return {
+            ...items.default(),
+            source: "head_hay", name: "Hay Head", element: "earth",
+            shopcost: 600, type: "armor", piece: "head",
+            stats: { "eva": 2 }, ...args || {},
+        }
+    },
+    bodyhay(args) {
+        return {
+            ...items.default(),
+            source: "body_hay", name: "Hay Body", element: "earth",
+            shopcost: 600, type: "armor", piece: "body",
+            stats: { "eva": 2 }, ...args || {},
+        }
+    },
+    swordhay(args) {
+        return {
+            ...items.default(),
+            source: "sword_hay", name: "Hay Sword", element: "earth",
+            shopcost: 600, type: "armor", piece: "rhand",
+            stats: { "strength": 1, "eva": 2 }, ...args || {},
+        }
+    },
+    shieldhay(args) {
+        return {
+            ...items.default(),
+            source: "shield_hay", name: "Hay Shield", element: "earth",
+            shopcost: 600, type: "armor", piece: "lhand",
+            stats: { "eva": 6, "strength": -1 }, ...args || {},
         }
     },
     
