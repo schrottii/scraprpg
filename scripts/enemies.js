@@ -107,13 +107,13 @@ let enemyTypes = {
     "evil_peter": {
         name: "Evil Peter", source: "evilpeter", element: "physical",
         HP: 6, strength: 2,
-        eva: 20, acc: 50, agi: 66, luk: 20,
+        eva: 10, acc: 70, agi: 66, luk: 20,
         items: "none",
     },
     "living_hay": {
         name: "Living Hay", source: "livinghay", element: "earth",
         HP: 3, strength: 2,
-        eva: 50, acc: 70, agi: 10, luk: 20,
+        eva: 10, acc: 60, agi: 10, luk: 20,
         items: "none",
     },
     "home_runner": {

@@ -123,7 +123,7 @@ let mapenemies = {
         return {
             ...mapenemies.default(), source: "enemies/livinghay",
             time: "all", minSize: 1, maxSize: 2,
-            walkingInterval: 1, walkingSpeed: 0.2,
+            walkingInterval: 4, walkingSpeed: 0.2,
             enemies: {
                 "living_hay": 60,
                 "evil_peter": 10

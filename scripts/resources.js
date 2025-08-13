@@ -391,8 +391,8 @@ var audio = {
 
     "bgm/forest2": "data/bgm/lun_SOTR__Desperate_Forest.mp3",
 
-    "bgm/town/intro": "data/bgm/dec_SOTR__Town_Intro.ogg",
-    "bgm/town": "data/bgm/dec_SOTR__Town_Loop.ogg",
+    "bgm/town/intro": "data/bgm/dec_SOTR__Town_Intro.mp3",
+    "bgm/town": "data/bgm/dec_SOTR__Town_Loop.mp3",
 
     "bgm/castle": "data/bgm/lun_SOTR__Lex_Alfred.mp3",
 
@@ -402,10 +402,10 @@ var audio = {
     "bgm/icecave/intro": "data/bgm/lun_SOTR__Subzero_Ooga_Intro.mp3",
     "bgm/icecave": "data/bgm/lun_SOTR__Subzero_Ooga_Loop.mp3",
 
-    "bgm/fight": "data/bgm/dec_SOTR__Battle_Theme.ogg",
+    "bgm/fight": "data/bgm/dec_SOTR__Battle_Theme.mp3",
 
-    "bgm/boss/intro": "data/bgm/dec_SOTR__Boss_Battle_Intro.ogg",
-    "bgm/boss": "data/bgm/dec_SOTR__Boss_Battle_Full.ogg",
+    "bgm/boss/intro": "data/bgm/dec_SOTR__Boss_Battle_Intro.mp3",
+    "bgm/boss": "data/bgm/dec_SOTR__Boss_Battle_Full.mp3",
 
     "bgm/intro": "data/bgm/lun_SOTR__Introer.mp3",
 
@@ -423,10 +423,10 @@ var audio = {
     "cancel": "data/sounds/click/sound_cancel.wav",
 
     // fight
-    "encounter": "data/sounds/fight/fight_encounter.ogg",
+    "encounter": "data/sounds/fight/fight_encounter.mp3",
     "damage": "data/sounds/fight/damage.wav",
     "critdamage": "data/sounds/fight/critical_damage.wav",
-    "miss": "data/sounds/fight/miss.ogg",
+    "miss": "data/sounds/fight/miss.mp3",
     "heal": "data/sounds/fight/heal.wav",
 
     "victory": "data/sounds/fight/victory_jingle.mp3",
@@ -435,15 +435,15 @@ var audio = {
     // other
     "titletransition": "data/sounds/Title_screen_transition.mp3",
     "keyitem": "data/sounds/important_item.wav",
-    "achievement": "data/sounds/achievement.ogg",
+    "achievement": "data/sounds/achievement.mp3",
     "movearea": "data/sounds/move_area.wav",
-    "teleport": "data/sounds/teleport.ogg",
+    "teleport": "data/sounds/teleport.mp3",
 
     // TALK
-    "male_young": "data/sounds/voices/dialogue_voice_male_young.ogg",
-    "male_grown": "data/sounds/voices/dialogue_voice_male_grown.ogg",
-    "female_young": "data/sounds/voices/dialogue_voice_female_young.ogg",
-    "female_grown": "data/sounds/voices/dialogue_voice_female_grown.ogg",
+    "male_young": "data/sounds/voices/dialogue_voice_male_young.mp3",
+    "male_grown": "data/sounds/voices/dialogue_voice_male_grown.mp3",
+    "female_young": "data/sounds/voices/dialogue_voice_female_young.mp3",
+    "female_grown": "data/sounds/voices/dialogue_voice_female_grown.mp3",
 };
 
 var maps = {

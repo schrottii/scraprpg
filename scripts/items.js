@@ -621,7 +621,7 @@ let items = {
             ...items.default(),
             source: "head_earth", name: "Earth Head", element: "earth",
             shopcost: 1000, type: "armor", piece: "head",
-            stats: { "def": 6, "agi": -5 }, ...args || {},
+            stats: { "def": 3, "agi": -5 }, ...args || {},
         }
     },
     bodyearth(args) {
@@ -629,7 +629,7 @@ let items = {
             ...items.default(),
             source: "body_earth", name: "Earth Body", element: "earth",
             shopcost: 1000, type: "armor", piece: "body",
-            stats: { "def": 5 }, ...args || {},
+            stats: { "def": 2 }, ...args || {},
         }
     },
     swordearth(args) {
@@ -637,7 +637,7 @@ let items = {
             ...items.default(),
             source: "sword_earth", name: "Earth Sword", element: "earth",
             shopcost: 1000, type: "armor", piece: "rhand",
-            stats: { "strength": 10, "agi": -5 }, ...args || {},
+            stats: { "strength": 3, "agi": -5 }, ...args || {},
         }
     },
     shieldearth(args) {
@@ -791,7 +791,7 @@ let items = {
             ...items.default(),
             source: "head_physical", name: "Physical Head", element: "physical",
             shopcost: 1000, type: "armor", piece: "head",
-            stats: { "def": 3, "strength": 5 }, ...args || {},
+            stats: { "def": 2, "strength": 1 }, ...args || {},
         }
     },
     bodyphysical(args) {
@@ -799,7 +799,7 @@ let items = {
             ...items.default(),
             source: "body_physical", name: "Physical Body", element: "physical",
             shopcost: 1000, type: "armor", piece: "body",
-            stats: { "def": 3, "strength": 5 }, ...args || {},
+            stats: { "def": 2, "strength": 1 }, ...args || {},
         }
     },
     swordphysical(args) {
@@ -807,7 +807,7 @@ let items = {
             ...items.default(),
             source: "sword_physical", name: "Physical Sword", element: "physical",
             shopcost: 1000, type: "armor", piece: "rhand",
-            stats: { "strength": 10 }, ...args || {},
+            stats: { "strength": 3 }, ...args || {},
         }
     },
     shieldphysical(args) {
@@ -815,7 +815,7 @@ let items = {
             ...items.default(),
             source: "shield_physical", name: "Physical Shield", element: "physical",
             shopcost: 1000, type: "armor", piece: "lhand",
-            stats: { "strength": 5 }, ...args || {},
+            stats: { "strength": 1 }, ...args || {},
         }
     },
     
@@ -1281,7 +1281,7 @@ let items = {
             ...items.default(),
             source: "baseballbat", name: "Baseball Bat", element: "physical",
             shopcost: 300, type: "armor", piece: "rhand",
-            stats: { "strength": 3, "agi": 6 }, ...args || {},
+            stats: { "strength": 3, "agi": 10 }, ...args || {},
         }
     },
     tophat(args) {
@@ -1439,12 +1439,24 @@ let items = {
         }
     },
 
+    potionverysmall(args) {
+        return {
+            ...items.default(),
+            source: "potion", name: "Very Small Potion", type: "potion",
+            desc: "Heals 5 HP (best used outside of battles)",
+            max: 99, shopcost: 50,
+            effect: () => {
+                healPlayer(args.player, 5, args.anchor, args.offset);
+            },
+            ...args || {},
+        }
+    },
     potion(args) {
         return {
             ...items.default(),
             source: "potion", name: "Small Potion", type: "potion",
             desc: "Heals 20 HP",
-            max: 99, shopcost: 200,
+            max: 99, shopcost: 250,
             effect: () => {
                 healPlayer(args.player, 20, args.anchor, args.offset);
             },
@@ -1456,7 +1468,7 @@ let items = {
             ...items.default(),
             source: "potion_medium", name: "Medium Potion", type: "potion",
             desc: "Heals 50 HP",
-            max: 99, shopcost: 600,
+            max: 99, shopcost: 1000,
             effect: () => {
                 healPlayer(args.player, 50, args.anchor, args.offset);
             },
@@ -1468,7 +1480,7 @@ let items = {
             ...items.default(),
             source: "potion_large", name: "Large Potion", type: "potion",
             desc: "Heals 100 HP",
-            max: 99, shopcost: 1500,
+            max: 99, shopcost: 2500,
             effect: () => {
                 healPlayer(args.player, 100, args.anchor, args.offset);
             },

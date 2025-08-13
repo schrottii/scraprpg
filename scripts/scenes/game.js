@@ -140,6 +140,7 @@ function teleportPlayer(mmap, x, y) {
 }
 
 function checkTileDialogue() {
+    if (inDialogue) return false;
     if (getTile(map, game.position[0], game.position[1]) != undefined) {
         if (getTile(map, game.position[0], game.position[1]).dialogue != undefined) {
             startDialogue(map.dialogues[getTile(map, game.position[0], game.position[1]).dialogue]);
@@ -237,6 +238,10 @@ function spawnMapEnemy(possibleSpawns) {
     if (posX == game.position[0]) return false;
     if (posY == game.position[1]) return false;
     if (getTile(map, posX, posY).occupied == true) return false;
+
+    // do not spawn near the player
+    if (posX - game.position[0] < 5 && posX - game.position[0] > -5) return false;
+    if (posY - game.position[1] < 5 && posY - game.position[1] > -5) return false;
 
     activeEnemies.push(mapenemies[possibleSpawns]({
         position: [posX, posY], map: game.map,

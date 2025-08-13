@@ -1345,7 +1345,7 @@ scenes.mapmaker = () => {
         }
     }));
 
-    const dialogueScriptTypes = ["Add Quest", "Claim Quest", "Talk Quest Progress", "Give Item", "Teleport"];
+    const dialogueScriptTypes = ["Add Quest", "Claim Quest", "Talk Quest Progress", "Give Item", "Teleport", "Open Shop"];
     createDialogueButtons.push(controls.button({
         anchor: [0.3, 0.76], sizeAnchor: [0.05, 0.05], offset: [72 * 16, -600],
         text: "Script", alpha: 0, selected: "",
@@ -1402,6 +1402,16 @@ scenes.mapmaker = () => {
                             tpTo = tpTo.split(".");
 
                             result = "teleportPlayer('" + tpTo[0] + "', " + tpTo[1] + ", " + tpTo[2] + ")";
+                            break;
+                        case "Open Shop":
+                            if (selectedInfoType == "shops" && isValid(selectedInfo)) {
+                                result = "openShop('" + selectedInfo + "')";
+                            }
+                            else {
+                                showInfo();
+                                renderInfo("shops");
+                                return;
+                            }
                             break;
                     }
 
@@ -2963,6 +2973,12 @@ scenes.mapmaker = () => {
             case "quests":
                 grabFrom = [];
                 for (let q in quests) {
+                    grabFrom.push(q);
+                }
+                break;
+            case "shops":
+                grabFrom = [];
+                for (let q in shops) {
                     grabFrom.push(q);
                 }
                 break;

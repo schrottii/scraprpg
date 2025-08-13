@@ -394,9 +394,9 @@ scenes.fight = () => {
                 wrenchGain = wrenchGain * Math.ceil(wrenchLUK) / 64;
                 brickGain = brickGain * Math.ceil(brickLUK) / 128;
 
-                EXPforAll = Math.ceil(EXPforAll * [8, 1, 0.5][settings.difficulty]);
-                wrenchGain = Math.ceil(wrenchGain * [4, 1, 0.5][settings.difficulty]);
-                brickGain = Math.ceil(brickGain * [10, 1, 1][settings.difficulty]);
+                EXPforAll = Math.ceil(EXPforAll * [1.5, 1, 2][settings.difficulty]);
+                wrenchGain = Math.ceil(wrenchGain * [2, 1, 3][settings.difficulty]);
+                brickGain = Math.ceil(brickGain * [2, 1, 3][settings.difficulty]);
 
                 addWrenches(wrenchGain);
                 addBricks(brickGain);
@@ -505,7 +505,6 @@ scenes.fight = () => {
 
     function deathScreen() {
         // GAME OVER
-        game.stats.fightsLost++;
         stopMusic();
 
         addAnimator(function (t) {
@@ -1933,6 +1932,16 @@ scenes.fight = () => {
             tempBuffRemoveAll(characters[i]);
         }
 
+        // destroy enemies near you
+        let posX;
+        let posY;
+        for (let e in activeEnemies) {
+            posX = activeEnemies[e].position[0];
+            posY = activeEnemies[e].position[1];
+            if (posX - game.position[0] < 5 && posX - game.position[0] > -5) activeEnemies.splice(e, 1);
+            if (posY - game.position[1] < 5 && posY - game.position[1] > -5) activeEnemies.splice(e, 1);
+        }
+
         fadeOut(1000, true, () => setScene(scenes.game()));
     }
 
@@ -2524,6 +2533,12 @@ scenes.fight = () => {
             if (this.alpha == 1) {
                 playSound("buttonClickSound");
                 loadGame();
+
+                game.stats.fightsLost++;
+                for (let c in game.chars) {
+                    game.characters[game.chars[c]].HP = getStat(game.chars[c], "maxHP");
+                }
+
                 endFight();
             }
         }

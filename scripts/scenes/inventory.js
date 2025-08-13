@@ -214,6 +214,29 @@ scenes.inventory = () => {
         alpha: 1
     }))
 
+    coolDisplays.push(controls.label({
+        anchor: [0.275, 0.925],
+        fill: "black", align: "right", fontSize: 20,
+        text: "",
+        alpha: 1
+    }))
+    coolDisplays.push(controls.label({
+        anchor: [0.275, 0.975],
+        fill: "black", align: "right", fontSize: 20,
+        text: "",
+        alpha: 1
+    }))
+    coolDisplays.push(controls.image({
+        anchor: [0.29, 0.925], offset: [-16, -16], sizeOffset: [32, 32],
+        source: "wrench",
+        alpha: 1,
+    }));
+    coolDisplays.push(controls.image({
+        anchor: [0.29, 0.975], offset: [-16, -16], sizeOffset: [32, 32],
+        source: "brick",
+        alpha: 1,
+    }));
+
     fadeIn(1000 / 3, true);
 
     return {
@@ -269,6 +292,9 @@ scenes.inventory = () => {
 
             coolDisplays[0].text = "Current time: " + getTime();
             coolDisplays[2].text = "Total time spent: " + getTime(game.stats.playTime, 60, 3600, true);
+
+            coolDisplays[4].text = game.bricks;
+            coolDisplays[5].text = game.wrenches;
         },
         // Controls
         controls: [

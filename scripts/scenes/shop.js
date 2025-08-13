@@ -9,7 +9,6 @@ function openShop(whichone) {
 }
 
 scenes.shop = () => {
-
     let bottomRects = [];
     let navigationButtons = [];
     let shopTextControls = [];
@@ -408,6 +407,7 @@ scenes.shop = () => {
 
             if (shop.limitedBuy != false && typeText.text == "") {
                 typeText.text = {
+                    none: "(Doesn't buy your stuff)",
                     flower: "Flowers",
                     potion: "Potions",
                     armor: "Clothes",
