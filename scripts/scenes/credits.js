@@ -246,7 +246,7 @@ scenes.credits = () => {
 
     // Zedoreku (right)
     creditTexts.push(controls.label({
-        text: "Zedoreku",
+        text: "zedoreku",
         anchor: [0.8, 1.5],
         fontSize: 32, fill: "white", alpha: 1,
     }));
@@ -263,27 +263,12 @@ scenes.credits = () => {
     }));
 
     creditTexts.push(controls.label({
-        text: "6 tracks:",
+        text: "house door and window",
         anchor: [0.79, 1.6], align: "right",
         fontSize: 24, fill: "white", alpha: 1,
     }));
     creditTexts.push(controls.label({
-        text: "Azure Waves, But a Mirage",
-        anchor: [0.79, 1.625], align: "right",
-        fontSize: 24, fill: "white", alpha: 1,
-    }));
-    creditTexts.push(controls.label({
-        text: "Cloudier Blue II, Eerie",
-        anchor: [0.79, 1.65], align: "right",
-        fontSize: 24, fill: "white", alpha: 1,
-    }));
-    creditTexts.push(controls.label({
-        text: "Frigid Caverns v3, Journeys Decision",
-        anchor: [0.79, 1.675], align: "right",
-        fontSize: 24, fill: "white", alpha: 1,
-    }));
-    creditTexts.push(controls.label({
-        text: "Composer",
+        text: "Graphic Designer",
         anchor: [0.81, 1.6], align: "left",
         fontSize: 24, fill: "white", alpha: 1,
     }));

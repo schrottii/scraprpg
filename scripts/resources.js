@@ -395,14 +395,8 @@ var audio = {
     "bgm/evilcastle/intro": "data/bgm/lun_SOTR__Warmonger_Walls_Intro.mp3",
     "bgm/evilcastle": "data/bgm/lun_SOTR__Warmonger_Walls_Loop.mp3",
 
-    "bgm/cave": "data/bgm/zed_SOTR__Frigid_Caverns_v3.ogg",
-
     "bgm/icecave/intro": "data/bgm/lun_SOTR__Subzero_Ooga_Intro.mp3",
     "bgm/icecave": "data/bgm/lun_SOTR__Subzero_Ooga_Loop.mp3",
-
-    "bgm/mountain": "data/bgm/zed_SOTR__Cloudier_Blue_II_v2.ogg",
-
-    "bgm/water": "data/bgm/zed_SOTR__Azure_Waves.ogg",
 
     "bgm/fight": "data/bgm/dec_SOTR__Battle_Theme.ogg",
 
@@ -414,8 +408,6 @@ var audio = {
     "bgm/title": "data/bgm/dec_SOTR__Title_OST.mp3",
 
     "bgm/credits": "data/bgm/lun_SOTR__Crewdiss.mp3",
-
-    "bgm/eerie": "data/bgm/zed_SOTR__Eerie.ogg",
 
     "bgm/placeholder": "data/bgm/theme05_(ScrapRPG_Mix).mp3",
 

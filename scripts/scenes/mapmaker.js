@@ -230,7 +230,6 @@ scenes.mapmaker = () => {
 
                 // fill redo
                 if (redoLog.length > 0 && redoLog[0][4] != undefined && (redoLog[1][4] == undefined || redoLog[0][4] == redoLog[1][4])) {
-                    console.log("it's a repeat")
                     this.onClick();
                 }
 
@@ -3289,7 +3288,7 @@ scenes.mapmaker = () => {
             //console.log(tilesFilled);
             if (mp.substr(x * 4, 3) != rePlaced) {
                 // Nope (limit Y)
-                console.log("y limiter");
+                //console.log("y limiter");
                 break;
             }
 
@@ -3329,7 +3328,7 @@ scenes.mapmaker = () => {
             mp = map[layer][y];
             x = temp[0];
         }
-        console.log("fill while, end");
+        //console.log("fill while, end");
     }
 
     function eraseTile(x, y, layer) {
@@ -3491,7 +3490,7 @@ scenes.mapmaker = () => {
                         currentMap = lmresult.id; // from file
                         map = maps[lmresult];
 
-                        console.log("loaded: " + currentMap);
+                        //console.log("loaded: " + currentMap);
                         newMap();
                     }
                     else {

@@ -18,7 +18,7 @@ function createEnemy(type) {
                 poy = ret[1];
             }
             else {
-                console.log("huhh????")
+                //console.log("huhh????")
             }
             if (dup == 0) {
                 currentEnemies.push([type, pox, poy, "2x2"]);

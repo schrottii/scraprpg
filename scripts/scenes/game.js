@@ -955,7 +955,7 @@ scenes.game = () => {
             }
             else {
                 // already pre-generated
-                console.log("from pregen")
+                //console.log("from pregen")
                 for (let j in activeEnemies[i].gen){
                     createEnemy(activeEnemies[i].gen[j]);
                 }
