@@ -293,8 +293,8 @@ scenes.inventory = () => {
             coolDisplays[0].text = "Current time: " + getTime();
             coolDisplays[2].text = "Total time spent: " + getTime(game.stats.playTime, 60, 3600, true);
 
-            coolDisplays[4].text = game.bricks;
-            coolDisplays[5].text = game.wrenches;
+            coolDisplays[4].text = game.wrenches;
+            coolDisplays[5].text = game.bricks;
         },
         // Controls
         controls: [

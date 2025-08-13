@@ -380,15 +380,15 @@ scenes.fight = () => {
                 }
                 for (j = 0; j < 3; j++) {
                     for (i = 0; i < 3; i++) {
-                        if (epositions[i][j].strength != undefined) wrenchGain += epositions[i][j].strength * 4;
+                        if (epositions[i][j].strength != undefined) wrenchGain += epositions[i][j].strength * 1;
                         if (epositions[i][j].maxHP != undefined) wrenchGain += epositions[i][j].maxHP / 4;
                     }
                 }
 
                 // get currencies based on luck
-                for (i in game.characters) {
-                    wrenchLUK += getStat(game.characters[i].name.toLowerCase(), "luk");
-                    brickLUK += getStat(game.characters[i].name.toLowerCase(), "luk") / 4;
+                for (i in game.chars) {
+                    wrenchLUK += getStat(game.chars[i], "luk");
+                    brickLUK += getStat(game.chars[i], "luk") / 4;
                 }
                 wrenchGain = wrenchGain * (1 + Object.keys(game.monsterbook).length * 0.02);
                 wrenchGain = wrenchGain * Math.ceil(wrenchLUK) / 64;

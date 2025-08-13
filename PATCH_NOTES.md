@@ -2,7 +2,7 @@
 ## 1.0 (2025-08-13)
 - Release 
 
-## 1.0.1 (2025-08-13)
+## 1.0.1 (2025-08-14)
 -> Maps:
 - Bricky Town: expanded to the right side, with a Shop building!
 - This first shop sells Very Small Potions, Energy Drinks, and at lvl 2 Small Potions
@@ -26,6 +26,7 @@
 - After going Game Over, you now get fully healed
 - Inventory: Your Wrenches and Bricks are now visible
 - Changed .ogg files to .mp3 to avoid iOS issues
+- Fixed an issue that caused too high Wrench gains
 
 -> Internal:
 - Map Maker: added dialogue script Open Shop
