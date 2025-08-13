@@ -1,4 +1,4 @@
-# ScrapRPG
+﻿# ScrapRPG
 A *Scrap Clicker* RPG fan game. Despite the games it is based on, it is not an idle game. It is a full-blown RPG with maps, enemies, spells and all that stuff. But it plays in the Scrap universe and contains bits of official lore. 
 
 The game is approved and licensed by Schrott Games / Endte, and also copyrighted (see license file). Any other Scrap RPGs are fake. 

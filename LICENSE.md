@@ -1,4 +1,4 @@
-ScrapRPG license: 
+﻿ScrapRPG license: 
 - Copyright, name and project owned by Schrottii
 - Modifying the game or cheating is not allowed 
 - Players are freely allowed to make fanart, suggest stuff, etc. and upload videos (as long as they contain no cheating, discriminating content or illegal content)

@@ -1,4 +1,4 @@
-A basic ScrapRPG documentation as even I (frankneurhein) found myself struggling to remember some things sometimes
+﻿A basic ScrapRPG documentation as even I found myself struggling to remember some things sometimes
 
 Name means the thing you have to use in the code
 
