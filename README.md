@@ -5,6 +5,10 @@ The game is approved and licensed by Schrott Games / Endte, and also copyrighted
 
 The game used to be made by a team of almost a dozen people, and some brought music, ideas and sprites to the table. But 98% of the game was made by the Schrottii, including 99.5% of the code, most enemies, maps, polishing, etc.
 
+# Play:
+- [Web Version](https://schrottii.github.io/scraprpg/)
+- [Windows Download](https://github.com/schrottii/scraprpg/releases/download/release/ScrapRPG.zip)
+
 ## Links
 - [License](LICENSE.md)
 - [Users added to the game](USERS.md)
