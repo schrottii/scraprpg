@@ -1,0 +1,7 @@
+exclude:
+  - node_modules
+  - out
+  - data/images
+  - scripts
+  - package.json
+  - package-lock.json
