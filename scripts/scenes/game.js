@@ -509,7 +509,7 @@ scenes.game = () => {
 
     function dialogueBox() {
         let text;
-        if (currentDialogue[dialogueProgress] == undefined) return false;
+        if (currentDialogue == undefined || currentDialogue[dialogueProgress] == undefined) return false;
         if (typeof (currentDialogue[dialogueProgress].text) == "string") text = currentDialogue[dialogueProgress].text;
         else text = currentDialogue[dialogueProgress].text();
 
