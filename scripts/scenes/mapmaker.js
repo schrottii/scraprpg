@@ -977,6 +977,8 @@ scenes.mapmaker = () => {
                 game.map.tiles = Object.assign({}, game.map.tiles, loadPacks());
                 game.position = toPos;
 
+                localStorage.setItem("SRPGMM", JSON.stringify(map));
+
                 canMove = true;
                 isMapTestingMode = true;
                 setScene(scenes.game());
@@ -1439,12 +1441,12 @@ scenes.mapmaker = () => {
                 }
                 if (map.npcs[curNPC] == undefined) {
                     map.npcs[curNPC] = {
-                        position: [4, 4],
+                        position: [game.position[0], game.position[1]],
                         map: currentMap,
                     }
                 }
                 for (j in npcs.default) {
-                    if (map.npcs[curNPC][j] == undefined) map.npcs[curNPC][j] = npcs.default[j];
+                    if (map.npcs[curNPC][j] == undefined && j != "dialogues") map.npcs[curNPC][j] = npcs.default[j];
                 }
 
                 this.text = "NPC: " + curNPC;
@@ -1461,6 +1463,7 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) {
                 if (selectedInfoType == "dialogues" && isValid(selectedInfo)) {
                     if (map.dialogues[selectedInfo] != undefined && isValid(selectedInfo)) {
+                        if (!isValid(map.npcs[curNPC].dialogues)) map.npcs[curNPC].dialogues = {};
                         map.npcs[curNPC].dialogues["1"] = selectedInfo;
                         this.text = "Dialogue: " + selectedInfo;
 
@@ -2435,7 +2438,7 @@ scenes.mapmaker = () => {
         }
         for (i in activeNPCs) {
             for (j in npcs.default) {
-                if (activeNPCs[i][j] == undefined) activeNPCs[i][j] = npcs.default[j];
+                if (activeNPCs[i][j] == undefined && j != "dialogues") activeNPCs[i][j] = npcs.default[j];
             }
         }
     }
@@ -2534,7 +2537,6 @@ scenes.mapmaker = () => {
         // Add something to the undo log
         undoLog.unshift([x, y, layer, prevContent, fill])
         undoButtons[0].alpha = 1;
-        console.log(undoLog.length);
         if (undoLog.length > 2048) undoLog.pop();
         //console.log(undoLog.length, undoLog);
     }
@@ -2781,7 +2783,7 @@ scenes.mapmaker = () => {
         createNPCLabels[3].text = map.npcs[curNPC].walkingInterval;
         createNPCLabels[4].text = map.npcs[curNPC].walkingSpeed;
 
-        createNPCButtons[1].text = "Dialogue: " + map.npcs[curNPC].dialogues["1"];
+        if (map.npcs[curNPC].dialogues != undefined) createNPCButtons[1].text = "Dialogue: " + map.npcs[curNPC].dialogues["1"];
 
         loadNPCs();
         updateTiles = true;

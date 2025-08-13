@@ -161,6 +161,15 @@ let images = {
     "npcs/cow": "data/images/npcs/658_cow.png",
     "npcs/peter": "data/images/npcs/661_peter.png",
 
+    "npcs/stella": "data/images/npcs/Stella.png",
+    "npcs/aaron": "data/images/npcs/Aaron.png",
+    "npcs/common_npc": "data/images/npcs/common_npc.png",
+    "npcs/common_npc2": "data/images/npcs/common_npc2.png",
+    "npcs/common_npc3": "data/images/npcs/common_npc3.png",
+    "npcs/deserto": "data/images/npcs/deserto.png",
+    "npcs/metallo": "data/images/npcs/metallo.png",
+    "npcs/mountaino": "data/images/npcs/mountaino.png",
+
     Portraits_NAN: "data/images/npcs/Portraits_NAN.png",
     Portraits_Endte: "data/images/npcs/Portraits_Endte.png",
 

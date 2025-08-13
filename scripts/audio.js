@@ -14,7 +14,9 @@ function playMusic(name, intro = "none") {
     if (musicPlayer.volume > 0 && musicPlayer.volume <= 1) {
         if (audio[name].src != musicPlayer.src) {
             if (intro == "none") {
+                playAfterIntro = "none"; // play the loop, nothing after that
                 musicPlayer.src = audio[name].src;
+                musicPlayer.loop = true;
             }
             else {
                 playAfterIntro = name;

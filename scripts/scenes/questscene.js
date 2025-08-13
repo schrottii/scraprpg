@@ -48,8 +48,8 @@ scenes.questscene = () => {
             text: "", q: undefined,
             onClick(args) {
                 // insta claim
-                if (this.q != undefined && quests[this.q].instaclaim && !isQuestClaimed(q)) {
-                    claimQuest(q);
+                if (this.q != undefined && quests[this.q].instaclaim && !isQuestClaimed(this.q)) {
+                    claimQuest(this.q);
                 }
             }
         }))
@@ -120,7 +120,7 @@ scenes.questscene = () => {
                     else questText[2 + k].text = "* Claimed *";
 
                     questText[3 + k].text = "Nr." + quest.id;
-                    questText[4 + k].text = getTime(calcQuestDuration(quest.id));
+                    questText[4 + k].text = isQuestComplete(q) ? getTime(calcQuestDuration(q)) : "-";
 
                     questText[5 + k].source = quest.source != undefined ? quest.source : "items/scroll";
                     questText[5 + k].alpha = 1;

@@ -74,11 +74,28 @@ talk "talkID"
 */
 
 var quests = {
+    /*
     "test": {
         name: "Test Quest",
         description: "Kill the 3 Peters of the land.",
         goal: ["enemy", "evil_peter", 3],
         repeatable: false, instaclaim: true,
         items: { "potion": 1, "swordwood": 1 }
-    }
+    },
+    */
+
+    // Chapter 1
+    "firstQuest": {
+        name: "Your first quest",
+        description: "Talk to three people in Bricky Town",
+        goal: ["talk", "brickyTown", 3],
+        repeatable: false, instaclaim: true,
+        items: { "potion": 1 }
+    },
+    "aliens": {
+        name: "Aliens?",
+        description: "Jan Kin claims aliens are real. Can you find one?",
+        goal: ["talk", "alien", 1],
+        items: { "potion": 1 }
+    },
 };
