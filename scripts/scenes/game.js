@@ -968,7 +968,7 @@ scenes.game = () => {
             areaTeleportFade.alpha = 0;
             stopMusic();
             let previouszoom = zoom;
-            setTimeout(() => {
+            setTimeout((enemyID) => {
                 createImageAnimation(images.tokenattack, 10, 6, 4000, 1350, 50);
                 addAnimator(function (t) {
                     zoom = 1 + (t / 500);
@@ -980,6 +980,9 @@ scenes.game = () => {
                     }
                     if (t > 2999) {
                         startFight();
+
+                        console.log(enemyID)
+                        activeEnemies.splice(enemyID, 1);
 
                         zoom = previouszoom;
                         tokenRunning = false;

@@ -144,7 +144,7 @@ scenes.savemanager = () => {
                 if (mode == "export") {
                     if (localStorage["SRPG" + a] == "null") return false; // don't export if it's empty xd
 
-                    let exporter = localStorage["SRPG" + a];
+                    let exporter = JSON.parse(localStorage["SRPG" + a]);
 
                     if (confirm("Do you want to export this save with " + getTime(exporter.stats.playTime, 60, 3600, true) + " play time?")) {
                         exporter = JSON.stringify(exporter);

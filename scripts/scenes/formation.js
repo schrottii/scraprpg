@@ -151,7 +151,8 @@ scenes.formation = () => {
         }
     }
 
-    for (i in game.characters) {
+    for (let ch in game.chars) {
+        i = game.chars[ch];
         let thisPos = game.characters[i].pos[0] + 3 * game.characters[i].pos[1];
 
         // Already occupied - 2 on the same pos?!

@@ -39,7 +39,7 @@ let game = {
             EP: 3,
             HP: 22,
             effect: ["none", 0],
-            pos: [0, 0],
+            pos: [1, 1],
             macro: "attack",
             equipment: {
                 "head": "none",
@@ -163,7 +163,7 @@ let game = {
 let settings = {
     // gameplay
     FPS: 60,
-    autosave: false,
+    autosave: true,
     difficulty: 1,
     circles: "npcs",
 
@@ -193,7 +193,7 @@ for (c in game.characters) {
 var saveNR = 0;
 
 function isDevMode() {
-    return true;
+    return false;
 }
 
 function load(x, altx) {
@@ -262,7 +262,7 @@ function loadGame() {
         if (saveCopy.stats == undefined) saveCopy.stats = game.stats;
 
         if (saveCopy.characters.bleu.pos == undefined) {
-            saveCopy.characters.bleu.pos = [0, 0];
+            saveCopy.characters.bleu.pos = [1, 1];
             saveCopy.characters.corelle.pos = [0, 1];
             saveCopy.characters.gau.pos = [2, 2];
             saveCopy.characters.koki.pos = [2, 1];

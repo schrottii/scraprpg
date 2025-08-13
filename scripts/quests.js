@@ -11,7 +11,7 @@ function calcQuestDuration(name) {
 
 // quest lifecycle: start -> complete -> claim
 function addQuest(name) {
-    if (game.quests[name] == undefined) {
+    if (game.quests[name] == undefined && quests[name] != undefined) {
         game.quests[name] = [0, game.stats.playTime, 0];
         return true;
     }
@@ -54,7 +54,7 @@ function claimQuest(name) {
 
 function questProgress(goalType, goalItem) {
     for (let q in game.quests) {
-        if (quests[q].goal[0] == goalType && quests[q].goal[1] == goalItem) game.quests[q][0]++;
+        if (quests[q].goal[0] == goalType && (quests[q].goal[1] == goalItem || quests[q].goal[1] == "")) game.quests[q][0]++;
         // you need to claim from the menu, not here
         /*
         if (game.quests[q].instaclaim != undefined && game.quests[q].instaclaim == true) {
@@ -92,22 +92,29 @@ var quests = {
     // Chapter 1
     "firstQuest": {
         name: "Your first quest",
-        description: "Talk to three people in Bricky Town",
+        description: "Talk to three people in Bricky Town (Reward: 1 Potion)",
         goal: ["talk", "brickyTown", 3],
         repeatable: false, instaclaim: true,
         items: { "potion": 1 }
     },
     "aliens": {
-        name: "Aliens?",
-        description: "Jan Kin claims aliens are real. Can you find one?",
+        name: "Aliens?", source: "items/book_ectoplasm",
+        description: "Jan Kin claims aliens are real. Can you find one? (Reward: 1 Spell Book)",
         goal: ["talk", "alien", 1],
-        items: { "potion": 1 }
+        items: { "spellbookectoplasms": 1 }
     },
     "rabbitPlague": {
-        name: "Rabbit Plague",
-        description: "Defeat 20 Evil Peters",
-        goal: ["enemy", "evil_peter", 1],
+        name: "Rabbit Plague", source: "enemies/evilpeter", snip: [0, 32, 32, 32],
+        description: "Defeat 20 Evil Peters (Reward: 1 Spell Book)",
+        goal: ["enemy", "evil_peter", 20],
         repeatable: true, instaclaim: false,
         items: { "spellbookearths": 1 }
+    },
+    "evilBarrels": {
+        name: "Evil Barrels", source: "enemies/weakhelter", snip: [0, 32, 32, 32],
+        description: "Prove to Edward that you are capable of survival (Reward: 1 Energy Drink)",
+        goal: ["enemy", "", 10],
+        instaclaim: true,
+        items: { "energydrink": 1 }
     },
 };

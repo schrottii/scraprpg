@@ -3142,22 +3142,23 @@ scenes.fight = () => {
     }
 
     // insert characters into positions
-    for (i in game.characters) {
-        if (game.chars.includes(game.characters[i].name.toLowerCase())) { //only if he is in the party
-            if (game.characters[i].pos != undefined) {
+    for (i in game.chars) {
+        let char = game.chars[i];
+        if (game.chars.includes(char)) { // only if they are in the party
+            if (game.characters[char].pos != undefined) {
                 let duplicate = false;
                 for (j in game.characters) {
-                    if (game.characters[i].pos[0] == game.characters[j].pos[0] && game.characters[i].pos[1] == game.characters[j].pos[1] && i != j) duplicate = true;
+                    if (game.characters[char].pos[0] == game.characters[j].pos[0] && game.characters[char].pos[1] == game.characters[j].pos[1] && i != j) duplicate = true;
                 }
                 while (duplicate == true) {
-                    game.characters[i].pos = [Math.floor(3 * Math.random()), Math.floor(3 * Math.random())];
+                    game.characters[char].pos = [Math.floor(3 * Math.random()), Math.floor(3 * Math.random())];
                     duplicate = false;
                     for (j in game.characters) {
-                        if (game.characters[i].pos[0] == game.characters[j].pos[0] && game.characters[i].pos[1] == game.characters[j].pos[1] && i != j) duplicate = true;
+                        if (game.characters[char].pos[0] == game.characters[j].pos[0] && game.characters[char].pos[1] == game.characters[j].pos[1] && char != j) duplicate = true;
                     }
                 }
-                positions[game.characters[i].pos[0]][game.characters[i].pos[1]].occupied = game.characters[i].name.toLowerCase();
-                positions[game.characters[i].pos[0]][game.characters[i].pos[1]].isOccupied = true;
+                positions[game.characters[char].pos[0]][game.characters[char].pos[1]].occupied = char;
+                positions[game.characters[char].pos[0]][game.characters[char].pos[1]].isOccupied = true;
             }
         }
     }

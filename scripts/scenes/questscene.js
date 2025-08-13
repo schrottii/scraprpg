@@ -102,10 +102,34 @@ scenes.questscene = () => {
             let k = 0;
             let quest;
 
+            for (let q = 0; q < 5; q++) {
+                k = q * 6; // things per button
+
+                questText[0 + k].text = "";
+                questText[1 + k].text = "";
+                questText[2 + k].text = "";
+
+                questText[3 + k].text = "";
+                questText[4 + k].text = "";
+
+                questText[5 + k].source = "";
+                questText[5 + k].snip = false;
+                questText[5 + k].alpha = 0;
+
+                questButtons[q].q = undefined;
+                questButtons[q].fillTop = colors.topcolor;
+                questButtons[q].fillBottom = colors.bottomcolor;
+            }
+
             for (let q in game.quests) {
                 if (quests[q] != undefined && game.quests[q] != undefined) {
                     quest = quests[q];
                     quest.id = (jj + 1);
+
+                    // skip claimed quests
+                    if (isQuestClaimed(q)) {
+                        continue;
+                    }
 
                     // update texts
                     k = 6 * jj;
@@ -123,6 +147,7 @@ scenes.questscene = () => {
                     questText[4 + k].text = isQuestClaimed(q) ? getTime(calcQuestDuration(q)) : "-";
 
                     questText[5 + k].source = quest.source != undefined ? quest.source : "items/scroll";
+                    questText[5 + k].snip = quest.snip != undefined ? quest.snip : false;
                     questText[5 + k].alpha = 1;
 
                     questButtons[jj].q = q;
@@ -134,25 +159,9 @@ scenes.questscene = () => {
                         questButtons[jj].fillTop = colors.buttontop;
                         questButtons[jj].fillBottom = colors.buttonbottom;
                     }
+
+                    jj++;
                 }
-                else {
-                    questText[0 + k].text = "";
-                    questText[1 + k].text = "";
-                    questText[2 + k].text = "";
-
-                    questText[3 + k].text = "";
-                    questText[4 + k].text = "";
-
-                    questText[5 + k].source = "";
-                    questText[5 + k].alpha = 0;
-
-                    questButtons[jj].q = undefined;
-                    questButtons[jj].fillTop = colors.bottomcolor;
-                    questButtons[jj].fillBottom = colors.topcolor;
-                }
-
-                // increase counter by 1
-                jj++;
             }
         },
         // Controls
