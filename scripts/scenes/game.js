@@ -1,6 +1,7 @@
 ﻿var zoom = 1;
 var zswm = 1;
 var kofs = [0, 0, 0];
+var head = 0;
 
 var mapWidth = 0;
 var map;
@@ -235,9 +236,7 @@ function spawnMapEnemy(possibleSpawns) {
     let posX = Math.floor(Math.random() * mapWidth);
     let posY = Math.floor(Math.random() * maps[game.map].map.length);
 
-    if (posX == game.position[0]) return false;
-    if (posY == game.position[1]) return false;
-    if (getTile(map, posX, posY).occupied == true) return false;
+    if (getTile(map, posX, posY).occupied == true || getTile(map, posX, posY).swim == true) return false;
 
     // do not spawn near the player
     if (posX - game.position[0] < 5 && posX - game.position[0] > -5) return false;
@@ -326,7 +325,6 @@ let autoSaveText = controls.label({
 });
 
 scenes.game = () => {
-    let head = 0;
     let pad = "";
 
     var scale;
@@ -1060,10 +1058,10 @@ scenes.game = () => {
         if (game.characters[game.leader].HP < 1) {
             let highest = 0;
             let who = "";
-            for (i in game.characters) {
-                if (game.characters[i].HP > highest) {
-                    highest = game.characters[i].HP;
-                    who = game.characters[i].name.toLowerCase();
+            for (i in game.chars) {
+                if (game.characters[game.chars[i]].HP > highest) {
+                    highest = game.characters[game.chars[i]].HP;
+                    who = game.characters[game.chars[i]].name.toLowerCase();
                 }
             }
             if (highest == 0 || who == "") {
@@ -1170,13 +1168,6 @@ scenes.game = () => {
         movable: true, movable2: true, lifespan: 5, alpha: 1, amount: 150, spawnTime: 0.02,
         dead: true, repeatMode: true,
     })
-
-    map = maps[game.map];
-    map.tiles = Object.assign({}, map.tiles, loadPacks(map));
-    loadNPCs();
-    loadAreaMusic();
-    trySpawnEnemy(42);
-    checkTileDialogue();
 
     /*let fallingLeaves = Particles({
         anchor: [0, -0.1], spreadAnchor: [1, 0], sizeOffset: [64, 64], spreadOffset: [0, -256], sizeOffsetVary: [1.5, 1.5], quadraticVary: true,
@@ -1421,6 +1412,13 @@ scenes.game = () => {
     }
 
     // enter game scene, fade in
+    map = maps[game.map];
+    map.tiles = Object.assign({}, map.tiles, loadPacks(map));
+    loadNPCs();
+    loadAreaMusic();
+    trySpawnEnemy(42);
+    checkTileDialogue();
+
     let tTime = 1000 / 3;
     if (previousScene == "main" || previousScene == "title" || previousScene == undefined) tTime = 1500; // Not inventory or fight
     fadeIn(tTime, true);
@@ -1820,6 +1818,7 @@ scenes.game = () => {
                 if (confirm("Do you want to go back to the main menu?")) {
                     setScene(scenes.title());
                 }
+                else currentKeys["q"] = false;
             }
             // open inventory
             if (currentKeys["e"]) {

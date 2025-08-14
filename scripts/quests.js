@@ -33,6 +33,7 @@ function claimQuest(name) {
     // you finished the goal -> claim it -> get reward
     if (game.quests[name] == undefined) return false;
     if (isQuestClaimed(name)) return false; // already claimed
+    if (!isQuestComplete(name)) return false; // already claimed
 
     // set the finish time, this shows that the quest is done
     game.quests[name][2] = game.stats.playTime;
@@ -116,5 +117,11 @@ var quests = {
         goal: ["enemy", "", 10],
         instaclaim: true,
         items: { "energydrink": 1 }
+    },
+    "unhealthyDiet": {
+        name: "Unhealthy Diet", source: "items/energy_drink",
+        description: "Drink 12 Energy Drinks and check in on Myllermit (Reward: Special Energy Drink)",
+        goal: ["useItem", "energydrink", 12],
+        items: { "specialenergydrink": 1 }
     },
 };

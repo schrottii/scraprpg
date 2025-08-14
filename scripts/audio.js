@@ -17,6 +17,7 @@ function playMusic(name, intro = "none") {
                 playAfterIntro = "none"; // play the loop, nothing after that
                 musicPlayer.src = audio[name].src;
                 musicPlayer.loop = true;
+                if (!game.jukebox.includes(name)) game.jukebox.push(name);
             }
             else {
                 playAfterIntro = name;
@@ -42,6 +43,7 @@ function introToLoop() {
         musicPlayer.src = audio[playAfterIntro].src;
         playAfterIntro = "none";
 
+        if (!game.jukebox.includes(name)) game.jukebox.push(name);
         musicPlayer.loop = true;
         musicPlayer.play();
     }

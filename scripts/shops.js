@@ -46,7 +46,7 @@ class Shop {
 
     // Function used to figure out how much I can sell this shit for
     getSellPrice(i) {
-        return items[i]().shopcost / 2;
+        return Math.ceil(items[i]().shopcost / 2);
     }
 
     // Increase this shop's clp after buying or selling an item
@@ -90,7 +90,7 @@ var shops = {
 
     brickyTownShop: new Shop("brickyTownShop", "Bricky Town Shop",
         ["Welcome to my shop!", "Here you can spend your Wrenches from fights"],
-        [{ item: "potionverysmall" }, { item: "potion", amount: 10, clv: 2 }, { item: "energydrink" }],
+        [{ item: "potionverysmall" }, { item: "potion", clv: 2 }, { item: "energydrink" }],
         "potion", false
     ),
 };

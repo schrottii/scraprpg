@@ -90,13 +90,23 @@ scenes.equipment = () => {
                 game.characters[characterSelected].equipment[type] = item.name;
 
                 if (hadEquipped != "none" && hadEquipped != undefined) addItem(hadEquipped, 1);
-                removeItem(item.name, 1);
+                removeItem(item.name, 1, true);
                 showItems();
             }
         }
 
         showItems();
         updateImmunities();
+    }
+
+    function unequipItem(type) {
+        if (game.characters[characterSelected].equipment[type] != "none") {
+            let equipped = game.characters[characterSelected].equipment[type];
+            addItem(equipped, 1);
+            game.characters[characterSelected].equipment[type] = "none";
+            showItems();
+            updateCharacterPreview();
+        }
     }
 
     var equipButton = controls.button({
@@ -125,7 +135,11 @@ scenes.equipment = () => {
 
                     // consent feature: click again or click button to equip
                     if (this.item != undefined) {
-                        if (selectedItem == "" || selectedItem.name != this.item.name) {
+                        if (this.item.name == game.characters[characterSelected].equipment[this.item().piece]) {
+                            // already equipped, instant unequip
+                            unequipItem(this.item().piece);
+                        }
+                        else if (selectedItem == "" || selectedItem.name != this.item.name) {
                             selectedItem = this.item;
                             equipButton.alpha = 1;
                         }
@@ -280,36 +294,52 @@ scenes.equipment = () => {
     characterPreview.push(controls.image({
         anchor: [0.3, 0.5], sizeOffset: [256, 256], offset: [-128, -128],
         source: "items/body_chemical",
-        alpha: 1
+        alpha: 1,
+        onClick(args) {
+            unequipItem("body");
+        }
     }));
     characterPreview.push(controls.image({
         anchor: [0.3, 0.5], sizeOffset: [256, 256], offset: [-128, -128],
         source: "items/head_chemical",
-        alpha: 1
+        alpha: 1,
+        onClick(args) {
+            unequipItem("head");
+        }
     }));
     characterPreview.push(controls.image({
         anchor: [0.3, 0.5], sizeOffset: [128, 128], offset: [-160, 0],
         source: "items/shield_chemical",
-        alpha: 1
+        alpha: 1,
+        onClick(args) {
+            unequipItem("lhand");
+        }
     }));
     characterPreview.push(controls.image({
         anchor: [0.3, 0.5], sizeOffset: [128, 128], offset: [16, 0],
         source: "items/sword_chemical",
-        alpha: 1
+        alpha: 1,
+        onClick(args) {
+            unequipItem("rhand");
+        }
     }));
     // acc 1. 2
     characterPreview.push(controls.image({
         anchor: [0.3, 0.5], sizeOffset: [128, 128], offset: [-160, -256],
         source: "items/crystal_strength",
-        alpha: 1
+        alpha: 1,
+        onClick(args) {
+            unequipItem("acc1");
+        }
     }));
     characterPreview.push(controls.image({
         anchor: [0.3, 0.5], sizeOffset: [128, 128], offset: [32, -256],
         source: "items/crystal_strength",
-        alpha: 1
+        alpha: 1,
+        onClick(args) {
+            unequipItem("acc2");
+        }
     }));
-
-
 
     var filteredItems = [];
     for (let i in Object.keys(game.inventory)){
@@ -330,39 +360,37 @@ scenes.equipment = () => {
                 itemsButtons[i].fill = "white";
                 continue;
             }
-            if (game.inventory[items[inventory[i + itemOffset]].name] > 0) {
-                itemsButtons[i].item = items[inventory[i + itemOffset]];
-                if (game.inventory[items[inventory[i + itemOffset]].name] > 1) {
-                    itemsButtons[i].text = items[inventory[i + itemOffset]]().name + " x" + game.inventory[items[inventory[i + itemOffset]].name];
-                }
-                else itemsButtons[i].text = items[inventory[i + itemOffset]]().name;
 
-                if (inventory[i + itemOffset] == game.characters[characterSelected].equipment[items[inventory[i + itemOffset]]().piece]) {
-                    // Equipped
-                    itemsButtons[i].fillTop = "lime";
-                    itemsButtons[i].fillBottom = "green";
-                }
-                else if (items[inventory[i + itemOffset]]().piece != "none") {
-                    // Can be equipped
-                    itemsButtons[i].fillTop = colors.buttontop;
-                    itemsButtons[i].fillBottom = colors.buttonbottom;
-                    itemsButtons[i].pressedTop = colors.buttontoppressed;
-                    itemsButtons[i].pressedBottom = colors.buttonbottompressed;
-                }
-                else {
-                    // Not equippable, HIDEEE!!!
-                    continue;
-                }
+            if (game.inventory[items[inventory[i + itemOffset]].name] == undefined) game.inventory[items[inventory[i + itemOffset]].name] = 0;
 
-                itemsImages[i].source = "items/" + items[inventory[i + itemOffset]]().source;
-                itemsButtons[i].alpha = 1;
-                itemsImages[i].alpha = 1;
+            itemsButtons[i].item = items[inventory[i + itemOffset]];
+            if (game.inventory[items[inventory[i + itemOffset]].name] != 1) {
+                itemsButtons[i].text = items[inventory[i + itemOffset]]().name + " x" + game.inventory[items[inventory[i + itemOffset]].name];
+            }
+            else itemsButtons[i].text = items[inventory[i + itemOffset]]().name;
+
+            if (inventory[i + itemOffset] == game.characters[characterSelected].equipment[items[inventory[i + itemOffset]]().piece]) {
+                // Equipped
+                itemsButtons[i].fillTop = "lime";
+                itemsButtons[i].fillBottom = "green";
+            }
+            else if (items[inventory[i + itemOffset]]().piece != "none") {
+                // Can be equipped
+                itemsButtons[i].fillTop = colors.buttontop;
+                itemsButtons[i].fillBottom = colors.buttonbottom;
+                itemsButtons[i].pressedTop = colors.buttontoppressed;
+                itemsButtons[i].pressedBottom = colors.buttonbottompressed;
             }
             else {
-                itemsButtons[i].fillTop = "lightgray";
-                itemsButtons[i].fillBottom = "gray";
+                // Not equippable, HIDEEE!!!
+                continue;
             }
+
+            itemsImages[i].source = "items/" + items[inventory[i + itemOffset]]().source;
+            itemsButtons[i].alpha = 1;
+            itemsImages[i].alpha = 1;
         }
+
 
         updateCharacterPreview();
     }

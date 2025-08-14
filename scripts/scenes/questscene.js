@@ -48,7 +48,7 @@ scenes.questscene = () => {
             text: "", q: undefined,
             onClick(args) {
                 // insta claim
-                if (this.q != undefined && quests[this.q].instaclaim && !isQuestClaimed(this.q)) {
+                if (isQuestComplete(this.q) && this.q != undefined && quests[this.q].instaclaim && !isQuestClaimed(this.q)) {
                     claimQuest(this.q);
                 }
             }

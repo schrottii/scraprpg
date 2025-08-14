@@ -158,6 +158,8 @@ let game = {
     monsterbook: {},
 
     quests: {}, // "test": [3, 15846, 16312] <-- progress, start time, finish time
+
+    jukebox: []
 }
 
 let settings = {
@@ -299,6 +301,7 @@ function loadGame() {
 
         if (saveCopy.mItems == undefined) saveCopy.mItems = [];
         if (saveCopy.quests == undefined) saveCopy.quests = {};
+        if (saveCopy.jukebox == undefined) saveCopy.jukebox = [];
 
         // delete items that don't exist anymore
         for (let i in saveCopy.inventory){

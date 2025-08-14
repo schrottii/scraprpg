@@ -46,8 +46,8 @@ scenes.inventory = () => {
         }));
 
         buttonPics.push(controls.image({
-            anchor: [0.7, 0.034 + (0.085 / 8) + (i * 0.1)], sizeOffset: [64, 64], id: i,
-            alpha: 1,
+            anchor: [0.7, 0.004 + (0.085 / 2) + (i * 0.1)], offset: [0, 0], sizeOffset: [64, 64], id: i,
+            alpha: 1, clickstop: false,
             source: ["items/scroll", "items/potion", "fire", "inventory", "grid", "monsterbook", "save", "gear", "flee"][i],
         }));
     }

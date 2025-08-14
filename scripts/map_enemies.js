@@ -94,7 +94,7 @@ let mapenemies = {
     forest1(args) {
         return {
             ...mapenemies.default(), source: "gen",
-            time: "all", minSize: 3, maxSize: 6,
+            time: "all", minSize: 2, maxSize: 4,
             walkingInterval: 0.66, walkingSpeed: 0.66,
             enemies: {
                 "weakhelter": 20,
@@ -110,7 +110,7 @@ let mapenemies = {
     forestsmall(args) {
         return {
             ...mapenemies.default(), source: "gen",
-            time: "all", minSize: 2, maxSize: 4,
+            time: "all", minSize: 1, maxSize: 3,
             walkingInterval: 0.66, walkingSpeed: 1,
             enemies: {
                 "weakhelter": 20,

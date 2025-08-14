@@ -2,6 +2,7 @@ let images = {
     // the most important files!!!
     gear: "data/images/gear.png",
     proud: "data/images/proud.png",
+    ping: "data/images/ping.png",
     npcCircle: "data/images/npcCircle.png",
     enemyCircle: "data/images/enemyCircle.png",
 
@@ -169,6 +170,7 @@ let images = {
     "npcs/deserto": "data/images/npcs/deserto.png",
     "npcs/metallo": "data/images/npcs/metallo.png",
     "npcs/mountaino": "data/images/npcs/mountaino.png",
+    "npcs/kermit": "data/images/npcs/kermit.png",
 
     Portraits_NAN: "data/images/npcs/Portraits_NAN.png",
     Portraits_Endte: "data/images/npcs/Portraits_Endte.png",
@@ -463,6 +465,7 @@ var maps = {
     "brfr1": "scripts/maps/chapter1/brfr1.js",
     "brfr2": "scripts/maps/chapter1/brfr2.js",
     "brfr3": "scripts/maps/chapter1/brfr3.js",
+    "brickyMill": "scripts/maps/chapter1/brickyMill.js",
     //"": "scripts/maps/chapter1/.js",
 };
 

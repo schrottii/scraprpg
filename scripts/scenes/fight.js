@@ -854,6 +854,8 @@ scenes.fight = () => {
                     targetAnchor: positionControls[activeCharacter.action[4] + (activeCharacter.action[5] * 3)].anchor, targetOffset: positionControls[activeCharacter.action[4] + (activeCharacter.action[5] * 3)].offset
                 }).effect();
 
+                questProgress("useItem", activeCharacter.action[1]);
+
                 if (game.characters[positions[activeCharacter.action[4]][activeCharacter.action[5]].occupied].HP < 1) {
                     game.characters[positions[activeCharacter.action[4]][activeCharacter.action[5]].occupied].HP = 0;
                     postLog(positions[activeCharacter.action[2]][activeCharacter.action[3]].name + " killed " + game.characters[positions[activeCharacter.action[4]][activeCharacter.action[5]].occupied].name + "!");
@@ -2184,7 +2186,12 @@ scenes.fight = () => {
             let Experience = epositions[pos1][pos2].strength;
             game.characters[positions[fpos1][fpos2].occupied].EXP += Experience;
 
+            let Mana = Math.ceil(epositions[pos1][pos2].maxHP / 20);
+            game.characters[positions[fpos1][fpos2].occupied].EP += Mana;
+            checkOverMax();
+
             postLog(game.characters[positions[fpos1][fpos2].occupied].name + " killed " + epositions[pos1][pos2].name + " and earned " + Experience + " EXP!");
+            postLog("+" + Experience + " EXP, +" + Mana + " EP");
             checkLevelUps();
             checkAllDead();
         }

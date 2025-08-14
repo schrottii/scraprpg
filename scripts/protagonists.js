@@ -88,13 +88,32 @@ const cStats = {
         element: "light",
         length: 2,
     }
+};
+
+function INN(){
+    if (game.bricks >= 10) {
+        addBricks(-10);
+
+        for (let c in game.chars) {
+            game.characters[game.chars[c]].HP = getStat(game.chars[c], "maxHP");
+            game.characters[game.chars[c]].EP = getStat(game.chars[c], "maxEP");
+        }
+
+        fadeOut(2000, true, () => {
+            head = 0;
+            game.position[1] += 1;
+            kofs = [0, 1, 1];
+
+            fadeIn(2000, true);
+        });
+    }
 }
 
 function addWrenches(amount = 0) {
     if (game.wrenches != undefined) {
         game.wrenches = Math.min(game.wrenches + amount, 999999999);
-        game.stats.wrenches += amount;
-        questProgress("wrenches", "");
+        if (amount > 0) game.stats.wrenches += amount;
+        if (amount > 0) questProgress("wrenches", "");
     }
 }
 
@@ -102,8 +121,8 @@ function addBricks(amount = 0) {
     // only from boss fights and enemies from the "Scorched Planet"(Scrap Planet after Platinschrott Volcano eruption)
     if (game.bricks != undefined) {
         game.bricks = Math.min(game.bricks + amount, 999999);
-        game.stats.bricks += amount;
-        questProgress("bricks", "");
+        if (amount > 0) game.stats.bricks += amount;
+        if (amount > 0) questProgress("bricks", "");
     }
 }
 
@@ -140,6 +159,7 @@ function checkLevelUps() {
             game.characters[I].level += 1;
 
             game.characters[I].HP = getStat(I, "maxHP");
+            game.characters[I].EP = getStat(I, "maxEP");
         }
     }
 }

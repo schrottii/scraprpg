@@ -15,9 +15,9 @@ function addItem(name, amount = 1) {
     }
 }
 
-function removeItem(name, amount = 1) {
+function removeItem(name, amount = 1, equip = false) {
     game.inventory[name] -= amount;
-    if (game.inventory[name] < 1 || game.inventory[name] == undefined) {
+    if (!equip && (game.inventory[name] < 1 || game.inventory[name] == undefined)) {
         delete game.inventory[name];
     }
 }
@@ -1541,6 +1541,16 @@ let items = {
                 tempBuffAdd(args.player.name, "luk", 1.5, 5);
                 tempBuffAdd(args.player.name, "eva", 1.5, 5);
             },
+            ...args || {},
+        }
+    },
+
+    // story items
+    specialenergydrink(args) {
+        return {
+            ...items.default(), source: "energy_drink", name: "Special Energy Drink",
+            desc: "Limited edition. Maybe one day you can find someone who appreciates this.",
+            type: "potion", max: 1, story: true,
             ...args || {},
         }
     },

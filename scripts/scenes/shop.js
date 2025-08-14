@@ -210,7 +210,14 @@ scenes.shop = () => {
         }
         if (mode == "buy") {
             for (i in itemsButtons) {
-                if (itemsButtons[i].offer != "") {
+                let clvreq = shop.offers[i].clv == undefined ? true : shop.clv >= shop.offers[i].clv;
+
+                if (!clvreq) {
+                    itemsImages[i].source = "gear";
+                    itemsButtons[i].text = "Locked (LVL " + shop.clv + "/" + shop.offers[i].clv + ")";
+                    showButtons(i);
+                }
+                else if (itemsButtons[i].offer != "") {
                     itemsImages[i].source = "items/" + items[itemsButtons[i].offer]().source;
                     // v how many of it YOU have, not the shop
                     itemsOwnAmount[i].text = game.inventory[itemsButtons[i].offer] != undefined ? game.inventory[itemsButtons[i].offer] : "0";
@@ -269,8 +276,10 @@ scenes.shop = () => {
         itemsButtons[i].pressedTop = colors.buttontoppressed;
         itemsButtons[i].pressedBottom = colors.buttonbottompressed;
 
+        if (itemsImages[i].source != "gear") itemsImages[i].alpha = 1;
+        else itemsImages[i].alpha = 0;
+
         itemsButtons[i].alpha = 1;
-        itemsImages[i].alpha = 1;
         itemsOwnAmount[i].alpha = 1;
         itemsCosts[i].alpha = 1;
     }
@@ -328,8 +337,9 @@ scenes.shop = () => {
                         }
                         else {
                             let item = items[this.offer]();
+                            let clvreq = shop.offers[this.idx].clv == undefined ? true : shop.clv >= shop.offers[this.idx].clv;
 
-                            if (game.wrenches > shop.getPrice(this.idx) && this.amount > 0) {
+                            if (game.wrenches > shop.getPrice(this.idx) && this.amount > 0 && clvreq) {
                                 addWrenches(shop.getPrice(this.idx) * -1);
                                 addItem(this.offer, 1);
                                 shop.increaseCLP(this.offer);
@@ -384,8 +394,7 @@ scenes.shop = () => {
 
     function setButtons() {
         for (i in shop.offers) {
-            let clvreq = shop.offers[i].clv == undefined ? true : shop.clv >= shop.offers[i].clv;
-            if (itemsButtons[i] != undefined && !shop.offers[i].oos && clvreq) {
+            if (itemsButtons[i] != undefined && !shop.offers[i].oos) {
                 itemsButtons[i].offer = shop.offers[i].item;
                 if (shop.offers[i].amount != undefined) itemsButtons[i].amount = shop.offers[i].amount;
             }

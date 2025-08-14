@@ -100,6 +100,8 @@ scenes.pretitle = () => {
                         loadGame();
                         loadSettings();
 
+                        game.map = "test";
+
                         exampleFight();
 
                         setScene(scenes.fight());
