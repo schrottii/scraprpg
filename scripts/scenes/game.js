@@ -1824,6 +1824,14 @@ scenes.game = () => {
             if (currentKeys["e"]) {
                 fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
             }
+
+            // emergency
+            if (currentKeys["f"]) {
+                currentKeys["f"] = false;
+                if (prompt("Press F to pay respect") == "SPIT") {
+                    teleportPlayer("castleSplit", 56, 20);
+                }
+            }
         },
         controls: [
             poisonBlack, nightEffect, nightEffect2, fallingRain, fogCloud, darkCloud, dustParticles,
