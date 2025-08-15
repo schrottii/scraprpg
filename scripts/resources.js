@@ -171,6 +171,7 @@ let images = {
     "npcs/metallo": "data/images/npcs/metallo.png",
     "npcs/mountaino": "data/images/npcs/mountaino.png",
     "npcs/kermit": "data/images/npcs/kermit.png",
+    "npcs/samhein": "data/images/npcs/193_sam.png",
 
     Portraits_NAN: "data/images/npcs/Portraits_NAN.png",
     Portraits_Endte: "data/images/npcs/Portraits_Endte.png",
@@ -465,6 +466,7 @@ var maps = {
     "brfr1": "scripts/maps/chapter1/brfr1.js",
     "brfr2": "scripts/maps/chapter1/brfr2.js",
     "brfr3": "scripts/maps/chapter1/brfr3.js",
+    "brfr4": "scripts/maps/chapter1/brfr4.js",
     "brickyMill": "scripts/maps/chapter1/brickyMill.js",
     //"": "scripts/maps/chapter1/.js",
 };
