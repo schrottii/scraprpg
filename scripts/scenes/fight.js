@@ -942,7 +942,7 @@ scenes.fight = () => {
                         }
                         else {
                             // check if all the enemis are deadd
-                            checkEnemyDead(targets[t][3][0], targets[t][3][1], a[2], a[3]);
+                            checkEnemyDead(targets[t][1].pos1, targets[t][1].pos2, a[2], a[3]);
                         }
                     }
                 }
@@ -1352,7 +1352,7 @@ scenes.fight = () => {
 
     var filteredItems = [];
     for (let i in Object.keys(game.inventory)){
-        if (items[Object.keys(game.inventory)[i]]().type == "armor") continue;
+        if (items[Object.keys(game.inventory)[i]]().type == "armor" || items[Object.keys(game.inventory)[i]]().story == true) continue;
         filteredItems.push(Object.keys(game.inventory)[i]);
     }
 

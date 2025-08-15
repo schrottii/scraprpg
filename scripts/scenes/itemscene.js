@@ -85,16 +85,24 @@ scenes.itemscene = () => {
         anchor: [0.25, 0.01], sizeAnchor: [0.15, 0.1],
         alpha: 0,
         onClick(args) {
-            if (useMode == "use") useMode = "drop";
-            else if (useMode == "drop") useMode = "dropall";
-            else if (useMode == "dropall") useMode = "use";
-            theTop[1].text = "Mode: " + useMode;
+            if (useMode == "use") {
+                useMode = "drop";
+                theTop[1].text = "Mode: Drop";
+            }
+            else if (useMode == "drop") {
+                useMode = "dropall";
+                theTop[1].text = "Mode: Drop All";
+            }
+            else if (useMode == "dropall") {
+                useMode = "use";
+                theTop[1].text = "Mode: Use";
+            }
         },
         fill: "black"
     }));
     theTop.push(controls.label({
         anchor: [0.305, 0.06],
-        text: "Mode: use",
+        text: "Mode: Use",
         align: "center", fontSize: 20, fill: "black",
         alpha: 1,
     }));
@@ -229,12 +237,17 @@ scenes.itemscene = () => {
                 pressedTop: "darkgray", pressedBottom: "gray",
                 alpha: 1,
                 onClick(args) {
-                    if (this.fillTop == "lightgray") {
+                    if (this.item == undefined) {
                         playSound("no");
                         return false;
                     }
 
                     let item = this.item;
+                    let usable = true;
+
+                    if (this.fillTop == "lightgray" || items[item]().story == true) {
+                        usable = false;
+                    }
 
                     if (selectedItem == "" || selectedItem != item) {
                         // consent
@@ -242,18 +255,18 @@ scenes.itemscene = () => {
                         
                         selItem[0].text = items[item]().name;
                         selItem[1].text = items[item]().desc;
-                        selItem[2].alpha = 1;
+                        if (usable) selItem[2].alpha = 1;
                     }
                     else {
                         // already selected
-                        useItem(item);
+                        useItem(item, usable);
                     }
                 }
             }));
         }
     }
 
-    function useItem(item){
+    function useItem(item, usable = true){
         if (useMode == "drop") {
             // Drop 1
             map.items.push([game.position[0], game.position[1], item, 1, true]);
@@ -264,7 +277,7 @@ scenes.itemscene = () => {
             map.items.push([game.position[0], game.position[1], item, game.inventory[item], true]);
             removeItem(item, 9999);
         }
-        else {
+        else if (usable) {
             // Use
             let itemOffset = itemPage * 12;
 
@@ -280,6 +293,9 @@ scenes.itemscene = () => {
                 }
             }
         }
+        else {
+            playSound("no");
+        }
 
         showItems();
     }
@@ -288,22 +304,31 @@ scenes.itemscene = () => {
         // this basically generates the items
         let itemOffset = itemPage * 32;
         let inventory = Object.keys(game.inventory);
+        let i = 0;
 
-        for (i = 0; i < itemsButtons.length; i++) {
+        // make all empty first
+        for (let i in itemsButtons) {
+            itemsButtons[i].item = undefined;
+            itemsButtons[i].text = "---";
+            itemsButtons[i].fillTop = "lightgray";
+            itemsButtons[i].fillBottom = "gray";
+            itemsImages[i].alpha = 0;
+        }
+
+        // go through items and add them accordingly
+        for (let it in game.inventory) {
             itemsButtons[i].alpha = 1;
-            if (inventory[i + itemOffset] == undefined) {
-                itemsButtons[i].text = "---";
-                itemsButtons[i].fillTop = "lightgray";
-                itemsButtons[i].fillBottom = "gray";
-                itemsImages[i].alpha = 0;
+
+            let item = items[it];
+
+            // go for next item if this is not the same story type
+            if (item().story != storyonly) {
                 continue;
             }
-            let item = items[inventory[i + itemOffset]];
 
-            if (game.inventory[item.name] > 0
-                && ((item().story == false && storyonly == false) || (item().story == true && storyonly == true))) {
+            if (game.inventory[item.name] > 0) {
                 // item exists, show it
-                itemsButtons[i].item = inventory[i + itemOffset];
+                itemsButtons[i].item = it;
                 if (game.inventory[item.name] > 1) itemsButtons[i].text = item().name + " x" + game.inventory[item.name];
                 else itemsButtons[i].text = item().name;
 
@@ -323,12 +348,13 @@ scenes.itemscene = () => {
                 itemsImages[i].source = "items/" + item().source;
             }
             else {
+                itemsButtons[i].item = undefined;
                 itemsButtons[i].text = "---";
                 itemsButtons[i].fillTop = "lightgray";
                 itemsButtons[i].fillBottom = "gray";
                 itemsImages[i].alpha = 0;
-                //if (item().story != storyonly) j -= 1;
             }
+            i++;
         }
     }
     showItems();

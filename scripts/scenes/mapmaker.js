@@ -130,7 +130,7 @@ scenes.mapmaker = () => {
 
     let autoSaveTime = 0;
 
-    var mode = "moveandplace";
+    var mode = "move";
     var prevmode = "moveandplace";
     var fillToolActive = false;
     var tilesFilled = 0;
@@ -1432,6 +1432,19 @@ scenes.mapmaker = () => {
         alpha: 0, source: "Portraits_NAN"
     }));
 
+    createDialogueButtons.push(controls.button({
+        anchor: [0.25, 0.2], sizeAnchor: [0.05, 0.1], offset: [72 * 16, -600],
+        text: "DEL", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1 && confirm("Do you really want to delete this dialogue?!")) {
+                delete map.dialogues[curDia];
+                curDia = "";
+
+                toggleCreateDialogueButtons(true);
+            }
+        }
+    }));
+
     // Create NPC
     createNPCButtons.push(controls.button({
         anchor: [0.3, 0.2], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
@@ -1606,6 +1619,20 @@ scenes.mapmaker = () => {
             if (this.alpha == 1) {
                 let newText = prompt("New speed? (default: 1 | secs it takes to walk from one tile to another)");
                 if (isValid(newText)) map.npcs[curNPC].walkingSpeed = newText;
+                updateNPCLabels();
+            }
+        }
+    }));
+
+    createNPCButtons.push(controls.button({
+        anchor: [0.25, 0.2], sizeAnchor: [0.05, 0.1], offset: [72 * 16, -600],
+        text: "DEL", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1 && confirm("Do you really want to delete this NPC?!")) {
+                delete map.npcs[curNPC];
+                curNPC = "";
+
+                toggleCreateNPCButtons(true);
                 updateNPCLabels();
             }
         }
@@ -2640,6 +2667,8 @@ scenes.mapmaker = () => {
 
             createTileInfoPageLength = 0;
 
+            createDialogueButtons[0].text = curDia == "" ? "Create New / Load" : curDia;
+
             showInfo();
             renderInfo("dialogues");
 
@@ -2773,6 +2802,7 @@ scenes.mapmaker = () => {
     }
 
     function updateDialogueLabels() {
+        if (curDia == "") return false;
         createDialogueLabels[0].text = (curLine + 1) + "/" + Object.keys(map.dialogues[curDia].lines).length;
         createDialogueLabels[1].text = map.dialogues[curDia].lines[curLine].text;
         createDialogueLabels[2].text = map.dialogues[curDia].lines[curLine].portrait;
@@ -2786,13 +2816,16 @@ scenes.mapmaker = () => {
     }
 
     function updateNPCLabels() {
+        createNPCButtons[0].text = curNPC == "" ? "Create New / Load" : curNPC;
+        if (curNPC == "") return false;
+
+        if (map.npcs[curNPC].dialogues != undefined) createNPCButtons[1].text = "Dialogue: " + map.npcs[curNPC].dialogues["1"];
+
         createNPCLabels[0].text = map.npcs[curNPC].position;
         createNPCLabels[1].text = map.npcs[curNPC].alpha;
         createNPCLabels[2].text = map.npcs[curNPC].source;
         createNPCLabels[3].text = map.npcs[curNPC].walkingInterval;
         createNPCLabels[4].text = map.npcs[curNPC].walkingSpeed;
-
-        if (map.npcs[curNPC].dialogues != undefined) createNPCButtons[1].text = "Dialogue: " + map.npcs[curNPC].dialogues["1"];
 
         loadNPCs();
         updateTiles = true;

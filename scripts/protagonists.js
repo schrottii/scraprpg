@@ -276,7 +276,7 @@ function getStat(prot, stat) {
 
     if (stat == "strength") return Math.round(tempBonus * (itemBonus + cStats[prot][stat] * (1 + 0.07 * lvl)));
     if (stat == "maxHP") return Math.round(tempBonus * (itemBonus + cStats[prot][stat] * (1 + 0.1 * lvl)));
-    if (stat == "maxEP") return Math.round(tempBonus * (itemBonus + cStats[prot][stat] * (1 + 0.05 * lvl)));
+    if (stat == "maxEP") return Math.round(tempBonus * (itemBonus + cStats[prot][stat] * (1 + 0.1 * lvl)));
 
     if (stat == "agi") return Math.round(tempBonus * (itemBonus + cStats[prot][stat] * (1 + 0.005 * lvl)));
     if (stat == "acc") return Math.min(100, Math.round(tempBonus * (itemBonus + cStats[prot][stat] * (1 + 0.005 * lvl))));

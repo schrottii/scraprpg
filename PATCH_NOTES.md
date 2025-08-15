@@ -71,3 +71,21 @@
 - Inventory: (right side) images can be clicked through and are properly centered
 - Fixed possibility of leader (the one visible on map) being someone locked
 - Fixed funny space bar crash
+
+
+
+## 1.0.3 (2025-08-16)
+-> Items:
+- Your items: improved rendering and handling of non-usable / story items
+- Descriptions of non-usable items can now be seen
+- Improved current mode text
+- Story Items are no longer visible in fights
+
+-> Other:
+- Doubled max EP scaling (ie Bleu lvl 10: 4 -> 6)
+- Fixed single enemy spell crash
+
+-> Internal:
+- Default MM mode is now move rather than move+place
+- MM: Dialogues can be deleted
+- MM: NPCs can be deleted
