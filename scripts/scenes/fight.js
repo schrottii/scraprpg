@@ -679,12 +679,12 @@ scenes.fight = () => {
         if (type == 1) { // Ally attack evil
             if (positions[pos1][pos2].atk == undefined) positions[pos1][pos2].atk = 1;
 
-            return [isCritical, Math.round(getStat(positions[pos1][pos2].occupied, "strength")
+            return [isCritical, Math.max(1, Math.round(getStat(positions[pos1][pos2].occupied, "strength")
                 * (1 - ROWBOOST + (ROWBOOST * pos1))
                 * (1 + ROWBOOST + (ROWBOOST * enpos1)
                 * positions[pos1][pos2].atk
                 * getElementDamage(getStat(positions[pos1][pos2].occupied, "element"), epositions[enpos1][enpos2].element))
-                * critBonus)];
+                * critBonus))];
         }
 
         if (type == 2) { // Evil attack ally
@@ -696,21 +696,24 @@ scenes.fight = () => {
                 critBonus = CRITBOOST;
             }
 
-            return [isCritical, Math.ceil(epositions[pos1][pos2].strength
+            return [isCritical, Math.max(1, Math.ceil(epositions[pos1][pos2].strength
                 * (1 + ROWBOOST - (ROWBOOST * pos1))
                 * (1 - ROWBOOST + (ROWBOOST * enpos1)
+                // / (1 + getStat(positions[enpos1][enpos2].occupied, "def") / 10)
                 / (positions[enpos1][enpos2].shield != undefined ? positions[enpos1][enpos2].shield : 1)
                 * getElementDamage(epositions[pos1][pos2].element, getStat(positions[enpos1][enpos2].occupied, "element").element))
-                * critBonus)];
+                * critBonus
+                - getStat(positions[enpos1][enpos2].occupied, "def")))];
         }
 
         if (type == 3) { // Ally attack ally
-            return [isCritical, Math.round(getStat(positions[pos1][pos2].occupied, "strength")
+            return [isCritical, Math.max(1, Math.round(getStat(positions[pos1][pos2].occupied, "strength")
                 * (1 + ROWBOOST - (ROWBOOST * pos1))
                 * (1 - ROWBOOST + (ROWBOOST * enpos1)
                 * positions[enpos1][enpos2].atk
                 * getElementDamage(positions[pos1][pos2].element, getStat(positions[enpos1][enpos2].occupied, "element").element))
-                * critBonus)];
+                * critBonus
+                - getStat(positions[enpos1][enpos2].occupied, "def")))];
         }
     }
 
@@ -776,7 +779,12 @@ scenes.fight = () => {
                 }
             }
 
-            enemiesTurn(); // Is everyone done? Can we continue?
+            try {
+                enemiesTurn(); // Is everyone done? Can we continue?
+            }
+            catch {
+                endRound();
+            }
             return;
         }
         alliesCurrentlyActive = true;
@@ -1054,6 +1062,7 @@ scenes.fight = () => {
         let highestAGI = 0;
         let pos = [];
         let charsRemaining = 0;
+
         // Look for the fastest man alive
         for (j = 0; j < 3; j++) {
             for (i = 0; i < 3; i++) {
@@ -1073,19 +1082,7 @@ scenes.fight = () => {
 
         // Stop if there is nobody (when is that?)
         if (highestAGI == 0) {
-            // TURN IS OVER
-            // NEXT ROUND
-            fightAction = "none";
-            turnCounter += 1;
-            fightStarted = false;
-
-            endOfTurnEvents();
-
-            for (j = 0; j < 3; j++) {
-                for (i = 0; i < 3; i++) {
-                    positions[i][j].shield = 1;
-                }
-            }
+            endRound();
             return;
         }
 
@@ -1155,6 +1152,22 @@ scenes.fight = () => {
             generateOrderDisplay();
             if (!fightLost) setTimeout(() => enemiesTurn(), ACTIONDELAY);
         }, true); // very important true
+    }
+
+    function endRound() {
+        // TURN IS OVER
+        // NEXT ROUND
+        fightAction = "none";
+        turnCounter += 1;
+        fightStarted = false;
+
+        endOfTurnEvents();
+
+        for (j = 0; j < 3; j++) {
+            for (i = 0; i < 3; i++) {
+                positions[i][j].shield = 1;
+            }
+        }
     }
 
     function endOfTurnEvents() {
@@ -1941,7 +1954,7 @@ scenes.fight = () => {
             posX = activeEnemies[e].position[0];
             posY = activeEnemies[e].position[1];
             if (posX - game.position[0] < 5 && posX - game.position[0] > -5) activeEnemies.splice(e, 1);
-            if (posY - game.position[1] < 5 && posY - game.position[1] > -5) activeEnemies.splice(e, 1);
+            else if (posY - game.position[1] < 5 && posY - game.position[1] > -5) activeEnemies.splice(e, 1);
         }
 
         fadeOut(1000, true, () => setScene(scenes.game()));

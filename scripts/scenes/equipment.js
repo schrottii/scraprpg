@@ -162,10 +162,12 @@ scenes.equipment = () => {
         anchor: [0, 0.9], sizeAnchor: [0.05, 0.1], fontSize: 60,
         alpha: 1,
         onClick(args) {
-            playSound("buttonClickSound");
-            if (itemPage > 0) {
-                itemPage--;
-                showItems();
+            if (this.alpha == 0) {
+                playSound("buttonClickSound");
+                if (itemPage > 0) {
+                    itemPage--;
+                    showItems();
+                }
             }
         },
         text: "<-",
@@ -175,10 +177,12 @@ scenes.equipment = () => {
         anchor: [0.95, 0.9], sizeAnchor: [0.05, 0.1], fontSize: 60,
         alpha: 1,
         onClick(args) {
-            playSound("buttonClickSound");
-            if (itemPage + 1 < Object.keys(filteredItems).length / 18) {
-                itemPage++;
-                showItems();
+            if (this.alpha == 0) {
+                playSound("buttonClickSound");
+                if (itemPage + 1 < Object.keys(filteredItems).length / 18) {
+                    itemPage++;
+                    showItems();
+                }
             }
         },
         text: "->",
@@ -477,6 +481,9 @@ scenes.equipment = () => {
             }
 
             selectedItemStats[selectedItemStats.length - 1].alpha = (selectedItemStats[selectedItemStats.length - 1].source == "gear" ? 0 : 1);
+
+            pageButtons[0].alpha = (itemPage > 0) ? 1 : 0;
+            pageButtons[1].alpha = (itemPage + 1 < Object.keys(filteredItems).length / 18) ? 1 : 0;
         },
         // Controls
         controls: [

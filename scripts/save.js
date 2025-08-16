@@ -195,7 +195,7 @@ for (c in game.characters) {
 var saveNR = 0;
 
 function isDevMode() {
-    if (!isElectron() && document.URL.includes("file:///") && document.URL.includes("scraprpg/index.html")) return true;
+    if (localStorage.getItem("SRPGcheats") != undefined && localStorage.getItem("SRPGcheats").includes("devmode")) return true;
     return false;
 }
 

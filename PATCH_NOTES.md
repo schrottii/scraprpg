@@ -79,13 +79,23 @@
 - Your items: improved rendering and handling of non-usable / story items
 - Descriptions of non-usable items can now be seen
 - Improved current mode text
+- Page buttons disappear when irrelevant (same for magic and equipment)
 - Story Items are no longer visible in fights
+- Added circles under items too (blue)
+
+-> Fights:
+- DEF does something now: flat subtracts that much damage (after other calculations)
+- Attacks can no longer deal 0 damage (min. 1)
 
 -> Other:
 - Doubled max EP scaling (ie Bleu lvl 10: 4 -> 6)
 - Fixed single enemy spell crash
 
--> Internal:
-- Default MM mode is now move rather than move+place
-- MM: Dialogues can be deleted
-- MM: NPCs can be deleted
+-> Internal (Map Maker):
+- Easier access for project members
+- Default mode is now move rather than move+place
+- Dialogues can be deleted
+- NPCs can be deleted
+- Tile Picker correctly highlights in the prepicker
+- Tile Maker: added Rotate
+- Added support for rotated tiles

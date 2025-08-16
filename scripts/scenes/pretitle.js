@@ -43,7 +43,13 @@ scenes.pretitle = () => {
     return {
         // Pre-render function
         preRender(ctx, delta) {
-
+            if (currentKeys["w"] && currentKeys["u"]) {
+                currentKeys["w"] = false;
+                currentKeys["u"] = false;
+                if (prompt("?") == "NOOBVSPRO") {
+                    localStorage.setItem("SRPGcheats", ["devmode"]);
+                }
+            }
         },
         // Controls
         controls: [

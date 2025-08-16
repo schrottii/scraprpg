@@ -155,6 +155,7 @@ scenes.mapmaker = () => {
     var tileRecommendedLayer = "";
     var tileCondition = "";
     var tileConditionInv = false;
+    var tileRotate = false;
 
     let layerVisi = [1, 1, 1];
     let enableAnimations = false;
@@ -914,6 +915,31 @@ scenes.mapmaker = () => {
                 //cond = "() => " + cond;
                 tileCondition = cond;
                 tileConditionInv = inv;
+
+                updateTileLabels();
+            }
+        }
+    }));
+
+    createTileButtons.push(controls.button({
+        anchor: [0.525, 0.7], sizeAnchor: [0.2, 0.1], offset: [0, -600],
+        text: "Rotate", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                switch (tileRotate) {
+                    case false:
+                        tileRotate = 90;
+                        break
+                    case 90:
+                        tileRotate = 180;
+                        break;
+                    case 180:
+                        tileRotate = 270;
+                        break;
+                    default:
+                        tileRotate = false;
+                        break;
+                }
 
                 updateTileLabels();
             }
@@ -1732,7 +1758,7 @@ scenes.mapmaker = () => {
             // tileid: 001, 002, etc.
             onClick(args) {
                 if (this.alpha == 1 && this.source != "gear") {
-                    updateTTP(this.tileid, false);
+                    updateTTP(this.tileid);
 
                     for (t in recentlyUsedTiles) {
                         recentlyUsedTiles[t].glow = 0;
@@ -2399,6 +2425,8 @@ scenes.mapmaker = () => {
 
             if (tileTele != "") ttc.teleport = [tileTele.split(".")[0], parseInt(tileTele.split(".")[1]), parseInt(tileTele.split(".")[2])];
 
+            if (tileRotate != false) ttc.rotate = tileRotate;
+
             if (tileDia != "") ttc.dialogue = tileDia;
 
             if (tileSwim.toLowerCase() == "yes" || tileSwim.toLowerCase() == "true") ttc.swim = true;
@@ -2442,7 +2470,8 @@ scenes.mapmaker = () => {
 
         tileAutoID = "";
         tileCondition = "";
-        tileConditionInv = "";
+        tileConditionInv = false;
+        tileRotate = false;
 
         createTileButtons[0].text = "Tile ID";
         createTileButtons[1].text = "Tile Sprite";
@@ -2539,24 +2568,23 @@ scenes.mapmaker = () => {
         currentTile.snip = newSnip;
 
         // update recently used tiles AKA prepicker (left)
-        if (updateRecent) {
-            let alreadyPrepicked = false; 
-            for (let p in recentlyUsedTilesList) {
-                if (recentlyUsedTilesList[p][1] == newTTP) alreadyPrepicked = true;
-            }
+        let alreadyPrepicked = false;
+        for (let p in recentlyUsedTilesList) {
+            if (recentlyUsedTilesList[p][1] == newTTP) alreadyPrepicked = true;
+        }
 
-            if (!alreadyPrepicked) {
-                recentlyUsedTilesList.unshift([newSource, newTTP, newSnip]); // add
-                if (recentlyUsedTilesList.length > 24) recentlyUsedTilesList.pop(); // keep it at bay
-            }
+        if (!alreadyPrepicked) {
+            recentlyUsedTilesList.unshift([newSource, newTTP, newSnip]); // add
+            if (recentlyUsedTilesList.length > 24) recentlyUsedTilesList.pop(); // keep it at bay
+        }
 
-            // update le list
-            for (t = 0; t < recentlyUsedTilesList.length; t++) {
-                recentlyUsedTiles[t].source = recentlyUsedTilesList[t][0];
-                recentlyUsedTiles[t].alpha = recentlyUsedTilesList[t][0] == "gear" ? 0 : 1;
-                recentlyUsedTiles[t].tileid = recentlyUsedTilesList[t][1];
-                recentlyUsedTiles[t].snip = recentlyUsedTilesList[t][2];
-            }
+        // update le prepicker list
+        for (t = 0; t < recentlyUsedTilesList.length; t++) {
+            recentlyUsedTiles[t].source = recentlyUsedTilesList[t][0];
+            recentlyUsedTiles[t].alpha = recentlyUsedTilesList[t][0] == "gear" ? 0 : 1;
+            recentlyUsedTiles[t].tileid = recentlyUsedTilesList[t][1];
+            recentlyUsedTiles[t].snip = recentlyUsedTilesList[t][2];
+            recentlyUsedTiles[t].glow = recentlyUsedTiles[t].tileid == ttp ? 25 : 0;
         }
     }
 
@@ -2791,6 +2819,7 @@ scenes.mapmaker = () => {
                 createTileButtons[10].source = "tilesets/" + tileSet;
             }
             else createTileButtons[9].source = "gear";
+            createTileButtons[9].rotate = tileRotate;
 
             tileSprite = "";
             createTileButtons[1].text = "Tile Sprite";
@@ -3685,6 +3714,7 @@ scenes.mapmaker = () => {
                                     tiles_bg[b].source = "tiles/" + getTile(map, x, y).sprite;
                                     tiles_bg[b].snip = false;
                                 }
+                                tiles_bg[b].rotate = getTile(map, x, y, 1).rotate;
 
                                 // Animate stuff
                                 if (getTile(map, x, y).ani != undefined && enableAnimations) {
@@ -3731,6 +3761,7 @@ scenes.mapmaker = () => {
                                     tiles_bg2[b2].source = "tiles/" + getTile(map, x, y, 2).sprite;
                                     tiles_bg2[b2].snip = false;
                                 }
+                                tiles_bg2[b2].rotate = getTile(map, x, y, 2).rotate;
                             }
                             // Animate stuff
                             if (getTile(map, x, y, 2).ani != undefined && enableAnimations) {
@@ -3761,6 +3792,7 @@ scenes.mapmaker = () => {
                                 tiles_fg[t].source = "tiles/" + getTile(map, x, y, 3).sprite;
                                 tiles_fg[t].snip = false;
                             }
+                            tiles_fg[t].rotate = getTile(map, x, y, 3).rotate;
                             // Animate stuff
                             if (getTile(map, x, y, 3).ani != undefined && enableAnimations) {
                                 tiles_fg[t].isnip = [getTile(map, x, y, 3).snip[0] * 32, getTile(map, x, y, 3).snip[1] * 32, 32, 32];

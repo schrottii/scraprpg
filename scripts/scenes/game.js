@@ -216,13 +216,13 @@ function trySpawnEnemy(amount = 1) {
     }
 }
 
-function spawnMapEnemy(possibleSpawns) {
-    if (mapenemies[possibleSpawns] != undefined) {
-        if (mapenemies[possibleSpawns]().time == "day" && !isDay()) return false;
-        if (mapenemies[possibleSpawns]().time == "dawn" && !isDawn()) return false;
-        if (mapenemies[possibleSpawns]().time == "noon" && !isNoon()) return false;
-        if (mapenemies[possibleSpawns]().time == "dusk" && !isDusk()) return false;
-        if (mapenemies[possibleSpawns]().time == "night" && !isNight()) return false;
+function spawnMapEnemy(enemyToSpawn) {
+    if (mapenemies[enemyToSpawn] != undefined) {
+        if (mapenemies[enemyToSpawn]().time == "day" && !isDay()) return false;
+        if (mapenemies[enemyToSpawn]().time == "dawn" && !isDawn()) return false;
+        if (mapenemies[enemyToSpawn]().time == "noon" && !isNoon()) return false;
+        if (mapenemies[enemyToSpawn]().time == "dusk" && !isDusk()) return false;
+        if (mapenemies[enemyToSpawn]().time == "night" && !isNight()) return false;
     }
     else return false;
 
@@ -242,7 +242,7 @@ function spawnMapEnemy(possibleSpawns) {
     if (posX - game.position[0] < 5 && posX - game.position[0] > -5) return false;
     if (posY - game.position[1] < 5 && posY - game.position[1] > -5) return false;
 
-    activeEnemies.push(mapenemies[possibleSpawns]({
+    activeEnemies.push(mapenemies[enemyToSpawn]({
         position: [posX, posY], map: game.map,
     }));
     let latest = activeEnemies[activeEnemies.length - 1];
@@ -920,6 +920,8 @@ scenes.game = () => {
         if (layer == 2) Ts = "mapbg2";
         if (layer == 3) Ts = "mapfg";
 
+        let px, py, pw, ph;
+
         for (let y = Math.floor(ofsY); y < ofsY + 16; y++) for (let x = Math.floor(ofsX); x < ofsX + width; x++) {
             ani = 0;
             tileSrc = "tiles/" + map.tiles.empty.sprite; // fallback
@@ -934,15 +936,21 @@ scenes.game = () => {
             }
 
             if (tileSrc == "tiles/" + map.tiles.empty.sprite && layer != 1) continue; // empty tiles only on mapbg 1
+            if (!isValid(images[tileSrc])) tileSrc = "tiles/" + map.tiles.empty.sprite; // crash prevention 666
 
             // drawing
+            px = Math.ceil((zoom * scale) * (x - ofsX)) - ((zoom - 1) * scale * (width / 2));
+            py = Math.ceil(zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7);
+
+            pw = Math.ceil(zoom * scale + 1);
+            ph = Math.ceil(zoom * scale + 1);
+
             ctx.drawImage(images[tileSrc],
                 Math.floor(ani + tileSnip[0] * 32), Math.floor(tileSnip[1] * 32) + 0.1, 32, 32,
-                Math.ceil((zoom * scale) * (x - ofsX)) - ((zoom - 1) * scale * (width / 2)),
-                Math.ceil(zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7),
-                Math.ceil(zoom * scale + 1),
-                Math.ceil(zoom * scale + 1));
-
+                px,
+                py,
+                pw,
+                ph);
         }
     }
 
@@ -1414,14 +1422,20 @@ scenes.game = () => {
     // enter game scene, fade in
     map = maps[game.map];
     map.tiles = Object.assign({}, map.tiles, loadPacks(map));
-    loadNPCs();
-    loadAreaMusic();
-    trySpawnEnemy(42);
-    checkTileDialogue();
 
-    let tTime = 1000 / 3;
-    if (previousScene == "main" || previousScene == "title" || previousScene == undefined) tTime = 1500; // Not inventory or fight
-    fadeIn(tTime, true);
+    try {
+        loadNPCs();
+        loadAreaMusic();
+        trySpawnEnemy(42);
+        checkTileDialogue();
+
+        let tTime = 1000 / 3;
+        if (previousScene == "main" || previousScene == "title" || previousScene == undefined) tTime = 1500; // Not inventory or fight
+        fadeIn(tTime, true);
+    }
+    catch {
+        console.log("| ⚠️ | Error while loading the map");
+    }
 
 
 
@@ -1431,6 +1445,13 @@ scenes.game = () => {
             scale = window.innerHeight / 16;
             map = maps[game.map];
             map.tiles = Object.assign({}, map.tiles, loadPacks(map));
+
+            // worldmode
+            let wm = 1;
+            if (map.worldmode == true) {
+                wm = 2;
+            }
+            zswm = (zoom * scale) / wm;
 
             // Auto Save & Auto Save Text
             if (autoSaveTime > 14999) {
@@ -1567,24 +1588,27 @@ scenes.game = () => {
             let ofsX = Math.max(CAMERA_LOCK_X, game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5);
             let ofsY = Math.max(CAMERA_LOCK_Y, game.position[1] - kofs[1] * kofs[2] - 7.5);
 
+            let posX = 0;
+            let posY = 0;
+
             // render items
             if (map.items != undefined) {
                 for (let item of map.items) {
                     if (game.mItems.includes(getItemDatName(map, item))) item[4] = false; // hide if you already got dat
                     if (item[4] == true) { // is visible
+                        posX = ((zoom * scale) * (item[0] - ofsX)) - ((zoom - 1) * scale * (width / 2));
+                        posY = (zoom * scale) * (item[1] - ofsY) - ((zoom - 1) * scale * 7);
+                        if (settings.circles == "all") {
+                            ctx.drawImage(images.itemCircle,
+                                posX - (zswm / 4), posY - (zswm / 4),
+                                zswm * 1.5, zswm * 1.5);
+                        }
                         if (images["items/" + items[item[2]]().source] != undefined) ctx.drawImage(images["items/" + items[item[2]]().source],
-                            ((zoom * scale) * (item[0] - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (item[1] - ofsY) - ((zoom - 1) * scale * 7),
+                            posX, posY,
                             zoom * scale, zoom * scale);
                     }
                 }
             }
-
-            // worldmode
-            let wm = 1;
-            if (map.worldmode == true) {
-                wm = 2;
-            }
-            zswm = (zoom * scale) / wm;
 
             // draw NPCs
             for (i in activeNPCs) {

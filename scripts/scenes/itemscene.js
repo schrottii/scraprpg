@@ -157,10 +157,12 @@ scenes.itemscene = () => {
         anchor: [0, 0.9], sizeAnchor: [0.05, 0.1], fontSize: 60,
         alpha: 1,
         onClick(args) {
-            playSound("buttonClickSound");
-            if (itemPage > 0) {
-                itemPage--;
-                showItems();
+            if (this.alpha == 1) {
+                playSound("buttonClickSound");
+                if (itemPage > 0) {
+                    itemPage--;
+                    showItems();
+                }
             }
         },
         text: "<-",
@@ -170,10 +172,12 @@ scenes.itemscene = () => {
         anchor: [0.95, 0.9], sizeAnchor: [0.05, 0.1], fontSize: 60,
         alpha: 1,
         onClick(args) {
-            playSound("buttonClickSound");
-            if (itemPage + 1 < Object.keys(game.inventory).length / 32) {
-                itemPage++;
-                showItems();
+            if (this.alpha == 1) {
+                playSound("buttonClickSound");
+                if (itemPage + 1 < Object.keys(game.inventory).length / 32) {
+                    itemPage++;
+                    showItems();
+                }
             }
         },
         text: "->",
@@ -316,10 +320,10 @@ scenes.itemscene = () => {
         }
 
         // go through items and add them accordingly
-        for (let it in game.inventory) {
+        for (let it = itemOffset; it < inventory.length; it++) {
             itemsButtons[i].alpha = 1;
 
-            let item = items[it];
+            let item = items[inventory[it]];
 
             // go for next item if this is not the same story type
             if (item().story != storyonly) {
@@ -328,7 +332,7 @@ scenes.itemscene = () => {
 
             if (game.inventory[item.name] > 0) {
                 // item exists, show it
-                itemsButtons[i].item = it;
+                itemsButtons[i].item = item.name;
                 if (game.inventory[item.name] > 1) itemsButtons[i].text = item().name + " x" + game.inventory[item.name];
                 else itemsButtons[i].text = item().name;
 
@@ -354,7 +358,9 @@ scenes.itemscene = () => {
                 itemsButtons[i].fillBottom = "gray";
                 itemsImages[i].alpha = 0;
             }
+
             i++;
+            if (i >= itemsButtons.length) break;
         }
     }
     showItems();
@@ -365,6 +371,9 @@ scenes.itemscene = () => {
         // Pre-render function
         preRender(ctx, delta) {
             background[7].text = "Items (" + Object.keys(game.inventory).length + "/" + (Object.keys(items).length - 1) + ")";
+
+            pageButtons[0].alpha = (itemPage > 0) ? 1 : 0;
+            pageButtons[1].alpha = (itemPage + 1 < Object.keys(game.inventory).length / 32) ? 1 : 0;
         },
         // Controls
         controls: [

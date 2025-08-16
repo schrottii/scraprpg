@@ -5,6 +5,7 @@ let images = {
     ping: "data/images/ping.png",
     npcCircle: "data/images/npcCircle.png",
     enemyCircle: "data/images/enemyCircle.png",
+    itemCircle: "data/images/itemCircle.png",
 
     // Misc.
     paper: "data/images/paper.png",

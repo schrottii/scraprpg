@@ -27,6 +27,7 @@
             source: null,
             snip: false,
             ri: false,
+            rotate: false,
             render(ctx) {
                 let red = 1;
                 if (isLs() == true && !this.ri) red = 2;
@@ -34,6 +35,9 @@
                     console.log("| ⚠️ | Image undefined: " + this.source);
                     return false;
                 }
+
+                let x = this.offset[0] / red + this.anchor[0] * ctx.canvas.width;
+                let y = this.offset[1] / red + this.anchor[1] * ctx.canvas.height;
 
                 let w = this.sizeOffset[0] / red + this.sizeAnchor[0] * ctx.canvas.width;
                 let h = this.sizeOffset[1] / red + this.sizeAnchor[1] * ctx.canvas.height;
@@ -48,16 +52,37 @@
                     ctx.shadowColor = this.glowColor;
                 }
 
-                if (w > 0 && h > 0 && this.snip != false) ctx.drawImage(images[this.source],
-                    this.snip[0], this.snip[1], this.snip[2], this.snip[3],
-                    this.offset[0] / red + this.anchor[0] * ctx.canvas.width,
-                    this.offset[1] / red + this.anchor[1] * ctx.canvas.height, w, h);
-                else if (w > 0 && h > 0) ctx.drawImage(images[this.source],
-                    this.offset[0] / red + this.anchor[0] * ctx.canvas.width,
-                    this.offset[1] / red + this.anchor[1] * ctx.canvas.height, w, h);
-                else ctx.drawImage(images[this.source],
-                    this.offset[0] / red + this.anchor[0] * ctx.canvas.width,
-                    this.offset[1] / red + this.anchor[1] * ctx.canvas.height);
+                if (isValid(this.rotate)) {
+                    ctx.save();
+                    ctx.translate(x + w / 2, y + h / 2);
+                    ctx.rotate(this.rotate * Math.PI / 180);
+
+                    if (w > 0 && h > 0 && this.snip != false) {
+                        ctx.drawImage(images[this.source],
+                            this.snip[0], this.snip[1], this.snip[2], this.snip[3],
+                            -w / 2, -h / 2, w, h);
+                    } else if (w > 0 && h > 0) {
+                        ctx.drawImage(images[this.source],
+                            -w / 2, -h / 2, w, h);
+                    } else {
+                        ctx.drawImage(images[this.source],
+                            -w / 2, -h / 2);
+                    }
+
+                    ctx.restore();
+                }
+                else {
+                    if (w > 0 && h > 0 && this.snip != false) ctx.drawImage(images[this.source],
+                        this.snip[0], this.snip[1], this.snip[2], this.snip[3],
+                        x,
+                        y, w, h);
+                    else if (w > 0 && h > 0) ctx.drawImage(images[this.source],
+                        x,
+                        y, w, h);
+                    else ctx.drawImage(images[this.source],
+                        x,
+                        y);
+                }
 
                 if (this.glow && settings.glow) ctx.shadowBlur = 0;
             },
