@@ -22,6 +22,11 @@ function removeItem(name, amount = 1, equip = false) {
     }
 }
 
+function hasItem(name) {
+    if (game.inventory[name] != undefined) return true;
+    return false;
+}
+
 function everyItem() {
     if (isDevMode()) {
         for (let item in items) {
@@ -1292,6 +1297,14 @@ let items = {
             stats: { "luk": 40, "eva": 30 }, ...args || {},
         }
     },
+    heavylog(args) {
+        return {
+            ...items.default(),
+            source: "heavy_log", name: "Heavy Log", element: "physical",
+            shopcost: 300, type: "armor", piece: "rhand",
+            stats: { "strength": 5, "agi": -40, "eva": -10 }, ...args || {},
+        }
+    },
 
 
 
@@ -1545,11 +1558,33 @@ let items = {
         }
     },
 
+    hikingboots(args) {
+        return {
+            ...items.default(),
+            source: "boots", name: "Hiking Boots",
+            desc: "These everduring boots speed you up, spiritually.",
+            shopcost: 1000, type: "armor", piece: "acc1",
+            stats: { "agi": 20, "eva": 5 },
+            ...args || {},
+        }
+    },
+
+
+
+    //////////////////////////////////////////////////////////////////////////////////
     // story items
     specialenergydrink(args) {
         return {
             ...items.default(), source: "energy_drink", name: "Special Energy Drink",
             desc: "Limited edition. Maybe one day you can find someone who appreciates this.",
+            type: "potion", max: 1, story: true,
+            ...args || {},
+        }
+    },
+    fallenleaves(args) {
+        return {
+            ...items.default(), source: "fallenleaves", name: "Fallen Leaves",
+            desc: "Literal leaves given to you by a kid in the Mythical Plains",
             type: "potion", max: 1, story: true,
             ...args || {},
         }

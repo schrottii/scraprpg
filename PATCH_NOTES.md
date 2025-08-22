@@ -99,3 +99,40 @@
 - Tile Picker correctly highlights in the prepicker
 - Tile Maker: added Rotate
 - Added support for rotated tiles
+
+
+
+## 1.0.4 (2025-08-22)
+-> New Maps:
+- New map: Bricky Forest - brfr4 (by tomekbet)
+- 1 quest
+- New map: Oxbow Lake (by tomekbet)
+- 1 quest, and find someone special here!
+- New map: Bricky Forest - brfr5 (by Schrottii)
+- first map with higher level enemies
+- New map: Mythical Plains (by Meowy)
+- 2 quests, largest map
+
+-> Maps:
+- Hay Maze: added some grass and trees to the left side
+- brfr3: removed stronger enemies, now that they can appear in later maps
+
+-> Other:
+- Added the 4 new quests, and 3 new items connected to them
+- Added tomekbet and Meowy to credits
+- Enemies can no longer move when you can't move
+- Fixed medusa bug
+
+-> Internal (Maps):
+- Added Creator to the existing maps  (11x Schrottii, 2x tomekbet, 1x Meowy)
+- Removed 2 typo dialogues
+
+-> Internal (Map Maker):
+- Map Info: Added button to set the map's Creator
+- NPC Maker: Added condition (same as tiles)
+- Dialogue Scripts: added Add Protagonist and Rem Protagonist
+- Prepicked tiles are now kept after testing
+- When loading a map, you get moved to its bottom right corner if you were far away
+- Fixed issues with transparent NPCs and enemies
+- Fixed issues when loading from a file (ie wrong ID)
+- Fixed map level range issue

@@ -656,26 +656,90 @@ scenes.credits = () => {
         fontSize: 24, fill: "white", alpha: 1,
     }));
 
+
+
+    // Meowy (left)
+    creditTexts.push(controls.label({
+        text: "Meowy",
+        anchor: [0.2, 5],
+        fontSize: 32, fill: "white", alpha: 1,
+    }));
+
+    creditTexts.push(controls.label({
+        text: "Roles |",
+        anchor: [0.19, 5.05], align: "right",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+    creditTexts.push(controls.label({
+        text: "| Contributions",
+        anchor: [0.21, 5.05], align: "left",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+
+    creditTexts.push(controls.label({
+        text: "Map Maker",
+        anchor: [0.19, 5.1], align: "right",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+    creditTexts.push(controls.label({
+        text: "Mythical Plains map",
+        anchor: [0.21, 5.1], align: "left",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+
+
+
+    // tomekbet (right)
+    creditTexts.push(controls.label({
+        text: "tomekbet",
+        anchor: [0.8, 5],
+        fontSize: 32, fill: "white", alpha: 1,
+    }));
+
+    creditTexts.push(controls.label({
+        text: "Contributions |",
+        anchor: [0.79, 5.05], align: "right",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+    creditTexts.push(controls.label({
+        text: "| Roles",
+        anchor: [0.81, 5.05], align: "left",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+
+    creditTexts.push(controls.label({
+        text: "2 maps",
+        anchor: [0.79, 5.1], align: "right",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+    creditTexts.push(controls.label({
+        text: "Map Maker",
+        anchor: [0.81, 5.1], align: "left",
+        fontSize: 24, fill: "white", alpha: 1,
+    }));
+
+
+
     // notes
     creditTexts.push(controls.label({
         text: "songs with * have an intro and loop version",
-        anchor: [0.5, 4.8],
+        anchor: [0.5, 5.3],
         fontSize: 32, fill: "white", alpha: 1,
     }));
     creditTexts.push(controls.label({
         text: "I tried to give everyone proper credits, let me know if something is missing",
-        anchor: [0.5, 4.85],
+        anchor: [0.5, 5.35],
         fontSize: 32, fill: "white", alpha: 1,
     }));
     creditTexts.push(controls.label({
         text: "After >500 hours of my time, it is finally there... I am free...",
-        anchor: [0.5, 4.9],
+        anchor: [0.5, 5.4],
         fontSize: 32, fill: "white", alpha: 1,
     }));
 
     creditTexts.push(controls.label({
         text: "ScrapRPG",
-        anchor: [0.5, 5],
+        anchor: [0.5, 5.5],
         fontSize: 64, fill: "yellow", alpha: 1,
     }));
 

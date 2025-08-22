@@ -71,6 +71,9 @@ function getMapLevelRange(mmap = map) {
         mmap.levelRange = [1, 1];
     }
 
+    mmap.levelRange[0] = parseInt(mmap.levelRange[0]);
+    mmap.levelRange[1] = parseInt(mmap.levelRange[1]);
+
     return mmap.levelRange;
 }
 

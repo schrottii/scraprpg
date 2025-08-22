@@ -351,6 +351,8 @@ let images = {
     "items/sword_princess": "data/images/items/equipment/sword_princess.png",
     "items/sword_banana": "data/images/items/equipment/sword_banana.png",
     "items/baseballbat": "data/images/items/equipment/baseball_bat.png",
+    "items/boots": "data/images/items/equipment/boots.png",
+    "items/heavy_log": "data/images/items/equipment/heavy_log.png",
 
     "items/brickyleaf": "data/images/items/brickyleaf.png",
     "items/potion": "data/images/items/potion.png",
@@ -366,6 +368,8 @@ let images = {
     "items/instrument": "data/images/items/instrument.png",
     "items/mirror": "data/images/items/mirror.png",
     "items/tropicalmilkshake": "data/images/items/tropicalmilkshake.png",
+
+    "items/fallenleaves": "data/images/items/fallenleaves.png",
 };
 
 var scenes = {
@@ -399,6 +403,9 @@ var audio = {
     "bgm/town": "data/bgm/dec_SOTR__Town_Loop.mp3",
 
     "bgm/castle": "data/bgm/lun_SOTR__Lex_Alfred.mp3",
+
+    "bgm/piasee/intro": "data/bgm/lun_SOTR__Piasee_Intro.mp3",
+    "bgm/piasee": "data/bgm/lun_SOTR__Piasee_Loop.mp3",
 
     "bgm/evilcastle/intro": "data/bgm/lun_SOTR__Warmonger_Walls_Intro.mp3",
     "bgm/evilcastle": "data/bgm/lun_SOTR__Warmonger_Walls_Loop.mp3",
@@ -467,8 +474,11 @@ var maps = {
     "brfr1": "scripts/maps/chapter1/brfr1.js",
     "brfr2": "scripts/maps/chapter1/brfr2.js",
     "brfr3": "scripts/maps/chapter1/brfr3.js",
-    "brfr4": "scripts/maps/chapter1/brfr4.js",
     "brickyMill": "scripts/maps/chapter1/brickyMill.js",
+    "brfr4": "scripts/maps/chapter1/brfr4.js",
+    "oxbl": "scripts/maps/chapter1/oxbl.js",
+    "brfr5": "scripts/maps/chapter1/brfr5.js",
+    "mythicalPlains": "scripts/maps/chapter1/mythicalPlains.js",
     //"": "scripts/maps/chapter1/.js",
 };
 

@@ -53,9 +53,12 @@ function claimQuest(name) {
     return true;
 }
 
-function questProgress(goalType, goalItem) {
+function questProgress(goalType, goalItem, set = false) {
     for (let q in game.quests) {
-        if (quests[q].goal[0] == goalType && (quests[q].goal[1] == goalItem || quests[q].goal[1] == "")) game.quests[q][0]++;
+        if (quests[q].goal[0] == goalType && (quests[q].goal[1] == goalItem || quests[q].goal[1] == "")) {
+            if (set == false) game.quests[q][0]++;
+            else game.quests[q][0] = set;
+        }
         // you need to claim from the menu, not here
         /*
         if (game.quests[q].instaclaim != undefined && game.quests[q].instaclaim == true) {
@@ -77,6 +80,8 @@ wrenches ""
 bricks ""
 useItem "potion"
 talk "talkID"
+walk ""
+level "corelle"
 */
 
 var quests = {
@@ -123,5 +128,32 @@ var quests = {
         description: "Drink 12 Energy Drinks and check in on Myllermit (Reward: Special Energy Drink)",
         goal: ["useItem", "energydrink", 12],
         items: { "specialenergydrink": 1 }
+    },
+    "forestHiking": {
+        name: "Forest Hiking", source: "items/boots",
+        description: "Walk a lot to exercise your legs (Reward: Hiking Boots)",
+        goal: ["walk", "", 1000],
+        items: { "hikingboots": 1 }
+    },
+    "oxbowHealer": {
+        name: "Oxbow Healer", source: "items/potion",
+        description: "Defeat 10 enemies (Reward: 1 Potion)",
+        goal: ["enemy", "", 10],
+        repeatable: true, instaclaim: false,
+        items: { "potion": 1 }
+    },
+    "woodChopin": {
+        name: "Wood Chopin", source: "enemies/ent", snip: [0, 32, 32, 32],
+        description: "Defeat 6 walking trees aahh (Reward: 1 Heavy Log)",
+        goal: ["enemy", "ent_weak", 6],
+        instaclaim: true,
+        items: { "heavylog": 1 }
+    },
+    "plainsDefender": {
+        name: "Plains Defender", source: "items/sword_wood",
+        description: "Get Corelle to level 5 (Reward: 1 Angel Wing)",
+        goal: ["level", "corelle", 5],
+        instaclaim: true,
+        items: { "angelwing": 1 }
     },
 };

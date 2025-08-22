@@ -79,6 +79,19 @@ function getTileCondition(map, x, y, l) {
     }
 }
 
+function getNPCCondition(npc) {
+    if (npc.condition == undefined || !isValid(npc.condition)) return true; // enabled
+
+    if (!isValid(npc.condinv)) {
+        // tile exists if condition, else it does not exist
+        return typeof (npc.condition) == "string" ? eval(npc.condition) : npc.condition();
+    }
+    else {
+        // invert, so it exists if condition false
+        return typeof (npc.condition) == "string" ? !eval(npc.condition) : !npc.condition();
+    }
+}
+
 var activeEnemies = [];
 var activeNPCs = [];
 
@@ -689,7 +702,7 @@ scenes.game = () => {
                     }
                 }
                 for (i in activeNPCs) {
-                    if (activeNPCs[i].position[0] == xpos + xo && activeNPCs[i].position[1] == ypos + yo && isValid(activeNPCs[i].dialogues)) {
+                    if (activeNPCs[i].position[0] == xpos + xo && activeNPCs[i].position[1] == ypos + yo && isValid(activeNPCs[i].dialogues) && activeNPCs[i].talk && getNPCCondition(activeNPCs[i])) {
                         startDialogue(activeNPCs[i].dialogues[1]);
                     }
                 }
@@ -792,6 +805,8 @@ scenes.game = () => {
     }
 
     function renderNPC(ctx, npc) {
+        if (!getNPCCondition(npc)) return false; 
+
         let tileX = npc.position[0];
         let tileY = npc.position[1];
 
@@ -833,7 +848,7 @@ scenes.game = () => {
             }
         }
         for (cot in activeNPCs) {
-            if (activeNPCs[cot].position[0] == x && activeNPCs[cot].position[1] == y) {
+            if (activeNPCs[cot].position[0] == x && activeNPCs[cot].position[1] == y && getNPCCondition(activeNPCs[cot])) {
                 return true;
             }
         }
@@ -898,7 +913,7 @@ scenes.game = () => {
     function tryTalk(xo, yo) {
         for (i in activeNPCs) {
             activeNPCs[i].talk = false;
-            if (activeNPCs[i].position[0] == game.position[0] + xo && activeNPCs[i].position[1] == game.position[1] + yo) {
+            if (activeNPCs[i].position[0] == game.position[0] + xo && activeNPCs[i].position[1] == game.position[1] + yo && getNPCCondition(activeNPCs[i])) {
                 actionButton.snip = [64, 32, 64, 32];
                 activeNPCs[i].talk = true;
             }
@@ -1261,86 +1276,87 @@ scenes.game = () => {
     }
 
     function walkNPCs() {
-        if (canMove == true) {
-            for (i = 0; i < activeNPCs.length; i++) {
-                activeNPCs[i].movementTime += delta;
-                let xo = 0;
-                let yo = 0;
-                let head;
+        if (!canMove) return false;
+        for (i = 0; i < activeNPCs.length; i++) {
+            if (!getNPCCondition(activeNPCs[i])) continue;
+            activeNPCs[i].movementTime += delta;
+            let xo = 0;
+            let yo = 0;
+            let head;
 
-                // movement 0: none, 1: random, 2: path
-                if (activeNPCs[i].movement == 1 && activeNPCs[i].talk == false && activeNPCs[i].movementTime > activeNPCs[i].walkingInterval * 1000 && !activeNPCs[i].kofs[2]) {
-                    activeNPCs[i].movementTime = 0;
-                    // Random moving
-                    let randy = Math.random();
-                    if (randy > 0.75) { // Down
-                        xo = 0;
-                        yo = 1;
-                        head = 0;
-                    }
-                    else if (randy > 0.50) { // Left
-                        xo = -1;
-                        yo = 0;
-                        head = 1;
-                    }
-                    else if (randy > 0.25) { // Right
-                        xo = 1;
-                        yo = 0;
-                        head = 2;
-                    }
-                    else { // Up
-                        xo = 0;
-                        yo = -1;
-                        head = 3;
-                    }
-
+            // movement 0: none, 1: random, 2: path
+            if (activeNPCs[i].movement == 1 && activeNPCs[i].talk == false && activeNPCs[i].movementTime > activeNPCs[i].walkingInterval * 1000 && !activeNPCs[i].kofs[2]) {
+                activeNPCs[i].movementTime = 0;
+                // Random moving
+                let randy = Math.random();
+                if (randy > 0.75) { // Down
+                    xo = 0;
+                    yo = 1;
+                    head = 0;
+                }
+                else if (randy > 0.50) { // Left
+                    xo = -1;
+                    yo = 0;
+                    head = 1;
+                }
+                else if (randy > 0.25) { // Right
+                    xo = 1;
+                    yo = 0;
+                    head = 2;
+                }
+                else { // Up
+                    xo = 0;
+                    yo = -1;
+                    head = 3;
                 }
 
-                let before = [activeNPCs[i].position[0], activeNPCs[i].position[1]];
-                if (activeNPCs[i].movement == 2 && activeNPCs[i].talk == false && activeNPCs[i].movementTime > activeNPCs[i].walkingInterval * 1000) {
-                    activeNPCs[i].movementTime = 0;
-                    if (activeNPCs[i].pathProgress >= activeNPCs[i].path.length) {
-                        activeNPCs[i].pathProgress = 0;
-                    }
+            }
 
-                    if (activeNPCs[i].path[activeNPCs[i].pathProgress] == 0) {
-                        // Down
-                        yo = 1;
-                        head = 0;
-                    }
-                    if (activeNPCs[i].path[activeNPCs[i].pathProgress] == 1) {
-                        // Left
-                        xo = -1;
-                        head = 1;
-                    }
-                    if (activeNPCs[i].path[activeNPCs[i].pathProgress] == 2) {
-                        // Right
-                        xo = 1;
-                        head = 2;
-                    }
-                    if (activeNPCs[i].path[activeNPCs[i].pathProgress] == 3) {
-                        // Up
-                        yo = -1;
-                        head = 3;
-                    }
+            let before = [activeNPCs[i].position[0], activeNPCs[i].position[1]];
+            if (activeNPCs[i].movement == 2 && activeNPCs[i].talk == false && activeNPCs[i].movementTime > activeNPCs[i].walkingInterval * 1000) {
+                activeNPCs[i].movementTime = 0;
+                if (activeNPCs[i].pathProgress >= activeNPCs[i].path.length) {
+                    activeNPCs[i].pathProgress = 0;
                 }
 
-                // walk npc
-                if (xo != 0 || yo != 0) {
-                    if (getTileAllLayersWalkable(map, activeNPCs[i].position[0] + xo, activeNPCs[i].position[1] + yo, "npc")) {
-                        activeNPCs[i].position[0] += xo;
-                        activeNPCs[i].position[1] += yo;
-                        activeNPCs[i].head = head;
-                        activeNPCs[i].kofs = [xo, yo, activeNPCs[i].walkingSpeed];
+                if (activeNPCs[i].path[activeNPCs[i].pathProgress] == 0) {
+                    // Down
+                    yo = 1;
+                    head = 0;
+                }
+                if (activeNPCs[i].path[activeNPCs[i].pathProgress] == 1) {
+                    // Left
+                    xo = -1;
+                    head = 1;
+                }
+                if (activeNPCs[i].path[activeNPCs[i].pathProgress] == 2) {
+                    // Right
+                    xo = 1;
+                    head = 2;
+                }
+                if (activeNPCs[i].path[activeNPCs[i].pathProgress] == 3) {
+                    // Up
+                    yo = -1;
+                    head = 3;
+                }
+            }
 
-                        if (activeNPCs[i].movement == 2 && (activeNPCs[i].position[0] != before[0] || activeNPCs[i].position[1] != before[1])) activeNPCs[i].pathProgress++;
-                    }
+            // walk npc
+            if (xo != 0 || yo != 0) {
+                if (getTileAllLayersWalkable(map, activeNPCs[i].position[0] + xo, activeNPCs[i].position[1] + yo, "npc")) {
+                    activeNPCs[i].position[0] += xo;
+                    activeNPCs[i].position[1] += yo;
+                    activeNPCs[i].head = head;
+                    activeNPCs[i].kofs = [xo, yo, activeNPCs[i].walkingSpeed];
+
+                    if (activeNPCs[i].movement == 2 && (activeNPCs[i].position[0] != before[0] || activeNPCs[i].position[1] != before[1])) activeNPCs[i].pathProgress++;
                 }
             }
         }
     }
 
     function walkEnemies() {
+        if (!canMove) return false;
         let px = game.position[0];
         let py = game.position[1];
 
@@ -1548,6 +1564,7 @@ scenes.game = () => {
                         game.position[0] += xo;
                         game.position[1] += yo;
                         game.stats.walk++;
+                        questProgress("walk");
 
                         ActionsOnMove();
                         tryTeleport(map, Math.floor(game.position[0]), Math.floor(game.position[1]));
@@ -1613,18 +1630,20 @@ scenes.game = () => {
             // draw NPCs
             for (i in activeNPCs) {
                 if (activeNPCs[i].alpha > 0) {
-                    ctx.globalAlpha = activeNPCs[i].alpha;
+                    ctx.globalAlpha = isValid(activeNPCs[i].alpha) ? activeNPCs[i].alpha : 1;
                     renderNPC(ctx, activeNPCs[i]);
                 }
             }
-
+            ctx.globalAlpha = 1;
+            
             // draw enemies
             for (let enemy of activeEnemies) {
                 if (enemy.alpha > 0) {
-                    ctx.globalAlpha = enemy.alpha;
+                    ctx.globalAlpha = isValid(enemy.alpha) ? enemy.alpha : 1;
                     enemy.render(ctx);
                 }
             }
+            ctx.globalAlpha = 1;
 
             // draw player / formation leader
             if (map.worldmode != true || images["wm_" + game.leader] == undefined) {

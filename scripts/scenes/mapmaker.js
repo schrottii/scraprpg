@@ -70,6 +70,7 @@ function loadMap() {
 }
 
 var map;
+let recentlyUsedTilesList = [];
 
 scenes.mapmaker = () => {
     let walkPad = [];
@@ -81,7 +82,6 @@ scenes.mapmaker = () => {
     let tilesMenuControls = [];
     let tilesMenuTiles = [];
     let recentlyUsedTiles = [];
-    let recentlyUsedTilesList = [];
     let tilesMenuIcons = [];
 
     let createTileButtons = [];
@@ -1371,7 +1371,7 @@ scenes.mapmaker = () => {
         }
     }));
 
-    const dialogueScriptTypes = ["Add Quest", "Claim Quest", "Talk Quest Progress", "Give Item", "Teleport", "Open Shop"];
+    const dialogueScriptTypes = ["Add Quest", "Claim Quest", "Talk Quest Progress", "Give Item", "Teleport", "Open Shop", "Add Protagonist", "Rem Protagonist"];
     createDialogueButtons.push(controls.button({
         anchor: [0.3, 0.76], sizeAnchor: [0.05, 0.05], offset: [72 * 16, -600],
         text: "Script", alpha: 0, selected: "",
@@ -1436,6 +1436,26 @@ scenes.mapmaker = () => {
                             else {
                                 showInfo();
                                 renderInfo("shops");
+                                return;
+                            }
+                            break;
+                        case "Add Protagonist":
+                            if (selectedInfoType == "protagonists" && isValid(selectedInfo)) {
+                                result = "addProtagonist('" + selectedInfo.toLowerCase() + "')";
+                            }
+                            else {
+                                showInfo();
+                                renderInfo("protagonists");
+                                return;
+                            }
+                            break;
+                        case "Rem Protagonist":
+                            if (selectedInfoType == "protagonists" && isValid(selectedInfo)) {
+                                result = "removeProtagonist('" + selectedInfo.toLowerCase() + "')";
+                            }
+                            else {
+                                showInfo();
+                                renderInfo("protagonists");
                                 return;
                             }
                             break;
@@ -1663,6 +1683,25 @@ scenes.mapmaker = () => {
             }
         }
     }));
+    createNPCButtons.push(controls.button({
+        anchor: [0.3, 0.7], sizeAnchor: [0.2, 0.1], offset: [72 * 16, -600],
+        text: "No Condition", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let cond = prompt("Condition? Write code... (no () =>)");
+                if (!isValid(cond)) return false;
+
+                let inv = confirm("Inverted?")
+                if (!isValid(inv)) inv = false;
+
+                //cond = "() => " + cond;
+                map.npcs[curNPC].condition = cond;
+                map.npcs[curNPC].condinv = inv;
+
+                updateTileLabels();
+            }
+        }
+    }));
 
     // Tiles menu ahahyahahaaaa
     tilesMenuControls.push(controls.rect({
@@ -1768,10 +1807,10 @@ scenes.mapmaker = () => {
             }
         }));
     }
-    function generateRecentlyUsed() {
-        recentlyUsedTilesList = [];
 
+    function generateRecentlyUsed() {
         for (t = 0; t < 24; t++) {
+            if (recentlyUsedTiles.length >= 24) break;
             recentlyUsedTilesList.push(["gear", "gear", [0, 0, 64, 64]]);
             recentlyUsedTiles[t].source = "gear";
             recentlyUsedTiles[t].alpha = 0;
@@ -1779,7 +1818,15 @@ scenes.mapmaker = () => {
         }
     }
 
-    generateRecentlyUsed();
+    function updatePrePicker() {
+        for (t = 0; t < recentlyUsedTilesList.length; t++) {
+            recentlyUsedTiles[t].source = recentlyUsedTilesList[t][0];
+            recentlyUsedTiles[t].alpha = recentlyUsedTilesList[t][0] == "gear" ? 0 : 1;
+            recentlyUsedTiles[t].tileid = recentlyUsedTilesList[t][1];
+            recentlyUsedTiles[t].snip = recentlyUsedTilesList[t][2];
+            recentlyUsedTiles[t].glow = recentlyUsedTiles[t].tileid == ttp ? 25 : 0;
+        }
+    }
 
     walkPad.push(controls.image({ // Up
         anchor: [.1, .9], offset: [0, -walkPadSize * 3], sizeOffset: [walkPadSize, walkPadSize],
@@ -2074,6 +2121,22 @@ scenes.mapmaker = () => {
         }
     }));
     mapInfoControls.push(controls.button({
+        anchor: [0.1, 0.7], sizeAnchor: [0.2, 0.1],
+        text: "Creator: " + map.name, alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                let newName = prompt("Who made this?");
+                if (isValid(newName)) {
+                    map.creator = newName;
+                }
+                this.uText();
+            }
+        },
+        uText() {
+            this.text = "Creator: " + map.creator;
+        }
+    }));
+    mapInfoControls.push(controls.button({
         anchor: [0.4, 0.2], sizeAnchor: [0.2, 0.1],
         text: "Weather: " + map.weather, alpha: 0, i: 0,
         onClick(args) {
@@ -2196,14 +2259,18 @@ scenes.mapmaker = () => {
     }));
     mapInfoControls.push(controls.button({
         anchor: [0.7, 0.45], sizeAnchor: [0.2, 0.1],
-        text: "Level Range", alpha: 0,
+        text: "Lvl Range", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
                 let neww = prompt("What range? (ie 1-10) (from 1 to 50)");
-                if (neww.includes("-") && neww.split("-")[0] > 0 && neww.split("-")[2] <= 50) {
-                    map.levelRange = [neww.split("-")[0], neww.split("-")[2]];
+                if (isValid(neww) && neww.includes("-") && neww.split("-")[0] > 0 && neww.split("-")[1] <= 50) {
+                    map.levelRange = [parseInt(neww.split("-")[0]), parseInt(neww.split("-")[1])];
                 }
+                this.uText();
             }
+        },
+        uText() {
+            this.text = "Lvl Range: " + map.levelRange;
         }
     }));
     mapInfoControls.push(controls.button({
@@ -2521,6 +2588,13 @@ scenes.mapmaker = () => {
 
         map.tiles = Object.assign({}, map.tiles, loadPacks(map));
 
+        let width = 0;
+        for (let m in map.map) {
+            if (isValid(map.map[m]) && map.map[m].length > width) width = Math.floor(map.map[m].length / 4);
+        }
+        if (game.position[0] > width) game.position[0] = width;
+        if (game.position[1] > map.map.length) game.position[1] = map.map.length;
+
         generateRecentlyUsed();
         updateTiles = true;
     }
@@ -2579,13 +2653,7 @@ scenes.mapmaker = () => {
         }
 
         // update le prepicker list
-        for (t = 0; t < recentlyUsedTilesList.length; t++) {
-            recentlyUsedTiles[t].source = recentlyUsedTilesList[t][0];
-            recentlyUsedTiles[t].alpha = recentlyUsedTilesList[t][0] == "gear" ? 0 : 1;
-            recentlyUsedTiles[t].tileid = recentlyUsedTilesList[t][1];
-            recentlyUsedTiles[t].snip = recentlyUsedTilesList[t][2];
-            recentlyUsedTiles[t].glow = recentlyUsedTiles[t].tileid == ttp ? 25 : 0;
-        }
+        updatePrePicker();
     }
 
     function postLog(src, x, y, layer, prevContent, fill = undefined) {
@@ -3042,6 +3110,12 @@ scenes.mapmaker = () => {
                 grabFrom = [];
                 for (let q in shops) {
                     grabFrom.push(q);
+                }
+                break;
+            case "protagonists":
+                grabFrom = [];
+                for (let q in characters) {
+                    grabFrom.push(characters[q]);
                 }
                 break;
         }
@@ -3552,6 +3626,9 @@ scenes.mapmaker = () => {
         loop = () => { return false; };
     }
 
+    generateRecentlyUsed();
+    updatePrePicker();
+
     loadNPCs();
     fadeIn(250, true);
     canMove = true;
@@ -3572,9 +3649,11 @@ scenes.mapmaker = () => {
                         newMap();
                     }
                     else {
-                        // It does not exist, create a new empty map
+                        // It does not exist, load from file
                         //createNewMap(eval(lmresult));
                         map = eval(lmresult);
+                        currentMap = map.id;
+                        newMap();
                     }
                 }
 
@@ -3692,7 +3771,7 @@ scenes.mapmaker = () => {
                         tnpcs[np].offset = [(((zoom * scale) * (npc.position[0] + kofs[0] * kofs[2] - (game.position[0] - width / 2 + 0.5))) - ((zoom - 1) * scale * (width / 2))) - ((width * scale) / 2), ((zoom * scale) * (npc.position[1] + kofs[1] * kofs[2] - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7)) - (height / 2)];
                         tnpcs[np].sizeOffset = [zswm, zswm];
                         tnpcs[np].source = npc.source;
-                        tnpcs[np].alpha = 1;
+                        tnpcs[np].alpha = npc.alpha;
                         np += 1;
                     }
                 }

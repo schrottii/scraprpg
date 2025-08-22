@@ -109,6 +109,14 @@ function INN(){
     }
 }
 
+function addProtagonist(name) {
+    if (!game.chars.includes(name)) game.chars.push(name);
+}
+
+function removeProtagonist(name) {
+    if (game.chars.includes(name)) game.chars.splice(game.chars.indexOf(name), 1);
+}
+
 function addWrenches(amount = 0) {
     if (game.wrenches != undefined) {
         game.wrenches = Math.min(game.wrenches + amount, 999999999);
@@ -155,11 +163,14 @@ function checkLevelUps() {
     for (i in game.chars) {
         let I = game.chars[i];
         while (game.characters[I].EXP >= calcEXP(I) && game.characters[I].level < 50) {
+            // level up!
             game.characters[I].EXP -= calcEXP(I);
             game.characters[I].level += 1;
 
             game.characters[I].HP = getStat(I, "maxHP");
             game.characters[I].EP = getStat(I, "maxEP");
+
+            questProgress("level", I, game.characters[I].level);
         }
     }
 }

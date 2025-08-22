@@ -1957,6 +1957,8 @@ scenes.fight = () => {
             else if (posY - game.position[1] < 5 && posY - game.position[1] > -5) activeEnemies.splice(e, 1);
         }
 
+        canMove = true;
+
         fadeOut(1000, true, () => setScene(scenes.game()));
     }
 

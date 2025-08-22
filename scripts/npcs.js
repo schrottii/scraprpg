@@ -109,5 +109,14 @@ let npcs = {
         movement: 2,
         walkingInterval: 0.2,
         path: [2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+    },
+    TBC: {
+        position: [999, 999],
+        map: "test",
+        source: "bleu",
+        dialogues: {
+            1: [{ "text":"Thank you for playing, quack quack!", "portrait":"Portraits_Endte", "emotion":"happy", "name":"Endte", "voice":"male_young"}, { "text":"Sadly, you have reached the current end of the game. It's not easy for one person to make all the maps", "portrait":"Portraits_Endte", "emotion":"sad", "name":"Endte", "voice":false}, { "text":"A busy duck, just like me.", "portrait":"Portraits_Endte", "emotion":"disappointed", "name":"Endte", "voice":false}, { "text":"More content coming soon", "portrait":"Portraits_Endte", "emotion":"happy", "name":"Endte", "voice":false}]
+        },
+        movement: 0
     }
 };
