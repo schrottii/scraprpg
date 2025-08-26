@@ -205,6 +205,7 @@ scenes.magicscene = () => {
     }
     showItems();
 
+    removeNotification("magic");
     fadeIn(1000 / 3, true);
 
     return {

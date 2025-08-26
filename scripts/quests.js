@@ -13,6 +13,7 @@ function calcQuestDuration(name) {
 function addQuest(name) {
     if (game.quests[name] == undefined && quests[name] != undefined) {
         game.quests[name] = [0, game.stats.playTime, 0];
+        addNotification("quest");
         return true;
     }
     else return false;
@@ -58,13 +59,12 @@ function questProgress(goalType, goalItem, set = false) {
         if (quests[q].goal[0] == goalType && (quests[q].goal[1] == goalItem || quests[q].goal[1] == "")) {
             if (set == false) game.quests[q][0]++;
             else game.quests[q][0] = set;
+
+            // you need to claim from the menu, not here
+            if (isQuestComplete(q) && !isQuestClaimed(q) && quests[q].instaclaim != undefined && quests[q].instaclaim == true) {
+                addNotification("quest");
+            }
         }
-        // you need to claim from the menu, not here
-        /*
-        if (game.quests[q].instaclaim != undefined && game.quests[q].instaclaim == true) {
-            claimQuest(q);
-        }
-        */
     }
 }
 

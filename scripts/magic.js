@@ -34,6 +34,7 @@ function awardRandomSpell(charName, element, size){
 
     if (randomSpell == undefined) return false;
     game.characters[charName].magic.push(randomSpell);
+    addNotification("magic");
     return true;
 }
 

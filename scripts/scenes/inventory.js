@@ -2,6 +2,7 @@ scenes.inventory = () => {
     let background = [];
     let buttons = [];
     let buttonPics = [];
+    let buttonNotifs = [];
 
     let characters = [];
     let characterNames = [];
@@ -49,6 +50,13 @@ scenes.inventory = () => {
             anchor: [0.7, 0.004 + (0.085 / 2) + (i * 0.1)], offset: [0, 0], sizeOffset: [64, 64], id: i,
             alpha: 1, clickstop: false,
             source: ["items/scroll", "items/potion", "fire", "inventory", "grid", "monsterbook", "save", "gear", "flee"][i],
+        }));
+
+        buttonNotifs.push(controls.image({
+            anchor: [0.7, 0.004 + (0.085 / 2) + (i * 0.1)], offset: [32, 32], sizeOffset: [32, 32], id: i,
+            alpha: 0, clickstop: false,
+            notif: ["quest", "item", "magic", "", "", "book", "", "", ""][i],
+            source: "ping",
         }));
     }
 
@@ -290,6 +298,10 @@ scenes.inventory = () => {
                 emptyChars[i].alpha = 1;
             }
 
+            for (let nf in buttonNotifs) {
+                buttonNotifs[nf].alpha = notifications.includes(buttonNotifs[nf].notif) ? 1 : 0;
+            }
+
             coolDisplays[0].text = "Current time: " + getTime();
             coolDisplays[2].text = "Total time spent: " + getTime(game.stats.playTime, 60, 3600, true);
 
@@ -298,7 +310,7 @@ scenes.inventory = () => {
         },
         // Controls
         controls: [
-            ...background, ...buttons, ...buttonPics, ...characters, ...characterNames, ...characterImages, ...characterBars, ...emptyChars, ...coolDisplays, ...cl,
+            ...background, ...buttons, ...buttonPics, ...buttonNotifs, ...characters, ...characterNames, ...characterImages, ...characterBars, ...emptyChars, ...coolDisplays, ...cl,
         ],
         name: "inventory"
     }

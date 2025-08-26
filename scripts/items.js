@@ -1,5 +1,6 @@
 function addItem(name, amount = 1) {
     if (game.inventory[name] == undefined) {
+        addNotification("item");
         game.inventory[name] = 0;
     }
     if (game.inventory[name] >= items[name]().max) {

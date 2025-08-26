@@ -136,3 +136,28 @@
 - Fixed issues with transparent NPCs and enemies
 - Fixed issues when loading from a file (ie wrong ID)
 - Fixed map level range issue
+
+
+
+## 1.0.5 (2025-08-27)
+-> Notifications
+- Added notifications, which help guide you (they look like a red square)
+- They can appear for Quests, Items, Magic and the Monster Book
+- Quests: when you get a new Quest or completed one you can directly claim
+- Items: getting an item you did not have before
+- Magic: getting a spell from a book (no other way to get spells yet)
+- Monster Book: having killed an enemy for the first time, or scanning it
+- Go into the respective menu to make it disappear
+
+-> Fights:
+- Increased size of protagonists and enemies by 50%
+- Slide in/out for buttons, actions and inventory now all take 300ms (previously 500ms, except for buttons in)
+- Fight log: added [P], [E], [I] depending on if a protagonist or enemy did it, or it's just info
+- Fight log: changed start text when a battle starts
+- Fight log: removed redundant EXP gain text
+- Stats of selected protagonist now disappear when unselecting
+- Fixed unavailable attacks briefly showing up when sliding out the actions
+
+-> Internal:
+- Added notifications
+- Fights: added support for different grid/pos sizes

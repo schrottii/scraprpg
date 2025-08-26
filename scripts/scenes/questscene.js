@@ -93,6 +93,7 @@ scenes.questscene = () => {
         }));
     }
 
+    removeNotification("quest");
     fadeIn(1000 / 3, true);
 
     return {

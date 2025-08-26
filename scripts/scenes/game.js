@@ -465,6 +465,11 @@ scenes.game = () => {
         alpha: 1,
         source: "inventory", clickstop: false
     });
+    let inventoryNotif = controls.image({
+        anchor: [1, 0], offset: [-64, 64], sizeOffset: [64, 64],
+        alpha: 1,
+        source: "ping", clickstop: false
+    });
 
     let poisonBlack = controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 1],
@@ -1847,6 +1852,8 @@ scenes.game = () => {
                 }
             }
 
+            inventoryNotif.alpha = notifications.length > 0 ? 1 : 0;
+
             // Keybinds
 
             // action
@@ -1878,7 +1885,7 @@ scenes.game = () => {
         },
         controls: [
             poisonBlack, nightEffect, nightEffect2, fallingRain, fogCloud, darkCloud, dustParticles,
-            ...walkPad, inventoryButton, inventoryImage, actionButton, backButton,
+            ...walkPad, inventoryButton, inventoryImage, inventoryNotif, actionButton, backButton,
             ...cutsceneElements, ...dialogueNormalComponents, ...dialogueInvisComponents, ...dialogueNarratorComponents, ...dialogueCutsceneComponents,
             autoSaveText, ...areaNameBox, areaTeleportFade,
         ],

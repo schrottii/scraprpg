@@ -18,6 +18,8 @@ var animationtime = -1;
 var animation;
 var animationspeed = 100;
 
+var notifications = [];
+
 var FPS = 60;
 var FPSover = 0;
 
@@ -74,6 +76,14 @@ if (isElectron()) {
         }
     });
     */
+}
+
+function addNotification(name) {
+    if (!notifications.includes(name)) notifications.push(name);
+}
+
+function removeNotification(name) {
+    notifications.splice(notifications.indexOf(name), 1);
 }
 
 // init

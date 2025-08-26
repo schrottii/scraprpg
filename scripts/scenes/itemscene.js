@@ -365,6 +365,7 @@ scenes.itemscene = () => {
     }
     showItems();
 
+    removeNotification("item");
     fadeIn(1000 / 3, true);
 
     return {

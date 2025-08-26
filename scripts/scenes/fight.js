@@ -4,6 +4,9 @@ const amountFightStats = 14;
 var positions;
 var defeatType = "default"; // default or nogameover
 
+var fightPosSize = 96;
+var fightPosSize2 = fightPosSize * 1.125;
+
 // Colors of the range indicator
 const rangeColors = ["red", "#ff00ff", "blue"];
 
@@ -141,7 +144,6 @@ scenes.fight = () => {
     var fightLogComponents = [];
     var enemyListComponents = [];
     var enemyAmounts = ["", "", "", "", "", "", "", "", ""];
-    var fightOverview = [];
     var winScreen = [];
     var winScreen2 = [];
     var winStats = [];
@@ -175,12 +177,8 @@ scenes.fight = () => {
     let scal = 10;
 
     var fightlog = [
-        "",
-        "Battle has started!",
-        "All actions will",
-        "be logged here!",
     ];
-
+    postLog("i", "Fight Log: actions will be logged here");
 
     function checkAllDead(checkonly = false) {
         // checks if ALL enemies are dead, or if ALL allies are dead
@@ -411,7 +409,11 @@ scenes.fight = () => {
 
                         if (enemy.type != undefined) {
                             if (game.monsterbook[enemy.type] != undefined) game.monsterbook[enemy.type] += 1;
-                            else game.monsterbook[enemy.type] = 1;
+                            else {
+                                // new
+                                addNotification("book");
+                                game.monsterbook[enemy.type] = 1;
+                            }
                         }
                     }
                 }
@@ -717,10 +719,14 @@ scenes.fight = () => {
         }
     }
 
-    function postLog(text) {
+    function postLog(cause, text) {
         let maxLength = 30;
         let tempText = "";
         let superTempText = "";
+
+        if (cause == "p") text = "[P] " + text;
+        if (cause == "e") text = "[E] " + text;
+        if (cause == "i") text = "[I] " + text;
 
         for (i = 0; i < text.length; i++) {
             superTempText = superTempText + text[i];
@@ -832,12 +838,12 @@ scenes.fight = () => {
                 if (isCritical) playSound("critdamage");
                 else playSound("damage");
 
-                postLog(game.characters[positions[activeCharacter.action[1]][activeCharacter.action[2]].occupied].name + " attacks " + game.characters[positions[activeCharacter.action[3]][activeCharacter.action[4]].occupied].name + " and deals " + Damage + " damage!");
+                postLog("p", game.characters[positions[activeCharacter.action[1]][activeCharacter.action[2]].occupied].name + " attacks " + game.characters[positions[activeCharacter.action[3]][activeCharacter.action[4]].occupied].name + " and deals " + Damage + " damage!");
 
                 // Bar animation! (Cowboy moment)
                 if (game.characters[positions[activeCharacter.action[3]][activeCharacter.action[4]].occupied].HP < 1) {
                     game.characters[positions[activeCharacter.action[3]][activeCharacter.action[4]].occupied].HP = 0;
-                    postLog(game.characters[positions[activeCharacter.action[1]][activeCharacter.action[2]].occupied].name + " killed " + game.characters[positions[activeCharacter.action[3]][activeCharacter.action[4]].occupied].name + "!");
+                    postLog("p", game.characters[positions[activeCharacter.action[1]][activeCharacter.action[2]].occupied].name + " killed " + game.characters[positions[activeCharacter.action[3]][activeCharacter.action[4]].occupied].name + "!");
                     positions[activeCharacter.action[3]][activeCharacter.action[4]].isOccupied = false;
                     checkAllDead();
                 }
@@ -866,7 +872,7 @@ scenes.fight = () => {
 
                 if (game.characters[positions[activeCharacter.action[4]][activeCharacter.action[5]].occupied].HP < 1) {
                     game.characters[positions[activeCharacter.action[4]][activeCharacter.action[5]].occupied].HP = 0;
-                    postLog(positions[activeCharacter.action[2]][activeCharacter.action[3]].name + " killed " + game.characters[positions[activeCharacter.action[4]][activeCharacter.action[5]].occupied].name + "!");
+                    postLog("p", positions[activeCharacter.action[2]][activeCharacter.action[3]].name + " killed " + game.characters[positions[activeCharacter.action[4]][activeCharacter.action[5]].occupied].name + "!");
                     positions[activeCharacter.action[4]][activeCharacter.action[5]].isOccupied = false;
                     checkAllDead();
                 }
@@ -943,7 +949,7 @@ scenes.fight = () => {
                             // is a player
                             if (targets[t][0].HP < 1) {
                                 targets[t][0].HP = 0;
-                                postLog(c.name + " killed " + targets[t][0].name + "!");
+                                postLog("p", c.name + " killed " + targets[t][0].name + "!");
                                 targets[t][3].isOccupied = false;
                                 checkAllDead();
                             }
@@ -959,7 +965,7 @@ scenes.fight = () => {
                     // check if ur dead, dunno why
                     if (p.HP < 1) {
                         p.HP = 0;
-                        postLog(c.name + " killed " + p.name + "!");
+                        postLog("p", c.name + " killed " + p.name + "!");
                         positions[a[4]][a[5]].isOccupied = false;
                         checkAllDead();
                     }
@@ -993,13 +999,16 @@ scenes.fight = () => {
                     enemySpecies = enemyTypes[enemy.occupied];
                 }
 
-                postLog("-== Scanning " + enemySpecies.name + " ==-");
-                postLog("Element: " + enemy.element);
-                postLog("HP: " + enemy.HP + "/" + enemy.maxHP);
-                postLog("Strength: " + enemy.strength);
+                postLog("", "-== Scanning " + enemySpecies.name + " ==-");
+                postLog("", "Element: " + enemy.element);
+                postLog("", "HP: " + enemy.HP + "/" + enemy.maxHP);
+                postLog("", "Strength: " + enemy.strength);
 
                 // scan once, see in monster book :eyes:
-                if (game.monsterbook[enemy.type] == undefined) game.monsterbook[enemy.type] = 0;
+                if (game.monsterbook[enemy.type] == undefined) {
+                    addNotification("book");
+                    game.monsterbook[enemy.type] = 0;
+                }
 
                 endOfExecute(pos);
                 break;
@@ -1124,14 +1133,14 @@ scenes.fight = () => {
                     if (!isCritical) playSound("damage");
                     else playSound("critdamage");
 
-                    postLog(epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[fpos1][fpos2].occupied].name + " and deals " + Damage + " damage!");
+                    postLog("e", epositions[pos[0]][pos[1]].name + " attacks " + game.characters[positions[fpos1][fpos2].occupied].name + " and deals " + Damage + " damage!");
                     if (getElementDamage(epositions[pos[0]][pos[1]].element, getStat(positions[fpos1][fpos2].occupied, "element")) != 1) {
-                        postLog("Element boost: x" + getElementDamage(epositions[pos[0]][pos[1]].element, getStat(positions[fpos1][fpos2].occupied)) + "!");
+                        postLog("e", "Element boost: x" + getElementDamage(epositions[pos[0]][pos[1]].element, getStat(positions[fpos1][fpos2].occupied)));
                     }
 
                     if (game.characters[positions[fpos1][fpos2].occupied].HP < 1) {
                         game.characters[positions[fpos1][fpos2].occupied].HP = 0;
-                        postLog(epositions[pos[0]][pos[1]].name + " killed " + game.characters[positions[fpos1][fpos2].occupied].name + "!");
+                        postLog("e", epositions[pos[0]][pos[1]].name + " killed " + game.characters[positions[fpos1][fpos2].occupied].name + "!");
                         positions[fpos1][fpos2].isOccupied = false;
                         checkAllDead();
                     }
@@ -1146,7 +1155,7 @@ scenes.fight = () => {
                 epositions[pos[0]][pos[1]].action = false;
                 battleNumber(positionControls[fpos1 + (fpos2 * 3)].anchor, "Miss...", 0, positionControls[fpos1 + (fpos2 * 3)].offset);
                 playSound("miss");
-                postLog(epositions[pos[0]][pos[1]].name + " missed!");
+                postLog("e", epositions[pos[0]][pos[1]].name + " missed!");
             }
 
             generateOrderDisplay();
@@ -1177,43 +1186,43 @@ scenes.fight = () => {
             if (getPlayer(i + 1).effect[0] == "acid") {
                 changeEmo(getPlayer(i + 1).pos[0] + getPlayer(i + 1).pos[1] * 3, "poison");
                 getPlayer(i + 1).HP -= Math.ceil(getStat(i + 1, "maxHP") / 15);
-                postLog(getPlayer(i + 1).name + " took " + Math.ceil(getStat(i + 1, "maxHP") / 15) + " damage from acid!");
+                postLog("p", getPlayer(i + 1).name + " took " + Math.ceil(getStat(i + 1, "maxHP") / 15) + " damage from acid!");
 
                 getPlayer(i + 1).effect[1] -= 1;
                 if (getPlayer(i + 1).effect[1] < 1) {
                     getPlayer(i + 1).effect[0] = "none";
-                    postLog(getPlayer(i + 1).name + "'s acid is over!");
+                    postLog("p", getPlayer(i + 1).name + "'s acid is over!");
                 }
             }
 
             if (getPlayer(i + 1).effect[0] == "poison") {
                 changeEmo(getPlayer(i + 1).pos[0] + getPlayer(i + 1).pos[1] * 3, "poison");
                 getPlayer(i + 1).HP -= Math.ceil(getStat(i + 1, "maxHP") / 15);
-                postLog(getPlayer(i + 1).name + " took " + Math.ceil(getStat(i + 1, "maxHP") / 15) + " damage from poison!");
+                postLog("p", getPlayer(i + 1).name + " took " + Math.ceil(getStat(i + 1, "maxHP") / 15) + " damage from poison!");
 
                 getPlayer(i + 1).effect[1] -= 1;
                 if (getPlayer(i + 1).effect[1] < 1) {
                     getPlayer(i + 1).effect[0] = "none";
-                    postLog(getPlayer(i + 1).name + "'s poison is over!");
+                    postLog("p", getPlayer(i + 1).name + "'s poison is over!");
                 }
             }
 
             if (getPlayer(i + 1).effect[0] == "burn") {
                 changeEmo(getPlayer(i + 1).pos[0] + getPlayer(i + 1).pos[1] * 3, "burn");
                 getPlayer(i + 1).HP -= Math.ceil(getStat(i + 1, "maxHP") / 10);
-                postLog(getPlayer(i + 1).name + " burns and took " + Math.ceil(getStat(i + 1, "maxHP") / 10) + " damage!");
+                postLog("p", getPlayer(i + 1).name + " burns and took " + Math.ceil(getStat(i + 1, "maxHP") / 10) + " damage!");
 
                 getPlayer(i + 1).effect[1] -= 1;
                 if (getPlayer(i + 1).effect[1] < 1) {
                     getPlayer(i + 1).effect[0] = "none";
-                    postLog(getPlayer(i + 1).name + "'s burn is over!");
+                    postLog("p", getPlayer(i + 1).name + "'s burn is over!");
                 }
             }
 
             if (getPlayer(i + 1).effect[0] == "condemned") {
                 changeEmo(getPlayer(i + 1).pos[0] + getPlayer(i + 1).pos[1] * 3, "condemned");
-                postLog(getPlayer(i + 1).name + " is condemned!");
-                if (getPlayer(i + 1).effect[1] == 1) postLog(getPlayer(i + 1).name + " is going to die!");
+                postLog("p", getPlayer(i + 1).name + " is condemned!");
+                if (getPlayer(i + 1).effect[1] == 1) postLog("p", getPlayer(i + 1).name + " is going to die!");
 
                 getPlayer(i + 1).effect[1] -= 1;
                 if (getPlayer(i + 1).effect[1] < 1) {
@@ -1224,7 +1233,7 @@ scenes.fight = () => {
 
             if (getPlayer(i + 1).HP < 1 && positions[getPlayer(i + 1).pos[0]][getPlayer(i + 1).pos[1]].isOccupied == true) {
                 //fightStats[5 + amountStats * i].alpha = 0;
-                postLog(getPlayer(i + 1).name + " died!");
+                postLog("p",  getPlayer(i + 1).name + " died!");
                 positions[getPlayer(i + 1).pos[0]][getPlayer(i + 1).pos[1]].isOccupied = false;
                 checkAllDead();
             }
@@ -1313,7 +1322,7 @@ scenes.fight = () => {
 
             attackAnimationObjects[9 + pos1 + (pos2 * 3)].anchor[0] = epositionControls[pos1 + (pos2 * 3)].anchor[0] + 0;
             attackAnimationObjects[9 + pos1 + (pos2 * 3)].anchor[1] = epositionControls[pos1 + (pos2 * 3)].anchor[1] + 0;
-            attackAnimationObjects[9 + pos1 + (pos2 * 3)].offset = [epositionControls[pos1 + (pos2 * 3)].offset[0] - 72 + epositionControls[pos1 + (pos2 * 3)].bigoff, epositionControls[pos1 + (pos2 * 3)].offset[1]];
+            attackAnimationObjects[9 + pos1 + (pos2 * 3)].offset = [epositionControls[pos1 + (pos2 * 3)].offset[0] - fightPosSize2 + epositionControls[pos1 + (pos2 * 3)].bigoff, epositionControls[pos1 + (pos2 * 3)].offset[1]];
             attackAnimationObjects[9 + pos1 + (pos2 * 3)].alpha = 1;
             attackAnimationObjects[9 + pos1 + (pos2 * 3)].source = "eattackani0";
 
@@ -1324,7 +1333,7 @@ scenes.fight = () => {
 
                 attackAnimationObjects[9 + pos1 + (pos2 * 3)].anchor[0] = epositionControls[pos1 + (pos2 * 3)].anchor[0] + 0;
                 attackAnimationObjects[9 + pos1 + (pos2 * 3)].anchor[1] = epositionControls[pos1 + (pos2 * 3)].anchor[1] + 0;
-                attackAnimationObjects[9 + pos1 + (pos2 * 3)].offset = [epositionControls[pos1 + (pos2 * 3)].offset[0] - 72 + epositionControls[pos1 + (pos2 * 3)].bigoff, epositionControls[pos1 + (pos2 * 3)].offset[1]];
+                attackAnimationObjects[9 + pos1 + (pos2 * 3)].offset = [epositionControls[pos1 + (pos2 * 3)].offset[0] - fightPosSize2 + epositionControls[pos1 + (pos2 * 3)].bigoff, epositionControls[pos1 + (pos2 * 3)].offset[1]];
 
                 // Super good animated feeeeeeet
                 epositionControls[pos1 + (pos2 * 3)].snip[0] = Math.floor(runTime) * 32;
@@ -1362,13 +1371,49 @@ scenes.fight = () => {
         }
     }
 
-
     var filteredItems = [];
     for (let i in Object.keys(game.inventory)){
         if (items[Object.keys(game.inventory)[i]]().type == "armor" || items[Object.keys(game.inventory)[i]]().story == true) continue;
         filteredItems.push(Object.keys(game.inventory)[i]);
     }
 
+    function showFightButtons() {
+        let me = positions[selectedAlly[0]][selectedAlly[1]].occupied;
+
+        // update texts based on items, spells and flee chance u got
+        fightButtons[5].text = "Items (" + Object.keys(filteredItems).length + ")";
+        fightButtons[8].text = "Magic (" + Object.keys(game.characters[me].magic).length + ")";
+        fightButtons[14].text = "Flee (" + (getStat(me, "agi") / 2) + "%)";
+
+        addAnimator(function (t) {
+            for (i = 0; i < fightButtons.length; i++) {
+                fightButtons[i].offset[1] = -300 + t;
+            }
+            if (t > 299) {
+                for (i = 0; i < fightButtons.length; i++) {
+                    fightButtons[i].offset[1] = 0;
+                }
+                return true;
+            }
+        });
+    }
+
+    function hideFightButtons() {
+        if (fightButtons[0].offset[1] != 0) return false;
+
+        addAnimator(function (t) {
+            for (i = 0; i < fightButtons.length; i++) {
+                fightButtons[i].offset[1] = -t;
+            }
+            if (t > 299) {
+                for (i = 0; i < fightButtons.length; i++) {
+                    fightButtons[i].offset[1] = -500;
+                    fightButtons[i].offset[1] = -t;
+                }
+                return true;
+            }
+        });
+    }
     function showActionButtons(ally) {
         // for actionButtons like attack, defend, etc.
 
@@ -1385,79 +1430,38 @@ scenes.fight = () => {
 
         addAnimator(function (t) {
             for (i = 0; i < actionButtons.length; i++) {
-                if (actionButtons[i].enabled) actionButtons[i].offset[1] = -500 + t;
+                if (actionButtons[i].enabled) actionButtons[i].offset[1] = -300 + t;
             }
-            if (t > 499) {
+            if (t > 299) {
                 for (i = 0; i < actionButtons.length; i++) {
                     if (actionButtons[i].enabled) actionButtons[i].offset[1] = 0;
                 }
                 return true;
             }
-        })
+        });
     }
 
-    function hideActionButtons(thisButton) {
-        if (actionButtons[0].offset[1] != 0 && thisButton != 99) return false;
+    function hideActionButtons() {
         addAnimator(function (t) {
             for (i = 0; i < actionButtons.length; i++) {
-                if (thisButton != 0 || i < 21) actionButtons[i].offset[1] = -t;
-            }
-            if (t > 499) {
-                for (i = 0; i < actionButtons.length; i++) {
-                    if (thisButton != 0 || i < 21) actionButtons[i].offset[1] = -500;
-                }
-                return true;
-            }
-        })
-    }
-
-    function showFightButtons() {
-        let me = positions[selectedAlly[0]][selectedAlly[1]].occupied;
-        
-        // update texts based on items, spells and flee chance u got
-        fightButtons[5].text = "Items (" + Object.keys(filteredItems).length + ")";
-        fightButtons[8].text = "Magic (" + Object.keys(game.characters[me].magic).length + ")";
-        fightButtons[14].text = "Flee (" + (getStat(me, "agi") / 2) + "%)";
-        
-
-        addAnimator(function (t) {
-            for (i = 0; i < fightButtons.length; i++) {
-                fightButtons[i].offset[1] = -300 + t;
+                if (actionButtons[i].enabled) actionButtons[i].offset[1] = -t;
             }
             if (t > 299) {
-                for (i = 0; i < fightButtons.length; i++) {
-                    fightButtons[i].offset[1] = 0;
+                for (i = 0; i < actionButtons.length; i++) {
+                    if (actionButtons[i].enabled) actionButtons[i].offset[1] = -500;
                 }
                 return true;
             }
-        })
+        });
     }
 
-    function hideFightButtons() {
-        if (fightButtons[0].offset[1] != 0) return false;
-
-        addAnimator(function (t) {
-            for (i = 0; i < fightButtons.length; i++) {
-                fightButtons[i].offset[1] = -t;
-            }
-            if (t > 499) {
-                for (i = 0; i < fightButtons.length; i++) {
-                    fightButtons[i].offset[1] = -500;
-                    fightButtons[i].offset[1] = -t;
-                }
-                return true;
-            }
-        })
-    }
-
-
-    function showfightInventory() {
+    function showFightInventory() {
         addAnimator(function (t) {
             for (i = 0; i < fightInventory.length; i++) {
-                fightInventory[i].offset[1] = -500 + t;
-                if (fightInventory[i].source != undefined) fightInventory[i].offset[1] = -520 + t;
+                fightInventory[i].offset[1] = -300 + t;
+                if (fightInventory[i].source != undefined) fightInventory[i].offset[1] = -320 + t;
             }
-            if (t > 499) {
+            if (t > 299) {
                 for (i = 0; i < fightInventory.length; i++) {
                     fightInventory[i].offset[1] = 0;
                     if (fightInventory[i].source != undefined) fightInventory[i].offset[1] = -20;
@@ -1467,13 +1471,13 @@ scenes.fight = () => {
         });
     }
 
-    function hidefightInventory() {
+    function hideFightInventory() {
         if (fightInventory[0].offset[1] != 0) return false;
         addAnimator(function (t) {
             for (i = 0; i < fightInventory.length; i++) {
                 fightInventory[i].offset[1] = -t;
             }
-            if (t > 499) {
+            if (t > 299) {
                 for (i = 0; i < fightInventory.length; i++) {
                     fightInventory[i].offset[1] = -500;
                 }
@@ -1632,7 +1636,7 @@ scenes.fight = () => {
                 alpha: 1,
                 onClick(args) {
                     if (this.alpha == 1 && fightAction == "active") {
-                        showfightInventory();
+                        showFightInventory();
                         showItems();
                         hideFightButtons();
                     }
@@ -1646,7 +1650,7 @@ scenes.fight = () => {
                 alpha: 1,
                 onClick(args) {
                     if (this.alpha == 1 && fightAction == "active") {
-                        showfightInventory();
+                        showFightInventory();
                         showMagic();
                         hideFightButtons();
                     }
@@ -1661,7 +1665,7 @@ scenes.fight = () => {
                 alpha: 1,
                 onClick(args) {
                     if (this.alpha == 1) {
-                        postLog(prompt("Put what?"));
+                        postLog("i", prompt("Put what?"));
                     }
                 }
             }))
@@ -1761,10 +1765,11 @@ scenes.fight = () => {
                             break;
                         case 6:
                             // Back
+                            selectedStats.text = "";
                             positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].source = "grid";
                             positionGrid[selectedAlly[0] + (selectedAlly[1] * 3)].blend = "mul";
                             if (fightAction == "attack2" && this.i == 6) {
-                                hideActionButtons(99);
+                                hideActionButtons();
                                 fightAction = "none";
                                 return true;
                             }
@@ -1776,7 +1781,7 @@ scenes.fight = () => {
                             break;
                     }
                     hideFightButtons();
-                    hideActionButtons(this.i);
+                    hideActionButtons();
                 }
             }
         }))
@@ -1875,7 +1880,7 @@ scenes.fight = () => {
         fleeIcon.alpha = 1;
 
         hideFightButtons();
-        hidefightInventory();
+        hideFightInventory();
 
         let runTime = 0;
         let runLaps = 0;
@@ -1995,7 +2000,7 @@ scenes.fight = () => {
                                         fightAction = "item";
                                         selectedItem = this.item;
                                         hideFightButtons();
-                                        hidefightInventory();
+                                        hideFightInventory();
                                     }
                                     else {
                                         selectedItem = this.item;
@@ -2004,7 +2009,7 @@ scenes.fight = () => {
                                         fightAction = "none";
                                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "items/" + selectedItem().source;
                                         hideFightButtons();
-                                        hidefightInventory();
+                                        hideFightInventory();
                                     }
                                 }
                             }
@@ -2014,7 +2019,7 @@ scenes.fight = () => {
                                 fightAction = "magic";
                                 selectedItem = this.item;
                                 hideFightButtons();
-                                hidefightInventory();
+                                hideFightInventory();
                             }
                         }
                     }
@@ -2047,7 +2052,7 @@ scenes.fight = () => {
         onClick(args) {
             // go back
             if (this.alpha == 1) {
-                hidefightInventory();
+                hideFightInventory();
                 showFightButtons();
             }
         }
@@ -2162,9 +2167,9 @@ scenes.fight = () => {
                     if (isCritical) playSound("critdamage");
                     else playSound("damage");
 
-                    postLog(game.characters[positions[fpos1][fpos2].occupied].name + " attacks " + epositions[pos1][pos2].name + " and deals " + Damage + " damage!");
+                    postLog("p", game.characters[positions[fpos1][fpos2].occupied].name + " attacks " + epositions[pos1][pos2].name + " and deals " + Damage + " damage!");
                     if (getElementDamage(getStat(positions[fpos1][fpos2].occupied, "element"), epositions[pos1][pos2].element) != 1) {
-                        postLog("Element boost: x" + getElementDamage(getStat(positions[fpos1][fpos2].occupied, "element"), epositions[pos1][pos2].element) + "!");
+                        postLog("p", "Element boost: x" + getElementDamage(getStat(positions[fpos1][fpos2].occupied, "element"), epositions[pos1][pos2].element));
                     }
 
                     checkEnemyDead(pos1, pos2, fpos1, fpos2);
@@ -2172,7 +2177,7 @@ scenes.fight = () => {
                 else {
                     battleNumber(epositionControls[pos1 + (pos2 * 3)].anchor, "Miss...", 0, epositionControls[pos1 + (pos2 * 3)].offset);
                     playSound("miss");
-                    postLog(game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " missed!");
+                    postLog("p", game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].name + " missed!");
                 }
                 onFinish();
             }, false);
@@ -2205,8 +2210,8 @@ scenes.fight = () => {
             game.characters[positions[fpos1][fpos2].occupied].EP += Mana;
             checkOverMax();
 
-            postLog(game.characters[positions[fpos1][fpos2].occupied].name + " killed " + epositions[pos1][pos2].name + " and earned " + Experience + " EXP!");
-            postLog("+" + Experience + " EXP, +" + Mana + " EP");
+            postLog("p", game.characters[positions[fpos1][fpos2].occupied].name + " killed " + epositions[pos1][pos2].name);
+            postLog("", "+" + Experience + " EXP, +" + Mana + " EP");
             checkLevelUps();
             checkAllDead();
         }
@@ -2821,8 +2826,8 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             positionControls.push(controls.image({
-                anchor: [0.0 /* 0.025 */, 0.4], offset: [-256, 72 * j], sizeOffset: [64, 64],
-                defoff: 72 * i, fly: 0, flydir: 1,
+                anchor: [0.0 /* 0.025 */, 0.4], offset: [-256, fightPosSize2 * j - fightPosSize2], sizeOffset: [fightPosSize, fightPosSize],
+                defoff: fightPosSize2 * i, fly: 0, flydir: 1,
                 source: "gear",
                 alpha: 1,
                 snip: [0, 64, 32, 32],
@@ -2839,11 +2844,11 @@ scenes.fight = () => {
                     if (game.characters[name].effect[0] == "paralysis" && positions[this.pos1][this.pos2].action == false) {
                         changeEmo(selectedAlly[0] + (selectedAlly[1] * 3), "paralysis");
                         positions[this.pos1][this.pos2].action = ["nothing", this.pos1, this.pos2];
-                        postLog(game.characters[name].name + " is paralysed!")
+                        postLog("p", game.characters[name].name + " is paralysed!")
                         game.characters[name].effect[1] -= 1;
                         if (game.characters[name].effect[1] < 1) {
                             game.characters[name].effect[0] = "none";
-                            postLog(game.characters[name].name + "'s paralysis is over!")
+                            postLog("p", game.characters[name].name + "'s paralysis is over!")
                         }
                     }
                     if (fightAction == "none" && game.characters[name].effect[0] == "enraged") {
@@ -2853,12 +2858,12 @@ scenes.fight = () => {
                         selectedAlly = [this.pos1, this.pos2];
                         allyIsSelected(true);
 
-                        postLog(game.characters[name].name + " is very angry!")
+                        postLog("p", game.characters[name].name + " is very angry!")
 
                         game.characters[name].effect[1] -= 1;
                         if (game.characters[name].effect[1] < 1) {
                             game.characters[name].effect[0] = "none";
-                            postLog(game.characters[name].name + "'s rage is over!")
+                            postLog("p", game.characters[name].name + "'s rage is over!")
                         }
                     }
                     // Attack teammate
@@ -2869,7 +2874,7 @@ scenes.fight = () => {
 
                         fightAction = "none";
                         hideFightButtons();
-                        hidefightInventory();
+                        hideFightInventory();
                     }
 
                     // Select character
@@ -2923,8 +2928,8 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             epositionControls.push(controls.image({
-                anchor: [1.975, 0.4], offset: [500, 72 * j], sizeOffset: [64, 64], bigoff: 0,
-                defoff: -(72 + (72 * i)),
+                anchor: [1.975, 0.4], offset: [500, fightPosSize2 * j - fightPosSize2], sizeOffset: [fightPosSize, fightPosSize], bigoff: 0,
+                defoff: -(fightPosSize2 + (fightPosSize2 * i)),
                 source: "gear",
                 alpha: 1,
                 snip: [0, 32, 32, 32],
@@ -2961,7 +2966,7 @@ scenes.fight = () => {
                         }
                         fightAction = "none";
                         hideFightButtons();
-                        hidefightInventory();
+                        hideFightInventory();
                         //attackEnemy(selectedAlly[0], selectedAlly[1], this.pos1, this.pos2); // direct attack, testing thing
                     }
                     if (fightAction == "magic" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
@@ -2975,7 +2980,7 @@ scenes.fight = () => {
                         game.characters[positions[selectedAlly[0]][selectedAlly[1]].occupied].EP -= selectedItem().cost;
                         fightAction = "none";
                         hideFightButtons();
-                        hidefightInventory();
+                        hideFightInventory();
                     }
                     if (fightAction == "scan" && positions[selectedAlly[0]][selectedAlly[1]].action == false) {
                         positionGrid2[selectedAlly[0] + (selectedAlly[1] * 3)].source = "scan";
@@ -2988,7 +2993,7 @@ scenes.fight = () => {
 
                         fightAction = "none";
                         hideFightButtons();
-                        hidefightInventory();
+                        hideFightInventory();
                     }
                 }
             }));
@@ -2999,39 +3004,40 @@ scenes.fight = () => {
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             positionGrid.push(controls.image({
-                anchor: [0.025, 0.4], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
+                anchor: [0.025, 0.4], offset: [fightPosSize2 * i, fightPosSize2 * j - fightPosSize2], sizeOffset: [fightPosSize, fightPosSize],
                 source: "grid",
                 blend: "mul",
                 alpha: 1, clickstop: false
             }));
             positionGrid2.push(controls.image({
-                anchor: [0.025, 0.4], offset: [(72 * i) + 32, (72 * j) + 32], sizeOffset: [32, 32],
+                anchor: [0.025, 0.4], offset: [fightPosSize2 * i, fightPosSize2 * j - fightPosSize2 + (fightPosSize / 2)], sizeOffset: [fightPosSize / 2, fightPosSize / 2],
                 source: "grid",
                 alpha: 1, clickstop: false
             }));
             highlightGrid.push(controls.rect({
-                anchor: [0.025, 0.4], offset: [72 * i, 72 * j], sizeOffset: [64, 64],
+                anchor: [0.025, 0.4], offset: [fightPosSize2 * i, fightPosSize2 * j - fightPosSize2], sizeOffset: [fightPosSize, fightPosSize],
                 fill: "white",
                 alpha: 0, clickstop: false
             }));
         }
     }
 
+    // ENEMY GRID
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 3; i++) {
             positionGrid.push(controls.image({
-                anchor: [0.975, 0.4], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
+                anchor: [0.975, 0.4], offset: [-(fightPosSize2 * i) - fightPosSize2, fightPosSize2 * j - fightPosSize2], sizeOffset: [fightPosSize, fightPosSize],
                 source: "grid",
                 blend: "mul",
                 alpha: 1, clickstop: false
             }));
             positionGrid2.push(controls.image({
-                anchor: [0.975, 0.4], offset: [-(72 + (72 * i)), (72 * j) + 32], sizeOffset: [32, 32],
+                anchor: [0.975, 0.4], offset: [-(fightPosSize2 * i) - fightPosSize2, fightPosSize2 * j - fightPosSize2 + (fightPosSize / 2)], sizeOffset: [fightPosSize / 2, fightPosSize / 2],
                 source: "grid",
                 alpha: 1, clickstop: false
             }));
             highlightGrid.push(controls.rect({
-                anchor: [0.975, 0.4], offset: [-(72 + (72 * i)), 72 * j], sizeOffset: [64, 64],
+                anchor: [0.975, 0.4], offset: [-(fightPosSize2 * i) - fightPosSize2, fightPosSize2 * j - fightPosSize2], sizeOffset: [fightPosSize, fightPosSize],
                 fill: "white",
                 alpha: 0, clickstop: false
             }));
@@ -3062,19 +3068,19 @@ scenes.fight = () => {
                         epositionControls[i + (j * 3)].alpha = 1;
 
                         if (epositions[i][j].size == "2x2") {
-                            epositionControls[i + (j * 3)].sizeOffset = [128, 128];
+                            epositionControls[i + (j * 3)].sizeOffset = [fightPosSize * 2, fightPosSize * 2];
                             if (epositionControls[i + (j * 3)].bigoff == 0) {
-                                epositionControls[i + (j * 3)].bigoff = -72;
-                                epositionControls[i + (j * 3)].defoff = -(72 + (72 * i)) - 72;
-                                epositionControls[i + (j * 3)].offset = [-(72 + (72 * i)) - 72, 72 * j];
+                                epositionControls[i + (j * 3)].bigoff = -fightPosSize2;
+                                epositionControls[i + (j * 3)].defoff = -(fightPosSize2 + (fightPosSize2 * i)) - fightPosSize2;
+                                epositionControls[i + (j * 3)].offset = [-(fightPosSize2 + (fightPosSize2 * i)) - fightPosSize2, fightPosSize2 * j];
                             }
                         }
                         else {
-                            epositionControls[i + (j * 3)].sizeOffset = [64, 64];
-                            if (epositionControls[i + (j * 3)].bigoff == -72) {
+                            epositionControls[i + (j * 3)].sizeOffset = [fightPosSize, fightPosSize];
+                            if (epositionControls[i + (j * 3)].bigoff == -fightPosSize2) {
                                 epositionControls[i + (j * 3)].bigoff = 0;
-                                epositionControls[i + (j * 3)].defoff = -(72 + (72 * i));
-                                epositionControls[i + (j * 3)].offset = [-(72 + (72 * i)), 72 * j];
+                                epositionControls[i + (j * 3)].defoff = -(fightPosSize2 + (fightPosSize2 * i));
+                                epositionControls[i + (j * 3)].offset = [-(fightPosSize2 + (fightPosSize2 * i)), fightPosSize2 * j];
                             }
                         }
 
@@ -3461,7 +3467,7 @@ scenes.fight = () => {
                             kokitoziParticles.dead = false;
                             kokitoziParticles.anchor = positionControls[i + (j * 3)].anchor;
                             kokitoziParticles.offset[0] = positionControls[i + (j * 3)].offset[0];
-                            kokitoziParticles.offset[1] = positionControls[i + (j * 3)].offset[1] + 64;
+                            kokitoziParticles.offset[1] = positionControls[i + (j * 3)].offset[1] + fightPosSize;
 
                             let kokigirl = positionControls[i + (j * 3)];
 
@@ -3471,7 +3477,7 @@ scenes.fight = () => {
                             if (kokigirl.flydir == 0) kokigirl.fly -= (4 + Math.max(0, (-16 - kokigirl.fly) / 8) - (Math.max(0, -28 + (kokigirl.fly * -1)) * 1.4)) / delta;
                             if (kokigirl.fly <= -32) kokigirl.flydir = 1;
 
-                            kokigirl.offset[1] = (72 * kokigirl.pos2) + kokigirl.fly;
+                            kokigirl.offset[1] = (fightPosSize2 * kokigirl.pos2) + kokigirl.fly;
                         }
                     }
                 }
@@ -3504,7 +3510,7 @@ scenes.fight = () => {
 
             // Update fightlog
             for (i = 0; i < 12; i++) {
-                fightLogComponents[2 + i].text = fightlog[Math.max(0, fightlog.length - 12 + i)];
+                fightLogComponents[2 + i].text = fightlog.length - 12 + i > -1 ? fightlog[fightlog.length - 12 + i] : "";
             }
 
             // Grid thing
@@ -3560,10 +3566,9 @@ scenes.fight = () => {
         // Controls
         controls: [
             // Load all the nice stuff
-            ...positionGrid, ...fightButtons, ...fightInventory, ...actionButtons, 
+            ...positionGrid, ...fightButtons, ...actionButtons, ...fightInventory, 
             turnDisplay, selectedStats, fleeLoss, fleeIcon, ...orderDisplay,
             ...fightLogComponents, ...enemyListComponents,
-            ...fightOverview,
             ...fightStats, actionDisplay, ...gameOverScreen,
             ...positionControls, ...epositionControls, ...positionGrid2, ...highlightGrid, ...attackAnimationObjects, kokitoziParticles, ...battleNumbers,
             ...winScreen, ...winScreen2, ...winStats, ...fleeWrenches, ...gameOverScreen2,

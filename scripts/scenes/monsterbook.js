@@ -125,6 +125,7 @@ scenes.monsterbook = () => {
         }
     }
 
+    removeNotification("book");
     fadeIn(1000 / 3, true);
 
     return {
