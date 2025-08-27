@@ -1371,7 +1371,7 @@ scenes.mapmaker = () => {
         }
     }));
 
-    const dialogueScriptTypes = ["Add Quest", "Claim Quest", "Talk Quest Progress", "Give Item", "Teleport", "Open Shop", "Add Protagonist", "Rem Protagonist"];
+    const dialogueScriptTypes = ["Add Quest", "Claim Quest", "Talk Quest Progress", "Give Item", "Teleport", "Open Shop", "Add Protagonist", "Rem Protagonist", "Inn"];
     createDialogueButtons.push(controls.button({
         anchor: [0.3, 0.76], sizeAnchor: [0.05, 0.05], offset: [72 * 16, -600],
         text: "Script", alpha: 0, selected: "",
@@ -1458,6 +1458,9 @@ scenes.mapmaker = () => {
                                 renderInfo("protagonists");
                                 return;
                             }
+                            break;
+                        case "Inn":
+                            result = "INN()";
                             break;
                     }
 

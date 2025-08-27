@@ -210,6 +210,7 @@ scenes.shop = () => {
         }
         if (mode == "buy") {
             for (i in itemsButtons) {
+                if (shop.offers[i] == undefined) continue;
                 let clvreq = shop.offers[i].clv == undefined ? true : shop.clv >= shop.offers[i].clv;
 
                 if (!clvreq) {

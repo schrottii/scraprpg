@@ -140,6 +140,15 @@
 
 
 ## 1.0.5 (2025-08-27)
+-> Maps:
+- New map: Plain Town
+- South of Mythical Forest, relatively small, has Cows
+- New map: Plain Town (inside)
+- has a Shop, an INN and 3 NPCs
+- 16 Maps total
+- Mythical Forest: added a new Quest, at the bridge, which now unlocks the bottom path instead
+- Mythical Forest: added more OOB deco, and another house
+
 -> Notifications
 - Added notifications, which help guide you (they look like a red square)
 - They can appear for Quests, Items, Magic and the Monster Book
@@ -158,6 +167,10 @@
 - Stats of selected protagonist now disappear when unselecting
 - Fixed unavailable attacks briefly showing up when sliding out the actions
 
+-> Other:
+- Made paths (sand and stone) smoother
+
 -> Internal:
 - Added notifications
 - Fights: added support for different grid/pos sizes
+- Map Maker: added díalogue script for INN

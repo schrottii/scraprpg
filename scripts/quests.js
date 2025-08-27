@@ -156,4 +156,11 @@ var quests = {
         instaclaim: true,
         items: { "angelwing": 1 }
     },
+    "plainTown": {
+        name: "Plain Town",
+        description: "Take a break from the wandering and check out the nearby town (Reward: 1 Potion)",
+        goal: ["talk", "plainTown", 1],
+        repeatable: false, instaclaim: true,
+        items: { "potion": 1 }
+    },
 };

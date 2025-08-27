@@ -93,4 +93,10 @@ var shops = {
         [{ item: "potionverysmall" }, { item: "potion", clv: 2 }, { item: "energydrink" }],
         "potion", false
     ),
+
+    plainTownShop: new Shop("plainTownShop", "Plain Town Shop",
+        ["Welcome to Plain Town...", "My shop currently has a lack of supplies.", "I can't sell you much, but uh", "You can buy the things we have"],
+        [{ item: "potionverysmall", amount: 10 }, { item: "potion", amount: 10 }, { item: "energydrink" }, { item: "potionverysmall", amount: 10, clv: 2 }, { item: "potion", amount: 10, clv: 2 }],
+        "potion", false
+    ),
 };

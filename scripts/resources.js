@@ -479,6 +479,8 @@ var maps = {
     "oxbl": "scripts/maps/chapter1/oxbl.js",
     "brfr5": "scripts/maps/chapter1/brfr5.js",
     "mythicalPlains": "scripts/maps/chapter1/mythicalPlains.js",
+    "plainTown": "scripts/maps/chapter1/plainTown.js",
+    "plainTownInside": "scripts/maps/chapter1/plainTownInside.js",
     //"": "scripts/maps/chapter1/.js",
 };
 
