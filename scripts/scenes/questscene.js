@@ -1,7 +1,10 @@
 scenes.questscene = () => {
     let background = [];
+    let pageButtons = [];
     let questButtons = [];
     let questText = [];
+
+    let questPage = 0;
 
     // Background
     background.push(controls.rect({
@@ -39,6 +42,36 @@ scenes.questscene = () => {
         text: "",
         align: "center", fontSize: 36, fill: "black",
         alpha: 1,
+    }));
+
+    // Page Buttons
+    pageButtons.push(controls.button({
+        anchor: [0, 0.9], sizeAnchor: [0.05, 0.1], fontSize: 60,
+        alpha: 1,
+        onClick(args) {
+            if (this.alpha == 1) {
+                playSound("buttonClickSound");
+                if (questPage > 0) {
+                    questPage--;
+                }
+            }
+        },
+        text: "<-",
+        fill: "white"
+    }));
+    pageButtons.push(controls.button({
+        anchor: [0.95, 0.9], sizeAnchor: [0.05, 0.1], fontSize: 60,
+        alpha: 1,
+        onClick(args) {
+            if (this.alpha == 1) {
+                playSound("buttonClickSound");
+                if (questPage + 1 < Object.keys(game.quests).length / 5) {
+                    questPage++;
+                }
+            }
+        },
+        text: "->",
+        fill: "white"
     }));
 
     // Generate our lovely buttons
@@ -122,7 +155,9 @@ scenes.questscene = () => {
                 questButtons[q].fillBottom = colors.bottomcolor;
             }
 
-            for (let q in game.quests) {
+            for (let qq = 5 * questPage; jj < 5; qq++) {
+                let q = Object.keys(quests)[qq]
+                if (q == undefined) break;
                 if (quests[q] != undefined && game.quests[q] != undefined) {
                     quest = quests[q];
                     quest.id = (jj + 1);
@@ -167,7 +202,7 @@ scenes.questscene = () => {
         },
         // Controls
         controls: [
-            ...background, ...questButtons, ...questText
+            ...background, ...pageButtons, ...questButtons, ...questText
         ],
         name: "questscene"
     }

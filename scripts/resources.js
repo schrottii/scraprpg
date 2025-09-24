@@ -390,6 +390,7 @@ var scenes = {
     monsterbook: "scripts/scenes/monsterbook.js",
     questscene: "scripts/scenes/questscene.js",
     credits: "scripts/scenes/credits.js",
+    stats: "scripts/scenes/stats.js",
 };
 
 var audio = {
@@ -500,6 +501,11 @@ var resCount = 0;
 var resLoad = 0;
 
 function finishedLoadingResources() {
+    resLoad++;
+    scene.controls[1].text = "Loading resources...";
+    scene.controls[7].sizeAnchor[0] = 0.56 * (1 - resLoad / resCount);
+    scene.controls[7].anchor[0] = 0.22 + 0.56 * (resLoad / resCount);
+
     if (resLoad == resCount) {
         scene.controls[1].text = "Everything good to go!";
         scene.controls[3].clickthrough = false;
@@ -512,10 +518,7 @@ function loadAllResources() {
         let img = new Image();
         img.src = images[image];
         img.onload = () => {
-            resLoad++;
-            scene.controls[1].text = "Loading resources...";
             scene.controls[2].text = "images/" + image + " " + resLoad + "/" + resCount;
-            scene.controls[7].sizeAnchor[0] = 0.22 * (resLoad / resCount);
             finishedLoadingResources();
         }
         images[image] = img;
@@ -525,10 +528,7 @@ function loadAllResources() {
         let scr = document.createElement("script");
         scr.src = scenes[scn];
         scr.onload = () => {
-            resLoad++;
-            scene.controls[1].text = "Loading resources...";
             scene.controls[2].text = "scenes/" + scn + " " + resLoad + "/" + resCount;
-            scene.controls[7].sizeAnchor[0] = 0.22 * (resLoad / resCount);
             finishedLoadingResources();
         }
         scenes[scn] = scr;
@@ -538,10 +538,7 @@ function loadAllResources() {
     for (let snd in audio) {
         let aud = new Audio(audio[snd]);
         aud.onloadeddata = () => {
-            resLoad++;
-            scene.controls[1].text = "Loading resources...";
             scene.controls[2].text = "audio/" + snd + " " + resLoad + "/" + resCount;
-            scene.controls[7].sizeAnchor[0] = 0.22 * (resLoad / resCount);
             finishedLoadingResources();
         }
         audio[snd] = aud;
@@ -551,10 +548,7 @@ function loadAllResources() {
         let mp = document.createElement("script");
         mp.src = maps[map];
         mp.onload = () => {
-            resLoad++;
-            scene.controls[1].text = "Loading resources...";
             scene.controls[2].text = "maps/" + map + " " + resLoad + "/" + resCount;
-            scene.controls[7].sizeAnchor[0] = 0.22 * (resLoad / resCount);
             finishedLoadingResources();
         }
         maps[map] = mp;

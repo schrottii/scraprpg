@@ -5,14 +5,16 @@ scenes.title = () => {
     let saveTexts = [];
     let hiddn = false;
 
+    /*
     let BG = controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 1],
         fill: "rgb(0, 0, 0)"
-    })
+    });
+    */
 
     let gameIcon = controls.image({
         anchor: [0.5, 0.35], offset: [-277.5, -200], sizeOffset: [555, 300],
-        alpha: 0,
+        alpha: 0, glowColor: "yellow",
         source: "gameicon",
     });
     let contLabel = controls.label({
@@ -35,7 +37,7 @@ scenes.title = () => {
     let verLabel = controls.label({
         anchor: [0.98, 0.98], offset: [-5, -12],
         align: "right", baseline: "alphabetic", fontSize: 24, fill: "#7f7f7f", alpha: 0,
-        text: "v1.0.5 (2025-08-27)",
+        text: "v1.0.6 (2025-09-24)",
     });
 
     let settingsSaveText = controls.label({
@@ -46,10 +48,11 @@ scenes.title = () => {
     function loadSave(id) {
         fadeOverlay.clickthrough = false;
         for (st = 0; st < saveTexts.length; st++) {
-            saveTexts[st].defoff = saveTexts[st].offset[1] - (130 * (Math.floor(st / 15))) + 240;
+            saveTexts[st].defoff = saveTexts[st].offset[1] - saveButtons[Math.floor(st / 15)].offset[1];
         }
 
         addAnimator(function (t) {
+            // clicked on a save, transition thingy
             for (let a = 0; a < 3; a++) {
                 if (a == id) {
                     saveButtons[a].offset[1] = (-160 + 130 * a) * Math.max(1 - t / 600, 0) ** 2 - 60;
@@ -85,15 +88,15 @@ scenes.title = () => {
             for (let a = 0; a < 3; a++) {
                 id = a;
                 saveButtons[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
-                saveButtons[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
+                //saveButtons[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
                 saveImages[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
-                saveImages[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
+                //saveImages[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
 
                 // Bricks and Wrenches
                 saveTexts[11 + a * 15].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
-                saveTexts[11 + a * 15].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
+                //saveTexts[11 + a * 15].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
                 saveTexts[12 + a * 15].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
-                saveTexts[12 + a * 15].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
+                //saveTexts[12 + a * 15].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
             }
 
             if (t > 599) {
@@ -108,11 +111,12 @@ scenes.title = () => {
         fadeOverlay.clickthrough = true;
         addAnimator(function (t) {
             for (let a = 0; a < 3; a++) {
-                id = a;
-                saveButtons[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(t / 600, 0) ** 2);
-                saveButtons[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(t / 600, 0)) ** 2);
-                saveImages[a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(t / 600, 0) ** 2);
-                saveImages[a].anchor[1] = .3 + (a > id ? 1 : -1) * ((1 - Math.max(t / 600, 0)) ** 2);
+                saveButtons[a].offset[1] = -60 + (-160 + 130 * a) * (Math.max(t / 600, 0) ** 2);
+                saveImages[a].offset[1] = -60 + (-160 + 130 * a) * (Math.max(t / 600, 0) ** 2);
+
+                // Bricks and Wrenches
+                saveTexts[11 + a * 15].offset[1] = (-164 + 130 * a) * (Math.max(t / 600, 0) ** 2);
+                saveTexts[12 + a * 15].offset[1] = (-132 + 130 * a) * (Math.max(t / 600, 0) ** 2);
             }
             if (t > 599) {
                 return true;
@@ -332,6 +336,10 @@ scenes.title = () => {
     return {
         // Pre-render function
         preRender(ctx, delta) {
+            // bg needs to be done here cuz particles
+            ctx.fillStyle = "black";
+            ctx.fillRect(0, 0, 1, 1);
+
             let w = ctx.canvas.width;
             let h = ctx.canvas.height;
             for (let a = 0; a < particles.length; a++) {
@@ -355,10 +363,13 @@ scenes.title = () => {
                 );
             }
 
-            if (state == "title") {
+            //if (state == "title") {
                 contLabel.alpha = (Math.cos(time / 1000) + 3) / 4;
-            }
-
+                gameIcon.anchor[0] = 0.5 + 0.025 * Math.cos(time / 6666);
+                gameIcon.glow = 24 * Math.cos(time / 1000);
+                //gameIcon.sizeOffset[0] = 555 * (1 + 0.5 * (Math.cos(time / 1000) + 3) / 4);
+                //gameIcon.sizeOffset[1] = 300 * (1 + 0.5 * (Math.cos(time / 1000) + 3) / 4);
+            //}
 
             for (let a = 0; a < 3; a++) {
                 var tempsaveNR = a;
@@ -434,7 +445,7 @@ scenes.title = () => {
 
         // Controls
         controls: [
-            BG,
+            //BG,
             gameIcon, contLabel, infoLabel, creditHitbox, verLabel,
             controls.base({
                 anchor: [0, 0], sizeAnchor: [1, 1],

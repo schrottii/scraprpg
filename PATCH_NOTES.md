@@ -174,3 +174,22 @@
 - Added notifications
 - Fights: added support for different grid/pos sizes
 - Map Maker: added díalogue script for INN
+
+
+
+## 1.0.6 (2025-09-24)
+-> Stats:
+- Added stats scene (accessible from inventory)
+- Here all stats are visible
+- Following stats already existed since release: 
+- Play time, Wrenches, Bricks, Tiles walked, Times teleported, Total fights, Fights fled, Fights lost, Fights won, Saves, Auto saves, Game opened
+- Following stats were added now: 
+- Inventory opened, NPCs talked to, Items used, Items dropped, Items bought, Items sold
+
+-> Other:
+- Prettier loading bar (water and sand)
+- Quests: added pages
+- Title: added glow & slight moving animation for the game logo
+- Title: brought back flying star particles
+- Title: fixed text being misplaced after loading a save
+- Title: fixed some stuff being misplaced after going to settings and back

@@ -302,6 +302,7 @@ function startDialogue(cd) {
     dialogueProgress = 0;
     dialogueEmotion = currentDialogue[dialogueProgress].portrait;
 
+    game.stats.npcsTalked++;
     canMove = false;
     dialogueScript();
 }
@@ -456,6 +457,7 @@ scenes.game = () => {
         onClick(args) {
             if (canMove == true) {
                 playSound("buttonClickSound");
+                game.stats.inventory++;
                 fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
             }
         }
@@ -1872,6 +1874,7 @@ scenes.game = () => {
             }
             // open inventory
             if (currentKeys["e"]) {
+                game.stats.inventory++;
                 fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
             }
 

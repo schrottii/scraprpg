@@ -201,39 +201,39 @@ scenes.inventory = () => {
         fill: "black", align: "right", fontSize: 20,
         text: "0",
         alpha: 1
-    }))
+    }));
 
     coolDisplays.push(controls.rect({
         anchor: [0.61, 0.01], sizeAnchor: [0.005, 0.98],
         fill: colors.bottomcolor,
         alpha: 1
-    }))
+    }));
 
     coolDisplays.push(controls.label({
         anchor: [0.02, 0.95],
         fill: "black", align: "left", fontSize: 20,
         text: "Total time spent: 0",
         alpha: 1
-    }))
+    }));
 
     coolDisplays.push(controls.rect({
         anchor: [0.305, 0.01], sizeAnchor: [0.005, 0.98],
         fill: colors.bottomcolor,
         alpha: 1
-    }))
+    }));
 
     coolDisplays.push(controls.label({
         anchor: [0.275, 0.925],
         fill: "black", align: "right", fontSize: 20,
         text: "",
         alpha: 1
-    }))
+    }));
     coolDisplays.push(controls.label({
         anchor: [0.275, 0.975],
         fill: "black", align: "right", fontSize: 20,
         text: "",
         alpha: 1
-    }))
+    }));
     coolDisplays.push(controls.image({
         anchor: [0.29, 0.925], offset: [-16, -16], sizeOffset: [32, 32],
         source: "wrench",
@@ -243,6 +243,18 @@ scenes.inventory = () => {
         anchor: [0.29, 0.975], offset: [-16, -16], sizeOffset: [32, 32],
         source: "brick",
         alpha: 1,
+    }));
+
+    coolDisplays.push(controls.button({
+        anchor: [0.31, 0.905], sizeAnchor: [0.15, 0.085], id: i,
+        alpha: 1,
+        text: "Stats",
+        onClick(args) {
+            playSound("buttonClickSound");
+            fadeOut(1000 / 3, true, () => {
+                setScene(scenes.stats());
+            });
+        }
     }));
 
     fadeIn(1000 / 3, true);

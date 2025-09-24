@@ -110,12 +110,12 @@ function init() {
                 fill: "rgb(0, 0, 0)"
             }),
 
-            controls.label({
+            controls.label({ // loading text
                 anchor: [0.02, 0.9], offset: [5, -12],
                 align: "left", baseline: "alphabetic", fontSize: 32,
                 text: "",
             }),
-            controls.label({
+            controls.label({ // what it is currently loading
                 anchor: [0.98, .98], offset: [-5, -12],
                 align: "right", baseline: "alphabetic", fontSize: 32, fill: "#7f7f7f",
                 text: "",
@@ -141,15 +141,14 @@ function init() {
                 anchor: [0.2, 0.4], sizeAnchor: [0.6, 0.2],
                 fill: "rgb(0, 37, 6)"
             }),
-            controls.rect({
+            controls.image({
                 anchor: [0.22, 0.42], sizeAnchor: [0.56, 0.16],
-                fill: "rgb(13, 62, 21)"
+                source: "tiles/water"
             }),
-            controls.rect({
+            controls.image({
                 anchor: [0.22, 0.42], sizeAnchor: [0.56, 0.16],
-                fill: "rgb(113, 255, 42)"
+                source: "tiles/sand1"
             }),
-
         ],
         name: "loading"
     });

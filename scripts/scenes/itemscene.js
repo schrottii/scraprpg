@@ -274,11 +274,13 @@ scenes.itemscene = () => {
         if (useMode == "drop") {
             // Drop 1
             map.items.push([game.position[0], game.position[1], item, 1, true]);
+            game.stats.itemsDropped++;
             removeItem(item, 1);
         }
         else if (useMode == "dropall") {
             // Drop All
             map.items.push([game.position[0], game.position[1], item, game.inventory[item], true]);
+            game.stats.itemsDropped += game.inventory[name];
             removeItem(item, 9999);
         }
         else if (usable) {
@@ -291,6 +293,7 @@ scenes.itemscene = () => {
                         // use item
                         items[item]({ player: game.characters[characterSelected] }).effect();
 
+                        game.stats.itemsUsed++;
                         questProgress("useItem", item);
                         removeItem(item, 1);
                     }

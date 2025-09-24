@@ -25,6 +25,12 @@ let game = {
         saves: 0,
         autoSaves: 0,
         opened: 0,
+        inventory: 0,
+        npcsTalked: 0,
+        itemsUsed: 0,
+        itemsDropped: 0,
+        itemsBought: 0,
+        itemsSold: 0
     },
 
     // your peoples
@@ -262,7 +268,7 @@ function loadGame() {
             }
         }
 
-        if (saveCopy.stats == undefined) saveCopy.stats = game.stats;
+        saveCopy.stats = Object.assign({}, game.stats, saveCopy.stats);
 
         if (saveCopy.characters.bleu.pos == undefined) {
             saveCopy.characters.bleu.pos = [1, 1];

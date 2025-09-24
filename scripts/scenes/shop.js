@@ -343,6 +343,8 @@ scenes.shop = () => {
                             if (game.wrenches > shop.getPrice(this.idx) && this.amount > 0 && clvreq) {
                                 addWrenches(shop.getPrice(this.idx) * -1);
                                 addItem(this.offer, 1);
+                                game.stats.itemsBought++;
+
                                 shop.increaseCLP(this.offer);
                                 this.amount -= 1;
                                 shop.offers[this.idx].amount -= 1;
@@ -363,6 +365,8 @@ scenes.shop = () => {
                             return false;
                         }
                         addWrenches(shop.getSellPrice(item));
+                        game.stats.itemsSold++;
+
                         shop.increaseCLP(item);
                         removeItem(item, 1);
                         setButtons();
