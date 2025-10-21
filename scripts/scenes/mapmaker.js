@@ -2423,24 +2423,58 @@ scenes.mapmaker = () => {
         }
     }));
     tileInfoControls.push(controls.button({
-        anchor: [0.4, 0.625], sizeAnchor: [0.2, 0.1],
+        anchor: [0.3, 0.625], sizeAnchor: [0.2, 0.1],
         text: "Remove item", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
                 let thisOne = -1;
-                if (map.items == undefined) return false;
-                for (i = 0; i < map.items.length; i++) {
-                    if (map.items[i][0] == currInfo[0] && map.items[i][1] == currInfo[1]) {
-                        // Same coords
-                        thisOne = i;
+                // not optimal?
+                if (map.items != undefined) {
+                    for (i = 0; i < map.items.length; i++) {
+                        if (map.items[i][0] == currInfo[0] && map.items[i][1] == currInfo[1]) {
+                            // Same coords
+                            thisOne = i;
+                        }
+                    }
+
+                    if (thisOne != -1) {
+                        map.items.splice(thisOne, 1);
+                        // Update
+                        tileInfo(currInfo[0], currInfo[1], ["map", "mapbg2", "mapfg"][currInfo[2] - 1]);
+                        updateTiles = true;
                     }
                 }
 
-                if (thisOne != -1) {
-                    map.items.splice(thisOne, 1);
-                    // Update
-                    tileInfo(currInfo[0], currInfo[1], ["map", "mapbg2", "mapfg"][currInfo[2] - 1]);
-                    updateTiles = true;
+                if (map.chests != undefined) {
+                    for (let c in map.chests) {
+                        if (map.chests[c][0] == currInfo[0] && map.chests[c][1] == currInfo[1]) {
+                            map.chests.splice(c, 1);
+                            tileInfo(currInfo[0], currInfo[1], ["map", "mapbg2", "mapfg"][currInfo[2] - 1]);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }));    
+    tileInfoControls.push(controls.button({
+        anchor: [0.5, 0.625], sizeAnchor: [0.2, 0.1],
+        text: "Add chest", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                if (selectedInfoType == "items" && isValid(selectedInfo)) {
+                    let amount = prompt("How many?");
+                    if (!isValid(amount)) amount = 1;
+                    amount = parseInt(amount);
+
+                    if (map.chests == undefined) map.chests = [];
+                    map.chests.push([currInfo[0], currInfo[1], ["map", "mapbg2", "mapfg"][currInfo[2] - 1], selectedInfo, amount]);
+
+                    hideInfo();
+                }
+                else {
+                    showInfo();
+                    renderInfo("items");
                 }
             }
         }

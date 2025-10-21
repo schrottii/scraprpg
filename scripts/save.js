@@ -161,6 +161,8 @@ let game = {
 
     mItems: [],
 
+    mChests: [],
+
     monsterbook: {},
 
     quests: {}, // "test": [3, 15846, 16312] <-- progress, start time, finish time
@@ -306,6 +308,7 @@ function loadGame() {
         }
 
         if (saveCopy.mItems == undefined) saveCopy.mItems = [];
+        if (saveCopy.mChests == undefined) saveCopy.mChests = [];
         if (saveCopy.quests == undefined) saveCopy.quests = {};
         if (saveCopy.jukebox == undefined) saveCopy.jukebox = [];
 

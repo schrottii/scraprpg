@@ -696,6 +696,7 @@ scenes.game = () => {
                 yo /= 2;
             }
 
+            // start dialogue
             if (inDialogue == false) {
                 map.tiles = Object.assign({}, map.tiles, loadPacks(map));
                 if (getTile(map, xpos + xo, ypos + yo) != undefined) {
@@ -713,7 +714,30 @@ scenes.game = () => {
                         startDialogue(activeNPCs[i].dialogues[1]);
                     }
                 }
+            }
 
+            // open chest
+            // chests are saved as [x, y, item, amount]
+            if (isValid(map.chests)) {
+                for (let m in map.chests) {
+                    if (map.chests[m][0] == xpos + xo && map.chests[m][1] == ypos + yo) {
+                        // im looking at chest wow
+                        let chestName = "" + map.id + "," + map.chests[m][0] + "," + map.chests[m][1] + "," + map.chests[m][2];
+
+                        if (!game.mChests.includes(chestName)){
+                            // open me owo
+                            game.mChests.push(chestName);
+
+                            //console.log("chest open");
+                            addItem(map.chests[m][3], map.chests[m][4]);
+                        }
+                        else {
+                            // is already open
+                        }
+
+                        actionButton.snip = [64, 96, 64, 32];
+                    }
+                }
             }
         }
     });
@@ -927,6 +951,31 @@ scenes.game = () => {
         }
     }
 
+    function tryLookAtChest(xo, yo) {
+        if (map.chests == undefined) return false;
+        let isLooking = false;
+        let isOpened = false;
+
+        xo = game.position[0] + xo;
+        yo = game.position[1] + yo;
+
+        for (let m in map.chests) {
+            isOpened = game.mChests.includes(map.id + "," + xo + "," + yo + ",0") || 
+            game.mChests.includes(map.id + "," + xo + "," + yo + ",1") || 
+            game.mChests.includes(map.id + "," + xo + "," + yo + ",2");
+            
+            if (map.chests[m][0] == xo && map.chests[m][1] == yo && !isOpened) {
+                isLooking = true;
+                break;
+            }
+        }
+
+        if (isLooking) {
+            actionButton.snip = [64, 32, 64, 32];
+        }
+        else actionButton.snip = [64, 96, 64, 32];
+    }
+
     function drawTiles(ctx, layer) {
         let ofsX = Math.max(CAMERA_LOCK_X, game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5);
         let ofsY = Math.max(CAMERA_LOCK_Y, game.position[1] - kofs[1] * kofs[2] - 7.5);
@@ -967,6 +1016,10 @@ scenes.game = () => {
             pw = Math.ceil(zoom * scale + 1);
             ph = Math.ceil(zoom * scale + 1);
 
+            // chest? 
+            if (map.chests != undefined && game.mChests.includes(map.id + "," + x + "," + y + "," + (layer - 1))) ani += 32;
+
+            // draw
             ctx.drawImage(images[tileSrc],
                 Math.floor(ani + tileSnip[0] * 32), Math.floor(tileSnip[1] * 32) + 0.1, 32, 32,
                 px,
@@ -1582,6 +1635,7 @@ scenes.game = () => {
                         else if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2).action != undefined) actionButton.snip = [64, 32, 64, 32]
 
                         tryTalk(xo, yo);
+                        tryLookAtChest(xo, yo);
                     }
                 }
             }
