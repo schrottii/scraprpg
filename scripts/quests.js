@@ -30,6 +30,13 @@ function isQuestClaimed(name) {
     return game.quests[name][2] != 0;
 }
 
+function isQuestActive(name) {
+    if (game.quests[name] == undefined) return false;
+    if (isQuestComplete(name)) return false;
+    if (isQuestClaimed(name)) return false;
+    return true;
+}
+
 function claimQuest(name) {
     // you finished the goal -> claim it -> get reward
     if (game.quests[name] == undefined) return false;
@@ -79,6 +86,7 @@ enemy "evil_peter"
 wrenches ""
 bricks ""
 useItem "potion"
+findItem "potion"
 talk "talkID"
 walk ""
 level "corelle"
@@ -162,5 +170,19 @@ var quests = {
         goal: ["talk", "plainTown", 1],
         repeatable: false, instaclaim: true,
         items: { "potion": 1 }
+    },
+    "brfr6": {
+        name: "Lost Cards",
+        description: "Find 7 cards in this part of Bricky Forest (Reward: 1 Ace Card)",
+        goal: ["findItem", "pokercards", 7],
+        repeatable: false, instaclaim: false,
+        items: { "acecard": 1 }
+    },
+    "lostCow": {
+        name: "Lost Cow",
+        description: "Boblaw's cow is gone... please find the cow for him (Reward: 1 Book)",
+        goal: ["talk", "lostCow", 1],
+        repeatable: false, instaclaim: false,
+        items: { "spellbookheals": 1 }
     },
 };

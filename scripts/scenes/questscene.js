@@ -179,7 +179,7 @@ scenes.questscene = () => {
                     }
                     else questText[2 + k].text = "* Claimed *";
 
-                    questText[3 + k].text = "Nr." + quest.id;
+                    questText[3 + k].text = "Nr. " + (quest.id + questPage * 5);
                     questText[4 + k].text = isQuestClaimed(q) ? getTime(calcQuestDuration(q)) : "-";
 
                     questText[5 + k].source = quest.source != undefined ? quest.source : "items/scroll";

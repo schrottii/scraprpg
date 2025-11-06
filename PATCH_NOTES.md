@@ -124,7 +124,7 @@
 - Fixed medusa bug
 
 -> Internal (Maps):
-- Added Creator to the existing maps  (11x Schrottii, 2x tomekbet, 1x Meowy)
+- Added Creator to the existing maps (11x Schrottii, 2x tomekbet, 1x Meowy)
 - Removed 2 typo dialogues
 
 -> Internal (Map Maker):
@@ -173,7 +173,7 @@
 -> Internal:
 - Added notifications
 - Fights: added support for different grid/pos sizes
-- Map Maker: added díalogue script for INN
+- Map Maker: added dialogue script for INN
 
 
 
@@ -193,3 +193,28 @@
 - Title: brought back flying star particles
 - Title: fixed text being misplaced after loading a save
 - Title: fixed some stuff being misplaced after going to settings and back
+
+
+
+## 1.0.7 (2025-11-06)
+-> New Map:
+- New map: Bricky Forest - brfr6 (by Schrottii)
+- 2 quests: Lost Cards, Lost Cow
+
+-> Items & Collecting:
+- Added Chests system, allowing Chests and other containers to be actually opened
+- Similar to items on the ground, Chests can only be opened once, and contain one Item each
+- Put Items into the previously fake Chests on 3 maps (Castle, Castle, Bricky Town Inside)
+- Put Items from the ground into Chests on 3 maps (Split, Bricky Forest 3, Plain Town)
+- Added popup when an Item is found on the ground or in a Chest, showing its name, description and amount
+- It disappears after 3 seconds, but can be clicked away, which also gets rid of the notification
+- New items: Plush, Poker Card, Ace Card
+
+-> Daytime effects:
+- Changed color palette, to be more realistic and easier on the eyes
+- Fixed color jumping bug
+
+-> Internal:
+- New quest type: find items (findItem), triggered by items on ground and chests only
+- Tile info mode: added button to add chest, remove item button now also removes chest
+- Tile info mode: item on tile can show the tile's chest item, and specifies if it's on the ground or in a chest

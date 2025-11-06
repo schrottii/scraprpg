@@ -1570,6 +1570,17 @@ let items = {
         }
     },
 
+    acecard(args) {
+        return {
+            ...items.default(),
+            source: "pokercards", name: "Ace Card",
+            desc: "Let's go gambling!",
+            shopcost: 1000, type: "armor", piece: "acc2",
+            stats: { "luk": 13, "eva": -21 },
+            ...args || {},
+        }
+    },
+
 
 
     //////////////////////////////////////////////////////////////////////////////////
@@ -1587,6 +1598,22 @@ let items = {
             ...items.default(), source: "fallenleaves", name: "Fallen Leaves",
             desc: "Literal leaves given to you by a kid in the Mythical Plains",
             type: "potion", max: 1, story: true,
+            ...args || {},
+        }
+    },
+    plush(args) {
+        return {
+            ...items.default(), source: "plush", name: "Shark Plush",
+            desc: "A cute and big shark plush",
+            type: "potion", story: true,
+            ...args || {},
+        }
+    },
+    pokercards(args) {
+        return {
+            ...items.default(), source: "pokercards", name: "Poker Card",
+            desc: "Never stop gambling (warning: do not gamble)",
+            type: "potion", story: true,
             ...args || {},
         }
     },

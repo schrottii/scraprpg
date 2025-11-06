@@ -370,6 +370,8 @@ let images = {
     "items/tropicalmilkshake": "data/images/items/tropicalmilkshake.png",
 
     "items/fallenleaves": "data/images/items/fallenleaves.png",
+    "items/plush": "data/images/items/plush.png",
+    "items/pokercards": "data/images/items/pokercards.png",
 };
 
 var scenes = {
@@ -482,6 +484,7 @@ var maps = {
     "mythicalPlains": "scripts/maps/chapter1/mythicalPlains.js",
     "plainTown": "scripts/maps/chapter1/plainTown.js",
     "plainTownInside": "scripts/maps/chapter1/plainTownInside.js",
+    "brfr6": "scripts/maps/chapter1/brfr6.js",
     //"": "scripts/maps/chapter1/.js",
 };
 

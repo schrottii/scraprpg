@@ -3581,10 +3581,15 @@ scenes.mapmaker = () => {
         // Item display
         let thisTilesItem;
         for (i in map.items) {
-            if (map.items[i][0] == x && map.items[i][1] == y) thisTilesItem = map.items[i];
+            if (map.items[i][0] == x && map.items[i][1] == y) thisTilesItem = [map.items[i][2], map.items[i][3], "ground"];
         }
-        tileInfoControls[12].text = "Item: " + (thisTilesItem == undefined ? "not" : map.items[i][2] + " x" + map.items[i][3]);
-        if (thisTilesItem != undefined) tileInfoControls[14].source = "items/" + items[map.items[i][2]]().source;
+        if (thisTilesItem == undefined) {
+            for (i in map.chests) {
+                if (map.chests[i][0] == x && map.chests[i][1] == y) thisTilesItem = [map.chests[i][3], map.chests[i][4], "chest"];
+            }
+        }
+        tileInfoControls[12].text = "Item: " + (thisTilesItem == undefined ? "not" : thisTilesItem[0] + " x" + thisTilesItem[1] + " (" + thisTilesItem[2] + ")");
+        if (thisTilesItem != undefined) tileInfoControls[14].source = "items/" + items[thisTilesItem[0]]().source;
         else tileInfoControls[14].source = "gear";
 
         tileInfoControls[13].text = "Dialogue: " + (selectedTile.dialogue == undefined ? "not" : selectedTile.dialogue);
@@ -3800,6 +3805,15 @@ scenes.mapmaker = () => {
                             titems[it].alpha = 1;
                             it += 1;
                         }
+                    }
+                }
+                if (map.chests != undefined) {
+                    for (let item of map.chests) {
+                        titems[it].offset = [(((zoom * scale) * (item[0] + kofs[0] * kofs[2] - (game.position[0] - width / 2 + 0.5))) - ((zoom - 1) * scale * (width / 2))) - ((width * scale) / 2), ((zoom * scale) * (item[1] + kofs[1] * kofs[2] - (game.position[1] - 7.5)) - ((zoom - 1) * scale * 7)) - (height / 2)];
+                        titems[it].sizeOffset = [zoom * scale / 2, zoom * scale / 2];
+                        titems[it].source = "items/" + items[item[3]]().source;
+                        titems[it].alpha = 1;
+                        it += 1;
                     }
                 }
                 for (i in activeNPCs) {

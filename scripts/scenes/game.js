@@ -141,8 +141,6 @@ function teleportPlayer(mmap, x, y) {
         trySpawnEnemy(42);
         checkTileDialogue();
 
-        instantEffect = true;
-
         game.stats.tp++;
 
         game.position[0] = x;
@@ -348,6 +346,7 @@ scenes.game = () => {
     var currentFogAlpha = 2;
 
     var cutsceneElements = [];
+    let itemPopupElements = [];
 
     var tokenRunning = false;
 
@@ -667,8 +666,92 @@ scenes.game = () => {
         source: "star",
         alpha: 0, falpha: 0, clickstop: false,
     }));
-
     // end of the dialogue stuff. lol.
+
+    // item popup
+    itemPopupElements.push(controls.rect({
+        anchor: [0.35, 0.15], sizeAnchor: [0.3, 0.1], sizeOffset: [128, 128], offset: [-64, -64], defoff: [-64, -64],
+        clickstop: false,
+        fill: colors.topcolor,
+        alpha: 0,
+        onClick(args) {
+            removeNotification("item");
+            for (let e in itemPopupElements) {
+                itemPopupElements[e].alpha = 0;
+            }
+        }
+    }));
+    itemPopupElements.push(controls.rect({
+        anchor: [0.35, 0.15], sizeAnchor: [0.3, 0.1], sizeOffset: [112, 112], offset: [-64 + 8, -64 + 8], defoff: [-64 + 8, -64 + 8],
+        clickstop: false,
+        fill: colors.bottomcolor,
+        alpha: 0,
+    }));
+    itemPopupElements.push(controls.image({
+        anchor: [0.35, 0.2], sizeOffset: [128, 128], offset: [-64, -64], defoff: [-64, -64],
+        source: "items/potion",
+        alpha: 0, clickstop: false,
+    }));
+    itemPopupElements.push(controls.label({
+        anchor: [0.4, 0.15], offset: [0, 0], defoff: [0, 0],
+        align: "left", fontSize: 16, fill: "white",
+        text: "...",
+        alpha: 0, clickstop: false,
+    }));
+    itemPopupElements.push(controls.label({
+        anchor: [0.4, 0.2], offset: [0, 0], defoff: [0, 0],
+        align: "left", fontSize: 24, fill: "white",
+        text: "...",
+        alpha: 0, clickstop: false,
+    }));
+    itemPopupElements.push(controls.label({
+        anchor: [0.4, 0.25], offset: [0, 0], defoff: [0, 0],
+        align: "left", fontSize: 20, fill: "white",
+        text: "...",
+        alpha: 0, clickstop: false,
+    }));
+
+    function showItemPopup(itemName, amount = 1, found = true) {
+        let item = items[itemName]();
+        //console.log(itemName, item)
+
+        for (let e in itemPopupElements) {
+            itemPopupElements[e].offset[1] = itemPopupElements[e].defoff[1] -800;
+            itemPopupElements[e].alpha = 1;
+        }
+
+        addAnimator(function (t) {
+            if (t < 800) {
+                for (let e in itemPopupElements) {
+                    itemPopupElements[e].offset[1] = itemPopupElements[e].defoff[1] - 800 + t;
+                }
+            }
+            if (t > 799) {
+                for (let e in itemPopupElements) {
+                    itemPopupElements[e].offset[1] = itemPopupElements[e].defoff[1];
+                }
+            }
+            if (t > 3799) {
+                for (let e in itemPopupElements) {
+                    itemPopupElements[e].offset[1] = itemPopupElements[e].defoff[1] - (t - 3800);
+                }
+            }
+            if (t > 4599) {
+                for (let e in itemPopupElements) {
+                    itemPopupElements[e].alpha = 0;
+                }
+                return true;
+            }
+            return false;
+        });
+
+        itemPopupElements[2].source = "items/" + item.source;
+        itemPopupElements[3].text = found ? "Item found" : "Item received";
+        itemPopupElements[4].text = item.name + "  x" + amount;
+        itemPopupElements[5].text = item.desc;
+    }
+
+    // core
     let actionButton = controls.image({
         anchor: [1, 0.8], sizeOffset: [256, 128], offset: [-312, 0],
         alpha: 1,
@@ -726,10 +809,12 @@ scenes.game = () => {
 
                         if (!game.mChests.includes(chestName)){
                             // open me owo
-                            game.mChests.push(chestName);
-
-                            //console.log("chest open");
-                            addItem(map.chests[m][3], map.chests[m][4]);
+                            let collected = addItem(map.chests[m][3], map.chests[m][4]);
+                            if (collected) {
+                                game.mChests.push(chestName);
+                                questProgress("findItem", map.chests[m][3]);
+                                showItemPopup(map.chests[m][3], map.chests[m][4], true);
+                            }
                         }
                         else {
                             // is already open
@@ -753,29 +838,26 @@ scenes.game = () => {
     areaNameBox.push(controls.image({
         anchor: [0.2, 0], sizeAnchor: [0.6, 0.4],
         source: "hangingsign", alpha: 0
-    }))
+    }));
     areaNameBox.push(controls.label({
         anchor: [0.5, 0.25],
         align: "center", fontSize: 32, fill: "black",
         text: "AREA UNDEFINED", alpha: 0,
-    }))
-
-    instantEffect = true;
+    }));
 
     let areaTeleportFade = controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 1],
         fill: "black", alpha: 0
-    })
+    });
 
     // Weather time thing
-    function setNightEffect(color, al = 0.5, type = "none") {
-        //console.log(nightEffect.alpha, color, al, type, instantEffect);
+    function setNightEffect(color, al = 0.5, instant = false, type = "none") {
+        //console.log(nightEffect.alpha, color, al, type);
         let transitionDuration = 12000; // Roughly how long it lasts. 1000 = 1 sec
         let fogAlphaChangeIntensity = 10; // How much the opacity during fog changes. Higher number = less
         // Speed in preRender
 
-        if (instantEffect == true) {
-            instantEffect = false;
+        if (instant == true) {
             nightEffect.alpha = al;
             nightEffect2.alpha = 0;
             nightEffect.fill = color;
@@ -960,9 +1042,9 @@ scenes.game = () => {
         yo = game.position[1] + yo;
 
         for (let m in map.chests) {
-            isOpened = game.mChests.includes(map.id + "," + xo + "," + yo + ",0") || 
-            game.mChests.includes(map.id + "," + xo + "," + yo + ",1") || 
-            game.mChests.includes(map.id + "," + xo + "," + yo + ",2");
+            isOpened = game.mChests.includes(map.id + "," + xo + "," + yo + ",map") || 
+            game.mChests.includes(map.id + "," + xo + "," + yo + ",mapbg2") || 
+            game.mChests.includes(map.id + "," + xo + "," + yo + ",mapfg");
             
             if (map.chests[m][0] == xo && map.chests[m][1] == yo && !isOpened) {
                 isLooking = true;
@@ -1017,7 +1099,7 @@ scenes.game = () => {
             ph = Math.ceil(zoom * scale + 1);
 
             // chest? 
-            if (map.chests != undefined && game.mChests.includes(map.id + "," + x + "," + y + "," + (layer - 1))) ani += 32;
+            if (map.chests != undefined && game.mChests.includes(map.id + "," + x + "," + y + "," + Ts)) ani += 32;
 
             // draw
             ctx.drawImage(images[tileSrc],
@@ -1107,6 +1189,8 @@ scenes.game = () => {
             map.items[i][4] = !collected;
             if (collected) {
                 game.mItems.push(getItemDatName(map, map.items[i]));
+                questProgress("findItem", map.items[i][2]);
+                showItemPopup(map.items[i][2], map.items[i][3], true);
             }
         }
     }
@@ -1232,7 +1316,7 @@ scenes.game = () => {
         anchor: [-0.2, 0], spreadAnchor: [0, 1], sizeOffset: [96, 48], sizeOffsetVary: [2, 2], quadraticVary: true,
         type: "img", source: ["fog", "fog2"],
         direction: 2, speedAnchor: 0.02,
-        movable: true, lifespan: 20, alpha: 0.75, amount: 30, spawnTime: 0.8,
+        movable: true, lifespan: 30, alpha: 0.75, amount: 80, spawnTime: 0.8,
         dead: true, repeatMode: true,
     })
     let darkCloud = Particles({
@@ -1315,23 +1399,28 @@ scenes.game = () => {
             }
         }
 
+        let nightInstant = false;
+        if (nightEffect.alpha == 0 && nightEffect2.alpha == 0 && nightEffect.fill == "white" && nightEffect2.fill == "white") {
+            nightInstant = true;
+            //console.log("instant");
+        }
         if (map.weather == "none" || map.weather == undefined) {
-            if (isNoon()) setNightEffect("#d92200", 0);
-            else if (isDusk()) setNightEffect("#ff8c1a", 0.35);
-            else if (isNight()) setNightEffect("#481365", 0.35);
-            else if (isDawn()) setNightEffect("#d92200", 0.35);
+            if (isNoon()) setNightEffect("#A88A84", 0.35, nightInstant);
+            else if (isDusk()) setNightEffect("#FFA44F", 0.35, nightInstant);
+            else if (isNight()) setNightEffect("#481365", 0.35, nightInstant);
+            else if (isDawn()) setNightEffect("#d92200", 0.35, nightInstant);
         }
         if (map.weather == "rain") {
-            if (isNoon()) setNightEffect("#cccccc", 0.4);
-            else if (isDusk()) setNightEffect("#bf854c", 0.4);
-            else if (isNight()) setNightEffect("#37293f", 0.4);
-            else if (isDawn()) setNightEffect("#894337", 0.4);
+            if (isNoon()) setNightEffect("#6F7291", 0.6, nightInstant);
+            else if (isDusk()) setNightEffect("#60435A", 0.6, nightInstant);
+            else if (isNight()) setNightEffect("#120089", 0.6, nightInstant);
+            else if (isDawn()) setNightEffect("#542984", 0.6, nightInstant);
         }
         if (map.weather == "fog" || map.weather == "dust") {
-            if (isNoon()) setNightEffect("#b2b2b2", 0.5, "fog");
-            else if (isDusk()) setNightEffect("#998572", 0.5, "fog");
-            else if (isNight()) setNightEffect("#221c26", 0.5, "fog");
-            else if (isDawn()) setNightEffect("#4c4241", 0.5, "fog");
+            if (isNoon()) setNightEffect("#b2b2b2", 0.5, nightInstant, "fog");
+            else if (isDusk()) setNightEffect("#998572", 0.5, nightInstant, "fog");
+            else if (isNight()) setNightEffect("#494949", 0.5, nightInstant, "fog");
+            else if (isDawn()) setNightEffect("#777777", 0.5, nightInstant, "fog");
         }
     }
 
@@ -1943,6 +2032,7 @@ scenes.game = () => {
         controls: [
             poisonBlack, nightEffect, nightEffect2, fallingRain, fogCloud, darkCloud, dustParticles,
             ...walkPad, inventoryButton, inventoryImage, inventoryNotif, actionButton, backButton,
+            ...itemPopupElements,
             ...cutsceneElements, ...dialogueNormalComponents, ...dialogueInvisComponents, ...dialogueNarratorComponents, ...dialogueCutsceneComponents,
             autoSaveText, ...areaNameBox, areaTeleportFade,
         ],

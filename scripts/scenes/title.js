@@ -37,7 +37,7 @@ scenes.title = () => {
     let verLabel = controls.label({
         anchor: [0.98, 0.98], offset: [-5, -12],
         align: "right", baseline: "alphabetic", fontSize: 24, fill: "#7f7f7f", alpha: 0,
-        text: "v1.0.6 (2025-09-24)",
+        text: "v1.0.7 (2025-11-06)",
     });
 
     let settingsSaveText = controls.label({
