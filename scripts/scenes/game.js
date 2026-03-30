@@ -223,6 +223,7 @@ function trySpawnEnemy(amount = 1) {
                     if (spawned == true) enemiesOnThisMap++;
                 }
             }
+            else break;
         }
     }
 }
@@ -239,7 +240,7 @@ function spawnMapEnemy(enemyToSpawn) {
 
     if (mapWidth == 0) {
         for (i = 0; i < maps[game.map].map.length; i++) {
-            if (maps[game.map].map[i] != undefined && maps[game.map].map[i].length > mapWidth) mapWidth = maps[game.map].map[i].length;
+            if (maps[game.map].map[i] != undefined && maps[game.map].map[i].length > mapWidth) mapWidth = maps[game.map].map[i].length / 4;
         }
     }
 
@@ -928,15 +929,19 @@ scenes.game = () => {
 
         npc.kofs[2] = Math.max(npc.kofs[2] - delta / 166, 0);
 
+        // circle
         if (settings.circles == "all" || settings.circles == "npcs") {
             ctx.drawImage(images.npcCircle,
                 ((zoom * scale) * (tileX - ofsX)) - ((zoom - 1) * scale * (width / 2)) - (zswm / 4), (zoom * scale) * (tileY - ofsY) - ((zoom - 1) * scale * 7) - (zswm / 4),
                 zswm * 1.5, zswm * 1.5);
         }
+        // the actual npc
         ctx.drawImage(images[npc.source],
             32 * Math.floor(walkTime), 32 * npc.head, 32, 32,
-            ((zoom * scale) * (tileX - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (tileY - ofsY) - ((zoom - 1) * scale * 7),
+            ((zoom * scale) * (tileX - ofsX)) - ((zoom - 1) * scale * (width / 2)),
+            Math.ceil(zoom * scale) * (tileY - ofsY) - ((zoom - 1) * scale * 7),
             zswm, zswm);
+        // dialogue image
         if (npc.talk == true && isValid(npc.dialogues)) {
             ctx.drawImage(images.talk,
                 ((zoom * scale) * (tileX + (map.worldmode ? 0.5 : 1) - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (tileY - (map.worldmode ? 0.5 : 1) - ofsY) - ((zoom - 1) * scale * 7),
@@ -971,40 +976,42 @@ scenes.game = () => {
 
     // Function to check if a tile is, well, walkable
     // Define if a tile (e. g. water) is walkable in the sprites dict
-    function isWalkable(map, x, y, l = 1, source = "player") {
-        if (map.map[Math.round(y)] && getTile(map, x, y, l)) { // Check if tile exists
+    function isWalkable(map, x, y, l = 1, source = "player", char = undefined) {
+        // rounding cuz world mode
+        x = Math.floor(x);
+        y = Math.floor(y);
+
+        if (map.map[y] && getTile(map, x, y, l)) { // Check if tile exists
             if (!getTileCondition(map, x, y, l)) return true;
+            let tile = getTile(map, x, y, l);
 
-            // rounding cuz world mode
-            x = Math.floor(x);
-            y = Math.floor(y);
-
-            // block collision for non-player if there is a teleport
+            // block collision for non-player if there is a teleport or water
             if (source != "player") {
                 if (isTeleport(map, x, y, l)) return false;
             }
-            if (source == "npc" || source == "enemy") if (getTile(map, x, y, l).swim != undefined) return false;
+            if (source == "npc" && tile.swim == true) return false;
+            if (source == "enemy" && tile.swim == true && !char.canSwim) return false;
 
             // occupied, let's see how
-            if (getTile(map, x, y, l).occupied != undefined) { // Check if occupied exists
-                if (source == "player" && typeof (getTile(map, x, y, l).occupied) == "object") { // Config exists?
-                    if (direction == "up" && getTile(map, x, y, l).occupied.includes("up")) {
+            if (tile.occupied != undefined) { // Check if occupied exists
+                if (source == "player" && typeof (tile.occupied) == "object") { // Config exists?
+                    if (direction == "up" && tile.occupied.includes("up")) {
                         return true;
                     }
-                    else if (direction == "left" && getTile(map, x, y, l).occupied.includes("left")) {
+                    else if (direction == "left" && tile.occupied.includes("left")) {
                         return true;
                     }
-                    else if (direction == "down" && getTile(map, x, y, l).occupied.includes("down")) {
+                    else if (direction == "down" && tile.occupied.includes("down")) {
                         return true;
                     }
-                    else if (direction == "right" && getTile(map, x, y, l).occupied.includes("right")) {
+                    else if (direction == "right" && tile.occupied.includes("right")) {
                         return true;
                     }
                     else { // Config denies passing
                         return false;
                     }
                 }
-                return !getTile(map, x, y, l).occupied // No config, is it occupied?
+                return !tile.occupied // No config, is it occupied?
             }
 
             // Unoccupied, you can pass!
@@ -1015,12 +1022,23 @@ scenes.game = () => {
         }
     }
 
-    function getTileAllLayersWalkable(map, x, y, source) {
+    /*
+    function getEnemyOnTile(map, x, y) {
+        for (let e of activeEnemies) {
+            console.log(map, x, y, e);
+            if (e.x == x && e.y == y && e.map == map) return e;
+        }
+
+        return false;
+    }
+    */
+
+    function getTileAllLayersWalkable(map, x, y, source, char = undefined) {
         // checks if u can walk on all layers and no ppl there
-        return isWalkable(map, x, y, 1, source)
-            && isWalkable(map, x, y, 2, source)
-            && isWalkable(map, x, y, 3, source)
-            && !isSomeoneOnTile(map, x, y, source);
+        return isWalkable(map, x, y, 1, source, char)
+            && isWalkable(map, x, y, 2, source, char)
+            && isWalkable(map, x, y, 3, source, char)
+            && !isSomeoneOnTile(map, x, y, source, char);
     }
 
     function tryTalk(xo, yo) {
@@ -1095,15 +1113,15 @@ scenes.game = () => {
             px = Math.ceil((zoom * scale) * (x - ofsX)) - ((zoom - 1) * scale * (width / 2));
             py = Math.ceil(zoom * scale) * (y - ofsY) - ((zoom - 1) * scale * 7);
 
-            pw = Math.ceil(zoom * scale + 1);
-            ph = Math.ceil(zoom * scale + 1);
+            pw = Math.ceil(zoom * scale - ((zoom - 1) * scale * (width / 2))) + 1;
+            ph = Math.ceil(zoom * scale - ((zoom - 1) * scale * 7)) + 1;
 
             // chest? 
             if (map.chests != undefined && game.mChests.includes(map.id + "," + x + "," + y + "," + Ts)) ani += 32;
 
             // draw
             ctx.drawImage(images[tileSrc],
-                Math.floor(ani + tileSnip[0] * 32), Math.floor(tileSnip[1] * 32) + 0.1, 32, 32,
+                Math.floor(ani + tileSnip[0] * 32) + 0.005, Math.floor(tileSnip[1] * 32) + 0.005, 31.99, 31.99,
                 px,
                 py,
                 pw,
@@ -1490,6 +1508,11 @@ scenes.game = () => {
                 }
             }
 
+            if (map.worldmode) {
+                xo /= 2;
+                yo /= 2;
+            }
+
             // walk npc
             if (xo != 0 || yo != 0) {
                 if (getTileAllLayersWalkable(map, activeNPCs[i].position[0] + xo, activeNPCs[i].position[1] + yo, "npc")) {
@@ -1546,9 +1569,14 @@ scenes.game = () => {
                         headTo = 1;
                     }
 
+                    if (map.worldmode) {
+                        xo /= 2;
+                        yo /= 2;
+                    }
+
                     // walk enemy
                     if (xo != 0 || yo != 0) {
-                        if (getTileAllLayersWalkable(map, activeEnemies[i].position[0] + xo, activeEnemies[i].position[1] + yo, "enemy")) {
+                        if (getTileAllLayersWalkable(map, activeEnemies[i].position[0] + xo, activeEnemies[i].position[1] + yo, "enemy", activeEnemies[i])) {
                             activeEnemies[i].position[0] += xo;
                             activeEnemies[i].position[1] += yo;
                             activeEnemies[i].head = headTo;
@@ -1557,14 +1585,15 @@ scenes.game = () => {
                     }
                 }
 
-                // Respawn if on ocean or occupied
-                if (map.map[activeEnemies[i].position[1]] != undefined) {
-                    if (getTile(map, activeEnemies[i].position[0], activeEnemies[i].position[1]) == undefined) { // Undefined
+                // Respawn if on undefined, ocean or occupied
+                let currentTile = getTile(map, Math.floor(activeEnemies[i].position[0]), Math.floor(activeEnemies[i].position[1]));
+                if (map.map[Math.floor(activeEnemies[i].position[1])] != undefined) {
+                    if (currentTile == undefined) { // Undefined
                         activeEnemies[i].alpha = 0;
                         activeEnemies[i].position = [Math.floor(Math.random() * mapWidth), Math.floor(Math.random() * maps[game.map].map.length)];
                     }
                     else {
-                        if (getTile(map, activeEnemies[i].position[0], activeEnemies[i].position[1]).occupied == true) { // occupied
+                        if (currentTile.occupied == true || (currentTile.swim && !activeEnemies[i].canSwim)) { // occupied or water
                             activeEnemies[i].alpha = 0;
                             activeEnemies[i].position = [Math.floor(Math.random() * mapWidth), Math.floor(Math.random() * maps[game.map].map.length)];
                         }
@@ -1799,13 +1828,15 @@ scenes.game = () => {
             if (map.worldmode != true || images["wm_" + game.leader] == undefined) {
                 ctx.drawImage(images[game.leader], 32 * Math.floor(walkTime), 32 * head, 32, 32 / isInWater,
                     scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5)),
-                    scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zswm, zswm / isInWater)
+                    Math.ceil(zoom * scale) * (7.5) - ((zoom - 1) * scale * 7),
+                    zswm, zswm / isInWater);
                 ctx.imageSmoothingEnabled = false;
             }
             else {
                 ctx.drawImage(images["wm_" + game.leader], 16 * Math.floor(walkTime), 16 * head, 16, 16 / isInWater,
                     scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5)),
-                    scale * (game.position[1] - kofs[1] * kofs[2] - ofsY + ((zoom - 1) / 2)), zswm, zswm / isInWater)
+                    Math.ceil(zoom * scale) * (7.5) - ((zoom - 1) * scale * 7),
+                    zswm, zswm / isInWater);
                 ctx.imageSmoothingEnabled = false;
             }
 

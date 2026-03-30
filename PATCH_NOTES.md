@@ -218,3 +218,11 @@
 - New quest type: find items (findItem), triggered by items on ground and chests only
 - Tile info mode: added button to add chest, remove item button now also removes chest
 - Tile info mode: item on tile can show the tile's chest item, and specifies if it's on the ground or in a chest
+
+
+
+## 1.0.8
+- Added ability for certain enemies to swim
+- Improved player/npc/enemy Y relative to the tiles
+- NPCs and enemies can now walk half a step in worldmode
+- Improved enemy spawning

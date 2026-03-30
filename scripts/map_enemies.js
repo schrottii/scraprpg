@@ -34,13 +34,16 @@ let mapenemies = {
             movementTime: 0, // offset, usually irrelevant
             walkingInterval: 0.5, // time between walks
             walkingSpeed: 1, // how long it takes to walk from one tile to another (in seconds)
+            canSwim: false,
 
             render(ctx) {
                 let ofsX = Math.max(CAMERA_LOCK_X, game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5) + this.kofs[0] * (this.kofs[2] / this.walkingSpeed);
                 let ofsY = Math.max(CAMERA_LOCK_Y, game.position[1] - kofs[1] * kofs[2] - 7.5) + this.kofs[1] * (this.kofs[2] / this.walkingSpeed);
 
                 let posX = ((zoom * scale) * (this.position[0] - ofsX)) - ((zoom - 1) * scale * (width / 2));
-                let posY = (zoom * scale) * (this.position[1] - ofsY) - ((zoom - 1) * scale * 7);
+                let posY = Math.ceil(zoom * scale) * (this.position[1] - ofsY) - ((zoom - 1) * scale * 7);
+
+                let isSwimming = this.canSwim == false ? false : getTile(maps[this.map], this.position[0], this.position[1], 1).swim == true;
 
                 this.kofs[2] = Math.max(this.kofs[2] - delta / 166, 0);
 
@@ -52,12 +55,14 @@ let mapenemies = {
                                 zswm * 1.5, zswm * 1.5);
                         }
                         ctx.drawImage(images[this.source],
-                            32 * Math.floor(walkTime), 32 * this.head, 32, 32,
+                            32 * Math.floor(walkTime), 32 * this.head, 32, !isSwimming ? 32 : 16,
                             posX, posY,
-                            zswm, zswm)
+                            zswm, !isSwimming ? zswm : zswm / 2);
                     }
                 }
                 ctx.globalAlpha = 1;
+
+                // spawn animation
                 if (this.spawntime < 900 && this.alpha != 0) {
                     this.spawntime += delta;
                     if (this.spawntime > 599) {
