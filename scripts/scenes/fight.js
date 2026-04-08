@@ -1926,8 +1926,6 @@ scenes.fight = () => {
                 if (positionControls[p].source != "gear") positionControls[p].offset[0] = -500;
                 if (positionControls[p].source != "gear") positionControls[p].anchor[0] = 0;
                 positionControls[p].source = "gear";
-                delete runTime;
-                delete runLaps;
 
                 for (i = 0; i < fleeWrenches.length; i++) {
                     fleeWrenches[i].alpha = 0;
@@ -3413,8 +3411,6 @@ scenes.fight = () => {
                         epositionControls[i].offset[0] = epositionControls[i].defoff;
                         epositionControls[i].anchor[0] = 0.975;
                     }
-                    delete runTime;
-                    delete runLaps;
                     return true;
                 }
                 return false;

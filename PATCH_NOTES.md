@@ -222,7 +222,12 @@
 
 
 ## 1.0.8
+-> Enemy behavior: 
 - Added ability for certain enemies to swim
-- Improved player/npc/enemy Y relative to the tiles
 - NPCs and enemies can now walk half a step in worldmode
 - Improved enemy spawning
+
+-> Bug fixes:
+- Improved player/npc/enemy Y relative to the tiles
+- brfr6: Fixed a chest issue
+- Tried to fix randomly not being able to move sometimes

@@ -294,7 +294,9 @@ function spawnMapEnemy(enemyToSpawn) {
 }
 
 function startDialogue(cd) {
+    if (inDialogue) return false;
     if (typeof (cd) == "string") cd = map.dialogues[cd];
+
     inDialogue = true;
     currentDialogue = cd.lines;
     dialogueType = cd.type;
@@ -1625,7 +1627,7 @@ scenes.game = () => {
 
         let tTime = 1000 / 3;
         if (previousScene == "main" || previousScene == "title" || previousScene == undefined) tTime = 1500; // Not inventory or fight
-        fadeIn(tTime, true);
+        fadeIn(tTime, true, () => canMove = true);
     }
     catch {
         console.log("| ⚠️ | Error while loading the map");
@@ -2047,9 +2049,13 @@ scenes.game = () => {
                 else currentKeys["q"] = false;
             }
             // open inventory
-            if (currentKeys["e"]) {
+            if (currentKeys["e"] && canMove) {
+                canMove = false;
                 game.stats.inventory++;
-                fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
+                fadeOut(1000 / 3, true, () => {
+                    setScene(scenes.inventory());
+                    canMove = true;
+                });
             }
 
             // emergency
