@@ -1910,33 +1910,73 @@ scenes.mapmaker = () => {
         }
     }));
 
-    // bottom left, leave map maker
-    let backButton = controls.button({
-        anchor: [0, 0.96], sizeAnchor: [0.05, 0.045],
-        text: "<",
+    // BOTTOM LEFT
+    // now sorted top to bottom
+
+    // bottom left, show/hide collisions
+    let collisionButton = controls.image({
+        anchor: [0, 0.69], sizeAnchor: [0.05, 0.05],
+        source: "darkPaths",
         onClick(args) {
             if (this.alpha == 1) {
-                if (confirm("Do you really want to leave Map Maker?")) setScene(scenes.pretitle());
+                visibleCollision = !visibleCollision;
+                if (visibleCollision) this.alpha = 0.3;
+                else this.alpha = 1;
+                updateTiles = true;
             }
         },
         alpha: 1,
     });
 
-    // bottom left, very important, show map info, spawns, etc.
-    let toggleMapInfoButton = controls.button({
-        anchor: [0, 0.9], sizeAnchor: [0.05, 0.045],
-        text: "(i)",
+    // bottom left, hide/show UI
+    let eyeButton = controls.image({
+        anchor: [0, 0.7425], sizeAnchor: [0.05, 0.05],
+        source: "hideUI",
         onClick(args) {
+            let a;
             if (this.alpha == 1) {
-                toggleMapInfoButtons();
+                a = 0;
+                this.alpha = 0.5;
+
+                for (let prep in recentlyUsedTiles) {
+                    recentlyUsedTiles[prep].alpha = 0;
+                }
             }
+            else {
+                a = 1;
+                this.alpha = 1;
+
+                for (let prep in recentlyUsedTiles) {
+                    if (recentlyUsedTiles[prep].source != "gear") recentlyUsedTiles[prep].alpha = 1;
+                }
+            }
+
+            for (m in modeButtons) {
+                modeButtons[m].va = modeButtons[m].alpha;
+                modeButtons[m].alpha = a;
+            }
+            for (w in walkPad) {
+                walkPad[w].alpha = a;
+            }
+            for (u in undoButtons) {
+                undoButtons[u].alpha = a;
+            }
+
+            currentMapText.alpha = a;
+            currentTile.alpha = a;
+
+            collisionButton.alpha = a;
+            toggleAnimate.alpha = a;
+            toggleMakerInfo.alpha = a;
+            toggleMapInfoButton.alpha = a;
+            backButton.alpha = a;
         },
         alpha: 1,
     });
-
+    
     // bottom left, toggle animations on or off (visual only)
     let toggleAnimate = controls.button({
-        anchor: [0, 0.84], sizeAnchor: [0.05, 0.045],
+        anchor: [0, 0.795], sizeAnchor: [0.05, 0.05],
         text: "ani:off",
         onClick(args) {
             if (this.alpha == 1) {
@@ -1954,79 +1994,21 @@ scenes.mapmaker = () => {
         alpha: 1,
     });
 
-    // bottom left, hide/show UI
-    let eyeButton = controls.image({
-        anchor: [0, 0.7], sizeAnchor: [0.05, 0.045],
-        source: "hideUI",
+    // bottom left, very important, show map info, spawns, etc.
+    let toggleMapInfoButton = controls.button({
+        anchor: [0, 0.8475], sizeAnchor: [0.05, 0.05],
+        text: "MAP",
         onClick(args) {
             if (this.alpha == 1) {
-                for (m in modeButtons) {
-                    modeButtons[m].va = modeButtons[m].alpha;
-                    modeButtons[m].alpha = 0;
-                }
-                for (w in walkPad) {
-                    walkPad[w].alpha = 0;
-                }
-                for (u in undoButtons) {
-                    undoButtons[u].alpha = 0;
-                }
-                currentMapText.alpha = 0;
-                toggleMapInfoButton.alpha = 0;
-                backButton.alpha = 0;
-                toggleAnimate.alpha = 0;
-                this.alpha = 0.5;
-
-                for (let prep in recentlyUsedTiles) {
-                    recentlyUsedTiles[prep].alpha = 0;
-                }
-            }
-            else {
-                for (m in modeButtons) {
-                    modeButtons[m].alpha = modeButtons[m].va;
-                }
-                for (w in walkPad) {
-                    walkPad[w].alpha = 1;
-                }
-                for (u in undoButtons) {
-                    undoButtons[u].alpha = 1;
-                }
-                currentMapText.alpha = 1;
-                toggleMapInfoButton.alpha = 1;
-                backButton.alpha = 1;
-                toggleAnimate.alpha = 1;
-                this.alpha = 1;
-
-                for (let prep in recentlyUsedTiles) {
-                    if (recentlyUsedTiles[prep].source != "gear") recentlyUsedTiles[prep].alpha = 1;
-                }
+                toggleMapInfoButtons();
             }
         },
         alpha: 1,
     });
 
-    // bottom left, show/hide collisions
-    let collisionButton = controls.image({
-        anchor: [0, 0.655], sizeAnchor: [0.05, 0.045],
-        source: "darkPaths",
-        onClick(args) {
-            visibleCollision = !visibleCollision;
-            if (visibleCollision) this.alpha = 0.3;
-            else this.alpha = 1;
-            updateTiles = true;
-        },
-        alpha: 1,
-    });
-
-    // bottom left, the current tile you got
-    let currentTile = controls.image({
-        anchor: [0, 0.775], sizeOffset: [64, 64], offset: [0, -16],
-        source: "tiles/sand1", glow: 5, glowColor: "yellow",
-        alpha: 1,
-    });
-
-    // bottom right, maker info
+    // bottom left, maker info
     let toggleMakerInfo = controls.button({
-        anchor: [0.95, 0.955], sizeAnchor: [0.05, 0.045],
+        anchor: [0, 0.9], sizeAnchor: [0.05, 0.05],
         text: "info",
         onClick(args) {
             if (this.alpha == 1) {
@@ -2044,6 +2026,27 @@ scenes.mapmaker = () => {
         },
         alpha: 1,
     });
+
+    // bottom left, leave map maker
+    let backButton = controls.button({
+        anchor: [0, 0.9525], sizeAnchor: [0.05, 0.0475],
+        text: "<",
+        onClick(args) {
+            if (this.alpha == 1) {
+                if (confirm("Do you really want to leave Map Maker?")) setScene(scenes.pretitle());
+            }
+        },
+        alpha: 1,
+    });
+
+    // bottom left but righter, the current tile you got
+    let currentTile = controls.image({
+        anchor: [0, 0.64], sizeOffset: [64, 64], offset: [256 + 96, 48],
+        source: "tiles/sand1", glow: 5, glowColor: "yellow",
+        alpha: 1,
+    });
+
+
 
     mapInfoControls.push(controls.rect({
         anchor: [0.05, 0.15], sizeAnchor: [0.9, 0.7],
@@ -2317,11 +2320,12 @@ scenes.mapmaker = () => {
     let currentMapText = controls.label({
         anchor: [0.075, 0.95],
         text: "ERROR",
-        align: "left", fontSize: 33, fill: "white",
-        outline: "black", outlineSize: 13,
+        align: "left", fontSize: 40, fill: "white",
+        outline: "gray", outlineSize: 10,
         alpha: 1,
     });
 
+    // the cursor thing in the middle
     let middlei = controls.image({
         anchor: [0.5, 0.5], sizeOffset: [zswm, zswm],
         ri: true, clickstop: false,
@@ -3746,7 +3750,7 @@ scenes.mapmaker = () => {
             let width = window.innerWidth / scale;
 
             // Update location/status text
-            currentMapText.text = "Map: " + currentMap + "   |   Pos: x" + game.position[0] + " y" + game.position[1] + " z" + editingLayer + "   |   Mode: " + mode + "   |   Tile: " + ttp;
+            currentMapText.text = currentMap + " | [x" + game.position[0] + ", y" + game.position[1] + ", z" + editingLayer + "] | Mode: " + mode + " | Sel: " + ttp;
 
             ctx.imageSmoothingEnabled = false;
             ctx.globalAlpha = 1;

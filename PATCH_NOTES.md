@@ -227,6 +227,12 @@
 - NPCs and enemies can now walk half a step in worldmode
 - Improved enemy spawning
 
+-> Map Maker:
+- Repositioned buttons in the bottom left, moved info from bottom right to the bottom left
+- The button for map info now shows "MAP" instead of "(i)" (to avoid confusion with "info")
+- Updated images for toggle UI and show collisions buttons
+- Improved code of toggle UI button and added elements that were not toggled before
+
 -> Bug fixes:
 - Improved player/npc/enemy Y relative to the tiles
 - brfr6: Fixed a chest issue
