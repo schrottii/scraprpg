@@ -132,6 +132,7 @@ scenes.mapmaker = () => {
 
     var mode = "move";
     var prevmode = "moveandplace";
+    var tempPlaceBlock = 0;
     var fillToolActive = false;
     var tilesFilled = 0;
 
@@ -784,6 +785,7 @@ scenes.mapmaker = () => {
         fillTop: "red", fillBottom: "darkred",
         onClick(args) {
             if (this.alpha == 1) {
+                tempPlaceBlock = 1;
                 createTile("map");
             }
         }
@@ -959,6 +961,7 @@ scenes.mapmaker = () => {
         text: "Load from file...", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                tempPlaceBlock = 1;
                 showSelect();
             }
         }
@@ -968,6 +971,8 @@ scenes.mapmaker = () => {
         text: "Load from name...", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                tempPlaceBlock = 1;
+
                 // get the name thru info or asking
                 let newMapn;
                 if (selectedInfo != "" && maps[selectedInfo] != undefined) newMapn = selectedInfo;
@@ -990,6 +995,8 @@ scenes.mapmaker = () => {
         text: "Play", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                tempPlaceBlock = 1;
+
                 let toPos = [game.position[0], game.position[1]];
 
                 saveNR = 0;
@@ -1015,6 +1022,7 @@ scenes.mapmaker = () => {
         text: "Save as .sotrm", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                tempPlaceBlock = 1;
                 saveFile("sotrm");
             }
         }
@@ -1024,6 +1032,7 @@ scenes.mapmaker = () => {
         text: "Save as .js", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
+                tempPlaceBlock = 1;
                 saveFile("js");
             }
         }
@@ -1034,6 +1043,7 @@ scenes.mapmaker = () => {
         onClick(args) {
             if (this.alpha == 1) {
                 if (confirm("Do you really want to create a new map?") == true) {
+                    tempPlaceBlock = 1;
                     createNewMap("newMap");
                 }
             }
@@ -1795,7 +1805,7 @@ scenes.mapmaker = () => {
     for (t = 0; t < 24; t++) {
         recentlyUsedTiles.push(controls.image({
             anchor: [0, 0.025], offset: [72 * (t % 6), 72 * Math.floor(t / 6) + 72 * 4 + 4], sizeOffset: [64, 64],
-            source: "gear", alpha: 1, glowColor: "white", glow: 0,
+            source: "gear", alpha: 0, glowColor: "white", glow: 0,
             // tile: the tile, with sprite, occupied, etc.
             // tileid: 001, 002, etc.
             onClick(args) {
@@ -2333,6 +2343,14 @@ scenes.mapmaker = () => {
         alpha: 1,
     });
 
+    // the cursor thing but for the selected tile
+    let tileInfoSelectedTile = controls.image({
+        anchor: [0, 0], sizeAnchor: [0, 0], sizeOffset: [zswm, zswm],
+        clickstop: false,
+        source: "selectedtile",
+        alpha: 0,
+    });
+
 
 
     // TILE INFO
@@ -2349,11 +2367,8 @@ scenes.mapmaker = () => {
         text: "X", alpha: 0,
         onClick(args) {
             if (this.alpha == 1) {
-                mode = "move";
-                for (tic in tileInfoControls) {
-                    tileInfoControls[tic].alpha = 0;
-                }
-                setTimeout(() => { mode = "tile"; }, 100);
+                tempPlaceBlock = 1;
+                UI_toggle_tileInfoControls(0);
             }
         }
     }));
@@ -2394,9 +2409,7 @@ scenes.mapmaker = () => {
                             game.position = [selectedTile.teleport[1], selectedTile.teleport[2]];
                             newMap();
 
-                            for (tic in tileInfoControls) {
-                                tileInfoControls[tic].alpha = 0;
-                            }
+                            UI_toggle_tileInfoControls(0);
                         }
                     }
                 }
@@ -2497,6 +2510,29 @@ scenes.mapmaker = () => {
             }
         }
     }));
+    tileInfoControls.push(controls.button({
+        anchor: [0.85, 0.15], sizeOffset: [128, 90], offset: [-128, 0],
+        text: "GO", alpha: 0,
+        onClick(args) {
+            if (this.alpha == 1) {
+                tempPlaceBlock = 1;
+                UI_toggle_tileInfoControls(0);
+
+                let myTile = tileInfoControls[15].pos;
+                game.position[0] = myTile[0];
+                game.position[1] = myTile[1];
+                updateTiles = true;
+            }
+        }
+    }));
+
+    function UI_toggle_tileInfoControls(val) {
+        for (tic in tileInfoControls) {
+            tileInfoControls[tic].alpha = val;
+        }
+        tileInfoSelectedTile.alpha = val;
+        console.log(tileInfoSelectedTile.offset,tileInfoSelectedTile.alpha);
+    }
 
 
 
@@ -3354,9 +3390,7 @@ scenes.mapmaker = () => {
 
         // Tile Info
         if (i != 1) {
-            for (tic in tileInfoControls) {
-                tileInfoControls[tic].alpha = 0;
-            }
+            UI_toggle_tileInfoControls(0);
         }
 
         // Load
@@ -3398,6 +3432,7 @@ scenes.mapmaker = () => {
     }
 
     function placeTile(x, y, layer, tileToPlace = "none", umode = "default") {
+        if (tempPlaceBlock > 0) return false;
         if (x < 0 || y < 0) {
             return false;
         }
@@ -3538,6 +3573,7 @@ scenes.mapmaker = () => {
     }
 
     function tileInfo(x, y, layer, selected = "none") {
+        if (tempPlaceBlock > 0) return false;
         closeAllMenus(1);
 
         let selectedTile;
@@ -3599,15 +3635,19 @@ scenes.mapmaker = () => {
         tileInfoControls[13].text = "Dialogue: " + (selectedTile.dialogue == undefined ? "not" : selectedTile.dialogue);
 
         // Show it all
-        for (tic in tileInfoControls) {
-            tileInfoControls[tic].alpha = 1;
-        }
+        UI_toggle_tileInfoControls(1);
 
+        //tileInfoSelectedTile.offset[0] = (x - game.position[0] + 16.1) * zswm;
+        //tileInfoSelectedTile.offset[1] = (y - game.position[1] + 7.5) * zswm;
+        tileInfoSelectedTile.anchor = [0.5, 0.5];
+        tileInfoSelectedTile.offset = [(x - game.position[0]) * zswm - (zswm / 2), (zoom * scale * (y - game.position[1] + 7.5) - ((zoom - 1) * scale * (y - game.position[1] + 7.5))) - (height / 2)];
+        tileInfoSelectedTile.sizeOffset = [zswm, zswm];
+        console.log(tileInfoSelectedTile.offset,tileInfoSelectedTile.alpha);
         tileInfoControls[15].pos = currInfo;
         tileInfoControls[15].alpha = (selectedTile.teleport != undefined);
     }
 
-    // YOU WILL EAT ZE TILES AND BE HAPPY
+    // ALL THE TILES
     for (i = 0; i < 800; i++) {
         tiles_bg.push(controls.image({
             offset: [-1000, -1000], sizeOffset: [2, 2],
@@ -3959,6 +3999,7 @@ scenes.mapmaker = () => {
             middlei.sizeOffset = [zoom * scale, zoom * scale];
             middlei.offset = [-zoom * scale / 2, (zoom * scale * 7.5 - ((zoom - 1) * scale * 7)) - (height / 2)];
 
+            // tick auto save
             autoSaveTime += 1 / delta;
             if (autoSaveTime >= 12) {
                 autoSaveTime = 0;
@@ -3973,6 +4014,9 @@ scenes.mapmaker = () => {
                     return false;
                 })
             }
+
+            // tick temporary placing blocker
+            if (tempPlaceBlock > 0) tempPlaceBlock -= 1 / delta;
         },
         // Controls
         controls: [
@@ -3988,7 +4032,7 @@ scenes.mapmaker = () => {
             ...createDialogueButtons, ...createDialogueLabels, ...createNPCButtons, ...createNPCLabels,
             ...tileInfoControls,
             toggleMakerInfo, ...makerInfo, ...makerInfoText,
-            autoSaveText
+            autoSaveText, tileInfoSelectedTile
         ],
         name: "mapmaker"
     }

@@ -233,6 +233,11 @@
 - Updated images for toggle UI and show collisions buttons
 - Improved code of toggle UI button and added elements that were not toggled before
 
+- Recently used tiles no longer appear as gears at the start
+- Fixed accidental tile placing after closing certain menus (tile maker, load map)
+- Tile Info: added GO button to directly move to the selected tile
+- Tile Info: selected tile is now highlighted
+
 -> Bug fixes:
 - Improved player/npc/enemy Y relative to the tiles
 - brfr6: Fixed a chest issue
