@@ -25,9 +25,13 @@ function postResSpecifics() {
 function loadAllResources() {
     resSpecifics = {
         images: Object.keys(images).length,
-            scenes: Object.keys(scenes).length,
-                audio: Object.keys(audio).length,
-                    maps: Object.keys(maps).length
+        scenes: Object.keys(scenes).length,
+        audio: Object.keys(audio).length,
+        maps: Object.keys(maps).length,
+        images_ids: Object.keys(images),
+        scenes_ids: Object.keys(scenes),
+        audio_ids: Object.keys(audio),
+        maps_ids: Object.keys(maps)
     };
     postResSpecifics();
 
@@ -37,6 +41,7 @@ function loadAllResources() {
         img.onload = () => {
             scene.controls[2].text = "images/" + image + " " + resLoad + "/" + resCount;
             resSpecifics.images--;
+            resSpecifics.images_ids.splice(resSpecifics.images_ids.indexOf(image), 1);
             finishedLoadingResources();
         }
         images[image] = img;
@@ -48,6 +53,7 @@ function loadAllResources() {
         scr.onload = () => {
             scene.controls[2].text = "scenes/" + scn + " " + resLoad + "/" + resCount;
             resSpecifics.scenes--;
+            resSpecifics.scenes_ids.splice(resSpecifics.scenes_ids.indexOf(scn), 1);
             finishedLoadingResources();
         }
         scenes[scn] = scr;
@@ -59,6 +65,7 @@ function loadAllResources() {
         aud.onloadeddata = () => {
             scene.controls[2].text = "audio/" + snd + " " + resLoad + "/" + resCount;
             resSpecifics.audio--;
+            resSpecifics.audio_ids.splice(resSpecifics.audio_ids.indexOf(snd), 1);
             finishedLoadingResources();
         }
         audio[snd] = aud;
@@ -70,6 +77,7 @@ function loadAllResources() {
         mp.onload = () => {
             scene.controls[2].text = "maps/" + map + " " + resLoad + "/" + resCount;
             resSpecifics.maps--;
+            resSpecifics.maps_ids.splice(resSpecifics.maps_ids.indexOf(map), 1);
             finishedLoadingResources();
         }
         maps[map] = mp;

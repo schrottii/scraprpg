@@ -1,50 +1,74 @@
 let images = {
     // the most important files!!!
     gear: "assets/textures/gear.png",
+    gameicon: "assets/textures/gameicon.png",
     proud: "assets/textures/proud.png",
     ping: "assets/textures/ping.png",
-    npcCircle: "assets/textures/npcCircle.png",
-    enemyCircle: "assets/textures/enemyCircle.png",
-    itemCircle: "assets/textures/itemCircle.png",
 
-    // Misc.
-    paper: "assets/textures/paper.png",
-    inventory: "assets/textures/inventory.png",
+    // Misc. or unsorted
     wrench: "assets/textures/currencies/wrench.png",
     brick: "assets/textures/currencies/brick.png",
 
     mainmenu_bg: "assets/textures/mainmenu_bg.png",
     fight_bg: "assets/textures/fight_bg2.png",
-    gameicon: "assets/textures/gameicon.png",
-    actions: "assets/textures/actions.png",
-    techniques: "assets/textures/techniques.png",
-    switch: "assets/textures/switch.png",
-    flee: "assets/textures/flee.png",
-    gameover: "assets/textures/GAME_OVER.png",
+    narratorbg: "assets/textures/narratorbg.png",
+
     selected: "assets/textures/selected.png",
     grid: "assets/textures/gridempty.png",
-    selected: "assets/textures/selected.png",
-    fleeing: "assets/textures/fleeing.png",
-    hasaction: "assets/textures/done.png",
-    scan: "assets/textures/scan.png",
-    talk: "assets/textures/talk.png",
-    order: "assets/textures/order.png",
-
-    rain: "assets/textures/rain.png",
+    paper: "assets/textures/paper.png",
     vignette: "assets/textures/screenvignette.png",
     star: "assets/textures/star.png",
-    narratorbg: "assets/textures/narratorbg.png",
-    save: "assets/textures/save.png",
-    load: "assets/textures/load.png",
-    delete: "assets/textures/delete.png",
-    autosave: "assets/textures/autosave.png",
-    mapbuttons: "assets/textures/mapbuttons.png",
-    monsterbook: "assets/textures/monsterbook.png",
 
-    shopbg: "assets/textures/shop/shop-bg.png",
-    shoptable: "assets/textures/shop/shop-table.png",
-    pawn: "assets/textures/shop/pawn.png",
-    hangingsign: "assets/textures/hanging-sign.png",
+
+
+    // OVERWORLD
+    // overworld UI
+    inventory: "assets/textures/gui/overworld/ui/inventory.png",
+    mapbuttons: "assets/textures/gui/overworld/ui/mapbuttons.png",
+
+    npcCircle: "assets/textures/gui/overworld/other/npcCircle.png",
+    enemyCircle: "assets/textures/gui/overworld/other/enemyCircle.png",
+    itemCircle: "assets/textures/gui/overworld/other/itemCircle.png",
+    talk: "assets/textures/gui/overworld/other/talk.png",
+    hangingsign: "assets/textures/gui/overworld/other/hanging-sign.png",
+
+    // weather
+    rain: "assets/textures/gui/overworld/weather/rain.png",
+    fog: "assets/textures/gui/overworld/weather/fog_cloud.png",
+    fog2: "assets/textures/gui/overworld/weather/fog_cloud2.png",
+    cloudshadow1: "assets/textures/gui/overworld/weather/scloud.png",
+    cloudshadow2: "assets/textures/gui/overworld/weather/scloud2.png",
+    cloudshadow3: "assets/textures/gui/overworld/weather/scloud3.png",
+
+    // shop
+    shopbg: "assets/textures/gui/shop/shop-bg.png",
+    shoptable: "assets/textures/gui/shop/shop-table.png",
+    pawn: "assets/textures/gui/shop/pawn.png",
+
+
+
+    // INVENTORY
+    save: "assets/textures/gui/inventory/save.png",
+    load: "assets/textures/gui/inventory/load.png",
+    delete: "assets/textures/gui/inventory/delete.png",
+    autosave: "assets/textures/gui/inventory/autosave.png",
+
+    monsterbook: "assets/textures/gui/inventory/monsterbook.png",
+
+
+
+    // FIGHT
+    scan: "assets/textures/gui/fight/actions/scan.png",
+    fleeing: "assets/textures/gui/fight/actions/fleeing.png",
+    hasaction: "assets/textures/gui/fight/actions/done.png",
+
+    actions: "assets/textures/gui/fight/other/actions.png",
+    techniques: "assets/textures/gui/fight/other/techniques.png",
+    switch: "assets/textures/gui/fight/other/switch.png",
+    flee: "assets/textures/gui/fight/other/flee.png",
+    selected: "assets/textures/gui/fight/other/selected.png",
+    order: "assets/textures/gui/fight/other/order.png",
+    gameover: "assets/textures/gui/fight/other/GAME_OVER.png",
 
     // attack animations (sword)
     attackani0: "assets/textures/animations/attack/attackani0.png",
@@ -54,55 +78,73 @@ let images = {
     eattackani1: "assets/textures/animations/attack/eattackani1.png",
     eattackani2: "assets/textures/animations/attack/eattackani2.png",
 
-    // weather
-    fog: "assets/textures/clouds/fog_cloud.png",
-    fog2: "assets/textures/clouds/fog_cloud2.png",
-    cloudshadow1: "assets/textures/clouds/scloud.png",
-    cloudshadow2: "assets/textures/clouds/scloud2.png",
-    cloudshadow3: "assets/textures/clouds/scloud3.png",
+    // Elements
+    fire: "assets/textures/gui/fight/elements/fire_element.png",
+    earth: "assets/textures/gui/fight/elements/earth_element.png",
+    wind: "assets/textures/gui/fight/elements/wind_element_colored.png",
+    lightning: "assets/textures/gui/fight/elements/lightning_element.png",
+    water: "assets/textures/gui/fight/elements/water_element.png",
+    light: "assets/textures/gui/fight/elements/light_element.png",
+    dark: "assets/textures/gui/fight/elements/dark_element.png",
+    physical: "assets/textures/gui/fight/elements/physical_element.png",
+    ectoplasm: "assets/textures/gui/fight/elements/ectoplasm_element.png",
+
+    // Effects (images by TheKingofTrash)
+    acid: "assets/textures/gui/fight/effects/acid.png",
+    poison: "assets/textures/gui/fight/effects/poison.png",
+    burn: "assets/textures/gui/fight/elements/fire_element.png",
+    enraged: "assets/textures/gui/fight/effects/berserk_shiny.png",
+    paralysis: "assets/textures/gui/fight/effects/paralysis.png",
+    condemned: "assets/textures/gui/fight/effects/condemned.png",
+
+
 
     // Map Maker
-    place: "assets/textures/mm/mode-place.png",
-    move: "assets/textures/mm/mode-move.png",
-    erase: "assets/textures/mm/mode-erase.png",
-    movenplace: "assets/textures/mm/mode-movenplace.png",
-    tilesmenu: "assets/textures/mm/tiles-menu.png",
-    autolayer: "assets/textures/mm/autolayer.png",
-    loadmap: "assets/textures/mm/loadm.png",
-    savemap: "assets/textures/mm/save.png",
-    newmap: "assets/textures/mm/delete.png",
-    layerbuttons: "assets/textures/mm/layerbuttons.png",
-    senza: "assets/textures/mm/Senza titolo.png",
-    plus: "assets/textures/mm/plus.png",
-    minus: "assets/textures/mm/minus.png",
-    tilemaker: "assets/textures/mm/tilemaker.png",
-    dialoguemaker: "assets/textures/mm/dialoguemaker.png",
-    npcmaker: "assets/textures/mm/npcmaker.png",
-    mmzoom: "assets/textures/mm/zoom.png",
-    undo: "assets/textures/mm/back.png",
-    redo: "assets/textures/mm/forward.png",
-    copy: "assets/textures/mm/copy.png",
-    paste: "assets/textures/mm/paste.png",
-    selectedtile: "assets/textures/mm/selected-tile.png",
-    eye: "assets/textures/mm/eye.png",
-    tilemode: "assets/textures/mm/tilemode.png",
-    fill: "assets/textures/mm/fill.png",
-    tilepickerinfoicons: "assets/textures/mm/miniicons.png",
-    hideUI: "assets/textures/mm/hideUI.png",
-    darkPaths: "assets/textures/mm/darkPaths.png",
+    place: "assets/textures/gui/map_maker/mode-place.png",
+    move: "assets/textures/gui/map_maker/mode-move.png",
+    erase: "assets/textures/gui/map_maker/mode-erase.png",
+    movenplace: "assets/textures/gui/map_maker/mode-movenplace.png",
+    tilesmenu: "assets/textures/gui/map_maker/tiles-menu.png",
+    autolayer: "assets/textures/gui/map_maker/autolayer.png",
+    loadmap: "assets/textures/gui/map_maker/loadm.png",
+    savemap: "assets/textures/gui/map_maker/save.png",
+    newmap: "assets/textures/gui/map_maker/delete.png",
+    layerbuttons: "assets/textures/gui/map_maker/layerbuttons.png",
+    senza: "assets/textures/gui/map_maker/Senza titolo.png",
+    plus: "assets/textures/gui/map_maker/plus.png",
+    minus: "assets/textures/gui/map_maker/minus.png",
+    tilemaker: "assets/textures/gui/map_maker/tilemaker.png",
+    dialoguemaker: "assets/textures/gui/map_maker/dialoguemaker.png",
+    npcmaker: "assets/textures/gui/map_maker/npcmaker.png",
+    mmzoom: "assets/textures/gui/map_maker/zoom.png",
+    undo: "assets/textures/gui/map_maker/back.png",
+    redo: "assets/textures/gui/map_maker/forward.png",
+    copy: "assets/textures/gui/map_maker/copy.png",
+    paste: "assets/textures/gui/map_maker/paste.png",
+    selectedtile: "assets/textures/gui/map_maker/selected-tile.png",
+    eye: "assets/textures/gui/map_maker/eye.png",
+    tilemode: "assets/textures/gui/map_maker/tilemode.png",
+    fill: "assets/textures/gui/map_maker/fill.png",
+    tilepickerinfoicons: "assets/textures/gui/map_maker/miniicons.png",
+    hideUI: "assets/textures/gui/map_maker/hideUI.png",
+    darkPaths: "assets/textures/gui/map_maker/darkPaths.png",
+
+
 
     // Save images
-    saveimage1: "assets/textures/pfps/PFP-1.png",
-    saveimage2: "assets/textures/pfps/PFP-2.png",
-    saveimage3: "assets/textures/pfps/PFP-3.png",
-    saveimage4: "assets/textures/pfps/PFP-4.png",
-    saveimage5: "assets/textures/pfps/PFP-5.png",
+    saveimage1: "assets/textures/gui/pfps/PFP-1.png",
+    saveimage2: "assets/textures/gui/pfps/PFP-2.png",
+    saveimage3: "assets/textures/gui/pfps/PFP-3.png",
+    saveimage4: "assets/textures/gui/pfps/PFP-4.png",
+    saveimage5: "assets/textures/gui/pfps/PFP-5.png",
 
     // Animations
     spawn: "assets/textures/animations/spawn_default.png",
     tokenattack: "assets/textures/animations/token-animation.png",
     schrottgamesanimation: "assets/textures/animations/sganimation.png",
     tttanimation: "assets/textures/animations/Toast_Tech_Team_Animation.png",
+
+
 
     // Characters (images by Decastar and Schrottii)
     bleu: "assets/textures/protagonists/map/Map_Bleu.png",
@@ -140,24 +182,7 @@ let images = {
     Portraits_Kokitozi: "assets/textures/protagonists/portraits/Portraits_Kokitozi.png",
     Portraits_DocAspen: "assets/textures/protagonists/portraits/Portraits_DocAspen.png",
 
-    // Elements
-    fire: "assets/textures/elements/fire_element.png",
-    earth: "assets/textures/elements/earth_element.png",
-    wind: "assets/textures/elements/wind_element_colored.png",
-    lightning: "assets/textures/elements/lightning_element.png",
-    water: "assets/textures/elements/water_element.png",
-    light: "assets/textures/elements/light_element.png",
-    dark: "assets/textures/elements/dark_element.png",
-    physical: "assets/textures/elements/physical_element.png",
-    ectoplasm: "assets/textures/elements/ectoplasm_element.png",
 
-    // Effects (images by TheKingofTrash)
-    acid: "assets/textures/effects/acid.png",
-    poison: "assets/textures/effects/poison.png",
-    burn: "assets/textures/elements/fire_element.png",
-    enraged: "assets/textures/effects/berserk_shiny.png",
-    paralysis: "assets/textures/effects/paralysis.png",
-    condemned: "assets/textures/effects/condemned.png",
 
     // NPCs
     "npcs/cow": "assets/textures/npcs/658_cow.png",
@@ -176,6 +201,8 @@ let images = {
 
     Portraits_NAN: "assets/textures/npcs/Portraits_NAN.png",
     Portraits_Endte: "assets/textures/npcs/Portraits_Endte.png",
+
+
 
     // Enemies (images by Schrottii)
     "enemies/black": "assets/textures/enemies/Map_Black.png",
@@ -213,6 +240,8 @@ let images = {
     "enemies/futhark": "assets/textures/enemies/717_futhark.png",
     "enemies/shapeward": "assets/textures/enemies/758_shapeward.png",
 
+
+
     // Tiles
     "tiles/empty": "assets/textures/tiles/empty.png",
     "tiles/water": "assets/textures/tiles/water.png",
@@ -221,6 +250,8 @@ let images = {
     "tiles/sand1": "assets/textures/tiles/sand1.png",
     "tiles/grass1": "assets/textures/tiles/grass1.png",
     "tiles/grass2": "assets/textures/tiles/grass2.png",
+
+
 
     // Tilesets
     "tilesets/common": "assets/textures/tilesets/common.png",
@@ -231,6 +262,8 @@ let images = {
     "tilesets/village": "assets/textures/tilesets/village.png",
 
     "tilesets/teleport": "assets/textures/tilesets/teleport.png",
+
+
 
     // Items (images by Schrottii)
     "items/crystal_strength": "assets/textures/items/equipment/crystal_strength.png",
