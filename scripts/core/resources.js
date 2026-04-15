@@ -1,5 +1,6 @@
 var resCount = 0;
 var resLoad = 0;
+var resSpecifics;
 
 function finishedLoadingResources() {
     resLoad++;
@@ -14,12 +15,28 @@ function finishedLoadingResources() {
     }
 }
 
+function postResSpecifics() {
+    console.log(resSpecifics);
+    setTimeout(() => {
+        if (resLoad != resCount) postResSpecifics();
+    }, 5000);
+}
+
 function loadAllResources() {
+    resSpecifics = {
+        images: Object.keys(images).length,
+            scenes: Object.keys(scenes).length,
+                audio: Object.keys(audio).length,
+                    maps: Object.keys(maps).length
+    };
+    postResSpecifics();
+
     for (let image in images) {
         let img = new Image();
         img.src = images[image];
         img.onload = () => {
             scene.controls[2].text = "images/" + image + " " + resLoad + "/" + resCount;
+            resSpecifics.images--;
             finishedLoadingResources();
         }
         images[image] = img;
@@ -30,6 +47,7 @@ function loadAllResources() {
         scr.src = scenes[scn];
         scr.onload = () => {
             scene.controls[2].text = "scenes/" + scn + " " + resLoad + "/" + resCount;
+            resSpecifics.scenes--;
             finishedLoadingResources();
         }
         scenes[scn] = scr;
@@ -40,6 +58,7 @@ function loadAllResources() {
         let aud = new Audio(audio[snd]);
         aud.onloadeddata = () => {
             scene.controls[2].text = "audio/" + snd + " " + resLoad + "/" + resCount;
+            resSpecifics.audio--;
             finishedLoadingResources();
         }
         audio[snd] = aud;
@@ -50,6 +69,7 @@ function loadAllResources() {
         mp.src = maps[map];
         mp.onload = () => {
             scene.controls[2].text = "maps/" + map + " " + resLoad + "/" + resCount;
+            resSpecifics.maps--;
             finishedLoadingResources();
         }
         maps[map] = mp;

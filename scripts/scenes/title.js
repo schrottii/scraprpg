@@ -26,7 +26,7 @@ scenes.title = () => {
     let infoLabel = controls.label({
         anchor: [0.02, 0.98], offset: [5, -12],
         align: "left", baseline: "alphabetic", fontSize: 24, fill: "#7f7f7f", alpha: 0,
-        text: "©2021-2025 Schrottii & Toast Technology Team / ScrapRPG team / Schrott Games",
+        text: "©2021-2026 Schrottii / Balnoom / Toast Technology Team / ScrapRPG team / Schrott Games",
     });
     let creditHitbox = controls.rect({
         anchor: [0, 0.9], sizeAnchor: [0.2, 0.1], alpha: 0,

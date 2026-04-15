@@ -238,6 +238,11 @@
 - Tile Info: added GO button to directly move to the selected tile
 - Tile Info: selected tile is now highlighted
 
+-> Other:
+- Reworked file tree: assets folder, new data folder, data files split, and much more (800+ changes)
+- Added resSpecifics, logging which types of files are getting loaded, reporting to console every 5 seconds of loading time
+- Updated copyright to 2026 and added Balnoom
+
 -> Bug fixes:
 - Improved player/npc/enemy Y relative to the tiles
 - brfr6: Fixed a chest issue

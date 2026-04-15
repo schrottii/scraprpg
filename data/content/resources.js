@@ -32,7 +32,7 @@ let images = {
 
     rain: "assets/textures/rain.png",
     vignette: "assets/textures/screenvignette.png",
-    star: "assets/textures/Icon_star.png",
+    star: "assets/textures/star.png",
     narratorbg: "assets/textures/narratorbg.png",
     save: "assets/textures/save.png",
     load: "assets/textures/load.png",

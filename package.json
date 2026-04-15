@@ -16,12 +16,12 @@
   "build": {
     "appId": "com.schrottii.scraprpg",
     "productName": "ScrapRPG",
-    "icon": "assets/textures/ico",
+    "icon": "styles/favicon/ico",
     "win": {
-      "icon": "assets/textures/icon.ico"
+      "icon": "styles/favicon/icon.ico"
     },
     "linux": {
-      "icon": "assets/textures/Icon_star.png"
+      "icon": "styles/favicon/icon.png"
     }
   },
   "keywords": [

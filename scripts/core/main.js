@@ -53,7 +53,7 @@ if (isElectron()) {
         const win = new BrowserWindow({
             width: 1920,
             height: 1080,
-            icon: "assets/textures/ico.ico",
+            icon: "styles/favicon/ico.ico",
         })
 
         win.setMenuBarVisibility(false);

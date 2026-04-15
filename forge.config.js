@@ -12,7 +12,7 @@ module.exports = {
             name: '@electron-forge/maker-squirrel',
             config: {
                 name: 'ScrapRPG',
-                setupIcon: 'assets/textures/ico.ico',
+                setupIcon: 'styles/favicon/ico.ico',
             }
         },
         {
