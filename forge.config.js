@@ -4,7 +4,7 @@ const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 module.exports = {
     packagerConfig: {
         asar: true,
-        icon: 'data/images/icon'
+        icon: 'assets/textures/icon'
     },
     rebuildConfig: {},
     makers: [
@@ -12,7 +12,7 @@ module.exports = {
             name: '@electron-forge/maker-squirrel',
             config: {
                 name: 'ScrapRPG',
-                setupIcon: 'data/images/ico.ico',
+                setupIcon: 'assets/textures/ico.ico',
             }
         },
         {

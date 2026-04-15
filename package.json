@@ -1,6 +1,6 @@
 {
   "name": "scraprpg",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "ScrapRPG",
   "main": "scripts\\main.js",
   "scripts": {
@@ -16,12 +16,12 @@
   "build": {
     "appId": "com.schrottii.scraprpg",
     "productName": "ScrapRPG",
-    "icon": "data/images/ico",
+    "icon": "assets/textures/ico",
     "win": {
-      "icon": "data/images/icon.ico"
+      "icon": "assets/textures/icon.ico"
     },
     "linux": {
-      "icon": "data/images/Icon_star.png"
+      "icon": "assets/textures/Icon_star.png"
     }
   },
   "keywords": [

@@ -1164,7 +1164,7 @@ var packs = {
         },
     },
 
-    desert: 
+    desert:
     {
         "D01": {
             "set": "desert",
@@ -1615,7 +1615,7 @@ var packs = {
         }
     },
 
-    forest: 
+    forest:
     {
         "F00": {
             "set": "forest",
@@ -2620,7 +2620,7 @@ var packs = {
         }
     },
 
-    interior: 
+    interior:
     {
         "I00": {
             "set": "interior",

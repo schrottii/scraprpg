@@ -16,7 +16,7 @@ function updateAnimators(delta) {
     }
 }
 
-/* data/images/protagonists
+/* assets/textures/protagonists
  | battle       | battleAnimation()
  | map          | overworld (game.js)
  | other        | emotionAnimation()

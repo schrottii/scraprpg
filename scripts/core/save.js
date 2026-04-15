@@ -192,11 +192,6 @@ let settings = {
     soundVolume: 0.5
 }
 
-for (c in game.characters) {
-    game.characters[c].HP = getStat(game.characters[c].name, "maxHP");
-    game.characters[c].EP = getStat(game.characters[c].name, "maxEP");
-}
-
 
 
 // Functions
@@ -205,6 +200,13 @@ var saveNR = 0;
 function isDevMode() {
     if (localStorage.getItem("SRPGcheats") != undefined && localStorage.getItem("SRPGcheats").includes("devmode")) return true;
     return false;
+}
+
+function removeExtraHP() {
+    for (c in game.characters) {
+        game.characters[c].HP = getStat(game.characters[c].name, "maxHP");
+        game.characters[c].EP = getStat(game.characters[c].name, "maxEP");
+    }
 }
 
 function load(x, altx) {
@@ -311,6 +313,8 @@ function loadGame() {
         if (saveCopy.mChests == undefined) saveCopy.mChests = [];
         if (saveCopy.quests == undefined) saveCopy.quests = {};
         if (saveCopy.jukebox == undefined) saveCopy.jukebox = [];
+
+        removeExtraHP();
 
         // delete items that don't exist anymore
         for (let i in saveCopy.inventory){
