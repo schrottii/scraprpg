@@ -24,7 +24,7 @@ let images = {
     // OVERWORLD
     // overworld UI
     inventory: "assets/textures/gui/overworld/ui/inventory.png",
-    mapbuttons: "assets/textures/gui/overworld/ui/mapbuttons.png",
+    mapbuttons: "assets/textures/gui/overworld/ui/mapbuttons2.png",
 
     npcCircle: "assets/textures/gui/overworld/other/npcCircle.png",
     enemyCircle: "assets/textures/gui/overworld/other/enemyCircle.png",

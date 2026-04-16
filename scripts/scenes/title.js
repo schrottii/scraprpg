@@ -37,7 +37,7 @@ scenes.title = () => {
     let verLabel = controls.label({
         anchor: [0.98, 0.98], offset: [-5, -12],
         align: "right", baseline: "alphabetic", fontSize: 24, fill: "#7f7f7f", alpha: 0,
-        text: "v1.1 (INDEV)",
+        text: GAMEVERSION,
     });
 
     let settingsSaveText = controls.label({
@@ -174,7 +174,6 @@ scenes.title = () => {
         }));
 
         for (i = 0; i < 2; i++) {
-            // Names 1 2
             saveTexts.push(controls.label({
                 anchor: [1.2 + (0.225 * i), 0.405], offset: [0, -146 + 130 * a], defanch: 0.205 + (0.125 * i),
                 align: "left", fontSize: 20, fill: "black",
@@ -182,15 +181,15 @@ scenes.title = () => {
                 alpha: 1,
             }));
             saveTexts.push(controls.label({
-                anchor: [1.2 + (0.225 * i), 0.405], offset: [0, -120 + 130 * a], defanch: 0.205 + (0.125 * i),
-                align: "left", fontSize: 20, fill: "black",
+                anchor: [1.15 + (0.225 * i), 0.405], offset: [0, -146 + 130 * a], defanch: 0.28 + (0.125 * i),
+                align: "right", fontSize: 16, fill: "black",
                 text: "",
                 alpha: 1,
             }));
-            // Levels 1 2
+
             saveTexts.push(controls.label({
-                anchor: [1.15 + (0.225 * i), 0.405], offset: [0, -146 + 130 * a], defanch: 0.28 + (0.125 * i),
-                align: "right", fontSize: 16, fill: "black",
+                anchor: [1.2 + (0.225 * i), 0.405], offset: [0, -120 + 130 * a], defanch: 0.205 + (0.125 * i),
+                align: "left", fontSize: 20, fill: "black",
                 text: "",
                 alpha: 1,
             }));
@@ -201,6 +200,7 @@ scenes.title = () => {
                 alpha: 1,
             }));
         }
+
         saveTexts.push(controls.label({
             anchor: [1.2, 0.4], offset: [120, -120 + 130 * a], defanch: 0.7,
             align: "right", fontSize: 32, fill: "black",
@@ -374,12 +374,13 @@ scenes.title = () => {
             for (let a = 0; a < 3; a++) {
                 var tempsaveNR = a;
                 if (localStorage.getItem("SRPG" + tempsaveNR) != undefined && localStorage.getItem("SRPG" + tempsaveNR) != "null") { // It exists
+                    var thisSave;
                     try {
-                        var thisSave = JSON.parse(localStorage.getItem("SRPG" + tempsaveNR));
+                        thisSave = JSON.parse(localStorage.getItem("SRPG" + tempsaveNR));
                     }
                     catch (e) {
                         saveGame();
-                        var thisSave = JSON.parse(localStorage.getItem("SRPG" + tempsaveNR));
+                        thisSave = JSON.parse(localStorage.getItem("SRPG" + tempsaveNR));
                     }
                     //if (a == 3) saveButtons[a].text = "Auto " + "\n Lvl: " + thisSave.characters.bleu.level;
                     //else saveButtons[a].text = "Save " + (tempsaveNR + 1) + "\n Lvl: " + thisSave.characters.bleu.level;
@@ -390,27 +391,28 @@ scenes.title = () => {
 
                     saveButtons[a].text = " ";
 
+                    // save texts
                     let amount = 15;
-                    for (i = 0; i < amount; i++) {
-                        saveTexts[i + (a * amount)].alpha = 1;
-                    }
 
                     // Current party with levels texts, e. g. Skro Lvl. 4
-                    saveTexts[2 + (a * amount)].text = getPlayer(1, thisSave).name;
-                    saveTexts[4 + (a * amount)].text = "Lvl. " + getPlayer(1, thisSave).level;
+                    for (let aa = 2; aa < 10; aa += 2) {
+                        if (thisSave.chars.length > (aa / 2) - 1) {
+                            saveTexts[aa + (a * amount)].text = getPlayer((aa / 2), thisSave).name;
+                            saveTexts[aa + 1 + (a * amount)].text = "Lvl. " + getPlayer((aa / 2), thisSave).level;
+                        }
+                    }
 
-                    if (thisSave.chars.length > 1) saveTexts[3 + (a * amount)].text = getPlayer(2, thisSave).name;
-                    if (thisSave.chars.length > 1) saveTexts[5 + (a * amount)].text = "Lvl. " + getPlayer(2, thisSave).level;
-                    if (thisSave.chars.length > 2) saveTexts[6 + (a * amount)].text = getPlayer(3, thisSave).name;
-                    if (thisSave.chars.length > 2) saveTexts[8 + (a * amount)].text = "Lvl. " + getPlayer(3, thisSave).level;
-                    if (thisSave.chars.length > 3) saveTexts[7 + (a * amount)].text = getPlayer(4, thisSave).name;
-                    if (thisSave.chars.length > 3) saveTexts[9 + (a * amount)].text = "Lvl. " + getPlayer(4, thisSave).level;
-
+                    // play time, currencies
                     if (thisSave.stats != undefined) saveTexts[10 + (a * amount)].text = getTime(thisSave.stats.playTime, 60, 3600);
 
                     saveTexts[13 + (a * amount)].text = formatNumber(thisSave.wrenches);
                     saveTexts[14 + (a * amount)].text = formatNumber(thisSave.bricks);
 
+                    for (i = 0; i < amount; i++) {
+                        saveTexts[i + (a * amount)].alpha = 1;
+                    }
+
+                    // pfp
                     saveImages[a].source = "saveimage" + thisSave.pfp;
                     saveImages[a].alpha = 1;
                 }

@@ -26,6 +26,8 @@ var FPSover = 0;
 let scale = 1080 / 16;// window.innerHeight / 16;
 let width = 1920 / scale;// window.innerWidth / scale;
 
+const GAMEVERSION = "v1.1 (INDEV)";
+
 function isElectron() {
     // Renderer process
     if (typeof window !== 'undefined' && typeof window.process === 'object' && window.process.type === 'renderer') {
@@ -219,7 +221,7 @@ function loop() {
     // Debug black bar
     if (isDevMode()) {
         ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, ctx.canvas.width * ((game.stats.playTime / 15) % 1) * 0.1, ctx.canvas.height * 0.01);
+        ctx.fillRect(0, 0, ctx.canvas.width * ((game.stats.playTime / 15) % 1) * 0.2, ctx.canvas.height * 0.02);
     }
 
     // Draw FPS
@@ -228,7 +230,7 @@ function loop() {
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
     ctx.globalAlpha = 1; //or else it's a bit transparent
-    if (isDevMode()) ctx.fillText((1000 / delta).toFixed(0) + "fps   | w: " + width.toFixed(1) + "  scale: " + scale.toFixed(1) + "   h: " + height + (isLs() ? "  ls" : "  p"), 2, 12);
+    if (isDevMode()) ctx.fillText((1000 / delta).toFixed(0) + "fps   " + ctx.canvas.width + "x" + ctx.canvas.height + "   w: " + width.toFixed(1) + "  scale: " + scale.toFixed(1) + (isLs() ? "  ls" : "  p"), 2, 12);
     else ctx.fillText((1000 / delta).toFixed(0) + "FPS", 2, 10);
 
     // Auto Save

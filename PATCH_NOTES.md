@@ -242,9 +242,12 @@
 - Reworked file tree: assets folder (like old data folder), new data folder, data files split, and much more (800+ changes)
 - Organized textures folder (all the images)
 - Added resSpecifics, logging which types of files are getting loaded, and which files exactly fail to load, reporting to console every 5 seconds of loading time
+- Top left now displays width x height
+- New map button design
 - Updated copyright to 2026 and added Balnoom
 
 -> Bug fixes:
+- Fixed wrong character names in title screen
 - Improved player/npc/enemy Y relative to the tiles
 - brfr6: Fixed a chest issue
 - Tried to fix randomly not being able to move sometimes
