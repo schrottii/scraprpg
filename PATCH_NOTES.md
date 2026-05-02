@@ -1,10 +1,10 @@
 ﻿# ScrapRPG
-## 1.0 (2025-08-13)
+## v1.0 (2025-08-13)
 - Release 
 
 
 
-## 1.0.1 (2025-08-14)
+## v1.0.1 (2025-08-14)
 -> Maps:
 - Bricky Town: expanded to the right side, with a Shop building!
 - This first shop sells Very Small Potions, Energy Drinks, and at lvl 2 Small Potions
@@ -30,13 +30,15 @@
 - Changed .ogg files to .mp3 to avoid iOS issues
 - Fixed an issue that caused too high Wrench gains
 
+
+
 -> Internal:
 - Map Maker: added dialogue script Open Shop
 - Made it easier for me to go into testing mode
 
 
 
-## 1.0.2 (2025-08-15)
+## v1.0.2 (2025-08-15)
 -> New content:
 - New Map: Bricky Forest - Mill
 - Here you can find Myllermit, who gives a quest
@@ -74,7 +76,7 @@
 
 
 
-## 1.0.3 (2025-08-16)
+## v1.0.3 (2025-08-16)
 -> Items:
 - Your items: improved rendering and handling of non-usable / story items
 - Descriptions of non-usable items can now be seen
@@ -91,6 +93,8 @@
 - Doubled max EP scaling (ie Bleu lvl 10: 4 -> 6)
 - Fixed single enemy spell crash
 
+
+
 -> Internal (Map Maker):
 - Easier access for project members
 - Default mode is now move rather than move+place
@@ -102,7 +106,7 @@
 
 
 
-## 1.0.4 (2025-08-22)
+## v1.0.4 (2025-08-22)
 -> New Maps:
 - New map: Bricky Forest - brfr4 (by tomekbet)
 - 1 quest
@@ -123,6 +127,8 @@
 - Enemies can no longer move when you can't move
 - Fixed medusa bug
 
+
+
 -> Internal (Maps):
 - Added Creator to the existing maps (11x Schrottii, 2x tomekbet, 1x Meowy)
 - Removed 2 typo dialogues
@@ -139,7 +145,7 @@
 
 
 
-## 1.0.5 (2025-08-27)
+## v1.0.5 (2025-08-27)
 -> Maps:
 - New map: Plain Town
 - South of Mythical Forest, relatively small, has Cows
@@ -170,6 +176,8 @@
 -> Other:
 - Made paths (sand and stone) smoother
 
+
+
 -> Internal:
 - Added notifications
 - Fights: added support for different grid/pos sizes
@@ -177,7 +185,7 @@
 
 
 
-## 1.0.6 (2025-09-24)
+## v1.0.6 (2025-09-24)
 -> Stats:
 - Added stats scene (accessible from inventory)
 - Here all stats are visible
@@ -196,7 +204,7 @@
 
 
 
-## 1.0.7 (2025-11-06)
+## v1.0.7 (2025-11-06)
 -> New Map:
 - New map: Bricky Forest - brfr6 (by Schrottii)
 - 2 quests: Lost Cards, Lost Cow
@@ -214,6 +222,8 @@
 - Changed color palette, to be more realistic and easier on the eyes
 - Fixed color jumping bug
 
+
+
 -> Internal:
 - New quest type: find items (findItem), triggered by items on ground and chests only
 - Tile info mode: added button to add chest, remove item button now also removes chest
@@ -221,11 +231,24 @@
 
 
 
-## 1.0.8
+## v1.1 (?)
+indev name: 1.0.8
+
 -> Enemy behavior: 
 - Added ability for certain enemies to swim
 - NPCs and enemies can now walk half a step in worldmode
 - Improved enemy spawning
+
+-> Other:
+- New map button design
+
+-> Bug fixes:
+- Fixed wrong character names in title screen
+- Improved player/npc/enemy Y relative to the tiles
+- brfr6: Fixed a chest issue
+- Tried to fix randomly not being able to move sometimes
+
+
 
 -> Map Maker:
 - Repositioned buttons in the bottom left, moved info from bottom right to the bottom left
@@ -238,16 +261,9 @@
 - Tile Info: added GO button to directly move to the selected tile
 - Tile Info: selected tile is now highlighted
 
--> Other:
+-> Internal:
 - Reworked file tree: assets folder (like old data folder), new data folder, data files split, and much more (800+ changes)
 - Organized textures folder (all the images)
 - Added resSpecifics, logging which types of files are getting loaded, and which files exactly fail to load, reporting to console every 5 seconds of loading time
 - Top left now displays width x height
-- New map button design
 - Updated copyright to 2026 and added Balnoom
-
--> Bug fixes:
-- Fixed wrong character names in title screen
-- Improved player/npc/enemy Y relative to the tiles
-- brfr6: Fixed a chest issue
-- Tried to fix randomly not being able to move sometimes
