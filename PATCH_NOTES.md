@@ -264,6 +264,8 @@ indev name: 1.0.8
 -> Internal:
 - Reworked file tree: assets folder (like old data folder), new data folder, data files split, and much more (800+ changes)
 - Organized textures folder (all the images)
+- Added scripts/node/nodemain.js, seperating it from the global main.js logic (PC version stuff)
+- Blocked prompts in the PC version
 - Added resSpecifics, logging which types of files are getting loaded, and which files exactly fail to load, reporting to console every 5 seconds of loading time
 - Top left now displays width x height
-- Updated copyright to 2026 and added Balnoom
+- Updated copyright to 2026 and added Balnoom name

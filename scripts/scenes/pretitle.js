@@ -46,7 +46,7 @@ scenes.pretitle = () => {
             if (currentKeys["w"] && currentKeys["u"]) {
                 currentKeys["w"] = false;
                 currentKeys["u"] = false;
-                if (prompt("?") == "NOOBVSPRO") {
+                if (!isElectron() && prompt("?") == "NOOBVSPRO") {
                     localStorage.setItem("SRPGcheats", ["devmode"]);
                 }
             }

@@ -2061,7 +2061,7 @@ scenes.game = () => {
             // emergency
             if (currentKeys["f"]) {
                 currentKeys["f"] = false;
-                if (prompt("Press F to pay respect") == "SPIT") {
+                if (isElectron() || prompt("Press F to pay respect") == "SPIT") {
                     teleportPlayer("castleSplit", 56, 20);
                 }
             }
