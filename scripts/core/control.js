@@ -230,10 +230,10 @@ function onCanvasPointerDown(e) {
         if (isLs() && !scene.controls[a].ri) red = 2;
         if (con.offset == undefined) console.trace();
 
-        offsetX = con.offset[0] / red + con.anchor[0] * mainCanvas.width;
-        offsetY = con.offset[1] / red + con.anchor[1] * mainCanvas.height;
-        sizeX = con.sizeOffset[0] / red + con.sizeAnchor[0] * mainCanvas.width;
-        sizeY = con.sizeOffset[1] / red + con.sizeAnchor[1] * mainCanvas.height;
+        offsetX = con.offset[0] / red + con.anchor[0] * wggjCanvas.width;
+        offsetY = con.offset[1] / red + con.anchor[1] * wggjCanvas.height;
+        sizeX = con.sizeOffset[0] / red + con.sizeAnchor[0] * wggjCanvas.width;
+        sizeY = con.sizeOffset[1] / red + con.sizeAnchor[1] * wggjCanvas.height;
 
         // Make buttons go pressed color
         if (!scene.controls[a].clickthrough &&
@@ -275,10 +275,10 @@ function onCanvasPointerUp(e, keepHold = false) {
         if (isLs() && !scene.controls[a].ri) red = 2;
         if (con.offset == undefined) console.trace();
 
-        offsetX = con.offset[0] / red + con.anchor[0] * mainCanvas.width;
-        offsetY = con.offset[1] / red + con.anchor[1] * mainCanvas.height;
-        sizeX = con.sizeOffset[0] / red + con.sizeAnchor[0] * mainCanvas.width;
-        sizeY = con.sizeOffset[1] / red + con.sizeAnchor[1] * mainCanvas.height;
+        offsetX = con.offset[0] / red + con.anchor[0] * wggjCanvas.width;
+        offsetY = con.offset[1] / red + con.anchor[1] * wggjCanvas.height;
+        sizeX = con.sizeOffset[0] / red + con.sizeAnchor[0] * wggjCanvas.width;
+        sizeY = con.sizeOffset[1] / red + con.sizeAnchor[1] * wggjCanvas.height;
 
         // Makes button go unpressed color after you stop clicking it, without this you'd have to click somewhere else to "unclick" it
         if (scene.controls[a].fillTop != undefined) scene.controls[a].isPressed = false;
@@ -301,10 +301,10 @@ function onCanvasPointerUp(e, keepHold = false) {
             if (!scene.controls[a].clickthrough && scene.controls[a].p != undefined && scene.controls[a].p != 0) {
                 for (n in scene.controls[a].p) {
                     let p = scene.controls[a].p[n];
-                    offsetX = p[1][0] / red + p[0][0] * mainCanvas.width;
-                    offsetY = p[1][1] / red + p[0][1] * mainCanvas.height;
-                    sizeX = p[3][0] / red + p[2][0] * mainCanvas.width;
-                    sizeY = p[3][1] / red + p[2][1] * mainCanvas.height;
+                    offsetX = p[1][0] / red + p[0][0] * wggjCanvas.width;
+                    offsetY = p[1][1] / red + p[0][1] * wggjCanvas.height;
+                    sizeX = p[3][0] / red + p[2][0] * wggjCanvas.width;
+                    sizeY = p[3][1] / red + p[2][1] * wggjCanvas.height;
                     if (pointerPos[0] >= offsetX && pointerPos[0] < offsetX + sizeX &&
                         pointerPos[1] >= offsetY && pointerPos[1] < offsetY + sizeY) {
                         return;

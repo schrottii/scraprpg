@@ -56,11 +56,11 @@ function removeNotification(name) {
 }
 
 // init
-function init() {
+function customWGGJInit() {
     // Button detection
-    mainCanvas.addEventListener("pointerdown", onCanvasPointerDown);
-    mainCanvas.addEventListener("pointermove", onCanvasPointerMove);
-    mainCanvas.addEventListener("pointerup", onCanvasPointerUp);
+    wggjCanvas.addEventListener("pointerdown", onCanvasPointerDown);
+    wggjCanvas.addEventListener("pointermove", onCanvasPointerMove);
+    wggjCanvas.addEventListener("pointerup", onCanvasPointerUp);
     window.addEventListener("keydown", (e) => currentKeys[e.key.toLowerCase()] = true);
     window.addEventListener("keyup", (e) => currentKeys[e.key.toLowerCase()] = false);
 
@@ -123,7 +123,6 @@ function init() {
     });
     loadAllResources();
     defFilter();
-    loop();
 }
 
 // FUNCTIONS
@@ -142,10 +141,11 @@ function isValid(vVar) {
     return vVar != undefined && vVar != null && vVar != "" && vVar != false;
 }
 
-function loop() {
+/*
+function customWGGJLoop() {
     // Handle FPS && Tick time
     if (FPS < 999 && Date.now() - time + FPSover < 1000 / FPS) {
-        requestAnimationFrame(loop);
+        requestAnimationFrame(customWGGJLoop);
         return false;
     }
     else {
@@ -156,15 +156,15 @@ function loop() {
     time = Date.now();
 
     // Resize the canvas
-    mainCanvas.style.width = (mainCanvas.width = window.innerWidth) + "px";
-    mainCanvas.style.height = (mainCanvas.height = window.innerHeight) + "px";
+    //wggjCanvas.style.width = (wggjCanvas.width = window.innerWidth) + "px";
+    //wggjCanvas.style.height = (wggjCanvas.height = window.innerHeight) + "px";
 
     height = window.innerHeight;
     scale = height / 16;
     width = window.innerWidth / scale;
 
     // this sets ctx to the canvas, just the usual stuff
-    let ctx = mainCanvas.getContext("2d");
+    let ctx = wggjCanvas.getContext("2d");
 
     ctx.imageSmoothingEnabled = false;
     ctx.globalAlpha = 1;
@@ -211,7 +211,16 @@ function loop() {
     updateAnimators(delta);
     timeTicker(delta);
 
-    requestAnimationFrame(loop);
+    requestAnimationFrame(customWGGJLoop);
 }
+*/
 
 // main end
+
+// wggj
+wggj.config.gameName = "ScrapRPG " + GAMEVERSION;
+wggj.config.startScene = "pretitle";
+
+wggjLoadImages();
+//wggjLoadAudio();
+wggjLoop();

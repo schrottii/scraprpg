@@ -186,19 +186,23 @@ function createImageAnimation(image, columns, rows, sizex, sizey, speed = 100) {
     animationtime = 0;
     animation = [image, columns - 1, rows - 1, sizex / columns, sizey / rows];
     animationspeed = speed;
+
+    objects["imageAnimation"].alpha = 1;
+    objects["imageAnimation"].image = image;
+
     canMove = false;
 }
 
 function updateImageAnimation(delta){
-    let ctx = mainCanvas.getContext("2d");
-    
     // updating animators
     if (animationtime > -1) {
         let prog = Math.floor(animationtime / animationspeed);
         let i = Math.floor(prog % (animation[1] + 1));
         let j = Math.floor(prog / (animation[1] + 1));
+
         if (i + (j * animation[1]) != animation[1] * (animation[2] + 1) + 2) {
-            ctx.drawImage(animation[0], animation[3] * i, animation[4] * j, animation[3], animation[4], 0, 0, width * scale, height);
+            console.log(objects["imageAnimation"].snip);
+            objects["imageAnimation"].snip = [animation[3] * i, animation[4] * j, animation[3], animation[4]];
             animationtime += delta;
         }
         else {

@@ -1,6 +1,38 @@
 ﻿## TODO:
+### WGGJ migration:
+- title, pretitle
+- game
+- mapmaker
+- fight (bear wit me)
+- shop
+
+- inventory
+- equipment
+- itemscene, magicscene
+- formation
+- monsterbook
+- questscene
+- savemanager
+- status
+- stats
+
+- credits
+- settings
+
+Notes:
+- do not migrate tiles (do renderlayer) and music yet
+- we are using an indev version of v1.7
+
+### Other:
 - Monster Book: Enemy details
 - Stats scene
+
+
+
+
+
+
+
 
 
 

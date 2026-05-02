@@ -11,7 +11,7 @@ function clearBlend() {
     if (!isClear) {
         isClear = true;
 
-        let ctx = mainCanvas.getContext("2d");
+        let ctx = wggjCanvas.getContext("2d");
         ctx.globalCompositeOperation = 'source-over';
     }
 }
@@ -19,7 +19,7 @@ function clearBlend() {
 function setBlend(type) {
     if (settings.blend == false) return false;
 
-    let ctx = mainCanvas.getContext("2d");
+    let ctx = wggjCanvas.getContext("2d");
 
     isClear = false;
 

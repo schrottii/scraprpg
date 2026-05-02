@@ -1,4 +1,4 @@
-let images = {
+images = {
     // the most important files!!!
     gear: "assets/textures/gear.png",
     gameicon: "assets/textures/gameicon.png",
