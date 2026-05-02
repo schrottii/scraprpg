@@ -28,7 +28,8 @@ scenes["pretitle"] = new Scene(
         createImageAnimation("schrottgamesanimation", 5, 15, 2000, 3375, 50);
         setTimeout(() => {
             if (!cancel) createImageAnimation("tttanimation", 5, 21, 4000, 9450, 25)
-        }, 3650);
+        }, 3250);
+
         setTimeout(() => {
             objects["imageAnimation"].alpha = 1;
 
@@ -46,13 +47,13 @@ scenes["pretitle"] = new Scene(
                 return false;
             })
             */
-        }, 3650 + 2625);
+        }, 3250 + 2250);
 
         setTimeout(() => {
             if (!cancel) {
                 setScene(scenes.title());
             }
-        }, 5150 + 2625);
+        }, 3250 + 2250 + 2000);
 
         playMusic("bgm/intro");
     },

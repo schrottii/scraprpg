@@ -183,9 +183,17 @@ function battleAnimation(char, emotion, anit = 0) {
 }
 
 function createImageAnimation(image, columns, rows, sizex, sizey, speed = 100) {
-    animationtime = 0;
-    animation = [image, columns - 1, rows - 1, sizex / columns, sizey / rows];
-    animationspeed = speed;
+    imageAnimation = {
+        time: 0,
+        speed: speed,
+        image: image,
+        columns: columns - 1,
+        rows: rows - 1,
+        w: sizex / columns,
+        h: sizey / rows,
+        sizex: sizex,
+        sizey: sizey
+    };
 
     objects["imageAnimation"].alpha = 1;
     objects["imageAnimation"].image = image;
@@ -195,20 +203,22 @@ function createImageAnimation(image, columns, rows, sizex, sizey, speed = 100) {
 
 function updateImageAnimation(delta){
     // updating animators
-    if (animationtime > -1) {
-        let prog = Math.floor(animationtime / animationspeed);
-        let i = Math.floor(prog % (animation[1] + 1));
-        let j = Math.floor(prog / (animation[1] + 1));
+    if (imageAnimation.time > -1) {
+        let prog = Math.floor(imageAnimation.time / imageAnimation.speed);
+        let i = Math.floor(prog % (imageAnimation.columns + 0));
+        let j = Math.floor(prog / (imageAnimation.columns + 0));
 
-        if (i + (j * animation[1]) != animation[1] * (animation[2] + 1) + 2) {
-            console.log(objects["imageAnimation"].snip);
-            objects["imageAnimation"].snip = [animation[3] * i, animation[4] * j, animation[3], animation[4]];
-            animationtime += delta;
+        if (imageAnimation.w * i < imageAnimation.sizex && imageAnimation.h * j < imageAnimation.sizey) {
+            objects["imageAnimation"].snip = [imageAnimation.w * i, imageAnimation.h * j, imageAnimation.w, imageAnimation.h];
+            //console.log(objects["imageAnimation"].snip);
+            imageAnimation.time += delta;
         }
         else {
             // Finished
+            console.log("image animation finished after: " + imageAnimation.time);
+            imageAnimation.time = -1;
+
             canMove = true;
-            animationtime = -1;
         }
     }
 }

@@ -14,9 +14,10 @@ let pointerPos = [0, 0];
 let delta = 0;
 let time = Date.now();
 
-var animationtime = -1;
-var animation;
-var animationspeed = 100;
+var imageAnimation = {
+    time: -1,
+    speed: 1000
+};
 
 var notifications = [];
 
