@@ -24,6 +24,68 @@ scenes["pretitle"] = new Scene(
         });
         */
 
+        createButton("devbtn1", 0.7, 0.85, 0.2, 0.08, "button", () => {
+            cancel = true;
+            //musicPlayer.muted = true; // false?
+            soundPlayer.muted = false;
+
+            loadSettings();
+            changeSoundVolume(settings.soundVolume);
+            playSound("titletransition");
+
+            stopMusic();
+            //playMusic("bgm/boss", "bgm/placeholder");
+            //^intro example - remove comment ^ there, add comment to setscene few lines below, set musicplayer muted to false above
+            saveNR = 0;
+
+            loadGame();
+            loadSettings();
+
+            if (maps[game.map] == undefined) game.map = "test";
+            canMove = true;
+            setScene(scenes.game());
+            //openShop("placeholder");
+        }, { aText: { text: "Dev Mode", size: 20 }, power: isDevMode() });
+
+        createButton("devbtn2", 0.7, 0.75, 0.2, 0.08, "button", () => {
+            cancel = true;
+            musicPlayer.muted = false; // false?
+            soundPlayer.muted = false;
+
+            loadSettings();
+            changeSoundVolume(settings.soundVolume);
+            playSound("titletransition");
+
+            stopMusic();
+            playMusic("bgm/fight");
+            //^intro example - remove comment ^ there, add comment to setscene few lines below, set musicplayer muted to false above
+            saveNR = 0;
+
+            loadGame();
+            loadSettings();
+
+            game.map = "test";
+
+            exampleFight();
+
+            setScene(scenes.fight());
+        }, { aText: { text: "Fight", size: 20 }, power: isDevMode() });
+
+        createButton("devbtn3", 0.7, 0.65, 0.2, 0.08, "button", () => {
+            cancel = true;
+            musicPlayer.muted = true; // false?
+            soundPlayer.muted = false;
+
+            loadSettings();
+            changeSoundVolume(settings.soundVolume);
+            playSound("titletransition");
+
+            stopMusic();
+            setScene(scenes.mapmaker());
+        }, { aText: { text: "Map Maker", size: 20 }, power: isDevMode() });
+
+
+
         // image animations (schrott games)
         createImageAnimation("schrottgamesanimation", 5, 15, 2000, 3375, 50);
         setTimeout(() => {
@@ -66,13 +128,11 @@ scenes["pretitle"] = new Scene(
             currentKeys["u"] = false;
             if (!isElectron() && prompt("?") == "NOOBVSPRO") {
                 localStorage.setItem("SRPGcheats", ["devmode"]);
+                loadScene("pretitle");
             }
         }
     }
 );
-
-
-
 
 /*
 return {
@@ -89,26 +149,7 @@ return {
             text: "Dev Mode",
             onClick() {
                 if (this.alpha == 1) {
-                    cancel = true;
-                    //musicPlayer.muted = true; // false?
-                    soundPlayer.muted = false;
-
-                    loadSettings();
-                    changeSoundVolume(settings.soundVolume);
-                    playSound("titletransition");
-
-                    stopMusic();
-                    //playMusic("bgm/boss", "bgm/placeholder");
-                    //^intro example - remove comment ^ there, add comment to setscene few lines below, set musicplayer muted to false above
-                    saveNR = 0;
-
-                    loadGame();
-                    loadSettings();
-
-                    if (maps[game.map] == undefined) game.map = "test";
-                    canMove = true;
-                    setScene(scenes.game());
-                    //openShop("placeholder");
+                    
                 }
             }
         }),
@@ -118,27 +159,7 @@ return {
             text: "Fight",
             onClick() {
                 if (this.alpha == 1) {
-                    cancel = true;
-                    musicPlayer.muted = false; // false?
-                    soundPlayer.muted = false;
-
-                    loadSettings();
-                    changeSoundVolume(settings.soundVolume);
-                    playSound("titletransition");
-
-                    stopMusic();
-                    playMusic("bgm/fight");
-                    //^intro example - remove comment ^ there, add comment to setscene few lines below, set musicplayer muted to false above
-                    saveNR = 0;
-
-                    loadGame();
-                    loadSettings();
-
-                    game.map = "test";
-
-                    exampleFight();
-
-                    setScene(scenes.fight());
+                    
                 }
             }
         }),
@@ -148,16 +169,7 @@ return {
             text: "Map Maker",
             onClick() {
                 if (this.alpha == 1) {
-                    cancel = true;
-                    musicPlayer.muted = true; // false?
-                    soundPlayer.muted = false;
-
-                    loadSettings();
-                    changeSoundVolume(settings.soundVolume);
-                    playSound("titletransition");
-
-                    stopMusic();
-                    setScene(scenes.mapmaker());
+                    
                 }
             }
         }),

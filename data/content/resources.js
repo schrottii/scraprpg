@@ -4,6 +4,7 @@ images = {
     gameicon: "assets/textures/gameicon.png",
     proud: "assets/textures/proud.png",
     ping: "assets/textures/ping.png",
+    button: "assets/textures/gui/button.png",
 
     // Misc. or unsorted
     wrench: "assets/textures/currencies/wrench.png",

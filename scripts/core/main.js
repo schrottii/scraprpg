@@ -221,6 +221,7 @@ function customWGGJLoop() {
 // wggj
 wggj.config.gameName = "ScrapRPG " + GAMEVERSION;
 wggj.config.startScene = "pretitle";
+wggj.config.font = "DePixelHalbfett";
 
 wggjLoadImages();
 //wggjLoadAudio();

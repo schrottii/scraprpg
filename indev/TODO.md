@@ -1,6 +1,6 @@
 ﻿## TODO:
 ### WGGJ migration:
-- title, pretitle
+- title, ~~pretitle~~
 - game
 - mapmaker
 - fight (bear wit me)
