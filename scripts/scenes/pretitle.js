@@ -1,8 +1,8 @@
+let cancel = false;
+
 scenes["pretitle"] = new Scene(
     () => {
         // Init
-        let cancel = false;
-
         createSquare("BG", 0, 0, 1, 1, "#000000");
         createImage("imageAnimation", 0, 0, 1, 1, "tttanimation", { alpha: 0 });
         objects["imageAnimation"].snip = [3200, 9000, 800, 450];
@@ -84,6 +84,11 @@ scenes["pretitle"] = new Scene(
             setScene(scenes.mapmaker());
         }, { aText: { text: "Map Maker", size: 20 }, power: isDevMode() });
 
+        createButton("devbtn4", 0.7, 0.55, 0.2, 0.08, "button", () => {
+            cancel = true;
+            loadScene("title");
+        }, { aText: { text: "Skip", size: 20 }, power: isDevMode() });
+
 
 
         // image animations (schrott games)
@@ -93,9 +98,11 @@ scenes["pretitle"] = new Scene(
         }, 3250);
 
         setTimeout(() => {
-            objects["imageAnimation"].alpha = 1;
+            if (!cancel) {
+                objects["imageAnimation"].alpha = 1;
 
-            createAnimation("fade", "imageAnimation", (t, d, a) => t.alpha = 1 - a.pct, 1.5, true);
+                createAnimation("fade", "imageAnimation", (t, d, a) => t.alpha = 1 - a.pct, 1.5, true);
+            }
 
             /*
             pre-wggj:
@@ -113,7 +120,7 @@ scenes["pretitle"] = new Scene(
 
         setTimeout(() => {
             if (!cancel) {
-                setScene(scenes.title());
+                loadScene("title");
             }
         }, 3250 + 2250 + 2000);
 

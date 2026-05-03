@@ -1,16 +1,348 @@
+let mode = 0;
+let state = "intro";
+let hiddn = false;
+
+scenes["title"] = new Scene(
+    () => {
+        // Init
+        let particles = [];
+
+        // particles
+        createRenderLayer("particleLayer", () => {
+            let w = wggj.canvas.w;
+            let h = wggj.canvas.h;
+            for (let a = 0; a < particles.length; a++) {
+                let par = particles[a];
+                let scale = 2 / ((20000 - par[2]) / 2000); // size
+
+                par[2] += delta; // age
+                if (par[2] > 20000) { // lifetime
+                    particles.splice(a, 1);
+                    a--;
+                } else {
+                    ctx.fillStyle = "#ffffff" + Math.min(Math.floor(par[2] / 20), 255).toString(16).padStart(2, "0");
+                    ctx.beginPath();
+                    ctx.arc(par[0] * scale * 20 + w / 2, par[1] * scale * 20 + h / 2, 5 * scale, 0, Math.PI * 2);
+                }
+                ctx.fill();
+            }
+            for (let a = 0; a < delta; a += 2) { // last number is for how often one spawns
+                particles.push(
+                    [Math.random() * w * 2 - w, Math.random() * h * 2 - h, delta - a],
+                );
+            }
+        });
+
+        // generic elements
+        createImage("gameIcon", 0.5, 0.15, 0.4, 0.3, "gameicon", { quadratic: true, centered: true }); // add glow
+        createText("contLabel", 0.5, 0.65, "Click anywhere to continue...", { alpha: 0, size: 32, color: "white" }); // add red outline
+        createText("infoLabel", 0.02, 0.98, "©2021-2026 Schrottii / Balnoom / Toast Technology Team / ScrapRPG team / Schrott Games", { align: "left", size: "20", color: "#7f7f7f", alpha: 0 });
+        createClickable("creditHitbox", 0, 0.9, 0.2, 0.1, () => { setScene(scenes.credits()); });
+        createText("verLabel", 0.98, 0.98, GAMEVERSION, { align: "right", size: 24, color: "#7f7f7f", alpha: 0 });
+
+        // local functions
+        function loadSave(id) {
+            fadeOverlay.clickthrough = false;
+            //objects["saveTexts" + id].set("defoff", saveTexts[st].offset[1] - saveButtons[Math.floor(st / 15)].offset[1]);
+
+            addAnimator(function (t) {
+                // clicked on a save, transition thingy
+                for (let a = 0; a < 3; a++) {
+                    if (a == id) {
+                        objects["saveButtons" + a].offset[1] = (-160 + 130 * a) * Math.max(1 - t / 600, 0) ** 2 - 60;
+                        objects["saveImages" + a].offset[1] = (-160 + 130 * a) * Math.max(1 - t / 600, 0) ** 2 - 60;
+                    } else {
+                        objects["saveButtons" + a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
+                        objects["saveButtons" + a].y = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
+                        objects["saveImages" + a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
+                        objects["saveImages" + a].y = .3 + (a > id ? 1 : -1) * ((1 - Math.max(1 - t / 600, 0)) ** 2);
+                    }
+
+                    //objects["saveTexts" + id].set("y", objects["saveButtons" + a].y);
+                        //objects["saveTexts" + st].offset[1] = saveTexts[st].defoff + saveButtons[a].offset[1];
+                    
+                }
+
+                objects["fadeOverlay"].alpha = 1 - (1 - t / 4000) ** 2;
+                objects["deleteButton"].offset[1] = optionButton.offset[1] = (70 + 130 * (2 - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
+                objects["deleteButton"].y = optionButton.anchor[1] = 0.5 + ((1 - Math.max(1 - t / 600, 0)) ** 2);
+                if (t > 4000) {
+                    setScene(scenes.game());
+                    return true;
+                }
+                return false;
+            })
+        }
+
+        function loadOptions() {
+            fadeOverlay.clickthrough = true;
+            addAnimator(function (t) {
+                for (let a = 0; a < 3; a++) {
+                    id = a;
+                    objects["saveButtons" + a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
+                    objects["saveImages" + a].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
+
+                    // Bricks and Wrenches
+                    objects["saveTexts" + a + "wrenches"].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
+                    objects["saveTexts" + a + "bricks"].offset[1] = (-60 + 130 * (a - id)) + (-160 + 130 * id) * (Math.max(1 - t / 600, 0) ** 2);
+                }
+
+                if (t > 599) {
+                    fadeOut(500, true, () => setScene(scenes.settings()));
+                    return true;
+                }
+                return false;
+            });
+        };
+
+        function hideOptions() {
+            fadeOverlay.clickthrough = true;
+            addAnimator(function (t) {
+                for (let a = 0; a < 3; a++) {
+                    objects["saveButtons" + a].offset[1] = -60 + (-160 + 130 * a) * (Math.max(t / 600, 0) ** 2);
+                    objects["saveImages" + a].offset[1] = -60 + (-160 + 130 * a) * (Math.max(t / 600, 0) ** 2);
+
+                    // Bricks and Wrenches
+                    objects["saveTexts" + a + "wrenches"].offset[1] = (-164 + 130 * a) * (Math.max(t / 600, 0) ** 2);
+                    objects["saveTexts" + a + "wrenches"].offset[1] = (-132 + 130 * a) * (Math.max(t / 600, 0) ** 2);
+                }
+                if (t > 599) {
+                    return true;
+                }
+                return false;
+            });
+            addAnimator(function (t) {
+                objects["settingsSaveText"].alpha = t / 10;
+                if (t > 2500) {
+                    objects["settingsSaveText"].alpha = 0;
+                    return true;
+                }
+                return false;
+            })
+        };
+
+        // save buttons
+        for (let a = 0; a < 3; a++) {
+            createButton("saveButtons" + a, 1.2, 0.4, 0.5, 0.1, "button", () => {
+                if (mode == 0) {
+                    saveNR = a;
+
+                    playSound("titletransition");
+                    stopMusic();
+
+                    loadGame(a);
+                    loadSave(a);
+                    game.stats.opened++;
+                    mode = 69;
+                }
+                else if (mode == 1) {
+                    saveNR = a;
+                    localStorage["SRPG" + saveNR] = "null";
+                    mode = 0;
+                }
+            });
+
+            createText("saveTexts" + a + "nr", 1.2, 0.4, "Save " + (a + 1), { align: "left", size: 48, color: "black" });
+            createText("saveTexts" + a + "chapter", 1.2, 0.4, "Chapter I: The Beginning", { align: "right", size: 24, color: "black" });
+
+            //for (i = 0; i < 2; i++) {
+                createText("saveTexts" + a + "prot1name", 1.2, 0.405, "", { align: "left", size: 20, color: "black" });
+                createText("saveTexts" + a + "prot1lvl", 1.15, 0.405, "", { align: "right", size: 16, color: "black" });
+
+                createText("saveTexts" + a + "prot2name", 1.2, 0.405, "", { align: "left", size: 20, color: "black" });
+                createText("saveTexts" + a + "prot2lvl", 1.15, 0.405, "", { align: "right", size: 16, color: "black" });
+            //}
+
+            createText("saveTexts" + a + "playtime", 1.2, 0.4, "24:31:02", { align: "right", size: 32, color: "black" });
+
+            createSmartText("saveTexts" + a + "wrenches", 1.2, 0.4, "0", { align: "left", size: 32, color: "black" });
+            createSmartText("saveTexts" + a + "bricks", 1.2, 0.4, "0", { align: "left", size: 32, color: "black" });
+
+            createButton("saveImage" + a, 1.2, 0.4, 0.02, 0.02, "saveimage" + Math.ceil(Math.random() * 5), () => {
+                // change image when clicked
+                saveNR = a;
+                stopMusic();
+                loadGame(saveNR);
+
+                if (game.pfp == 5) { // To avoid changing to a pic that does not exist
+                    game.pfp = 1;
+                }
+                else {
+                    game.pfp += 1;
+                }
+                saveGame();
+            }, { quadratic: true, alpha: 0 });
+
+            /*
+            createGroup("saveGroup" + a, [
+                "saveButtons" + a, "saveTexts" + a + "nr", "saveTexts" + a + "chapter",
+                "saveTexts" + a + "prot1name", "saveTexts" + a + "prot1lvl", "saveTexts" + a + "prot2name", "saveTexts" + a + "prot2lvl",
+                "saveTexts" + a + "playtime", "saveImage" + a
+            ]);
+            createGroup("saveTexts" + a, [
+                "saveTexts" + a + "nr", "saveTexts" + a + "chapter",
+                "saveTexts" + a + "prot1name", "saveTexts" + a + "prot1lvl", "saveTexts" + a + "prot2name", "saveTexts" + a + "prot2lvl",
+                "saveTexts" + a + "playtime"
+            ]);
+            */
+        }
+
+        // misc buttons
+        createButton("deleteButton", -0.8, 0.6, 0.1, 0.1, "button", () => {
+            playSound("buttonClickSound");
+            if (mode == 1) {
+                mode = 0;
+                for (i = 0; i < 3; i++) {
+                    objects["saveButtons" + i].fillTop = colors.buttontop;
+                    objects["saveButtons" + i].fillBottom = colors.buttonbottom;
+                }
+            }
+            else if (mode == 0) {
+                mode = 1;
+                addAnimator(function (t) {
+                    if (mode != 1) {
+                        for (i = 0; i < 3; i++) {
+                            objects["saveButtons" + i].fillTop = colors.buttontop;
+                            objects["saveButtons" + i].fillBottom = colors.buttonbottom;
+                        }
+                        return true;
+                    }
+                    for (i = 0; i < 3; i++) {
+                        objects["saveButtons" + i].fillTop = t % 800 > 400 ? "red" : colors.buttontop;
+                        objects["saveButtons" + i].fillBottom = t % 800 > 400 ? "darkred" : colors.buttonbottom;
+                    }
+                    return false;
+                });
+            }
+        })
+
+        createButton("optionButton", -0.8, 0.6, 0.1, 0.1, "button", () => {
+            playSound("buttonClickSound");
+            if (mode == 2) {
+                mode = 0;
+                saveSettings();
+                hideOptions();
+            }
+            else {
+                mode = 2;
+                loadOptions();
+            }
+        });
+
+        createSquare("fadeOverlay", 0, 0, 1, 1, "#000000", { alpha: 0 });
+        objects["fadeOverlay"].alpha = 0;
+
+        addAnimator(function (t) {
+            objects["gameIcon"].alpha = Math.min(Math.max(t / 300, 0), 1);
+            objects["contLabel"].alpha = Math.min(Math.max((t - 100) / 300, 0), 1) * (Math.cos(time / 1000) + 3) / 4;
+            objects["infoLabel"].alpha = objects["verLabel"].alpha = Math.min(Math.max((t - 200) / 300, 0), 1);
+
+            if (t > 500) {
+                state = "title";
+                return true;
+            }
+            return false;
+        })
+
+        // clickable to continue, so logo disappears, and the save buttons fly in
+        createClickable("con", 0, 0, 1, 0.8, () => {
+            // when you click and get to the second part of the title screen
+            if (state == "menu") return false;
+            state = "menu";
+            console.log("click!");
+
+            loadSettings();
+            changeSoundVolume(settings.soundVolume);
+            playSound("titletransition");
+            playMusic("bgm/title");
+
+            createAnimation("title2_gameIcon", "gameIcon", (t, d, a) => {
+                t.y = 0.15 - 1 * Math.min(a.dur * 1000 / 800, 1) ** 4;
+                //t.offset[1] = -200 - 100 * Math.min(a.dur * 1000 / 800, 1) ** 4;
+            }, 3000, true);
+
+            createAnimation("title2_contLabel", "contLabel", (t, d, a) => {
+                t.y = 0.65 + 1 * Math.min(a.dur * 1000 / 800, 1) ** 4;
+                t.alpha = (Math.cos(a.dur * 1000 / 20) + 1) / 2;
+            }, 3000, true);
+
+            createAnimation("title2_infoLabel", "infoLabel", (t, d, a) => {
+                //t.offset[1] = objects["contLabel"].offset[1] = -12 + 120 * (a.dur * 1000 / 800) ** 4;
+            }, 3000, true);
+
+            createAnimation("title2_saveButtons0", "saveButtons0", (t, d, a) => t.x = 1.2 - (1 - (1 - Math.max(Math.min((a.dur * 1000 - 800) / 800, 1), 0)) ** 4), 0, 3000, true);
+            createAnimation("title2_saveButtons1", "saveButtons1", (t, d, a) => t.x = 1.2 - (1 - (1 - Math.max(Math.min((a.dur * 1000 - 800) / 800, 1), 0)) ** 4), 0, 3000, true);
+            createAnimation("title2_saveButtons2", "saveButtons2", (t, d, a) => t.x = 1.2 - (1 - (1 - Math.max(Math.min((a.dur * 1000 - 800) / 800, 1), 0)) ** 4), 0, 3000, true);
+
+            /*
+            addAnimator(function (t) {
+                objects["gameIcon"].y = 0.35 - 0.5 * Math.min(t / 800, 1) ** 4;
+                objects["gameIcon"].offset[1] = -200 - 100 * Math.min(t / 800, 1) ** 4;
+                objects["contLabel"].y = 0.65 + 0.5 * Math.min(t / 800, 1) ** 4;
+                objects["contLabel"].alpha = (Math.cos(t / 20) + 1) / 2;
+                objects["infoLabel"].offset[1] = verLabel.offset[1] = -12 + 120 * (t / 800) ** 4;
+
+                objects["saveButtons0"].x = 1.2 - (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4);
+                objects["saveButtons1"].x = 1.2 - (1 - (1 - Math.max(Math.min((t - 850) / 800, 1), 0)) ** 4);
+                objects["saveButtons2"].x = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
+
+                //for (let i = 0; i < 3; i++) {
+                    //objects["saveTexts" + i].set("x", saveButtons[Math.floor(i / 15)].anchor[0] + saveTexts[i].defanch - 0.2);
+                    //saveTexts[i].anchor[0] = saveButtons[Math.floor(i / 15)].anchor[0] + saveTexts[i].defanch - 0.2;
+                //}
+
+                objects["saveImages0"].x = 1.2 - (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4);
+                objects["saveImages1"].x = 1.2 - (1 - (1 - Math.max(Math.min((t - 850) / 800, 1), 0)) ** 4);
+                objects["saveImages2"].x = 1.2 - (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
+
+                objects["deleteButton"].x = -0.8 + (1 - (1 - Math.max(Math.min((t - 900) / 800, 1), 0)) ** 4);
+                objects["optionButton"].x = -0.3 + (1 - (1 - Math.max(Math.min((t - 800) / 800, 1), 0)) ** 4);
+
+                if (t > 3000) {
+                    return true;
+                }
+                return false;
+            })
+            */
+        });
+    },
+    (tick) => {
+        // Loop
+        // fancy animation
+        if (objects["contLabel"].time == undefined) objects["contLabel"].time = 0;
+        objects["contLabel"].time += tick;
+        let time = objects["contLabel"].time;
+
+        objects["contLabel"].alpha = (Math.cos(time) + 3) / 4;
+        objects["gameIcon"].x = 0.5 + 0.025 * Math.cos(time / 6.6);
+        objects["gameIcon"].glow = 24 * Math.cos(time);
+
+        // update texts
+        if (mode == 0) {
+            objects["deleteButton"].text = "Delete";
+            objects["optionButton"].text = "Settings";
+        }
+        if (mode == 1) {
+            objects["deleteButton"].text = "SELECT . . ."
+            objects["optionButton"].text = "Settings";
+        }
+
+        if (previousScene == "settings" && hiddn == false) {
+            hideOptions();
+            hiddn = true;
+        }
+    }
+);
+
+/*
 scenes.title = () => {
-    let state = "intro";
 
-    let particles = [];
-    let saveTexts = [];
-    let hiddn = false;
-
-    /*
+    /
     let BG = controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 1],
         fill: "rgb(0, 0, 0)"
     });
-    */
+    *
 
     let gameIcon = controls.image({
         anchor: [0.5, 0.35], offset: [-277.5, -200], sizeOffset: [555, 300],
@@ -499,3 +831,4 @@ scenes.title = () => {
         name: "title"
     }
 };
+*/
