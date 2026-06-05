@@ -142,9 +142,10 @@ function isValid(vVar) {
     return vVar != undefined && vVar != null && vVar != "" && vVar != false;
 }
 
-/*
+
 function customWGGJLoop() {
     // Handle FPS && Tick time
+    /*
     if (FPS < 999 && Date.now() - time + FPSover < 1000 / FPS) {
         requestAnimationFrame(customWGGJLoop);
         return false;
@@ -152,21 +153,14 @@ function customWGGJLoop() {
     else {
         FPSover = FPSover + Math.min(1000, (Date.now() - time) - (1000 / FPS));
     }
+    */
 
     delta = Date.now() - time;
     time = Date.now();
 
-    // Resize the canvas
-    //wggjCanvas.style.width = (wggjCanvas.width = window.innerWidth) + "px";
-    //wggjCanvas.style.height = (wggjCanvas.height = window.innerHeight) + "px";
-
-    height = window.innerHeight;
-    scale = height / 16;
-    width = window.innerWidth / scale;
-
-    // this sets ctx to the canvas, just the usual stuff
     let ctx = wggjCanvas.getContext("2d");
 
+    /*
     ctx.imageSmoothingEnabled = false;
     ctx.globalAlpha = 1;
 
@@ -183,6 +177,7 @@ function customWGGJLoop() {
             control.render(ctx);
         }
     }
+    */
 
     introToLoop();
 
@@ -208,20 +203,21 @@ function customWGGJLoop() {
         }
     }
 
+    /*
     updateImageAnimation(delta);
     updateAnimators(delta);
+    */
     timeTicker(delta);
 
-    requestAnimationFrame(customWGGJLoop);
+    //requestAnimationFrame(customWGGJLoop);
 }
-*/
 
 // main end
 
 // wggj
 wggj.config.gameName = "ScrapRPG " + GAMEVERSION;
 wggj.config.startScene = "pretitle";
-wggj.config.font = "DePixelHalbfett";
+wggj.config.font = "DePixelKlein";
 wggj.config.imageBasePath = "assets/textures/";
 wggj.debug.scene = true;
 

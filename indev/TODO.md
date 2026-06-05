@@ -1,6 +1,6 @@
 ﻿## TODO:
 ### WGGJ migration:
-- title, ~~pretitle~~
+- ~~title~~, ~~pretitle~~
 - game
 - mapmaker
 - fight (bear wit me)
@@ -21,11 +21,10 @@
 
 Notes:
 - do not migrate tiles (do renderlayer) and music yet
-- we are using an indev version of v1.7
+- we are using an indev version of v1.7, er, v1.8
 
 ### Other:
 - Monster Book: Enemy details
-- Stats scene
 
 
 

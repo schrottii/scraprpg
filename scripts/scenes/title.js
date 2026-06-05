@@ -76,7 +76,7 @@ scenes["title"] = new Scene(
                 objects["deleteButton"].y = objects["optionButton"].y = 0.5 + ((1 - Math.max(1 - a.dur / 0.6, 0)) ** 2);
 
                 if (a.dur >= 4) {
-                    setScene(scenes.game());
+                    loadScene("game");
                 }
             }, 4, true);
         }
@@ -266,7 +266,7 @@ scenes["title"] = new Scene(
             // when you click and get to the second part of the title screen
             if (state == "menu") return false;
             state = "menu";
-            console.log("click!");
+            //console.log("click!");
 
             loadSettings();
             changeSoundVolume(settings.soundVolume);
@@ -317,7 +317,7 @@ scenes["title"] = new Scene(
                     saveGame();
                     thisSave = JSON.parse(localStorage.getItem("SRPG" + tempsaveNR));
                 }
-                console.log(thisSave);
+                //console.log(thisSave);
 
                 objects["saveTexts" + a + "wrenches"].text = "i{currency} " + formatNumber(thisSave.wrenches);
                 objects["saveTexts" + a + "bricks"].text = "i{currency} " + formatNumber(thisSave.bricks);
