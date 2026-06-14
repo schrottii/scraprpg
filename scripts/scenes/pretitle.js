@@ -45,7 +45,7 @@ scenes["pretitle"] = new Scene(
             canMove = true;
             setScene(scenes.game());
             //openShop("placeholder");
-        }, { aText: { text: "Dev Mode", size: 20 }, power: isDevMode() });
+        }, { aText: { text: "Dev Mode", size: 24 }, power: isDevMode() });
 
         createButton("devbtn2", 0.7, 0.75, 0.2, 0.08, "button", () => {
             cancel = true;
@@ -69,7 +69,7 @@ scenes["pretitle"] = new Scene(
             exampleFight();
 
             setScene(scenes.fight());
-        }, { aText: { text: "Fight", size: 20 }, power: isDevMode() });
+        }, { aText: { text: "Fight", size: 24 }, power: isDevMode() });
 
         createButton("devbtn3", 0.7, 0.65, 0.2, 0.08, "button", () => {
             cancel = true;
@@ -82,12 +82,12 @@ scenes["pretitle"] = new Scene(
 
             stopMusic();
             setScene(scenes.mapmaker());
-        }, { aText: { text: "Map Maker", size: 20 }, power: isDevMode() });
+        }, { aText: { text: "Map Maker", size: 24 }, power: isDevMode() });
 
         createButton("devbtn4", 0.7, 0.55, 0.2, 0.08, "button", () => {
             cancel = true;
             loadScene("title");
-        }, { aText: { text: "Skip", size: 20 }, power: isDevMode() });
+        }, { aText: { text: "Skip", size: 24 }, power: isDevMode() });
 
 
 

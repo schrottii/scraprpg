@@ -137,10 +137,13 @@ function formatNumber(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+/*
 function isValid(vVar) {
     // is this var valid? 
     return vVar != undefined && vVar != null && vVar != "" && vVar != false;
 }
+we now have wggj so we use that one
+*/
 
 
 function customWGGJLoop() {
@@ -219,6 +222,7 @@ wggj.config.gameName = "ScrapRPG " + GAMEVERSION;
 wggj.config.startScene = "pretitle";
 wggj.config.font = "DePixelKlein";
 wggj.config.imageBasePath = "assets/textures/";
+wggj.config.autoStart = true;
 wggj.debug.scene = true;
 
 wggjLoadImages();

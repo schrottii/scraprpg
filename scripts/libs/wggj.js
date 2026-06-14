@@ -50,6 +50,21 @@ document.addEventListener('keydown', (e) => {
 });
 */
 
+/*
+v1.8:
+-> onClick etc:
+- Objects are now cycled through in reverse order (newest first)
+- Added clickthrough support
+
+-> Config:
+- offset
+- sizeOffset
+- clickthrough
+
+-> wggj:
+- debug.autoStart
+*/
+
 
 
 //-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/
@@ -94,7 +109,8 @@ var wggj = {
         startScene: "mainmenu",
         font: "Times",
         gameName: "",
-        imageBasePath: "images/"
+        imageBasePath: "images/",
+        autoStart: false
     },
 
     debug: {
@@ -211,12 +227,16 @@ function wggjEventsOnClick(e) {
     wggj.mouse.y = e.clientY - wggjCanvas.getBoundingClientRect().y;
     wggj.mouse.down = true;
 
-    for (let c in objects) {
+    let c;
+    for (let i = Object.keys(objects).length - 1; i >= 0; i--) {
+        c = Object.keys(objects)[i];
+
         if (objects[c] == undefined) continue;
         if (objects[c].onClick == undefined || objects[c].power == false) continue;
 
         if (objects[c].isHit(wggj.mouse.x, wggj.mouse.y)) {
             objects[c].onClick(c, e);
+            if (objects[c].clickthrough === false) break;
         }
     }
 }
@@ -225,12 +245,16 @@ function wggjEventsOnPointerUp(e) {
     e.preventDefault();
     wggj.mouse.down = false;
 
-    for (let c in objects) {
+    let c;
+    for (let i = Object.keys(objects).length - 1; i >= 0; i--) {
+        c = Object.keys(objects)[i];
+
         if (objects[c] == undefined) continue;
         if (objects[c].onUp == undefined || objects[c].power == false) continue;
 
         if (objects[c].isHit(wggj.mouse.x, wggj.mouse.y)) {
             objects[c].onUp(c, e);
+            if (objects[c].clickthrough === false) break;
         }
     }
 }
@@ -240,25 +264,33 @@ function wggjEventsOnPointerMove(e) {
     wggj.mouse.x = e.clientX - wggjCanvas.getBoundingClientRect().x;
     wggj.mouse.y = e.clientY - wggjCanvas.getBoundingClientRect().y;
 
-    for (let c in objects) {
+    let c;
+    for (let i = Object.keys(objects).length - 1; i >= 0; i--) {
+        c = Object.keys(objects)[i];
+
         if (objects[c] == undefined) continue;
         if ((objects[c].onDrag == undefined && objects[c].onMouseMove == undefined) || objects[c].power == false) continue;
 
         if (objects[c].isHit(wggj.mouse.x, wggj.mouse.y)) {
             if (wggj.mouse.down && objects[c].onDrag != undefined) objects[c].onDrag(c, e);
             if (objects[c].onMouseMove != undefined) objects[c].onMouseMove(c, e);
+            if (objects[c].clickthrough === false) break;
         }
     }
 }
 
 function wggjEventsOnLoop(e) {
-    for (let c in objects) {
+    let c;
+    for (let i = Object.keys(objects).length - 1; i >= 0; i--) {
+        c = Object.keys(objects)[i];
+
         if (objects[c] == undefined) continue;
         if ((objects[c].onHover == undefined && objects[c].onHold == undefined) || objects[c].power == false) continue;
 
         if (objects[c].isHit(wggj.mouse.x, wggj.mouse.y)) {
             if (wggj.mouse.down && objects[c].onHold != undefined) objects[c].onHold(c, e);
             if (objects[c].onHover != undefined) objects[c].onHover(c, e);
+            if (objects[c].clickthrough === false) break;
         }
     }
 }
@@ -279,7 +311,7 @@ class Scene {
 
 function loadScene(sceneName) {
     if (wggj.debug.scene) console.log("loading scene: " + sceneName)
-    if (scenes[sceneName] == undefined) return false;
+    if (scenes[sceneName] == undefined || scenes[sceneName].init == undefined) return false;
 
     wggj.canvas.currentScene = sceneName;
 
@@ -371,6 +403,7 @@ class WGGJ_Square extends WGGJ_Base {
         this.alpha = isValid(config.alpha) ? config.alpha : 1;
         this.offset = isValid(config.offset) ? config.offset : [0, 0];
         this.sizeOffset = isValid(config.sizeOffset) ? config.sizeOffset : [0, 0];
+        this.clickthrough = isValid(config.clickthrough) ? config.clickthrough : true;
 
         this.onClick = isValid(config.onClick) ? config.onClick : undefined;
         this.onHold = isValid(config.onHold) ? config.onHold : undefined;
@@ -467,6 +500,7 @@ class WGGJ_Image extends WGGJ_Base {
         this.alpha = isValid(config.alpha) ? config.alpha : 1;
         this.offset = isValid(config.offset) ? config.offset : [0, 0];
         this.sizeOffset = isValid(config.sizeOffset) ? config.sizeOffset : [0, 0];
+        this.clickthrough = isValid(config.clickthrough) ? config.clickthrough : true;
 
         this.rotate = isValid(config.rotate) ? config.rotate : 0;
 
@@ -613,6 +647,7 @@ class WGGJ_Text extends WGGJ_Base {
         this.noScaling = isValid(config.noScaling) ? config.noScaling : false;
         this.alpha = isValid(config.alpha) ? config.alpha : 1;
         this.offset = isValid(config.offset) ? config.offset : [0, 0];
+        this.clickthrough = isValid(config.clickthrough) ? config.clickthrough : true;
 
         this.config = config;
     }
@@ -845,6 +880,7 @@ class WGGJ_Container extends WGGJ_Group {
         this.XLimit = isValid(config.XLimit) ? config.XLimit : [0, 0]; // left right
         this.YLimit = isValid(config.YLimit) ? config.YLimit : [0, 0]; // up down
         this.limitEffect = isValid(config.limitEffect) ? config.limitEffect : false;
+        this.clickthrough = isValid(config.clickthrough) ? config.clickthrough : true;
     }
 
     onClick(c, e) {
@@ -943,6 +979,7 @@ class WGGJ_RenderLayer {
 
         this.objectName = name;
         this.power = true;
+        this.clickthrough = true;
     }
 
     render() {
@@ -1577,7 +1614,12 @@ function wggjLoadedScene() {
     wggjCTX.textAlign = "center";
 
     wggjCTX.fillText(wggj.config.gameName, wggj.canvas.w / 2, wggj.canvas.h / 4);
-    if (wggjLoadedImages == wggjLoadingImages) wggjCTX.fillText("Click to start!", wggj.canvas.w / 2, wggj.canvas.h / 2);
+    if (wggjLoadedImages == wggjLoadingImages) {
+        if (wggj.config.autoStart) {
+            loadScene(wggj.config.startScene != undefined ? wggj.config.startScene : "mainmenu");
+        }
+        else wggjCTX.fillText("Click to start!", wggj.canvas.w / 2, wggj.canvas.h / 2);
+    }
     else wggjCTX.fillText("Loaded: " + wggjLoadedImages + "/" + wggjLoadingImages, wggj.canvas.w / 2, wggj.canvas.h / 2);
 }
 

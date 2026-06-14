@@ -155,25 +155,25 @@ scenes["title"] = new Scene(
             objects["saveTexts" + a + "chapter"].defanch = 0.7;
 
             //for (i = 0; i < 2; i++) {
-            createText("saveTexts" + a + "prot1name", 1.2, 0.405, "", { align: "left", size: 20, color: "black", offset: [0, -146 + 130 * a] });
-            createText("saveTexts" + a + "prot1lvl", 1.15, 0.405, "", { align: "right", size: 16, color: "black", offset: [0, -120 + 130 * a] });
+            createText("saveTexts" + a + "prot1name", 1.2, 0.41, "", { align: "left", size: 20, color: "black", offset: [0, -146 + 130 * a] });
+            createText("saveTexts" + a + "prot1lvl", 1.15, 0.41, "", { align: "right", size: 16, color: "black", offset: [0, -146 + 130 * a] });
             objects["saveTexts" + a + "prot1name"].defanch = 0.205;
-            objects["saveTexts" + a + "prot1lvl"].defanch = 0.205;
+            objects["saveTexts" + a + "prot1lvl"].defanch = 0.28;
 
-            createText("saveTexts" + a + "prot2name", 1.2, 0.405, "", { align: "left", size: 20, color: "black", offset: [0, -146 + 130 * a] });
-            createText("saveTexts" + a + "prot2lvl", 1.15, 0.405, "", { align: "right", size: 16, color: "black", offset: [0, -120 + 130 * a] });
-            objects["saveTexts" + a + "prot2name"].defanch = 0.28;
+            createText("saveTexts" + a + "prot2name", 1.2, 0.41, "", { align: "left", size: 20, color: "black", offset: [0, -120 + 130 * a] });
+            createText("saveTexts" + a + "prot2lvl", 1.15, 0.41, "", { align: "right", size: 16, color: "black", offset: [0, -120 + 130 * a] });
+            objects["saveTexts" + a + "prot2name"].defanch = 0.205;
             objects["saveTexts" + a + "prot2lvl"].defanch = 0.28;
             //}
 
-            createText("saveTexts" + a + "playtime", 1.2, 0.4, "24:31:02", { align: "right", size: 32, color: "black", offset: [120, -120 + 130 * a] });
+            createText("saveTexts" + a + "playtime", 1.2, 0.41, "24:31:02", { align: "right", size: 32, color: "black", offset: [120, -120 + 130 * a] });
             objects["saveTexts" + a + "playtime"].defanch = 0.7;
 
             createImage("wrench", -10, 0, 0, 0, "wrench");
             createImage("brick", -10, 0, 0, 0, "brick");
 
-            createSmartText("saveTexts" + a + "wrenches", 1.2, 0.4, "0", { align: "left", size: 32, color: "black", offset: [40, -150 + 130 * a], images: { currency: "wrench" } });
-            createSmartText("saveTexts" + a + "bricks", 1.2, 0.4, "0", { align: "left", size: 32, color: "black", offset: [40, -116 + 130 * a], images: { currency: "brick" } });
+            createSmartText("saveTexts" + a + "wrenches", 1.2, 0.41, "0", { align: "left", size: 32, color: "black", offset: [40, -150 + 130 * a], images: { currency: "wrench" } });
+            createSmartText("saveTexts" + a + "bricks", 1.2, 0.41, "0", { align: "left", size: 32, color: "black", offset: [40, -116 + 130 * a], images: { currency: "brick" } });
             objects["saveTexts" + a + "wrenches"].defanch = 0.55;
             objects["saveTexts" + a + "bricks"].defanch = 0.55;
 
@@ -187,7 +187,7 @@ scenes["title"] = new Scene(
                 objects[c].image = "saveimage" + game.pfp;
 
                 saveGame();
-            }, { quadratic: true, alpha: 0, offset: [0, -220 + 130 * a], sizeOffset: [64, 64] });
+            }, { clickthrough: false, quadratic: true, alpha: 0, offset: [0, -220 + 130 * a], sizeOffset: [64, 64] });
             objects["saveImage" + a].defanch = 0.2;
 
             //    "saveButtons" + a
@@ -325,9 +325,22 @@ scenes["title"] = new Scene(
 
                 objects["saveImage" + a].image = "saveimage" + thisSave.pfp;
                 objects["saveImage" + a].alpha = 1;
+
+                // Current party with levels texts, e. g. Skro Lvl. 4
+                objects["saveTexts" + a + "prot1name"].text = getPlayer(1, thisSave).name;
+                objects["saveTexts" + a + "prot1lvl"].text = "Lvl. " + getPlayer(1, thisSave).level;
+
+                if (thisSave.chars.length > 1) objects["saveTexts" + a + "prot2name"].text = getPlayer(2, thisSave).name;
+                if (thisSave.chars.length > 1) objects["saveTexts" + a + "prot2lvl"].text = "Lvl. " + getPlayer(2, thisSave).level;
+                /*
+                if (thisSave.chars.length > 2) saveTexts[6 + (a * amount)].text = getPlayer(3, thisSave).name;
+                if (thisSave.chars.length > 2) saveTexts[8 + (a * amount)].text = "Lvl. " + getPlayer(3, thisSave).level;
+                if (thisSave.chars.length > 3) saveTexts[7 + (a * amount)].text = getPlayer(4, thisSave).name;
+                if (thisSave.chars.length > 3) saveTexts[9 + (a * amount)].text = "Lvl. " + getPlayer(4, thisSave).level;
+                */
             }
             else { // Save does not exist :(
-                console.log("doesn't exist: " + a);
+                console.log("save doesn't exist: nr " + a);
                 objects["saveButtons" + a + ":text"].alpha = 1;
                 objects["saveButtons" + a + ":text"].text = "New Game";
                 objects["saveImage" + a].alpha = 1;
