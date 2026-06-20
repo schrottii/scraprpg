@@ -437,9 +437,9 @@ function setNightEffect(color, al = 0.5, instant = false, type = "none") {
     // Speed in preRender
 
     if (instant == true) {
-        nightEffect.alpha = al;
-        nightEffect2.alpha = 0;
-        nightEffect.fill = color;
+        objects["nightEffect"].alpha = al;
+        objects["nightEffect2"].alpha = 0;
+        objects["nightEffect"].color = color;
         return true;
     }
 
@@ -451,44 +451,44 @@ function setNightEffect(color, al = 0.5, instant = false, type = "none") {
         //nightEffect.alpha = al;
     }
 
-    if (color != "none" && nightEffect.alpha == 0) {
+    if (color != "none" && objects["nightEffect"].alpha == 0) {
         // changing from nothing
         addAnimator(function (t) {
-            nightEffect.alpha = al * t / transitionDuration;
+            objects["nightEffect"].alpha = al * t / transitionDuration;
 
             if (t > transitionDuration) {
-                nightEffect.alpha = al;
+                objects["nightEffect"].alpha = al;
                 return true;
             }
             return false;
         });
     }
-    else if (color == "none" && nightEffect.alpha == 0.35) {
+    else if (color == "none" && objects["nightEffect"].alpha == 0.35) {
         // changing to nothing
         addAnimator(function (t) {
-            nightEffect.alpha = al - t / transitionDuration;
+            objects["nightEffect"].alpha = al - t / transitionDuration;
 
             if (t > al * transitionDuration) {
-                nightEffect.alpha = 0;
+                objects["nightEffect"].alpha = 0;
                 return true;
             }
             return false;
         });
     }
-    else if (nightEffect.fill != color) {
-        nightEffect2.fill = nightEffect.fill;
-        nightEffect.fill = color;
-        nightEffect2.alpha = al;
-        nightEffect.alpha = 0;
+    else if (objects["nightEffect"].color != color) {
+        objects["nightEffect2"].color = objects["nightEffect"].color;
+        objects["nightEffect"].color = color;
+        objects["nightEffect2"].alpha = al;
+        objects["nightEffect"].alpha = 0;
 
         // smooth transition
         addAnimator(function (t) {
-            nightEffect.alpha = 0 + t / transitionDuration;
-            nightEffect2.alpha = al - t / transitionDuration;
+            objects["nightEffect"].alpha = 0 + t / transitionDuration;
+            objects["nightEffect2"].alpha = al - t / transitionDuration;
 
             if (t > al * transitionDuration) {
-                nightEffect2.alpha = 0;
-                nightEffect.alpha = al;
+                objects["nightEffect2"].alpha = 0;
+                objects["nightEffect"].alpha = al;
                 return true;
             }
             return false;
@@ -496,7 +496,7 @@ function setNightEffect(color, al = 0.5, instant = false, type = "none") {
     }
 }
 
-function renderNPC(ctx, npc) {
+function renderNPC(npc) {
     if (!getNPCCondition(npc)) return false;
 
     let tileX = npc.position[0];
@@ -509,19 +509,19 @@ function renderNPC(ctx, npc) {
 
     // circle
     if (settings.circles == "all" || settings.circles == "npcs") {
-        ctx.drawImage(images.npcCircle,
+        wggjCTX.drawImage(images.npcCircle,
             ((zoom * scale) * (tileX - ofsX)) - ((zoom - 1) * scale * (width / 2)) - (zswm / 4), (zoom * scale) * (tileY - ofsY) - ((zoom - 1) * scale * 7) - (zswm / 4),
             zswm * 1.5, zswm * 1.5);
     }
     // the actual npc
-    ctx.drawImage(images[npc.source],
+    wggjCTX.drawImage(images[npc.source],
         32 * Math.floor(walkTime), 32 * npc.head, 32, 32,
         ((zoom * scale) * (tileX - ofsX)) - ((zoom - 1) * scale * (width / 2)),
         Math.ceil(zoom * scale) * (tileY - ofsY) - ((zoom - 1) * scale * 7),
         zswm, zswm);
     // dialogue image
     if (npc.talk == true && isValid(npc.dialogues)) {
-        ctx.drawImage(images.talk,
+        wggjCTX.drawImage(images.talk,
             ((zoom * scale) * (tileX + (map.worldmode ? 0.5 : 1) - ofsX)) - ((zoom - 1) * scale * (width / 2)), (zoom * scale) * (tileY - (map.worldmode ? 0.5 : 1) - ofsY) - ((zoom - 1) * scale * 7),
             zswm, zswm);
     }
@@ -623,7 +623,7 @@ function tryTalk(xo, yo) {
     for (i in activeNPCs) {
         activeNPCs[i].talk = false;
         if (activeNPCs[i].position[0] == game.position[0] + xo && activeNPCs[i].position[1] == game.position[1] + yo && getNPCCondition(activeNPCs[i])) {
-            actionButton.snip = [64, 32, 64, 32];
+            objects["actionButton"].snip = [64, 32, 64, 32];
             activeNPCs[i].talk = true;
         }
     }
@@ -649,12 +649,12 @@ function tryLookAtChest(xo, yo) {
     }
 
     if (isLooking) {
-        actionButton.snip = [64, 32, 64, 32];
+        objects["actionButton"].snip = [64, 32, 64, 32];
     }
-    else actionButton.snip = [64, 96, 64, 32];
+    else objects["actionButton"].snip = [64, 96, 64, 32];
 }
 
-function drawTiles(ctx, layer) {
+function drawTiles(layer) {
     let ofsX = Math.max(CAMERA_LOCK_X, game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5);
     let ofsY = Math.max(CAMERA_LOCK_Y, game.position[1] - kofs[1] * kofs[2] - 7.5);
 
@@ -698,7 +698,7 @@ function drawTiles(ctx, layer) {
         if (map.chests != undefined && game.mChests.includes(map.id + "," + x + "," + y + "," + Ts)) ani += 32;
 
         // draw
-        ctx.drawImage(images[tileSrc],
+        wggjCTX.drawImage(images[tileSrc],
             Math.floor(ani + tileSnip[0] * 32) + 0.005, Math.floor(tileSnip[1] * 32) + 0.005, 31.99, 31.99,
             px,
             py,
@@ -923,9 +923,11 @@ function renderWeather() {
             dustParticles.dead = true;
         }
     }
+}
 
+function renderNightEffect() {
     let nightInstant = false;
-    if (nightEffect.alpha == 0 && nightEffect2.alpha == 0 && nightEffect.fill == "white" && nightEffect2.fill == "white") {
+    if (objects["nightEffect"].alpha == 0 && objects["nightEffect2"].alpha == 0 && objects["nightEffect"].color == "#FFFFFF" && objects["nightEffect2"].color == "#FFFFFF") {
         nightInstant = true;
         //console.log("instant");
     }
@@ -1116,6 +1118,130 @@ function walkEnemies() {
 
             // Don't put this in a for loop. lol
             checkEnemyCollision(i);
+        }
+    }
+}
+
+function reviveWalkPad() {
+    walkPadIdle = 5;
+    realphaWalkPad(1);
+    pad = "";
+}
+
+function realphaWalkPad(alp = 1) {
+    objects["walkPadUp"].alpha = alp;
+    objects["walkPadRight"].alpha = alp;
+    objects["walkPadDown"].alpha = alp;
+    objects["walkPadLeft"].alpha = alp;
+    objects["walkPadMiddle"].alpha = alp;
+}
+
+function useWalkPad(direction) {
+    switch (direction) {
+        case "up":
+            objects["walkPadUp"].snip[0] = 0;
+            pad = "";
+            break;
+        case "right":
+            objects["walkPadRight"].snip[0] = 0;
+            pad = "";
+            break;
+        case "down":
+            objects["walkPadDown"].snip[0] = 0;
+            pad = "";
+            break;
+        case "left":
+            objects["walkPadLeft"].snip[0] = 0;
+            pad = "";
+            break;
+    }
+}
+
+function downWalkPad(direction) {
+    switch (direction) {
+        case "up":
+            objects["walkPadUp"].snip[0] = 32;
+            reviveWalkPad();
+            pad = "up";
+            break;
+        case "right":
+            objects["walkPadRight"].snip[0] = 32;
+            reviveWalkPad();
+            pad = "right";
+            break;
+        case "down":
+            objects["walkPadDown"].snip[0] = 32;
+            reviveWalkPad();
+            pad = "down";
+            break;
+        case "left":
+            objects["walkPadLeft"].snip[0] = 32;
+            reviveWalkPad();
+            pad = "left";
+            break;
+    }
+}
+
+function clickActionButton() {
+    // Look at how amazingly optimized this is now YAY (xo & yo, more like that's awesome yo)
+    let xo = 0;
+    let yo = 0;
+    if (head == 0) yo = 1; // Down
+    if (head == 1) xo = -1; // Left
+    if (head == 2) xo = 1; // Right
+    if (head == 3) yo = -1; // Up
+
+    let xpos = game.position[0];
+    let ypos = game.position[1];
+
+    if (maps[game.map].worldmode == true) {
+        xo /= 2;
+        yo /= 2;
+    }
+
+    // start dialogue
+    if (inDialogue == false) {
+        map.tiles = Object.assign({}, map.tiles, loadPacks(map));
+        if (getTile(map, xpos + xo, ypos + yo) != undefined) {
+            if (getTile(map, xpos + xo, ypos + yo).action != undefined) {
+                getTile(map, xpos + xo, ypos + yo).action();
+            }
+        }
+        if (getTile(map, xpos + xo, ypos + yo, 2) != undefined) {
+            if (getTile(map, xpos + xo, ypos + yo, 2).action != undefined) {
+                getTile(map, xpos + xo, ypos + yo, 2).action();
+            }
+        }
+        for (i in activeNPCs) {
+            if (activeNPCs[i].position[0] == xpos + xo && activeNPCs[i].position[1] == ypos + yo && isValid(activeNPCs[i].dialogues) && activeNPCs[i].talk && getNPCCondition(activeNPCs[i])) {
+                startDialogue(activeNPCs[i].dialogues[1]);
+            }
+        }
+    }
+
+    // open chest
+    // chests are saved as [x, y, item, amount]
+    if (isValid(map.chests)) {
+        for (let m in map.chests) {
+            if (map.chests[m][0] == xpos + xo && map.chests[m][1] == ypos + yo) {
+                // im looking at chest wow
+                let chestName = "" + map.id + "," + map.chests[m][0] + "," + map.chests[m][1] + "," + map.chests[m][2];
+
+                if (!game.mChests.includes(chestName)) {
+                    // open me owo
+                    let collected = addItem(map.chests[m][3], map.chests[m][4]);
+                    if (collected) {
+                        game.mChests.push(chestName);
+                        questProgress("findItem", map.chests[m][3]);
+                        showItemPopup(map.chests[m][3], map.chests[m][4], true);
+                    }
+                }
+                else {
+                    // is already open
+                }
+
+                objects["actionButton"].snip = [64, 96, 64, 32];
+            }
         }
     }
 }

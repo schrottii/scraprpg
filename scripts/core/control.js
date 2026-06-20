@@ -36,11 +36,11 @@
                     return false;
                 }
 
-                let x = this.offset[0] / red + this.anchor[0] * ctx.canvas.width;
-                let y = this.offset[1] / red + this.anchor[1] * ctx.canvas.height;
+                let x = this.offset[0] / red + this.anchor[0] * wggjCTX.canvas.width;
+                let y = this.offset[1] / red + this.anchor[1] * wggjCTX.canvas.height;
 
-                let w = this.sizeOffset[0] / red + this.sizeAnchor[0] * ctx.canvas.width;
-                let h = this.sizeOffset[1] / red + this.sizeAnchor[1] * ctx.canvas.height;
+                let w = this.sizeOffset[0] / red + this.sizeAnchor[0] * wggjCTX.canvas.width;
+                let h = this.sizeOffset[1] / red + this.sizeAnchor[1] * wggjCTX.canvas.height;
 
                 if (settings.blend) {
                     if (this.blend != false) setBlend(this.blend);
@@ -48,43 +48,43 @@
                 }
 
                 if (this.glow != 0 && settings.glow) {
-                    ctx.shadowBlur = this.glow;
-                    ctx.shadowColor = this.glowColor;
+                    wggjCTX.shadowBlur = this.glow;
+                    wggjCTX.shadowColor = this.glowColor;
                 }
 
                 if (isValid(this.rotate)) {
-                    ctx.save();
-                    ctx.translate(x + w / 2, y + h / 2);
-                    ctx.rotate(this.rotate * Math.PI / 180);
+                    wggjCTX.save();
+                    wggjCTX.translate(x + w / 2, y + h / 2);
+                    wggjCTX.rotate(this.rotate * Math.PI / 180);
 
                     if (w > 0 && h > 0 && this.snip != false) {
-                        ctx.drawImage(images[this.source],
+                        wggjCTX.drawImage(images[this.source],
                             this.snip[0], this.snip[1], this.snip[2], this.snip[3],
                             -w / 2, -h / 2, w, h);
                     } else if (w > 0 && h > 0) {
-                        ctx.drawImage(images[this.source],
+                        wggjCTX.drawImage(images[this.source],
                             -w / 2, -h / 2, w, h);
                     } else {
-                        ctx.drawImage(images[this.source],
+                        wggjCTX.drawImage(images[this.source],
                             -w / 2, -h / 2);
                     }
 
-                    ctx.restore();
+                    wggjCTX.restore();
                 }
                 else {
-                    if (w > 0 && h > 0 && this.snip != false) ctx.drawImage(images[this.source],
+                    if (w > 0 && h > 0 && this.snip != false) wggjCTX.drawImage(images[this.source],
                         this.snip[0], this.snip[1], this.snip[2], this.snip[3],
                         x,
                         y, w, h);
-                    else if (w > 0 && h > 0) ctx.drawImage(images[this.source],
+                    else if (w > 0 && h > 0) wggjCTX.drawImage(images[this.source],
                         x,
                         y, w, h);
-                    else ctx.drawImage(images[this.source],
+                    else wggjCTX.drawImage(images[this.source],
                         x,
                         y);
                 }
 
-                if (this.glow && settings.glow) ctx.shadowBlur = 0;
+                if (this.glow && settings.glow) wggjCTX.shadowBlur = 0;
             },
             ...args || {},
         }
@@ -98,17 +98,17 @@
                 let red = 1;
                 if (isLs() == true) red = 2;
 
-                let w = this.sizeOffset[0] / red + this.sizeAnchor[0] * ctx.canvas.width;
-                let h = this.sizeOffset[1] / red + this.sizeAnchor[1] * ctx.canvas.height;
+                let w = this.sizeOffset[0] / red + this.sizeAnchor[0] * wggjCTX.canvas.width;
+                let h = this.sizeOffset[1] / red + this.sizeAnchor[1] * wggjCTX.canvas.height;
 
                 if (this.blend != false) setBlend(this.blend);
                 else clearBlend();
 
-                ctx.fillStyle = this.fill;
+                wggjCTX.fillStyle = this.fill;
 
-                if (w > 0 && h > 0) ctx.fillRect(
-                    this.offset[0] / red + this.anchor[0] * ctx.canvas.width,
-                    this.offset[1] / red + this.anchor[1] * ctx.canvas.height, w, h);
+                if (w > 0 && h > 0) wggjCTX.fillRect(
+                    this.offset[0] / red + this.anchor[0] * wggjCTX.canvas.width,
+                    this.offset[1] / red + this.anchor[1] * wggjCTX.canvas.height, w, h);
 
             },
             ...args || {},
@@ -128,9 +128,9 @@
             outlineSize: 0,
             outlineAnchor: false,
             render(ctx) {
-                ctx.fillStyle = this.fill;
-                ctx.textAlign = this.align;
-                ctx.textBaseline = this.baseline;
+                wggjCTX.fillStyle = this.fill;
+                wggjCTX.textAlign = this.align;
+                wggjCTX.textBaseline = this.baseline;
 
                 let red = 1;
                 if (isLs() == true) red = 2;
@@ -140,23 +140,23 @@
                 // fontAnchor is OPTIONAL! If you use it, fontSize will be ignored. If not, fontSize will be used.
                 // Same thing with outlineAnchor.
 
-                if (this.fontAnchor == false) ctx.font = (this.fontSize / red) + "px " + this.font + ", sans-serif";
-                else ctx.font = Math.ceil((this.fontAnchor * ctx.canvas.width) / red) + "px " + this.font + ", sans-serif";
+                if (this.fontAnchor == false) wggjCTX.font = (this.fontSize / red) + "px " + this.font + ", sans-serif";
+                else wggjCTX.font = Math.ceil((this.fontAnchor * wggjCTX.canvas.width) / red) + "px " + this.font + ", sans-serif";
 
                 if (this.blend != false) setBlend(this.blend);
                 else clearBlend();
 
                 if (this.outline != "none") {
-                    ctx.strokeStyle = this.outline;
-                    if (this.outlineAnchor == false) ctx.lineWidth = this.outlineSize / red;
-                    else ctx.lineWidth = (this.outlineAnchor * ctx.canvas.width) / red;
-                    ctx.strokeText(this.text,
-                        this.offset[0] / red + this.anchor[0] * ctx.canvas.width,
-                        this.offset[1] / red + this.anchor[1] * ctx.canvas.height);
+                    wggjCTX.strokeStyle = this.outline;
+                    if (this.outlineAnchor == false) wggjCTX.lineWidth = this.outlineSize / red;
+                    else wggjCTX.lineWidth = (this.outlineAnchor * wggjCTX.canvas.width) / red;
+                    wggjCTX.strokeText(this.text,
+                        this.offset[0] / red + this.anchor[0] * wggjCTX.canvas.width,
+                        this.offset[1] / red + this.anchor[1] * wggjCTX.canvas.height);
                 }
-                ctx.fillText(this.text,
-                    this.offset[0] / red + this.anchor[0] * ctx.canvas.width,
-                    this.offset[1] / red + this.anchor[1] * ctx.canvas.height);
+                wggjCTX.fillText(this.text,
+                    this.offset[0] / red + this.anchor[0] * wggjCTX.canvas.width,
+                    this.offset[1] / red + this.anchor[1] * wggjCTX.canvas.height);
 
             },
             ...args || {},
@@ -180,27 +180,27 @@
                 let red = 1;
                 if (isLs() == true) red = 2;
 
-                x = this.offset[0] / red + this.anchor[0] * ctx.canvas.width;
-                y = this.offset[1] / red + this.anchor[1] * ctx.canvas.height;
-                w = this.sizeOffset[0] / red + this.sizeAnchor[0] * ctx.canvas.width;
-                h = this.sizeOffset[1] / red + this.sizeAnchor[1] * ctx.canvas.height;
+                x = this.offset[0] / red + this.anchor[0] * wggjCTX.canvas.width;
+                y = this.offset[1] / red + this.anchor[1] * wggjCTX.canvas.height;
+                w = this.sizeOffset[0] / red + this.sizeAnchor[0] * wggjCTX.canvas.width;
+                h = this.sizeOffset[1] / red + this.sizeAnchor[1] * wggjCTX.canvas.height;
 
                 if (this.blend != false) setBlend(this.blend);
                 else clearBlend();
 
-                if (this.isPressed) ctx.fillStyle = this.pressedTop;
-                else ctx.fillStyle = this.fillTop;
-                ctx.fillRect(x, y, w, h / 2 + 0.25);
+                if (this.isPressed) wggjCTX.fillStyle = this.pressedTop;
+                else wggjCTX.fillStyle = this.fillTop;
+                wggjCTX.fillRect(x, y, w, h / 2 + 0.25);
 
-                if (this.isPressed) ctx.fillStyle = this.pressedBottom;
-                else ctx.fillStyle = this.fillBottom;
-                ctx.fillRect(x, y + h / 2, w, h / 2);
+                if (this.isPressed) wggjCTX.fillStyle = this.pressedBottom;
+                else wggjCTX.fillStyle = this.fillBottom;
+                wggjCTX.fillRect(x, y + h / 2, w, h / 2);
 
-                ctx.font = (this.fontSize / red) + "px " + this.font + ", sans-serif";
-                ctx.fillStyle = this.fillText;
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                ctx.fillText(this.text, x + w / 2, y + h / 2, w);
+                wggjCTX.font = (this.fontSize / red) + "px " + this.font + ", sans-serif";
+                wggjCTX.fillStyle = this.fillText;
+                wggjCTX.textAlign = "center";
+                wggjCTX.textBaseline = "middle";
+                wggjCTX.fillText(this.text, x + w / 2, y + h / 2, w);
             },
             ...args || {},
         }

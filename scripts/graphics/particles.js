@@ -119,8 +119,8 @@ function Particles(args) {
                     let red = 1;
                     if (isLs() == true) red = 2;
                     for (p in this.p) {
-                        let w = this.p[p][3][0] / red + this.p[p][2][0] * ctx.canvas.width;
-                        let h = this.p[p][3][1] / red + this.p[p][2][1] * ctx.canvas.height;
+                        let w = this.p[p][3][0] / red + this.p[p][2][0] * wggjCTX.canvas.width;
+                        let h = this.p[p][3][1] / red + this.p[p][2][1] * wggjCTX.canvas.height;
 
                         if (w < 0 || h < 0) this.p.splice(parseInt(p), 1);
                     }
@@ -140,7 +140,7 @@ function Particles(args) {
             if (this.movable) if (this.acc != 1) this.acc = this.acc + (0.1 * this.acc / delta);
             if (this.movable2) if (this.acc2 != 1) this.acc2 = this.acc2 + (0.1 * this.acc2 / delta);
 
-            if (this.fill != "none") ctx.fillStyle = this.fill;
+            if (this.fill != "none") wggjCTX.fillStyle = this.fill;
 
             for (p in this.p) {
                 if (this.p[p][4] >= this.lifespan && this.lifespan != 0 && this.lifeMode) {
@@ -214,7 +214,7 @@ function Particles(args) {
                 if (this.alphaChange != 0) {
                     this.p[p][5] -= this.alphaChange / delta;
                     if (this.p[p][5] < 0) this.p[p][5] = 0;
-                    ctx.globalAlpha = this.p[p][5];
+                    wggjCTX.globalAlpha = this.p[p][5];
                 }
 
                 if (this.anchorChange[0] != 0) this.p[p][2][0] -= Math.max(0, this.anchorChange[0] / delta);
@@ -222,27 +222,27 @@ function Particles(args) {
                 if (this.offsetChange[0] != 0) this.p[p][3][0] = Math.max(0, this.p[p][3][0] - this.offsetChange[0] / delta);
                 if (this.offsetChange[1] != 0) this.p[p][3][1] = Math.max(0, this.p[p][3][1] - this.offsetChange[1] / delta);
 
-                let w = this.p[p][3][0] / red + this.p[p][2][0] * ctx.canvas.width;
-                let h = this.p[p][3][1] / red + this.p[p][2][1] * ctx.canvas.height;
+                let w = this.p[p][3][0] / red + this.p[p][2][0] * wggjCTX.canvas.width;
+                let h = this.p[p][3][1] / red + this.p[p][2][1] * wggjCTX.canvas.height;
 
                 // Show me
                 if (this.type == "rect") {
-                    ctx.fillRect(
-                        this.p[p][1][0] / red + this.p[p][0][0] * ctx.canvas.width,
-                        this.p[p][1][1] / red + this.p[p][0][1] * ctx.canvas.height, w, h);
+                    wggjCTX.fillRect(
+                        this.p[p][1][0] / red + this.p[p][0][0] * wggjCTX.canvas.width,
+                        this.p[p][1][1] / red + this.p[p][0][1] * wggjCTX.canvas.height, w, h);
 
                 }
                 if (this.type == "img") {
-                    if (w > 0 && h > 0 && this.snip != false) ctx.drawImage(images[this.p[p][6]],
+                    if (w > 0 && h > 0 && this.snip != false) wggjCTX.drawImage(images[this.p[p][6]],
                         this.snip[0], this.snip[1], this.snip[2], this.snip[3],
-                        this.p[p][1][0] / red + this.p[p][0][0] * ctx.canvas.width,
-                        this.p[p][1][1] / red + this.p[p][0][1] * ctx.canvas.height, w, h);
-                    else if (w > 0 && h > 0) ctx.drawImage(images[this.p[p][6]],
-                        this.p[p][1][0] / red + this.p[p][0][0] * ctx.canvas.width,
-                        this.p[p][1][1] / red + this.p[p][0][1] * ctx.canvas.height, w, h);
-                    else ctx.drawImage(images[this.p[p][6]],
-                        this.p[p][1][0] / red + this.p[p][0][0] * ctx.canvas.width,
-                        this.p[p][1][1] / red + this.p[p][0][1] * ctx.canvas.height);
+                        this.p[p][1][0] / red + this.p[p][0][0] * wggjCTX.canvas.width,
+                        this.p[p][1][1] / red + this.p[p][0][1] * wggjCTX.canvas.height, w, h);
+                    else if (w > 0 && h > 0) wggjCTX.drawImage(images[this.p[p][6]],
+                        this.p[p][1][0] / red + this.p[p][0][0] * wggjCTX.canvas.width,
+                        this.p[p][1][1] / red + this.p[p][0][1] * wggjCTX.canvas.height, w, h);
+                    else wggjCTX.drawImage(images[this.p[p][6]],
+                        this.p[p][1][0] / red + this.p[p][0][0] * wggjCTX.canvas.width,
+                        this.p[p][1][1] / red + this.p[p][0][1] * wggjCTX.canvas.height);
                 }
             }
         },

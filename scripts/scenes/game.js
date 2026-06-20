@@ -1,5 +1,633 @@
-﻿
+﻿// Init
+let pad = "";
+//let scale;
+let currentFogAlpha = 2;
+let tokenRunning = false;
+let previousMap = "";
 
+// Walk Pad
+let walkPad = [];
+let walkPadIdle = 5;
+let walkPadSize = Math.max(32, 64 * settings.walkPadSize);
+
+// Joy Stick
+let padActive = false;
+let padAlpha = 0;
+let padPosition = [0, 0];
+let padThumbPosition = [0, 0];
+
+scenes["game"] = new Scene(
+    () => {
+        // objects
+        //createSquare("BG", 0, 0, 1, 1, "#000000");
+
+        createButton("walkPadUp", 0.1, 0.9, 0, 0, "mapbuttons", () => useWalkPad("up"),
+            {
+                offset: [0, -walkPadSize * 3], sizeOffset: [walkPadSize, walkPadSize],
+                snip: [0, 0, 32, 32],
+                onHold: () => downWalkPad("up")
+            });
+        createButton("walkPadRight", 0.1, 0.9, 0, 0, "mapbuttons", () => useWalkPad("right"),
+            {
+                offset: [walkPadSize, -walkPadSize * 2], sizeOffset: [walkPadSize, walkPadSize],
+                snip: [0, 32, 32, 32],
+                onHold: () => downWalkPad("right")
+            });
+        createButton("walkPadDown", 0.1, 0.9, 0, 0, "mapbuttons", () => useWalkPad("down"),
+            {
+                offset: [0, -walkPadSize * 1], sizeOffset: [walkPadSize, walkPadSize],
+                snip: [0, 64, 32, 32],
+                onHold: () => downWalkPad("down")
+            });
+        createButton("walkPadLeft", 0.1, 0.9, 0, 0, "mapbuttons", () => useWalkPad("left"),
+            {
+                offset: [-walkPadSize, -walkPadSize * 2], sizeOffset: [walkPadSize, walkPadSize],
+                snip: [0, 96, 32, 32],
+                onHold: () => downWalkPad("left")
+            });
+        createButton("walkPadMiddle", 0.1, 0.9, 0, 0, "mapbuttons", () => { },
+            {
+                offset: [0, -walkPadSize * 2], sizeOffset: [walkPadSize, walkPadSize],
+                snip: [64, 0, 32, 32],
+                onHold: () => reviveWalkPad()
+            });
+
+        createSquare("nightEffect", 0, 0, 1, 1, "#FFFFFF", { alpha: 0 });
+        createSquare("nightEffect2", 0, 0, 1, 1, "#FFFFFF", { alpha: 0 });
+
+        /* not needed just yet
+        let poisonBlack = controls.rect({
+            anchor: [0, 0], sizeAnchor: [1, 1],
+            alpha: 0,
+            fill: "black",
+        });
+        let areaTeleportFade = controls.rect({
+            anchor: [0, 0], sizeAnchor: [1, 1],
+            fill: "black", alpha: 0
+        });
+        */
+
+        // This is for the inventory button. In the TOP RIGHT.
+        createButton("inventoryButton", 1, 0, 0, 0, "inventory", () => {
+            if (canMove == true) {
+                playSound("buttonClickSound");
+                game.stats.inventory++;
+                fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
+            }
+        }, { offset: [-128, 0], sizeOffset: [128, 128] });
+        createImage("inventoryButtonPing", 1, 0, 0, 0, "ping",
+            { offset: [-64, 64], sizeOffset: [64, 64] });
+
+        createButton("actionButton", 1, 0.8, 0, 0, "mapbuttons", (c) => { objects[c].snip[1] = 96; clickActionButton(); },
+            {
+                sizeOffset: [256, 128], offset: [-312, 0], snip: [64, 96, 64, 32],
+                onDown: (c) => { objects[c].snip[1] = 64; }
+            });
+
+
+
+        /*
+        let autoSaveText = controls.label({
+        anchor: [.025, .98], offset: [12, -12],
+        fontSize: 16, text: "Game saved!", alpha: 0,
+    });
+
+    dialogueNormalComponents.push(controls.rect({
+        anchor: [0, 1], offset: [0, -200], defoff: [0, -200], sizeAnchor: [1, 0], sizeOffset: [0, 200], at: 0,
+        clickthrough: false,
+        fill: colors.bottomcolor,
+        onClick(args) {
+            if (this.alpha == 1) {
+                dialogueBox();
+            }
+        },
+        alpha: 0, falpha: 1,
+    }));
+    dialogueNormalComponents.push(controls.rect({
+        anchor: [0.01, 1.01], offset: [0, -200], defoff: [0, -200], sizeOffset: [136, 136], at: 0,
+        clickthrough: false, clickstop: false,
+        fill: colors.topcolor,
+        alpha: 0, falpha: 1,
+    }));
+    dialogueNormalComponents.push(controls.rect({
+        anchor: [0.01, 1.01], offset: [0, -54], defoff: [0, -54], sizeOffset: [128, 32], at: 0,
+        clickthrough: false, clickstop: false,
+        fill: colors.topcolor,
+        alpha: 0, falpha: 1,
+    }));
+    dialogueNormalComponents.push(controls.label({
+        anchor: [0.01, 1.01], offset: [64, -34], defoff: [64, -34], at: 0,
+        align: "center", fontSize: 20, fill: "black",
+        text: "Bleu",
+        alpha: 0, falpha: 1, clickstop: false,
+    }));
+    dialogueNormalComponents.push(controls.rect({
+        anchor: [0.01, 1.01], offset: [164, -200], defoff: [164, -200], sizeOffset: [0, 178], sizeAnchor: [0.8, 0], at: 0,
+        clickthrough: false, clickstop: false,
+        fill: colors.topcolor,
+        alpha: 0, falpha: 1,
+    }));
+    dialogueNormalComponents.push(controls.image({
+        anchor: [0.01, 1.01], offset: [0, -192], defoff: [0, -192], sizeOffset: [128, 128], snip: [0, 0, 64, 64], at: 0,
+        source: "Portraits_NAN",
+        alpha: 0, falpha: 1, clickstop: false,
+    }));
+    dialogueNormalComponents.push(controls.label({ // 6
+        anchor: [0, 1], offset: [196, -168], defoff: [196, -168], at: 0,
+        align: "left", fontSize: 16, fill: "black",
+        text: "...",
+        alpha: 0, falpha: 1, clickstop: false,
+    }));
+    dialogueNormalComponents.push(controls.image({
+        anchor: [0.81, 1], sizeOffset: [64, 64], offset: [100, -96], defoff: [100, -96], at: 0,
+        source: "star",
+        alpha: 0, falpha: 0, clickstop: false,
+    }));
+
+    dialogueInvisComponents.push(controls.rect({
+        anchor: [0, 1], offset: [0, -200], defoff: [0, -200], sizeAnchor: [1, 0], sizeOffset: [0, 200], at: 0,
+        clickthrough: false,
+        fill: colors.bottomcolor,
+        onClick(args) {
+            if (this.alpha == 1) {
+                dialogueBox();
+            }
+        },
+        alpha: 0, falpha: 1,
+    }));
+    dialogueInvisComponents.push(controls.rect({
+        anchor: [0.01, 1.01], offset: [0, -200], defoff: [0, -200], sizeOffset: [0, 180], sizeAnchor: [0.98, 0], at: 0,
+        clickthrough: false, clickstop: false,
+        fill: colors.topcolor,
+        alpha: 0, falpha: 1,
+    }));
+    dialogueInvisComponents.push(controls.label({ // 2
+        anchor: [0.02, 1], offset: [0, -168], defoff: [0, -168], at: 0,
+        align: "left", fontSize: 16, fill: "black",
+        text: "...",
+        alpha: 0, falpha: 1, clickstop: false,
+    }));
+    dialogueInvisComponents.push(controls.image({
+        anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96], defoff: [0, -96], at: 0,
+        source: "star",
+        alpha: 0, falpha: 0, clickstop: false,
+    }));
+
+
+    dialogueNarratorComponents.push(controls.image({
+        anchor: [0, 0], sizeAnchor: [1, 1],
+        clickthrough: false,
+        source: "narratorbg",
+        onClick(args) {
+            if (this.alpha == 1 || dialogueType == "cinematic") {
+                dialogueBox();
+            }
+        },
+        alpha: 0, falpha: 1,
+    }));
+    dialogueNarratorComponents.push(controls.label({ // 1
+        anchor: [0.5, 0.5],
+        align: "center", fontSize: 16, fill: "white",
+        text: "...",
+        alpha: 0, falpha: 1, clickstop: false,
+    }));
+    dialogueNarratorComponents.push(controls.image({
+        anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96], defoff: [0, -96], at: 0,
+        source: "star",
+        alpha: 0, falpha: 0, clickstop: false,
+    }));
+
+
+    dialogueCutsceneComponents.push(controls.image({
+        anchor: [0, 0], sizeAnchor: [1, 1],
+        clickthrough: false,
+        source: "narratorbg",
+        onClick(args) {
+            if (this.alpha == 0.01) {
+                dialogueBox();
+            }
+        },
+        alpha: 0, falpha: 0.01,
+    }));
+    dialogueCutsceneComponents.push(controls.label({ // 1
+        anchor: [0.01, 1], offset: [0, -96], defoff: [0, -96], at: 0,
+        align: "left", fontSize: 16, fill: "white",
+        text: "...",
+        alpha: 0, falpha: 1, clickstop: false,
+    }));
+    dialogueCutsceneComponents.push(controls.image({
+        anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96], defoff: [0, -96], at: 0,
+        source: "star",
+        alpha: 0, falpha: 0, clickstop: false,
+    }));
+
+    let fallingRain = Particles({
+        anchor: [-0.2, -0.2], spreadAnchor: [1, 0], sizeOffset: [64, 64],
+        type: "img", source: "rain",
+        direction: 0, speedAnchor: 0.3,
+        direction2: 2, speedAnchor2: 0.05,
+        movable: true, movable2: true, lifespan: 1.5, alpha: 1, amount: 60, spawnTime: 0.03, alphaChange: 0.2,
+        dead: true, repeatMode: true,
+    })
+    let fogCloud = Particles({
+        anchor: [-0.2, 0], spreadAnchor: [0, 1], sizeOffset: [96, 48], sizeOffsetVary: [2, 2], quadraticVary: true,
+        type: "img", source: ["fog", "fog2"],
+        direction: 2, speedAnchor: 0.02,
+        movable: true, lifespan: 30, alpha: 0.75, amount: 80, spawnTime: 0.8,
+        dead: true, repeatMode: true,
+    })
+    let darkCloud = Particles({
+        anchor: [1.2, -0.8], spreadAnchor: [0.2, 1.5], sizeOffset: [128, 64], sizeOffsetVary: [2, 2], quadraticVary: true,
+        type: "img", source: ["cloudshadow1", "cloudshadow2", "cloudshadow3"],
+        direction: 0, speedAnchor: 0.015,
+        direction2: 1, speedAnchor2: 0.015,
+        movable: true, movable2: true, lifespan: 45, alpha: 0.75, amount: 25, spawnTime: 3,
+        dead: true, repeatMode: true,
+    })
+    let dustParticles = Particles({
+        anchor: [-0.2, 0], spreadAnchor: [0, 1], sizeOffset: [2, 2], sizeOffsetVary: [2, 2], quadraticVary: true,
+        type: "rect", fill: "yellow",
+        direction: 2, speedAnchor: 0.2,
+        direction2: 3, speedAnchor2: 0.05, moveRandom2: 1,
+        movable: true, movable2: true, lifespan: 5, alpha: 1, amount: 150, spawnTime: 0.02,
+        dead: true, repeatMode: true,
+    })
+
+    let fallingLeaves = Particles({
+        anchor: [0, -0.1], spreadAnchor: [1, 0], sizeOffset: [64, 64], spreadOffset: [0, -256], sizeOffsetVary: [1.5, 1.5], quadraticVary: true,
+        type: "img", source: "items/brickyleaf",
+        direction: 0, speedAnchor: 0.04,
+        direction2: 1, speedOffset2: 10, moveRandom2: 5,
+        offsetChange: [3, 3], repeatMode: true,
+        movable: true, movable2: true, lifespan: 80, alpha: 1, amount: 8, spawnTime: 1, alphaChange: 0.04,
+        onParticleClick(n) {
+            this.p[n][3][0] *= 1.2;
+            this.p[n][3][1] *= 1.2;
+            this.p[n][4] -= 3;
+            this.p[n][5] = 1;
+        }
+    })
+
+    let backButton = controls.button({
+        anchor: [0.01, 0.925], sizeAnchor: [0.05, 0.045],
+        text: "<",
+        onClick(args) {
+            if (this.alpha == 1) {
+                setScene(scenes.mapmaker());
+            }
+        },
+        alpha: (isMapTestingMode ? 1 : 0),
+    });
+        */
+
+
+
+        // enter game scene, fade in
+        map = maps[game.map];
+        map.tiles = Object.assign({}, map.tiles, loadPacks(map));
+
+        try {
+            loadNPCs();
+            loadAreaMusic();
+            trySpawnEnemy(42);
+            checkTileDialogue();
+
+            let tTime = 1000 / 3;
+            if (previousScene == "main" || previousScene == "title" || previousScene == undefined) tTime = 1500; // Not inventory or fight
+            fadeIn(tTime, true, () => canMove = true);
+        }
+        catch {
+            console.log("| ⚠️ | Error while loading the map");
+        }
+    },
+    (tick) => {
+        // Loop
+        scale = window.innerHeight / 16;
+        map = maps[game.map];
+        map.tiles = Object.assign({}, map.tiles, loadPacks(map));
+
+        // worldmode
+        let wm = 1;
+        if (map.worldmode == true) {
+            wm = 2;
+        }
+        zswm = (zoom * scale) / wm;
+
+        // Auto Save & Auto Save Text
+        if (autoSaveTime > 14999) {
+            // Animation
+            addAnimator(function (t) {
+                autoSaveText.alpha = 1 - (1 / 2500) * t;
+                if (t > 2500) {
+                    autoSaveTime = 0;
+                    autoSaveText.alpha = 0;
+                    return true;
+                }
+                return false;
+            })
+            // Saving
+            saveGame(true);
+            autoSaveTime = -3; // To prevent saving multiple times!
+        }
+
+        // map sign
+        /*
+        if (previousMap != maps[game.map].name) {
+            previousMap = maps[game.map].name;
+            areaNameBox[1].text = maps[game.map].name;
+
+            for (i in areaNameBox) {
+                areaNameBox[i].alpha = 1;
+                areaNameBox[i].offset = [0, 0];
+            }
+
+            setTimeout(() => { // Box disappear
+                addAnimator(function (t) {
+                    for (i in areaNameBox) {
+                        //areaNameBox[i].alpha = 1 - (t / 500);
+                        areaNameBox[i].offset[1] = t * (-0.5);
+                    }
+                    if (t > 999) {
+                        for (i in areaNameBox) {
+                            areaNameBox[i].alpha = 0;
+                        }
+                        return true;
+                    }
+                    return false;
+                });
+            }, 800);
+        }
+        */
+
+        // stuffs
+        //renderWeather();
+        renderNightEffect();
+
+        walkNPCs();
+        walkEnemies();
+
+        // This is literally player walking
+        if (!kofs[2] && canMove == true) {
+            let xo;
+            let yo;
+            if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up")) {
+                head = 3;
+                direction = "up";
+                xo = 0;
+                yo = -1;
+            } else if ((currentKeys["s"] || currentKeys["arrowdown"] || pad == "down")) {
+                head = 0;
+                direction = "down";
+                xo = 0;
+                yo = 1;
+            } else if ((currentKeys["a"] || currentKeys["arrowleft"] || pad == "left")) {
+                head = 1;
+                direction = "left";
+                xo = -1;
+                yo = 0;
+            } else if ((currentKeys["d"] || currentKeys["arrowright"] || pad == "right")) {
+                head = 2;
+                direction = "right";
+                xo = 1;
+                yo = 0;
+            }
+            // Optimized code pog
+            if (xo != undefined) {
+                if (map.worldmode == true) {
+                    // only move half a tile in world mode
+                    xo /= 2;
+                    yo /= 2;
+                }
+                objects["actionButton"].snip = [64, 96, 64, 32];
+                if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo).action != undefined) actionButton.snip = [64, 32, 64, 32]
+                else if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2).action != undefined) actionButton.snip = [64, 32, 64, 32]
+
+                tryTalk(xo, yo);
+
+                // WALKING
+                // walk player
+                if (getTileAllLayersWalkable(map, game.position[0] + xo, game.position[1] + yo, "player")) {
+                    kofs = [xo, yo, 1];
+                    game.position[0] += xo;
+                    game.position[1] += yo;
+                    game.stats.walk++;
+                    questProgress("walk");
+
+                    ActionsOnMove();
+                    tryTeleport(map, Math.floor(game.position[0]), Math.floor(game.position[1]));
+                    tryTeleport(map, Math.floor(game.position[0]), Math.floor(game.position[1]), 2);
+
+                    objects["actionButton"].snip = [64, 96, 64, 32];
+                    if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo).action != undefined) actionButton.snip = [64, 32, 64, 32]
+                    else if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2) != undefined) if (getTile(map, Math.floor(game.position[0]) + xo, Math.floor(game.position[1]) + yo, 2).action != undefined) actionButton.snip = [64, 32, 64, 32]
+
+                    tryTalk(xo, yo);
+                    tryLookAtChest(xo, yo);
+                }
+            }
+        }
+
+        // water
+        let isInWater = 1;
+        if (getTile(map, game.position[0], game.position[1]) != undefined) if (getTile(map, game.position[0], game.position[1]).swim == true) isInWater = 2;
+
+        // anim
+        kofs[2] = Math.max(kofs[2] - delta / 166 / 1.5 / isInWater, 0);
+        walkTime = (walkTime + delta * (kofs[2] ? 5 : 1) / 1000) % 2;
+        animateTime = (animateTime + delta / 1000) % 2;
+        spaceBarTime += delta;
+
+        wggjCTX.imageSmoothingEnabled = false;
+        wggjCTX.globalAlpha = 1;
+
+        // Camera limit (corners of the map)
+        // the min(0, does the limiting. CAMERA_LOCK_X and Y are some sorta offset
+        // CAM_OX and Y range from 0 to inf, 0 = locked camera, value = distance to the lock
+        CAM_OX = Math.min(0, (game.position[0] - width / 2 + 0.5) - CAMERA_LOCK_X);
+        CAM_OY = Math.min(0, (game.position[1] - 7.5) - CAMERA_LOCK_Y);
+
+        // draw tiles of BG and BG2 layers (behind player)
+        drawTiles(1);
+        drawTiles(2);
+
+        let ofsX = Math.max(CAMERA_LOCK_X, game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5);
+        let ofsY = Math.max(CAMERA_LOCK_Y, game.position[1] - kofs[1] * kofs[2] - 7.5);
+
+        let posX = 0;
+        let posY = 0;
+
+        // render items
+        if (map.items != undefined) {
+            for (let item of map.items) {
+                if (game.mItems.includes(getItemDatName(map, item))) item[4] = false; // hide if you already got dat
+                if (item[4] == true) { // is visible
+                    posX = ((zoom * scale) * (item[0] - ofsX)) - ((zoom - 1) * scale * (width / 2));
+                    posY = (zoom * scale) * (item[1] - ofsY) - ((zoom - 1) * scale * 7);
+                    if (settings.circles == "all") {
+                        wggjCTX.drawImage(images.itemCircle,
+                            posX - (zswm / 4), posY - (zswm / 4),
+                            zswm * 1.5, zswm * 1.5);
+                    }
+                    if (images["items/" + items[item[2]]().source] != undefined) wggjCTX.drawImage(images["items/" + items[item[2]]().source],
+                        posX, posY,
+                        zoom * scale, zoom * scale);
+                }
+            }
+        }
+
+        // draw NPCs
+        for (i in activeNPCs) {
+            if (activeNPCs[i].alpha > 0) {
+                wggjCTX.globalAlpha = isValid(activeNPCs[i].alpha) ? activeNPCs[i].alpha : 1;
+                renderNPC(activeNPCs[i]);
+            }
+        }
+        wggjCTX.globalAlpha = 1;
+
+        // draw enemies
+        for (let enemy of activeEnemies) {
+            if (enemy.alpha > 0) {
+                wggjCTX.globalAlpha = isValid(enemy.alpha) ? enemy.alpha : 1;
+                enemy.render();
+            }
+        }
+        wggjCTX.globalAlpha = 1;
+
+        // draw player / formation leader
+        if (map.worldmode != true || images["wm_" + game.leader] == undefined) {
+            wggjCTX.drawImage(images[game.leader], 32 * Math.floor(walkTime), 32 * head, 32, 32 / isInWater,
+                scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5)),
+                Math.ceil(zoom * scale) * (7.5) - ((zoom - 1) * scale * 7),
+                zswm, zswm / isInWater);
+            wggjCTX.imageSmoothingEnabled = false;
+        }
+        else {
+            wggjCTX.drawImage(images["wm_" + game.leader], 16 * Math.floor(walkTime), 16 * head, 16, 16 / isInWater,
+                scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5)),
+                Math.ceil(zoom * scale) * (7.5) - ((zoom - 1) * scale * 7),
+                zswm, zswm / isInWater);
+            wggjCTX.imageSmoothingEnabled = false;
+        }
+
+        // draw FG tiles (in front of player)
+        drawTiles(3);
+
+        // Joystick
+        if (settings.joystick) {
+            pad = "";
+            if (pointerActive && canMove) {
+                if (padActive) {
+                    padThumbPosition = pointerPos;
+                    let offset = [padThumbPosition[0] - padPosition[0], padThumbPosition[1] - padPosition[1]]
+                    let dist = Math.sqrt(offset[0] ** 2 + offset[1] ** 2);
+                    if (dist > scale * 1.5 && !kofs[2]) {
+                        if (Math.abs(offset[0]) > Math.abs(offset[1])) {
+                            pad = offset[0] > 0 ? "right" : "left";
+                        } else {
+                            pad = offset[1] > 0 ? "down" : "up";
+                        }
+                    }
+                    if (dist > scale * 2.5) {
+                        padPosition = [
+                            padPosition[0] + offset[0] / dist * (dist - scale * 2.5),
+                            padPosition[1] + offset[1] / dist * (dist - scale * 2.5),
+                        ]
+                    }
+                } else {
+                    padPosition = padThumbPosition = pointerPos;
+                }
+                padAlpha = Math.min(padAlpha + delta * .01, 1);
+                padActive = true;
+            } else {
+                let lerp = 1 - (0.98 ** delta);
+                padThumbPosition = [
+                    padThumbPosition[0] + (padPosition[0] - padThumbPosition[0]) * lerp,
+                    padThumbPosition[1] + (padPosition[1] - padThumbPosition[1]) * lerp,
+                ]
+                padAlpha = Math.max(padAlpha - delta * .005, 0);
+                padActive = false;
+            }
+
+            wggjCTX.globalAlpha = padAlpha;
+            wggjCTX.beginPath();
+            wggjCTX.arc(padPosition[0], padPosition[1], scale * 2.5, 0, Math.PI * 2);
+            wggjCTX.fillStyle = "#000000af";
+            wggjCTX.fill();
+            if (pad || kofs[2]) {
+                let ang = { up: -0.75, right: -0.25, down: 0.25, left: 0.75 }[direction]
+                wggjCTX.beginPath();
+                wggjCTX.arc(padPosition[0], padPosition[1], scale * 2.5, Math.PI * ang, Math.PI * (ang + .5));
+                wggjCTX.arc(padPosition[0], padPosition[1], scale * 1, Math.PI * (ang + .5), Math.PI * ang, true);
+                wggjCTX.fillStyle = "#ffffff1f";
+                wggjCTX.fill();
+            }
+
+            wggjCTX.globalAlpha = padAlpha * 2;
+            wggjCTX.beginPath();
+            wggjCTX.arc(padThumbPosition[0], padThumbPosition[1], scale + 2, 0, Math.PI * 2);
+            wggjCTX.fillStyle = "#ffae38";
+            wggjCTX.fill();
+            wggjCTX.beginPath();
+            wggjCTX.arc(padThumbPosition[0], padThumbPosition[1], scale, 0, Math.PI * 2);
+            wggjCTX.fillStyle = "#d18822";
+            wggjCTX.fill();
+
+            if (objects["walkPadMiddle"].alpha == 1) {
+                realphaWalkPad(0);
+            }
+        }
+        else {
+            walkPadIdle -= delta / 1000;
+            if (walkPadIdle <= 0 && objects["walkPadMiddle"].alpha == 1) {
+                addAnimator(function (t) {
+                    realphaWalkPad(Math.max(1 - (t * 0.004), 0.01));
+                    if (t > 250) return true;
+                    return false;
+                });
+            }
+            if (objects["walkPadMiddle"].alpha == 0) {
+                reviveWalkPad();
+            }
+        }
+
+        objects["inventoryButtonPing"].alpha = notifications.length > 0 ? 1 : 0;
+
+        // Keybinds
+        // action
+        if (currentKeys[" "] && spaceBarTime > 199) {
+            objects["actionButton"].onClick();
+            dialogueBox();
+            spaceBarTime = 0;
+        }
+
+        // ...leave?
+        if (currentKeys["q"]) {
+            if (confirm("Do you want to go back to the main menu?")) {
+                loadScene("title");
+            }
+            else currentKeys["q"] = false;
+        }
+        // open inventory
+        if (currentKeys["e"] && canMove) {
+            canMove = false;
+            game.stats.inventory++;
+            fadeOut(1000 / 3, true, () => {
+                setScene(scenes.inventory());
+                canMove = true;
+            });
+        }
+
+        // emergency
+        if (currentKeys["f"]) {
+            currentKeys["f"] = false;
+            if (isElectron() || prompt("Press F to pay respect") == "SPIT") {
+                teleportPlayer("castleSplit", 56, 20);
+            }
+        }
+    }
+);
+
+/*
 scenes.game = () => {
     let pad = "";
 
@@ -94,13 +722,6 @@ scenes.game = () => {
             pad = "";
         }
     }));
-
-    function reviveWalkPad() {
-        walkPadIdle = 5;
-        for (wp in walkPad) {
-            walkPad[wp].alpha = 1;
-        }
-    }
 
     let nightEffect = controls.rect({
         anchor: [0, 0], sizeAnchor: [1, 1],
@@ -462,7 +1083,7 @@ scenes.game = () => {
         dead: true, repeatMode: true,
     })
 
-    /*let fallingLeaves = Particles({
+    let fallingLeaves = Particles({
         anchor: [0, -0.1], spreadAnchor: [1, 0], sizeOffset: [64, 64], spreadOffset: [0, -256], sizeOffsetVary: [1.5, 1.5], quadraticVary: true,
         type: "img", source: "items/brickyleaf",
         direction: 0, speedAnchor: 0.04,
@@ -475,7 +1096,7 @@ scenes.game = () => {
             this.p[n][4] -= 3;
             this.p[n][5] = 1;
         }
-    })*/
+    })
 
     let backButton = controls.button({
         anchor: [0.01, 0.925], sizeAnchor: [0.05, 0.045],
@@ -643,8 +1264,8 @@ scenes.game = () => {
             animateTime = (animateTime + delta / 1000) % 2;
             spaceBarTime += delta;
 
-            ctx.imageSmoothingEnabled = false;
-            ctx.globalAlpha = 1;
+            wggjCTX.imageSmoothingEnabled = false;
+            wggjCTX.globalAlpha = 1;
 
             // Camera limit (corners of the map)
             // the min(0, does the limiting. CAMERA_LOCK_X and Y are some sorta offset
@@ -670,11 +1291,11 @@ scenes.game = () => {
                         posX = ((zoom * scale) * (item[0] - ofsX)) - ((zoom - 1) * scale * (width / 2));
                         posY = (zoom * scale) * (item[1] - ofsY) - ((zoom - 1) * scale * 7);
                         if (settings.circles == "all") {
-                            ctx.drawImage(images.itemCircle,
+                            wggjCTX.drawImage(images.itemCircle,
                                 posX - (zswm / 4), posY - (zswm / 4),
                                 zswm * 1.5, zswm * 1.5);
                         }
-                        if (images["items/" + items[item[2]]().source] != undefined) ctx.drawImage(images["items/" + items[item[2]]().source],
+                        if (images["items/" + items[item[2]]().source] != undefined) wggjCTX.drawImage(images["items/" + items[item[2]]().source],
                             posX, posY,
                             zoom * scale, zoom * scale);
                     }
@@ -684,35 +1305,35 @@ scenes.game = () => {
             // draw NPCs
             for (i in activeNPCs) {
                 if (activeNPCs[i].alpha > 0) {
-                    ctx.globalAlpha = isValid(activeNPCs[i].alpha) ? activeNPCs[i].alpha : 1;
+                    wggjCTX.globalAlpha = isValid(activeNPCs[i].alpha) ? activeNPCs[i].alpha : 1;
                     renderNPC(ctx, activeNPCs[i]);
                 }
             }
-            ctx.globalAlpha = 1;
+            wggjCTX.globalAlpha = 1;
             
             // draw enemies
             for (let enemy of activeEnemies) {
                 if (enemy.alpha > 0) {
-                    ctx.globalAlpha = isValid(enemy.alpha) ? enemy.alpha : 1;
+                    wggjCTX.globalAlpha = isValid(enemy.alpha) ? enemy.alpha : 1;
                     enemy.render(ctx);
                 }
             }
-            ctx.globalAlpha = 1;
+            wggjCTX.globalAlpha = 1;
 
             // draw player / formation leader
             if (map.worldmode != true || images["wm_" + game.leader] == undefined) {
-                ctx.drawImage(images[game.leader], 32 * Math.floor(walkTime), 32 * head, 32, 32 / isInWater,
+                wggjCTX.drawImage(images[game.leader], 32 * Math.floor(walkTime), 32 * head, 32, 32 / isInWater,
                     scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5)),
                     Math.ceil(zoom * scale) * (7.5) - ((zoom - 1) * scale * 7),
                     zswm, zswm / isInWater);
-                ctx.imageSmoothingEnabled = false;
+                wggjCTX.imageSmoothingEnabled = false;
             }
             else {
-                ctx.drawImage(images["wm_" + game.leader], 16 * Math.floor(walkTime), 16 * head, 16, 16 / isInWater,
+                wggjCTX.drawImage(images["wm_" + game.leader], 16 * Math.floor(walkTime), 16 * head, 16, 16 / isInWater,
                     scale * (game.position[0] - kofs[0] * kofs[2] - ofsX - ((zoom - 1) * 0.5)),
                     Math.ceil(zoom * scale) * (7.5) - ((zoom - 1) * scale * 7),
                     zswm, zswm / isInWater);
-                ctx.imageSmoothingEnabled = false;
+                wggjCTX.imageSmoothingEnabled = false;
             }
 
             // draw FG tiles (in front of player)
@@ -754,29 +1375,29 @@ scenes.game = () => {
                     padActive = false;
                 }
 
-                ctx.globalAlpha = padAlpha;
-                ctx.beginPath();
-                ctx.arc(padPosition[0], padPosition[1], scale * 2.5, 0, Math.PI * 2);
-                ctx.fillStyle = "#000000af";
-                ctx.fill();
+                wggjCTX.globalAlpha = padAlpha;
+                wggjCTX.beginPath();
+                wggjCTX.arc(padPosition[0], padPosition[1], scale * 2.5, 0, Math.PI * 2);
+                wggjCTX.fillStyle = "#000000af";
+                wggjCTX.fill();
                 if (pad || kofs[2]) {
                     let ang = { up: -0.75, right: -0.25, down: 0.25, left: 0.75 }[direction]
-                    ctx.beginPath();
-                    ctx.arc(padPosition[0], padPosition[1], scale * 2.5, Math.PI * ang, Math.PI * (ang + .5));
-                    ctx.arc(padPosition[0], padPosition[1], scale * 1, Math.PI * (ang + .5), Math.PI * ang, true);
-                    ctx.fillStyle = "#ffffff1f";
-                    ctx.fill();
+                    wggjCTX.beginPath();
+                    wggjCTX.arc(padPosition[0], padPosition[1], scale * 2.5, Math.PI * ang, Math.PI * (ang + .5));
+                    wggjCTX.arc(padPosition[0], padPosition[1], scale * 1, Math.PI * (ang + .5), Math.PI * ang, true);
+                    wggjCTX.fillStyle = "#ffffff1f";
+                    wggjCTX.fill();
                 }
 
-                ctx.globalAlpha = padAlpha * 2;
-                ctx.beginPath();
-                ctx.arc(padThumbPosition[0], padThumbPosition[1], scale + 2, 0, Math.PI * 2);
-                ctx.fillStyle = "#ffae38";
-                ctx.fill();
-                ctx.beginPath();
-                ctx.arc(padThumbPosition[0], padThumbPosition[1], scale, 0, Math.PI * 2);
-                ctx.fillStyle = "#d18822";
-                ctx.fill();
+                wggjCTX.globalAlpha = padAlpha * 2;
+                wggjCTX.beginPath();
+                wggjCTX.arc(padThumbPosition[0], padThumbPosition[1], scale + 2, 0, Math.PI * 2);
+                wggjCTX.fillStyle = "#ffae38";
+                wggjCTX.fill();
+                wggjCTX.beginPath();
+                wggjCTX.arc(padThumbPosition[0], padThumbPosition[1], scale, 0, Math.PI * 2);
+                wggjCTX.fillStyle = "#d18822";
+                wggjCTX.fill();
 
                 if (walkPad[0].alpha == 1) {
                     for (wp in walkPad) {
@@ -949,3 +1570,4 @@ scenes.game = () => {
         name: "game"
     }
 }
+*/

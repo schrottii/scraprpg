@@ -3437,10 +3437,10 @@ scenes.fight = () => {
             globalFightAnimationTime = Math.min(1.999, globalFightAnimationTime + (2.9325 / 2 / delta));
             if (globalFightAnimationTime == 1.999) globalFightAnimationTime = 0;
 
-            ctx.scale(scal, scal);
+            wggjCTX.scale(scal, scal);
 
             // draw background
-            ctx.drawImage(images["fight_bg"], 0, 0, width * scale, height);
+            wggjCTX.drawImage(images["fight_bg"], 0, 0, width * scale, height);
 
             // go back to battle sheet
             for (pcc in positionControls) {

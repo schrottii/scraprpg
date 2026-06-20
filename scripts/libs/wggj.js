@@ -63,6 +63,9 @@ v1.8:
 
 -> wggj:
 - debug.autoStart
+
+- snip config for images
+- breaking onClick,etc. loops when object no longer defined (scene change)
 */
 
 
@@ -236,7 +239,8 @@ function wggjEventsOnClick(e) {
 
         if (objects[c].isHit(wggj.mouse.x, wggj.mouse.y)) {
             objects[c].onClick(c, e);
-            if (objects[c].clickthrough === false) break;
+            if (objects[c] == undefined) break;
+            if (objects[c].clickthrough != undefined && objects[c].clickthrough === false) break;
         }
     }
 }
@@ -254,7 +258,8 @@ function wggjEventsOnPointerUp(e) {
 
         if (objects[c].isHit(wggj.mouse.x, wggj.mouse.y)) {
             objects[c].onUp(c, e);
-            if (objects[c].clickthrough === false) break;
+            if (objects[c] == undefined) break;
+            if (objects[c].clickthrough != undefined && objects[c].clickthrough === false) break;
         }
     }
 }
@@ -273,8 +278,12 @@ function wggjEventsOnPointerMove(e) {
 
         if (objects[c].isHit(wggj.mouse.x, wggj.mouse.y)) {
             if (wggj.mouse.down && objects[c].onDrag != undefined) objects[c].onDrag(c, e);
+            if (objects[c] == undefined) break;
+
             if (objects[c].onMouseMove != undefined) objects[c].onMouseMove(c, e);
-            if (objects[c].clickthrough === false) break;
+            if (objects[c] == undefined) break;
+
+            if (objects[c].clickthrough != undefined && objects[c].clickthrough === false) break;
         }
     }
 }
@@ -289,8 +298,12 @@ function wggjEventsOnLoop(e) {
 
         if (objects[c].isHit(wggj.mouse.x, wggj.mouse.y)) {
             if (wggj.mouse.down && objects[c].onHold != undefined) objects[c].onHold(c, e);
+            if (objects[c] == undefined) break;
+
             if (objects[c].onHover != undefined) objects[c].onHover(c, e);
-            if (objects[c].clickthrough === false) break;
+            if (objects[c] == undefined) break;
+
+            if (objects[c].clickthrough != undefined && objects[c].clickthrough === false) break;
         }
     }
 }
@@ -503,6 +516,7 @@ class WGGJ_Image extends WGGJ_Base {
         this.clickthrough = isValid(config.clickthrough) ? config.clickthrough : true;
 
         this.rotate = isValid(config.rotate) ? config.rotate : 0;
+        this.snip = isValid(config.snip) ? config.snip : 0;
 
         this.onClick = isValid(config.onClick) ? config.onClick : undefined;
         this.onHold = isValid(config.onHold) ? config.onHold : undefined;
@@ -605,8 +619,8 @@ class WGGJ_Image extends WGGJ_Base {
         // rotate 1/2
         if (this.rotate) {
             wggjCTX.save();
-            //ctx.translate(x + w / 2, y + h / 2);
-            //ctx.rotate(this.rotate * Math.PI / 180);
+            //wggjCTX.translate(x + w / 2, y + h / 2);
+            //wggjCTX.rotate(this.rotate * Math.PI / 180);
             wggjCTX.translate(renderX + (renderW / 2), renderY + (renderH / 2));
             wggjCTX.rotate(this.rotate * Math.PI / 180);
 

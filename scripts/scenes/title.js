@@ -711,11 +711,11 @@ scenes.title = () => {
         // Pre-render function
         preRender(ctx, delta) {
             // bg needs to be done here cuz particles
-            ctx.fillStyle = "black";
-            ctx.fillRect(0, 0, 1, 1);
+            wggjCTX.fillStyle = "black";
+            wggjCTX.fillRect(0, 0, 1, 1);
 
-            let w = ctx.canvas.width;
-            let h = ctx.canvas.height;
+            let w = wggjCTX.canvas.width;
+            let h = wggjCTX.canvas.height;
             for (let a = 0; a < particles.length; a++) {
                 let par = particles[a];
                 let scale = 2 / ((20000 - par[2]) / 2000); // size
@@ -725,11 +725,11 @@ scenes.title = () => {
                     particles.splice(a, 1);
                     a--;
                 } else {
-                    ctx.fillStyle = "#ffffff" + Math.min(Math.floor(par[2] / 20), 255).toString(16).padStart(2, "0");
-                    ctx.beginPath();
-                    ctx.arc(par[0] * scale * 20 + w / 2, par[1] * scale * 20 + h / 2, 5 * scale, 0, Math.PI * 2);
+                    wggjCTX.fillStyle = "#ffffff" + Math.min(Math.floor(par[2] / 20), 255).toString(16).padStart(2, "0");
+                    wggjCTX.beginPath();
+                    wggjCTX.arc(par[0] * scale * 20 + w / 2, par[1] * scale * 20 + h / 2, 5 * scale, 0, Math.PI * 2);
                 }
-                ctx.fill();
+                wggjCTX.fill();
             }
             for (let a = 0; a < delta; a += 2) { // last number is for how often one spawns
                 particles.push(

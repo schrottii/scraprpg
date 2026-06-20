@@ -12,7 +12,7 @@ function clearBlend() {
         isClear = true;
 
         let ctx = wggjCanvas.getContext("2d");
-        ctx.globalCompositeOperation = 'source-over';
+        wggjCTX.globalCompositeOperation = 'source-over';
     }
 }
 
@@ -26,16 +26,16 @@ function setBlend(type) {
     // Aliases
     switch (type) {
         case "add":
-            ctx.globalCompositeOperation = 'lighter';
+            wggjCTX.globalCompositeOperation = 'lighter';
             break;
         case "mul":
-            ctx.globalCompositeOperation = 'multiply';
+            wggjCTX.globalCompositeOperation = 'multiply';
             break;
         case "overlap":
-            ctx.globalCompositeOperation = 'source-in';
+            wggjCTX.globalCompositeOperation = 'source-in';
             break;
     }
 
     // Set to name by default
-    ctx.globalCompositeOperation = type;
+    wggjCTX.globalCompositeOperation = type;
 }

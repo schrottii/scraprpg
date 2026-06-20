@@ -3792,8 +3792,8 @@ scenes.mapmaker = () => {
             // Update location/status text
             currentMapText.text = currentMap + " | [x" + game.position[0] + ", y" + game.position[1] + ", z" + editingLayer + "] | Mode: " + mode + " | Sel: " + ttp;
 
-            ctx.imageSmoothingEnabled = false;
-            ctx.globalAlpha = 1;
+            wggjCTX.imageSmoothingEnabled = false;
+            wggjCTX.globalAlpha = 1;
 
             let ofsX = game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5;
             let ofsY = game.position[1] - kofs[1] * kofs[2] - 7.5;

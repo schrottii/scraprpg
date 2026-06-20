@@ -36,7 +36,7 @@ let mapenemies = {
             walkingSpeed: 1, // how long it takes to walk from one tile to another (in seconds)
             canSwim: false,
 
-            render(ctx) {
+            render() {
                 let ofsX = Math.max(CAMERA_LOCK_X, game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5) + this.kofs[0] * (this.kofs[2] / this.walkingSpeed);
                 let ofsY = Math.max(CAMERA_LOCK_Y, game.position[1] - kofs[1] * kofs[2] - 7.5) + this.kofs[1] * (this.kofs[2] / this.walkingSpeed);
 
@@ -50,28 +50,28 @@ let mapenemies = {
                 if (this.spawntime > 599) {
                     if (game.map == this.map) {
                         if (settings.circles == "all" || settings.circles == "enemies") {
-                            ctx.drawImage(images.enemyCircle,
+                            wggjCTX.drawImage(images.enemyCircle,
                                 posX - (zswm / 4), posY - (zswm / 4),
                                 zswm * 1.5, zswm * 1.5);
                         }
-                        ctx.drawImage(images[this.source],
+                        wggjCTX.drawImage(images[this.source],
                             32 * Math.floor(walkTime), 32 * this.head, 32, !isSwimming ? 32 : 16,
                             posX, posY,
                             zswm, !isSwimming ? zswm : zswm / 2);
                     }
                 }
-                ctx.globalAlpha = 1;
+                wggjCTX.globalAlpha = 1;
 
                 // spawn animation
                 if (this.spawntime < 900 && this.alpha != 0) {
                     this.spawntime += delta;
                     if (this.spawntime > 599) {
-                        ctx.drawImage(images.spawn, 64, 0, 32, 32, posX, posY, zswm, zswm);
+                        wggjCTX.drawImage(images.spawn, 64, 0, 32, 32, posX, posY, zswm, zswm);
                     }
                     else if (this.spawntime > 299) {
-                        ctx.drawImage(images.spawn, 32, 0, 32, 32, posX, posY, zswm, zswm);
+                        wggjCTX.drawImage(images.spawn, 32, 0, 32, 32, posX, posY, zswm, zswm);
                     }
-                    else ctx.drawImage(images.spawn, 0, 0, 32, 32, posX, posY, zswm, zswm);
+                    else wggjCTX.drawImage(images.spawn, 0, 0, 32, 32, posX, posY, zswm, zswm);
                 }
             },
 

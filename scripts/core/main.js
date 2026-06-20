@@ -164,8 +164,8 @@ function customWGGJLoop() {
     let ctx = wggjCanvas.getContext("2d");
 
     /*
-    ctx.imageSmoothingEnabled = false;
-    ctx.globalAlpha = 1;
+    wggjCTX.imageSmoothingEnabled = false;
+    wggjCTX.globalAlpha = 1;
 
     // pre-render the canvas (big one)
     scene.preRender(ctx, delta);
@@ -176,7 +176,7 @@ function customWGGJLoop() {
             // Alpha 1 = Max (100% opacity)
             // Alpha 0.1 = Barely visible              Alpha 0 = Invisible
             // Alpha 255 (or anything above 1 really) does not work anymore!
-            ctx.globalAlpha = control.alpha;
+            wggjCTX.globalAlpha = control.alpha;
             control.render(ctx);
         }
     }
@@ -186,18 +186,18 @@ function customWGGJLoop() {
 
     // Debug black bar
     if (isDevMode()) {
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, ctx.canvas.width * ((game.stats.playTime / 15) % 1) * 0.2, ctx.canvas.height * 0.02);
+        wggjCTX.fillStyle = "black";
+        wggjCTX.fillRect(0, 0, wggjCTX.canvas.width * ((game.stats.playTime / 15) % 1) * 0.2, wggjCTX.canvas.height * 0.02);
     }
 
     // Draw FPS
-    ctx.fillStyle = "white";
-    ctx.font = "12px DePixelKlein, sans-serif";
-    ctx.textAlign = "left";
-    ctx.textBaseline = "alphabetic";
-    ctx.globalAlpha = 1; //or else it's a bit transparent
-    if (isDevMode()) ctx.fillText((1000 / delta).toFixed(0) + "fps   " + ctx.canvas.width + "x" + ctx.canvas.height + "   w: " + width.toFixed(1) + "  scale: " + scale.toFixed(1) + (isLs() ? "  ls" : "  p"), 2, 12);
-    else ctx.fillText((1000 / delta).toFixed(0) + "FPS", 2, 10);
+    wggjCTX.fillStyle = "white";
+    wggjCTX.font = "12px DePixelKlein, sans-serif";
+    wggjCTX.textAlign = "left";
+    wggjCTX.textBaseline = "alphabetic";
+    wggjCTX.globalAlpha = 1; //or else it's a bit transparent
+    if (isDevMode()) wggjCTX.fillText((1000 / delta).toFixed(0) + "fps   " + wggjCTX.canvas.width + "x" + wggjCTX.canvas.height + "   w: " + width.toFixed(1) + "  scale: " + scale.toFixed(1) + (isLs() ? "  ls" : "  p"), 2, 12);
+    else wggjCTX.fillText((1000 / delta).toFixed(0) + "FPS", 2, 10);
 
     // Auto Save
     if (settings != undefined) {

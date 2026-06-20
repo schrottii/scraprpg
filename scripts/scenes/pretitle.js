@@ -43,7 +43,7 @@ scenes["pretitle"] = new Scene(
 
             if (maps[game.map] == undefined) game.map = "test";
             canMove = true;
-            setScene(scenes.game());
+            loadScene("game");
             //openShop("placeholder");
         }, { aText: { text: "Dev Mode", size: 24 }, power: isDevMode() });
 
