@@ -206,6 +206,8 @@ function customWGGJLoop() {
         }
     }
 
+    document.title = "ScrapRPG (" + wggj.canvas.currentScene.substr(0, 1).toUpperCase() + wggj.canvas.currentScene.substr(1) + ")";
+
     /*
     updateImageAnimation(delta);
     updateAnimators(delta);
