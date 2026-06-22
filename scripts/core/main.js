@@ -210,8 +210,8 @@ function customWGGJLoop() {
 
     /*
     updateImageAnimation(delta);
-    updateAnimators(delta);
     */
+    updateAnimators(delta);
     timeTicker(delta);
 
     //requestAnimationFrame(customWGGJLoop);
@@ -230,3 +230,8 @@ wggj.debug.scene = true;
 wggjLoadImages();
 //wggjLoadAudio();
 wggjLoop();
+
+if (!isElectron()) {
+    scale = window.innerHeight / 16;
+    width = window.innerWidth / scale;
+}

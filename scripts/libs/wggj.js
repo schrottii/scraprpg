@@ -66,6 +66,7 @@ v1.8:
 
 - snip config for images
 - breaking onClick,etc. loops when object no longer defined (scene change)
+- groups: set,etc. can now be a lambda (passed: object)
 */
 
 
@@ -823,7 +824,8 @@ class WGGJ_Group {
         for (let c of this.children) {
             if (exclude.includes(c)) continue;
             if (condition === true || condition(objects[c]) == true) {
-                objects[c][attribute] = state;
+                if (typeof(state) == "function") objects[c][attribute] = state(objects[c]);
+                else objects[c][attribute] = state;
             }
         }
     }
@@ -833,7 +835,8 @@ class WGGJ_Group {
         for (let c of this.children) {
             if (exclude.includes(c)) continue;
             if (condition === true || condition(objects[c]) == true) {
-                objects[c][attribute] += state;
+                if (typeof (state) == "function") objects[c][attribute] += state(objects[c]);
+                else objects[c][attribute] += state;
             }
         }
     }
@@ -842,7 +845,8 @@ class WGGJ_Group {
         for (let c of this.children) {
             if (exclude.includes(c)) continue;
             if (condition === true || condition(objects[c]) == true) {
-                objects[c][attribute] -= state;
+                if (typeof (state) == "function") objects[c][attribute] -= state(objects[c]);
+                else objects[c][attribute] = -state;
             }
         }
     }
@@ -851,7 +855,8 @@ class WGGJ_Group {
         for (let c of this.children) {
             if (exclude.includes(c)) continue;
             if (condition === true || condition(objects[c]) == true) {
-                objects[c][attribute] *= state;
+                if (typeof (state) == "function") objects[c][attribute] *= state(objects[c]);
+                else objects[c][attribute] *= state;
             }
         }
     }
@@ -860,7 +865,8 @@ class WGGJ_Group {
         for (let c of this.children) {
             if (exclude.includes(c)) continue;
             if (condition === true || condition(objects[c]) == true) {
-                objects[c][attribute] /= state;
+                if (typeof (state) == "function") objects[c][attribute] /= state(objects[c]);
+                else objects[c][attribute] /= state;
             }
         }
     }

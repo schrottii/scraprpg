@@ -54,18 +54,8 @@ scenes["game"] = new Scene(
 
         createSquare("nightEffect", 0, 0, 1, 1, "#FFFFFF", { alpha: 0 });
         createSquare("nightEffect2", 0, 0, 1, 1, "#FFFFFF", { alpha: 0 });
-
-        /* not needed just yet
-        let poisonBlack = controls.rect({
-            anchor: [0, 0], sizeAnchor: [1, 1],
-            alpha: 0,
-            fill: "black",
-        });
-        let areaTeleportFade = controls.rect({
-            anchor: [0, 0], sizeAnchor: [1, 1],
-            fill: "black", alpha: 0
-        });
-        */
+        createSquare("areaTeleportFade", 0, 0, 1, 1, "#FFFFFF", { alpha: 0 });
+        createSquare("poisonBlack", 0, 0, 1, 1, "lime", { alpha: 0 }); // lime instead of black now
 
         // This is for the inventory button. In the TOP RIGHT.
         createButton("inventoryButton", 1, 0, 0, 0, "inventory", () => {
@@ -84,143 +74,98 @@ scenes["game"] = new Scene(
                 onDown: (c) => { objects[c].snip[1] = 64; }
             });
 
+        createText("autoSaveText", 0.025, 0.98, "Game saved", { offset: [12, -12], size: 16, alpha: 0 });
 
+        // DIALOGUE STUFF
+        createButton("dialogue_normal_squareBG", 0, 1, 1, 0, colors.bottomcolor, () => { dialogueBox(); }, {
+            offset: [0, -200], sizeOffset: [0, 200], alpha: 0, falpha: 1
+        });
+        createSquare("dialogue_normal_square2", 0.01, 1.01, 0, 0, colors.topcolor, {
+            offset: [0, -200], sizeOffset: [136, 136], alpha: 0, falpha: 1
+        });
+        createSquare("dialogue_normal_square3", 0.01, 1.01, 0, 0, colors.topcolor, {
+            offset: [0, -54], sizeOffset: [128, 32], alpha: 0, falpha: 1
+        });
+        createText("dialogue_normal_charactername", 0.01, 1.01, "", {
+            align: "center", size: 20, color: "black",
+            offset: [64, -34], alpha: 0, falpha: 1
+        });
+        createSquare("dialogue_normal_square4", 0.01, 1.01, 0.8, 0, colors.topcolor, {
+            offset: [164, -200], sizeOffset: [0, 178], alpha: 0, falpha: 1
+        });
+        createImage("dialogue_normal_image", 0.01, 1.01, 0, 0, "Portraits_NAN", {
+            offset: [0, -192], sizeOffset: [128, 128], alpha: 0, falpha: 1,
+            snip: [0, 0, 64, 64]
+        });
+        createText("dialogue_normal_maintext", 0, 1, "...", {
+            align: "left", size: 16, color: "black",
+            offset: [196, -168], alpha: 0, falpha: 1
+        });
+        createImage("dialogue_normal_continuestar", 0.81, 1, 0, 0, "star", {
+            sizeOffset: [64, 64], offset: [100, -96], alpha: 0, falpha: 0
+        });
+
+        createGroup("dialogue_normal", ["dialogue_normal_squareBG", "dialogue_normal_square2", "dialogue_normal_square3",
+            "dialogue_normal_charactername", "dialogue_normal_square4",
+            "dialogue_normal_image", "dialogue_normal_maintext", "dialogue_normal_continuestar"
+        ]);
+        groups["dialogue_normal"].set("at", 0);
+        groups["dialogue_normal"].set("defoff", (c) => c.offset);
+        groups["dialogue_normal"].set("falpha", (c) => c.config.falpha);
+
+        createButton("dialogue_invis_squareBG", 0, 1, 1, 0, colors.bottomcolor, () => { dialogueBox(); }, {
+            offset: [0, -200], sizeOffset: [0, 200], alpha: 0, falpha: 1
+        });
+        createSquare("dialogue_invis_square2", 0.01, 1.01, 0.98, 0, colors.topcolor, {
+            offset: [0, -200], sizeOffset: [0, 180], alpha: 0, falpha: 1
+        });
+        createText("dialogue_invis_maintext", 0.02, 1, "...", {
+            align: "left", size: 16, color: "black",
+            offset: [0, -168], alpha: 0, falpha: 1
+        });
+        createImage("dialogue_invis_continuestar", 0.8, 1, 0, 0, "star", {
+            sizeOffset: [64, 64], offset: [0, -96], alpha: 0, falpha: 0
+        });
+
+        createGroup("dialogue_invis", ["dialogue_normal_squareBG", "dialogue_invis_square2",
+            "dialogue_invis_maintext", "dialogue_invis_continuestar"]);
+        groups["dialogue_invis"].set("at", 0);
+        groups["dialogue_invis"].set("defoff", (c) => c.offset);
+        groups["dialogue_invis"].set("falpha", (c) => c.config.falpha);
+
+        createButton("dialogue_narrator_squareBG", 0, 0, 1, 1, "narratorbg", () => { dialogueBox(); }, {
+            alpha: 0, falpha: 1
+        });
+        createText("dialogue_narrator_maintext", 0.5, 0.5, "...", {
+            align: "center", size: 16, color: "white",
+            alpha: 0, falpha: 1
+        });
+        createImage("dialogue_narrator_continuestar", 0.8, 1, 0, 0, "star", {
+            sizeOffset: [64, 64], offset: [0, -96], alpha: 0, falpha: 0
+        });
+
+        createGroup("dialogue_narrator", ["dialogue_narrator_squareBG", "dialogue_narrator_maintext", "dialogue_narrator_continuestar"]);
+        groups["dialogue_narrator"].set("at", 0);
+        groups["dialogue_narrator"].set("defoff", (c) => c.offset);
+        groups["dialogue_narrator"].set("falpha", (c) => c.config.falpha);
+
+        createButton("dialogue_cutscene_squareBG", 0, 0, 1, 1, "narratorbg", () => { dialogueBox(); }, {
+            alpha: 0, falpha: 0.1
+        });
+        createText("dialogue_cutscene_maintext", 0.01, 1, "...", {
+            align: "left", size: 16, color: "white",
+            offset: [0, -96], alpha: 0, falpha: 1
+        });
+        createImage("dialogue_cutscene_continuestar", 0.8, 1, 0, 0, "star", {
+            sizeOffset: [64, 64], offset: [0, -96], alpha: 0, falpha: 0
+        });
+
+        createGroup("dialogue_cutscene", ["dialogue_cutscene_squareBG", "dialogue_cutscene_maintext", "dialogue_cutscene_continuestar"]);
+        groups["dialogue_cutscene"].set("at", 0);
+        groups["dialogue_cutscene"].set("defoff", (c) => c.offset);
+        groups["dialogue_cutscene"].set("falpha", (c) => c.config.falpha);
 
         /*
-        let autoSaveText = controls.label({
-        anchor: [.025, .98], offset: [12, -12],
-        fontSize: 16, text: "Game saved!", alpha: 0,
-    });
-
-    dialogueNormalComponents.push(controls.rect({
-        anchor: [0, 1], offset: [0, -200], defoff: [0, -200], sizeAnchor: [1, 0], sizeOffset: [0, 200], at: 0,
-        clickthrough: false,
-        fill: colors.bottomcolor,
-        onClick(args) {
-            if (this.alpha == 1) {
-                dialogueBox();
-            }
-        },
-        alpha: 0, falpha: 1,
-    }));
-    dialogueNormalComponents.push(controls.rect({
-        anchor: [0.01, 1.01], offset: [0, -200], defoff: [0, -200], sizeOffset: [136, 136], at: 0,
-        clickthrough: false, clickstop: false,
-        fill: colors.topcolor,
-        alpha: 0, falpha: 1,
-    }));
-    dialogueNormalComponents.push(controls.rect({
-        anchor: [0.01, 1.01], offset: [0, -54], defoff: [0, -54], sizeOffset: [128, 32], at: 0,
-        clickthrough: false, clickstop: false,
-        fill: colors.topcolor,
-        alpha: 0, falpha: 1,
-    }));
-    dialogueNormalComponents.push(controls.label({
-        anchor: [0.01, 1.01], offset: [64, -34], defoff: [64, -34], at: 0,
-        align: "center", fontSize: 20, fill: "black",
-        text: "Bleu",
-        alpha: 0, falpha: 1, clickstop: false,
-    }));
-    dialogueNormalComponents.push(controls.rect({
-        anchor: [0.01, 1.01], offset: [164, -200], defoff: [164, -200], sizeOffset: [0, 178], sizeAnchor: [0.8, 0], at: 0,
-        clickthrough: false, clickstop: false,
-        fill: colors.topcolor,
-        alpha: 0, falpha: 1,
-    }));
-    dialogueNormalComponents.push(controls.image({
-        anchor: [0.01, 1.01], offset: [0, -192], defoff: [0, -192], sizeOffset: [128, 128], snip: [0, 0, 64, 64], at: 0,
-        source: "Portraits_NAN",
-        alpha: 0, falpha: 1, clickstop: false,
-    }));
-    dialogueNormalComponents.push(controls.label({ // 6
-        anchor: [0, 1], offset: [196, -168], defoff: [196, -168], at: 0,
-        align: "left", fontSize: 16, fill: "black",
-        text: "...",
-        alpha: 0, falpha: 1, clickstop: false,
-    }));
-    dialogueNormalComponents.push(controls.image({
-        anchor: [0.81, 1], sizeOffset: [64, 64], offset: [100, -96], defoff: [100, -96], at: 0,
-        source: "star",
-        alpha: 0, falpha: 0, clickstop: false,
-    }));
-
-    dialogueInvisComponents.push(controls.rect({
-        anchor: [0, 1], offset: [0, -200], defoff: [0, -200], sizeAnchor: [1, 0], sizeOffset: [0, 200], at: 0,
-        clickthrough: false,
-        fill: colors.bottomcolor,
-        onClick(args) {
-            if (this.alpha == 1) {
-                dialogueBox();
-            }
-        },
-        alpha: 0, falpha: 1,
-    }));
-    dialogueInvisComponents.push(controls.rect({
-        anchor: [0.01, 1.01], offset: [0, -200], defoff: [0, -200], sizeOffset: [0, 180], sizeAnchor: [0.98, 0], at: 0,
-        clickthrough: false, clickstop: false,
-        fill: colors.topcolor,
-        alpha: 0, falpha: 1,
-    }));
-    dialogueInvisComponents.push(controls.label({ // 2
-        anchor: [0.02, 1], offset: [0, -168], defoff: [0, -168], at: 0,
-        align: "left", fontSize: 16, fill: "black",
-        text: "...",
-        alpha: 0, falpha: 1, clickstop: false,
-    }));
-    dialogueInvisComponents.push(controls.image({
-        anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96], defoff: [0, -96], at: 0,
-        source: "star",
-        alpha: 0, falpha: 0, clickstop: false,
-    }));
-
-
-    dialogueNarratorComponents.push(controls.image({
-        anchor: [0, 0], sizeAnchor: [1, 1],
-        clickthrough: false,
-        source: "narratorbg",
-        onClick(args) {
-            if (this.alpha == 1 || dialogueType == "cinematic") {
-                dialogueBox();
-            }
-        },
-        alpha: 0, falpha: 1,
-    }));
-    dialogueNarratorComponents.push(controls.label({ // 1
-        anchor: [0.5, 0.5],
-        align: "center", fontSize: 16, fill: "white",
-        text: "...",
-        alpha: 0, falpha: 1, clickstop: false,
-    }));
-    dialogueNarratorComponents.push(controls.image({
-        anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96], defoff: [0, -96], at: 0,
-        source: "star",
-        alpha: 0, falpha: 0, clickstop: false,
-    }));
-
-
-    dialogueCutsceneComponents.push(controls.image({
-        anchor: [0, 0], sizeAnchor: [1, 1],
-        clickthrough: false,
-        source: "narratorbg",
-        onClick(args) {
-            if (this.alpha == 0.01) {
-                dialogueBox();
-            }
-        },
-        alpha: 0, falpha: 0.01,
-    }));
-    dialogueCutsceneComponents.push(controls.label({ // 1
-        anchor: [0.01, 1], offset: [0, -96], defoff: [0, -96], at: 0,
-        align: "left", fontSize: 16, fill: "white",
-        text: "...",
-        alpha: 0, falpha: 1, clickstop: false,
-    }));
-    dialogueCutsceneComponents.push(controls.image({
-        anchor: [0.8, 1], sizeOffset: [64, 64], offset: [0, -96], defoff: [0, -96], at: 0,
-        source: "star",
-        alpha: 0, falpha: 0, clickstop: false,
-    }));
-
     let fallingRain = Particles({
         anchor: [-0.2, -0.2], spreadAnchor: [1, 0], sizeOffset: [64, 64],
         type: "img", source: "rain",
@@ -267,18 +212,11 @@ scenes["game"] = new Scene(
             this.p[n][5] = 1;
         }
     })
-
-    let backButton = controls.button({
-        anchor: [0.01, 0.925], sizeAnchor: [0.05, 0.045],
-        text: "<",
-        onClick(args) {
-            if (this.alpha == 1) {
-                setScene(scenes.mapmaker());
-            }
-        },
-        alpha: (isMapTestingMode ? 1 : 0),
-    });
         */
+
+        createButton("backButton", 0.01, 0.925, 0.05, 0.045, "button", () => {
+            setScene(scenes.mapmaker());
+        }, { aText: { text: "<", size: 24 }, power: (isMapTestingMode ? 1 : 0) });
 
 
 
@@ -299,6 +237,7 @@ scenes["game"] = new Scene(
         catch {
             console.log("| ⚠️ | Error while loading the map");
         }
+
     },
     (tick) => {
         // Loop
@@ -317,10 +256,10 @@ scenes["game"] = new Scene(
         if (autoSaveTime > 14999) {
             // Animation
             addAnimator(function (t) {
-                autoSaveText.alpha = 1 - (1 / 2500) * t;
+                objects["autoSaveText"].alpha = 1 - (1 / 2500) * t;
                 if (t > 2500) {
                     autoSaveTime = 0;
-                    autoSaveText.alpha = 0;
+                    objects["autoSaveText"].alpha = 0;
                     return true;
                 }
                 return false;
@@ -592,6 +531,9 @@ scenes["game"] = new Scene(
 
         objects["inventoryButtonPing"].alpha = notifications.length > 0 ? 1 : 0;
 
+        // DIALOGUES
+        renderDialogue();
+
         // Keybinds
         // action
         if (currentKeys[" "] && spaceBarTime > 199) {
@@ -626,6 +568,8 @@ scenes["game"] = new Scene(
         }
     }
 );
+
+
 
 /*
 scenes.game = () => {

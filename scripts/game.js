@@ -16,6 +16,7 @@ var currentDialogue;
 var dialogueProgress = 0;
 var dialogueType;
 var dialogueEmotion = "neutral";
+var dialogueObjects = "";
 var overWorldStatsScroll = 0;
 var cutsceneMode = false;
 
@@ -147,7 +148,7 @@ function teleportPlayer(mmap, x, y) {
         game.position[1] = y;
 
         fadeIn(1000 / 3, true);
-        if (!isValid(currentDialogue)) canMove = true;
+        if (!isValid(currentDialogue) || currentDialogue === false) canMove = true;
     }, 750);
 }
 
@@ -315,6 +316,155 @@ function dialogueScript() {
     }
 }
 
+function renderDialogue() {
+    let dNameID = dTextID = dPortraitID = dStarID = -1; // star and text must exist, rest optional
+
+    // Set dialogueObjects (which will be used) to whatever our current type is
+    // Cutscene, normal, invis., narrator
+
+    /*
+    if (inDialogue == true && cutsceneMode == true) {
+    }
+    */
+    if (inDialogue == true && cutsceneMode == false) {
+        switch (dialogueType) {
+            case "normal":
+                dialogueObjects = "dialogue_normal";
+
+                dNameID = "dialogue_normal_charactername";
+                dTextID = "dialogue_normal_maintext";
+                dPortraitID = "dialogue_normal_image";
+                dStarID = "dialogue_normal_continuestar";
+                break;
+            case "invis":
+                dialogueObjects = "dialogue_invis";
+                dTextID = "dialogue_invis_maintext";
+                dStarID = "dialogue_invis_continuestar";
+                break;
+            case "narrator":
+                //dialogueNarratorComponents[0].falpha = 1;
+                dialogueObjects = "dialogue_narrator";
+                dTextID = "dialogue_narrator_maintext";
+                dStarID = "dialogue_narrator_continuestar";
+                break;
+            case "cinematic":
+                //dialogueNarratorComponents[0].falpha = 0;
+                dialogueObjects = "dialogue_cutscene";
+                dTextID = "dialogue_cutscene_maintext";
+                dStarID = "dialogue_cutscene_continuestar";
+                break;
+        }
+    }
+    if (dTextID != -1) objects[dTextID].text = "";
+
+    if (inDialogue == true) {
+        // Make / keep the dialogue objects visible
+        groups[dialogueObjects].set("alpha", (c) => c.falpha);
+
+        // Slide them in
+        if (objects[dTextID].at == 0) {
+            objects[dTextID].at = 0.5;
+            groups[dialogueObjects].set("offset", (c) => [c.defoff[0], c.defoff[1] + 500]);
+
+            addAnimator(function (t) {
+                for (i in dialogueObjects) {
+                    groups[dialogueObjects].set("offset", (c) => [c.defoff[0], c.defoff[1] + 500 - Math.min(t, 500)]);
+                }
+                if (t > 499) {
+                    groups[dialogueObjects].set("at", 1);
+                    return true;
+                }
+                return false;
+            });
+        }
+
+        // They are there, visible
+        if (objects[dTextID].at == 1) {
+            if (currentDialogue != false) {
+                // Update text
+                if (currentDialogue[dialogueProgress].text == undefined) {
+                    // Broken dialogue (undefined)
+                    alert("This dialogue is broken!\nPlease report it to the devs!");
+                    dialogueNext();
+                }
+                else if (typeof (currentDialogue[dialogueProgress].text) == "string") objects[dTextID].text = animatedText(currentDialogue[dialogueProgress].text);
+                else objects[dTextID].text = animatedText(currentDialogue[dialogueProgress].text());
+
+                if (dNameID != -1) { // Change name display if it exists
+                    if (currentDialogue[dialogueProgress].name != undefined) objects[dNameID].text = currentDialogue[dialogueProgress].name;
+                    else objects[dNameID].text = "Bleu";
+                }
+                if (dPortraitID != -1) { // Change portrait display if it exists
+                    dialogueEmotion = currentDialogue[dialogueProgress].emotion;
+                    if (currentDialogue[dialogueProgress].portrait != undefined) {
+                        objects[dPortraitID].image = currentDialogue[dialogueProgress].portrait;
+                        if (dialogueEmotion != undefined) objects[dPortraitID].snip = getEmotion(dialogueEmotion);
+                        else objects[dPortraitID].snip = getEmotion("neutral");
+                    }
+                    else { // doesn't exist - use default
+                        objects[dPortraitID].image = "Bleu_Portrait";
+                        objects[dPortraitID].snip = getEmotion("neutral");
+                    }
+                }
+
+                if (currentDialogue[dialogueProgress + 1] != undefined) objects[dStarID].alpha = 1; // Star
+                objects["actionButton"].alpha = 0;
+            }
+        }
+    }
+}
+
+function dialogueNext() {
+    dialogueProgress += 1;
+    textProgress = -1;
+
+    let c = "dialogue_" + dialogueType + "_maintext";
+
+    if (dialogueProgress >= currentDialogue.length || currentDialogue.dialogueProgress == undefined) {
+        // Dialogue end
+        currentDialogue = false;
+        dialogueEmotion = "neutral";
+        dialogueProgress = 0;
+        canMove = true;
+        objects["actionButton"].alpha = 1;
+
+        if (objects[c].at == 1 && (dialogueType == "normal" || dialogueType == "invis")) {
+            objects[c].at = 0.4;
+            addAnimator(function (t) {
+                groups[dialogueObjects].set("offset", (c) => [c.offset[0], c.offset[1] + Math.min(t, 500)]);
+                if (t > 499) {
+                    groups[dialogueObjects].set("at", 0);
+                    if (canMove == true) inDialogue = false;
+                    return true;
+                }
+                return false;
+            });
+        }
+        else {
+            groups[dialogueObjects].set("alpha", 0);
+            if (canMove == true) inDialogue = false;
+        }
+    }
+    else {
+        // it is not over yet
+        dialogueScript();
+    }
+}
+
+function dialogueBox() {
+    let text;
+    if (currentDialogue == undefined || currentDialogue[dialogueProgress] == undefined) return false;
+    if (typeof (currentDialogue[dialogueProgress].text) == "string") text = currentDialogue[dialogueProgress].text;
+    else text = currentDialogue[dialogueProgress].text();
+
+    if ((textProgress * 20) >= text.length) {
+        dialogueNext(c);
+    }
+    else {
+        textProgress = text.length * 20;
+    }
+}
+
 function startFight(type = "default", enemies = "default") {
     defeatType = type;
 
@@ -332,61 +482,6 @@ function startFight(type = "default", enemies = "default") {
 
     game.stats.fights++;
     setScene(scenes.fight());
-}
-
-function dialogueNext() {
-    dialogueProgress += 1;
-    textProgress = -1;
-
-    if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
-        // Dialogue end
-        currentDialogue = false;
-        dialogueEmotion = "neutral";
-        dialogueProgress = 0;
-        canMove = true;
-        actionButton.alpha = 1;
-
-        if (dialogueObjects[0].at == 1 && (dialogueType == "normal" || dialogueType == "invis")) {
-            dialogueObjects[0].at = 0.4;
-            addAnimator(function (t) {
-                for (i in dialogueObjects) {
-                    dialogueObjects[i].offset[1] = dialogueObjects[i].defoff[1] + Math.min(t, 500);
-                }
-                if (t > 499) {
-                    for (i in dialogueObjects) {
-                        dialogueObjects[i].at = 0;
-                    }
-                    if (canMove == true) inDialogue = false;
-                    return true;
-                }
-                return false;
-            });
-        }
-        else {
-            for (i in dialogueObjects) {
-                dialogueObjects[i].alpha = 0;
-            }
-            if (canMove == true) inDialogue = false;
-        }
-    }
-    else {
-        // it is not over yet
-        dialogueScript();
-    }
-}
-
-function dialogueBox() {
-    let text;
-    if (currentDialogue == undefined || currentDialogue[dialogueProgress] == undefined) return false;
-    if (typeof (currentDialogue[dialogueProgress].text) == "string") text = currentDialogue[dialogueProgress].text;
-    else text = currentDialogue[dialogueProgress].text();
-
-    if ((textProgress * 20) >= text.length) {
-        dialogueNext();
-    }
-    else {
-        textProgress = text.length * 20;
-    }
 }
 
 function showItemPopup(itemName, amount = 1, found = true) {
@@ -742,8 +837,8 @@ function checkEnemyCollision(i) {
         playSound("encounter");
         defeatType = "default";
 
-        areaTeleportFade.fill = "white";
-        areaTeleportFade.alpha = 0;
+        objects["areaTeleportFade"].color = "white";
+        objects["areaTeleportFade"].alpha = 0;
         stopMusic();
         let previouszoom = zoom;
         setTimeout((enemyID) => {
@@ -751,10 +846,10 @@ function checkEnemyCollision(i) {
             addAnimator(function (t) {
                 zoom = 1 + (t / 500);
                 if (t > 1799 && t < 2500) {
-                    areaTeleportFade.alpha = 0 + Math.min(((Math.min(t - 1800, 400)) / 400), 1);
+                    objects["areaTeleportFade"].alpha = 0 + Math.min(((Math.min(t - 1800, 400)) / 400), 1);
                 }
                 if (t > 2499 && t < 2755) {
-                    areaTeleportFade.fill = "rgb(" + (255 - (t - 2500)) + "," + (255 - (t - 2500)) + "," + (255 - (t - 2500)) + ")";
+                    objects["areaTeleportFade"].color = "rgb(" + (255 - (t - 2500)) + "," + (255 - (t - 2500)) + "," + (255 - (t - 2500)) + ")";
                 }
                 if (t > 2999) {
                     startFight();
