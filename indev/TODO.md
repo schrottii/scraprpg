@@ -1,7 +1,7 @@
 ﻿## TODO:
 ### WGGJ migration:
 - ~~title~~, ~~pretitle~~
-- ~~game~~ (https://discord.com/channels/906961455352528906/906962468809621515/1518685835086790760)
+- ~~overworld~~ (https://discord.com/channels/906961455352528906/906962468809621515/1518685835086790760)
 - mapmaker
 - fight (bear wit me)
 - shop

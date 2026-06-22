@@ -18,10 +18,10 @@ function updateAnimators(delta) {
 
 /* assets/textures/protagonists
  | battle       | battleAnimation()
- | map          | overworld (game.js)
+ | map          | overworld (overworld.js)
  | other        | emotionAnimation()
  | portraits    | getEmotion()
- | worldmode    | overworld (game.js)
+ | worldmode    | overworld (overworld.js)
 */
 
 // emotional stuff

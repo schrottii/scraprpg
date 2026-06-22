@@ -76,7 +76,7 @@ scenes["title"] = new Scene(
                 objects["deleteButton"].y = objects["optionButton"].y = 0.5 + ((1 - Math.max(1 - a.dur / 0.6, 0)) ** 2);
 
                 if (a.dur >= 4) {
-                    loadScene("game");
+                    loadScene("overworld");
                 }
             }, 4, true);
         }

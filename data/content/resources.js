@@ -413,7 +413,7 @@ images = {
 var scenes = {
     title: "scripts/scenes/title.js",
     pretitle: "scripts/scenes/pretitle.js",
-    game: "scripts/scenes/game.js",
+    game: "scripts/scenes/overworld.js",
     fight: "scripts/scenes/fight.js",
     mapmaker: "scripts/scenes/mapmaker.js",
     inventory: "scripts/scenes/inventory.js",
