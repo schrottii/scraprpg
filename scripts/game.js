@@ -496,40 +496,30 @@ function showItemPopup(itemName, amount = 1, found = true) {
     let item = items[itemName]();
     //console.log(itemName, item)
 
-    for (let e in itemPopupElements) {
-        itemPopupElements[e].offset[1] = itemPopupElements[e].defoff[1] - 800;
-        itemPopupElements[e].alpha = 1;
-    }
+    groups["itempopup"].set("offset", (c) => [c.offset[0], c.defoff[1] - 800]);
+    groups["itempopup"].set("alpha", 1);
 
     addAnimator(function (t) {
         if (t < 800) {
-            for (let e in itemPopupElements) {
-                itemPopupElements[e].offset[1] = itemPopupElements[e].defoff[1] - 800 + t;
-            }
+            groups["itempopup"].set("offset", (c) => [c.offset[0], c.defoff[1] - 800 + t]);
         }
         if (t > 799) {
-            for (let e in itemPopupElements) {
-                itemPopupElements[e].offset[1] = itemPopupElements[e].defoff[1];
-            }
+            groups["itempopup"].set("offset", (c) => [c.offset[0], c.defoff[1]]);
         }
         if (t > 3799) {
-            for (let e in itemPopupElements) {
-                itemPopupElements[e].offset[1] = itemPopupElements[e].defoff[1] - (t - 3800);
-            }
+            groups["itempopup"].set("offset", (c) => [c.offset[0], c.defoff[1] - (t - 3000)]);
         }
         if (t > 4599) {
-            for (let e in itemPopupElements) {
-                itemPopupElements[e].alpha = 0;
-            }
+            groups["itempopup"].set("alpha", 0);
             return true;
         }
         return false;
     });
 
-    itemPopupElements[2].source = "items/" + item.source;
-    itemPopupElements[3].text = found ? "Item found" : "Item received";
-    itemPopupElements[4].text = item.name + "  x" + amount;
-    itemPopupElements[5].text = item.desc;
+    objects["itempopup_image"].image = "items/" + item.source;
+    objects["itempopup_text1"].text = found ? "Item found" : "Item received";
+    objects["itempopup_text2"].text = item.name + "  x" + amount;
+    objects["itempopup_text3"].text = item.desc;
 }
 
 // Weather time thing

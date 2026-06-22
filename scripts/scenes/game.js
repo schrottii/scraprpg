@@ -169,6 +169,45 @@ scenes["game"] = new Scene(
         groups["dialogue_cutscene"].set("defoff", (c) => c.offset);
         groups["dialogue_cutscene"].set("falpha", (c) => c.config.falpha);
 
+
+
+        // item popup
+        createButton("itempopup_squareBG", 0.35, 0.15, 0.3, 0.1, colors.topcolor, () => {
+            if (this.alpha > 0) {
+            removeNotification("item");
+                for (let e in itemPopupElements) {
+                    itemPopupElements[e].alpha = 0;
+                }
+            }
+        }, { sizeOffset: [128, 128], offset: [-64, -64], alpha: 0 });
+        createSquare("itempopup_square2", 0.35, 0.15, 0.3, 0.1, colors.bottomcolor, {
+            sizeOffset: [112, 112], offset: [-64 + 8, -64 + 8], alpha: 0
+        });
+        createImage("itempopup_image", 0.35, 0.2, 0, 0, "items/potion", {
+            sizeOffset: [128, 128], offset: [-64, -64], alpha: 0
+        });
+        createText("itempopup_text1", 0.4, 0.15, "...", {
+            align: "left", size: 16, color: "white", alpha: 0
+        });
+        createText("itempopup_text2", 0.4, 0.2, "...", {
+            align: "left", size: 24, color: "white", alpha: 0
+        });
+        createText("itempopup_text3", 0.4, 0.25, "...", {
+            align: "left", size: 20, color: "white", alpha: 0
+        });
+
+        createGroup("itempopup", ["itempopup_squareBG", "itempopup_square2", "itempopup_image",
+            "itempopup_text1", "itempopup_text2", "itempopup_text3"]);
+        groups["itempopup"].set("defoff", (c) => c.offset);
+
+        createImage("areaNameBox1", 0.2, 0, 0.6, 0.4, "hangingsign", { alpha: 0 });
+        createText("areaNameBox2", 0.5, 0.25, "", {
+            align: "center", size: 32, color: "black", alpha: 0
+        });
+        createGroup("areaNameBox", ["areaNameBox1", "areaNameBox2"]);
+
+
+
         /*
     let fallingRain = Particles({
         anchor: [-0.2, -0.2], spreadAnchor: [1, 0], sizeOffset: [64, 64],
@@ -274,33 +313,25 @@ scenes["game"] = new Scene(
         }
 
         // map sign
-        /*
         if (previousMap != maps[game.map].name) {
             previousMap = maps[game.map].name;
-            areaNameBox[1].text = maps[game.map].name;
+            objects["areaNameBox2"].text = maps[game.map].name;
 
-            for (i in areaNameBox) {
-                areaNameBox[i].alpha = 1;
-                areaNameBox[i].offset = [0, 0];
-            }
+            groups["areaNameBox"].set("alpha", 1);
+            groups["areaNameBox"].set("offset", [0, 0]);
 
             setTimeout(() => { // Box disappear
                 addAnimator(function (t) {
-                    for (i in areaNameBox) {
-                        //areaNameBox[i].alpha = 1 - (t / 500);
-                        areaNameBox[i].offset[1] = t * (-0.5);
-                    }
+                    //areaNameBox[i].alpha = 1 - (t / 500);
+                    groups["areaNameBox"].set("offset", [0, t * (-0.5)]);
                     if (t > 999) {
-                        for (i in areaNameBox) {
-                            areaNameBox[i].alpha = 0;
-                        }
+                        groups["areaNameBox"].set("alpha", 0);
                         return true;
                     }
                     return false;
                 });
             }, 800);
         }
-        */
 
         // stuffs
         //renderWeather();
