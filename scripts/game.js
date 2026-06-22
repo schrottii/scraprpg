@@ -326,6 +326,7 @@ function renderDialogue() {
     if (inDialogue == true && cutsceneMode == true) {
     }
     */
+
     if (inDialogue == true && cutsceneMode == false) {
         switch (dialogueType) {
             case "normal":
@@ -390,23 +391,27 @@ function renderDialogue() {
                 else if (typeof (currentDialogue[dialogueProgress].text) == "string") objects[dTextID].text = animatedText(currentDialogue[dialogueProgress].text);
                 else objects[dTextID].text = animatedText(currentDialogue[dialogueProgress].text());
 
-                if (dNameID != -1) { // Change name display if it exists
+                // Change (character) name display if it exists
+                if (dNameID != -1) {
                     if (currentDialogue[dialogueProgress].name != undefined) objects[dNameID].text = currentDialogue[dialogueProgress].name;
                     else objects[dNameID].text = "Bleu";
                 }
-                if (dPortraitID != -1) { // Change portrait display if it exists
+                // Change portrait display if it exists
+                if (dPortraitID != -1) {
                     dialogueEmotion = currentDialogue[dialogueProgress].emotion;
                     if (currentDialogue[dialogueProgress].portrait != undefined) {
                         objects[dPortraitID].image = currentDialogue[dialogueProgress].portrait;
                         if (dialogueEmotion != undefined) objects[dPortraitID].snip = getEmotion(dialogueEmotion);
                         else objects[dPortraitID].snip = getEmotion("neutral");
                     }
-                    else { // doesn't exist - use default
+                    else {
+                        // doesn't exist - use default
                         objects[dPortraitID].image = "Bleu_Portrait";
                         objects[dPortraitID].snip = getEmotion("neutral");
                     }
                 }
 
+                // appearance of star and action button
                 if (currentDialogue[dialogueProgress + 1] != undefined) objects[dStarID].alpha = 1; // Star
                 objects["actionButton"].alpha = 0;
             }
@@ -457,10 +462,13 @@ function dialogueBox() {
     if (typeof (currentDialogue[dialogueProgress].text) == "string") text = currentDialogue[dialogueProgress].text;
     else text = currentDialogue[dialogueProgress].text();
 
+    // always assumes text speed is 20
     if ((textProgress * 20) >= text.length) {
+        console.log("next text");
         dialogueNext(c);
     }
     else {
+        console.log("speed up text");
         textProgress = text.length * 20;
     }
 }

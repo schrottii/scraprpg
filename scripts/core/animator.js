@@ -1,4 +1,4 @@
-// basic animations
+﻿// basic animations
 let animators = [];
 
 function addAnimator(fs) {
@@ -227,8 +227,17 @@ function animatedText(text, speed = 20) { // 8, 20, 24
     if (textProgress == -1) textProgress = 0;
     let prog = Math.floor(textProgress * speed);
     if (prog < text.length) {
+        // play sound
         if (currentDialogue[dialogueProgress].voice == false || currentDialogue[dialogueProgress].voice == undefined) playSound("female_young");
         else playSound(currentDialogue[dialogueProgress].voice);
     }
+    // return how much of the text shall be shown
     return text.slice(0, prog);
 }
+
+/*
+function animatedTextDone(text) {
+    // is it done appearing yet?
+    return Math.floor(textProgress * speed) >= text.length;
+}
+*/

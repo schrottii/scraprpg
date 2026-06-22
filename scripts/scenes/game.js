@@ -77,7 +77,7 @@ scenes["game"] = new Scene(
         createText("autoSaveText", 0.025, 0.98, "Game saved", { offset: [12, -12], size: 16, alpha: 0 });
 
         // DIALOGUE STUFF
-        createButton("dialogue_normal_squareBG", 0, 1, 1, 0, colors.bottomcolor, () => { dialogueBox(); }, {
+        createButton("dialogue_normal_squareBG", 0, 1, 1, 0, colors.bottomcolor, (c) => { if (objects[c].alpha > 0) dialogueBox(); }, {
             offset: [0, -200], sizeOffset: [0, 200], alpha: 0, falpha: 1
         });
         createSquare("dialogue_normal_square2", 0.01, 1.01, 0, 0, colors.topcolor, {
@@ -88,7 +88,7 @@ scenes["game"] = new Scene(
         });
         createText("dialogue_normal_charactername", 0.01, 1.01, "", {
             align: "center", size: 20, color: "black",
-            offset: [64, -34], alpha: 0, falpha: 1
+            offset: [64, -24], alpha: 0, falpha: 1
         });
         createSquare("dialogue_normal_square4", 0.01, 1.01, 0.8, 0, colors.topcolor, {
             offset: [164, -200], sizeOffset: [0, 178], alpha: 0, falpha: 1
@@ -97,8 +97,9 @@ scenes["game"] = new Scene(
             offset: [0, -192], sizeOffset: [128, 128], alpha: 0, falpha: 1,
             snip: [0, 0, 64, 64]
         });
-        createText("dialogue_normal_maintext", 0, 1, "...", {
-            align: "left", size: 16, color: "black",
+        createSmartText("dialogue_normal_maintext", 0, 1, "...", {
+            align: "left", size: 20, color: "black",
+            maxW: 0.7, autoLinebreak: 160,
             offset: [196, -168], alpha: 0, falpha: 1
         });
         createImage("dialogue_normal_continuestar", 0.81, 1, 0, 0, "star", {
@@ -113,14 +114,15 @@ scenes["game"] = new Scene(
         groups["dialogue_normal"].set("defoff", (c) => c.offset);
         groups["dialogue_normal"].set("falpha", (c) => c.config.falpha);
 
-        createButton("dialogue_invis_squareBG", 0, 1, 1, 0, colors.bottomcolor, () => { dialogueBox(); }, {
+        createButton("dialogue_invis_squareBG", 0, 1, 1, 0, colors.bottomcolor, (c) => { if (objects[c].alpha > 0) dialogueBox(); }, {
             offset: [0, -200], sizeOffset: [0, 200], alpha: 0, falpha: 1
         });
         createSquare("dialogue_invis_square2", 0.01, 1.01, 0.98, 0, colors.topcolor, {
             offset: [0, -200], sizeOffset: [0, 180], alpha: 0, falpha: 1
         });
-        createText("dialogue_invis_maintext", 0.02, 1, "...", {
-            align: "left", size: 16, color: "black",
+        createSmartText("dialogue_invis_maintext", 0.02, 1, "...", {
+            align: "left", size: 20, color: "black",
+            maxW: 0.75, autoLinebreak: 160,
             offset: [0, -168], alpha: 0, falpha: 1
         });
         createImage("dialogue_invis_continuestar", 0.8, 1, 0, 0, "star", {
@@ -133,11 +135,12 @@ scenes["game"] = new Scene(
         groups["dialogue_invis"].set("defoff", (c) => c.offset);
         groups["dialogue_invis"].set("falpha", (c) => c.config.falpha);
 
-        createButton("dialogue_narrator_squareBG", 0, 0, 1, 1, "narratorbg", () => { dialogueBox(); }, {
+        createButton("dialogue_narrator_squareBG", 0, 0, 1, 1, "narratorbg", (c) => { if (objects[c].alpha > 0) dialogueBox(); }, {
             alpha: 0, falpha: 1
         });
-        createText("dialogue_narrator_maintext", 0.5, 0.5, "...", {
-            align: "center", size: 16, color: "white",
+        createSmartText("dialogue_narrator_maintext", 0.5, 0.5, "...", {
+            align: "center", size: 20, color: "white",
+            maxW: 0.6, autoLinebreak: 120,
             alpha: 0, falpha: 1
         });
         createImage("dialogue_narrator_continuestar", 0.8, 1, 0, 0, "star", {
@@ -149,11 +152,12 @@ scenes["game"] = new Scene(
         groups["dialogue_narrator"].set("defoff", (c) => c.offset);
         groups["dialogue_narrator"].set("falpha", (c) => c.config.falpha);
 
-        createButton("dialogue_cutscene_squareBG", 0, 0, 1, 1, "narratorbg", () => { dialogueBox(); }, {
+        createButton("dialogue_cutscene_squareBG", 0, 0, 1, 1, "narratorbg", (c) => { if (objects[c].alpha > 0) dialogueBox(); }, {
             alpha: 0, falpha: 0.1
         });
-        createText("dialogue_cutscene_maintext", 0.01, 1, "...", {
+        createSmartText("dialogue_cutscene_maintext", 0.01, 1, "...", {
             align: "left", size: 16, color: "white",
+            maxW: 0.98, autoLinebreak: 200,
             offset: [0, -96], alpha: 0, falpha: 1
         });
         createImage("dialogue_cutscene_continuestar", 0.8, 1, 0, 0, "star", {
@@ -537,7 +541,7 @@ scenes["game"] = new Scene(
         // Keybinds
         // action
         if (currentKeys[" "] && spaceBarTime > 199) {
-            objects["actionButton"].onClick();
+            objects["actionButton"].onClick("actionButton");
             dialogueBox();
             spaceBarTime = 0;
         }
@@ -554,7 +558,7 @@ scenes["game"] = new Scene(
             canMove = false;
             game.stats.inventory++;
             fadeOut(1000 / 3, true, () => {
-                setScene(scenes.inventory());
+                loadScene("inventory");
                 canMove = true;
             });
         }

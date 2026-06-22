@@ -67,6 +67,7 @@ v1.8:
 - snip config for images
 - breaking onClick,etc. loops when object no longer defined (scene change)
 - groups: set,etc. can now be a lambda (passed: object)
+- SmartText autoLinebreak no longer splits mid word
 */
 
 
@@ -762,8 +763,11 @@ class WGGJ_SmartText extends WGGJ_Text {
             // automatic line breaks
             if (this.autoLinebreak != 0 && charsUsed + splitLine.length > this.autoLinebreak) {
                 // add overweight text after the current element and cut current short
-                splitText.splice(sT + 1, 0, splitLine.substr(this.autoLinebreak - charsUsed));
-                splitLine = splitLine.substr(0, this.autoLinebreak - charsUsed);
+                // where splitLine is the current (shorten it) and splitText (list of lines) gains a new line
+                let spaceToSplit = splitLine.substr(0, this.autoLinebreak - charsUsed).lastIndexOf(" ");
+
+                splitText.splice(sT + 1, 0, splitLine.substr(spaceToSplit));
+                splitLine = splitLine.substr(0, spaceToSplit);
                 charsUsed = 0;
             }
             else charsUsed += splitLine.length;
