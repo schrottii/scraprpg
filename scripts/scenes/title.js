@@ -77,8 +77,9 @@ scenes["title"] = new Scene(
 
                 if (a.dur >= 4) {
                     loadScene("overworld");
+                    a.kill();
                 }
-            }, 4, true);
+            }, 4.2, true);
         }
 
         function loadOptions() {
@@ -95,7 +96,7 @@ scenes["title"] = new Scene(
                 }
 
                 if (t > 599) {
-                    fadeOut(500, true, () => setScene(scenes.settings()));
+                    fadeOut(500, true, () => loadScene("settings"));
                     return true;
                 }
                 return false;

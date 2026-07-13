@@ -68,6 +68,7 @@ v1.8:
 - breaking onClick,etc. loops when object no longer defined (scene change)
 - groups: set,etc. can now be a lambda (passed: object)
 - SmartText autoLinebreak no longer splits mid word
+- object render try/error catching
 */
 
 
@@ -1610,8 +1611,16 @@ function wggjLoop() {
             if (isValid(animations[a])) animations[a].durationTick(wggj.time.delta / 1000, a);
         }
         // normal objects
-        for (o in objects) {
-            if (!objects[o].config?.foreground) objects[o].render();
+        try {
+            for (o in objects) {
+                if (!objects[o].config?.foreground) objects[o].render();
+            }
+        }
+        catch (e) {
+            console.log("WGGJ: error in rendering object " + o + ": ");
+            console.log(objects[o]);
+            console.log(e);
+            debugger
         }
         // foreground objects <- ??
         for (o in objects) {

@@ -1,3 +1,184 @@
+scenes["inventory"] = new Scene(
+    () => {
+        // Init
+        // Background
+        createSquare("bg", 0, 0, 1, 1, colors.bottomcolor);
+        createSquare("bg2", 0.01, 0.01, 0.98, 0.98, colors.topcolor);
+
+        createSquare("bgline1", 0.61, 0.01, 0.005, 0.98, colors.bottomcolor);
+        createSquare("bgline2", 0.305, 0.01, 0.005, 0.98, colors.bottomcolor);
+
+        // Buttons on the right
+        for (i = 0; i < 9; i++) {
+            createButton("sidebutton" + i, 0.7, 0.04 + (i * 0.1), 0.2, 0.085, "button", () => {
+                playSound("buttonClickSound");
+                fadeOut(1000 / 3, true, (id = this.id) => {
+                    if (id == 0) setScene(scenes.questscene());
+                    if (id == 1) setScene(scenes.itemscene());
+                    if (id == 2) setScene(scenes.magicscene());
+                    if (id == 3) setScene(scenes.equipment());
+                    if (id == 4) setScene(scenes.formation());
+                    if (id == 5) setScene(scenes.monsterbook());
+                    if (id == 6) setScene(scenes.savemanager());
+                    if (id == 7) setScene(scenes.settings());
+                    if (id == 8) setScene(scenes.game());
+                });
+            }, {
+                aText: { size: 32, text: ["Quests", "Items", "Magic", "Equipment", "Formation", "Monster Book", "Save Manager", "Settings", "Exit Menu"][i] }
+            });
+            objects["sidebutton" + i].id = i;
+
+            createImage("sidebuttonpic" + i, 0.7, 0.004 + (0.085 / 2) + (i * 0.1), 0, 0,
+                ["items/scroll", "items/potion", "fire", "inventory", "grid", "monsterbook", "save", "gear", "flee"][i]
+                , { sizeOffset: [64, 64] });
+            objects["sidebuttonpic" + i].id = i;
+
+            createImage("sidebuttonping" + i, 0.7, 0.004 + (0.085 / 2) + (i * 0.1), 0, 0,
+                "ping", { sizeOffset: [32, 32], clickthrough: true, alpha: 0 }
+            );
+            objects["sidebuttonping" + i].id = i;
+            objects["sidebuttonping" + i].notif = ["quest", "item", "magic", "", "", "book", "", "", ""][i]
+        }
+
+        // characters
+        let cnr; // character number
+        for (i = 0; i < 2; i++) {
+            for (j = 0; j < 3; j++) {
+                cnr = j + (i * 3);
+                createText("char_emptyslot" + cnr, 0.16 + (0.3 * i), 0.15 + (0.3 * j), "No Party Member", {
+                    size: 32, color: "black", alpha: 0
+                });
+                createButton("char_bgbutton" + cnr, 0.01 + (0.3 * i), 0.01 + (0.3 * j), 0.3, 0.3, "button", () => {
+                    if (objects["char_emptyslot" + this.cnr].alpha == 0) {
+                        fadeOut(1000 / 3, true, () => setScene(scenes.status(objects["char_pic" + this.cnr].source)));
+                    }
+                }, { alpha: 0 });
+                objects["char_bgbutton"].cnr = cnr;
+
+                createText("char_name" + cnr, 0.06 + (0.3 * i), 0.08 + (0.3 * j), "Bleu", {
+                    align: "left", size: 32, color: "black", alpha: 0
+                });
+                createText("char_lvl" + cnr, 0.075 + (0.3 * i), 0.08 + (0.3 * j), "Lvl. 1", {
+                    align: "left", size: 20, color: "black", alpha: 0
+                });
+                objects["char_lvl" + cnr].defoff = 0.075 + (0.3 * i); // for adjusting based on name length
+
+                createImage("char_pic" + cnr, 0.05 + (0.3 * i), 0.275 + (0.3 * j), 0, 0, "bleu",
+                    { alpha: 0, sizeOffset: [64, 64], snip: [0, 0, 32, 32], offset: [0, -64] });
+                createImage("char_statuseffect" + cnr, 0.15 + (0.3 * i), 0.275 + (0.3 * j), 0, 0, "poison",
+                    { alpha: 0, sizeOffset: [64, 64], offset: [0, -64] });
+
+                createSquare("char_bgline" + cnr, 0.01 + (0.3 * i), 0.3 + (0.3 * j), 0.3, 0, colors.bottomcolor,
+                    { sizeOffset: [0, 5] });
+
+                // health bar
+
+                // mana bar
+
+                // XP bar
+            }
+        }
+
+        // cool info yippee <:3
+        createText("displays_ingametime", 0.6, 0.95, "0", {
+            color: "black", align: "right", size: 20
+        });
+        createText("displays_savetime", 0.02, 0.95, "0", {
+            color: "black", align: "left", size: 20
+        });
+        // smort |:3
+        createImage("wrench", -10, 0, 0, 0, "wrench");
+        createSmartText("displays_wrenches", 0.295, 0.94, "0", {
+            color: "black", align: "right", size: 24,
+            images: { currency: "wrench" }
+        });
+        createImage("brick", -10, 0, 0, 0, "brick");
+        createSmartText("displays_bricks", 0.295, 0.98, "0", {
+            color: "black", align: "right", size: 24,
+            images: { currency: "brick" }
+        });
+
+        // why ze HECC was dis in coolDisplays alongside TEXZZ beforr >:3c
+        createButton("open_stats", 0.31, 0.905, 0.15, 0.085, "button", () => {
+            playSound("buttonClickSound");
+            fadeOut(1000 / 3, true, () => {
+                setScene(scenes.stats());
+            });
+        }, { aText: { text: "Stats", size: 32 } });
+
+        fadeIn(1000 / 3, true);
+    },
+    (tick) => {
+        // Loop
+        // update coolDisplays
+        objects["displays_ingametime"].text = "Current time: " + getTime();
+        objects["displays_savetime"].text = "Total time spent: " + getTime(game.stats.playTime, 60, 3600, true);
+
+        objects["displays_wrenches"].text = game.wrenches + "i{currency}";
+        objects["displays_bricks"].text = game.bricks + "i{currency}";
+
+        // protagonists / characters
+        for (let i = 0; i < game.chars.length; i++) {
+            objects["char_emptyslot" + i].alpha = 0;
+
+            objects["char_name" + i].text = getPlayer(i + 1).name;
+            objects["char_lvl" + i].text = "Lvl. " + getPlayer(i + 1).level;
+            objects["char_lvl" + i].x = objects["char_lvl" + i].defoff + (getPlayer(i + 1).name.length * 0.01);
+            objects["char_name" + i].alpha = 1;
+            objects["char_lvl" + i].alpha = 1;
+
+            // image
+            objects["char_pic" + i].alpha = 1;
+            if (getPlayer(i + 1).HP > 0) {
+                objects["char_pic" + i].source = getPlayer(i + 1).name.toLowerCase();
+                objects["char_pic" + i].snip = [0, 0, 32, 32];
+            }
+            else {
+                objects["char_pic" + i].source = getPlayer(i + 1).name.toLowerCase() + "_battle";
+                objects["char_pic" + i].snip = battleAnimation(getPlayer(i + 1).name.toLowerCase(), "dead");
+            }
+
+            if (getPlayer(i + 1).effect[0] != "none") {
+                objects["char_statuseffect" + i].source = getPlayer(i + 1).effect[0];
+                objects["char_statuseffect" + i].alpha = 1;
+            }
+
+            // Barz
+            /*
+            if (getPlayer(1 + i).HP > 0) characterBars[2 + (i * 15)].sizeAnchor[0] = 0.1960 * (getPlayer(1 + i).HP / getStat(getPlayer(1 + i).name, "maxHP"));
+            else characterBars[2 + (i * 15)].sizeAnchor[0] = 0.00001;
+
+            if (getPlayer(1 + i).EP > 0) characterBars[6 + (i * 15)].sizeAnchor[0] = 0.1960 * ((0.00001 + getPlayer(1 + i).EP) / getStat(getPlayer(1 + i).name, "maxEP"));
+            else characterBars[6 + (i * 15)].sizeAnchor[0] = 0.00001;
+
+            if (getPlayer(1 + i).EXP > 0) characterBars[10 + (i * 15)].sizeAnchor[0] = 0.1960 * ((0.00001 + getPlayer(1 + i).EXP) / calcEXP(getPlayer(1 + i).name));
+            else characterBars[10 + (i * 15)].sizeAnchor[0] = 0.00001;
+
+            characterBars[12 + (i * 15)].text = getPlayer(1 + i).HP + "/" + getStat(getPlayer(1 + i).name, "maxHP");
+            characterBars[13 + (i * 15)].text = getPlayer(1 + i).EP + "/" + getStat(getPlayer(1 + i).name, "maxEP");
+            characterBars[14 + (i * 15)].text = getPlayer(1 + i).EXP + "/" + calcEXP(getPlayer(1 + i).name);
+            
+
+            for (j = 0; j < 15; j++) {
+                // all except loss
+                if (j != 3 && j != 7 && j != 11) characterBars[(i * 15) + j].alpha = 1;
+            }
+            */
+        }
+
+        // remove No Party Member for every slot that has someone
+        for (let i = 0 + game.chars.length; i < 6; i++) {
+            objects["char_emptyslot" + i].alpha = 1;
+        }
+
+        // update ping icons
+        for (let i = 0; i < 9; i++) {
+            objects["sidebuttonping" + i].alpha = notifications.includes(objects["sidebuttonping" + i].notif) ? 1 : 0;
+        }
+    }
+);
+
+/*
 scenes.inventory = () => {
     let background = [];
     let buttons = [];
@@ -327,3 +508,4 @@ scenes.inventory = () => {
         name: "inventory"
     }
 }
+*/

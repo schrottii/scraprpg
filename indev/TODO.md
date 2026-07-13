@@ -1,12 +1,14 @@
-﻿## TODO:
-### WGGJ migration:
+﻿# TODO:
+## WGGJ migration:
+Important:
 - ~~title~~, ~~pretitle~~
 - ~~overworld~~ (https://discord.com/channels/906961455352528906/906962468809621515/1518685835086790760)
 - mapmaker
 - fight (bear wit me)
 - shop
 
-- inventory
+Inventory:
+- ~~inventory~~
 - equipment
 - itemscene, magicscene
 - formation
@@ -16,6 +18,7 @@
 - status
 - stats
 
+Misc:
 - credits
 - settings
 
@@ -23,8 +26,14 @@ Notes:
 - do not migrate tiles (do renderlayer) and music yet
 - we are using an indev version of v1.7, er, v1.8
 
-### Other:
+## Other:
+For v1.1:
+- WGGJ migration
+- New overworld UI / selection
+
+Sometime:
 - Monster Book: Enemy details
+- New maps of course!
 
 
 
@@ -34,7 +43,7 @@ Notes:
 
 
 
-
+# Phases
 ## Phase 1:
 The developing phase, Schrottii's phase, the essential features of the game, mostly coding (DEFINITELY a bad decision in hindsight, sigh).
 Nov 13th 2021 - Nov 1st 2022!
@@ -60,7 +69,8 @@ The testing & publishing phase. This will be fun.
 - Nerf Skro!!!
 - Publish the game
 
-### The 7 roles:
+# Team
+## The 7 roles:
 - Programming
 - Ideas
 - Story
@@ -69,7 +79,8 @@ The testing & publishing phase. This will be fun.
 - Maps
 - Testing
 
-### Chapters:
+# Game
+## Chapters:
 - Pre-chapter 1
 - Chapter 1
 - Chapter 2 (Boss: DZ)

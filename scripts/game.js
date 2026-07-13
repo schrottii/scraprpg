@@ -464,11 +464,11 @@ function dialogueBox() {
 
     // always assumes text speed is 20
     if ((textProgress * 20) >= text.length) {
-        console.log("next text");
+        //console.log("next text");
         dialogueNext(c);
     }
     else {
-        console.log("speed up text");
+        //console.log("speed up text");
         textProgress = text.length * 20;
     }
 }

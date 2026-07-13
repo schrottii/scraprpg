@@ -62,7 +62,7 @@ scenes["overworld"] = new Scene(
             if (canMove == true) {
                 playSound("buttonClickSound");
                 game.stats.inventory++;
-                fadeOut(1000 / 3, true, () => setScene(scenes.inventory()));
+                fadeOut(1000 / 3, true, () => loadScene("inventory"));
             }
         }, { offset: [-128, 0], sizeOffset: [128, 128] });
         createImage("inventoryButtonPing", 1, 0, 0, 0, "ping",
