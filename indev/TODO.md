@@ -29,10 +29,13 @@ Notes:
 ## Other:
 For v1.1:
 - WGGJ migration
-- New overworld UI / selection
+- overworld: new UI / selection
+- overworld: weather effects re-added
+- bars: loss animation on change
 
 Sometime:
 - Monster Book: Enemy details
+- overworld: putting tiles into render layers and fixing some oddities with them
 - New maps of course!
 
 

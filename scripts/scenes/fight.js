@@ -86,44 +86,6 @@ function battleNumber(pos, displayText, type, offset = [0, 0], crit = false) {
     })
 }
 
-function updateBar(charName, type, before, amount, max) {
-    // used to update the fightStats (bottom), those HP and EP bars, you know
-    // type 0 HP 1 EP
-    // now automated --> updatePositions()
-
-    // preparations
-    if (amount < 0) amount = 0;
-    if (fightStats.length < 1) return false; // we are not in a fight - do not render!
-
-    let whichChar = characters.indexOf(charName);
-    let which = (type == 0 ? 5 : 9) + (whichChar * amountFightStats);
-    let row = Math.ceil((whichChar + 1) / 3); // 1 or 2
-
-    let Leftend = 0.1960 * (Math.max(amount, 0) / max);
-    let Length = (0.1960 * (before / max)) - Leftend;
-
-    fightStats[which].alpha = 1;
-    fightStats[which - 1].alpha = 1;
-    if (amount > 0) fightStats[which - 1].sizeAnchor[0] = 0.1960 * (amount / max);
-    fightStats[which].anchor[0] = 0.242 + Leftend + (0.35 * (row - 1));
-    fightStats[which].sizeAnchor[0] = Length;
-    addAnimator(function (t) {
-        if (t > 200) {
-            fightStats[which].sizeAnchor[0] = Length * Math.max(0.01, (1 - (Math.min((t - 199) * 1 / 600, 1))));
-        }
-
-        if (t > 800) {
-            fightStats[which].alpha = 0;
-            if (amount < 1) {
-                fightStats[which - 1].alpha = 0;
-                fightStats[which].alpha = 0;
-            }
-            return true;
-        }
-    });
-}
-
-
 
 scenes.fight = () => {
     var fightAction = "none";

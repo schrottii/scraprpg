@@ -53,7 +53,7 @@ scenes["inventory"] = new Scene(
                         fadeOut(1000 / 3, true, () => setScene(scenes.status(objects["char_pic" + this.cnr].source)));
                     }
                 }, { alpha: 0 });
-                objects["char_bgbutton"].cnr = cnr;
+                objects["char_bgbutton" + cnr].cnr = cnr;
 
                 createText("char_name" + cnr, 0.06 + (0.3 * i), 0.08 + (0.3 * j), "Bleu", {
                     align: "left", size: 32, color: "black", alpha: 0
@@ -71,11 +71,10 @@ scenes["inventory"] = new Scene(
                 createSquare("char_bgline" + cnr, 0.01 + (0.3 * i), 0.3 + (0.3 * j), 0.3, 0, colors.bottomcolor,
                     { sizeOffset: [0, 5] });
 
-                // health bar
-
-                // mana bar
-
-                // XP bar
+                // all the bars - now global :)
+                createBarHP("bar_hp" + cnr, 0.06 + (i * 0.3), 0.095 + (0.3 * j), 0.2, 0.025);
+                createBarMANA("bar_mana" + cnr, 0.06 + (i * 0.3), 0.135 + (0.3 * j), 0.2, 0.025);
+                createBarEXP("bar_exp" + cnr, 0.06 + (i * 0.3), 0.175 + (0.3 * j), 0.2, 0.025);
             }
         }
 
@@ -130,11 +129,11 @@ scenes["inventory"] = new Scene(
             // image
             objects["char_pic" + i].alpha = 1;
             if (getPlayer(i + 1).HP > 0) {
-                objects["char_pic" + i].source = getPlayer(i + 1).name.toLowerCase();
+                objects["char_pic" + i].image = getPlayer(i + 1).name.toLowerCase();
                 objects["char_pic" + i].snip = [0, 0, 32, 32];
             }
             else {
-                objects["char_pic" + i].source = getPlayer(i + 1).name.toLowerCase() + "_battle";
+                objects["char_pic" + i].image = getPlayer(i + 1).name.toLowerCase() + "_battle";
                 objects["char_pic" + i].snip = battleAnimation(getPlayer(i + 1).name.toLowerCase(), "dead");
             }
 
@@ -144,26 +143,15 @@ scenes["inventory"] = new Scene(
             }
 
             // Barz
-            /*
-            if (getPlayer(1 + i).HP > 0) characterBars[2 + (i * 15)].sizeAnchor[0] = 0.1960 * (getPlayer(1 + i).HP / getStat(getPlayer(1 + i).name, "maxHP"));
-            else characterBars[2 + (i * 15)].sizeAnchor[0] = 0.00001;
-
-            if (getPlayer(1 + i).EP > 0) characterBars[6 + (i * 15)].sizeAnchor[0] = 0.1960 * ((0.00001 + getPlayer(1 + i).EP) / getStat(getPlayer(1 + i).name, "maxEP"));
-            else characterBars[6 + (i * 15)].sizeAnchor[0] = 0.00001;
-
-            if (getPlayer(1 + i).EXP > 0) characterBars[10 + (i * 15)].sizeAnchor[0] = 0.1960 * ((0.00001 + getPlayer(1 + i).EXP) / calcEXP(getPlayer(1 + i).name));
-            else characterBars[10 + (i * 15)].sizeAnchor[0] = 0.00001;
-
-            characterBars[12 + (i * 15)].text = getPlayer(1 + i).HP + "/" + getStat(getPlayer(1 + i).name, "maxHP");
-            characterBars[13 + (i * 15)].text = getPlayer(1 + i).EP + "/" + getStat(getPlayer(1 + i).name, "maxEP");
-            characterBars[14 + (i * 15)].text = getPlayer(1 + i).EXP + "/" + calcEXP(getPlayer(1 + i).name);
-            
-
-            for (j = 0; j < 15; j++) {
-                // all except loss
-                if (j != 3 && j != 7 && j != 11) characterBars[(i * 15) + j].alpha = 1;
-            }
-            */
+            updateBar("bar_hp" + i,
+                getPlayer(1 + i).HP / getStat(getPlayer(1 + i).name, "maxHP"),
+                getPlayer(1 + i).HP + "/" + getStat(getPlayer(1 + i).name, "maxHP"), true);
+            updateBar("bar_mana" + i,
+                getPlayer(1 + i).EP / getStat(getPlayer(1 + i).name, "maxEP"),
+                getPlayer(1 + i).EP + "/" + getStat(getPlayer(1 + i).name, "maxEP"), true);
+            updateBar("bar_exp" + i,
+                getPlayer(1 + i).EXP / calcEXP(getPlayer(1 + i).name),
+                getPlayer(1 + i).EXP + "/" + calcEXP(getPlayer(1 + i).name), true);
         }
 
         // remove No Party Member for every slot that has someone
