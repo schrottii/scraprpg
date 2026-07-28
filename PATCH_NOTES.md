@@ -234,13 +234,22 @@
 ## v1.1 (?)
 indev name: 1.0.8
 
+-> WGGJ:
+.
+
+-> Scenes:
+- Formation: Grid is now shown differently if that setting is turned off
+- Formation: Changed display of the row stats
+- Formation: Macro Configuration now shows one square for every option
+
 -> Enemy behavior: 
 - Added ability for certain enemies to swim
 - NPCs and enemies can now walk half a step in worldmode
 - Improved enemy spawning
 
 -> Other:
-- New map button design
+- New button design
+- New overworld action buttons design
 
 -> Bug fixes:
 - Fixed wrong character names in title screen

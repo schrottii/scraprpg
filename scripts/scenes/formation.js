@@ -47,10 +47,20 @@ unavailable, it will redirect to Defend.`,
                             current = macros.indexOf(dude.macro);
                         }
                         while (dude.name.toLowerCase() != macroUsers[current] && macroUsers[current] != "all"); // keep going while you are not allowed to use it
+                    
+                        // update squares
+                        let usableMacros = objects["macro_btn" + (i + (j * 3))].usableMacros;
+                        for (let m = 0; m < usableMacros.length; m++) {
+                            objects["macro_btn" + (i + (j * 3)) + "_square" + m].color = current == macros.indexOf(usableMacros[m]) ? "red" : "black";
+                        }
                     }
                 }, { aText: { text: "Attack", size: 24, color: "black" } });
                 objects["macro_btn" + (i + (j * 3))].i = i;
                 objects["macro_btn" + (i + (j * 3))].j = j;
+
+                createText("macro_btn_charname" + (i + (j * 3)), 0.615 + (j * 0.225), 0.24 + (0.15 * i), "", {
+                    size: 24, color: "black", align: "center"
+                })
             }
         }
 
@@ -58,49 +68,62 @@ unavailable, it will redirect to Defend.`,
 
         for (let j = 0; j < 3; j++) {
             for (let i = 0; i < 3; i++) {
-                createImage("posgrid" + j + "." + i, 0.075, 0.15, 0, 0, "grid", {
-                    offset: [144 * i, 144 * j], sizeOffset: [128, 128]
-                });
+                if (settings.grid) {
+                    createImage("posgrid" + j + "." + i, 0.075, 0.15, 0, 0, "grid", {
+                        offset: [144 * i, 144 * j], sizeOffset: [128, 128]
+                    });
+                }
+                else {
+                    createSquare("posgrid" + j + "." + i, 0.075, 0.15, 0, 0, ["blue", "pink", "red"][i], {
+                        offset: [144 * i, 144 * j], sizeOffset: [128, 128], alpha: 0.2
+                    });
+                    createSquare("posgridb" + j + "." + i, 0.075, 0.15, 0, 0, ["blue", "pink", "red"][i], {
+                        offset: [144 * i + 16, 144 * j + 16], sizeOffset: [128 - 32, 128 - 32], alpha: 0.4
+                    });
+                }
                 createButton("poschar" + j + "." + i, 0.075, 0.15, 0, 0, "gear", (c) => {
                     let obj = objects[c];
                     if (selectedPos[0] == 8 && obj.image != "gear") {
-                        // start switching
+                        // start switching, first select has to be a character
                         selectedPos = [obj.pos1, obj.pos2];
                         objects["switchText"].text = "Which character should " + game.characters[obj.image].name + " switch with?";
                         objects["switchText"].alpha = 1;
                     }
                     else if (selectedPos[0] != 8 && (selectedPos[0] != obj.pos1 || selectedPos[1] != obj.pos2)) {
-                        // switch to here
+                        // switch character to here
                         let pre = obj.image;
-
-                        console.log(selectedPos);
-                        if (objects["poschar" + selectedPos[0] + "." + selectedPos[1]].image == "gear") return;
-                        game.characters[objects["poschar" + selectedPos[0] + "." + selectedPos[1]].image].pos = [obj.pos1, obj.pos2];
-
+                        
+                        // change my image (moving to)
                         obj.image = objects["poschar" + selectedPos[0] + "." + selectedPos[1]].image
                         obj.alpha = 1;
 
-                        objects["switchText"].alpha = 0;
+                        // move my guy
+                        //console.log(objects["poschar" + selectedPos[0] + "." + selectedPos[1]].image);
+                        game.characters[objects["poschar" + selectedPos[0] + "." + selectedPos[1]].image].pos = [obj.pos1, obj.pos2];
 
+                        // change the first field's image to what we had
                         if (pre != "gear") {
+                            // we had some guy
                             objects["poschar" + selectedPos[0] + "." + selectedPos[1]].image = pre;
                             objects["poschar" + selectedPos[0] + "." + selectedPos[1]].alpha = 1;
-                            game.characters[positions[obj.pos1 + 3 * obj.pos2].image].pos = [selectedPos[0], selectedPos[1]];
+                            game.characters[objects["poschar" + obj.pos1 + "." + obj.pos2].image].pos = [selectedPos[0], selectedPos[1]];
 
                         }
                         else {
+                            // we were empty
                             objects["poschar" + selectedPos[0] + "." + selectedPos[1]].image = "gear";
                             objects["poschar" + selectedPos[0] + "." + selectedPos[1]].alpha = 0;
                         }
 
+                        objects["switchText"].alpha = 0;
                         selectedPos = [8, 8];
                     }
                 }, {
                     offset: [144 * i, 144 * j], sizeOffset: [128, 128],
                     alpha: 0, snip: [0, 0, 32, 32]
                 });
-                objects["poschar" + j + "." + i].pos1 = i;
-                objects["poschar" + j + "." + i].pos2 = j;
+                objects["poschar" + j + "." + i].pos1 = j;
+                objects["poschar" + j + "." + i].pos2 = i;
             }
         }
 
@@ -109,23 +132,60 @@ unavailable, it will redirect to Defend.`,
             offset: [144 + 72, 0], alpha: 0
         });
 
-        for (i = 0; i < 3; i++) {
-            createText("posinfo" + i, 0.075, 0.125, ["Back", "Mid", "Front"][i], {
-                size: 32, align: "center", color: ["blue", "pink", "red"][i],
-                offset: [72 + 144 * i, 144 * 3.25]
+        for (let i = 0; i < 3; i++) {
+            // horizontal names
+            createText("posinfo" + i, 0.075, 0.135, ["Back", "Mid", "Front"][i], {
+                size: 28, align: "center", color: ["blue", "pink", "red"][i],
+                offset: [72 + 144 * i - 4, 144 * 3.25]
+            });
+            createSmartText("posinfob" + i, 0.075, 0.1425, ["\n" + (1 - ROWBOOST).toFixed(2) + "x STR\n" + (1 + ROWBOOST).toFixed(2) + "x DEF", "\n1x STR\n1x DEF", "\n" + (1 + ROWBOOST).toFixed(2) + "x STR\n" + (1 - ROWBOOST).toFixed(2) + "x DEF"][i], {
+                size: 24, align: "left", color: ["blue", "pink", "red"][i],
+                offset: [/*72 + */144 * i, 144 * 3.25]
             });
 
-            createText("posinfob" + i, 0.075, 0.175, ["Back: " + (1 - ROWBOOST).toFixed(2) + "x STR, " + (1 + ROWBOOST).toFixed(2) + "x DEF", "Mid: 1x STR, 1x DEF", "Front: " + (1 + ROWBOOST).toFixed(2) + "x STR, " + (1 - ROWBOOST).toFixed(2) + "x DEF"][i], {
+            // vertical descriptions
+            /*
+            createText("posinfob" + i, 0.075, 0.2, ["Back: " + (1 - ROWBOOST).toFixed(2) + "x STR, " + (1 + ROWBOOST).toFixed(2) + "x DEF", "Mid: 1x STR, 1x DEF", "Front: " + (1 + ROWBOOST).toFixed(2) + "x STR, " + (1 - ROWBOOST).toFixed(2) + "x DEF"][i], {
                 size: 32, align: "left", color: ["blue", "pink", "red"][i],
                 offset: [0, 144 * (3.5 + (i / 3))]
             });
+            */
         }
 
         // one-time preparations
-        // apply correct macro texts
+        // apply correct macro texts AND generate squares
         for (let j = 0; j < 2; j++) {
             for (let i = 0; i < 3; i++) {
-                objects["macro_btn" + (i + (j * 3))].text = macroTexts[macros.indexOf(getPlayer((j * 3 + i) + 1).macro)];
+                let guy = getPlayer((j * 3 + i) + 1).name;
+                let guyMacroIndex = macros.indexOf(getPlayer((j * 3 + i) + 1).macro);
+                objects["macro_btn" + (i + (j * 3))].text = macroTexts[guyMacroIndex];
+
+                if (i + (j * 3) < game.chars.length) {
+                    objects["macro_btn_charname" + (i + (j * 3))].text = guy;
+
+                    let usableMacros = [];
+                    let usableM = 0;
+                    for (let m in macroUsers) {
+                        if (macroUsers[m] == "all" || macroUsers[m] == guy.toLowerCase()) {
+                            usableM++;
+                            usableMacros.push(macros[m]);
+                        }
+                    }
+                    objects["macro_btn" + (i + (j * 3))].usableMacros = usableMacros;
+                    //console.log(guy, usableMacros);
+
+                    // generate squares
+                    // x range: 0.515 + (j * 0.225) and up to +0.2
+                    for (let m = 0; m < usableM; m++) {
+                        createSquare("macro_btn" + (i + (j * 3)) + "_square" + m,
+                        0.515 + (j * 0.225) + (m * (0.2 / usableM)), 0.325 + (0.15 * i),
+                        0.18 / usableM, 0.02, "black");
+
+                        objects["macro_btn" + (i + (j * 3)) + "_square" + m].macro = usableMacros[m];
+                        if (guyMacroIndex == macros.indexOf(usableMacros[m])) objects["macro_btn" + (i + (j * 3)) + "_square" + m].color = "red";
+                        //console.log(usableMacros[m], macros.indexOf(usableMacros[m]), guyMacroIndex, objects["macro_btn" + (i + (j * 3)) + "_square" + m].color);
+                    }
+                }
             }
         }
 
