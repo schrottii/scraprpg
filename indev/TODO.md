@@ -11,7 +11,7 @@ Inventory:
 - ~~inventory~~
 - equipment
 - itemscene, magicscene
-- formation
+- ~~formation~~
 - monsterbook
 - questscene
 - savemanager

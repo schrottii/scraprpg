@@ -10,18 +10,14 @@ scenes["inventory"] = new Scene(
 
         // Buttons on the right
         for (i = 0; i < 9; i++) {
-            createButton("sidebutton" + i, 0.7, 0.04 + (i * 0.1), 0.2, 0.085, "button", () => {
+            createButton("sidebutton" + i, 0.7, 0.04 + (i * 0.1), 0.2, 0.085, "button", (c) => {
                 playSound("buttonClickSound");
-                fadeOut(1000 / 3, true, (id = this.id) => {
-                    if (id == 0) setScene(scenes.questscene());
-                    if (id == 1) setScene(scenes.itemscene());
-                    if (id == 2) setScene(scenes.magicscene());
-                    if (id == 3) setScene(scenes.equipment());
-                    if (id == 4) setScene(scenes.formation());
-                    if (id == 5) setScene(scenes.monsterbook());
-                    if (id == 6) setScene(scenes.savemanager());
-                    if (id == 7) setScene(scenes.settings());
-                    if (id == 8) setScene(scenes.game());
+                fadeOut(1000 / 3, true, (id = objects[c].id) => {
+                    let sceneNames = ["questscene", "itemscene", "magicscene", "equipment", "formation", "monsterbook", "savemanager", "settings", "overworld"];
+                    if (id >= 0 && id <= 8) {
+                        console.log("sidebutton, loading: " + id + " - " + sceneNames[id]);
+                        loadScene(sceneNames[id]);
+                    }
                 });
             }, {
                 aText: { size: 32, text: ["Quests", "Items", "Magic", "Equipment", "Formation", "Monster Book", "Save Manager", "Settings", "Exit Menu"][i] }
