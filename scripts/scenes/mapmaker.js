@@ -70,9 +70,1533 @@ function loadMap() {
 }
 
 var map;
-let recentlyUsedTilesList = [];
+var recentlyUsedTilesList = [];
 
-scenes.mapmaker = () => {
+var mapmaker = {
+    currentMap: "newMap",
+    editingLayer: 0,
+    mode: "move",
+    previousmode: "movenandplace",
+    tileToPlace: "001",
+
+    // placing
+    temporaryPlacementBlocker: 0,
+
+    // animated preview
+    enableAnimations: false,
+    animateTime: 0,
+}
+
+scenes["mapmaker"] = new Scene(
+    () => {
+        // Init
+
+        // 1. variables
+
+        let walkPad = [];
+        let walkPadSize = Math.max(32, 64 * settings.walkPadSize);
+        let pad;
+        let modeButtons = [];
+        let updateTiles = false;
+
+        let tilesMenuControls = [];
+        let tilesMenuTiles = [];
+        let recentlyUsedTiles = [];
+        let tilesMenuIcons = [];
+
+        let createTileButtons = [];
+        let createTileBG = [];
+        let makerInfo = [];
+        let makerInfoText = [];
+
+        let createDialogueButtons = [];
+        let createDialogueLabels = [];
+
+        let createNPCButtons = [];
+        let createNPCLabels = [];
+
+        let loadMapButtons = [];
+        let expandMapButtons = [];
+        let undoButtons = [];
+        let mapInfoControls = [];
+        let tileInfoControls = [];
+
+        let pageWidth = 1;
+        let pageSize = 1;
+        let tileSource = "common";
+        let prot = false;
+
+        let autoLayer = true;
+        let visibleCollision = false;
+
+        let curDia = ""; // current dialogue
+        let curLine = 0; // current dialogue
+
+        let curNPC = ""; // current dialogue
+
+        var activeNPCs = [];
+        map = maps[mapmaker.currentMap];
+        map.tiles = Object.assign({}, map.tiles, loadPacks(map));
+
+        let loadFromAutoSave = localStorage.getItem("SRPGMM");
+        if (loadFromAutoSave != undefined && loadFromAutoSave != "empty") {
+            map = JSON.parse(loadFromAutoSave);
+            map.tiles = Object.assign({}, map.tiles, loadPacks(map));
+            mapmaker.currentMap = map.id; // on boot, from cache
+        }
+
+        let autoSaveTime = 0;
+
+        var fillToolActive = false;
+        var tilesFilled = 0;
+
+        var tiles_bg = [];
+        var tiles_bg2 = [];
+        var tiles_fg = [];
+        var titems = [];
+        var tnpcs = [];
+
+        // For creating new tiles
+        let tileID = "";
+        let tileSprite = "";
+        let tileSet = "";
+        let tileSetSnip = "";
+        let tileAni = "";
+        let tileTele = "";
+        let tileDia = "";
+        let tileSwim = "";
+        let tileOccupied = "";
+        var tileAutoID = "";
+        var tileRecommendedLayer = "";
+        var tileCondition = "";
+        var tileConditionInv = false;
+        var tileRotate = false;
+
+        let layerVisi = [1, 1, 1];
+
+        let createTileInfoPage = 0;
+        let createTileInfoPageLength = 1;
+        let createTileInfoprevM = "t";
+
+        var selectedInfo = "";
+        var selectedInfoType = "";
+
+        var undoLog = [];
+        var redoLog = [];
+
+        game.position = [4, 4];
+        let prePos = [-3483493, 934030];
+        let currInfo = [0, 0, 1];
+
+        // 2. functions
+
+        function generateRecentlyUsed() {
+            for (t = 0; t < 24; t++) {
+                if (recentlyUsedTiles.length >= 24) break;
+                recentlyUsedTilesList.push(["gear", "gear", [0, 0, 64, 64]]);
+                recentlyUsedTiles[t].source = "gear";
+                recentlyUsedTiles[t].alpha = 0;
+                recentlyUsedTiles[t].snip = [0, 0, 64, 64];
+            }
+        }
+
+        function updatePrePicker() {
+            for (t = 0; t < recentlyUsedTilesList.length; t++) {
+                recentlyUsedTiles[t].source = recentlyUsedTilesList[t][0];
+                recentlyUsedTiles[t].alpha = recentlyUsedTilesList[t][0] == "gear" ? 0 : 1;
+                recentlyUsedTiles[t].tileid = recentlyUsedTilesList[t][1];
+                recentlyUsedTiles[t].snip = recentlyUsedTilesList[t][2];
+                recentlyUsedTiles[t].glow = recentlyUsedTiles[t].tileid == ttp ? 25 : 0;
+            }
+        }
+
+        function createNewMap(mapName) {
+            mapmaker.currentMap = mapName.id != undefined ? mapName.id : mapName; // creating new map
+            map = { // CREATE NEW MAP
+                id: mapmaker.currentMap,
+                tiles: {
+                    empty: {
+                        sprite: "empty"
+                    },
+                },
+                map: ["---"],
+                mapbg2: ["---"],
+                mapfg: ["---"],
+
+                // useful default values
+                name: "newMap",
+                maxEnemies: 8,
+                weather: "none",
+                weatherStrength: 1,
+                worldmode: false
+            }
+            newMap();
+        }
+
+        const dialogueScriptTypes = ["Add Quest", "Claim Quest", "Talk Quest Progress", "Give Item", "Teleport", "Open Shop", "Add Protagonist", "Rem Protagonist", "Inn"];
+
+
+        function generateRecentlyUsed() {
+            for (t = 0; t < 24; t++) {
+                if (recentlyUsedTiles.length >= 24) break;
+                recentlyUsedTilesList.push(["gear", "gear", [0, 0, 64, 64]]);
+                recentlyUsedTiles[t].source = "gear";
+                recentlyUsedTiles[t].alpha = 0;
+                recentlyUsedTiles[t].snip = [0, 0, 64, 64];
+            }
+        }
+
+        function updatePrePicker() {
+            for (t = 0; t < recentlyUsedTilesList.length; t++) {
+                recentlyUsedTiles[t].source = recentlyUsedTilesList[t][0];
+                recentlyUsedTiles[t].alpha = recentlyUsedTilesList[t][0] == "gear" ? 0 : 1;
+                recentlyUsedTiles[t].tileid = recentlyUsedTilesList[t][1];
+                recentlyUsedTiles[t].snip = recentlyUsedTilesList[t][2];
+                recentlyUsedTiles[t].glow = recentlyUsedTiles[t].tileid == ttp ? 25 : 0;
+            }
+        }
+
+        function UI_toggle_tileInfoControls(val) {
+            for (tic in tileInfoControls) {
+                tileInfoControls[tic].alpha = val;
+            }
+            tileInfoSelectedTile.alpha = val;
+            console.log(tileInfoSelectedTile.offset, tileInfoSelectedTile.alpha);
+        }
+
+
+
+        function createTile(createType) {
+            if (images["tiles/" + tileSprite] == undefined && images["tilesets/" + tileSet] == undefined) {
+                alert("You have to set a valid sprite or a set!");
+                return false;
+            }
+            if (tileID == "") {
+                alert("You have to set an ID!");
+                return false;
+            }
+            try {
+                let ttc = {};
+                if (tileSet == "") {
+                    ttc = {
+                        "sprite": tileSprite
+                    }
+                }
+                else {
+                    if (tileSetSnip == "") tileSetSnip = "0.0";
+                    ttc = {
+                        "set": tileSet,
+                        "snip": [parseInt(tileSetSnip.split(".")[0]), parseInt(tileSetSnip.split(".")[1])],
+                    }
+                }
+
+                // adjust and process variables
+                if (tileOccupied.toLowerCase().substr(0, 1) == "y" || tileOccupied.toLowerCase() == "true") ttc.occupied = true;
+                else if (tileOccupied.toLowerCase().substr(0, 1) == "n" || tileOccupied.toLowerCase() == "false") ttc.occupied = false;
+                else if (tileOccupied.toLowerCase() != "" && tileOccupied != undefined) ttc.occupied = tileOccupied.split(".");
+
+                if (tileAni != "") ttc.ani = [parseInt(tileAni.split(".")[0]), parseInt(tileAni.split(".")[1])];
+
+                if (tileTele != "") ttc.teleport = [tileTele.split(".")[0], parseInt(tileTele.split(".")[1]), parseInt(tileTele.split(".")[2])];
+
+                if (tileRotate != false) ttc.rotate = tileRotate;
+
+                if (tileDia != "") ttc.dialogue = tileDia;
+
+                if (tileSwim.toLowerCase() == "yes" || tileSwim.toLowerCase() == "true") ttc.swim = true;
+
+                if (tileRecommendedLayer != "") ttc.layer = tileRecommendedLayer;
+                else ttc.layer = "none";
+
+                if (isValid(tileCondition)) {
+                    ttc.condition = tileCondition;
+                    if (isValid(tileConditionInv)) ttc.condinv = tileConditionInv;
+                }
+
+                // create the actual tile
+                if (createType == "map") {
+                    // CREATE button
+                    map.tiles[tileID] = ttc;
+                }
+                if (createType == "copy") {
+                    // Copy button
+                    navigator.clipboard.writeText('"' + tileID + '": ' + JSON.stringify(ttc));
+                }
+
+                // clearTile();
+            }
+            catch (e) {
+                alert("An error occured!\n" + e);
+            }
+            toggleCreateTileButtons();
+        }
+
+        function clearTile() {
+            tileID = "";
+            tileSprite = "";
+            tileOccupied = "";
+            tileSet = "";
+            tileSetSnip = "";
+            tileAni = "";
+            tileTele = "";
+            tileDia = "";
+            tileSwim = "";
+
+            tileAutoID = "";
+            tileCondition = "";
+            tileConditionInv = false;
+            tileRotate = false;
+
+            createTileButtons[0].text = "Tile ID";
+            createTileButtons[1].text = "Tile Sprite";
+            createTileButtons[2].text = "Tile Occupied";
+            createTileButtons[3].text = "Tile Set";
+            createTileButtons[4].text = "Set Snip";
+            createTileButtons[5].text = "Animation";
+            createTileButtons[6].text = "Teleport";
+            createTileButtons[7].text = "Dialogue";
+            createTileButtons[8].text = "Swim";
+
+            createTileButtons[9].source = "gear";
+            createTileButtons[10].source = "gear";
+        }
+
+        function loadNPCs() {
+            activeNPCs = [];
+            for (i in npcs) {
+                if (npcs[i].alpha != 0 && npcs[i].map == mapmaker.currentMap) {
+                    activeNPCs.push(npcs[i]);
+                }
+            }
+            if (map.npcs != undefined) {
+                for (i in map.npcs) {
+                    if (map.npcs[i].alpha != 0) {
+                        activeNPCs.push(map.npcs[i]);
+                    }
+                }
+            }
+            for (i in activeNPCs) {
+                for (j in npcs.default) {
+                    if (activeNPCs[i][j] == undefined && j != "dialogues") activeNPCs[i][j] = npcs.default[j];
+                }
+            }
+        }
+
+        function newMap() {
+            // Function called when the map has changed - not for creating a new map
+            game.position[0] = Math.round(game.position[0]);
+            game.position[1] = Math.round(game.position[1]);
+
+            activeNPCs = [];
+            for (i in tnpcs) {
+                tnpcs[i].alpha = 0;
+            }
+            loadNPCs();
+
+            map.tiles = Object.assign({}, map.tiles, loadPacks(map));
+
+            let width = 0;
+            for (let m in map.map) {
+                if (isValid(map.map[m]) && map.map[m].length > width) width = Math.floor(map.map[m].length / 4);
+            }
+            if (game.position[0] > width) game.position[0] = width;
+            if (game.position[1] > map.map.length) game.position[1] = map.map.length;
+
+            generateRecentlyUsed();
+            updateTiles = true;
+        }
+
+        function updateTTP(newTTP, updateRecent = true) {
+            // TTP = tile to place
+            let newSource = "";
+            let newSnip = [0, 0, 32, 32];
+
+            // Change the tile to place, and the current tile selected display
+            ttp = newTTP;
+
+            if (autoLayer) { // automatically go to the right layer
+                if (map.tiles[ttp] != undefined && map.tiles[ttp].layer != undefined && map.tiles[ttp].layer != "none") editingLayer = ["map", "mapbg2", "mapfg"].indexOf(map.tiles[ttp].layer);
+                if (commontiles[ttp] != undefined && commontiles[ttp].layer != undefined && commontiles[ttp].layer != "none") editingLayer = ["map", "mapbg2", "mapfg"].indexOf(commontiles[ttp].layer);
+            }
+
+            modeButtons[2].glow = editingLayer == 0 ? 10 : 0;
+            modeButtons[4].glow = editingLayer == 1 ? 10 : 0;
+            modeButtons[6].glow = editingLayer == 2 ? 10 : 0;
+
+            // Display
+            if (map.tiles[ttp] != undefined) {
+                if (map.tiles[ttp].sprite != undefined) {
+                    newSource = "tiles/" + map.tiles[ttp].sprite;
+                    newSnip = false;
+                }
+                else {
+                    newSource = "tilesets/" + map.tiles[ttp].set;
+                    newSnip = [map.tiles[ttp].snip[0] * 32, map.tiles[ttp].snip[1] * 32, 32, 32];
+                }
+            }
+            else if (commontiles[ttp] != undefined) {
+                if (commontiles[ttp].sprite != undefined) {
+                    newSource = "tiles/" + commontiles[ttp].sprite;
+                    newSnip = false;
+                }
+                else {
+                    newSource = "tilesets/" + commontiles[ttp].set;
+                    newSnip = [commontiles[ttp].snip[0] * 32, commontiles[ttp].snip[1] * 32, 32, 32];
+                }
+            }
+
+            currentTile.source = newSource;
+            currentTile.snip = newSnip;
+
+            // update recently used tiles AKA prepicker (left)
+            let alreadyPrepicked = false;
+            for (let p in recentlyUsedTilesList) {
+                if (recentlyUsedTilesList[p][1] == newTTP) alreadyPrepicked = true;
+            }
+
+            if (!alreadyPrepicked) {
+                recentlyUsedTilesList.unshift([newSource, newTTP, newSnip]); // add
+                if (recentlyUsedTilesList.length > 24) recentlyUsedTilesList.pop(); // keep it at bay
+            }
+
+            // update le prepicker list
+            updatePrePicker();
+        }
+
+        function postLog(src, x, y, layer, prevContent, fill = undefined) {
+            if (src == "default") {
+                postUndoLog(x, y, layer, prevContent, fill);
+            }
+            if (src == "undo") {
+                postRedoLog(x, y, layer, prevContent, fill);
+            }
+        }
+
+        function postUndoLog(x, y, layer, prevContent, fill) {
+            // Add something to the undo log
+            undoLog.unshift([x, y, layer, prevContent, fill])
+            undoButtons[0].alpha = 1;
+            if (undoLog.length > 2048) undoLog.pop();
+            //console.log(undoLog.length, undoLog);
+        }
+
+        function postRedoLog(x, y, layer, prevContent, fill) {
+            // Add something to the redo log
+            redoLog.unshift([x, y, layer, prevContent, fill])
+            undoButtons[1].alpha = 1;
+            if (undoLog.length > 2048) redoLog.pop();
+            //console.log(undoLog.length, undoLog);
+        }
+
+        function saveFile(type) {
+            let toExport;
+
+            /*
+            for (let tilesetTile in map.tiles) {
+                if (map.tiles[tilesetTile].set != undefined) {
+                    delete map.tiles[tilesetTile];
+                }
+            }
+            */
+
+            if (type == "sotrm") toExport = JSON.stringify(map);
+            if (type == "js") toExport = 'maps["' + mapmaker.currentMap + '"] = ' + JSON.stringify(map);
+
+            var blob = new Blob([toExport], { type: "text/plain" });
+            var anchor = document.createElement("a");
+            if (type == "sotrm") anchor.download = mapmaker.currentMap + ".sotrm";
+            if (type == "js") anchor.download = mapmaker.currentMap + ".js";
+            anchor.href = window.URL.createObjectURL(blob);
+            anchor.target = "_blank";
+            anchor.style.display = "none"; // just to be safe!
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+        }
+
+        function toggleCreateTileButtons(musthide) {
+            if (createTileButtons[0].alpha == 0 && !musthide) {
+                closeAllMenus(4);
+                for (i in createTileButtons) {
+                    createTileButtons[i].alpha = 1;
+                }
+                for (i in createTileBG) {
+                    createTileBG[i].alpha = 1;
+                }
+                createTileBG[2].text = "Tile Maker";
+
+                createTileInfoPageLength = 0;
+
+                showInfo();
+                renderInfo("id");
+
+                for (i in createTileButtons) {
+                    createTileButtons[i].offset[1] = 0;
+                }
+            }
+            else {
+                for (i in createTileBG) {
+                    createTileBG[i].alpha = 0;
+                }
+                hideInfo();
+
+                for (i in createTileButtons) {
+                    createTileButtons[i].offset[1] = -600;
+                    createTileButtons[i].alpha = 0;
+                }
+            }
+        }
+
+        function toggleCreateDialogueButtons(mustShow = false) {
+            if (createDialogueButtons[0].alpha == 0 || mustShow) {
+                closeAllMenus(5);
+                if (curDia != "") {
+                    for (i in createDialogueButtons) {
+                        createDialogueButtons[i].offset = [0, -600];
+                        createDialogueButtons[i].alpha = 1;
+                    }
+                    for (i in createDialogueLabels) {
+                        createDialogueLabels[i].alpha = 1;
+                    }
+                }
+                else {
+                    createDialogueButtons[0].offset = [0, 0];
+                    createDialogueButtons[0].alpha = 1;
+                }
+                for (i in createTileBG) {
+                    createTileBG[i].alpha = 1;
+                }
+                createTileBG[2].text = "Dialogue Maker";
+
+                createTileInfoPageLength = 0;
+
+                createDialogueButtons[0].text = curDia == "" ? "Create New / Load" : curDia;
+
+                showInfo();
+                renderInfo("dialogues");
+
+                if (curDia != "") {
+                    for (i in createDialogueButtons) {
+                        createDialogueButtons[i].offset[1] = 0;
+                    }
+                    for (i in createDialogueLabels) {
+                        createDialogueLabels[i].offset[1] = 0;
+                    }
+                }
+            }
+            else {
+                for (i in createDialogueButtons) {
+                    createDialogueButtons[i].offset = [0, 0];
+                }
+                for (i in createTileBG) {
+                    createTileBG[i].alpha = 0;
+                }
+                for (i in createDialogueLabels) {
+                    createDialogueLabels[i].alpha = 0;
+                }
+                hideInfo();
+
+                for (i in createDialogueButtons) {
+                    createDialogueButtons[i].offset[1] = -600;
+                    createDialogueButtons[i].alpha = 0;
+                }
+            }
+        }
+
+        function toggleCreateNPCButtons(mustShow = false) {
+            if (createNPCButtons[0].alpha == 0 || mustShow) {
+                closeAllMenus(6);
+                if (curNPC != "") {
+                    for (i in createNPCButtons) {
+                        createNPCButtons[i].offset = [0, -600];
+                        createNPCButtons[i].alpha = 1;
+                    }
+                    for (i in createNPCLabels) {
+                        createNPCLabels[i].alpha = 1;
+                    }
+                }
+                else {
+                    createNPCButtons[0].offset = [0, 0];
+                    createNPCButtons[0].alpha = 1;
+                }
+                for (i in createTileBG) {
+                    createTileBG[i].alpha = 1;
+                }
+                createTileBG[2].text = "NPC Maker";
+
+                createTileInfoPageLength = 0;
+
+                showInfo();
+                renderInfo("npcs");
+
+                if (curNPC != "") {
+                    for (i in createNPCButtons) {
+                        createNPCButtons[i].offset[1] = 0;
+                    }
+                    for (i in createNPCLabels) {
+                        createNPCLabels[i].offset[1] = 0;
+                    }
+                }
+            }
+            else {
+                for (i in createNPCButtons) {
+                    createNPCButtons[i].offset = [0, 0];
+                }
+                for (i in createNPCLabels) {
+                    createNPCLabels[i].offset = [0, 0];
+                }
+                for (i in createTileBG) {
+                    createTileBG[i].alpha = 0;
+                }
+                hideInfo();
+
+                for (i in createNPCButtons) {
+                    createNPCButtons[i].offset[1] = -600;
+                    createNPCButtons[i].alpha = 0;
+                }
+                for (i in createNPCLabels) {
+                    createNPCLabels[i].offset[1] = -600;
+                    createNPCLabels[i].alpha = 0;
+                }
+            }
+        }
+
+        function updateTileLabels() {
+            createTileButtons[0].text = "Tile ID: " + tileID;
+            createTileButtons[1].text = "Tile Sprite: " + tileSprite
+            createTileButtons[2].text = "Tile Occ: " + tileOccupied;
+            createTileButtons[3].text = "Tile Set: " + tileSet;
+            createTileButtons[4].text = "Set Snip: " + tileSetSnip;
+            createTileButtons[5].text = "Animation: " + tileAni;
+            createTileButtons[6].text = "Teleport: " + tileTele;
+            createTileButtons[7].text = "Dialogue: " + tileDia;
+            createTileButtons[8].text = "Swim: " + tileSwim;
+            //createTileButtons[13].text = "AutoID " + mapIdentifier + "00";
+
+            createTileButtons[23].text = isValid(tileCondition) ? (isValid(tileConditionInv) ? "!" : "") + tileCondition : "No Condition";
+
+            if (images["tilesets/" + tileSet] != undefined) createTileButtons[9].snip = [parseInt(tileSetSnip.split(".")[0]) * 32, parseInt(tileSetSnip.split(".")[1]) * 32, 32, 32];
+
+            if (tileSprite != "") {
+                if (images["tiles/" + tileSprite] != undefined) createTileButtons[9].source = "tiles/" + tileSprite;
+                else createTileButtons[9].source = "gear";
+
+                tileSet = "";
+                createTileButtons[3].text = "Tile Set";
+                createTileButtons[3].fillTop = "darkgray";
+                createTileButtons[3].fillBottom = "gray";
+                createTileButtons[1].fillTop = "red";
+                createTileButtons[1].fillBottom = "darkred";
+            }
+            if (tileSet != "") {
+                if (images["tilesets/" + tileSet] != undefined) {
+                    createTileButtons[9].source = "tilesets/" + tileSet;
+                    createTileButtons[10].source = "tilesets/" + tileSet;
+                }
+                else createTileButtons[9].source = "gear";
+                createTileButtons[9].rotate = tileRotate;
+
+                tileSprite = "";
+                createTileButtons[1].text = "Tile Sprite";
+                createTileButtons[1].fillTop = "darkgray";
+                createTileButtons[1].fillBottom = "gray";
+                createTileButtons[3].fillTop = "red";
+                createTileButtons[3].fillBottom = "darkred";
+            }
+        }
+
+        function updateDialogueLabels() {
+            if (curDia == "") return false;
+            createDialogueLabels[0].text = (curLine + 1) + "/" + Object.keys(map.dialogues[curDia].lines).length;
+            createDialogueLabels[1].text = map.dialogues[curDia].lines[curLine].text;
+            createDialogueLabels[2].text = map.dialogues[curDia].lines[curLine].portrait;
+            createDialogueLabels[3].text = map.dialogues[curDia].lines[curLine].emotion;
+            createDialogueLabels[4].text = map.dialogues[curDia].lines[curLine].name;
+            createDialogueLabels[5].text = map.dialogues[curDia].lines[curLine].voice;
+            createDialogueLabels[6].text = map.dialogues[curDia].lines[curLine].script;
+
+            createDialogueButtons[12].source = map.dialogues[curDia].lines[curLine].portrait;
+            createDialogueButtons[12].snip = getEmotion(map.dialogues[curDia].lines[curLine].emotion);
+        }
+
+        function updateNPCLabels() {
+            createNPCButtons[0].text = curNPC == "" ? "Create New / Load" : curNPC;
+            if (curNPC == "") return false;
+
+            if (map.npcs[curNPC].dialogues != undefined) createNPCButtons[1].text = "Dialogue: " + map.npcs[curNPC].dialogues["1"];
+
+            createNPCLabels[0].text = map.npcs[curNPC].position;
+            createNPCLabels[1].text = map.npcs[curNPC].alpha;
+            createNPCLabels[2].text = map.npcs[curNPC].source;
+            createNPCLabels[3].text = map.npcs[curNPC].walkingInterval;
+            createNPCLabels[4].text = map.npcs[curNPC].walkingSpeed;
+
+            loadNPCs();
+            updateTiles = true;
+        }
+
+        function toggleMapInfoButtons(mustclose = false) {
+            closeAllMenus(7);
+
+            if (mapInfoControls[0].alpha == 0 && !mustclose) {
+                for (u in undoButtons) {
+                    undoButtons[u].al = undoButtons[u].alpha;
+                    undoButtons[u].alpha = 0;
+                }
+
+                for (w in walkPad) {
+                    walkPad[w].alpha = 0;
+                }
+                // update their texts and show
+                for (mi in mapInfoControls) {
+                    if (mapInfoControls[mi].uText != undefined) mapInfoControls[mi].uText();
+                    mapInfoControls[mi].alpha = 1;
+                }
+
+                for (let prep in recentlyUsedTiles) {
+                    recentlyUsedTiles[prep].alpha = 0;
+                }
+            }
+            else if (mapInfoControls[0].alpha == 1) {
+                if (!mustclose) closeAllMenus(7);
+
+                for (u in undoButtons) {
+                    undoButtons[u].alpha = undoButtons[u].al;
+                }
+
+                for (mi in mapInfoControls) {
+                    mapInfoControls[mi].alpha = 0;
+                }
+                if (mode != "place") {
+                    for (w in walkPad) {
+                        walkPad[w].alpha = 1;
+                    }
+                }
+
+                for (let prep in recentlyUsedTiles) {
+                    if (recentlyUsedTiles[prep].source != "gear") recentlyUsedTiles[prep].alpha = 1;
+                }
+            }
+        }
+
+        function showInfo() {
+            createTileInfoPage = 0;
+            selectedInfo = "";
+
+            let red = 1;
+            if (isLs()) red = 2;
+
+            for (u in undoButtons) {
+                undoButtons[u].al = undoButtons[u].alpha;
+                undoButtons[u].alpha = 0;
+            }
+
+            for (i in makerInfo) {
+                makerInfo[i].alpha = 1;
+            }
+            createTileInfoPageLength = 0;
+            for (i in makerInfoText) {
+                if (height * 0.6 * red > i * 20) {
+                    createTileInfoPageLength += 1;
+                    makerInfoText[i].alpha = 1;
+                }
+            }
+        }
+
+        function hideInfo() {
+            selectedInfo = "";
+
+            for (u in undoButtons) {
+                undoButtons[u].alpha = undoButtons[u].al;
+            }
+
+            for (i in makerInfo) {
+                makerInfo[i].alpha = 0;
+            }
+            for (i in makerInfoText) {
+                makerInfoText[i].alpha = 0;
+            }
+        }
+
+        function renderInfo(type) {
+            let grabFrom;
+            if (type != "auto") selectedInfoType = type;
+
+            if (type == "auto") type = createTileInfoprevM;
+            else createTileInfoprevM = type;
+
+            switch (type) {
+                case "t":
+                    grabFrom = [];
+                    for (i in Object.keys(images)) {
+                        if (Object.keys(images)[i].substr(0, 6) == "tiles/") grabFrom.push(Object.keys(images)[i].substr(6));
+                    }
+                    break;
+                case "ts":
+                    grabFrom = [];
+                    for (i in Object.keys(images)) {
+                        if (Object.keys(images)[i].substr(0, 9) == "tilesets/") grabFrom.push(Object.keys(images)[i].substr(9));
+                    }
+                    break;
+                case "id":
+                    grabFrom = Object.keys(Object.assign({}, map.tiles, commontiles));
+                    break;
+                case "m":
+                    grabFrom = Object.keys(maps);
+                    break;
+                case "mapEnemies":
+                    grabFrom = Object.keys(mapenemies);
+                    break;
+                case "spawns":
+                    grabFrom = [];
+                    if (map.spawns != undefined) {
+                        let j = 0;
+                        for (i in map.spawns) {
+                            grabFrom.push(Object.keys(map.spawns)[j] + " | " + map.spawns[i]);
+                            j += 1;
+                        }
+                    }
+                    break;
+                case "dialogues":
+                    if (map.dialogues != undefined) grabFrom = Object.keys(map.dialogues);
+                    else grabFrom = [];
+                    break;
+                case "portraits":
+                    grabFrom = [];
+                    for (i in Object.keys(images)) {
+                        if (Object.keys(images)[i].substr(0, 10) == "Portraits_") grabFrom.push(Object.keys(images)[i]);
+                    }
+                    break;
+                case "npcs":
+                    grabFrom = [];
+                    if (map.npcs != undefined) {
+                        for (let n in map.npcs) {
+                            grabFrom.push(n);
+                        }
+                    }
+                    break;
+                case "music":
+                    // for selecting the music in map info (est 2025)
+                    grabFrom = [];
+                    for (let m in audio) {
+                        if (m.substr(0, 4) == "bgm/" && !m.includes("intro")) grabFrom.push(m); // exclude intro, we auto pick that later
+                    }
+                    break;
+                case "mapPacks":
+                    grabFrom = [];
+                    for (let p in packs) {
+                        grabFrom.push(p);
+                    }
+                    break;
+                case "characterImages":
+                    grabFrom = [];
+                    for (let im in images) {
+                        if (im.substr(0, 8) == "enemies/" || im.substr(0, 5) == "npcs/" || characters.includes(im)) grabFrom.push(im);
+                    }
+                    break;
+                case "items":
+                    grabFrom = [];
+                    for (let it in items) {
+                        if (it != "default") grabFrom.push(it);
+                    }
+                    break;
+                case "scripts":
+                    // I am clinically insane
+                    grabFrom = [];
+                    for (let sc in dialogueScriptTypes) {
+                        grabFrom.push(dialogueScriptTypes[sc]);
+                    }
+                    break;
+                case "quests":
+                    grabFrom = [];
+                    for (let q in quests) {
+                        grabFrom.push(q);
+                    }
+                    break;
+                case "shops":
+                    grabFrom = [];
+                    for (let q in shops) {
+                        grabFrom.push(q);
+                    }
+                    break;
+                case "protagonists":
+                    grabFrom = [];
+                    for (let q in characters) {
+                        grabFrom.push(characters[q]);
+                    }
+                    break;
+            }
+
+            let pageAdd = createTileInfoPage * createTileInfoPageLength;
+            for (g = 0; g < 25; g++) {
+                makerInfoText[g].fillTop = colors.buttontop;
+                makerInfoText[g].fillBottom = colors.buttonbottom;
+
+                if (grabFrom[g + pageAdd] != undefined) {
+                    makerInfoText[g].text = grabFrom[g + pageAdd];
+                    makerInfoText[g].g = grabFrom[g + pageAdd];
+                }
+                else {
+                    makerInfoText[g].text = "";
+                    //makerInfoText[g].onClick = () => { };
+                }
+            }
+        }
+
+        function toggleLoadButtons(mustclose = false) {
+            if (loadMapButtons[0].offset[1] != -600 && loadMapButtons[0].offset[1] != 0) {
+                animationOverlap = true;
+                return false;
+            }
+            if (loadMapButtons[0].alpha == 0 && !mustclose) {
+                // Open
+                closeAllMenus(2);
+                renderInfo("m");
+                showInfo();
+
+                for (i in loadMapButtons) {
+                    loadMapButtons[i].offset = [0, -600];
+                    loadMapButtons[i].alpha = 1;
+                }
+                for (i in loadMapButtons) {
+                    loadMapButtons[i].offset[1] = 0;
+                }
+            }
+            else {
+                // Close
+                hideInfo();
+
+                for (i in loadMapButtons) {
+                    loadMapButtons[i].offset = [0, 0];
+                }
+                hideInfo();
+                for (i in loadMapButtons) {
+                    loadMapButtons[i].offset[1] = -600;
+                    loadMapButtons[i].alpha = 0;
+                }
+            }
+        }
+
+        function modeHighlighter(thisMode) {
+            for (let m = 8; m <= 8 + 5; m++) {
+                if ((modeButtons[m].setmode == undefined || modeButtons[m].setmode != thisMode) && (modeButtons[m].alpha == 0 || modeButtons[m].alpha == 1)) modeButtons[m].glow = 0;
+                else if (modeButtons[m].alpha == 0 || modeButtons[m].alpha == 1) modeButtons[m].glow = 10;
+            }
+        }
+
+        function moveMode() {
+            mode = "move";
+            for (w in walkPad) {
+                walkPad[w].alpha = 1;
+            }
+            modeHighlighter("move");
+        }
+
+        function placeMode() {
+            mode = "place";
+            for (w in walkPad) {
+                walkPad[w].alpha = 0;
+            }
+            modeHighlighter("place");
+        }
+
+        function eraseMode() {
+            mode = "erase";
+            for (w in walkPad) {
+                walkPad[w].alpha = 0;
+            }
+            modeHighlighter("erase");
+        }
+
+        function moveAndPlaceMode() {
+            mode = "moveandplace";
+            for (w in walkPad) {
+                walkPad[w].alpha = 1;
+            }
+            modeHighlighter("moveandplace");
+        }
+
+        function tileMode() {
+            mode = "tile";
+            for (w in walkPad) {
+                walkPad[w].alpha = 1;
+            }
+            modeHighlighter("tile");
+        }
+
+        function openTilesMenu() {
+            closeAllMenus(0);
+
+            let red = isLs() ? 2 : 1;
+
+            for (u in undoButtons) {
+                undoButtons[u].al = undoButtons[u].alpha;
+                undoButtons[u].alpha = 0;
+            }
+
+            for (t in tilesMenuControls) {
+                tilesMenuControls[t].alpha = 1;
+            }
+            for (t in tilesMenuTiles) {
+                tilesMenuTiles[t].alpha = 0;
+                tilesMenuTiles[t].glow = 0;
+            }
+            for (t in tilesMenuIcons) {
+                tilesMenuIcons[t].alpha = 0;
+            }
+            for (t = 0; t < 25; t++) {
+                if (tilesMenuTiles[t].offset[0] / red <= width * scale * 0.9) pageWidth = t;
+            }
+            for (r = 0; r < 8; r++) {
+                if (tilesMenuTiles[r * 25].offset[1] / red <= height * 0.6) pageSize = pageWidth * (r + 1);
+            }
+            pageSize += 1;
+
+            let nr = 0;
+            let til;
+            let grb;
+            let starti = 0 + Math.ceil(tileMenuPage * pageSize / 2);
+            let i = starti;
+
+            // actual generation inside the tile picker!
+            while (i < pageSize + starti) {
+                if ((nr % 25) % pageWidth == 0 && nr > 0) nr += (25 - pageWidth);
+                if (tileSource == "common") {
+                    til = Object.keys(commontiles)[i];
+                    grb = commontiles[til];
+                }
+                if (tileSource == "map") {
+                    til = Object.keys(map.tiles)[i];
+                    grb = map.tiles[til];
+                }
+
+                if (til != undefined && (map.tiles[til] == undefined || tileSource == "map")) {
+                    if (til != "empty") {
+                        if (grb.set != undefined) {
+                            if (images["tilesets/" + grb.set] != undefined) tilesMenuTiles[nr].source = "tilesets/" + grb.set;
+                            else tilesMenuTiles[nr].source = "gear";
+                            tilesMenuTiles[nr].snip = [grb.snip[0] * 32, grb.snip[1] * 32, 32, 32];
+                        }
+                        else {
+                            if (images["tiles/" + grb.sprite] != undefined) tilesMenuTiles[nr].source = "tiles/" + grb.sprite;
+                            else tilesMenuTiles[nr].source = "gear";
+                            tilesMenuTiles[nr].snip = false;
+                        }
+                        tilesMenuTiles[nr].tile = grb;
+                        tilesMenuTiles[nr].tileid = til;
+                        tilesMenuTiles[nr].alpha = 1;
+
+                        let nr2 = (nr * 4);
+                        if (grb.occupied != undefined && grb.occupied != false) tilesMenuIcons[nr2].alpha = 1;
+                        if (grb.ani != undefined) tilesMenuIcons[nr2 + 1].alpha = 1;
+                        if (grb.teleport != undefined) tilesMenuIcons[nr2 + 2].alpha = 1;
+                        if (grb.dialogue != undefined || grb.action != undefined) tilesMenuIcons[nr2 + 3].alpha = 1;
+                        nr += 1;
+                    }
+                }
+                i += 1;
+            }
+        }
+
+        function closeTilesMenu() {
+            for (u in undoButtons) {
+                undoButtons[u].alpha = undoButtons[u].al;
+            }
+
+            for (t in tilesMenuControls) {
+                tilesMenuControls[t].alpha = 0;
+            }
+            for (t in tilesMenuTiles) {
+                tilesMenuTiles[t].alpha = 0;
+            }
+            for (t in tilesMenuIcons) {
+                tilesMenuIcons[t].alpha = 0;
+            }
+        }
+
+        function closeAllMenus(i) {
+            // Tile Menu
+            if (i != 0) closeTilesMenu();
+
+            // Tile Info
+            if (i != 1) {
+                UI_toggle_tileInfoControls(0);
+            }
+
+            // Load
+            if (i != 2) toggleLoadButtons(true);
+
+            // Save
+            //if (i != 3) toggleSaveButtons(true);
+
+            // Tile Maker
+            if (i != 4) {
+                toggleCreateTileButtons(true);
+            }
+
+            // Dialogue Maker
+            if (i != 5) {
+                for (tic in createDialogueButtons) {
+                    createDialogueButtons[tic].alpha = 0;
+                }
+                for (tic in createDialogueLabels) {
+                    createDialogueLabels[tic].alpha = 0;
+                }
+            }
+
+            // NPC Maker
+            if (i != 6) {
+                for (tic in createNPCButtons) {
+                    createNPCButtons[tic].alpha = 0;
+                }
+                for (tic in createNPCLabels) {
+                    createNPCLabels[tic].alpha = 0;
+                }
+            }
+
+            // Map Info
+            if (i != 7) toggleMapInfoButtons(true);
+
+            // Info
+            hideInfo();
+        }
+
+        function placeTile(x, y, layer, tileToPlace = "none", umode = "default") {
+            if (tempPlaceBlock > 0) return false;
+            if (x < 0 || y < 0) {
+                return false;
+            }
+
+            if (map[layer][y] == undefined) map[layer][y] = "---"; // jesus line
+            let mp = map[layer][y];
+            let def = "---";
+
+            if (mode == "place" || mode == "moveandplace" || umode == "undo" || umode == "copy") {
+                if (tileToPlace == "none") {
+                    tileToPlace = ttp;
+                }
+
+                let rePlaced;
+                if (fillToolActive) rePlaced = mp.substr(x * 4, 3);
+
+                if (mp == undefined) {
+                    while (mp == undefined) {
+                        map[layer].push(def);
+                        mp = map[layer][y];
+                    }
+                }
+
+                map[layer][y] = map[layer][y].replace(/\s{2,}/g, ' '); // remove double spaces
+                mp = map[layer][y];
+
+                if (x * 4 > mp.length) {
+                    while (x * 4 > mp.length) {
+                        map[layer][y] = mp + " " + def;
+                        mp = map[layer][y];
+                    }
+                }
+
+                map[layer][y] = map[layer][y].replace(/  /gi, " ");
+                mp = map[layer][y];
+
+                // Fill thing - only for move and m+p, not for redo (it spams)
+                if (fillToolActive && tilesFilled == 0 && umode == "default" && (mode == "place" || mode == "moveandplace")) {
+                    // Fill ON - multiple tiles
+                    let temp = [x, y];
+
+                    replaceY("+", mp, x, y, layer, rePlaced, tileToPlace, temp);
+                    x = temp[0];
+                    y = temp[1];
+
+                    replaceY("-", mp, x, y, layer, rePlaced, tileToPlace, temp);
+                    x = temp[0];
+                    y = temp[1];
+
+                    tilesFilled = 0; // done, reset back
+                }
+                else {
+                    // FILL OFF - single tile
+                    if (x * 4 > mp.length && umode != "undo") {
+                        // Expand map!
+                        map[layer][y] = mp + " " + tileToPlace;
+                    }
+                    else {
+                        // Somewhere in the middle of the map
+                        map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
+                    }
+
+                    // add to undo or redo log, and if undo, give the ID
+                    if (umode == "undo") postLog(umode, x, y, layer, mp.substr(x * 4, 3), undoLog[0][4]);
+                    else postLog(umode, x, y, layer, mp.substr(x * 4, 3));
+                }
+
+                map[layer][y] = map[layer][y].replace(/  /gi, " ");
+                updateTiles = true;
+            }
+        }
+
+        function replaceY(pom, mp, x, y, layer, rePlaced, tileToPlace, temp) {
+            let fillID = "F" + Math.ceil(Math.random() * Math.pow(2, 20));
+
+            if (rePlaced == "") return false;
+            let startX = 0;
+            let startY = y;
+
+            while (map[layer][y] != undefined && y - 100 < startY && tilesFilled < 5000) { // start row must exist, and max. 100 tiles in that direction
+                //console.log(tilesFilled);
+                if (mp.substr(x * 4, 3) != rePlaced) {
+                    // Nope (limit Y)
+                    //console.log("y limiter");
+                    break;
+                }
+
+                // go to the left
+                startX = x;
+                while (mp.substr(0, x * 4) != undefined && x > startX - 100) {
+                    if (mp.substr(x * 4, 3) == rePlaced) {
+                        map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
+                        postLog("default", x, y, layer, mp.substr(x * 4, 3), fillID);
+                        tilesFilled++;
+                    }
+                    else break;
+                    mp = map[layer][y];
+                    x -= 1;
+                }
+
+                x = temp[0] + 1;
+                mp = map[layer][y];
+
+                // go to the right
+                startX = x;
+                while (mp.substr(0, x * 4) != undefined && x - 100 < startX) {
+                    if (mp.substr(x * 4, 3) == rePlaced) {
+                        map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
+                        postLog("default", x, y, layer, mp.substr(x * 4, 3), fillID);
+                        tilesFilled++;
+                    }
+                    else break;
+                    mp = map[layer][y];
+                    x += 1;
+                }
+
+                // adjust the y
+                // pom = plus or minus
+                if (pom == "-") y -= 1;
+                if (pom == "+") y += 1;
+                mp = map[layer][y];
+                x = temp[0];
+            }
+            //console.log("fill while, end");
+        }
+
+        function eraseTile(x, y, layer) {
+            if (x < 0 || y < 0) {
+                return false;
+            }
+            let mp = map[layer][y];
+
+            if (mode == "erase" && mp != undefined && x * 4 <= mp.length) {
+                map[layer][y] = mp.substr(0, x * 4) + "--- " + mp.substr((1 + x) * 4);
+                map[layer][y] = map[layer][y].replace(/  /gi, " ");
+                updateTiles = true;
+            }
+        }
+
+        function tileInfo(x, y, layer, selected = "none") {
+            if (tempPlaceBlock > 0) return false;
+            closeAllMenus(1);
+
+            let selectedTile;
+            let selectedTileID;
+            let l = 1;
+
+            if (selected == "none") {
+                if (x < 0 || y < 0) {
+                    return false;
+                }
+
+                if (layer == "mapbg2") l = 2;
+                if (layer == "mapfg") l = 3;
+
+                currInfo = [x, y, l];
+
+                selectedTile = getTile(map, x, y, l);
+
+                if (selectedTile == undefined) selectedTile = map.tiles.empty;
+                selectedTileID = "empty";
+                if (map[layer][y] != undefined) selectedTileID = map[layer][y].substr(x * 4, 3);
+            }
+            else {
+                selectedTile = map.tiles[selected] != undefined ? map.tiles[selected] : commontiles[selected];
+                selectedTileID = selected;
+            }
+
+            if (selectedTile.set != undefined) {
+                tileInfoControls[4].source = "tilesets/" + selectedTile.set;
+                tileInfoControls[4].snip = [selectedTile.snip[0] * 32, selectedTile.snip[1] * 32, 32, 32];
+                tileInfoControls[5].text = "Set: " + selectedTile.set;
+            }
+            else {
+                tileInfoControls[4].source = "tiles/" + selectedTile.sprite;
+                tileInfoControls[4].snip = [0, 0, 32, 32];
+                tileInfoControls[5].text = "Sprite: " + selectedTile.sprite;
+            }
+            tileInfoControls[6].text = "ID: " + selectedTileID;
+            tileInfoControls[7].text = "Layer: " + layer + " (" + l + "/3)";
+            tileInfoControls[8].text = "Occupied: " + (selectedTile.occupied == undefined ? "not" : selectedTile.occupied);
+            tileInfoControls[9].text = "Animated: " + (selectedTile.ani == undefined ? "not" : selectedTile.ani);
+            tileInfoControls[10].text = "Teleport: " + (selectedTile.teleport == undefined ? "not" : selectedTile.teleport);
+            tileInfoControls[11].text = "Swim: " + (selectedTile.swim == undefined ? "not" : selectedTile.swim);
+
+            // Item display
+            let thisTilesItem;
+            for (i in map.items) {
+                if (map.items[i][0] == x && map.items[i][1] == y) thisTilesItem = [map.items[i][2], map.items[i][3], "ground"];
+            }
+            if (thisTilesItem == undefined) {
+                for (i in map.chests) {
+                    if (map.chests[i][0] == x && map.chests[i][1] == y) thisTilesItem = [map.chests[i][3], map.chests[i][4], "chest"];
+                }
+            }
+            tileInfoControls[12].text = "Item: " + (thisTilesItem == undefined ? "not" : thisTilesItem[0] + " x" + thisTilesItem[1] + " (" + thisTilesItem[2] + ")");
+            if (thisTilesItem != undefined) tileInfoControls[14].source = "items/" + items[thisTilesItem[0]]().source;
+            else tileInfoControls[14].source = "gear";
+
+            tileInfoControls[13].text = "Dialogue: " + (selectedTile.dialogue == undefined ? "not" : selectedTile.dialogue);
+
+            // Show it all
+            UI_toggle_tileInfoControls(1);
+
+            //tileInfoSelectedTile.offset[0] = (x - game.position[0] + 16.1) * zswm;
+            //tileInfoSelectedTile.offset[1] = (y - game.position[1] + 7.5) * zswm;
+            tileInfoSelectedTile.anchor = [0.5, 0.5];
+            tileInfoSelectedTile.offset = [(x - game.position[0]) * zswm - (zswm / 2), (zoom * scale * (y - game.position[1] + 7.5) - ((zoom - 1) * scale * (y - game.position[1] + 7.5))) - (height / 2)];
+            tileInfoSelectedTile.sizeOffset = [zswm, zswm];
+            console.log(tileInfoSelectedTile.offset, tileInfoSelectedTile.alpha);
+            tileInfoControls[15].pos = currInfo;
+            tileInfoControls[15].alpha = (selectedTile.teleport != undefined);
+        }
+
+        // 3. objects
+        
+        // the big bg rect
+        createSquare("bigBG", 0, 0, 0, 1, "brown", {
+            alpha: 0.8, sizeOffset: [72 * 6, 0]
+        });
+
+        createSquare("bigBG_line1", 0, 0, 0, 1, "white", {
+            alpha: 0.5, sizeOffset: [2, 0], offset: [72 * 6, 0]
+        });
+        createSquare("bigBG_line2", 0, 0.025, 0, 0, "white", {
+            alpha: 0.5, sizeOffset: [72 * 6, 2], offset: [0, 72 * 4]
+        });
+        createSquare("bigBG_line3", 0, 0.025, 0, 0, "white", {
+            alpha: 0.5, sizeOffset: [72 * 6, 2], offset: [0, 72 * 8]
+        });
+
+        createSmartText("currentMapInfo", 0.002, 0.07, "ERROR", {
+            align: "left", size: 32, color: "white",
+            sizeOffset: [72 * 6, 2], offset: [0, 72 * 8]
+            // outline: "gray", outlineSize: 10,
+        });
+
+        // walk pad
+        createButton("walkPadUp", 0.1, 0.9, 0, 0, "mapbuttons", () => useWalkPad("up"),
+            {
+                offset: [0, -walkPadSize * 3], sizeOffset: [walkPadSize, walkPadSize],
+                snip: [0, 0, 32, 32],
+                onHold: () => downWalkPad("up")
+            });
+        createButton("walkPadRight", 0.1, 0.9, 0, 0, "mapbuttons", () => useWalkPad("right"),
+            {
+                offset: [walkPadSize, -walkPadSize * 2], sizeOffset: [walkPadSize, walkPadSize],
+                snip: [0, 32, 32, 32],
+                onHold: () => downWalkPad("right")
+            });
+        createButton("walkPadDown", 0.1, 0.9, 0, 0, "mapbuttons", () => useWalkPad("down"),
+            {
+                offset: [0, -walkPadSize * 1], sizeOffset: [walkPadSize, walkPadSize],
+                snip: [0, 64, 32, 32],
+                onHold: () => downWalkPad("down")
+            });
+        createButton("walkPadLeft", 0.1, 0.9, 0, 0, "mapbuttons", () => useWalkPad("left"),
+            {
+                offset: [-walkPadSize, -walkPadSize * 2], sizeOffset: [walkPadSize, walkPadSize],
+                snip: [0, 96, 32, 32],
+                onHold: () => downWalkPad("left")
+            });
+        createButton("walkPadMiddle", 0.1, 0.9, 0, 0, "mapbuttons", () => { },
+            {
+                offset: [0, -walkPadSize * 2], sizeOffset: [walkPadSize, walkPadSize],
+                snip: [64, 0, 32, 32],
+                onHold: () => reviveWalkPad()
+            });
+
+        // left side buttons
+        createButton("btn_leavemapmaker", 0, 0.9525, 0.05, 0.0475, "button", (c) => {
+            if (objects[c].alpha == 1) {
+                if (confirm("Do you really want to leave Map Maker?")) loadScene("pretitle");
+            }
+        }, { aText: { text: "EXIT", size: 20 } });
+
+        createImage("currentTilePreview", 0, 0.64, 0, 0, "tiles/sand1", {
+            sizeOffset: [64, 64], offset: [256 + 96, 48]
+            //glow: 5, glowColor: "yellow"
+        })
+
+        // 4. init startup
+
+        if (!isDevMode()) {
+            fadeIn(25000, true);
+            loop = () => { return false; };
+        }
+
+        //generateRecentlyUsed();
+        //updatePrePicker();
+
+        //loadNPCs();
+        fadeIn(250, true);
+        canMove = true;
+
+    },
+    (tick) => {
+        // Loop
+
+        // load map
+        if (lmresult != "none") {
+            if (loadMapButtons[0].alpha == 1) toggleLoadButtons();
+            hideInfo();
+            if (lmresult != "justhide") {
+                if (typeof (lmresult) == "string" && lmresult.id != undefined) {
+                    // The map you have loaded already exists :)
+                    mapmaker.currentMap = lmresult.id; // from file
+                    map = maps[lmresult];
+
+                    //console.log("loaded: " + currentMap);
+                    newMap();
+                }
+                else {
+                    // It does not exist, load from file
+                    //createNewMap(eval(lmresult));
+                    map = eval(lmresult);
+                    mapmaker.currentMap = map.id;
+                    newMap();
+                }
+            }
+
+            lmresult = "none";
+        }
+
+        // ???
+        if (!kofs[2] && canMove == true && (mode != "place")) {
+            let xo;
+            let yo;
+            if ((currentKeys["w"] || currentKeys["arrowup"] || pad == "up")) {
+                head = 3;
+                direction = "up";
+                xo = 0;
+                yo = -1;
+            } else if ((currentKeys["s"] || currentKeys["arrowdown"] || pad == "down")) {
+                head = 0;
+                direction = "down";
+                xo = 0;
+                yo = 1;
+            } else if ((currentKeys["a"] || currentKeys["arrowleft"] || pad == "left")) {
+                head = 1;
+                direction = "left";
+                xo = -1;
+                yo = 0;
+            } else if ((currentKeys["d"] || currentKeys["arrowright"] || pad == "right")) {
+                head = 2;
+                direction = "right";
+                xo = 1;
+                yo = 0;
+            }
+            // Optimized code pog
+            if (xo != undefined) {
+                if (map.worldmode == true) {
+                    xo /= 2;
+                    yo /= 2;
+                }
+                kofs = [xo, yo, 0.1];
+                game.position[0] += xo;
+                game.position[1] += yo;
+            }
+        }
+
+        kofs[2] = Math.max(kofs[2] - delta / 166, 0);
+
+        // smaller stuffs
+        // Update location/status text
+        objects["currentMapInfo"].text = mapmaker.currentMap + " @ [x" + game.position[0] + ", y" + game.position[1] + ", z" + mapmaker.editingLayer + "]\n" + mapmaker.mode + "\n" + mapmaker.tileToPlace;
+
+        //wggjCTX.imageSmoothingEnabled = false;
+        wggjCTX.globalAlpha = 1;
+
+        let ofsX = game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5;
+        let ofsY = game.position[1] - kofs[1] * kofs[2] - 7.5;
+
+        if (map == undefined) return false;
+
+        let wm = map.worldmode == true ? 2 : 1;
+        zswm = (zoom * scale) / wm;
+
+        if (mapmaker.enableAnimations) {
+            mapmaker.animateTime = (mapmaker.animateTime + delta / 1000) % 2;
+
+            /*
+            for (ti in tiles_fg) {
+                if (tiles_bg[ti].ani != undefined) {
+                    tiles_bg[ti].snip = [Math.floor(tiles_bg[ti].ani[0] * (animateTime / 2)) * (32 * tiles_bg[ti].ani[1]) + tiles_bg[ti].isnip[0], tiles_bg[ti].isnip[1], 32, 32];
+                }
+                if (tiles_bg2[ti].ani != undefined) {
+                    tiles_bg2[ti].snip = [Math.floor(tiles_bg2[ti].ani[0] * (animateTime / 2)) * (32 * tiles_bg2[ti].ani[1]) + tiles_bg2[ti].isnip[0], tiles_bg2[ti].isnip[1], 32, 32];
+                }
+                if (tiles_fg[ti].ani != undefined) {
+                    tiles_fg[ti].snip = [Math.floor(tiles_fg[ti].ani[0] * (animateTime / 2)) * (32 * tiles_fg[ti].ani[1]) + tiles_fg[ti].isnip[0], tiles_fg[ti].isnip[1], 32, 32];
+                }
+            }
+            */
+        }
+
+        // draw tiles of BG and BG2 layers (behind player)
+        drawTiles(1);
+        drawTiles(2);
+        drawTiles(3);
+
+        /*
+
+        expandMapButtons[0].sizeOffset = [zoom * scale, zoom * scale];
+        expandMapButtons[0].offset = [(zoom * scale * (-2 - ofsX) - ((zoom - 1) * scale * (width / 2))), (zoom * scale * (-1 - ofsY) - ((zoom - 1) * scale * 7))];
+
+        expandMapButtons[1].sizeOffset = [zoom * scale, zoom * scale];
+        expandMapButtons[1].offset = [(zoom * scale * (-1 - ofsX) - ((zoom - 1) * scale * (width / 2))), (zoom * scale * (-2 - ofsY) - ((zoom - 1) * scale * 7))];
+
+        expandMapButtons[2].sizeOffset = [zoom * scale, zoom * scale];
+        expandMapButtons[2].offset = [(zoom * scale * (-4 - ofsX) - ((zoom - 1) * scale * (width / 2))), (zoom * scale * (-1 - ofsY) - ((zoom - 1) * scale * 7))];
+
+        expandMapButtons[3].sizeOffset = [zoom * scale, zoom * scale];
+        expandMapButtons[3].offset = [(zoom * scale * (-1 - ofsX) - ((zoom - 1) * scale * (width / 2))), (zoom * scale * (-4 - ofsY) - ((zoom - 1) * scale * 7))];
+
+        middlei.sizeOffset = [zoom * scale, zoom * scale];
+        middlei.offset = [-zoom * scale / 2, (zoom * scale * 7.5 - ((zoom - 1) * scale * 7)) - (height / 2)];
+
+        */
+
+        // tick temporary placing blocker
+        if (mapmaker.temporaryPlacementBlocker > 0) mapmaker.temporaryPlacementBlocker -= 1 / delta;
+    }
+);
+
+
+
+
+
+
+
+
+
+scenes.OLDmapmaker = () => {
     let walkPad = [];
     let walkPadSize = Math.max(32, 64 * settings.walkPadSize);
     let pad;
@@ -484,7 +2008,7 @@ scenes.mapmaker = () => {
         fill: colors.buttonbottom, alpha: 0, clickstop: true
     }));
     makerInfo.push(controls.rect({
-        anchor: [0.05, 0.15], sizeAnchor: [0.2, 0.825], offset: [8 -64, 8], sizeOffset: [-16 +64, -16],
+        anchor: [0.05, 0.15], sizeAnchor: [0.2, 0.825], offset: [8 - 64, 8], sizeOffset: [-16 + 64, -16],
         fill: colors.buttontop, alpha: 0,
     }));
     makerInfo.push(controls.label({
@@ -1983,7 +3507,7 @@ scenes.mapmaker = () => {
         },
         alpha: 1,
     });
-    
+
     // bottom left, toggle animations on or off (visual only)
     let toggleAnimate = controls.button({
         anchor: [0, 0.795], sizeAnchor: [0.05, 0.05],
@@ -2473,7 +3997,7 @@ scenes.mapmaker = () => {
                 }
             }
         }
-    }));    
+    }));
     tileInfoControls.push(controls.button({
         anchor: [0.5, 0.625], sizeAnchor: [0.2, 0.1],
         text: "Add chest", alpha: 0,
@@ -2531,7 +4055,7 @@ scenes.mapmaker = () => {
             tileInfoControls[tic].alpha = val;
         }
         tileInfoSelectedTile.alpha = val;
-        console.log(tileInfoSelectedTile.offset,tileInfoSelectedTile.alpha);
+        console.log(tileInfoSelectedTile.offset, tileInfoSelectedTile.alpha);
     }
 
 
@@ -3642,7 +5166,7 @@ scenes.mapmaker = () => {
         tileInfoSelectedTile.anchor = [0.5, 0.5];
         tileInfoSelectedTile.offset = [(x - game.position[0]) * zswm - (zswm / 2), (zoom * scale * (y - game.position[1] + 7.5) - ((zoom - 1) * scale * (y - game.position[1] + 7.5))) - (height / 2)];
         tileInfoSelectedTile.sizeOffset = [zswm, zswm];
-        console.log(tileInfoSelectedTile.offset,tileInfoSelectedTile.alpha);
+        console.log(tileInfoSelectedTile.offset, tileInfoSelectedTile.alpha);
         tileInfoControls[15].pos = currInfo;
         tileInfoControls[15].alpha = (selectedTile.teleport != undefined);
     }

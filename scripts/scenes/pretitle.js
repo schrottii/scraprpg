@@ -81,7 +81,7 @@ scenes["pretitle"] = new Scene(
             playSound("titletransition");
 
             stopMusic();
-            setScene(scenes.mapmaker());
+            loadScene("mapmaker");
         }, { aText: { text: "Map Maker", size: 24 }, power: isDevMode() });
 
         createButton("devbtn4", 0.7, 0.55, 0.2, 0.08, "button", () => {

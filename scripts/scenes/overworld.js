@@ -299,6 +299,7 @@ scenes["overworld"] = new Scene(
         if (autoSaveTime > 14999) {
             // Animation
             addAnimator(function (t) {
+                if (objects["autoSaveText"] == undefined) return false;
                 objects["autoSaveText"].alpha = 1 - (1 / 2500) * t;
                 if (t > 2500) {
                     autoSaveTime = 0;
