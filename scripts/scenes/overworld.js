@@ -21,35 +21,35 @@ scenes["overworld"] = new Scene(
         // objects
         //createSquare("BG", 0, 0, 1, 1, "#000000");
 
-        createButton("walkPadUp", 0.1, 0.9, 0, 0, "mapbuttons", () => useWalkPad("up"),
+        createButton("walkPadUp", 0.1, 0.9, 0, 0, "mapbuttons", () => downWalkPad("up"),
             {
                 offset: [0, -walkPadSize * 3], sizeOffset: [walkPadSize, walkPadSize],
                 snip: [0, 0, 32, 32],
-                onHold: () => downWalkPad("up")
+                onUp: () => useWalkPad("up")
             });
-        createButton("walkPadRight", 0.1, 0.9, 0, 0, "mapbuttons", () => useWalkPad("right"),
+        createButton("walkPadRight", 0.1, 0.9, 0, 0, "mapbuttons", () => downWalkPad("right"),
             {
                 offset: [walkPadSize, -walkPadSize * 2], sizeOffset: [walkPadSize, walkPadSize],
                 snip: [0, 32, 32, 32],
-                onHold: () => downWalkPad("right")
+                onUp: () => useWalkPad("right")
             });
-        createButton("walkPadDown", 0.1, 0.9, 0, 0, "mapbuttons", () => useWalkPad("down"),
+        createButton("walkPadDown", 0.1, 0.9, 0, 0, "mapbuttons", () => downWalkPad("down"),
             {
                 offset: [0, -walkPadSize * 1], sizeOffset: [walkPadSize, walkPadSize],
                 snip: [0, 64, 32, 32],
-                onHold: () => downWalkPad("down")
+                onUp: () => useWalkPad("down")
             });
-        createButton("walkPadLeft", 0.1, 0.9, 0, 0, "mapbuttons", () => useWalkPad("left"),
+        createButton("walkPadLeft", 0.1, 0.9, 0, 0, "mapbuttons", () => downWalkPad("left"),
             {
                 offset: [-walkPadSize, -walkPadSize * 2], sizeOffset: [walkPadSize, walkPadSize],
                 snip: [0, 96, 32, 32],
-                onHold: () => downWalkPad("left")
+                onUp: () => useWalkPad("left")
             });
         createButton("walkPadMiddle", 0.1, 0.9, 0, 0, "mapbuttons", () => { },
             {
                 offset: [0, -walkPadSize * 2], sizeOffset: [walkPadSize, walkPadSize],
                 snip: [64, 0, 32, 32],
-                onHold: () => reviveWalkPad()
+                onUp: () => reviveWalkPad()
             });
 
         createSquare("nightEffect", 0, 0, 1, 1, "#FFFFFF", { alpha: 0 });

@@ -1230,6 +1230,7 @@ function realphaWalkPad(alp = 1) {
 }
 
 function useWalkPad(direction) {
+    //console.log("up " + direction);
     switch (direction) {
         case "up":
             objects["walkPadUp"].snip[0] = 0;
@@ -1251,6 +1252,7 @@ function useWalkPad(direction) {
 }
 
 function downWalkPad(direction) {
+    //console.log("down " + direction);
     switch (direction) {
         case "up":
             objects["walkPadUp"].snip[0] = 32;

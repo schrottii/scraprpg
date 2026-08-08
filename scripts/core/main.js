@@ -194,8 +194,8 @@ function customWGGJLoop() {
     wggjCTX.fillStyle = "white";
     wggjCTX.font = "12px DePixelKlein, sans-serif";
     wggjCTX.textAlign = "left";
-    wggjCTX.textBaseline = "alphabetic";
-    wggjCTX.globalAlpha = 1; //or else it's a bit transparent
+    //wggjCTX.textBaseline = "alphabetic";
+    wggjCTX.globalAlpha = 1;
     if (isDevMode()) wggjCTX.fillText((1000 / delta).toFixed(0) + "fps   " + wggjCTX.canvas.width + "x" + wggjCTX.canvas.height + "   w: " + width.toFixed(1) + "  scale: " + scale.toFixed(1) + (isLs() ? "  ls" : "  p"), 2, 12);
     else wggjCTX.fillText((1000 / delta).toFixed(0) + "FPS", 2, 10);
 

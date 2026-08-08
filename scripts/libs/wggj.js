@@ -69,6 +69,8 @@ v1.8:
 - groups: set,etc. can now be a lambda (passed: object)
 - SmartText autoLinebreak no longer splits mid word
 - object render try/error catching
+- glow, glowColor for: square, image, text, smarttext
+- fixed onUp not working thru config
 */
 
 
@@ -399,6 +401,17 @@ class WGGJ_Base {
         this.alpha = Math.min(1, Math.max(0, this.alpha));
         if (wggjCTX.globalAlpha != this.alpha) wggjCTX.globalAlpha = this.alpha;
     }
+
+    glowStart() {
+        if (this.glow !== 0/* && settings.glow*/) {
+            wggjCTX.shadowBlur = this.glow;
+            wggjCTX.shadowColor = this.glowColor;
+        }
+    }
+
+    glowStop() {
+        wggjCTX.shadowBlur = 0;
+    }
 }
 
 class WGGJ_Square extends WGGJ_Base {
@@ -420,12 +433,15 @@ class WGGJ_Square extends WGGJ_Base {
         this.offset = isValid(config.offset) ? config.offset : [0, 0];
         this.sizeOffset = isValid(config.sizeOffset) ? config.sizeOffset : [0, 0];
         this.clickthrough = isValid(config.clickthrough) ? config.clickthrough : true;
+        this.glow = isValid(config.glow) ? config.glow : 0;
+        this.glowColor = isValid(config.glowColor) ? config.glowColor : "white";
 
         this.onClick = isValid(config.onClick) ? config.onClick : undefined;
         this.onHold = isValid(config.onHold) ? config.onHold : undefined;
         this.onDrag = isValid(config.onDrag) ? config.onDrag : undefined;
         this.onMouseMove = isValid(config.onMouseMove) ? config.onMouseMove : undefined;
         this.onHover = isValid(config.onHover) ? config.onHover : undefined;
+        this.onUp = isValid(config.onUp) ? config.onUp : undefined;
 
         this.aText = isValid(config.aText) ? config.aText : undefined;
         this.aImage = isValid(config.aImage) ? config.aImage : undefined;
@@ -488,11 +504,14 @@ class WGGJ_Square extends WGGJ_Base {
             }
         }
 
+        this.glowStart();
+
         wggjCTX.fillStyle = this.color;
         wggjCTX.fillRect(this.currentX(), this.currentY(), this.currentW(), this.currentH());
 
         this.buttonAttachments();
 
+        this.glowStop();
         if (this.parent != undefined) wggjCTX.restore();
     }
 }
@@ -517,6 +536,8 @@ class WGGJ_Image extends WGGJ_Base {
         this.offset = isValid(config.offset) ? config.offset : [0, 0];
         this.sizeOffset = isValid(config.sizeOffset) ? config.sizeOffset : [0, 0];
         this.clickthrough = isValid(config.clickthrough) ? config.clickthrough : true;
+        this.glow = isValid(config.glow) ? config.glow : 0;
+        this.glowColor = isValid(config.glowColor) ? config.glowColor : "white";
 
         this.rotate = isValid(config.rotate) ? config.rotate : 0;
         this.snip = isValid(config.snip) ? config.snip : 0;
@@ -526,6 +547,7 @@ class WGGJ_Image extends WGGJ_Base {
         this.onDrag = isValid(config.onDrag) ? config.onDrag : undefined;
         this.onMouseMove = isValid(config.onMouseMove) ? config.onMouseMove : undefined;
         this.onHover = isValid(config.onHover) ? config.onHover : undefined;
+        this.onUp = isValid(config.onUp) ? config.onUp : undefined;
 
         this.aText = isValid(config.aText) ? config.aText : undefined;
         this.aImage = isValid(config.aImage) ? config.aImage : undefined;
@@ -631,12 +653,15 @@ class WGGJ_Image extends WGGJ_Base {
             renderY = -renderH / 2;
         }
 
+        this.glowStart();
+
         // draw image
         if (this.snip || this.parent) wggjCTX.drawImage(images[this.image], snipX, snipY, snipW, snipH, renderX, renderY, renderW, renderH);
         else wggjCTX.drawImage(images[this.image], renderX, renderY, renderW, renderH);
 
         this.buttonAttachments();
 
+        this.glowStop();
         if (this.parent != undefined || this.rotate) wggjCTX.restore();
 
         // rotate 2/2
@@ -665,6 +690,8 @@ class WGGJ_Text extends WGGJ_Base {
         this.alpha = isValid(config.alpha) ? config.alpha : 1;
         this.offset = isValid(config.offset) ? config.offset : [0, 0];
         this.clickthrough = isValid(config.clickthrough) ? config.clickthrough : true;
+        this.glow = isValid(config.glow) ? config.glow : 0;
+        this.glowColor = isValid(config.glowColor) ? config.glowColor : "white";
 
         this.config = config;
     }
@@ -727,8 +754,11 @@ class WGGJ_Text extends WGGJ_Base {
             wggjCTX.clip();
         }
 
+        this.glowStart();
+
         this.renderText(renderX, renderY);
 
+        this.glowStop();
         if (this.parent != undefined) wggjCTX.restore();
     }
 }
