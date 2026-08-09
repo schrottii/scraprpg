@@ -15,12 +15,12 @@ scenes["inventory"] = new Scene(
                 fadeOut(1000 / 3, true, (id = objects[c].id) => {
                     let sceneNames = ["questscene", "itemscene", "magicscene", "equipment", "formation", "monsterbook", "savemanager", "settings", "overworld"];
                     if (id >= 0 && id <= 8) {
-                        console.log("sidebutton, loading: " + id + " - " + sceneNames[id]);
+                        //console.log("sidebutton, loading: " + id + " - " + sceneNames[id]);
                         loadScene(sceneNames[id]);
                     }
                 });
             }, {
-                aText: { size: 32, text: ["Quests", "Items", "Magic", "Equipment", "Formation", "Monster Book", "Save Manager", "Settings", "Exit Menu"][i] }
+                aText: { textBaseline: "bottom", size: 32, text: ["Quests", "Items", "Magic", "Equipment", "Formation", "Monster Book", "Save Manager", "Settings", "Exit Menu"][i] }
             });
             objects["sidebutton" + i].id = i;
 
@@ -84,12 +84,12 @@ scenes["inventory"] = new Scene(
         // smort |:3
         createImage("wrench", -10, 0, 0, 0, "wrench");
         createSmartText("displays_wrenches", 0.295, 0.94, "0", {
-            color: "black", align: "right", size: 24,
+            color: "black", align: "right", size: 24, textBaseline: "bottom",
             images: { currency: "wrench" }
         });
         createImage("brick", -10, 0, 0, 0, "brick");
         createSmartText("displays_bricks", 0.295, 0.98, "0", {
-            color: "black", align: "right", size: 24,
+            color: "black", align: "right", size: 24, textBaseline: "bottom",
             images: { currency: "brick" }
         });
 

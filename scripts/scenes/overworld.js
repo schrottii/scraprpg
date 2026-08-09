@@ -600,6 +600,7 @@ scenes["overworld"] = new Scene(
             currentKeys["f"] = false;
             if (isElectron() || prompt("Press F to pay respect") == "SPIT") {
                 teleportPlayer("castleSplit", 56, 20);
+                canMove = true;
             }
         }
     }

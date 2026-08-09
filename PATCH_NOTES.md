@@ -232,20 +232,40 @@
 
 
 ## v1.1 (?)
-indev name: 1.0.8
+indev name: v1.0.8
 
 -> WGGJ:
-.
+- Converted the entire game from its "new system" graphics to my WGGJ framework!
+- They function similarly, but working with WGGJ is more comfortable and allows for adding more new stuff
+- WGGJ v1.9 is co-developed alongside this update (symbiosis)
+- Major structural & code back-end changes
+- Most scenes are replicated 1:1 for now, but some have already received improvements, see below:
 
--> Scenes:
-- Formation: Grid is now shown differently if that setting is turned off
-- Formation: Changed display of the row stats
-- Formation: Macro Configuration now shows one square for every option
+-> WGGJ: Title & Pretitle:
+- Updated copyright to 2026 and added Balnoom name
+- For indev, added skip button
+- Made stars more intense
+
+-> WGGJ: Overworld:
+- Dialogues now support multiple lines
+
+-> WGGJ: Inventory:
+- uhh
+
+-> WGGJ: Formation:
+- Grid is now shown differently if that setting is turned off
+- Changed display of the row stats
+- Macro Configuration now shows one rectangle for every option (selected in red)
+
+
 
 -> Enemy behavior: 
 - Added ability for certain enemies to swim
 - NPCs and enemies can now walk half a step in worldmode
 - Improved enemy spawning
+
+-> Hotkeys:
+- Added Hotkeys.md, a documentational list of all available hotkeys
 
 -> Other:
 - New button design
@@ -259,7 +279,7 @@ indev name: 1.0.8
 
 
 
--> Map Maker:
+-> Map Maker (pre-WGGJ):
 - Repositioned buttons in the bottom left, moved info from bottom right to the bottom left
 - The button for map info now shows "MAP" instead of "(i)" (to avoid confusion with "info")
 - Updated images for toggle UI and show collisions buttons
@@ -270,11 +290,24 @@ indev name: 1.0.8
 - Tile Info: added GO button to directly move to the selected tile
 - Tile Info: selected tile is now highlighted
 
--> Internal:
+-> WGGJ: Map Maker:
+- Moved info text (with coords, tile to place, etc.) onto the left side
+- Zoom shows zoom level
+- Undo/redo show how many actions can be undone/redone
+- Optimized rendering of animation previews
+
+-> Files:
 - Reworked file tree: assets folder (like old data folder), new data folder, data files split, and much more (800+ changes)
 - Organized textures folder (all the images)
-- Added scripts/node/nodemain.js, seperating it from the global main.js logic (PC version stuff)
-- Blocked prompts in the PC version
+- Renamed game.js scene to overworld.js and added a separate game.js file for logic
+- Added bars.js (for re-usable graphical bars like HP)
+- Created scene subfolders inventory and mapmaker
+
+-> Internal:
 - Added resSpecifics, logging which types of files are getting loaded, and which files exactly fail to load, reporting to console every 5 seconds of loading time
 - Top left now displays width x height
-- Updated copyright to 2026 and added Balnoom name
+- Updated example_scene.js to include it for the new WGGJ format
+
+-> PC version:
+- Added scripts/node/nodemain.js, seperating it from the global main.js logic (PC version stuff)
+- Blocked prompts in the PC version (to avoid crashes)

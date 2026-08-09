@@ -71,6 +71,8 @@ v1.8:
 - object render try/error catching
 - glow, glowColor for: square, image, text, smarttext
 - fixed onUp not working thru config
+- Text, SmartText: textBaseline
+- wggj.config.textBaseline
 */
 
 
@@ -118,7 +120,8 @@ var wggj = {
         font: "Times",
         gameName: "",
         imageBasePath: "images/",
-        autoStart: false
+        autoStart: false,
+        textBaseline: "middle"
     },
 
     debug: {
@@ -127,7 +130,6 @@ var wggj = {
     },
 
     audio: {
-        // NEW
         musicPlayer: undefined,
         musicVolume: 1,
         musicMuted: false,
@@ -692,6 +694,7 @@ class WGGJ_Text extends WGGJ_Base {
         this.clickthrough = isValid(config.clickthrough) ? config.clickthrough : true;
         this.glow = isValid(config.glow) ? config.glow : 0;
         this.glowColor = isValid(config.glowColor) ? config.glowColor : "white";
+        this.textBaseline = isValid(config.textBaseline) ? config.textBaseline : false;
 
         this.config = config;
     }
@@ -733,7 +736,7 @@ class WGGJ_Text extends WGGJ_Base {
 
         wggjCTX.fillStyle = this.color;
         wggjCTX.font = this.getScaling() + "px " + wggj.config.font;
-        wggjCTX.textBaseline = "bottom";
+        wggjCTX.textBaseline = this.textBaseline ? this.textBaseline : wggj.config.textBaseline;
         wggjCTX.textAlign = this.align;
 
         let renderX = wggj.canvas.w * this.x + this.offset[0];

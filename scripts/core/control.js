@@ -130,7 +130,7 @@
             render(ctx) {
                 wggjCTX.fillStyle = this.fill;
                 wggjCTX.textAlign = this.align;
-                wggjCTX.textBaseline = this.baseline;
+                wggjCTX.config.textBaseline = this.baseline;
 
                 let red = 1;
                 if (isLs() == true) red = 2;
@@ -199,7 +199,7 @@
                 wggjCTX.font = (this.fontSize / red) + "px " + this.font + ", sans-serif";
                 wggjCTX.fillStyle = this.fillText;
                 wggjCTX.textAlign = "center";
-                wggjCTX.textBaseline = "middle";
+                wggjCTX.config.textBaseline = "middle";
                 wggjCTX.fillText(this.text, x + w / 2, y + h / 2, w);
             },
             ...args || {},

@@ -1601,7 +1601,7 @@ scenes["mapmaker"] = new Scene(
 
         createSmartText("currentMapInfo", 0.002, 0.07, "ERROR", {
             align: "left", size: 32, color: "white",
-            sizeOffset: [72 * 6, 2], offset: [0, 72 * 8]
+            sizeOffset: [72 * 6, 2], offset: [0, 72 * 8], textBaseline: "bottom"
             // outline: "gray", outlineSize: 10,
         });
 

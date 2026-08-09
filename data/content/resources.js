@@ -415,20 +415,23 @@ var scenes = {
     pretitle: "scripts/scenes/pretitle.js",
     game: "scripts/scenes/overworld.js",
     fight: "scripts/scenes/fight.js",
-    mapmaker: "scripts/scenes/mapmaker.js",
-    inventory: "scripts/scenes/inventory.js",
-    itemscene: "scripts/scenes/itemscene.js",
-    magicscene: "scripts/scenes/magicscene.js",
-    formation: "scripts/scenes/formation.js",
-    equipment: "scripts/scenes/equipment.js",
-    savemanager: "scripts/scenes/savemanager.js",
-    settings: "scripts/scenes/settings.js",
-    status: "scripts/scenes/status.js",
+
+    mapmaker: "scripts/scenes/mapmaker/mapmaker.js",
+
+    inventory: "scripts/scenes/inventory/inventory.js",
+    itemscene: "scripts/scenes/inventory/itemscene.js",
+    magicscene: "scripts/scenes/inventory/magicscene.js",
+    formation: "scripts/scenes/inventory/formation.js",
+    equipment: "scripts/scenes/inventory/equipment.js",
+    savemanager: "scripts/scenes/inventory/savemanager.js",
+    status: "scripts/scenes/inventory/status.js",
+    monsterbook: "scripts/scenes/inventory/monsterbook.js",
+    questscene: "scripts/scenes/inventory/questscene.js",
+    stats: "scripts/scenes/inventory/stats.js",
+
     shop: "scripts/scenes/shop.js",
-    monsterbook: "scripts/scenes/monsterbook.js",
-    questscene: "scripts/scenes/questscene.js",
     credits: "scripts/scenes/credits.js",
-    stats: "scripts/scenes/stats.js",
+    settings: "scripts/scenes/settings.js",
 };
 
 var audio = {
