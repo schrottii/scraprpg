@@ -73,6 +73,7 @@ v1.8:
 - fixed onUp not working thru config
 - Text, SmartText: textBaseline
 - wggj.config.textBaseline
+- container: fixed snip issue when going to negative X/Y
 */
 
 
@@ -620,8 +621,8 @@ class WGGJ_Image extends WGGJ_Base {
 
             let overlapX = Math.max(0, containerX - renderX);
             let overlapY = Math.max(0, containerY - renderY);
-            let visibleWidth = Math.min(renderW, containerX + containerWidth - renderX);
-            let visibleHeight = Math.min(renderH, containerY + containerHeight - renderY);
+            let visibleWidth = Math.min(renderW, containerX + containerWidth - renderX) - (renderX < containerX ? containerX - renderX : 0);
+            let visibleHeight = Math.min(renderH, containerY + containerHeight - renderY) - (renderY < containerY ? containerY - renderY : 0);
 
             snipX += overlapX * (snipW / renderW);
             snipY += overlapY * (snipH / renderH);

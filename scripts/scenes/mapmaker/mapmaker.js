@@ -67,6 +67,83 @@ function loadMap() {
     }
 }
 
+function changeTileToPlace(newTTP, updateRecent = true) {
+    // TTP = tile to place
+    let newSource = "";
+    let newSnip = [0, 0, 32, 32];
+
+    // Change the tile to place, and the current tile selected display
+    mapmaker.tileToPlace = newTTP;
+
+    if (mapmaker.autoLayer) { // automatically go to the right layer
+        if (mm_map.tiles[mapmaker.tileToPlace] != undefined && mm_map.tiles[mapmaker.tileToPlace].layer != undefined && mm_map.tiles[mapmaker.tileToPlace].layer != "none") editingLayer = ["map", "mapbg2", "mapfg"].indexOf(mm_map.tiles[mapmaker.tileToPlace].layer);
+        if (commontiles[mapmaker.tileToPlace] != undefined && commontiles[mapmaker.tileToPlace].layer != undefined && commontiles[mapmaker.tileToPlace].layer != "none") editingLayer = ["map", "mapbg2", "mapfg"].indexOf(commontiles[mapmaker.tileToPlace].layer);
+    }
+
+    if (objects["btn_layer0"] != undefined) {
+        objects["btn_layer0"].glow = mapmaker.editingLayer == 0 ? 10 : 0;
+        objects["btn_layer1"].glow = mapmaker.editingLayer == 1 ? 10 : 0;
+        objects["btn_layer2"].glow = mapmaker.editingLayer == 2 ? 10 : 0;
+    }
+
+    // Display (map or common, tile or tileset)
+    if (mm_map.tiles[mapmaker.tileToPlace] != undefined) {
+        if (mm_map.tiles[mapmaker.tileToPlace].sprite != undefined) {
+            newSource = "tiles/" + mm_map.tiles[mapmaker.tileToPlace].sprite;
+            newSnip = false;
+        }
+        else {
+            newSource = "tilesets/" + mm_map.tiles[mapmaker.tileToPlace].set;
+            newSnip = [mm_map.tiles[mapmaker.tileToPlace].snip[0] * 32, mm_map.tiles[mapmaker.tileToPlace].snip[1] * 32, 32, 32];
+        }
+    }
+    else if (commontiles[mapmaker.tileToPlace] != undefined) {
+        if (commontiles[mapmaker.tileToPlace].sprite != undefined) {
+            newSource = "tiles/" + commontiles[mapmaker.tileToPlace].sprite;
+            newSnip = false;
+        }
+        else {
+            newSource = "tilesets/" + commontiles[mapmaker.tileToPlace].set;
+            newSnip = [commontiles[mapmaker.tileToPlace].snip[0] * 32, commontiles[mapmaker.tileToPlace].snip[1] * 32, 32, 32];
+        }
+    }
+
+    if (newSource == "") return false;
+
+    if (objects["currentTilePreview"] != undefined) {
+        objects["currentTilePreview"].image = newSource;
+        objects["currentTilePreview"].snip = newSnip;
+    }
+
+    // update recently used tiles AKA prepicker (left)
+    let alreadyPrepicked = false;
+    for (let p in recentlyUsedTilesList) {
+        if (recentlyUsedTilesList[p][1] == newTTP) alreadyPrepicked = true;
+    }
+
+    if (!alreadyPrepicked) {
+        recentlyUsedTilesList.unshift([newSource, newTTP, newSnip]); // add
+        if (recentlyUsedTilesList.length > 24) recentlyUsedTilesList.pop(); // keep it at bay
+    }
+
+    // update le prepicker list
+    if (objects["recentlyUsedTiles0"] != undefined) {
+        updatePrePicker();
+    }
+}
+
+function updatePrePicker() {
+    let t = 0;
+    for (let tile of groups["recentTiles"].children) {
+        objects[tile].image = recentlyUsedTilesList[t][0];
+        objects[tile].alpha = recentlyUsedTilesList[t][0] == "gear" ? 0 : 1;
+        objects[tile].tileid = recentlyUsedTilesList[t][1];
+        objects[tile].snip = recentlyUsedTilesList[t][2];
+        objects[tile].glow = recentlyUsedTilesList[t].tileid == mapmaker.tileToPlace ? 25 : 0;
+        t++;
+    }
+}
+
 var mm_map;
 var recentlyUsedTilesList = [];
 
@@ -79,6 +156,7 @@ var mapmaker = {
     visibleLayers: [1, 1, 1],
     highlightCollisions: false,
 
+    prePos: [-3483493, 934030],
     mapNPCs: [],
 
     // mode
@@ -98,7 +176,9 @@ var mapmaker = {
     enableAnimations: false,
     animateTime: 0,
 
-    prePos: [-3483493, 934030],
+    // tile picker
+    tileSource: "common",
+    tilePickerZoom: 1
 }
 
 const dialogueScriptTypes = ["Add Quest", "Claim Quest", "Talk Quest Progress", "Give Item", "Teleport", "Open Shop", "Add Protagonist", "Rem Protagonist", "Inn"];
@@ -229,18 +309,6 @@ scenes["mapmaker"] = new Scene(
             groups["recentTiles"].set("image", "gear");
             groups["recentTiles"].set("alpha", 0);
             groups["recentTiles"].set("snip", [0, 0, 64, 64]);
-        }
-
-        function updatePrePicker() {
-            let t = 0;
-            for (let tile of groups["recentTiles"].children) {
-                objects[tile].image = recentlyUsedTilesList[t][0];
-                objects[tile].alpha = recentlyUsedTilesList[t][0] == "gear" ? 0 : 1;
-                objects[tile].tileid = recentlyUsedTilesList[t][1];
-                objects[tile].snip = recentlyUsedTilesList[t][2];
-                objects[tile].glow = recentlyUsedTilesList[t].tileid == mapmaker.tileToPlace ? 25 : 0;
-                t++;
-            }
         }
 
         function UI_toggle_tileInfoControls(val) {
@@ -426,65 +494,6 @@ scenes["mapmaker"] = new Scene(
 
             generateRecentlyUsed();
             mapmaker.updateTiles = true;
-        }
-
-        function changeTileToPlace(newTTP, updateRecent = true) {
-            // TTP = tile to place
-            let newSource = "";
-            let newSnip = [0, 0, 32, 32];
-
-            // Change the tile to place, and the current tile selected display
-            mapmaker.tileToPlace = newTTP;
-
-            if (mapmaker.autoLayer) { // automatically go to the right layer
-                if (mm_map.tiles[mapmaker.tileToPlace] != undefined && mm_map.tiles[mapmaker.tileToPlace].layer != undefined && mm_map.tiles[mapmaker.tileToPlace].layer != "none") editingLayer = ["map", "mapbg2", "mapfg"].indexOf(mm_map.tiles[mapmaker.tileToPlace].layer);
-                if (commontiles[mapmaker.tileToPlace] != undefined && commontiles[mapmaker.tileToPlace].layer != undefined && commontiles[mapmaker.tileToPlace].layer != "none") editingLayer = ["map", "mapbg2", "mapfg"].indexOf(commontiles[mapmaker.tileToPlace].layer);
-            }
-
-            objects["btn_layer0"].glow = mapmaker.editingLayer == 0 ? 10 : 0;
-            objects["btn_layer1"].glow = mapmaker.editingLayer == 1 ? 10 : 0;
-            objects["btn_layer2"].glow = mapmaker.editingLayer == 2 ? 10 : 0;
-
-            // Display (map or common, tile or tileset)
-            if (mm_map.tiles[mapmaker.tileToPlace] != undefined) {
-                if (mm_map.tiles[mapmaker.tileToPlace].sprite != undefined) {
-                    newSource = "tiles/" + mm_map.tiles[mapmaker.tileToPlace].sprite;
-                    newSnip = false;
-                }
-                else {
-                    newSource = "tilesets/" + mm_map.tiles[mapmaker.tileToPlace].set;
-                    newSnip = [mm_map.tiles[mapmaker.tileToPlace].snip[0] * 32, mm_map.tiles[mapmaker.tileToPlace].snip[1] * 32, 32, 32];
-                }
-            }
-            else if (commontiles[mapmaker.tileToPlace] != undefined) {
-                if (commontiles[mapmaker.tileToPlace].sprite != undefined) {
-                    newSource = "tiles/" + commontiles[mapmaker.tileToPlace].sprite;
-                    newSnip = false;
-                }
-                else {
-                    newSource = "tilesets/" + commontiles[mapmaker.tileToPlace].set;
-                    newSnip = [commontiles[mapmaker.tileToPlace].snip[0] * 32, commontiles[mapmaker.tileToPlace].snip[1] * 32, 32, 32];
-                }
-            }
-
-            if (newSource == "") return false;
-
-            objects["currentTilePreview"].image = newSource;
-            objects["currentTilePreview"].snip = newSnip;
-
-            // update recently used tiles AKA prepicker (left)
-            let alreadyPrepicked = false;
-            for (let p in recentlyUsedTilesList) {
-                if (recentlyUsedTilesList[p][1] == newTTP) alreadyPrepicked = true;
-            }
-
-            if (!alreadyPrepicked) {
-                recentlyUsedTilesList.unshift([newSource, newTTP, newSnip]); // add
-                if (recentlyUsedTilesList.length > 24) recentlyUsedTilesList.pop(); // keep it at bay
-            }
-
-            // update le prepicker list
-            updatePrePicker();
         }
 
         function postLog(src, x, y, layer, prevContent, fill = undefined) {
@@ -1030,99 +1039,7 @@ scenes["mapmaker"] = new Scene(
             }
         }
 
-        function openTilesMenu() {
-            ////////////////////////////////////////
-            // NOT CONVERTED YET
-            closeAllMenus(0);
-
-            let red = isLs() ? 2 : 1;
-
-            for (u in undoButtons) {
-                undoButtons[u].al = undoButtons[u].alpha;
-                undoButtons[u].alpha = 0;
-            }
-
-            for (t in tilesMenuControls) {
-                tilesMenuControls[t].alpha = 1;
-            }
-            for (t in tilesMenuTiles) {
-                tilesMenuTiles[t].alpha = 0;
-                tilesMenuTiles[t].glow = 0;
-            }
-            for (t in tilesMenuIcons) {
-                tilesMenuIcons[t].alpha = 0;
-            }
-            for (t = 0; t < 25; t++) {
-                if (tilesMenuTiles[t].offset[0] / red <= width * scale * 0.9) pageWidth = t;
-            }
-            for (r = 0; r < 8; r++) {
-                if (tilesMenuTiles[r * 25].offset[1] / red <= height * 0.6) pageSize = pageWidth * (r + 1);
-            }
-            pageSize += 1;
-
-            let nr = 0;
-            let til;
-            let grb;
-            let starti = 0 + Math.ceil(tileMenuPage * pageSize / 2);
-            let i = starti;
-
-            // actual generation inside the tile picker!
-            while (i < pageSize + starti) {
-                if ((nr % 25) % pageWidth == 0 && nr > 0) nr += (25 - pageWidth);
-                if (tileSource == "common") {
-                    til = Object.keys(commontiles)[i];
-                    grb = commontiles[til];
-                }
-                if (tileSource == "map") {
-                    til = Object.keys(mm_map.tiles)[i];
-                    grb = mm_map.tiles[til];
-                }
-
-                if (til != undefined && (mm_map.tiles[til] == undefined || tileSource == "map")) {
-                    if (til != "empty") {
-                        if (grb.set != undefined) {
-                            if (images["tilesets/" + grb.set] != undefined) tilesMenuTiles[nr].source = "tilesets/" + grb.set;
-                            else tilesMenuTiles[nr].source = "gear";
-                            tilesMenuTiles[nr].snip = [grb.snip[0] * 32, grb.snip[1] * 32, 32, 32];
-                        }
-                        else {
-                            if (images["tiles/" + grb.sprite] != undefined) tilesMenuTiles[nr].source = "tiles/" + grb.sprite;
-                            else tilesMenuTiles[nr].source = "gear";
-                            tilesMenuTiles[nr].snip = false;
-                        }
-                        tilesMenuTiles[nr].tile = grb;
-                        tilesMenuTiles[nr].tileid = til;
-                        tilesMenuTiles[nr].alpha = 1;
-
-                        let nr2 = (nr * 4);
-                        if (grb.occupied != undefined && grb.occupied != false) tilesMenuIcons[nr2].alpha = 1;
-                        if (grb.ani != undefined) tilesMenuIcons[nr2 + 1].alpha = 1;
-                        if (grb.teleport != undefined) tilesMenuIcons[nr2 + 2].alpha = 1;
-                        if (grb.dialogue != undefined || grb.action != undefined) tilesMenuIcons[nr2 + 3].alpha = 1;
-                        nr += 1;
-                    }
-                }
-                i += 1;
-            }
-        }
-
-        function closeTilesMenu() {
-            ////////////////////////////////////////
-            // NOT CONVERTED YET
-            for (u in undoButtons) {
-                undoButtons[u].alpha = undoButtons[u].al;
-            }
-
-            for (t in tilesMenuControls) {
-                tilesMenuControls[t].alpha = 0;
-            }
-            for (t in tilesMenuTiles) {
-                tilesMenuTiles[t].alpha = 0;
-            }
-            for (t in tilesMenuIcons) {
-                tilesMenuIcons[t].alpha = 0;
-            }
-        }
+        
 
         function closeAllMenus(i) {
             ////////////////////////////////////////
@@ -1511,8 +1428,8 @@ scenes["mapmaker"] = new Scene(
         }
 
         function tilePickerButton() {
-            ////////////////////////////////////////
-            // NOT CONVERTED YET
+            loadScene("tilepicker");
+            /*
             if (tilesMenuControls[0].alpha == 0) {
                 mapmaker.previousmode = mapmaker.mode;
                 //moveMode();
@@ -1524,6 +1441,7 @@ scenes["mapmaker"] = new Scene(
                 //else placeMode();
                 closeTilesMenu();
             }
+                */
         }
 
         function tileClicked(c) {
@@ -1583,6 +1501,61 @@ scenes["mapmaker"] = new Scene(
             objects["tiles_fg" + i].onHold = objects["tiles_fg" + i].onClick;
             groups["tiles_fg"].addChild("tiles_fg" + i);
         }
+
+        // the cursor thing in the middle
+        createImage("middlei", 0.5, 0.5, 0, 0, "selectedtile", {
+            sizeOffset: [zswm, zswm]
+        });
+
+        // the cursor thing but for the selected tile
+        createImage("tileInfoSelectedTile", 0.0, 0.0, 0, 0, "selectedtile", {
+            sizeOffset: [zswm, zswm]
+        });
+
+        // buttons to make map bigger (or smaller)
+        createButton("expandMap_X", 0, 0, 0, 0, "plus", () => {
+            for (let x in map.map) {
+                map.map[x] = "--- " + map.map[x];
+            }
+            for (let x in map.mapbg2) {
+                map.mapbg2[x] = "--- " + map.mapbg2[x];
+            }
+            for (let x in map.mapfg) {
+                map.mapfg[x] = "--- " + map.mapfg[x];
+            }
+            newMap();
+        }, { sizeOffset: [64, 64], offset: [0, 0] });
+
+        createButton("expandMap_Y", 0, 0, 0, 0, "plus", () => {
+            map.map.unshift("---");
+            map.mapbg2.unshift("---");
+            map.mapfg.unshift("---");
+            mapmaker.updateTiles = true;
+            newMap();
+        }, { sizeOffset: [64, 64], offset: [0, 0] });
+
+        createButton("shrinkMap_X", 0, 0, 0, 0, "minus", () => {
+            for (let x in map.map) {
+                map.map[x] = map.map[x].slice(4);
+            }
+            for (let x in map.mapbg2) {
+                map.mapbg2[x] = map.mapbg2[x].slice(4);
+            }
+            for (let x in map.mapfg) {
+                map.mapfg[x] = map.mapfg[x].slice(4);
+            }
+            newMap();
+        }, { sizeOffset: [64, 64], offset: [0, 0] });
+
+        createButton("shrinkMap_Y", 0, 0, 0, 0, "minus", () => {
+            map.map.shift();
+            map.mapbg2.shift();
+            map.mapfg.shift();
+            mapmaker.updateTiles = true;
+            newMap();
+        }, { sizeOffset: [64, 64], offset: [0, 0] });
+
+
 
         // the big bg rect
         createSquare("bigBG", 0, 0, 0, 1, "brown", {
@@ -1845,61 +1818,6 @@ scenes["mapmaker"] = new Scene(
 
 
 
-
-        // the cursor thing in the middle
-        createImage("middlei", 0.5, 0.5, 0, 0, "selectedtile", {
-            sizeOffset: [zswm, zswm]
-        });
-
-        // the cursor thing but for the selected tile
-        createImage("tileInfoSelectedTile", 0.0, 0.0, 0, 0, "selectedtile", {
-            sizeOffset: [zswm, zswm]
-        });
-
-        // buttons to make map bigger (or smaller)
-        createButton("expandMap_X", 0, 0, 0, 0, "plus", () => {
-            for (let x in map.map) {
-                map.map[x] = "--- " + map.map[x];
-            }
-            for (let x in map.mapbg2) {
-                map.mapbg2[x] = "--- " + map.mapbg2[x];
-            }
-            for (let x in map.mapfg) {
-                map.mapfg[x] = "--- " + map.mapfg[x];
-            }
-            newMap();
-        }, { sizeOffset: [64, 64], offset: [0, 0] });
-
-        createButton("expandMap_Y", 0, 0, 0, 0, "plus", () => {
-            map.map.unshift("---");
-            map.mapbg2.unshift("---");
-            map.mapfg.unshift("---");
-            mapmaker.updateTiles = true;
-            newMap();
-        }, { sizeOffset: [64, 64], offset: [0, 0] });
-
-        createButton("shrinkMap_X", 0, 0, 0, 0, "minus", () => {
-            for (let x in map.map) {
-                map.map[x] = map.map[x].slice(4);
-            }
-            for (let x in map.mapbg2) {
-                map.mapbg2[x] = map.mapbg2[x].slice(4);
-            }
-            for (let x in map.mapfg) {
-                map.mapfg[x] = map.mapfg[x].slice(4);
-            }
-            newMap();
-        }, { sizeOffset: [64, 64], offset: [0, 0] });
-
-        createButton("shrinkMap_Y", 0, 0, 0, 0, "minus", () => {
-            map.map.shift();
-            map.mapbg2.shift();
-            map.mapfg.shift();
-            mapmaker.updateTiles = true;
-            newMap();
-        }, { sizeOffset: [64, 64], offset: [0, 0] });
-
-
         // 4. init startup
 
         if (!isDevMode()) {
@@ -1913,7 +1831,7 @@ scenes["mapmaker"] = new Scene(
         loadNPCs();
         fadeIn(250, true);
         canMove = true;
-
+        mapmaker.updateTiles = true;
     },
     (tick) => {
         // Loop

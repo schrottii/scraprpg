@@ -417,6 +417,7 @@ var scenes = {
     fight: "scripts/scenes/fight.js",
 
     mapmaker: "scripts/scenes/mapmaker/mapmaker.js",
+    tilepicker: "scripts/scenes/mapmaker/tilepicker.js",
 
     inventory: "scripts/scenes/inventory/inventory.js",
     itemscene: "scripts/scenes/inventory/itemscene.js",
