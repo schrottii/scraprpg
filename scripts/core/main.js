@@ -161,8 +161,6 @@ function customWGGJLoop() {
     delta = Date.now() - time;
     time = Date.now();
 
-    let ctx = wggjCanvas.getContext("2d");
-
     /*
     wggjCTX.imageSmoothingEnabled = false;
     wggjCTX.globalAlpha = 1;
@@ -184,21 +182,6 @@ function customWGGJLoop() {
 
     introToLoop();
 
-    // Debug black bar
-    if (isDevMode()) {
-        wggjCTX.fillStyle = "black";
-        wggjCTX.fillRect(0, 0, wggjCTX.canvas.width * ((game.stats.playTime / 15) % 1) * 0.2, wggjCTX.canvas.height * 0.02);
-    }
-
-    // Draw FPS
-    wggjCTX.fillStyle = "white";
-    wggjCTX.font = "12px DePixelKlein, sans-serif";
-    wggjCTX.textAlign = "left";
-    //wggjCTX.textBaseline = "alphabetic";
-    wggjCTX.globalAlpha = 1;
-    if (isDevMode()) wggjCTX.fillText((1000 / delta).toFixed(0) + "fps   " + wggjCTX.canvas.width + "x" + wggjCTX.canvas.height + "   w: " + width.toFixed(1) + "  scale: " + scale.toFixed(1) + (isLs() ? "  ls" : "  p"), 2, 12);
-    else wggjCTX.fillText((1000 / delta).toFixed(0) + "FPS", 2, 10);
-
     // Auto Save
     if (settings != undefined) {
         if (settings.autosave == true) {
@@ -213,6 +196,23 @@ function customWGGJLoop() {
     */
     updateAnimators(delta);
     timeTicker(delta);
+}
+
+function customWGGJPostRender(){
+    // Debug black bar
+    if (isDevMode()) {
+        wggjCTX.fillStyle = "black";
+        wggjCTX.fillRect(0, 0, wggjCTX.canvas.width * ((game.stats.playTime / 15) % 1) * 0.2, wggjCTX.canvas.height * 0.02);
+    }
+
+    // Draw FPS
+    wggjCTX.fillStyle = "white";
+    wggjCTX.font = "12px DePixelKlein, sans-serif";
+    wggjCTX.textAlign = "left";
+    //wggjCTX.textBaseline = "alphabetic";
+    wggjCTX.globalAlpha = 1;
+    if (isDevMode()) wggjCTX.fillText((1000 / delta).toFixed(0) + "fps   " + wggjCTX.canvas.width + "x" + wggjCTX.canvas.height + "   w: " + width.toFixed(1) + "  scale: " + scale.toFixed(1) + (isLs() ? "  ls" : "  p"), 2, 12);
+    else wggjCTX.fillText((1000 / delta).toFixed(0) + "FPS", 2, 10);
 
     //requestAnimationFrame(customWGGJLoop);
 }

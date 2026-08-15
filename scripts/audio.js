@@ -4,7 +4,7 @@
 function playMusic(name, intro = "none") {
     // prevention if it does not exist
     if (audio[name] == undefined || audio[name].src == undefined) {
-        console.log("| ⚠️ | Music undefined: " + name);
+        console.log("| ! | Music undefined: " + name);
         return false;
     }
 
@@ -34,7 +34,7 @@ function introToLoop() {
 
     // prevention if it does not exist
     if (audio[playAfterIntro] == undefined || audio[playAfterIntro].src == undefined) {
-        console.log("| ⚠️ | Intro2Loop undefined: " + playAfterIntro);
+        console.log("| ! | Intro2Loop undefined: " + playAfterIntro);
         return false;
     }
 
@@ -73,7 +73,7 @@ for (s = 1; s < 17; s++) {
 function playSound(name) {
     // prevention if it does not exist
     if (audio[name] == undefined || audio[name].src == undefined) {
-        console.log("| ⚠️ | Sound undefined: " + name);
+        console.log("| ! | Sound undefined: " + name);
         return false;
     }
 

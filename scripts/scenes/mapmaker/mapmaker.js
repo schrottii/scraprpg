@@ -188,6 +188,7 @@ scenes["mapmaker"] = new Scene(
         // Init
 
         // 1. variables
+        console.time("variables");
 
         let walkPadSize = Math.max(32, 64 * settings.walkPadSize);
         let pad;
@@ -276,6 +277,8 @@ scenes["mapmaker"] = new Scene(
         let currInfo = [0, 0, 1];
 
         // 2. functions
+        console.timeEnd("variables");
+        console.time("functions");
 
         function createNewMap(mapName) {
             mapmaker.currentMap = mapName.id != undefined ? mapName.id : mapName; // creating new map
@@ -1454,6 +1457,8 @@ scenes["mapmaker"] = new Scene(
         }
 
         // 3. objects
+        console.timeEnd("functions");
+        console.time("objects");
 
         // layers, tiles, similar
 
@@ -1819,6 +1824,8 @@ scenes["mapmaker"] = new Scene(
 
 
         // 4. init startup
+        console.timeEnd("objects");
+        console.time("initstartup");
 
         if (!isDevMode()) {
             fadeIn(25000, true);
@@ -1832,12 +1839,15 @@ scenes["mapmaker"] = new Scene(
         fadeIn(250, true);
         canMove = true;
         mapmaker.updateTiles = true;
+        console.timeEnd("initstartup");
     },
     (tick) => {
         // Loop
-
+        
         // load map
         if (lmresult != "none") {
+            lmresult = "none";
+
             if (loadMapButtons[0].alpha == 1) toggleLoadButtons();
             hideInfo();
             if (lmresult != "justhide") {
@@ -1857,8 +1867,6 @@ scenes["mapmaker"] = new Scene(
                     newMap();
                 }
             }
-
-            lmresult = "none";
         }
 
         // this is a bit different than for the overworld: diagonal is allowed
@@ -2088,7 +2096,6 @@ scenes["mapmaker"] = new Scene(
 
         objects["middlei"].sizeOffset = [zoom * scale, zoom * scale];
         objects["middlei"].offset = [-zoom * scale / 2, (zoom * scale * 7.5 - ((zoom - 1) * scale * 7)) - (wggjCTX.canvas.height / 2)];
-
 
         // tick temporary placing blocker
         if (mapmaker.temporaryPlacementBlocker > 0) mapmaker.temporaryPlacementBlocker -= 1 / delta;

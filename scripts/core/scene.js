@@ -4,7 +4,7 @@ var currentScene;
 
 function setScene(args) {
     if (args.name != "loading" && scenes[args.name] == undefined) {
-        console.log("| ⚠️ | Scene undefined: " + args.name);
+        console.log("| ! | Scene undefined: " + args.name);
         return false;
     }
 

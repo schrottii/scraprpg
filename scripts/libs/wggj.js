@@ -74,6 +74,8 @@ v1.8:
 - Text, SmartText: textBaseline
 - wggj.config.textBaseline
 - container: fixed snip issue when going to negative X/Y
+- customWGGJPostRender
+- Optimized performance of mouse events
 */
 
 
@@ -238,9 +240,11 @@ function wggjEventsOnClick(e) {
     wggj.mouse.y = e.clientY - wggjCanvas.getBoundingClientRect().y;
     wggj.mouse.down = true;
 
+    let keys = Object.keys(objects);
     let c;
-    for (let i = Object.keys(objects).length - 1; i >= 0; i--) {
-        c = Object.keys(objects)[i];
+
+    for (let i = keys.length - 1; i >= 0; i--) {
+        c = keys[i];
 
         if (objects[c] == undefined) continue;
         if (objects[c].onClick == undefined || objects[c].power == false) continue;
@@ -257,9 +261,11 @@ function wggjEventsOnPointerUp(e) {
     e.preventDefault();
     wggj.mouse.down = false;
 
+    let keys = Object.keys(objects);
     let c;
-    for (let i = Object.keys(objects).length - 1; i >= 0; i--) {
-        c = Object.keys(objects)[i];
+
+    for (let i = keys.length - 1; i >= 0; i--) {
+        c = keys[i];
 
         if (objects[c] == undefined) continue;
         if (objects[c].onUp == undefined || objects[c].power == false) continue;
@@ -277,9 +283,11 @@ function wggjEventsOnPointerMove(e) {
     wggj.mouse.x = e.clientX - wggjCanvas.getBoundingClientRect().x;
     wggj.mouse.y = e.clientY - wggjCanvas.getBoundingClientRect().y;
 
+    let keys = Object.keys(objects);
     let c;
-    for (let i = Object.keys(objects).length - 1; i >= 0; i--) {
-        c = Object.keys(objects)[i];
+
+    for (let i = keys.length - 1; i >= 0; i--) {
+        c = keys[i];
 
         if (objects[c] == undefined) continue;
         if ((objects[c].onDrag == undefined && objects[c].onMouseMove == undefined) || objects[c].power == false) continue;
@@ -297,9 +305,11 @@ function wggjEventsOnPointerMove(e) {
 }
 
 function wggjEventsOnLoop(e) {
+    let keys = Object.keys(objects);
     let c;
-    for (let i = Object.keys(objects).length - 1; i >= 0; i--) {
-        c = Object.keys(objects)[i];
+
+    for (let i = keys.length - 1; i >= 0; i--) {
+        c = keys[i];
 
         if (objects[c] == undefined) continue;
         if ((objects[c].onHover == undefined && objects[c].onHold == undefined) || objects[c].power == false) continue;
@@ -1667,6 +1677,9 @@ function wggjLoop() {
         if (typeof (loadedScene) != "undefined") loadedScene();
         else wggjLoadedScene();
     }
+
+    // Your own custom loop function 2
+    if (typeof (customWGGJPostRender) != "undefined") customWGGJPostRender(wggj.time.delta);
 
     requestAnimationFrame(wggjLoop);
 }

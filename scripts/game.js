@@ -282,7 +282,7 @@ function spawnMapEnemy(enemyToSpawn) {
         genSource = "enemies/" + enemyTypes[latest.gen[Math.floor(Math.random() * latest.gen.length)]].source;
 
         if (images[genSource] == undefined) {
-            console.log("| ⚠️ | Enemy Sprite (gen) undefined: " + genSource);
+            console.log("| ! | Enemy Sprite (gen) undefined: " + genSource);
             latest.source = "enemies/black";
         }
         else {

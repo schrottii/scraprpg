@@ -278,7 +278,7 @@ scenes["overworld"] = new Scene(
             fadeIn(tTime, true, () => canMove = true);
         }
         catch {
-            console.log("| ⚠️ | Error while loading the map");
+            console.log("| ! | Error while loading the map");
         }
 
     },
@@ -1105,7 +1105,7 @@ scenes.game = () => {
         fadeIn(tTime, true, () => canMove = true);
     }
     catch {
-        console.log("| ⚠️ | Error while loading the map");
+        console.log("| ! | Error while loading the map");
     }
 
 

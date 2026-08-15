@@ -32,7 +32,7 @@
                 let red = 1;
                 if (isLs() == true && !this.ri) red = 2;
                 if (images[this.source] == undefined) {
-                    console.log("| ⚠️ | Image undefined: " + this.source);
+                    console.log("| ! | Image undefined: " + this.source);
                     return false;
                 }
 
