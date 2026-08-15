@@ -270,6 +270,7 @@ indev name: v1.0.8
 -> Other:
 - New button design
 - New overworld action buttons design
+- Improved design of the file loading menu (save manager)
 
 -> Bug fixes:
 - Fixed wrong character names in title screen
@@ -291,10 +292,12 @@ indev name: v1.0.8
 - Tile Info: selected tile is now highlighted
 
 -> WGGJ: Map Maker:
+- State/settings are now SAVED (entire mapmaker var), so things like mode stay the same
 - Moved info text (with coords, tile to place, etc.) onto the left side
 - Zoom shows zoom level
 - Undo/redo show how many actions can be undone/redone
 - Optimized rendering of animation previews
+- Improved undo/redo, duplicates are no longer saved
 
 -> Files:
 - Reworked file tree: assets folder (like old data folder), new data folder, data files split, and much more (800+ changes)

@@ -418,6 +418,7 @@ var scenes = {
 
     mapmaker: "scripts/scenes/mapmaker/mapmaker.js",
     tilepicker: "scripts/scenes/mapmaker/tilepicker.js",
+    mapinfo: "scripts/scenes/mapmaker/mapinfo.js",
 
     inventory: "scripts/scenes/inventory/inventory.js",
     itemscene: "scripts/scenes/inventory/itemscene.js",

@@ -18,16 +18,24 @@
     <canvas id="wggjCanvas"></canvas>
 
     <!-- Map Maker -->
-    <div class="loadiv" style="display: none">
-        <div id="myFileDiv" style="left: 70vw; top: 70vh;" type="file"></div>
-        <input id="myFile" style="margin-left: 50%; margin-right: 50%;" type="file">
+    <div class="loadiv" style="display: none;">
+        <h2><img src="./assets/textures/gameicon.png" style="width: 200px;"> Map Maker: load file</h2>
+        <hr style="clear: both;">
+
+        <div id="myFileDiv" type="file"></div>
+        <input id="myFile" type="file"> <br />
+        
         <button onclick="loadMap()">Load!</button><br />
         <button onclick="lmresult = 'justhide'; hideSelect();">Cancel</button>
     </div>
     <!-- Save Import -->
-    <div class="loadiv2" style="display: none">
-        <div id="myFileDiv2" style="left: 70vw; top: 70vh;" type="file"></div>
-        <input id="myFile2" style="margin-left: 50%; margin-right: 50%;" type="file">
+    <div class="loadiv2" style="display: none;">
+        <h2><img src="./assets/textures/gameicon.png" style="width: 200px;"> Save Manager: load file</h2>
+        <hr style="clear: both;">
+
+        <div id="myFileDiv2" type="file"></div>
+        <input id="myFile2" type="file"> <br />
+        
         <button onclick="loadSaveFromFile()">Load!</button><br />
         <button onclick="lmresult = 'justhide'; hideSelect2();">Cancel</button>
     </div>

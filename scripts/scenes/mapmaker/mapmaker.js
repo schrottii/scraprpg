@@ -67,6 +67,74 @@ function loadMap() {
     }
 }
 
+function toggleSaveButtons(mustclose = false) {
+    if (mustclose || objects[groups["savebuttons"].children[0]].power === true) {
+        groups["savebuttons"].set("power", false);
+    }
+    else {
+        groups["savebuttons"].set("power", true);
+    }
+}
+
+function newMap() {
+    // Function called when the map has changed - not for creating a new map
+    // THEN WHY IS IT CALLED THAT ẞẞẞ
+    game.position[0] = Math.round(game.position[0]);
+    game.position[1] = Math.round(game.position[1]);
+
+    activeNPCs = [];
+    /*
+    for (let i in tnpcs) {
+        tnpcs[i].alpha = 0;
+    }
+        */
+    loadNPCs();
+
+    mm_map.tiles = Object.assign({}, mm_map.tiles, loadPacks(mm_map));
+
+    let width = calcMapSize("x");
+    if (game.position[0] > width) game.position[0] = width;
+    if (game.position[1] > mm_map.map.length) game.position[1] = mm_map.map.length;
+
+    generateRecentlyUsed();
+    mapmaker.updateTiles = true;
+}
+
+function generateRecentlyUsed() {
+    for (let t = 0; t < 24; t++) {
+        if (recentlyUsedTilesList.length >= 24) break;
+        recentlyUsedTilesList.push(["gear", "gear", [0, 0, 64, 64]]);
+    }
+
+    groups["recentTiles"].set("image", "gear");
+    groups["recentTiles"].set("alpha", 0);
+    groups["recentTiles"].set("snip", [0, 0, 64, 64]);
+}
+
+function calcMapSize(type) {
+    // note: it does include empty spaces (like if the width is 70 and the leftmost 10 are empty, it says 70)
+    switch (type) {
+        case "x":
+            let width = 0;
+            for (let l of ["map", "mapbg2", "mapfg"]) {
+                for (let m in mm_map[l]) {
+                    if (isValid(mm_map[l][m]) && mm_map[l][m].length / 4 > width) width = Math.floor(mm_map[l][m].length / 4); // /4 due to string format (001 001 001)
+                }
+            }
+            return width;
+        case "y":
+            return Math.max(mm_map.map.length, mm_map.mapbg2.length, mm_map.mapfg.length);
+        case "tiles":
+            let tilesAmount = 0;
+            for (let l of ["map", "mapbg2", "mapfg"]) {
+                for (let m in mm_map[l]) {
+                    if (isValid(mm_map[l][m])) tilesAmount += Math.floor(mm_map[l][m].length / 4) - (mm_map[l][m].match(/---/g) || []).length;
+                }
+            }
+            return tilesAmount;
+    }
+}
+
 function changeTileToPlace(newTTP, updateRecent = true) {
     // TTP = tile to place
     let newSource = "";
@@ -76,8 +144,8 @@ function changeTileToPlace(newTTP, updateRecent = true) {
     mapmaker.tileToPlace = newTTP;
 
     if (mapmaker.autoLayer) { // automatically go to the right layer
-        if (mm_map.tiles[mapmaker.tileToPlace] != undefined && mm_map.tiles[mapmaker.tileToPlace].layer != undefined && mm_map.tiles[mapmaker.tileToPlace].layer != "none") editingLayer = ["map", "mapbg2", "mapfg"].indexOf(mm_map.tiles[mapmaker.tileToPlace].layer);
-        if (commontiles[mapmaker.tileToPlace] != undefined && commontiles[mapmaker.tileToPlace].layer != undefined && commontiles[mapmaker.tileToPlace].layer != "none") editingLayer = ["map", "mapbg2", "mapfg"].indexOf(commontiles[mapmaker.tileToPlace].layer);
+        if (mm_map.tiles[mapmaker.tileToPlace] != undefined && mm_map.tiles[mapmaker.tileToPlace].layer != undefined && mm_map.tiles[mapmaker.tileToPlace].layer != "none") mapmaker.editingLayer = ["map", "mapbg2", "mapfg"].indexOf(mm_map.tiles[mapmaker.tileToPlace].layer);
+        if (commontiles[mapmaker.tileToPlace] != undefined && commontiles[mapmaker.tileToPlace].layer != undefined && commontiles[mapmaker.tileToPlace].layer != "none") mapmaker.editingLayer = ["map", "mapbg2", "mapfg"].indexOf(commontiles[mapmaker.tileToPlace].layer);
     }
 
     if (objects["btn_layer0"] != undefined) {
@@ -134,7 +202,9 @@ function changeTileToPlace(newTTP, updateRecent = true) {
 
 function updatePrePicker() {
     let t = 0;
+
     for (let tile of groups["recentTiles"].children) {
+        if (recentlyUsedTilesList[t] == undefined) return;
         objects[tile].image = recentlyUsedTilesList[t][0];
         objects[tile].alpha = recentlyUsedTilesList[t][0] == "gear" ? 0 : 1;
         objects[tile].tileid = recentlyUsedTilesList[t][1];
@@ -144,7 +214,7 @@ function updatePrePicker() {
     }
 }
 
-var mm_map;
+var mm_map = undefined;
 var recentlyUsedTilesList = [];
 
 var lmresult = "none";
@@ -167,7 +237,7 @@ var mapmaker = {
     editingLayer: 0,
     autoLayer: false,
     tileToPlace: "001",
-    temporaryPlacementBlocker: 0,
+    placeBlocker: 0,
 
     fillToolActive: false,
     filledTiles: 0,
@@ -229,21 +299,23 @@ scenes["mapmaker"] = new Scene(
 
         let curNPC = ""; // current dialogue
 
-        mm_map = maps[mapmaker.currentMap];
-        mm_map.tiles = Object.assign({}, mm_map.tiles, loadPacks(mm_map));
-
-        let loadFromAutoSave = localStorage.getItem("SRPGMM");
-        if (loadFromAutoSave != undefined && loadFromAutoSave != "empty") {
-            mm_map = JSON.parse(loadFromAutoSave);
+        if (mm_map == undefined) {
+            mm_map = maps[mapmaker.currentMap];
             mm_map.tiles = Object.assign({}, mm_map.tiles, loadPacks(mm_map));
-            mapmaker.currentMap = mm_map.id; // on boot, from cache
-        }
 
-        var tiles_bg = [];
-        var tiles_bg2 = [];
-        var tiles_fg = [];
-        var titems = [];
-        var tnpcs = [];
+            let loadFromAutoSave = localStorage.getItem("SRPGMM");
+            if (loadFromAutoSave != undefined && loadFromAutoSave != "undefined" && loadFromAutoSave != "empty") {
+                loadFromAutoSave = JSON.parse(loadFromAutoSave);
+
+                mm_map = loadFromAutoSave.map;
+                mm_map.tiles = Object.assign({}, mm_map.tiles, loadPacks(mm_map));
+
+                mapmaker = loadFromAutoSave.maker;
+                mapmaker.currentMap = mm_map.id; // on boot, from cache
+            }
+
+            game.position = [4, 4];
+        }
 
         // For creating new tiles
         /*
@@ -273,7 +345,6 @@ scenes["mapmaker"] = new Scene(
         var undoLog = [];
         var redoLog = [];
 
-        game.position = [4, 4];
         let currInfo = [0, 0, 1];
 
         // 2. functions
@@ -303,17 +374,7 @@ scenes["mapmaker"] = new Scene(
             newMap();
         }
 
-        function generateRecentlyUsed() {
-            for (let t = 0; t < 24; t++) {
-                if (recentlyUsedTilesList.length >= 24) break;
-                recentlyUsedTilesList.push(["gear", "gear", [0, 0, 64, 64]]);
-            }
-
-            groups["recentTiles"].set("image", "gear");
-            groups["recentTiles"].set("alpha", 0);
-            groups["recentTiles"].set("snip", [0, 0, 64, 64]);
-        }
-
+        /*
         function UI_toggle_tileInfoControls(val) {
             ////////////////////////////////////////
             // NOT CONVERTED YET
@@ -422,6 +483,7 @@ scenes["mapmaker"] = new Scene(
             createTileButtons[9].source = "gear";
             createTileButtons[10].source = "gear";
         }
+            */
 
         function loadNPCs() {
             mapmaker.mapNPCs = [];
@@ -453,55 +515,7 @@ scenes["mapmaker"] = new Scene(
             }
         }
 
-        function calcMapSize(type) {
-            // note: it does include empty spaces (like if the width is 70 and the leftmost 10 are empty, it says 70)
-            switch (type) {
-                case "x":
-                    let width = 0;
-                    for (let l of ["map", "mapbg2", "mapfg"]) {
-                        for (let m in mm_map[l]) {
-                            if (isValid(mm_map[l][m]) && mm_map[l][m].length / 4 > width) width = Math.floor(mm_map[l][m].length / 4); // /4 due to string format (001 001 001)
-                        }
-                    }
-                    return width;
-                case "y":
-                    return Math.max(mm_map.map.length, mm_map.mapbg2.length, mm_map.mapfg.length);
-                case "tiles":
-                    let tilesAmount = 0;
-                    for (let l of ["map", "mapbg2", "mapfg"]) {
-                        for (let m in mm_map[l]) {
-                            if (isValid(mm_map[l][m])) tilesAmount += Math.floor(mm_map[l][m].length / 4) - (mm_map[l][m].match(/---/g) || []).length;
-                        }
-                    }
-                    return tilesAmount;
-            }
-        }
-
-        function newMap() {
-            // Function called when the map has changed - not for creating a new map
-            // THEN WHY IS IT CALLED THAT ẞẞẞ
-            game.position[0] = Math.round(game.position[0]);
-            game.position[1] = Math.round(game.position[1]);
-
-            activeNPCs = [];
-            for (let i in tnpcs) {
-                tnpcs[i].alpha = 0;
-            }
-            loadNPCs();
-
-            mm_map.tiles = Object.assign({}, mm_map.tiles, loadPacks(mm_map));
-
-            let width = calcMapSize("x");
-            if (game.position[0] > width) game.position[0] = width;
-            if (game.position[1] > mm_map.map.length) game.position[1] = mm_map.map.length;
-
-            generateRecentlyUsed();
-            mapmaker.updateTiles = true;
-        }
-
         function postLog(src, x, y, layer, prevContent, fill = undefined) {
-            ////////////////////////////////////////
-            // NOT CONVERTED YET
             if (src == "default") {
                 postUndoLog(x, y, layer, prevContent, fill);
             }
@@ -515,6 +529,9 @@ scenes["mapmaker"] = new Scene(
 
         function postUndoLog(x, y, layer, prevContent, fill) {
             // Add something to the undo log
+            if (undoLog.length > 0 && undoLog[0][0] == x && undoLog[0][1] == y && undoLog[0][2] == layer && undoLog[0][3] == prevContent && undoLog[0][4] == fill) return false;
+            if (fill != true && getTileName(mm_map, x, y, ["map", "mapbg2", "mapfg"].indexOf(layer) + 1) == prevContent) return false;
+
             undoLog.unshift([x, y, layer, prevContent, fill])
             objects["btn_undo"].alpha = 1;
             if (undoLog.length > 2048) undoLog.pop();
@@ -523,6 +540,9 @@ scenes["mapmaker"] = new Scene(
 
         function postRedoLog(x, y, layer, prevContent, fill) {
             // Add something to the redo log
+            if (redoLog.length > 0 && redoLog[0][0] == x && redoLog[0][1] == y && redoLog[0][2] == layer && redoLog[0][3] == prevContent && redoLog[0][4] == fill) return false;
+            if (fill != true && getTileName(mm_map, x, y, ["map", "mapbg2", "mapfg"].indexOf(layer) + 1) == prevContent) return false;
+
             redoLog.unshift([x, y, layer, prevContent, fill])
             objects["btn_undo"].alpha = 1;
             if (undoLog.length > 2048) redoLog.pop();
@@ -789,53 +809,6 @@ scenes["mapmaker"] = new Scene(
             updateTiles = true;
         }
 
-        function toggleMapInfoButtons(mustclose = false) {
-            ////////////////////////////////////////
-            // NOT CONVERTED YET
-            return;
-            closeAllMenus(7);
-
-            if (mapInfoControls[0].alpha == 0 && !mustclose) {
-                for (u in undoButtons) {
-                    undoButtons[u].al = undoButtons[u].alpha;
-                    undoButtons[u].alpha = 0;
-                }
-
-                for (w in walkPad) {
-                    walkPad[w].alpha = 0;
-                }
-                // update their texts and show
-                for (mi in mapInfoControls) {
-                    if (mapInfoControls[mi].uText != undefined) mapInfoControls[mi].uText();
-                    mapInfoControls[mi].alpha = 1;
-                }
-
-                for (let prep in recentlyUsedTiles) {
-                    recentlyUsedTiles[prep].alpha = 0;
-                }
-            }
-            else if (mapInfoControls[0].alpha == 1) {
-                if (!mustclose) closeAllMenus(7);
-
-                for (u in undoButtons) {
-                    undoButtons[u].alpha = undoButtons[u].al;
-                }
-
-                for (mi in mapInfoControls) {
-                    mapInfoControls[mi].alpha = 0;
-                }
-                if (mapmaker.mode != "place") {
-                    for (w in walkPad) {
-                        walkPad[w].alpha = 1;
-                    }
-                }
-
-                for (let prep in recentlyUsedTiles) {
-                    if (recentlyUsedTiles[prep].source != "gear") recentlyUsedTiles[prep].alpha = 1;
-                }
-            }
-        }
-
         function showInfo() {
             ////////////////////////////////////////
             // NOT CONVERTED YET
@@ -865,6 +838,7 @@ scenes["mapmaker"] = new Scene(
         function hideInfo() {
             ////////////////////////////////////////
             // NOT CONVERTED YET
+            return;
             selectedInfo = "";
 
             for (u in undoButtons) {
@@ -1006,42 +980,6 @@ scenes["mapmaker"] = new Scene(
             }
         }
 
-        function toggleLoadButtons(mustclose = false) {
-            ////////////////////////////////////////
-            // NOT CONVERTED YET
-            if (loadMapButtons[0].offset[1] != -600 && loadMapButtons[0].offset[1] != 0) {
-                animationOverlap = true;
-                return false;
-            }
-            if (loadMapButtons[0].alpha == 0 && !mustclose) {
-                // Open
-                closeAllMenus(2);
-                renderInfo("m");
-                showInfo();
-
-                for (i in loadMapButtons) {
-                    loadMapButtons[i].offset = [0, -600];
-                    loadMapButtons[i].alpha = 1;
-                }
-                for (i in loadMapButtons) {
-                    loadMapButtons[i].offset[1] = 0;
-                }
-            }
-            else {
-                // Close
-                hideInfo();
-
-                for (i in loadMapButtons) {
-                    loadMapButtons[i].offset = [0, 0];
-                }
-                hideInfo();
-                for (i in loadMapButtons) {
-                    loadMapButtons[i].offset[1] = -600;
-                    loadMapButtons[i].alpha = 0;
-                }
-            }
-        }
-
         
 
         function closeAllMenus(i) {
@@ -1056,7 +994,7 @@ scenes["mapmaker"] = new Scene(
             }
 
             // Load
-            if (i != 2) toggleLoadButtons(true);
+            if (i != 2) toggleSaveButtons(true);
 
             // Save
             //if (i != 3) toggleSaveButtons(true);
@@ -1209,16 +1147,15 @@ scenes["mapmaker"] = new Scene(
         }
 
         function replaceY(pom, mp, x, y, layer, rePlaced, tileToPlace, temp) {
-            ////////////////////////////////////////
-            // NOT CONVERTED YET
-            let fillID = "F" + Math.ceil(Math.random() * Math.pow(2, 20));
-
+            // function for fill
             if (rePlaced == "") return false;
+
+            let fillID = "F" + Math.ceil(Math.random() * Math.pow(2, 20));
             let startX = 0;
             let startY = y;
 
-            while (mm_map[layer][y] != undefined && y - 100 < startY && tilesFilled < 5000) { // start row must exist, and max. 100 tiles in that direction
-                //console.log(tilesFilled);
+            while (mm_map[layer][y] != undefined && y - 100 < startY && mapmaker.filledTiles < 5000) { // start row must exist, and max. 100 tiles in that direction
+                //console.log(mapmaker.filledTiles);
                 if (mp.substr(x * 4, 3) != rePlaced) {
                     // Nope (limit Y)
                     //console.log("y limiter");
@@ -1231,7 +1168,7 @@ scenes["mapmaker"] = new Scene(
                     if (mp.substr(x * 4, 3) == rePlaced) {
                         mm_map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
                         postLog("default", x, y, layer, mp.substr(x * 4, 3), fillID);
-                        tilesFilled++;
+                        mapmaker.filledTiles++;
                     }
                     else break;
                     mp = mm_map[layer][y];
@@ -1247,7 +1184,7 @@ scenes["mapmaker"] = new Scene(
                     if (mp.substr(x * 4, 3) == rePlaced) {
                         mm_map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
                         postLog("default", x, y, layer, mp.substr(x * 4, 3), fillID);
-                        tilesFilled++;
+                        mapmaker.filledTiles++;
                     }
                     else break;
                     mp = mm_map[layer][y];
@@ -1265,8 +1202,6 @@ scenes["mapmaker"] = new Scene(
         }
 
         function eraseTile(x, y, layer) {
-            ////////////////////////////////////////
-            // NOT CONVERTED YET
             if (x < 0 || y < 0) {
                 return false;
             }
@@ -1275,7 +1210,7 @@ scenes["mapmaker"] = new Scene(
             if (mapmaker.mode == "erase" && mp != undefined && x * 4 <= mp.length) {
                 mm_map[layer][y] = mp.substr(0, x * 4) + "--- " + mp.substr((1 + x) * 4);
                 mm_map[layer][y] = mm_map[layer][y].replace(/  /gi, " ");
-                updateTiles = true;
+                mapmaker.updateTiles = true;
             }
         }
 
@@ -1283,6 +1218,7 @@ scenes["mapmaker"] = new Scene(
             ////////////////////////////////////////
             // NOT CONVERTED YET
             // not an UI function, this is for handling the tile mode :p
+            return;
             if (tempPlaceBlock > 0) return false;
             closeAllMenus(1);
 
@@ -1360,9 +1296,11 @@ scenes["mapmaker"] = new Scene(
         function undoButton() {
             // UNDO
             let btn = objects["btn_undo"];
+
             if (undoLog.length == 0) btn.alpha = 0;
-            else if (btn.alpha == 1 && tilesMenuControls[0].alpha == 0) {
+            else if (btn.alpha == 1) {
                 let shifterCoords = [undoLog[0][0], undoLog[0][1], undoLog[0][2], undoLog[0][3]];
+                // now that no duplicates are put anymore, is this while loop needed, or can it be improved?
                 while (undoLog.length > 0 && undoLog[0][0] == shifterCoords[0]
                     && undoLog[0][1] == shifterCoords[1]
                     && undoLog[0][2] == shifterCoords[2]
@@ -1377,15 +1315,18 @@ scenes["mapmaker"] = new Scene(
                 }
 
                 if (undoLog.length == 0) btn.alpha = 0;
+                if (redoLog.length > 0) objects["btn_redo"].alpha = 1;
             }
         }
 
         function redoButton() {
             // REDO
             let btn = objects["btn_redo"];
+
             if (redoLog.length == 0) btn.alpha = 0;
-            else if (btn.alpha == 1 && tilesMenuControls[0].alpha == 0) {
+            else if (btn.alpha == 1) {
                 let shifterCoords = [redoLog[0][0], redoLog[0][1], redoLog[0][2], redoLog[0][3]];
+                // now that no duplicates are put anymore, is this while loop needed, or can it be improved?
                 while (redoLog.length > 0 && redoLog[0][0] == shifterCoords[0]
                     && redoLog[0][1] == shifterCoords[1]
                     && redoLog[0][2] == shifterCoords[2]
@@ -1400,6 +1341,7 @@ scenes["mapmaker"] = new Scene(
                 }
 
                 if (redoLog.length == 0) btn.alpha = 0;
+                if (undoLog.length > 0) objects["btn_undo"].alpha = 1;
             }
         }
 
@@ -1430,30 +1372,15 @@ scenes["mapmaker"] = new Scene(
             objects["btn_zoom:text"].text = "x" + zoom;
         }
 
-        function tilePickerButton() {
-            loadScene("tilepicker");
-            /*
-            if (tilesMenuControls[0].alpha == 0) {
-                mapmaker.previousmode = mapmaker.mode;
-                //moveMode();
-                openTilesMenu();
-            }
-            else {
-                // leave the maker menu
-                //if (mapmaker.previousmode == "moveandplace") moveAndPlaceMode();
-                //else placeMode();
-                closeTilesMenu();
-            }
-                */
-        }
-
         function tileClicked(c) {
             let me = objects[c];
-            if (me.pos == undefined) return;
+            if (me.pos == undefined || mapmaker.placeBlocker > 0) return;
 
-            if (mapmaker.mode == "erase") eraseTile(me.pos[0], me.pos[1], "map");
-            else if (mapmaker.mode == "tile") tileInfo(me.pos[0], me.pos[1], "map");
-            else placeTile(me.pos[0], me.pos[1], "map");
+            let editingLayer = ["map", "mapbg2", "mapfg"][mapmaker.editingLayer]
+
+            if (mapmaker.mode == "erase") eraseTile(me.pos[0], me.pos[1], editingLayer);
+            else if (mapmaker.mode == "tile") tileInfo(me.pos[0], me.pos[1], editingLayer);
+            else placeTile(me.pos[0], me.pos[1], editingLayer);
         }
 
         // 3. objects
@@ -1469,20 +1396,16 @@ scenes["mapmaker"] = new Scene(
         createGroup("tiles_npcs", []);
 
         for (let i = 0; i < 800; i++) {
-            createButton("tiles_bg" + i, 0, 0, 0, 0, "gear", (c) => {
-                if (mapmaker.editingLayer == 0) tileClicked(c);
-            }, {
+            createButton("tiles_bg" + i, 0, 0, 0, 0, "gear", () => {}, {
                 offset: [-1000, -1000], sizeOffset: [2, 2], alpha: 0
             });
-            objects["tiles_bg" + i].onHold = objects["tiles_bg" + i].onClick;
+            objects["tiles_bg" + i].onHold = (c) => { if (mapmaker.editingLayer == 0) tileClicked(c); };
             groups["tiles_bg"].addChild("tiles_bg" + i);
 
-            createButton("tiles_bg2" + i, 0, 0, 0, 0, "gear", (c) => {
-                if (mapmaker.editingLayer == 1) tileClicked(c);
-            }, {
-                offset: [-1000, -1000], sizeOffset: [2, 2], alpha: 0
+            createButton("tiles_bg2" + i, 0, 0, 0, 0, "gear", () => {}, {
+                offset: [-1000, -1000], sizeOffset: [2, 2], alpha: 0,
             });
-            objects["tiles_bg2" + i].onHold = objects["tiles_bg2" + i].onClick;
+            objects["tiles_bg2" + i].onHold = (c) => { if (mapmaker.editingLayer == 1) tileClicked(c); };
             groups["tiles_bg2"].addChild("tiles_bg2" + i);
         }
         for (let i = 0; i < 800; i++) { // they have to be split to not appear below random tiles
@@ -1498,12 +1421,10 @@ scenes["mapmaker"] = new Scene(
             groups["tiles_npcs"].addChild("tiles_npcs" + i);
 
 
-            createButton("tiles_fg" + i, 0, 0, 0, 0, "gear", (c) => {
-                if (mapmaker.editingLayer == 2) tileClicked(c);
-            }, {
+            createButton("tiles_fg" + i, 0, 0, 0, 0, "gear", () => {}, {
                 offset: [-1000, -1000], sizeOffset: [2, 2], alpha: 0
             });
-            objects["tiles_fg" + i].onHold = objects["tiles_fg" + i].onClick;
+            objects["tiles_fg" + i].onHold = (c) => { if (mapmaker.editingLayer == 2) tileClicked(c); };
             groups["tiles_fg"].addChild("tiles_fg" + i);
         }
 
@@ -1563,9 +1484,11 @@ scenes["mapmaker"] = new Scene(
 
 
         // the big bg rect
-        createSquare("bigBG", 0, 0, 0, 1, "brown", {
-            alpha: 0.8, sizeOffset: [72 * 6, 0]
+        createButton("bigBG", 0, 0, 0, 1, "#a52a2a", () => {}, {
+            alpha: 0.8, sizeOffset: [72 * 6, 0],
+            clickthrough: false
         });
+        objects["bigBG"].onHold = () => {};
 
         createSquare("bigBG_line1", 0, 0, 0, 1, "white", {
             alpha: 0.5, sizeOffset: [2, 0], offset: [72 * 6, 0]
@@ -1631,7 +1554,7 @@ scenes["mapmaker"] = new Scene(
         }, { aText: { text: "ani:off", size: 20 } });
 
         createButton("btn_togglemapinfo", 0, 0.8475, 0.05, 0.0475, "button", (c) => {
-            toggleMapInfoButtons();
+            loadScene("mapinfo");
         }, { aText: { text: "MAP", size: 20 } });
 
         createButton("btn_togglemakerinfo", 0, 0.9, 0.05, 0.0475, "button", (c) => {
@@ -1656,12 +1579,6 @@ scenes["mapmaker"] = new Scene(
             glow: 5, glowColor: "yellow"
         })
 
-        // middle left: recent tiles
-        // ...
-
-        // BUTTONS - move+place, eraser, tile picker, undo, etc.
-        // all the stuff on the top left
-
         // ROW 1: maker buttons
         createButton("btn_tilemaker", 0, 0.025, 0, 0, "tilemaker", () => { toggleCreateTileButtons(); }, {
             sizeOffset: [64, 64], offset: [72 * 3, 72 * 0]
@@ -1678,7 +1595,7 @@ scenes["mapmaker"] = new Scene(
         // ROW 1 + 2: three layers and visibility toggles
         for (let i = 0; i < 3; i++) {
             createButton("btn_layer" + i, 0, 0.025, 0, 0, "layerbuttons", (c) => {
-                editingLayer = objects[c].i;
+                mapmaker.editingLayer = objects[c].i;
                 objects["btn_layer0"].glow = 0;
                 objects["btn_layer1"].glow = 0;
                 objects["btn_layer2"].glow = 0;
@@ -1712,11 +1629,11 @@ scenes["mapmaker"] = new Scene(
             sizeOffset: [64, 64], offset: [72 * 3, 72 * 1]
         });
 
-        createButton("btn_saveload", 0, 0.025, 0, 0, "loadmap", () => { toggleLoadButtons(); }, {
+        createButton("btn_saveload", 0, 0.025, 0, 0, "loadmap", () => { toggleSaveButtons(); }, {
             sizeOffset: [64, 64], offset: [72 * 4, 72 * 1]
         });
 
-        createButton("btn_tilepicker", 0, 0.025, 0, 0, "tilesmenu", () => { tilePickerButton(); }, {
+        createButton("btn_tilepicker", 0, 0.025, 0, 0, "tilesmenu", () => { loadScene("tilepicker"); }, {
             sizeOffset: [64, 64], offset: [72 * 5, 72 * 1]
         });
 
@@ -1821,17 +1738,80 @@ scenes["mapmaker"] = new Scene(
             groups["recentTiles"].addChild("recentlyUsedTiles" + t);
         }
 
+        // save and load
+        createButton("btn_save_loadfromfile", 0, 0.1, 0.2, 0.1, "button", () => {
+                showSelect();
+        }, { offset: [72 * 11, 0], power: false, aText: { text: "Load from file", size: 32, color: "black" } });
 
+        createButton("btn_save_loadfromname", 0, 0.25, 0.2, 0.1, "button", () => {
+                // get the name thru info or asking
+                let newMapn;
+                if (selectedInfo != "" && maps[selectedInfo] != undefined) newMapn = selectedInfo;
+                else newMapn = prompt("Map name? (e. g. test)");
+
+                // load
+                if (maps[newMapn] != undefined) {
+                    mapmaker.currentMap = newMapn; // from name
+                    mm_map = maps[mapmaker.currentMap];
+                }
+                else alert("Does not exist!");
+
+                toggleSaveButtons(true);
+                hideInfo();
+                newMap();
+        }, { offset: [72 * 11, 0], power: false, aText: { text: "Load from name", size: 32, color: "black" } });
+
+        createButton("btn_save_playtest", 0, 0.4, 0.2, 0.1, "button", () => {
+                let toPos = [game.position[0], game.position[1]];
+
+                saveNR = 0;
+                loadGame();
+                loadSettings();
+
+                maps[mapmaker.currentMap] = mm_map;
+
+                game.map = mapmaker.currentMap;
+                game.map.tiles = Object.assign({}, game.map.tiles, loadPacks());
+                game.position = toPos;
+
+                localStorage.setItem("SRPGMM", JSON.stringify({
+                    map: mm_map,
+                    maker: mapmaker
+                }));
+
+                canMove = true;
+                isMapTestingMode = true;
+                loadScene("overworld");
+        }, { offset: [72 * 11, 0], power: false, aText: { text: "Play Test", size: 32, color: "black" } });
+
+        createButton("btn_save_savesotrm", 0, 0.55, 0.2, 0.1, "button", () => {
+                saveFile("sotrm");
+        }, { offset: [72 * 11, 0], power: false, aText: { text: "Save as .sotrm", size: 32, color: "black" } });
+
+        createButton("btn_save_savejs", 0, 0.7, 0.2, 0.1, "button", () => {
+                saveFile("js");
+        }, { offset: [72 * 11, 0], power: false, aText: { text: "Save as .js", size: 32, color: "black" } });
+
+        createButton("btn_save_deletenew", 0, 0.85, 0.2, 0.1, "button", () => {
+                if (confirm("Do you really want to create a new map?") == true) {
+                    createNewMap("newMap");
+                    toggleSaveButtons();
+                }
+        }, { offset: [72 * 11, 0], power: false, aText: { text: "Delete & New", size: 32, color: "black" } });
+
+        createGroup("savebuttons", ["btn_save_loadfromfile", "btn_save_loadfromname", "btn_save_playtest", "btn_save_savesotrm", "btn_save_savejs", "btn_save_deletenew"]);
 
         // 4. init startup
         console.timeEnd("objects");
         console.time("initstartup");
 
+        // uh huh
         if (!isDevMode()) {
             fadeIn(25000, true);
             loop = () => { return false; };
         }
 
+        mapmaker.placeBlocker = 2;
         generateRecentlyUsed();
         updatePrePicker();
 
@@ -1846,10 +1826,9 @@ scenes["mapmaker"] = new Scene(
         
         // load map
         if (lmresult != "none") {
-            lmresult = "none";
+            toggleSaveButtons(true);
+            //hideInfo();
 
-            if (loadMapButtons[0].alpha == 1) toggleLoadButtons();
-            hideInfo();
             if (lmresult != "justhide") {
                 if (typeof (lmresult) == "string" && lmresult.id != undefined) {
                     // The map you have loaded already exists :)
@@ -1867,6 +1846,8 @@ scenes["mapmaker"] = new Scene(
                     newMap();
                 }
             }
+
+            lmresult = "none";
         }
 
         // this is a bit different than for the overworld: diagonal is allowed
@@ -1965,6 +1946,7 @@ scenes["mapmaker"] = new Scene(
             groups["tiles_items"].set("alpha", 0);
             groups["tiles_npcs"].set("alpha", 0);
 
+            // not render pos but what tile they correlate to
             groups["tiles_bg"].set("pos", [-999999999, -999999999]);
             groups["tiles_bg2"].set("pos", [-999999999, -999999999]);
             groups["tiles_fg"].set("pos", [-999999999, -999999999]);
@@ -2097,8 +2079,18 @@ scenes["mapmaker"] = new Scene(
         objects["middlei"].sizeOffset = [zoom * scale, zoom * scale];
         objects["middlei"].offset = [-zoom * scale / 2, (zoom * scale * 7.5 - ((zoom - 1) * scale * 7)) - (wggjCTX.canvas.height / 2)];
 
+        // tick auto save
+        autoSaveTime += 1 / delta; // i think it might go 2x speed if you have game's normal auto save enabled
+        if (autoSaveTime >= 12) {
+            autoSaveTime = 0;
+            localStorage.setItem("SRPGMM", JSON.stringify({
+                    map: mm_map,
+                    maker: mapmaker
+                }));
+        }
+
         // tick temporary placing blocker
-        if (mapmaker.temporaryPlacementBlocker > 0) mapmaker.temporaryPlacementBlocker -= 1 / delta;
+        if (mapmaker.placeBlocker > 0) mapmaker.placeBlocker -= 1 / delta;
     }
 );
 

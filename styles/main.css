@@ -22,13 +22,21 @@ body {
     filter: none;
 }
 
-.loadiv {
-    height: 100%;
+.loadiv, .loadiv2 {
+    height: 100vh;
     width: 100%;
     background-color: sandybrown;
     color: black;
     text-align: center;
     font-size: 36px;
+}
+
+.loadiv button, .loadiv2 button, .loadiv input, .loadiv2 input {
+    background-color: darkslategray;
+    color: white;
+    font-size: 48px;
+    border: 8px solid gray;
+    margin-top: 20px;
 }
 
 canvas {

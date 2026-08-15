@@ -258,7 +258,7 @@ scenes["overworld"] = new Scene(
         */
 
         createButton("backButton", 0.01, 0.925, 0.05, 0.045, "button", () => {
-            setScene(scenes.mapmaker());
+            loadScene("mapmaker");
         }, { aText: { text: "<", size: 24 }, power: (isMapTestingMode ? 1 : 0) });
 
 
@@ -324,6 +324,7 @@ scenes["overworld"] = new Scene(
             setTimeout(() => { // Box disappear
                 addAnimator(function (t) {
                     //areaNameBox[i].alpha = 1 - (t / 500);
+                    if (objects[groups["areaNameBox"].children[0]] == undefined) return false;
                     groups["areaNameBox"].set("offset", [0, t * (-0.5)]);
                     if (t > 999) {
                         groups["areaNameBox"].set("alpha", 0);

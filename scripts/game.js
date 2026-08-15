@@ -65,6 +65,33 @@ function getTile(map, x, y, l = 1) {
     return fallBack;
 }
 
+// :eyes:
+function getTileName(map, x, y, l = 1) {
+    if (y < 0) return undefined;
+
+    let thetile = "";
+    x = Math.floor(x);
+    y = Math.floor(y);
+
+    if (l == 1) {
+        if (map.map[y] != undefined) {
+            thetile = map.map[y][x * 4] + map.map[y][(x * 4) + 1] + map.map[y][(x * 4) + 2];
+        }
+    }
+    if (l == 2) {
+        if (map.mapbg2[y] != undefined) {
+            thetile = map.mapbg2[y][x * 4] + map.mapbg2[y][(x * 4) + 1] + map.mapbg2[y][(x * 4) + 2];
+        }
+    }
+    if (l == 3) {
+        if (map.mapfg[y] != undefined) {
+            thetile = map.mapfg[y][x * 4] + map.mapfg[y][(x * 4) + 1] + map.mapfg[y][(x * 4) + 2];
+        }
+    }
+
+    return thetile;
+}
+
 function getTileCondition(map, x, y, l) {
     let tile = getTile(map, x, y, l);
 
