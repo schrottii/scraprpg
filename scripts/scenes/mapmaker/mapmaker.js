@@ -238,6 +238,7 @@ var mapmaker = {
     autoLayer: false,
     tileToPlace: "001",
     placeBlocker: 0,
+    hotkeyBlocker: 0,
 
     fillToolActive: false,
     filledTiles: 0,
@@ -310,7 +311,7 @@ scenes["mapmaker"] = new Scene(
                 mm_map = loadFromAutoSave.map;
                 mm_map.tiles = Object.assign({}, mm_map.tiles, loadPacks(mm_map));
 
-                mapmaker = loadFromAutoSave.maker;
+                mapmaker = Object.assign({}, mapmaker, loadFromAutoSave.maker);
                 mapmaker.currentMap = mm_map.id; // on boot, from cache
             }
 
@@ -1744,48 +1745,48 @@ scenes["mapmaker"] = new Scene(
         }, { offset: [72 * 11, 0], power: false, aText: { text: "Load from file", size: 32, color: "black" } });
 
         createButton("btn_save_loadfromname", 0, 0.25, 0.2, 0.1, "button", () => {
-                // get the name thru info or asking
-                let newMapn;
-                if (selectedInfo != "" && maps[selectedInfo] != undefined) newMapn = selectedInfo;
-                else newMapn = prompt("Map name? (e. g. test)");
+            // get the name thru info or asking
+            let newMapn;
+            if (selectedInfo != "" && maps[selectedInfo] != undefined) newMapn = selectedInfo;
+            else newMapn = prompt("Map name? (e. g. test)");
 
-                // load
-                if (maps[newMapn] != undefined) {
-                    mapmaker.currentMap = newMapn; // from name
-                    mm_map = maps[mapmaker.currentMap];
-                }
-                else alert("Does not exist!");
+            // load
+            if (maps[newMapn] != undefined) {
+                mapmaker.currentMap = newMapn; // from name
+                mm_map = maps[mapmaker.currentMap];
+            }
+            else alert("Does not exist!");
 
-                toggleSaveButtons(true);
-                hideInfo();
-                newMap();
+            toggleSaveButtons(true);
+            hideInfo();
+            newMap();
         }, { offset: [72 * 11, 0], power: false, aText: { text: "Load from name", size: 32, color: "black" } });
 
         createButton("btn_save_playtest", 0, 0.4, 0.2, 0.1, "button", () => {
-                let toPos = [game.position[0], game.position[1]];
+            let toPos = [game.position[0], game.position[1]];
 
-                saveNR = 0;
-                loadGame();
-                loadSettings();
+            saveNR = 0;
+            loadGame();
+            loadSettings();
 
-                maps[mapmaker.currentMap] = mm_map;
+            maps[mapmaker.currentMap] = mm_map;
 
-                game.map = mapmaker.currentMap;
-                game.map.tiles = Object.assign({}, game.map.tiles, loadPacks());
-                game.position = toPos;
+            game.map = mapmaker.currentMap;
+            game.map.tiles = Object.assign({}, game.map.tiles, loadPacks());
+            game.position = toPos;
 
-                localStorage.setItem("SRPGMM", JSON.stringify({
-                    map: mm_map,
-                    maker: mapmaker
-                }));
+            localStorage.setItem("SRPGMM", JSON.stringify({
+                map: mm_map,
+                maker: mapmaker
+            }));
 
-                canMove = true;
-                isMapTestingMode = true;
-                loadScene("overworld");
+            canMove = true;
+            isMapTestingMode = true;
+            loadScene("overworld");
         }, { offset: [72 * 11, 0], power: false, aText: { text: "Play Test", size: 32, color: "black" } });
 
         createButton("btn_save_savesotrm", 0, 0.55, 0.2, 0.1, "button", () => {
-                saveFile("sotrm");
+            saveFile("sotrm");
         }, { offset: [72 * 11, 0], power: false, aText: { text: "Save as .sotrm", size: 32, color: "black" } });
 
         createButton("btn_save_savejs", 0, 0.7, 0.2, 0.1, "button", () => {
@@ -2091,6 +2092,35 @@ scenes["mapmaker"] = new Scene(
 
         // tick temporary placing blocker
         if (mapmaker.placeBlocker > 0) mapmaker.placeBlocker -= 1 / delta;
+        if (mapmaker.hotkeyBlocker > 0) mapmaker.hotkeyBlocker -= 1 / delta;
+
+        // hotkeys!!
+        if (/*currentKeys.length > 0*/ mapmaker.hotkeyBlocker <= 0) {
+            if (currentKeys["q"]) mapmaker.editingLayer = (mapmaker.editingLayer + 1) % 3;
+            if (currentKeys["e"]) loadScene("tilepicker");
+
+            if (currentKeys["u"]) objects["btn_undo"].onClick();
+            else if (currentKeys["i"]) objects["btn_redo"].onClick();
+            else if (currentKeys["o"]) objects["btn_copy"].onClick();
+            else if (currentKeys["p"]) objects["btn_paste"].onClick();
+            else if (currentKeys["l"]) objects["btn_autolayer"].onClick(); //mapmaker.autoLayer = !mapmaker.autoLayer;
+            else if (currentKeys["f"]) objects["btn_fill"].onClick("btn_fill"); //mapmaker.fillToolActive = !mapmaker.fillToolActive;
+            else if (currentKeys["z"]) objects["btn_zoom"].onClick();
+
+            if (currentKeys["x"]) objects["btn_mode_move"].onClick();
+            else if (currentKeys["c"]) objects["btn_mode_moveandplace"].onClick();
+            else if (currentKeys["v"]) objects["btn_mode_erase"].onClick();
+            else if (currentKeys["b"]) objects["btn_mode_tile"].onClick();
+
+            if (currentKeys["n"]) objects["btn_saveload"].onClick();
+            if (currentKeys["m"]) loadScene("mapinfo");
+
+            for (let i = 0; i < 9; i++) {
+                if (currentKeys["" + (i + 1)]) objects["recentlyUsedTiles" + i].onClick("recentlyUsedTiles" + i);
+            }
+
+            mapmaker.hotkeyBlocker = 0.3;
+        }
     }
 );
 

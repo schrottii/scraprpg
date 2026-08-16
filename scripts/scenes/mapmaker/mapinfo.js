@@ -218,6 +218,6 @@ scenes["mapinfo"] = new Scene(
     },
     (tick) => {
         // Loop
-
+        if (currentKeys["escape"]) loadScene("mapmaker");
     }
 );

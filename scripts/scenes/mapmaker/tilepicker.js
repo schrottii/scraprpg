@@ -224,7 +224,17 @@ scenes["tilepicker"] = new Scene(
     },
     (tick) => {
         // Loop
+        if (mapmaker.hotkeyBlocker > 0) mapmaker.hotkeyBlocker -= 1 / delta;
 
+        // hotkeys!!
+        if (mapmaker.hotkeyBlocker <= 0) {
+            if (currentKeys["escape"]) loadScene("mapmaker");
+            else if (currentKeys["c"]) objects["top_btn_commontiles"].onClick();
+            else if (currentKeys["m"]) objects["top_btn_maptiles"].onClick();
+            else if (currentKeys["z"]) objects["top_btn_zoom"].onClick();
+        
+            mapmaker.hotkeyBlocker = 0.3;
+        }
     }
 );
 
