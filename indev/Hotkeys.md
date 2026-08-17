@@ -51,6 +51,7 @@ An overview of keys you can press
 | E                 | Open Tile Picker
 | N                 | Toggle Save/Load buttons
 | M                 | Open Map Info
+| T                 | TOGGLE MAKER INFO
 
 ## Tile Picker
 | Key(s)            | Description
@@ -60,8 +61,10 @@ An overview of keys you can press
 | C                 | Common tiles
 | M                 | Map tiles
 | Z                 | Zoom
+| T                 | TOGGLE MAKER INFO
 
 ## Map Info
 | Key(s)            | Description
 |:-----------------:|:-------------------------:
 | ESC               | Return to main Map Maker
+| T                 | TOGGLE MAKER INFO

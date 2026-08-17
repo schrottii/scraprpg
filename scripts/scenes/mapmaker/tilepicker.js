@@ -229,6 +229,8 @@ scenes["tilepicker"] = new Scene(
         // hotkeys!!
         if (mapmaker.hotkeyBlocker <= 0) {
             if (currentKeys["escape"]) loadScene("mapmaker");
+            if (currentKeys["t"]) makerInfoToggle();
+            
             else if (currentKeys["c"]) objects["top_btn_commontiles"].onClick();
             else if (currentKeys["m"]) objects["top_btn_maptiles"].onClick();
             else if (currentKeys["z"]) objects["top_btn_zoom"].onClick();

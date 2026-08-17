@@ -340,9 +340,6 @@ scenes["mapmaker"] = new Scene(
         let createTileInfoprevM = "t";
         */
 
-        var selectedInfo = "";
-        var selectedInfoType = "";
-
         var undoLog = [];
         var redoLog = [];
 
@@ -1384,6 +1381,27 @@ scenes["mapmaker"] = new Scene(
             else placeTile(me.pos[0], me.pos[1], editingLayer);
         }
 
+        function updateMapMakerUI() {
+            objects["btn_fill"].glow = mapmaker.fillToolActive ? 10 : 0;
+            objects["btn_autolayer"].glow = mapmaker.autoLayer ? 10 : 0;
+
+            //objects["currentTilePreview"].image = mapmaker.tileToPlace
+            changeTileToPlace(mapmaker.tileToPlace, true); // updates that one properly AND prepicker as well
+
+            objects["btn_layer0"].glow = 0;
+            objects["btn_layer1"].glow = 0;
+            objects["btn_layer2"].glow = 0;
+            objects["btn_layer" + mapmaker.editingLayer].glow = 10;
+
+            objects["btn_layertoggle0"].alpha = mapmaker.visibleLayers[0] == 0 ? 0.3 : 1;
+            objects["btn_layertoggle1"].alpha = mapmaker.visibleLayers[1] == 0 ? 0.3 : 1;
+            objects["btn_layertoggle2"].alpha = mapmaker.visibleLayers[2] == 0 ? 0.3 : 1;
+
+            modeHighlighter(mapmaker.mode);
+        }
+
+
+
         // 3. objects
         console.timeEnd("functions");
         console.time("objects");
@@ -1559,14 +1577,15 @@ scenes["mapmaker"] = new Scene(
         }, { aText: { text: "MAP", size: 20 } });
 
         createButton("btn_togglemakerinfo", 0, 0.9, 0.05, 0.0475, "button", (c) => {
-            if (objects[c].text == "info") {
-                showInfo();
-                renderInfo("auto");
-                objects[c].text = "X";
+            if (objects[c + ":text"].text == "info") {
+                makerInfoShow();
+                objects[c + ":text"].text = "X";
+
+                renderMakerInfo("auto");
             }
             else {
-                hideInfo();
-                objects[c].text = "info";
+                makerInfoHide();
+                objects[c + ":text"].text = "info";
             }
             mapmaker.updateTiles = true;
         }, { aText: { text: "info", size: 20 } });
@@ -1795,12 +1814,14 @@ scenes["mapmaker"] = new Scene(
 
         createButton("btn_save_deletenew", 0, 0.85, 0.2, 0.1, "button", () => {
                 if (confirm("Do you really want to create a new map?") == true) {
-                    createNewMap("newMap");
-                    toggleSaveButtons();
-                }
+                createNewMap("newMap");
+                toggleSaveButtons();
+            }
         }, { offset: [72 * 11, 0], power: false, aText: { text: "Delete & New", size: 32, color: "black" } });
 
         createGroup("savebuttons", ["btn_save_loadfromfile", "btn_save_loadfromname", "btn_save_playtest", "btn_save_savesotrm", "btn_save_savejs", "btn_save_deletenew"]);
+
+
 
         // 4. init startup
         console.timeEnd("objects");
@@ -1817,9 +1838,11 @@ scenes["mapmaker"] = new Scene(
         updatePrePicker();
 
         loadNPCs();
+        updateMapMakerUI();
+        mapmaker.updateTiles = true;
+
         fadeIn(250, true);
         canMove = true;
-        mapmaker.updateTiles = true;
         console.timeEnd("initstartup");
     },
     (tick) => {
@@ -2096,6 +2119,8 @@ scenes["mapmaker"] = new Scene(
 
         // hotkeys!!
         if (/*currentKeys.length > 0*/ mapmaker.hotkeyBlocker <= 0) {
+            if (currentKeys["t"]) makerInfoToggle();
+
             if (currentKeys["q"]) mapmaker.editingLayer = (mapmaker.editingLayer + 1) % 3;
             if (currentKeys["e"]) loadScene("tilepicker");
 

@@ -3,8 +3,9 @@ images = {
     gear: "gear.png",
     gameicon: "gameicon.png",
     proud: "proud.png",
-    ping: "ping.png",
+    
     button: "gui/button.png",
+    buttondark: "gui/buttondark.png",
 
     // Misc. or unsorted
     wrench: "currencies/wrench.png",
@@ -19,6 +20,7 @@ images = {
     paper: "paper.png",
     vignette: "screenvignette.png",
     star: "star.png",
+    ping: "ping.png",
 
 
 
