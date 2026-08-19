@@ -1,4 +1,7 @@
 // maker info 3.0
+const MAKER_INFO_SELBTN_ITEMS = 32;
+var makerInfoSelbtnItems = 0;
+
 var selectedInfo = "";
 var selectedInfoType = "";
 
@@ -22,12 +25,13 @@ var makerInfoCategories = [
 ];
 
 function makerInfoGenerate() {
+    // background and general objects
     createButton("makerInfo_bg1", 0, 0, 0.3, 1, colors.buttonbottom, () => { }, { sizeOffset: [64, 0], power: false, clickthrough: false });
     objects["makerInfo_bg1"].onHold = () => { }; // anti clickthrough
     createSquare("makerInfo_bg2", 0.1, 0, 0.2, 1, colors.buttontop, { offset: [8, 8], sizeOffset: [48, -16], power: false });
 
     createText("makerInfo_title", 0.2, 0.037, "Maker Info 3.0", { offset: [32, 0], size: 32, color: "black", align: "center", textBaseline: "bottom", power: false });
-    createSquare("makerInfo_bg3", 0.1, 0.034, 0.2, 0, colors.buttonbottom, { sizeOffset: [64, 4], offset: [0, 8], power: false });
+    createSquare("makerInfo_bg3", 0.1, 0.034, 0.2, 0, colors.buttonbottom, { sizeOffset: [64, 4], offset: [0, 8], power: false }); // behind categories
     createButton("makerInfo_close", 0.3, 0.034, 0, 0, "button",
         () => { makerInfoHide(); },
         {
@@ -35,18 +39,40 @@ function makerInfoGenerate() {
             aText: { text: "X", size: 24, color: "black", power: false }
         });
 
+    createText("makerInfo_length", 0.1, 0.96, "", { size: 16, color: "black", align: "right", power: false });
     createText("makerInfo_selected", 0.1, 0.98, "", { size: 16, color: "black", align: "right", power: false });
+
+    // new page buttons, using wggj scroll now
+    createButton("makerInfo_pageReset", 0.3125, 0.85, 0.0275, 0.05, "button", () => {
+        objects["makerInfo_sels"].scrolledY = 0;
+    }, { aText: { text: "P0", size: 24, color: "black", align: "center" } });
+    createButton("makerInfo_pageDown", 0.3125, 0.9, 0.0275, 0.05, "button", () => {
+        objects["makerInfo_sels"].scrolledY += 0.5 * wggj.canvas.h;
+        objects["makerInfo_sels"].scrolledY = Math.min(0, objects["makerInfo_sels"].scrolledY);
+    }, { aText: { text: "P-", size: 24, color: "black", align: "center" } });
+    createButton("makerInfo_pageUp", 0.3125, 0.95, 0.0275, 0.05, "button", () => {
+        objects["makerInfo_sels"].scrolledY -= 0.5 * wggj.canvas.h;
+    }, { aText: { text: "P+", size: 24, color: "black", align: "center" } });
 
     createGroup("makerInfo", [
         "makerInfo_bg1", "makerInfo_bg2",
         "makerInfo_title", "makerInfo_bg3", "makerInfo_close",
-        "makerInfo_selected"]);
+        "makerInfo_length", "makerInfo_selected",
+        "makerInfo_pageUp", "makerInfo_pageDown"
+    ]);
 
+    // categories (on the left)
     let iCat = 0;
+    let y = 0.91 / makerInfoCategories.length;
+    let h = y * 0.95; // leaves some space on top/bottom, x0.95 for gaps
     for (let cat of makerInfoCategories) {
-        createButton("makerInfo_category_" + cat[1], 0, 0.02, 0.1, 0, "button", (c) => { renderMakerInfo(objects[c].cat) },
+        createButton("makerInfo_category_" + cat[1], 0, 0.02 + (y * iCat), 0.1, h, "button", (c) => {
+            mapmaker.makerInfoScroll[selectedInfoType] = objects["makerInfo_sels"].scrolledY;
+            renderMakerInfo(objects[c].cat);
+            objects["makerInfo_sels"].scrolledY = mapmaker.makerInfoScroll[objects[c].cat] != undefined ? mapmaker.makerInfoScroll[objects[c].cat] : 0;
+        },
             {
-                sizeOffset: [0, 48], offset: [0, 54 * iCat], clickthrough: false, power: false,
+                clickthrough: false, power: false,
                 aText: { text: cat[0], size: 20, align: "center", maxW: 0.1, power: false }
             });
         objects["makerInfo_category_" + cat[1]].cat = cat[1];
@@ -55,10 +81,22 @@ function makerInfoGenerate() {
         iCat++;
     }
 
-    // the buttons (used to be text, now buttons) in the maker info
+    // scrollable container & groups
+    createContainer("makerInfo_sels", 0.1, 0.05, 0.225, 0.925, {
+        YScroll: true, YLimit: [0.000001, 0]
+    }, []);
+
     createGroup("makerInfo_selbtns", []);
     createGroup("makerInfo_selbtn_images", []);
-    for (let i = 0; i < 32; i++) {
+
+    // the buttons (used to be text, now buttons) in the maker info
+    makerInfoGenerateMoreButtons(MAKER_INFO_SELBTN_ITEMS);
+}
+
+function makerInfoGenerateMoreButtons(amount) {
+    if (amount <= makerInfoSelbtnItems) return;
+    for (let i = makerInfoSelbtnItems; i < amount; i++) {
+        // button
         createButton("makerInfo_selbtn" + i, 0.1, 0.05, 0.2, 0, "button", (c) => {
             selectedInfo = objects[c].g;
             objects["makerInfo_selected"].text = selectedInfo;
@@ -67,23 +105,21 @@ function makerInfoGenerate() {
             objects[c].image = "buttondark";
         }, {
             sizeOffset: [0, 30], offset: [8, 32 * i], power: false,
-            aText: { text: "", size: 24, color: "black", power: false }
+            aText: { text: "", align: "left", offset: [-0.033 * wggj.canvas.w, 0], size: 24, color: "black", power: false }
         });
-        objects["makerInfo_selbtn" + i].g = ""; //??
+        objects["makerInfo_selbtn" + i].g = ""; // data carrier
         groups["makerInfo_selbtns"].addChild("makerInfo_selbtn" + i);
-        //groups["makerInfo"].addChild("makerInfo_selbtn" + i);
+        objects["makerInfo_sels"].addChild("makerInfo_selbtn" + i);
 
+        // preview image if applicable
         createImage("makerInfo_selbtn_image" + i, 0.1, 0.05, 0, 0, "gear", {
             sizeOffset: [32, 32], offset: [8, 32 * i], power: false
         });
         groups["makerInfo_selbtn_images"].addChild("makerInfo_selbtn_image" + i);
-    }
+        objects["makerInfo_sels"].addChild("makerInfo_selbtn_image" + i);
 
-    /* page counter
-makerInfo.push(controls.label({
-    anchor: [0.2, 0.95], offset: [-64, 0],
-    text: "1", alpha: 0,
-})); */
+        makerInfoSelbtnItems++;
+    }
 }
 
 function makerInfoShow() {
@@ -257,8 +293,11 @@ function renderMakerInfo(type) {
         return false;
     }
 
+    objects["makerInfo_length"].text = grabFrom.length;
+    makerInfoGenerateMoreButtons(grabFrom.length);
+
     //let pageAdd = createTileInfoPage * createTileInfoPageLength;
-    for (let g = 0; g < 32; g++) {
+    for (let g = 0; g < makerInfoSelbtnItems; g++) {
         objects["makerInfo_selbtn" + g].image = "button";
 
         if (grabFrom[g] != undefined) {

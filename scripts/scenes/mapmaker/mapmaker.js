@@ -249,7 +249,10 @@ var mapmaker = {
 
     // tile picker
     tileSource: "common",
-    tilePickerZoom: 1
+    tilePickerZoom: 1,
+
+    // maker info
+    makerInfoScroll: {}
 }
 
 const dialogueScriptTypes = ["Add Quest", "Claim Quest", "Talk Quest Progress", "Give Item", "Teleport", "Open Shop", "Add Protagonist", "Rem Protagonist", "Inn"];
@@ -1924,6 +1927,8 @@ scenes["mapmaker"] = new Scene(
         //wggjCTX.imageSmoothingEnabled = false;
         if (wggjCTX.globalAlpha != 1) wggjCTX.globalAlpha = 1;
 
+        if (game.position[0] < 0) game.position[0] = 0;
+        if (game.position[1] < 0) game.position[1] = 0;
         let ofsX = game.position[0] - kofs[0] * kofs[2] - width / 2 + 0.5;
         let ofsY = game.position[1] - kofs[1] * kofs[2] - 7.5;
 

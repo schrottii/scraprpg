@@ -76,6 +76,7 @@ v1.8:
 - container: fixed snip issue when going to negative X/Y
 - customWGGJPostRender
 - Optimized performance of mouse events
+- using offset to offset attachment text/image
 */
 
 
@@ -390,14 +391,14 @@ class WGGJ_Base {
 
         if (this.aText != undefined) {
             objects[this.objectName + ":text"].power = this.power;
-            objects[this.objectName + ":text"].x = (this.currentX() + this.currentW() / 2) / wggj.canvas.w;
-            objects[this.objectName + ":text"].y = (this.currentY() + this.currentH() * 0.67) / wggj.canvas.h;
+            objects[this.objectName + ":text"].x = (this.currentX() + this.currentW() / 2 + objects[this.objectName + ":text"].offset[0]) / wggj.canvas.w;
+            objects[this.objectName + ":text"].y = (this.currentY() + this.currentH() * 0.67 + objects[this.objectName + ":text"].offset[1]) / wggj.canvas.h;
             objects[this.objectName + ":text"].render(true);
         }
         if (this.aImage != undefined) {
             objects[this.objectName + ":image"].power = this.power;
-            objects[this.objectName + ":image"].x = (this.currentX() + this.currentW() / 2) / wggj.canvas.w;
-            objects[this.objectName + ":image"].y = (this.currentY() + this.currentH() * 0.05) / wggj.canvas.h;
+            objects[this.objectName + ":image"].x = (this.currentX() + this.currentW() / 2 + objects[this.objectName + ":image"].offset[0]) / wggj.canvas.w;
+            objects[this.objectName + ":image"].y = (this.currentY() + this.currentH() * 0.05 + objects[this.objectName + ":image"].offset[1]) / wggj.canvas.h;
             objects[this.objectName + ":image"].w = (this.currentW() * 0.5) / wggj.canvas.w;
             objects[this.objectName + ":image"].h = (this.currentH() * 0.9) / wggj.canvas.h;
             objects[this.objectName + ":image"].render(true);
