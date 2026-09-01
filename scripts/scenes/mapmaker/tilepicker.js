@@ -1,8 +1,6 @@
 scenes["tilepicker"] = new Scene(
     () => {
         // Init
-        let tileProperties =["sprite", "set", "snip", "occupied", "ani", "teleport", "rotate", "dialogue", "swim", "layer", "condition"];
-
         function generateTiles() {
             if (objects["tile0"].tileid != undefined) {
                 // we already generated before, so gotta be-empty ye first
@@ -90,23 +88,7 @@ scenes["tilepicker"] = new Scene(
 
         function updateCurrentTileInfo(tile, tileID) {
             // update properties texts
-            //console.log(tile);
-            let txt = "";
-            let txt2 = "";
-            for (let prop of tileProperties) {
-                txt += prop + ":\n";// + " ".repeat(30 - (prop.length * 2)) + tile[prop] + "\n";
-                txt2 += (tile[prop] != undefined ? tile[prop] : "-") + "\n"
-            }
-
-            objects["selectedTileProperties"].text = txt;
-            objects["selectedTileProperties2"].text = txt2;
-
-            // update image and main name
-            //objects["selectedTileIMG"].image = image;
-            //objects["selectedTileIMG"].snip = snip;
-            objects["currentTilePreview"].power = true;
-
-            objects["selectedTileName"].text = tileID;
+            tileInfoRender(tileID, tile);
 
             // update prepicker preview
             updatePrePickerPreview();
@@ -200,11 +182,7 @@ scenes["tilepicker"] = new Scene(
         }
 
         // right side - info about current tile
-        createImage("currentTilePreview", 0.675, 0.15, 0, 0, "gear", { sizeOffset: [128, 128], power: false });
-        createText("selectedTileName", 0.8, 0.15, "", { size: 40, color: "black", align: "left", offset: [0, 64] });
-
-        createSmartText("selectedTileProperties", 0.675, 0.33, "", { size: 32, color: "black", align: "left" });
-        createSmartText("selectedTileProperties2", 0.775, 0.33, "", { size: 32, color: "black", align: "left" });
+        tileInfoGenerate();
 
         // right side - recent tiles preview
         createText("recentTilesPreview", 0.675, 0.8, "Prepicker Preview", { size: 40, color: "black", align: "left", offset: [0, 64] });

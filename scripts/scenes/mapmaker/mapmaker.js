@@ -252,7 +252,11 @@ var mapmaker = {
     tilePickerZoom: 1,
 
     // maker info
-    makerInfoScroll: {}
+    makerInfoScroll: {},
+
+    // tile info
+    tileInfoPos: [-1, -1, -1],
+    tileInfoItem: undefined
 }
 
 const dialogueScriptTypes = ["Add Quest", "Claim Quest", "Talk Quest Progress", "Give Item", "Teleport", "Open Shop", "Add Protagonist", "Rem Protagonist", "Inn"];
@@ -1215,85 +1219,6 @@ scenes["mapmaker"] = new Scene(
             }
         }
 
-        function tileInfo(x, y, layer, selected = "none") {
-            ////////////////////////////////////////
-            // NOT CONVERTED YET
-            // not an UI function, this is for handling the tile mode :p
-            return;
-            if (tempPlaceBlock > 0) return false;
-            closeAllMenus(1);
-
-            let selectedTile;
-            let selectedTileID;
-            let l = 1;
-
-            if (selected == "none") {
-                if (x < 0 || y < 0) {
-                    return false;
-                }
-
-                if (layer == "mapbg2") l = 2;
-                if (layer == "mapfg") l = 3;
-
-                currInfo = [x, y, l];
-
-                selectedTile = getTile(mm_map, x, y, l);
-
-                if (selectedTile == undefined) selectedTile = mm_map.tiles.empty;
-                selectedTileID = "empty";
-                if (mm_map[layer][y] != undefined) selectedTileID = mm_map[layer][y].substr(x * 4, 3);
-            }
-            else {
-                selectedTile = mm_map.tiles[selected] != undefined ? mm_map.tiles[selected] : commontiles[selected];
-                selectedTileID = selected;
-            }
-
-            if (selectedTile.set != undefined) {
-                tileInfoControls[4].source = "tilesets/" + selectedTile.set;
-                tileInfoControls[4].snip = [selectedTile.snip[0] * 32, selectedTile.snip[1] * 32, 32, 32];
-                tileInfoControls[5].text = "Set: " + selectedTile.set;
-            }
-            else {
-                tileInfoControls[4].source = "tiles/" + selectedTile.sprite;
-                tileInfoControls[4].snip = [0, 0, 32, 32];
-                tileInfoControls[5].text = "Sprite: " + selectedTile.sprite;
-            }
-            tileInfoControls[6].text = "ID: " + selectedTileID;
-            tileInfoControls[7].text = "Layer: " + layer + " (" + l + "/3)";
-            tileInfoControls[8].text = "Occupied: " + (selectedTile.occupied == undefined ? "not" : selectedTile.occupied);
-            tileInfoControls[9].text = "Animated: " + (selectedTile.ani == undefined ? "not" : selectedTile.ani);
-            tileInfoControls[10].text = "Teleport: " + (selectedTile.teleport == undefined ? "not" : selectedTile.teleport);
-            tileInfoControls[11].text = "Swim: " + (selectedTile.swim == undefined ? "not" : selectedTile.swim);
-
-            // Item display
-            let thisTilesItem;
-            for (i in mm_map.items) {
-                if (mm_map.items[i][0] == x && mm_map.items[i][1] == y) thisTilesItem = [mm_map.items[i][2], mm_map.items[i][3], "ground"];
-            }
-            if (thisTilesItem == undefined) {
-                for (i in mm_map.chests) {
-                    if (mm_map) thisTilesItem = [mm_map.chests[i][3], mm_map.chests[i][4], "chest"];
-                }
-            }
-            tileInfoControls[12].text = "Item: " + (thisTilesItem == undefined ? "not" : thisTilesItem[0] + " x" + thisTilesItem[1] + " (" + thisTilesItem[2] + ")");
-            if (thisTilesItem != undefined) tileInfoControls[14].source = "items/" + items[thisTilesItem[0]]().source;
-            else tileInfoControls[14].source = "gear";
-
-            tileInfoControls[13].text = "Dialogue: " + (selectedTile.dialogue == undefined ? "not" : selectedTile.dialogue);
-
-            // Show it all
-            UI_toggle_tileInfoControls(1);
-
-            //tileInfoSelectedTile.offset[0] = (x - game.position[0] + 16.1) * zswm;
-            //tileInfoSelectedTile.offset[1] = (y - game.position[1] + 7.5) * zswm;
-            tileInfoSelectedTile.anchor = [0.5, 0.5];
-            tileInfoSelectedTile.offset = [(x - game.position[0]) * zswm - (zswm / 2), (zoom * scale * (y - game.position[1] + 7.5) - ((zoom - 1) * scale * (y - game.position[1] + 7.5))) - (height / 2)];
-            tileInfoSelectedTile.sizeOffset = [zswm, zswm];
-            console.log(tileInfoSelectedTile.offset, tileInfoSelectedTile.alpha);
-            tileInfoControls[15].pos = currInfo;
-            tileInfoControls[15].alpha = (selectedTile.teleport != undefined);
-        }
-
         function undoButton() {
             // UNDO
             let btn = objects["btn_undo"];
@@ -1455,9 +1380,9 @@ scenes["mapmaker"] = new Scene(
             sizeOffset: [zswm, zswm]
         });
 
-        // the cursor thing but for the selected tile
+        // the cursor thing but for the selected tile (tile info)
         createImage("tileInfoSelectedTile", 0.0, 0.0, 0, 0, "selectedtile", {
-            sizeOffset: [zswm, zswm]
+            sizeOffset: [zswm, zswm], power: false
         });
 
         // buttons to make map bigger (or smaller)
@@ -1915,6 +1840,9 @@ scenes["mapmaker"] = new Scene(
                 kofs = [xo, yo, 0.1];
                 game.position[0] += xo;
                 game.position[1] += yo;
+
+                objects["tileInfoSelectedTile"].offset[0] -= xo * zswm;
+                objects["tileInfoSelectedTile"].offset[1] -= yo * zswm;
             }
         }
 
