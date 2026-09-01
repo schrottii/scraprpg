@@ -52,30 +52,39 @@ document.addEventListener('keydown', (e) => {
 
 /*
 v1.8:
--> onClick etc:
+-> Mouse Events:
+- Optimized performance
 - Objects are now cycled through in reverse order (newest first)
+- Improved stability when an object ceases existing
 - Added clickthrough support
+- Fixed onUp not being possible to set through config
+
+-> Scrolling:
+- Added mouse wheel support for Containers
+- Takes XScroll, YScroll, XScrollMod, YScrollMod into account
+- Use wheelable config to disable it for one container (enabled by default)
 
 -> Config:
 - offset
 - sizeOffset
 - clickthrough
+- Image: snip (this wasnt a thing before??)
+- Square, Image, Text, SmartText: glow
+- Square, Image, Text, SmartText: glowColor
+- Text, SmartText: textBaseline
+- Container: wheelable
 
 -> wggj:
 - debug.autoStart
+- config.textBaseline
 
-- snip config for images
-- breaking onClick,etc. loops when object no longer defined (scene change)
-- groups: set,etc. can now be a lambda (passed: object)
+-> Other:
 - SmartText autoLinebreak no longer splits mid word
-- object render try/error catching
-- glow, glowColor for: square, image, text, smarttext
-- fixed onUp not working thru config
-- Text, SmartText: textBaseline
-- wggj.config.textBaseline
+- Issues during object rendering are now caught
+- Groups: set, etc. can now be a lambda (passed: object)
+
 - container: fixed snip issue when going to negative X/Y
 - customWGGJPostRender
-- Optimized performance of mouse events
 - using offset to offset attachment text/image
 */
 
@@ -234,6 +243,7 @@ wggjCanvas.addEventListener("pointerdown", wggjEventsOnClick);
 wggjCanvas.addEventListener("pointerup", wggjEventsOnPointerUp);
 wggjCanvas.addEventListener("pointerleave", wggjEventsOnPointerUp);
 wggjCanvas.addEventListener("pointermove", wggjEventsOnPointerMove);
+wggjCanvas.addEventListener("wheel", wggjEventsOnWheel);
 
 function wggjEventsOnClick(e) {
     if (e.buttons != 2 || isMobile()) e.preventDefault();
@@ -323,6 +333,24 @@ function wggjEventsOnLoop(e) {
             if (objects[c] == undefined) break;
 
             if (objects[c].clickthrough != undefined && objects[c].clickthrough === false) break;
+        }
+    }
+}
+
+function wggjEventsOnWheel(e) {
+    e.preventDefault();
+
+    let keys = Object.keys(objects);
+    let c;
+
+    for (let i = keys.length - 1; i >= 0; i--) {
+        c = keys[i];
+
+        if (objects[c] == undefined) continue;
+        if (objects[c].scrolledX == undefined) continue;
+
+        if (objects[c].isHit(wggj.mouse.x, wggj.mouse.y)) {
+            objects[c].onWheel(e);
         }
     }
 }
@@ -951,6 +979,15 @@ class WGGJ_Container extends WGGJ_Group {
         this.YLimit = isValid(config.YLimit) ? config.YLimit : [0, 0]; // up down
         this.limitEffect = isValid(config.limitEffect) ? config.limitEffect : false;
         this.clickthrough = isValid(config.clickthrough) ? config.clickthrough : true;
+        this.wheelable = isValid(config.wheelable) ? config.wheelable : true;
+    }
+
+    getXLimit(upperlower) {
+        return (this.XLimit[upperlower] != 0 ? this.XLimit[upperlower] : (upperlower == 1 ? -1e7 : 1e7)) * wggj.canvas.w;
+    }
+
+    getYLimit(upperlower) {
+        return (this.YLimit[upperlower] != 0 ? this.YLimit[upperlower] : (upperlower == 1 ? -1e7 : 1e7)) * wggj.canvas.h;
     }
 
     onClick(c, e) {
@@ -965,19 +1002,29 @@ class WGGJ_Container extends WGGJ_Group {
         if (e == undefined || isNaN(e.clientX) || isNaN(e.clientY) || (this.recentMouseX == 0 && this.recentMouseY == 0)) return false;
 
         if (this.XScroll == true) {
-            this.scrolledX = Math.min((this.XLimit[0] != 0 ? this.XLimit[0] : 1e7) * wggj.canvas.w,
-                Math.max((this.XLimit[1] != 0 ? -this.XLimit[1] : -1e7) * wggj.canvas.w,
+            this.scrolledX = Math.min(this.getXLimit(0),
+                Math.max(this.getXLimit(1),
                     this.scrolledX + (e.clientX - wggjCanvas.getBoundingClientRect().x - this.recentMouseX) * this.XScrollMod));
 
         }
         if (this.YScroll == true) {
-            this.scrolledY = Math.min((this.YLimit[0] != 0 ? this.YLimit[0] : 1e7) * wggj.canvas.h,
-                Math.max((this.YLimit[1] != 0 ? -this.YLimit[1] : -1e7) * wggj.canvas.h,
+            this.scrolledY = Math.min(this.getYLimit(0),
+                Math.max(this.getYLimit(1),
                     this.scrolledY + (e.clientY - wggjCanvas.getBoundingClientRect().y - this.recentMouseY) * this.YScrollMod));
         }
 
         this.recentMouseX = e.clientX;
         this.recentMouseY = e.clientY;
+    }
+
+    onWheel(e) {
+        if (this.wheelable == false) return;
+
+        if (this.XScroll) this.scrolledX = Math.min(this.getXLimit(0),
+            Math.max(this.getXLimit(1), this.scrolledX + (e.deltaX * this.XScrollMod)));
+
+        if (this.YScroll) this.scrolledY = Math.min(this.getYLimit(0),
+            Math.max(this.getYLimit(1), this.scrolledY + (e.deltaY * -1 * this.YScrollMod)));
     }
 
     resetScroll() {

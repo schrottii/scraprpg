@@ -58,7 +58,7 @@ function makerInfoGenerate() {
         "makerInfo_bg1", "makerInfo_bg2",
         "makerInfo_title", "makerInfo_bg3", "makerInfo_close",
         "makerInfo_length", "makerInfo_selected",
-        "makerInfo_pageUp", "makerInfo_pageDown"
+        "makerInfo_pageReset", "makerInfo_pageUp", "makerInfo_pageDown"
     ]);
 
     // categories (on the left)
