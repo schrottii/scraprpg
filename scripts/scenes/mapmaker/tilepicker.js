@@ -21,6 +21,7 @@ scenes["tilepicker"] = new Scene(
             let i = 0;//starti;
             let pageSize = 200; // temp, not used anymore
             //let pageLines = 1;
+            let maxoffset = 0;
 
             let commontiles_keys = Object.keys(commontiles);
             let maptiles_keys = Object.keys(mm_map.tiles);
@@ -41,7 +42,7 @@ scenes["tilepicker"] = new Scene(
                     tileGrab = mm_map.tiles[tileName];
                 }
 
-                if (tileName != undefined && (mm_map.tiles[tileName] == undefined || mapmaker.tileSource == "map")) {
+                if (tileName != undefined && (mm_map.tiles[tileName] == undefined || mapmaker.tileSource == "map") && objects["tile" + nr] != undefined) {
                     if (tileName != "empty") {
                         // getting the right image
                         if (tileGrab.set != undefined) {
@@ -69,13 +70,14 @@ scenes["tilepicker"] = new Scene(
                         if (tileGrab.dialogue != undefined || tileGrab.action != undefined) tilesMenuIcons[nr2 + 3].alpha = 1;
                         */
 
+                        maxoffset = objects["tile" + nr].offset[1];
                         nr += 1;
                     }
                 }
                 i += 1;
             }
 
-            objects["tiles_list"].YLimit[1] = -0.6 + objects["tile" + nr].offset[1] / wggj.canvas.h;
+            objects["tiles_list"].YLimit[1] = Math.max(0.000001, -0.6 + maxoffset / wggj.canvas.h);
         }
 
         function resizeTiles() {

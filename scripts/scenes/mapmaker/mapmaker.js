@@ -1343,36 +1343,36 @@ scenes["mapmaker"] = new Scene(
         createGroup("tiles_npcs", []);
 
         for (let i = 0; i < 800; i++) {
-            createButton("tiles_bg" + i, 0, 0, 0, 0, "gear", () => {}, {
+            createButton("tiles_bg_" + i, 0, 0, 0, 0, "gear", () => {}, {
                 offset: [-1000, -1000], sizeOffset: [2, 2], alpha: 0
             });
-            objects["tiles_bg" + i].onHold = (c) => { if (mapmaker.editingLayer == 0) tileClicked(c); };
-            groups["tiles_bg"].addChild("tiles_bg" + i);
+            objects["tiles_bg_" + i].onHold = (c) => { if (mapmaker.editingLayer == 0) tileClicked(c); };
+            groups["tiles_bg"].addChild("tiles_bg_" + i);
 
-            createButton("tiles_bg2" + i, 0, 0, 0, 0, "gear", () => {}, {
+            createButton("tiles_bg2_" + i, 0, 0, 0, 0, "gear", () => {}, {
                 offset: [-1000, -1000], sizeOffset: [2, 2], alpha: 0,
             });
-            objects["tiles_bg2" + i].onHold = (c) => { if (mapmaker.editingLayer == 1) tileClicked(c); };
-            groups["tiles_bg2"].addChild("tiles_bg2" + i);
+            objects["tiles_bg2_" + i].onHold = (c) => { if (mapmaker.editingLayer == 1) tileClicked(c); };
+            groups["tiles_bg2"].addChild("tiles_bg2_" + i);
         }
         for (let i = 0; i < 800; i++) { // they have to be split to not appear below random tiles
-            createImage("tiles_items" + i, 0, 0, 0, 0, "gear", {
+            createImage("tiles_items_" + i, 0, 0, 0, 0, "gear", {
                 offset: [-1000, -1000], sizeOffset: [2, 2], alpha: 0
             });
-            groups["tiles_items"].addChild("tiles_items" + i);
+            groups["tiles_items"].addChild("tiles_items_" + i);
 
-            createImage("tiles_npcs" + i, 0, 0, 0, 0, "gear", {
+            createImage("tiles_npcs_" + i, 0, 0, 0, 0, "gear", {
                 offset: [-1000, -1000], sizeOffset: [2, 2], alpha: 0,
                 snip: [0, 0, 32, 32]
             });
-            groups["tiles_npcs"].addChild("tiles_npcs" + i);
+            groups["tiles_npcs"].addChild("tiles_npcs_" + i);
 
 
-            createButton("tiles_fg" + i, 0, 0, 0, 0, "gear", () => {}, {
+            createButton("tiles_fg_" + i, 0, 0, 0, 0, "gear", () => {}, {
                 offset: [-1000, -1000], sizeOffset: [2, 2], alpha: 0
             });
-            objects["tiles_fg" + i].onHold = (c) => { if (mapmaker.editingLayer == 2) tileClicked(c); };
-            groups["tiles_fg"].addChild("tiles_fg" + i);
+            objects["tiles_fg_" + i].onHold = (c) => { if (mapmaker.editingLayer == 2) tileClicked(c); };
+            groups["tiles_fg"].addChild("tiles_fg_" + i);
         }
 
         // the cursor thing in the middle
@@ -1387,43 +1387,43 @@ scenes["mapmaker"] = new Scene(
 
         // buttons to make map bigger (or smaller)
         createButton("expandMap_X", 0, 0, 0, 0, "plus", () => {
-            for (let x in map.map) {
-                map.map[x] = "--- " + map.map[x];
+            for (let x in mm_map.map) {
+                mm_map.map[x] = "--- " + mm_map.map[x];
             }
-            for (let x in map.mapbg2) {
-                map.mapbg2[x] = "--- " + map.mapbg2[x];
+            for (let x in mm_map.mapbg2) {
+                mm_map.mapbg2[x] = "--- " + mm_map.mapbg2[x];
             }
-            for (let x in map.mapfg) {
-                map.mapfg[x] = "--- " + map.mapfg[x];
+            for (let x in mm_map.mapfg) {
+                mm_map.mapfg[x] = "--- " + mm_map.mapfg[x];
             }
             newMap();
         }, { sizeOffset: [64, 64], offset: [0, 0] });
 
         createButton("expandMap_Y", 0, 0, 0, 0, "plus", () => {
-            map.map.unshift("---");
-            map.mapbg2.unshift("---");
-            map.mapfg.unshift("---");
+            mm_map.map.unshift("---");
+            mm_map.mapbg2.unshift("---");
+            mm_map.mapfg.unshift("---");
             mapmaker.updateTiles = true;
             newMap();
         }, { sizeOffset: [64, 64], offset: [0, 0] });
 
         createButton("shrinkMap_X", 0, 0, 0, 0, "minus", () => {
-            for (let x in map.map) {
-                map.map[x] = map.map[x].slice(4);
+            for (let x in mm_map.map) {
+                mm_map.map[x] = mm_map.map[x].slice(4);
             }
-            for (let x in map.mapbg2) {
-                map.mapbg2[x] = map.mapbg2[x].slice(4);
+            for (let x in mm_map.mapbg2) {
+                mm_map.mapbg2[x] = mm_map.mapbg2[x].slice(4);
             }
-            for (let x in map.mapfg) {
-                map.mapfg[x] = map.mapfg[x].slice(4);
+            for (let x in mm_map.mapfg) {
+                mm_map.mapfg[x] = mm_map.mapfg[x].slice(4);
             }
             newMap();
         }, { sizeOffset: [64, 64], offset: [0, 0] });
 
         createButton("shrinkMap_Y", 0, 0, 0, 0, "minus", () => {
-            map.map.shift();
-            map.mapbg2.shift();
-            map.mapfg.shift();
+            mm_map.map.shift();
+            mm_map.mapbg2.shift();
+            mm_map.mapfg.shift();
             mapmaker.updateTiles = true;
             newMap();
         }, { sizeOffset: [64, 64], offset: [0, 0] });
@@ -1915,22 +1915,22 @@ scenes["mapmaker"] = new Scene(
             if (mm_map.items != undefined) {
                 for (let item of mm_map.items) {
                     if (item[4] == true) {
-                        objects["tiles_items" + it].offset = [(((zoom * scale) * (item[0] - ofsX)) - ((zoom - 1) * scale * (width / 2))), 
+                        objects["tiles_items_" + it].offset = [(((zoom * scale) * (item[0] - ofsX)) - ((zoom - 1) * scale * (width / 2))), 
                         zoom * scale * (item[1] - ofsY) - ((zoom - 1) * scale * 7)];
-                        objects["tiles_items" + it].sizeOffset = [zoom * scale, zoom * scale];
-                        objects["tiles_items" + it].image = "items/" + items[item[2]]().source;
-                        objects["tiles_items" + it].alpha = 1;
+                        objects["tiles_items_" + it].sizeOffset = [zoom * scale, zoom * scale];
+                        objects["tiles_items_" + it].image = "items/" + items[item[2]]().source;
+                        objects["tiles_items_" + it].alpha = 1;
                         it += 1;
                     }
                 }
             }
             if (mm_map.chests != undefined) {
                 for (let item of mm_map.chests) {
-                    objects["tiles_items" + it].offset = [(((zoom * scale) * (item[0] - ofsX)) - ((zoom - 1) * scale * (width / 2))), 
+                    objects["tiles_items_" + it].offset = [(((zoom * scale) * (item[0] - ofsX)) - ((zoom - 1) * scale * (width / 2))), 
                         zoom * scale * (item[1] - ofsY) - ((zoom - 1) * scale * 7)];
-                    objects["tiles_items" + it].sizeOffset = [zoom * scale / 2, zoom * scale / 2];
-                    objects["tiles_items" + it].image = "items/" + items[item[3]]().source;
-                    objects["tiles_items" + it].alpha = 1;
+                    objects["tiles_items_" + it].sizeOffset = [zoom * scale / 2, zoom * scale / 2];
+                    objects["tiles_items_" + it].image = "items/" + items[item[3]]().source;
+                    objects["tiles_items_" + it].alpha = 1;
                     it += 1;
                 }
             }
@@ -1938,11 +1938,11 @@ scenes["mapmaker"] = new Scene(
                 if (mapmaker.mapNPCs[i].alpha > 0) {
                     let npc = mapmaker.mapNPCs[i];
 
-                    objects["tiles_npcs" + np].offset = [(((zoom * scale) * (npc.position[0] - ofsX)) - ((zoom - 1) * scale * (width / 2))), 
+                    objects["tiles_npcs_" + np].offset = [(((zoom * scale) * (npc.position[0] - ofsX)) - ((zoom - 1) * scale * (width / 2))), 
                         zoom * scale * (npc.position[1] - ofsY) - ((zoom - 1) * scale * 7)];
-                    objects["tiles_npcs" + np].sizeOffset = [zswm, zswm];
-                    objects["tiles_npcs" + np].image = npc.source;
-                    objects["tiles_npcs" + np].alpha = npc.alpha;
+                    objects["tiles_npcs_" + np].sizeOffset = [zswm, zswm];
+                    objects["tiles_npcs_" + np].image = npc.source;
+                    objects["tiles_npcs_" + np].alpha = npc.alpha;
                     np += 1;
                 }
             }
@@ -1950,7 +1950,7 @@ scenes["mapmaker"] = new Scene(
             let layerInfo = {
                 //l: [0, 1, 2],
                 layerName: ["map", "mapbg2", "mapfg"],
-                objs: ["tiles_bg", "tiles_bg2", "tiles_fg"],
+                objs: ["tiles_bg_", "tiles_bg2_", "tiles_fg_"],
                 fallbackRender: [true, false, false]
             }
             let gotTile;
@@ -1965,8 +1965,13 @@ scenes["mapmaker"] = new Scene(
                         (zoom * scale * (y - ofsY) - ((zoom - 1) * scale * 7))];
                     objects[layerInfo.objs[l] + b].sizeOffset = [zoom * scale, zoom * scale];
                     objects[layerInfo.objs[l] + b].alpha = mapmaker.visibleLayers[l];
-
-                    if (mm_map[layerInfo.layerName[l]][y] && mm_map[layerInfo.layerName[l]][y][(x * 4) + 2]) {
+                    
+                    if (l == 1 && (x == -1 || y == -1)) {
+                        if (x == -1) objects[layerInfo.objs[l] + b].image = "tiles/border";
+                        else if (y == -1) objects[layerInfo.objs[l] + b].image = "tiles/border2";
+                        objects[layerInfo.objs[l] + b].alpha = 1;
+                    }
+                    else if (mm_map[layerInfo.layerName[l]][y] && mm_map[layerInfo.layerName[l]][y][(x * 4) + 2]) {
                         if (mm_map[layerInfo.layerName[l]][y][(x * 4) + 2] != "-") {
                             gotTile = getTile(mm_map, x, y, l + 1);
 
@@ -2003,13 +2008,11 @@ scenes["mapmaker"] = new Scene(
                             objects[layerInfo.objs[l] + b].image = "tiles/" + mm_map.tiles.empty.sprite;
                             objects[layerInfo.objs[l] + b].snip = false;
                             objects[layerInfo.objs[l] + b].ani = undefined;
-                            objects[layerInfo.objs[l] + b].alpha = layerInfo.fallbackRender[l];
+                            objects[layerInfo.objs[l] + b].alpha = layerInfo.fallbackRender[l] ? 1 : 0;
                         }
                     }
                     else if (mm_map.tiles.empty && layerInfo.fallbackRender[l] === true) {
-                        if (x == -1) objects[layerInfo.objs[l] + b].image = "tiles/border";
-                        else if (y == -1) objects[layerInfo.objs[l] + b].image = "tiles/border2";
-                        else objects[layerInfo.objs[l] + b].image = "tiles/" + mm_map.tiles.empty.sprite;
+                        objects[layerInfo.objs[l] + b].image = "tiles/" + mm_map.tiles.empty.sprite;
                         objects[layerInfo.objs[l] + b].snip = false;
                         objects[layerInfo.objs[l] + b].ani = undefined;
                         objects[layerInfo.objs[l] + b].alpha = 1;

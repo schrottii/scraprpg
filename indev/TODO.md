@@ -8,9 +8,9 @@ Important:
 - shop
 
 Map Maker:
-- tile picker 2.0
-- map info / settings 2.0
-- load / save
+- ~~tile picker 2.0~~
+- ~~map info / settings 2.0~~
+- ~~load / save~~
 - tile maker 2.0
 - dialogue maker 2.0
 - npc maker 2.0

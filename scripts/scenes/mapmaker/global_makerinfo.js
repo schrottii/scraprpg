@@ -26,6 +26,7 @@ var makerInfoCategories = [
 
 function makerInfoGenerate() {
     // background and general objects
+    if (objects["makerInfo_bg1"] == undefined) makerInfoSelbtnItems = 0;
     createButton("makerInfo_bg1", 0, 0, 0.3, 1, colors.buttonbottom, () => { }, { sizeOffset: [64, 0], power: false, clickthrough: false });
     objects["makerInfo_bg1"].onHold = () => { }; // anti clickthrough
     createSquare("makerInfo_bg2", 0.1, 0, 0.2, 1, colors.buttontop, { offset: [8, 8], sizeOffset: [48, -16], power: false });
@@ -293,8 +294,10 @@ function renderMakerInfo(type) {
         return false;
     }
 
-    objects["makerInfo_length"].text = grabFrom.length;
-    makerInfoGenerateMoreButtons(grabFrom.length);
+    let grabFromLength = grabFrom.length;
+    objects["makerInfo_length"].text = grabFromLength;
+    objects["makerInfo_sels"].YLimit[1] = -0.4 + (30 / wggj.canvas.h * grabFromLength);
+    makerInfoGenerateMoreButtons(grabFromLength);
 
     //let pageAdd = createTileInfoPage * createTileInfoPageLength;
     for (let g = 0; g < makerInfoSelbtnItems; g++) {

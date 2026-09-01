@@ -983,11 +983,11 @@ class WGGJ_Container extends WGGJ_Group {
     }
 
     getXLimit(upperlower) {
-        return (this.XLimit[upperlower] != 0 ? this.XLimit[upperlower] : (upperlower == 1 ? -1e7 : 1e7)) * wggj.canvas.w;
+        return (this.XLimit[upperlower] != 0 ? this.XLimit[upperlower] : (upperlower == 1 ? 1e7 : -1e7)) * wggj.canvas.w;
     }
 
     getYLimit(upperlower) {
-        return (this.YLimit[upperlower] != 0 ? this.YLimit[upperlower] : (upperlower == 1 ? -1e7 : 1e7)) * wggj.canvas.h;
+        return (this.YLimit[upperlower] != 0 ? this.YLimit[upperlower] : (upperlower == 1 ? 1e7 : -1e7)) * wggj.canvas.h * -1;
     }
 
     onClick(c, e) {
@@ -1002,8 +1002,8 @@ class WGGJ_Container extends WGGJ_Group {
         if (e == undefined || isNaN(e.clientX) || isNaN(e.clientY) || (this.recentMouseX == 0 && this.recentMouseY == 0)) return false;
 
         if (this.XScroll == true) {
-            this.scrolledX = Math.min(this.getXLimit(0),
-                Math.max(this.getXLimit(1),
+            this.scrolledX = Math.min(this.getXLimit(1),
+                Math.max(this.getXLimit(0),
                     this.scrolledX + (e.clientX - wggjCanvas.getBoundingClientRect().x - this.recentMouseX) * this.XScrollMod));
 
         }
@@ -1020,8 +1020,8 @@ class WGGJ_Container extends WGGJ_Group {
     onWheel(e) {
         if (this.wheelable == false) return;
 
-        if (this.XScroll) this.scrolledX = Math.min(this.getXLimit(0),
-            Math.max(this.getXLimit(1), this.scrolledX + (e.deltaX * this.XScrollMod)));
+        if (this.XScroll) this.scrolledX = Math.min(this.getXLimit(1),
+            Math.max(this.getXLimit(0), this.scrolledX + (e.deltaX * this.XScrollMod)));
 
         if (this.YScroll) this.scrolledY = Math.min(this.getYLimit(0),
             Math.max(this.getYLimit(1), this.scrolledY + (e.deltaY * -1 * this.YScrollMod)));

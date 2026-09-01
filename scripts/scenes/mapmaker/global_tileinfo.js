@@ -61,9 +61,9 @@ function tileInfoGenerate() {
 // tileInfoWindow : the tile info mode
 function tileInfoWindowGenerate() {
     //createSquare("tileInfoWindow_bg", 0.65, 0.05, 0.325, 0.9, colors.bottomcolor);
-    createSquare("tileInfoWindow_bg", 0.65, 0.025, 0.325, 0.95, colors.bottomcolor, { clickthrough: false });
+    createSquare("tileInfoWindow_bg", 0.65, 0.025, 0.325, 0.95, colors.buttonbottompressed, { clickthrough: false });
     objects["tileInfoWindow_bg"].onHold = () => { };
-    createSquare("tileInfoWindow_bg2", 0.65, 0.05, 0.325, 0.9, colors.bottomcolor, { offset: [4, 4], sizeOffset: [-8, -8] });
+    createSquare("tileInfoWindow_bg2", 0.65, 0.025, 0.325, 0.95, colors.bottomcolor, { offset: [6, 6], sizeOffset: [-12, -12] });
     createText("tileInfoWindow_header", 0.675, 0.06, "Tile Info", { size: 32, color: "white", align: "left" });
 
     tileInfoGenerate();
@@ -258,7 +258,7 @@ function tileInfoWindowRender(tileID, tile = undefined) {
 
     // layers
     for (let i = 0; i < 3; i++) {
-        objects["tileInfoWindow_layer" + i].power = getTileName(mm_map, mapmaker.tileInfoPos[0], mapmaker.tileInfoPos[1], i + 1) !== "" && getTileName(mm_map, mapmaker.tileInfoPos[0], mapmaker.tileInfoPos[1], i + 1) !== "---";
+        objects["tileInfoWindow_layer" + i].power = getTileName(mm_map, mapmaker.tileInfoPos[0], mapmaker.tileInfoPos[1], i + 1) !== "" && getTileName(mm_map, mapmaker.tileInfoPos[0], mapmaker.tileInfoPos[1], i + 1) !== "---" && getTileName(mm_map, mapmaker.tileInfoPos[0], mapmaker.tileInfoPos[1], i + 1).length != undefined;
         objects["tileInfoWindow_layer" + i].alpha = (i == ["map", "mapbg2", "mapfg"].indexOf(mapmaker.tileInfoPos[2])) ? 1 : 0.5;
     }
 }
