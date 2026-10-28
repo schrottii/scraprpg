@@ -256,7 +256,27 @@ var mapmaker = {
 
     // tile info
     tileInfoPos: [-1, -1, -1],
-    tileInfoItem: undefined
+    tileInfoItem: undefined,
+
+    // tile maker
+    tileMakerTileID: "000",
+    tileMakerIdentifier: "",
+
+    // npc maker
+    npcMakerID: "",
+
+    // dialogue maker
+    dialogueMakerID: ""
+}
+
+function saveMapMakerCache() {
+    localStorage.setItem("SRPGMM", JSON.stringify({
+        map: mm_map,
+        maker: mapmaker,
+        tilemaker: tilemaker,
+        npcmaker: npcmaker,
+        dialoguemaker: dialoguemaker
+    }));
 }
 
 const dialogueScriptTypes = ["Add Quest", "Claim Quest", "Talk Quest Progress", "Give Item", "Teleport", "Open Shop", "Add Protagonist", "Rem Protagonist", "Inn"];
@@ -320,6 +340,10 @@ scenes["mapmaker"] = new Scene(
 
                 mapmaker = Object.assign({}, mapmaker, loadFromAutoSave.maker);
                 mapmaker.currentMap = mm_map.id; // on boot, from cache
+
+                tilemaker = Object.assign({}, tilemaker, loadFromAutoSave.tilemaker);
+                npcmaker = Object.assign({}, npcmaker, loadFromAutoSave.npcmaker);
+                dialoguemaker = Object.assign({}, dialoguemaker, loadFromAutoSave.dialoguemaker);
             }
 
             game.position = [4, 4];
@@ -581,41 +605,6 @@ scenes["mapmaker"] = new Scene(
         }
 
         // UI functions
-        function toggleCreateTileButtons(musthide) {
-            ////////////////////////////////////////
-            // NOT CONVERTED YET
-            if (createTileButtons[0].alpha == 0 && !musthide) {
-                closeAllMenus(4);
-                for (i in createTileButtons) {
-                    createTileButtons[i].alpha = 1;
-                }
-                for (i in createTileBG) {
-                    createTileBG[i].alpha = 1;
-                }
-                createTileBG[2].text = "Tile Maker";
-
-                createTileInfoPageLength = 0;
-
-                showInfo();
-                renderInfo("id");
-
-                for (i in createTileButtons) {
-                    createTileButtons[i].offset[1] = 0;
-                }
-            }
-            else {
-                for (i in createTileBG) {
-                    createTileBG[i].alpha = 0;
-                }
-                hideInfo();
-
-                for (i in createTileButtons) {
-                    createTileButtons[i].offset[1] = -600;
-                    createTileButtons[i].alpha = 0;
-                }
-            }
-        }
-
         function toggleCreateDialogueButtons(mustShow = false) {
             ////////////////////////////////////////
             // NOT CONVERTED YET
@@ -1341,6 +1330,7 @@ scenes["mapmaker"] = new Scene(
         createGroup("tiles_fg", []);
         createGroup("tiles_items", []);
         createGroup("tiles_npcs", []);
+        createGroup("tiles_npcpaths", []);
 
         for (let i = 0; i < 800; i++) {
             createButton("tiles_bg_" + i, 0, 0, 0, 0, "gear", () => {}, {
@@ -1366,6 +1356,12 @@ scenes["mapmaker"] = new Scene(
                 snip: [0, 0, 32, 32]
             });
             groups["tiles_npcs"].addChild("tiles_npcs_" + i);
+
+            createImage("tiles_npcpaths_" + i, 0, 0, 0, 0, "npcmovement", {
+                offset: [-1000, -1000], sizeOffset: [2, 2], alpha: 0,
+                snip: [0, 0, 32, 32]
+            });
+            groups["tiles_npcpaths"].addChild("tiles_npcpaths_" + i);
 
 
             createButton("tiles_fg_" + i, 0, 0, 0, 0, "gear", () => {}, {
@@ -1435,7 +1431,6 @@ scenes["mapmaker"] = new Scene(
             alpha: 0.8, sizeOffset: [72 * 6, 0],
             clickthrough: false
         });
-        objects["bigBG"].onHold = () => {};
 
         createSquare("bigBG_line1", 0, 0, 0, 1, "white", {
             alpha: 0.5, sizeOffset: [2, 0], offset: [72 * 6, 0]
@@ -1498,11 +1493,11 @@ scenes["mapmaker"] = new Scene(
                 objects[c + ":text"].text = "ani:off";
             }
             mapmaker.updateTiles = true;
-        }, { aText: { text: "ani:off", size: 20 } });
+        }, { aText: { text: "ani:off", size: 20, textBaseline: "bottom" } });
 
         createButton("btn_togglemapinfo", 0, 0.8475, 0.05, 0.0475, "button", (c) => {
             loadScene("mapinfo");
-        }, { aText: { text: "MAP", size: 20 } });
+        }, { aText: { text: "MAP", size: 20, textBaseline: "bottom" } });
 
         createButton("btn_togglemakerinfo", 0, 0.9, 0.05, 0.0475, "button", (c) => {
             if (objects[c + ":text"].text == "info") {
@@ -1516,11 +1511,11 @@ scenes["mapmaker"] = new Scene(
                 objects[c + ":text"].text = "info";
             }
             mapmaker.updateTiles = true;
-        }, { aText: { text: "info", size: 20 } });
+        }, { aText: { text: "info", size: 20, textBaseline: "bottom" } });
 
         createButton("btn_leavemapmaker", 0, 0.9525, 0.05, 0.0475, "button", (c) => {
             if (confirm("Do you really want to leave Map Maker?")) loadScene("pretitle");
-        }, { aText: { text: "EXIT", size: 20 } });
+        }, { aText: { text: "EXIT", size: 20, textBaseline: "bottom" } });
 
         createImage("currentTilePreview", 0, 0.64, 0, 0, "tiles/sand1", {
             sizeOffset: [64, 64], offset: [256 + 96, 48],
@@ -1528,15 +1523,15 @@ scenes["mapmaker"] = new Scene(
         })
 
         // ROW 1: maker buttons
-        createButton("btn_tilemaker", 0, 0.025, 0, 0, "tilemaker", () => { toggleCreateTileButtons(); }, {
+        createButton("btn_tilemaker", 0, 0.025, 0, 0, "tilemaker", () => { loadScene("tilemaker"); }, {
             sizeOffset: [64, 64], offset: [72 * 3, 72 * 0]
         });
 
-        createButton("btn_dialoguemaker", 0, 0.025, 0, 0, "dialoguemaker", () => { toggleCreateDialogueButtons(); }, {
+        createButton("btn_dialoguemaker", 0, 0.025, 0, 0, "dialoguemaker", () => { loadScene("dialoguemaker"); }, {
             sizeOffset: [64, 64], offset: [72 * 4, 72 * 0]
         });
 
-        createButton("btn_npcmaker", 0, 0.025, 0, 0, "npcmaker", () => { toggleCreateNPCButtons(); }, {
+        createButton("btn_npcmaker", 0, 0.025, 0, 0, "npcmaker", () => { loadScene("npcmaker"); }, {
             sizeOffset: [64, 64], offset: [72 * 5, 72 * 0]
         });
 
@@ -1689,7 +1684,7 @@ scenes["mapmaker"] = new Scene(
         // save and load
         createButton("btn_save_loadfromfile", 0, 0.1, 0.2, 0.1, "button", () => {
                 showSelect();
-        }, { offset: [72 * 11, 0], power: false, aText: { text: "Load from file", size: 32, color: "black" } });
+        }, { offset: [72 * 11, 0], power: false, aText: { text: "Load from file", size: 32, color: "black", textBaseline: "bottom" } });
 
         createButton("btn_save_loadfromname", 0, 0.25, 0.2, 0.1, "button", () => {
             // get the name thru info or asking
@@ -1707,7 +1702,7 @@ scenes["mapmaker"] = new Scene(
             toggleSaveButtons(true);
             hideInfo();
             newMap();
-        }, { offset: [72 * 11, 0], power: false, aText: { text: "Load from name", size: 32, color: "black" } });
+        }, { offset: [72 * 11, 0], power: false, aText: { text: "Load from name", size: 32, color: "black", textBaseline: "bottom" } });
 
         createButton("btn_save_playtest", 0, 0.4, 0.2, 0.1, "button", () => {
             let toPos = [game.position[0], game.position[1]];
@@ -1716,36 +1711,48 @@ scenes["mapmaker"] = new Scene(
             loadGame();
             loadSettings();
 
-            maps[mapmaker.currentMap] = mm_map;
+            maps[mapmaker.currentMap + "_test"] = JSON.parse(JSON.stringify(mm_map));
+            /*
+            for (let obj in mm_map) {
+                if (typeof (mm_map[obj]) == "object") {
+                    console.log(obj);
+                    if (mm_map[obj].length != undefined) {
+                        // array
+                        maps[mapmaker.currentMap + "_test"][obj] = Object.assign([], mm_map[obj]);
+                    }
+                    else {
+                        // dict
+                        maps[mapmaker.currentMap + "_test"][obj] = Object.assign({}, mm_map[obj]);
+                    }
+                }
+            }
+            */
 
-            game.map = mapmaker.currentMap;
-            game.map.tiles = Object.assign({}, game.map.tiles, loadPacks());
+            game.map = mapmaker.currentMap + "_test";
+            //game.map.tiles = Object.assign({}, game.map.tiles, loadPacks());
             game.position = toPos;
 
-            localStorage.setItem("SRPGMM", JSON.stringify({
-                map: mm_map,
-                maker: mapmaker
-            }));
+            saveMapMakerCache();
 
             canMove = true;
             isMapTestingMode = true;
             loadScene("overworld");
-        }, { offset: [72 * 11, 0], power: false, aText: { text: "Play Test", size: 32, color: "black" } });
+        }, { offset: [72 * 11, 0], power: false, aText: { text: "Play Test", size: 32, color: "black", textBaseline: "bottom" } });
 
         createButton("btn_save_savesotrm", 0, 0.55, 0.2, 0.1, "button", () => {
             saveFile("sotrm");
-        }, { offset: [72 * 11, 0], power: false, aText: { text: "Save as .sotrm", size: 32, color: "black" } });
+        }, { offset: [72 * 11, 0], power: false, aText: { text: "Save as .sotrm", size: 32, color: "black", textBaseline: "bottom" } });
 
         createButton("btn_save_savejs", 0, 0.7, 0.2, 0.1, "button", () => {
                 saveFile("js");
-        }, { offset: [72 * 11, 0], power: false, aText: { text: "Save as .js", size: 32, color: "black" } });
+        }, { offset: [72 * 11, 0], power: false, aText: { text: "Save as .js", size: 32, color: "black", textBaseline: "bottom" } });
 
         createButton("btn_save_deletenew", 0, 0.85, 0.2, 0.1, "button", () => {
                 if (confirm("Do you really want to create a new map?") == true) {
                 createNewMap("newMap");
                 toggleSaveButtons();
             }
-        }, { offset: [72 * 11, 0], power: false, aText: { text: "Delete & New", size: 32, color: "black" } });
+        }, { offset: [72 * 11, 0], power: false, aText: { text: "Delete & New", size: 32, color: "black", textBaseline: "bottom" } });
 
         createGroup("savebuttons", ["btn_save_loadfromfile", "btn_save_loadfromname", "btn_save_playtest", "btn_save_savesotrm", "btn_save_savejs", "btn_save_deletenew"]);
 
@@ -1902,6 +1909,7 @@ scenes["mapmaker"] = new Scene(
             groups["tiles_fg"].set("alpha", 0);
             groups["tiles_items"].set("alpha", 0);
             groups["tiles_npcs"].set("alpha", 0);
+            groups["tiles_npcpaths"].set("alpha", 0);
 
             // not render pos but what tile they correlate to
             groups["tiles_bg"].set("pos", [-999999999, -999999999]);
@@ -1910,6 +1918,7 @@ scenes["mapmaker"] = new Scene(
 
             let it = 0;
             let np = 0;
+            let pathLines = 0;
             let b = 0;
 
             if (mm_map.items != undefined) {
@@ -1943,6 +1952,45 @@ scenes["mapmaker"] = new Scene(
                     objects["tiles_npcs_" + np].sizeOffset = [zswm, zswm];
                     objects["tiles_npcs_" + np].image = npc.source;
                     objects["tiles_npcs_" + np].alpha = npc.alpha;
+
+                    // render path (if using fixed path movement type)
+                    if (npc.movement == 2 && npc.path != undefined && npc.path.length > 0) {
+                        let pathOffset = [npc.position[0], npc.position[1]];
+
+                        // go through all the lines 1 by 1
+                        for (let line of npc.path) {
+                            // change position and appearance
+                            objects["tiles_npcpaths_" + pathLines].offset = [(((zoom * scale) * (pathOffset[0] - ofsX)) - ((zoom - 1) * scale * (width / 2))),
+                                zoom * scale * (pathOffset[1] - ofsY) - ((zoom - 1) * scale * 7)];
+                            objects["tiles_npcpaths_" + pathLines].sizeOffset = [zswm, zswm];
+                            objects["tiles_npcpaths_" + pathLines].snip[0] = 32 * line;
+                            objects["tiles_npcpaths_" + pathLines].alpha = 1;
+
+                            // the movement only happens AFTER the current part of the path
+                            switch (line) {
+                                // down
+                                case 0:
+                                    pathOffset[1] += 1;
+                                    break;
+                                // left
+                                case 1:
+                                    pathOffset[0] -= 1;
+                                    break;
+                                // up
+                                case 2:
+                                    pathOffset[0] += 1;
+                                    break;
+                                // right
+                                case 3:
+                                    pathOffset[1] -= 1;
+                                    break;
+                            }
+
+                            // count up
+                            pathLines += 1;
+                        }
+                    }
+
                     np += 1;
                 }
             }
@@ -1967,9 +2015,11 @@ scenes["mapmaker"] = new Scene(
                     objects[layerInfo.objs[l] + b].alpha = mapmaker.visibleLayers[l];
                     
                     if (l == 1 && (x == -1 || y == -1)) {
+                        // border tiles
                         if (x == -1) objects[layerInfo.objs[l] + b].image = "tiles/border";
                         else if (y == -1) objects[layerInfo.objs[l] + b].image = "tiles/border2";
                         objects[layerInfo.objs[l] + b].alpha = 1;
+                        objects[layerInfo.objs[l] + b].snip = false;
                     }
                     else if (mm_map[layerInfo.layerName[l]][y] && mm_map[layerInfo.layerName[l]][y][(x * 4) + 2]) {
                         if (mm_map[layerInfo.layerName[l]][y][(x * 4) + 2] != "-") {
@@ -2024,6 +2074,19 @@ scenes["mapmaker"] = new Scene(
             }
         }
 
+        /* draw npc paths */
+        /*
+        if (mm_map.npcs != undefined) {
+            let npc;
+            for (let n in mm_map.npcs) {
+                npc = mm_map.npcs[n];
+                if (npc.movement == 2 && npc.path != undefined && npc.path.length > 0) {
+
+                }
+            }
+        }
+        */
+
         objects["expandMap_X"].sizeOffset = [zoom * scale, zoom * scale];
         objects["expandMap_X"].offset = [(zoom * scale * (-2 - ofsX) - ((zoom - 1) * scale * (width / 2))), (zoom * scale * (-1 - ofsY) - ((zoom - 1) * scale * 7))];
 
@@ -2043,10 +2106,7 @@ scenes["mapmaker"] = new Scene(
         autoSaveTime += 1 / delta; // i think it might go 2x speed if you have game's normal auto save enabled
         if (autoSaveTime >= 12) {
             autoSaveTime = 0;
-            localStorage.setItem("SRPGMM", JSON.stringify({
-                    map: mm_map,
-                    maker: mapmaker
-                }));
+            saveMapMakerCache();
         }
 
         // tick temporary placing blocker
@@ -2060,20 +2120,20 @@ scenes["mapmaker"] = new Scene(
             if (currentKeys["q"]) mapmaker.editingLayer = (mapmaker.editingLayer + 1) % 3;
             if (currentKeys["e"]) loadScene("tilepicker");
 
-            if (currentKeys["u"]) objects["btn_undo"].onClick();
-            else if (currentKeys["i"]) objects["btn_redo"].onClick();
-            else if (currentKeys["o"]) objects["btn_copy"].onClick();
-            else if (currentKeys["p"]) objects["btn_paste"].onClick();
-            else if (currentKeys["l"]) objects["btn_autolayer"].onClick(); //mapmaker.autoLayer = !mapmaker.autoLayer;
+            if (currentKeys["u"]) objects["btn_undo"].onClick("btn_undo");
+            else if (currentKeys["i"]) objects["btn_redo"].onClick("btn_redo");
+            else if (currentKeys["o"]) objects["btn_copy"].onClick("btn_copy");
+            else if (currentKeys["p"]) objects["btn_paste"].onClick("btn_paste");
+            else if (currentKeys["l"]) objects["btn_autolayer"].onClick("btn_autolayer"); //mapmaker.autoLayer = !mapmaker.autoLayer;
             else if (currentKeys["f"]) objects["btn_fill"].onClick("btn_fill"); //mapmaker.fillToolActive = !mapmaker.fillToolActive;
-            else if (currentKeys["z"]) objects["btn_zoom"].onClick();
+            else if (currentKeys["z"]) objects["btn_zoom"].onClick("btn_zoom");
 
-            if (currentKeys["x"]) objects["btn_mode_move"].onClick();
-            else if (currentKeys["c"]) objects["btn_mode_moveandplace"].onClick();
-            else if (currentKeys["v"]) objects["btn_mode_erase"].onClick();
-            else if (currentKeys["b"]) objects["btn_mode_tile"].onClick();
+            if (currentKeys["x"]) objects["btn_mode_move"].onClick("btn_mode_move");
+            else if (currentKeys["c"]) objects["btn_mode_moveandplace"].onClick("btn_mode_moveandplace");
+            else if (currentKeys["v"]) objects["btn_mode_erase"].onClick("btn_mode_erase");
+            else if (currentKeys["b"]) objects["btn_mode_tile"].onClick("btn_mode_tile");
 
-            if (currentKeys["n"]) objects["btn_saveload"].onClick();
+            if (currentKeys["n"]) objects["btn_saveload"].onClick("btn_saveload");
             if (currentKeys["m"]) loadScene("mapinfo");
 
             for (let i = 0; i < 9; i++) {

@@ -16,11 +16,155 @@ let padAlpha = 0;
 let padPosition = [0, 0];
 let padThumbPosition = [0, 0];
 
+let fallingRain = Particles({
+    anchor: [-0.2, -0.2], spreadAnchor: [1, 0], sizeOffset: [64, 64],
+    type: "img", source: "rain",
+    direction: 0, speedAnchor: 0.3,
+    direction2: 2, speedAnchor2: 0.05,
+    movable: true, movable2: true, lifespan: 1.5, alpha: 1, amount: 60, spawnTime: 0.03, alphaChange: 0.2,
+    dead: true, repeatMode: true,
+});
+let fogCloud = Particles({
+    anchor: [-0.2, 0], spreadAnchor: [0, 1], sizeOffset: [96, 48], sizeOffsetVary: [2, 2], quadraticVary: true,
+    type: "img", source: ["fog", "fog2"],
+    direction: 2, speedAnchor: 0.02,
+    movable: true, lifespan: 30, alpha: 0.75, amount: 80, spawnTime: 0.8,
+    dead: true, repeatMode: true,
+});
+let darkCloud = Particles({
+    anchor: [1.2, -0.8], spreadAnchor: [0.2, 1.5], sizeOffset: [128, 64], sizeOffsetVary: [2, 2], quadraticVary: true,
+    type: "img", source: ["cloudshadow1", "cloudshadow2", "cloudshadow3"],
+    direction: 0, speedAnchor: 0.015,
+    direction2: 1, speedAnchor2: 0.015,
+    movable: true, movable2: true, lifespan: 45, alpha: 0.75, amount: 25, spawnTime: 3,
+    dead: true, repeatMode: true,
+});
+let dustParticles = Particles({
+    anchor: [-0.2, 0], spreadAnchor: [0, 1], sizeOffset: [2, 2], sizeOffsetVary: [2, 2], quadraticVary: true,
+    type: "rect", fill: "yellow",
+    direction: 2, speedAnchor: 0.3,
+    direction2: 3, speedAnchor2: 0.05, moveRandom2: 1,
+    movable: true, movable2: true, lifespan: 5, alpha: 1, amount: 150, spawnTime: 0.04,
+    dead: true, repeatMode: true, lifeMode: true
+});
+let fallingLeaves = Particles({
+    anchor: [0, -0.1], spreadAnchor: [1, 0], sizeOffset: [64, 64], spreadOffset: [0, -256], sizeOffsetVary: [1.5, 1.5], quadraticVary: true,
+    type: "img", source: "items/brickyleaf",
+    direction: 0, speedAnchor: 0.04,
+    direction2: 1, speedOffset2: 10, moveRandom2: 5,
+    offsetChange: [3, 3],
+    movable: true, movable2: true, lifespan: 80, alpha: 1, amount: 8, spawnTime: 1, alphaChange: 0.04,
+    onParticleClick(n) {
+        this.p[n][3][0] *= 1.2;
+        this.p[n][3][1] *= 1.2;
+        this.p[n][4] -= 3;
+        this.p[n][5] = 1;
+    },
+    dead: true, repeatMode: true,
+});
+
+function createDialogueObjects() {
+    if (objects["dialogue_normal_squareBG"] != undefined) return;
+
+    createButton("dialogue_normal_squareBG", 0, 1, 1, 0, colors.bottomcolor, (c) => { if (objects[c].alpha > 0) dialogueBox(); }, {
+        offset: [0, -200], sizeOffset: [0, 200], alpha: 0, falpha: 1
+    });
+    createSquare("dialogue_normal_square2", 0.01, 1.01, 0, 0, colors.topcolor, {
+        offset: [0, -200], sizeOffset: [136, 136], alpha: 0, falpha: 1
+    });
+    createSquare("dialogue_normal_square3", 0.01, 1.01, 0, 0, colors.topcolor, {
+        offset: [0, -54], sizeOffset: [128, 32], alpha: 0, falpha: 1
+    });
+    createText("dialogue_normal_charactername", 0.01, 1.01, "", {
+        align: "center", size: 20, color: "black",
+        offset: [64, -24], alpha: 0, falpha: 1
+    });
+    createSquare("dialogue_normal_square4", 0.01, 1.01, 0.8, 0, colors.topcolor, {
+        offset: [164, -200], sizeOffset: [0, 178], alpha: 0, falpha: 1
+    });
+    createImage("dialogue_normal_image", 0.01, 1.01, 0, 0, "Portraits_NAN", {
+        offset: [0, -192], sizeOffset: [128, 128], alpha: 0, falpha: 1,
+        snip: [0, 0, 64, 64]
+    });
+    createSmartText("dialogue_normal_maintext", 0, 1, "...", {
+        align: "left", size: 20, color: "black",
+        maxW: 0.7, autoLinebreak: 160,
+        offset: [196, -168], alpha: 0, falpha: 1
+    });
+    createImage("dialogue_normal_continuestar", 0.81, 1, 0, 0, "star", {
+        sizeOffset: [64, 64], offset: [100, -96], alpha: 0, falpha: 0
+    });
+
+    createGroup("dialogue_normal", ["dialogue_normal_squareBG", "dialogue_normal_square2", "dialogue_normal_square3",
+        "dialogue_normal_charactername", "dialogue_normal_square4",
+        "dialogue_normal_image", "dialogue_normal_maintext", "dialogue_normal_continuestar"
+    ]);
+    groups["dialogue_normal"].set("at", 0);
+    groups["dialogue_normal"].set("defoff", (c) => c.offset);
+    groups["dialogue_normal"].set("falpha", (c) => c.config.falpha);
+
+    createButton("dialogue_invis_squareBG", 0, 1, 1, 0, colors.bottomcolor, (c) => { if (objects[c].alpha > 0) dialogueBox(); }, {
+        offset: [0, -200], sizeOffset: [0, 200], alpha: 0, falpha: 1
+    });
+    createSquare("dialogue_invis_square2", 0.01, 1.01, 0.98, 0, colors.topcolor, {
+        offset: [0, -200], sizeOffset: [0, 180], alpha: 0, falpha: 1
+    });
+    createSmartText("dialogue_invis_maintext", 0.02, 1, "...", {
+        align: "left", size: 20, color: "black",
+        maxW: 0.75, autoLinebreak: 160,
+        offset: [0, -168], alpha: 0, falpha: 1
+    });
+    createImage("dialogue_invis_continuestar", 0.8, 1, 0, 0, "star", {
+        sizeOffset: [64, 64], offset: [0, -96], alpha: 0, falpha: 0
+    });
+
+    createGroup("dialogue_invis", ["dialogue_normal_squareBG", "dialogue_invis_square2",
+        "dialogue_invis_maintext", "dialogue_invis_continuestar"]);
+    groups["dialogue_invis"].set("at", 0);
+    groups["dialogue_invis"].set("defoff", (c) => c.offset);
+    groups["dialogue_invis"].set("falpha", (c) => c.config.falpha);
+
+    createButton("dialogue_narrator_squareBG", 0, 0, 1, 1, "narratorbg", (c) => { if (objects[c].alpha > 0) dialogueBox(); }, {
+        alpha: 0, falpha: 1
+    });
+    createSmartText("dialogue_narrator_maintext", 0.5, 0.5, "...", {
+        align: "center", size: 20, color: "white",
+        maxW: 0.6, autoLinebreak: 120,
+        alpha: 0, falpha: 1
+    });
+    createImage("dialogue_narrator_continuestar", 0.8, 1, 0, 0, "star", {
+        sizeOffset: [64, 64], offset: [0, -96], alpha: 0, falpha: 0
+    });
+
+    createGroup("dialogue_narrator", ["dialogue_narrator_squareBG", "dialogue_narrator_maintext", "dialogue_narrator_continuestar"]);
+    groups["dialogue_narrator"].set("at", 0);
+    groups["dialogue_narrator"].set("defoff", (c) => c.offset);
+    groups["dialogue_narrator"].set("falpha", (c) => c.config.falpha);
+
+    createButton("dialogue_cutscene_squareBG", 0, 0, 1, 1, "narratorbg", (c) => { if (objects[c].alpha > 0) dialogueBox(); }, {
+        alpha: 0, falpha: 0.1
+    });
+    createSmartText("dialogue_cutscene_maintext", 0.01, 1, "...", {
+        align: "left", size: 16, color: "white",
+        maxW: 0.98, autoLinebreak: 200,
+        offset: [0, -96], alpha: 0, falpha: 1
+    });
+    createImage("dialogue_cutscene_continuestar", 0.8, 1, 0, 0, "star", {
+        sizeOffset: [64, 64], offset: [0, -96], alpha: 0, falpha: 0
+    });
+
+    createGroup("dialogue_cutscene", ["dialogue_cutscene_squareBG", "dialogue_cutscene_maintext", "dialogue_cutscene_continuestar"]);
+    groups["dialogue_cutscene"].set("at", 0);
+    groups["dialogue_cutscene"].set("defoff", (c) => c.offset);
+    groups["dialogue_cutscene"].set("falpha", (c) => c.config.falpha);
+}
+
 scenes["overworld"] = new Scene(
     () => {
         // objects
         //createSquare("BG", 0, 0, 1, 1, "#000000");
 
+        // Walkpad
         createButton("walkPadUp", 0.1, 0.9, 0, 0, "mapbuttons", () => downWalkPad("up"),
             {
                 offset: [0, -walkPadSize * 3], sizeOffset: [walkPadSize, walkPadSize],
@@ -52,11 +196,16 @@ scenes["overworld"] = new Scene(
                 onUp: () => reviveWalkPad()
             });
 
+
+
+        // Effects, filters, overlays - above the normal gameplay, below GUI
         createSquare("nightEffect", 0, 0, 1, 1, "#FFFFFF", { alpha: 0 });
         createSquare("nightEffect2", 0, 0, 1, 1, "#FFFFFF", { alpha: 0 });
         createSquare("areaTeleportFade", 0, 0, 1, 1, "#FFFFFF", { alpha: 0 });
         createSquare("poisonBlack", 0, 0, 1, 1, "lime", { alpha: 0 }); // lime instead of black now
 
+
+        // GUI
         // This is for the inventory button. In the TOP RIGHT.
         createButton("inventoryButton", 1, 0, 0, 0, "inventory", () => {
             if (canMove == true) {
@@ -76,105 +225,17 @@ scenes["overworld"] = new Scene(
 
         createText("autoSaveText", 0.025, 0.98, "Game saved", { offset: [12, -12], size: 16, alpha: 0 });
 
+
+
         // DIALOGUE STUFF
-        createButton("dialogue_normal_squareBG", 0, 1, 1, 0, colors.bottomcolor, (c) => { if (objects[c].alpha > 0) dialogueBox(); }, {
-            offset: [0, -200], sizeOffset: [0, 200], alpha: 0, falpha: 1
-        });
-        createSquare("dialogue_normal_square2", 0.01, 1.01, 0, 0, colors.topcolor, {
-            offset: [0, -200], sizeOffset: [136, 136], alpha: 0, falpha: 1
-        });
-        createSquare("dialogue_normal_square3", 0.01, 1.01, 0, 0, colors.topcolor, {
-            offset: [0, -54], sizeOffset: [128, 32], alpha: 0, falpha: 1
-        });
-        createText("dialogue_normal_charactername", 0.01, 1.01, "", {
-            align: "center", size: 20, color: "black",
-            offset: [64, -24], alpha: 0, falpha: 1
-        });
-        createSquare("dialogue_normal_square4", 0.01, 1.01, 0.8, 0, colors.topcolor, {
-            offset: [164, -200], sizeOffset: [0, 178], alpha: 0, falpha: 1
-        });
-        createImage("dialogue_normal_image", 0.01, 1.01, 0, 0, "Portraits_NAN", {
-            offset: [0, -192], sizeOffset: [128, 128], alpha: 0, falpha: 1,
-            snip: [0, 0, 64, 64]
-        });
-        createSmartText("dialogue_normal_maintext", 0, 1, "...", {
-            align: "left", size: 20, color: "black",
-            maxW: 0.7, autoLinebreak: 160,
-            offset: [196, -168], alpha: 0, falpha: 1
-        });
-        createImage("dialogue_normal_continuestar", 0.81, 1, 0, 0, "star", {
-            sizeOffset: [64, 64], offset: [100, -96], alpha: 0, falpha: 0
-        });
-
-        createGroup("dialogue_normal", ["dialogue_normal_squareBG", "dialogue_normal_square2", "dialogue_normal_square3",
-            "dialogue_normal_charactername", "dialogue_normal_square4",
-            "dialogue_normal_image", "dialogue_normal_maintext", "dialogue_normal_continuestar"
-        ]);
-        groups["dialogue_normal"].set("at", 0);
-        groups["dialogue_normal"].set("defoff", (c) => c.offset);
-        groups["dialogue_normal"].set("falpha", (c) => c.config.falpha);
-
-        createButton("dialogue_invis_squareBG", 0, 1, 1, 0, colors.bottomcolor, (c) => { if (objects[c].alpha > 0) dialogueBox(); }, {
-            offset: [0, -200], sizeOffset: [0, 200], alpha: 0, falpha: 1
-        });
-        createSquare("dialogue_invis_square2", 0.01, 1.01, 0.98, 0, colors.topcolor, {
-            offset: [0, -200], sizeOffset: [0, 180], alpha: 0, falpha: 1
-        });
-        createSmartText("dialogue_invis_maintext", 0.02, 1, "...", {
-            align: "left", size: 20, color: "black",
-            maxW: 0.75, autoLinebreak: 160,
-            offset: [0, -168], alpha: 0, falpha: 1
-        });
-        createImage("dialogue_invis_continuestar", 0.8, 1, 0, 0, "star", {
-            sizeOffset: [64, 64], offset: [0, -96], alpha: 0, falpha: 0
-        });
-
-        createGroup("dialogue_invis", ["dialogue_normal_squareBG", "dialogue_invis_square2",
-            "dialogue_invis_maintext", "dialogue_invis_continuestar"]);
-        groups["dialogue_invis"].set("at", 0);
-        groups["dialogue_invis"].set("defoff", (c) => c.offset);
-        groups["dialogue_invis"].set("falpha", (c) => c.config.falpha);
-
-        createButton("dialogue_narrator_squareBG", 0, 0, 1, 1, "narratorbg", (c) => { if (objects[c].alpha > 0) dialogueBox(); }, {
-            alpha: 0, falpha: 1
-        });
-        createSmartText("dialogue_narrator_maintext", 0.5, 0.5, "...", {
-            align: "center", size: 20, color: "white",
-            maxW: 0.6, autoLinebreak: 120,
-            alpha: 0, falpha: 1
-        });
-        createImage("dialogue_narrator_continuestar", 0.8, 1, 0, 0, "star", {
-            sizeOffset: [64, 64], offset: [0, -96], alpha: 0, falpha: 0
-        });
-
-        createGroup("dialogue_narrator", ["dialogue_narrator_squareBG", "dialogue_narrator_maintext", "dialogue_narrator_continuestar"]);
-        groups["dialogue_narrator"].set("at", 0);
-        groups["dialogue_narrator"].set("defoff", (c) => c.offset);
-        groups["dialogue_narrator"].set("falpha", (c) => c.config.falpha);
-
-        createButton("dialogue_cutscene_squareBG", 0, 0, 1, 1, "narratorbg", (c) => { if (objects[c].alpha > 0) dialogueBox(); }, {
-            alpha: 0, falpha: 0.1
-        });
-        createSmartText("dialogue_cutscene_maintext", 0.01, 1, "...", {
-            align: "left", size: 16, color: "white",
-            maxW: 0.98, autoLinebreak: 200,
-            offset: [0, -96], alpha: 0, falpha: 1
-        });
-        createImage("dialogue_cutscene_continuestar", 0.8, 1, 0, 0, "star", {
-            sizeOffset: [64, 64], offset: [0, -96], alpha: 0, falpha: 0
-        });
-
-        createGroup("dialogue_cutscene", ["dialogue_cutscene_squareBG", "dialogue_cutscene_maintext", "dialogue_cutscene_continuestar"]);
-        groups["dialogue_cutscene"].set("at", 0);
-        groups["dialogue_cutscene"].set("defoff", (c) => c.offset);
-        groups["dialogue_cutscene"].set("falpha", (c) => c.config.falpha);
+        createDialogueObjects();
 
 
 
         // item popup
-        createButton("itempopup_squareBG", 0.35, 0.15, 0.3, 0.1, colors.topcolor, () => {
-            if (this.alpha > 0) {
-            removeNotification("item");
+        createButton("itempopup_squareBG", 0.35, 0.15, 0.3, 0.1, colors.topcolor, (c) => {
+            if (objects[c].alpha > 0) {
+                removeNotification("item");
                 for (let e in itemPopupElements) {
                     itemPopupElements[e].alpha = 0;
                 }
@@ -200,6 +261,7 @@ scenes["overworld"] = new Scene(
             "itempopup_text1", "itempopup_text2", "itempopup_text3"]);
         groups["itempopup"].set("defoff", (c) => c.offset);
 
+        // Area popup
         createImage("areaNameBox1", 0.2, 0, 0.6, 0.4, "hangingsign", { alpha: 0 });
         createText("areaNameBox2", 0.5, 0.25, "", {
             align: "center", size: 32, color: "black", alpha: 0
@@ -208,58 +270,12 @@ scenes["overworld"] = new Scene(
 
 
 
-        /*
-    let fallingRain = Particles({
-        anchor: [-0.2, -0.2], spreadAnchor: [1, 0], sizeOffset: [64, 64],
-        type: "img", source: "rain",
-        direction: 0, speedAnchor: 0.3,
-        direction2: 2, speedAnchor2: 0.05,
-        movable: true, movable2: true, lifespan: 1.5, alpha: 1, amount: 60, spawnTime: 0.03, alphaChange: 0.2,
-        dead: true, repeatMode: true,
-    })
-    let fogCloud = Particles({
-        anchor: [-0.2, 0], spreadAnchor: [0, 1], sizeOffset: [96, 48], sizeOffsetVary: [2, 2], quadraticVary: true,
-        type: "img", source: ["fog", "fog2"],
-        direction: 2, speedAnchor: 0.02,
-        movable: true, lifespan: 30, alpha: 0.75, amount: 80, spawnTime: 0.8,
-        dead: true, repeatMode: true,
-    })
-    let darkCloud = Particles({
-        anchor: [1.2, -0.8], spreadAnchor: [0.2, 1.5], sizeOffset: [128, 64], sizeOffsetVary: [2, 2], quadraticVary: true,
-        type: "img", source: ["cloudshadow1", "cloudshadow2", "cloudshadow3"],
-        direction: 0, speedAnchor: 0.015,
-        direction2: 1, speedAnchor2: 0.015,
-        movable: true, movable2: true, lifespan: 45, alpha: 0.75, amount: 25, spawnTime: 3,
-        dead: true, repeatMode: true,
-    })
-    let dustParticles = Particles({
-        anchor: [-0.2, 0], spreadAnchor: [0, 1], sizeOffset: [2, 2], sizeOffsetVary: [2, 2], quadraticVary: true,
-        type: "rect", fill: "yellow",
-        direction: 2, speedAnchor: 0.2,
-        direction2: 3, speedAnchor2: 0.05, moveRandom2: 1,
-        movable: true, movable2: true, lifespan: 5, alpha: 1, amount: 150, spawnTime: 0.02,
-        dead: true, repeatMode: true,
-    })
-
-    let fallingLeaves = Particles({
-        anchor: [0, -0.1], spreadAnchor: [1, 0], sizeOffset: [64, 64], spreadOffset: [0, -256], sizeOffsetVary: [1.5, 1.5], quadraticVary: true,
-        type: "img", source: "items/brickyleaf",
-        direction: 0, speedAnchor: 0.04,
-        direction2: 1, speedOffset2: 10, moveRandom2: 5,
-        offsetChange: [3, 3], repeatMode: true,
-        movable: true, movable2: true, lifespan: 80, alpha: 1, amount: 8, spawnTime: 1, alphaChange: 0.04,
-        onParticleClick(n) {
-            this.p[n][3][0] *= 1.2;
-            this.p[n][3][1] *= 1.2;
-            this.p[n][4] -= 3;
-            this.p[n][5] = 1;
-        }
-    })
-        */
-
+        // map maker exclusive back button
         createButton("backButton", 0.01, 0.925, 0.05, 0.045, "button", () => {
             loadScene("mapmaker");
-        }, { aText: { text: "<", size: 24 }, power: (isMapTestingMode ? 1 : 0) });
+            isMapTestingMode = false;
+        }, { aText: { text: "<", size: 24, textBaseline: "bottom", }, power: (isMapTestingMode ? 1 : 0) });
+        //createRenderLayer("WTFrenderlayerParticles", renderWeather);
 
 
 
@@ -285,8 +301,6 @@ scenes["overworld"] = new Scene(
     (tick) => {
         // Loop
         scale = window.innerHeight / 16;
-        map = maps[game.map];
-        map.tiles = Object.assign({}, map.tiles, loadPacks(map));
 
         // worldmode
         let wm = 1;
@@ -336,8 +350,6 @@ scenes["overworld"] = new Scene(
         }
 
         // stuffs
-        //renderWeather();
-        renderNightEffect();
 
         walkNPCs();
         walkEnemies();
@@ -487,6 +499,9 @@ scenes["overworld"] = new Scene(
 
         // draw FG tiles (in front of player)
         drawTiles(3);
+
+        renderWeather();
+        renderNightEffect();
 
         // Joystick
         if (settings.joystick) {

@@ -131,6 +131,7 @@ images = {
     tilepickerinfoicons: "gui/map_maker/miniicons.png",
     hideUI: "gui/map_maker/hideUI.png",
     darkPaths: "gui/map_maker/darkPaths.png",
+    npcmovement: "gui/map_maker/npcmovement.png",
 
 
 
@@ -421,6 +422,9 @@ var scenes = {
     mapmaker: "scripts/scenes/mapmaker/mapmaker.js",
     tilepicker: "scripts/scenes/mapmaker/tilepicker.js",
     mapinfo: "scripts/scenes/mapmaker/mapinfo.js",
+    tilemaker: "scripts/scenes/mapmaker/tilemaker.js",
+    dialoguemaker: "scripts/scenes/mapmaker/dialoguemaker.js",
+    npcmaker: "scripts/scenes/mapmaker/npcmaker.js",
 
     inventory: "scripts/scenes/inventory/inventory.js",
     itemscene: "scripts/scenes/inventory/itemscene.js",

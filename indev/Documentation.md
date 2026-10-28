@@ -98,7 +98,7 @@ For getEmotion(...)    (portraits)
 | acc           | 1             | Acceleration (1 does nothing, higher = faster acceleration)
 |               |               | 
 | amount        | 1             | Amount of particles
-| p             | []            | You can technically use this to define the pos and size of every particle, but trust me you don't want to'
+| p             | []            | You can technically use this to define the pos and size of every particle, but trust me you don't want to
 | spreadAnchor  | [0, 0]        | Spread on screen
 | spreadOffset  | [0, 0]        | Spread in pixels
 | sizeAnchorVary| [0, 0]        | Randomly increase the screen size of the particles (this is a multi)
@@ -108,7 +108,7 @@ For getEmotion(...)    (portraits)
 | lifespan      | 4             | How long the object lives in seconds (0 = never dies)
 | life          | 0             | How many seconds it has lived for
 | spawnTime     | 0             | How many seconds between spawns. 0 = instant. 2 = 1 spawn every 2 seconds.
-| SpawnTimeTick | 0             | Time to next spawn (e. g. 1.6s/2s), can be manipulated or used to spawn the first one immediately by setting it to the same value as spawnTime
+| spawnTimeTick | 0             | Time to next spawn (e. g. 1.6s/2s), can be manipulated or used to spawn the first one immediately by setting it to the same value as spawnTime
 | lifeTickIdle  | false         | If set to true, it can get older (and eventually die) when it does not move
 | dead          | false         | When it's dead, it stops doing stuff. Sad.
 | repeatMode    | false         | 
@@ -122,6 +122,3 @@ For getEmotion(...)    (portraits)
 | onClick(args) |               | Function executed when any particle is clicked
 | onParticleClick(args) |       | Function executed when a specific particle is clicked (does something for that 1 particle)
 | onDeath(args) |               | Function executed on death
-
-
-|            |                      | 

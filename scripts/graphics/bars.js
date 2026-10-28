@@ -8,7 +8,7 @@ function createBar(basename, x, y, w, h, colors) {
     createSquare(basename + ":loss", x + w * 0.01, y + h * 0.1, w * 0.98, h * 0.8,
         colors[3] ? colors[3] : "red", { alpha: 0 });
     createText(basename + ":text", x + w * 0.99, y + h, "",
-        { color: "white", align: "right", size: 20 });
+        { color: "white", align: "right", size: 20, textBaseline: "bottom" });
 }
 
 function updateBar(basename, fillpct, text, visible) {

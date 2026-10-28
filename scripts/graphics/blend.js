@@ -10,16 +10,12 @@ var isClear = true;
 function clearBlend() {
     if (!isClear) {
         isClear = true;
-
-        let ctx = wggjCanvas.getContext("2d");
         wggjCTX.globalCompositeOperation = 'source-over';
     }
 }
 
 function setBlend(type) {
     if (settings.blend == false) return false;
-
-    let ctx = wggjCanvas.getContext("2d");
 
     isClear = false;
 

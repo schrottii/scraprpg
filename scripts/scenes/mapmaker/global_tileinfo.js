@@ -56,13 +56,18 @@ function tileInfoGenerate() {
 
     createSmartText("selectedTileProperties", 0.675, 0.33, "", { size: 32, color: "black", align: "left" });
     createSmartText("selectedTileProperties2", 0.775, 0.33, "", { size: 32, color: "black", align: "left" });
+
+    createButton("tileinfo_tilemaker_shortcut", 0.875, 0.15, 0, 0, "tilemaker", (c) => {
+        mapmaker.tileMakerTileID = objects[c].tileID;
+        tilemaker_loadTile(objects[c].tile);
+        loadScene("tilemaker");
+    }, { sizeOffset: [64, 64] });
 }
 
 // tileInfoWindow : the tile info mode
 function tileInfoWindowGenerate() {
     //createSquare("tileInfoWindow_bg", 0.65, 0.05, 0.325, 0.9, colors.bottomcolor);
     createSquare("tileInfoWindow_bg", 0.65, 0.025, 0.325, 0.95, colors.buttonbottompressed, { clickthrough: false });
-    objects["tileInfoWindow_bg"].onHold = () => { };
     createSquare("tileInfoWindow_bg2", 0.65, 0.025, 0.325, 0.95, colors.bottomcolor, { offset: [6, 6], sizeOffset: [-12, -12] });
     createText("tileInfoWindow_header", 0.675, 0.06, "Tile Info", { size: 32, color: "white", align: "left" });
 
@@ -112,10 +117,11 @@ function tileInfoWindowGenerate() {
 
     // switch layers
     for (let i = 0; i < 3; i++) {
-        createButton("tileInfoWindow_layer" + i, 0.925, 0.08 + (0.055 * i), 0.05, 0.05, "button", (c) => {
+        createButton("tileInfoWindow_layer" + i, 0.925, 0.08 + (0.055 * i), 0.05, 0.05, "layerbuttons", (c) => {
             mapmaker.tileInfoPos[2] = ["map", "mapbg2", "mapfg"][objects[c].layer];
             tileInfo_auto();
-        }, { aText: { text: ["BG", "BG2", "FG"][i], size: 24, color: "black" } });
+        }, { quadratic: true, offset: [32, 0] });
+        objects["tileInfoWindow_layer" + i].snip = [i * 32, 0, 32, 32];
         objects["tileInfoWindow_layer" + i].layer = i;
     }
 
@@ -195,6 +201,7 @@ function tileInfoWindowGenerate() {
     createGroup("tileInfoWindow", [
         "currentTilePreview", "selectedTileName",
         "selectedTileProperties", "selectedTileProperties2",
+        "tileinfo_tilemaker_shortcut",
         // new ones
         "tileInfoWindow_bg", "tileInfoWindow_bg2", "tileInfoWindow_header",
         "selectedTile_Item", "selectedTile_Dialogue",
@@ -229,6 +236,10 @@ function tileInfoRender(tileID, tile = undefined) {
     objects["currentTilePreview"].power = true;
 
     objects["selectedTileName"].text = tileID;
+
+    // give the shortcut button the right tile
+    objects["tileinfo_tilemaker_shortcut"].tile = tile;
+    objects["tileinfo_tilemaker_shortcut"].tileID = tileID;
 
     return [tileID, tile];
 }

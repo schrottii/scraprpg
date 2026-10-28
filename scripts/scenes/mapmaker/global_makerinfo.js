@@ -28,7 +28,6 @@ function makerInfoGenerate() {
     // background and general objects
     if (objects["makerInfo_bg1"] == undefined) makerInfoSelbtnItems = 0;
     createButton("makerInfo_bg1", 0, 0, 0.3, 1, colors.buttonbottom, () => { }, { sizeOffset: [64, 0], power: false, clickthrough: false });
-    objects["makerInfo_bg1"].onHold = () => { }; // anti clickthrough
     createSquare("makerInfo_bg2", 0.1, 0, 0.2, 1, colors.buttontop, { offset: [8, 8], sizeOffset: [48, -16], power: false });
 
     createText("makerInfo_title", 0.2, 0.037, "Maker Info 3.0", { offset: [32, 0], size: 32, color: "black", align: "center", textBaseline: "bottom", power: false });
@@ -46,14 +45,14 @@ function makerInfoGenerate() {
     // new page buttons, using wggj scroll now
     createButton("makerInfo_pageReset", 0.3125, 0.85, 0.0275, 0.05, "button", () => {
         objects["makerInfo_sels"].scrolledY = 0;
-    }, { aText: { text: "P0", size: 24, color: "black", align: "center" } });
+    }, { aText: { text: "P0", size: 24, color: "black", align: "center" }, clickthrough: false });
     createButton("makerInfo_pageDown", 0.3125, 0.9, 0.0275, 0.05, "button", () => {
         objects["makerInfo_sels"].scrolledY += 0.5 * wggj.canvas.h;
         objects["makerInfo_sels"].scrolledY = Math.min(0, objects["makerInfo_sels"].scrolledY);
-    }, { aText: { text: "P-", size: 24, color: "black", align: "center" } });
+    }, { aText: { text: "P-", size: 24, color: "black", align: "center" }, clickthrough: false });
     createButton("makerInfo_pageUp", 0.3125, 0.95, 0.0275, 0.05, "button", () => {
         objects["makerInfo_sels"].scrolledY -= 0.5 * wggj.canvas.h;
-    }, { aText: { text: "P+", size: 24, color: "black", align: "center" } });
+    }, { aText: { text: "P+", size: 24, color: "black", align: "center" }, clickthrough: false });
 
     createGroup("makerInfo", [
         "makerInfo_bg1", "makerInfo_bg2",
@@ -68,8 +67,9 @@ function makerInfoGenerate() {
     let h = y * 0.95; // leaves some space on top/bottom, x0.95 for gaps
     for (let cat of makerInfoCategories) {
         createButton("makerInfo_category_" + cat[1], 0, 0.02 + (y * iCat), 0.1, h, "button", (c) => {
+            // change category
             mapmaker.makerInfoScroll[selectedInfoType] = objects["makerInfo_sels"].scrolledY;
-            renderMakerInfo(objects[c].cat);
+            renderMakerInfo(objects[c].cat); // also changes selectedInfoType
             objects["makerInfo_sels"].scrolledY = mapmaker.makerInfoScroll[objects[c].cat] != undefined ? mapmaker.makerInfoScroll[objects[c].cat] : 0;
         },
             {
@@ -86,6 +86,7 @@ function makerInfoGenerate() {
     createContainer("makerInfo_sels", 0.1, 0.05, 0.225, 0.925, {
         YScroll: true, YLimit: [0.000001, 0]
     }, []);
+    groups["makerInfo"].addChild("makerInfo_sels");
 
     createGroup("makerInfo_selbtns", []);
     createGroup("makerInfo_selbtn_images", []);
@@ -126,6 +127,13 @@ function makerInfoGenerateMoreButtons(amount) {
 function makerInfoShow() {
     if (objects["makerInfo_bg1"] == undefined) makerInfoGenerate();
     groups["makerInfo"].set("power", true);
+
+    // main mm button
+    if (objects["btn_togglemakerinfo"] != undefined) {
+        objects["btn_togglemakerinfo:text"].text = "X";
+    }
+
+    renderMakerInfo("auto");
 }
 
 function makerInfoHide() {
@@ -135,7 +143,14 @@ function makerInfoHide() {
     mapmaker.placeBlocker = 0.3;
 
     selectedInfo = "";
-    selectedInfoType = "";
+    //selectedInfoType = "";
+
+    mapmaker.makerInfoScroll[selectedInfoType] = objects["makerInfo_sels"].scrolledY;
+
+    // main mm button
+    if (objects["btn_togglemakerinfo"] != undefined) {
+        objects["btn_togglemakerinfo:text"].text = "info";
+    }
 }
 
 function makerInfoToggle() {
@@ -148,14 +163,14 @@ function makerInfoToggle() {
 function renderMakerInfo(type) {
     if (objects["makerInfo_bg1"] == undefined) makerInfoGenerate();
 
-    let grabFrom;
-    let grabImage = [];
-    let imageSnip = 0;
-    let ikeys; // imo unnecessary to create it here, even if unused, but VS Code insists
-    if (type != "auto") selectedInfoType = type;
+    let grabFrom; // data harvesting
+    let grabImage = []; // image harvesting
+    let imageSnip = 0; // if we need a categorical snipping
 
-    //if (type == "auto") type = createTileInfoprevM;
-    //else createTileInfoprevM = type;
+    let ikeys; // imo unnecessary to create it here, even if unused, but VS Code insists
+
+    if (type != "auto") selectedInfoType = type;
+    else type = selectedInfoType;
 
     switch (type) {
         case "t":
@@ -298,6 +313,13 @@ function renderMakerInfo(type) {
     objects["makerInfo_length"].text = grabFromLength;
     objects["makerInfo_sels"].YLimit[1] = -0.4 + (30 / wggj.canvas.h * grabFromLength);
     makerInfoGenerateMoreButtons(grabFromLength);
+
+    objects["makerInfo_sels"].scrolledY = mapmaker.makerInfoScroll[selectedInfoType] != undefined ? mapmaker.makerInfoScroll[selectedInfoType] : 0;
+
+    for (let cat of makerInfoCategories) {
+        if (cat[1] == selectedInfoType) objects["makerInfo_category_" + cat[1]].alpha = 1;
+        else objects["makerInfo_category_" + cat[1]].alpha = 0.8;
+    }
 
     //let pageAdd = createTileInfoPage * createTileInfoPageLength;
     for (let g = 0; g < makerInfoSelbtnItems; g++) {

@@ -257,12 +257,17 @@ function wggjEventsOnClick(e) {
     for (let i = keys.length - 1; i >= 0; i--) {
         c = keys[i];
 
-        if (objects[c] == undefined) continue;
-        if (objects[c].onClick == undefined || objects[c].power == false) continue;
+        if (objects[c] == undefined || objects[c].power == false || objects[c].isHit == undefined) continue;
 
         if (objects[c].isHit(wggj.mouse.x, wggj.mouse.y)) {
+            if (objects[c].onClick == undefined) {
+                if (objects[c].clickthrough != undefined && objects[c].clickthrough === false) break;
+                else continue;
+            }
+
             objects[c].onClick(c, e);
             if (objects[c] == undefined) break;
+
             if (objects[c].clickthrough != undefined && objects[c].clickthrough === false) break;
         }
     }
@@ -278,12 +283,17 @@ function wggjEventsOnPointerUp(e) {
     for (let i = keys.length - 1; i >= 0; i--) {
         c = keys[i];
 
-        if (objects[c] == undefined) continue;
-        if (objects[c].onUp == undefined || objects[c].power == false) continue;
+        if (objects[c] == undefined || objects[c].power == false || objects[c].isHit == undefined) continue;
 
         if (objects[c].isHit(wggj.mouse.x, wggj.mouse.y)) {
+            if (objects[c].onUp == undefined) {
+                if (objects[c].clickthrough != undefined && objects[c].clickthrough === false) break;
+                else continue;
+            }
+
             objects[c].onUp(c, e);
             if (objects[c] == undefined) break;
+
             if (objects[c].clickthrough != undefined && objects[c].clickthrough === false) break;
         }
     }
@@ -300,10 +310,14 @@ function wggjEventsOnPointerMove(e) {
     for (let i = keys.length - 1; i >= 0; i--) {
         c = keys[i];
 
-        if (objects[c] == undefined) continue;
-        if ((objects[c].onDrag == undefined && objects[c].onMouseMove == undefined) || objects[c].power == false) continue;
+        if (objects[c] == undefined || objects[c].power == false || objects[c].isHit == undefined) continue;
 
         if (objects[c].isHit(wggj.mouse.x, wggj.mouse.y)) {
+            if ((objects[c].onDrag == undefined && objects[c].onMouseMove == undefined)) {
+                if (objects[c].clickthrough != undefined && objects[c].clickthrough === false) break;
+                else continue;
+            }
+
             if (wggj.mouse.down && objects[c].onDrag != undefined) objects[c].onDrag(c, e);
             if (objects[c] == undefined) break;
 
@@ -322,10 +336,14 @@ function wggjEventsOnLoop(e) {
     for (let i = keys.length - 1; i >= 0; i--) {
         c = keys[i];
 
-        if (objects[c] == undefined) continue;
-        if ((objects[c].onHover == undefined && objects[c].onHold == undefined) || objects[c].power == false) continue;
+        if (objects[c] == undefined || objects[c].power == false || objects[c].isHit == undefined) continue;
 
         if (objects[c].isHit(wggj.mouse.x, wggj.mouse.y)) {
+            if ((objects[c].onHover == undefined && objects[c].onHold == undefined)) {
+                if (objects[c].clickthrough != undefined && objects[c].clickthrough === false) break;
+                else continue;
+            }
+
             if (wggj.mouse.down && objects[c].onHold != undefined) objects[c].onHold(c, e);
             if (objects[c] == undefined) break;
 
@@ -1419,6 +1437,7 @@ function createRenderLayer(name, renderer) {
     return "";
 }
 
+/*
 function createTilesLayer(name, verticalTiles, x = 0, y = 0, w = 1, h = 1) {
     if (objects[name] == undefined) {
         objects[name] = new WGGJ_TilesLayer(name, verticalTiles, x, y, w, h);
@@ -1427,6 +1446,7 @@ function createTilesLayer(name, verticalTiles, x = 0, y = 0, w = 1, h = 1) {
     }
     return "";
 }
+*/
 
 
 

@@ -99,7 +99,7 @@ scenes["inventory"] = new Scene(
             fadeOut(1000 / 3, true, () => {
                 setScene(scenes.stats());
             });
-        }, { aText: { text: "Stats", size: 32 } });
+        }, { aText: { text: "Stats", size: 32, textBaseline: "bottom" } });
 
         fadeIn(1000 / 3, true);
     },

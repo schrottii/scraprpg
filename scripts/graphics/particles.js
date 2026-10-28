@@ -1,4 +1,4 @@
-/* Particles by Schrottii */
+/* Particles system by Schrottii, est. 2022 */
 
 
 function Particles(args) {
@@ -10,10 +10,11 @@ function Particles(args) {
         offset: pos in pixels
         sizeAnchor: size in screen
         sizeOffset: size in pixels
-        clickthrough: ?
         blend: blend effect
         alpha: opacity (0 - 1)
         */
+
+        clickthrough: true,
 
         // Image particle stuff
         type: "rect", // rect or img
@@ -63,7 +64,7 @@ function Particles(args) {
         onClick(args) { },
         onParticleClick(args) { },
 
-        generate(ctx) {
+        generate() {
             let avary = this.sizeAnchorVary[0] * Math.random();
             let avary2 = this.sizeAnchorVary[1] * Math.random();
             let ovary = this.sizeOffsetVary[0] * Math.random();
@@ -74,12 +75,13 @@ function Particles(args) {
                 ovary2 = ovary;
             }
 
+            // get src image or a random one if there are multiple
             let source = this.source;
             if (typeof (source) != "string") {
                 source = source[Math.floor(Math.random() * source.length)];
             }
 
-
+            // add to particles list for this type
             this.p.push([[this.anchor[0] + (this.spreadAnchor[0] * Math.random()), this.anchor[1] + (this.spreadAnchor[1] * Math.random())],
             [this.offset[0] + (1 + (this.spreadOffset[0] * Math.random())), this.offset[1] + (1 + (this.spreadOffset[1] * Math.random()))],
             [this.sizeAnchor[0] * (1 + avary), this.sizeAnchor[1] * (1 + avary2)],
@@ -96,21 +98,23 @@ function Particles(args) {
             */
         },
 
-        render(ctx) {
+        render() {
             if (this.dead) return false;
             this.spawnTimeTick += (delta / 1000);
+
             if (this.p.length < this.amount) {
                 if (this.spawnTime == 0) {
-                    for (i = 0; i < this.amount; i++) {
-                        if (this.p.length < this.amount) this.generate(ctx);
+                    for (let i = 0; i < this.amount; i++) {
+                        if (this.p.length < this.amount) this.generate();
                     }
                 }
                 else if (this.spawnTimeTick >= this.spawnTime) {
                     this.spawnTimeTick = 0;
-                    this.generate(ctx);
+                    this.generate();
                 }
             }
 
+            // non-life mode death to all of you
             if (this.life >= this.lifespan && this.lifespan != 0 && !this.lifeMode) {
                 if (!this.repeatMode) this.dead = true;
                 this.onDeath(args);
@@ -118,14 +122,15 @@ function Particles(args) {
                     this.life = 0;
                     let red = 1;
                     if (isLs() == true) red = 2;
-                    for (p in this.p) {
+
+                    // kill me if I get too small
+                    for (let p in this.p) {
                         let w = this.p[p][3][0] / red + this.p[p][2][0] * wggjCTX.canvas.width;
                         let h = this.p[p][3][1] / red + this.p[p][2][1] * wggjCTX.canvas.height;
-
                         if (w < 0 || h < 0) this.p.splice(parseInt(p), 1);
                     }
-                    for (i = 0; i < this.amount; i++) {
-                        if (this.p.length < this.amount) this.generate(ctx);
+                    for (let i = 0; i < this.amount; i++) {
+                        if (this.p.length < this.amount) this.generate();
                     }
                 }
             }
@@ -142,7 +147,8 @@ function Particles(args) {
 
             if (this.fill != "none") wggjCTX.fillStyle = this.fill;
 
-            for (p in this.p) {
+            for (let p in this.p) {
+                // life mode individual particle death
                 if (this.p[p][4] >= this.lifespan && this.lifespan != 0 && this.lifeMode) {
                     this.onDeath(args);
                     this.p.splice(parseInt(p), 1);
@@ -150,7 +156,7 @@ function Particles(args) {
                         this.life = 0;
                         this.spawnTimeTick = 0;
 
-                        this.generate(ctx);
+                        this.generate(wggjCTX);
                     }
                     continue;
                 }
@@ -158,12 +164,12 @@ function Particles(args) {
 
                 // Move
                 if (this.movable) {
-
                     let rndm = 1;
                     if (this.moveRandom > 0) {
                         if (Math.random() > 0.499) rndm = this.moveRandom * Math.random();
                         else rndm = -1 * this.moveRandom * Math.random();
                     }
+
                     switch (this.direction) {
                         case 0: // Down
                             this.p[p][0][1] += (this.speedAnchor * rndm / delta) * this.speedMulti * this.acc;
@@ -173,7 +179,7 @@ function Particles(args) {
                             this.p[p][0][0] -= (this.speedAnchor * rndm / delta) * this.speedMulti * this.acc;
                             this.p[p][1][0] -= (this.speedOffset * rndm / delta) * this.speedMulti * this.acc;
                             break;
-                        case 2: // Right
+                        case 2: // Right;
                             this.p[p][0][0] += (this.speedAnchor * rndm / delta) * this.speedMulti * this.acc;
                             this.p[p][1][0] += (this.speedOffset * rndm / delta) * this.speedMulti * this.acc;
                             break;
@@ -190,6 +196,7 @@ function Particles(args) {
                         if (Math.random() > 0.499) rndm = this.moveRandom2 * Math.random();
                         else rndm = -1 * this.moveRandom2 * Math.random();
                     }
+
                     switch (this.direction2) {
                         case 0: // Down
                             this.p[p][0][1] += (this.speedAnchor2 * rndm / delta) * this.speedMulti2 * this.acc2;

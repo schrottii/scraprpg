@@ -321,7 +321,7 @@ function spawnMapEnemy(enemyToSpawn) {
     return true; // it spawned
 }
 
-function startDialogue(cd) {
+function startDialogue(cd, testing = false) {
     if (inDialogue) return false;
     if (typeof (cd) == "string") cd = map.dialogues[cd];
 
@@ -331,7 +331,7 @@ function startDialogue(cd) {
     dialogueProgress = 0;
     dialogueEmotion = currentDialogue[dialogueProgress].portrait;
 
-    game.stats.npcsTalked++;
+    if (!testing) game.stats.npcsTalked++;
     canMove = false;
     dialogueScript();
 }
@@ -389,23 +389,6 @@ function renderDialogue() {
         // Make / keep the dialogue objects visible
         groups[dialogueObjects].set("alpha", (c) => c.falpha);
 
-        // Slide them in
-        if (objects[dTextID].at == 0) {
-            objects[dTextID].at = 0.5;
-            groups[dialogueObjects].set("offset", (c) => [c.defoff[0], c.defoff[1] + 500]);
-
-            addAnimator(function (t) {
-                for (i in dialogueObjects) {
-                    groups[dialogueObjects].set("offset", (c) => [c.defoff[0], c.defoff[1] + 500 - Math.min(t, 500)]);
-                }
-                if (t > 499) {
-                    groups[dialogueObjects].set("at", 1);
-                    return true;
-                }
-                return false;
-            });
-        }
-
         // They are there, visible
         if (objects[dTextID].at == 1) {
             if (currentDialogue != false) {
@@ -440,8 +423,25 @@ function renderDialogue() {
 
                 // appearance of star and action button
                 if (currentDialogue[dialogueProgress + 1] != undefined) objects[dStarID].alpha = 1; // Star
-                objects["actionButton"].alpha = 0;
+                if (objects["actionButton"] != undefined) objects["actionButton"].alpha = 0;
             }
+        }
+
+        // Slide them in
+        if (objects[dTextID].at == 0) {
+            objects[dTextID].at = 0.5;
+            groups[dialogueObjects].set("offset", (c) => [c.defoff[0], c.defoff[1] + 500]);
+
+            addAnimator(function (t) {
+                for (i in dialogueObjects) {
+                    groups[dialogueObjects].set("offset", (c) => [c.defoff[0], c.defoff[1] + 500 - Math.min(t, 500)]);
+                }
+                if (t > 499) {
+                    groups[dialogueObjects].set("at", 1);
+                    return true;
+                }
+                return false;
+            });
         }
     }
 }
@@ -452,13 +452,13 @@ function dialogueNext() {
 
     let c = "dialogue_" + dialogueType + "_maintext";
 
-    if (dialogueProgress >= currentDialogue.length || currentDialogue.dialogueProgress == undefined) {
+    if (dialogueProgress >= currentDialogue.length || currentDialogue[dialogueProgress] == undefined) {
         // Dialogue end
         currentDialogue = false;
         dialogueEmotion = "neutral";
         dialogueProgress = 0;
         canMove = true;
-        objects["actionButton"].alpha = 1;
+        if (objects["actionButton"] != undefined) objects["actionButton"].alpha = 1;
 
         if (objects[c].at == 1 && (dialogueType == "normal" || dialogueType == "invis")) {
             objects[c].at = 0.4;
@@ -492,7 +492,7 @@ function dialogueBox() {
     // always assumes text speed is 20
     if ((textProgress * 20) >= text.length) {
         //console.log("next text");
-        dialogueNext(c);
+        dialogueNext();
     }
     else {
         //console.log("speed up text");
@@ -551,6 +551,8 @@ function showItemPopup(itemName, amount = 1, found = true) {
 
 // Weather time thing
 function setNightEffect(color, al = 0.5, instant = false, type = "none") {
+    if (objects["nightEffect"] == undefined) return false;
+
     //console.log(nightEffect.alpha, color, al, type);
     let transitionDuration = 12000; // Roughly how long it lasts. 1000 = 1 sec
     let fogAlphaChangeIntensity = 10; // How much the opacity during fog changes. Higher number = less
@@ -574,6 +576,7 @@ function setNightEffect(color, al = 0.5, instant = false, type = "none") {
     if (color != "none" && objects["nightEffect"].alpha == 0) {
         // changing from nothing
         addAnimator(function (t) {
+            if (objects["nightEffect"] == undefined) return false;
             objects["nightEffect"].alpha = al * t / transitionDuration;
 
             if (t > transitionDuration) {
@@ -586,6 +589,7 @@ function setNightEffect(color, al = 0.5, instant = false, type = "none") {
     else if (color == "none" && objects["nightEffect"].alpha == 0.35) {
         // changing to nothing
         addAnimator(function (t) {
+            if (objects["nightEffect"] == undefined) return false;
             objects["nightEffect"].alpha = al - t / transitionDuration;
 
             if (t > al * transitionDuration) {
@@ -603,6 +607,7 @@ function setNightEffect(color, al = 0.5, instant = false, type = "none") {
 
         // smooth transition
         addAnimator(function (t) {
+            if (objects["nightEffect"] == undefined) return false;
             objects["nightEffect"].alpha = 0 + t / transitionDuration;
             objects["nightEffect2"].alpha = al - t / transitionDuration;
 
@@ -1008,6 +1013,7 @@ function endCutscene() {
 }
 
 function renderWeather() {
+    if (map == undefined) return false;
     if (map.worldmode) {
         darkCloud.dead = false;
         darkCloud.speedAnchor = 0.01 * map.weatherStrength;
@@ -1016,6 +1022,12 @@ function renderWeather() {
     else {
         darkCloud.dead = true;
     }
+
+    fallingRain.render();
+    fogCloud.render();
+    darkCloud.render();
+    dustParticles.render();
+    fallingLeaves.render();
 
     if (map.weather != undefined) {
         if (map.weather == "rain") {

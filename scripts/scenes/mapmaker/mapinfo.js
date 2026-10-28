@@ -1,6 +1,21 @@
 scenes["mapinfo"] = new Scene(
     () => {
         // Init
+        function renderInfoTexts() {
+            let ourSpawns = "Spawns:";
+            let ourPacks = "Map packs:\nCommon";
+
+            for (let spawn in mm_map.spawns) {
+                ourSpawns += "\n" + spawn + " (" + mm_map.spawns[spawn] + "%)";
+            }
+
+            for (let pack of mm_map.packs) {
+                ourPacks += "\n" + pack + " (+" + Object.keys(packs[pack]).length + ")";
+            }
+
+            objects["infotext_spawns"].text = ourSpawns;
+            objects["infotext_packs"].text = ourPacks;
+        }
 
         // Background
         createSquare("bg", 0, 0, 1, 1, colors.bottomcolor);
@@ -25,7 +40,7 @@ scenes["mapinfo"] = new Scene(
             let newName = prompt("New map name?");
             if (isValid(newName)) mm_map.name = newName;
             objects[c].uText(objects[c + ":text"]);
-        }, { alpha: 0.5, aText: { text: "Map name", color: "black", size: 20, textBaseline: "middle" } });
+        }, { alpha: 0.5, aText: { text: "Map name", color: "black", size: 20, textBaseline: "bottom" } });
         objects["essential_mapname"].uText = (c) => { c.text = "Map name: " + mm_map.name; };
         createImage("essential_mapname_icon", 0.05, 0.25, 0, 0, "place", { sizeOffset: [32, 32], offset: [-16, -16] });
 
@@ -36,7 +51,7 @@ scenes["mapinfo"] = new Scene(
                 mapmaker.currentMap = newName; // changing ID
             }
             objects[c].uText(objects[c + ":text"]);
-        }, { alpha: 0.5, aText: { text: "Map ID", color: "black", size: 20, textBaseline: "middle" } });
+        }, { alpha: 0.5, aText: { text: "Map ID", color: "black", size: 20, textBaseline: "bottom" } });
         objects["essential_mapID"].uText = (c) => { c.text = "Map ID: " + mm_map.id; };
         createImage("essential_mapID_icon", 0.2, 0.25, 0, 0, "place", { sizeOffset: [32, 32], offset: [-16, -16] });
 
@@ -46,7 +61,7 @@ scenes["mapinfo"] = new Scene(
                 mm_map.creator = newName;
             }
             objects[c].uText(objects[c + ":text"]);
-        }, { alpha: 0.5, aText: { text: "", color: "black", size: 20, textBaseline: "middle" } });
+        }, { alpha: 0.5, aText: { text: "", color: "black", size: 20, textBaseline: "bottom" } });
         objects["essential_creator"].uText = (c) => { c.text = "Creator: " + mm_map.creator; };
         createImage("essential_creator_icon", 0.35, 0.25, 0, 0, "place", { sizeOffset: [32, 32], offset: [-16, -16] });
 
@@ -59,7 +74,7 @@ scenes["mapinfo"] = new Scene(
         createButton("music_musicintro", 0.6, 0.25, 0.18, 0.08, "button", (c) => {
             objects["music_musicloop"].onClick("music_musicloop");
             objects[c].uText(objects[c + ":text"]);
-        }, { alpha: 0.5, aText: { text: "", color: "black", size: 20, textBaseline: "middle" } });
+        }, { alpha: 0.5, aText: { text: "", color: "black", size: 20, textBaseline: "bottom" } });
         objects["music_musicintro"].uText = (c) => { c.text = "Music intro: " + mm_map.intro; };
         createImage("music_musicintro_icon", 0.6, 0.25, 0, 0, "paste", { sizeOffset: [32, 32], offset: [-16, -16] });
 
@@ -77,7 +92,7 @@ scenes["mapinfo"] = new Scene(
                 renderMakerInfo("music");
             }
             objects[c].uText(objects[c + ":text"]);
-        }, { alpha: 0.5, aText: { text: "", color: "black", size: 20, textBaseline: "middle" } });
+        }, { alpha: 0.5, aText: { text: "", color: "black", size: 20, textBaseline: "bottom" } });
         objects["music_musicloop"].uText = (c) => { c.text = "Music loop: " + mm_map.music; };
         createImage("music_musicloop_icon", 0.8, 0.25, 0, 0, "paste", { sizeOffset: [32, 32], offset: [-16, -16] });
 
@@ -95,7 +110,7 @@ scenes["mapinfo"] = new Scene(
             if (co.i >= weathers.length) co.i = 0;
             mm_map.weather = newWeather;
             objects[c].uText(objects[c + ":text"]);
-        }, { alpha: 0.5, aText: { text: "", color: "black", size: 20, textBaseline: "middle" } });
+        }, { alpha: 0.5, aText: { text: "", color: "black", size: 20, textBaseline: "bottom" } });
         objects["weather_weathertype"].uText = (c) => { c.text = "Weather: " + mm_map.weather; };
         objects["weather_weathertype"].i = 0;
         createImage("weather_weathertype_icon", 0.05, 0.45, 0, 0, "redo", { sizeOffset: [32, 32], offset: [-16, -16] });
@@ -107,7 +122,7 @@ scenes["mapinfo"] = new Scene(
                 mm_map.weatherStrength = parseInt(newWeather);
             }
             objects[c].uText(objects[c + ":text"]);
-        }, { alpha: 0.5, aText: { text: "", color: "black", size: 20, textBaseline: "middle" } });
+        }, { alpha: 0.5, aText: { text: "", color: "black", size: 20, textBaseline: "bottom" } });
         objects["weather_weatherstrength"].uText = (c) => { c.text = "Weather Strength: " + mm_map.weatherStrength; };
         createImage("weather_weatherstrength_icon", 0.2, 0.45, 0, 0, "place", { sizeOffset: [32, 32], offset: [-16, -16] });
 
@@ -121,7 +136,7 @@ scenes["mapinfo"] = new Scene(
                 game.position[1] = Math.ceil(game.position[1]);
             }
             objects[c].uText(objects[c + ":text"]);
-        }, { alpha: 0.5, aText: { text: "", color: "black", size: 20, textBaseline: "middle" } });
+        }, { alpha: 0.5, aText: { text: "", color: "black", size: 20, textBaseline: "bottom" } });
         objects["weather_worldmode"].uText = (c) => { c.text = "Worldmode: " + (mm_map.worldmode ? "ON" : "OFF"); };
         createImage("weather_worldmode_icon", 0.35, 0.45, 0, 0, "redo", { sizeOffset: [32, 32], offset: [-16, -16] });
 
@@ -150,8 +165,10 @@ scenes["mapinfo"] = new Scene(
                 makerInfoShow();
                 renderMakerInfo("mapPacks");
             }
+
+            renderInfoTexts();
             //objects[c].uText(objects[c + ":text"]);
-        }, { alpha: 0.5, aText: { text: "Add map pack", color: "black", size: 20, textBaseline: "middle" } });
+        }, { alpha: 0.5, aText: { text: "Add map pack", color: "black", size: 20, textBaseline: "bottom" } });
         createImage("packs_addpack_icon", 0.6, 0.45, 0, 0, "paste", { sizeOffset: [32, 32], offset: [-16, -16] });
 
         createButton("packs_emptysprite", 0.75, 0.45, 0.14, 0.08, "button", (c) => {
@@ -160,15 +177,15 @@ scenes["mapinfo"] = new Scene(
                     mm_map.tiles.empty.sprite = selectedInfo;
                     updateTiles = true;
 
-                    hideInfo();
+                    makerInfoHide();
                 }
             }
             else {
-                showInfo();
-                renderInfo("t");
+                makerInfoShow();
+                renderMakerInfo("t");
             }
             objects[c].uText(objects[c + ":text"]);
-        }, { alpha: 0.5, aText: { text: "", color: "black", size: 20, textBaseline: "middle" } });
+        }, { alpha: 0.5, aText: { text: "", color: "black", size: 20, textBaseline: "bottom" } });
         objects["packs_emptysprite"].uText = (c) => { c.text = "Empty sprite: " + mm_map.tiles.empty.sprite; };
         createImage("packs_emptysprite_icon", 0.75, 0.45, 0, 0, "place", { sizeOffset: [32, 32], offset: [-16, -16] });
 
@@ -179,9 +196,10 @@ scenes["mapinfo"] = new Scene(
         createSquare("section_spawns_line", 0.06, 0.62, 0.2, 0.004, colors.buttonbottom);
 
         createButton("spawns_maxenemies", 0.05, 0.65, 0.14, 0.08, "button", (c) => {
-            mm_map.maxEnemies = Math.max(0, Math.round(prompt("New max.? (e. g. 8)")));
+            let neww = prompt("New max.? (e. g. 8)");
+            if (isValid(neww)) mm_map.maxEnemies = Math.max(0, Math.round(neww));
             objects[c].uText(objects[c + ":text"]);
-        }, { alpha: 0.5, aText: { text: "", color: "black", size: 20, textBaseline: "middle" } });
+        }, { alpha: 0.5, aText: { text: "", color: "black", size: 20, textBaseline: "bottom" } });
         objects["spawns_maxenemies"].uText = (c) => { c.text = "Max. enemies: " + mm_map.maxEnemies; };
         createImage("spawns_maxenemies_icon", 0.05, 0.65, 0, 0, "place", { sizeOffset: [32, 32], offset: [-16, -16] });
 
@@ -191,7 +209,7 @@ scenes["mapinfo"] = new Scene(
                 mm_map.levelRange = [parseInt(neww.split("-")[0]), parseInt(neww.split("-")[1])];
             }
             objects[c].uText(objects[c + ":text"]);
-        }, { alpha: 0.5, aText: { text: "", color: "black", size: 20, textBaseline: "middle" } });
+        }, { alpha: 0.5, aText: { text: "", color: "black", size: 20, textBaseline: "bottom" } });
         objects["spawns_lvlrange"].uText = (c) => { c.text = "Lvl Range: " + mm_map.levelRange; };
         createImage("spawns_lvlrange_icon", 0.2, 0.65, 0, 0, "place", { sizeOffset: [32, 32], offset: [-16, -16] });
 
@@ -209,8 +227,10 @@ scenes["mapinfo"] = new Scene(
                 makerInfoShow();
                 renderMakerInfo("mapEnemies");
             }
+
+            renderInfoTexts();
             //objects[c].uText(objects[c + ":text"]);
-        }, { alpha: 0.5, aText: { text: "Add spawn", color: "black", size: 20, textBaseline: "middle" } });
+        }, { alpha: 0.5, aText: { text: "Add spawn", color: "black", size: 20, textBaseline: "bottom" } });
         createImage("spawns_addspawn_icon", 0.35, 0.65, 0, 0, "paste", { sizeOffset: [32, 32], offset: [-16, -16] });
 
         createButton("spawns_removespawn", 0.5, 0.65, 0.14, 0.08, "button", (c) => {
@@ -222,11 +242,26 @@ scenes["mapinfo"] = new Scene(
                 makerInfoShow();
                 renderMakerInfo("spawns");
             }
+
+            renderInfoTexts();
             //objects[c].uText(objects[c + ":text"]);
-        }, { alpha: 0.5, aText: { text: "Remove spawn", color: "black", size: 20, textBaseline: "middle" } });
+        }, { alpha: 0.5, aText: { text: "Remove spawn", color: "black", size: 20, textBaseline: "bottom" } });
         createImage("spawns_removespawn_icon", 0.5, 0.65, 0, 0, "paste", { sizeOffset: [32, 32], offset: [-16, -16] });
 
 
+
+        // texts
+        createSmartText("infotext_spawns", 0.65, 0.65, "", { size: 20, color: "black", align: "left" });
+        createSmartText("infotext_packs", 0.65 + 0.35 / 2, 0.65, "", { size: 20, color: "black", align: "left" });
+
+
+
+        // clean up duplicate packs
+        let mappacks = [];
+        for (let pack of mm_map.packs) {
+            if (!mappacks.includes(pack)) mappacks.push(pack);
+        }
+        mm_map.packs = mappacks;
 
         // init - set all texts as far as ye can
         for (let o in objects) {
@@ -234,6 +269,7 @@ scenes["mapinfo"] = new Scene(
                 objects[o].uText(objects[o + ":text"]);
             }
         }
+        renderInfoTexts();
     },
     (tick) => {
         // Loop
