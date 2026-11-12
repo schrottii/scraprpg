@@ -1,6 +1,18 @@
+var multiPicked = [];
+
+function resetMultiPicked() {
+    multiPicked = [];
+    for (let i = 0; i < 5; i++) {
+        multiPicked.push([[], [], [], [], []]);
+    }
+}
+resetMultiPicked();
+
 scenes["tilepicker"] = new Scene(
     () => {
         // Init
+        let multiPickingActive = false;
+
         function generateTiles() {
             if (objects["tile0"].tileid != undefined) {
                 // we already generated before, so gotta be-empty ye first
@@ -94,6 +106,12 @@ scenes["tilepicker"] = new Scene(
 
             // update prepicker preview
             updatePrePickerPreview();
+
+            if (!multiPickingActive) {
+                groups["tileInfo"].set("power", true);
+                groups["recentTilesPreview"].set("power", true, (o) => o != undefined);
+                groups["multiPicker"].set("power", false);
+            }
         }
 
         function updateGlowingTiles() {
@@ -124,6 +142,17 @@ scenes["tilepicker"] = new Scene(
             objects["recentTilesPreview"].text = "Prepicker Preview (" + prePickerLength + "/24)";
         }
 
+        function openMultiPicker() {
+            //objects["tiles_list"].set("power", false);
+            multiPickingActive = true;
+
+            groups["tileInfo"].set("power", false);
+            groups["recentTilesPreview"].set("power", false, (o) => o != undefined);
+            groups["multiPicker"].set("power", true);
+
+            if (multiPicked == undefined || multiPicked.length == 0) resetMultiPicked();
+        }
+
         // Background
         createSquare("bg", 0, 0, 1, 1, colors.bottomcolor);
         createSquare("bg2", 0.01, 0.01, 0.98, 0.98, colors.topcolor);
@@ -132,7 +161,13 @@ scenes["tilepicker"] = new Scene(
             { size: 32, color: "black", align: "center" });
         createButton("top_leave_btn", 0.89, 0.01, 0.1, 0.1, "button", () => {
             playSound("buttonClickSound");
-            loadScene("mapmaker");
+            if (multiPickingActive) {
+                multiPickingActive = false;
+                groups["multiPicker"].set("power", false);
+            }
+            else {
+                loadScene("mapmaker");
+            }
         }, { aText: { textBaseline: "alphabetic", text: "X", size: 48, color: "black" } });
         createSquare("top_rect", 0.01, 0.1, 0.98, 0.01, colors.bottomcolor);
 
@@ -144,16 +179,19 @@ scenes["tilepicker"] = new Scene(
             mapmaker.tileSource = "common";
             generateTiles();
         }, { aText: { textBaseline: "alphabetic", text: "Common Tiles", size: 24, color: "black" } });
-        createButton("top_btn_maptiles", 0.4, 0.01, 0.15, 0.09, "button", () => {
+        createButton("top_btn_maptiles", 0.37, 0.01, 0.15, 0.09, "button", () => {
             mapmaker.tileSource = "map";
             generateTiles();
         }, { aText: { textBaseline: "alphabetic", text: "Map Tiles", size: 24, color: "black" } });
-        createButton("top_btn_zoom", 0.6, 0.01, 0.15, 0.09, "button", () => {
+        createButton("top_btn_zoom", 0.56, 0.01, 0.1, 0.09, "button", () => {
             mapmaker.tilePickerZoom = (mapmaker.tilePickerZoom + 1) % 5;
             resizeTiles();
             generateTiles();
             updateGlowingTiles();
         }, { aText: { textBaseline: "alphabetic", text: "Zoom", size: 24, color: "black" } });
+        createButton("top_btn_multipicker", 0.7, 0.01, 0.1, 0.09, "button", () => {
+            openMultiPicker();
+        }, { aText: { textBaseline: "alphabetic", text: "Multi Picker", size: 24, color: "black" } });
 
         // the tilies :)
         createContainer("tiles_list", 0, 0.1, 0.65, 0.9, { YScroll: true, YScrollMod: 2, limitEffect: true, YLimit: [0.000001, 0] }, []);
@@ -188,11 +226,77 @@ scenes["tilepicker"] = new Scene(
 
         // right side - recent tiles preview
         createText("recentTilesPreview", 0.675, 0.8, "Prepicker Preview", { size: 40, color: "black", align: "left", offset: [0, 64] });
+
+        createGroup("recentTilesPreview", [
+            "recentTilesPreview"
+        ]);
+
         for (let t = 0; t < 9; t++) {
             createImage("recentlyUsedTilesPreview" + t, 0.65, 0.85, 0, 0, "gear", {
                 offset: [72 * (t % 60) + 32, 72 * Math.floor(t / 60) + 32], sizeOffset: [64, 64],
                 alpha: 0
             });
+            groups["recentTilesPreview"].addChild("recentlyUsedTilesPreview" + t);
+        }
+
+        // right side - multi picker
+        createText("multiPickerHeader", 0.675, 0.15, "Multi Picker", { size: 40, color: "black", align: "left", power: false });
+        createButton("multiPicker_clearer", 0.9, 0.25, 0, 0, "delete", (c) => {
+            mapmaker.tileToPlace = "";
+            mapmaker.sourceToPlace = "grid";
+            mapmaker.snipToPlace = [0, 0, 32, 32];
+        }, {
+            offset: [72, 72], sizeOffset: [64, 64], power: false
+        });
+
+        createButton("multiPicker_enableButton", 0.725, 0.7, 0.2, 0.1, "button", (c) => {
+            mapmaker.multiPickerActive = !mapmaker.multiPickerActive;
+            objects[c + ":text"].text = mapmaker.multiPickerActive ? "Disable" : "Enable";
+        }, { aText: { textBaseline: "alphabetic", text: "Enable", size: 24, color: "black" }, power: false });
+        objects["multiPicker_enableButton:text"].text = mapmaker.multiPickerActive ? "Disable" : "Enable";
+
+        createButton("multiPicker_clearAllButton", 0.725, 0.85, 0.2, 0.1, "button", (c) => {
+            resetMultiPicked();
+            for (let i = 0; i < 5; i++) {
+                for (let j = 0; j < 5; j++) {
+                    if (multiPicked[i][j] != undefined) {
+                        let results = getTileImage(multiPicked[i][j]);
+                        if (results == undefined || results[0] == "") results = ["grid", [0, 0, 32, 32]];
+                        objects["multiPicker_grid_" + i + "." + j].image = results[0];
+                        objects["multiPicker_grid_" + i + "." + j].snip = results[1];
+                    }
+                }
+            }
+        }, { aText: { textBaseline: "alphabetic", text: "Clear All 5x5", size: 24, color: "black" }, power: false });
+
+        createGroup("multiPicker", [
+            "multiPickerHeader", "multiPicker_clearer",
+            "multiPicker_enableButton", "multiPicker_clearAllButton"
+        ]);
+
+        for (let i = 0; i < 5; i++) {
+            for (let j = 0; j < 5; j++) {
+                createButton("multiPicker_grid_" + i + "." + j, 0.7, 0.3, 0, 0, "grid", (c) => {
+                    //objects[c].tile = mapmaker.tileToPlace;
+                    objects[c].image = mapmaker.sourceToPlace;
+                    objects[c].snip = mapmaker.snipToPlace;
+                    multiPicked[objects[c].i][objects[c].j] = mapmaker.tileToPlace;
+                }, {
+                    offset: [72 * i, 72 * j], sizeOffset: [64, 64], power: false
+                });
+                //objects["multiPicker_grid_" + i + "." + j].tile = false;
+                objects["multiPicker_grid_" + i + "." + j].i = i;
+                objects["multiPicker_grid_" + i + "." + j].j = j;
+                groups["multiPicker"].addChild("multiPicker_grid_" + i + "." + j);
+
+                // load pre-existing
+                if (multiPicked[i][j] != undefined) {
+                    let results = getTileImage(multiPicked[i][j]);
+                    if (results == undefined || results[0] == "") results = ["grid", [0, 0, 32, 32]];
+                    objects["multiPicker_grid_" + i + "." + j].image = results[0];
+                    objects["multiPicker_grid_" + i + "." + j].snip = results[1];
+                }
+            }
         }
 
         // go go go

@@ -62,6 +62,12 @@ function tileInfoGenerate() {
         tilemaker_loadTile(objects[c].tile);
         loadScene("tilemaker");
     }, { sizeOffset: [64, 64] });
+
+    createGroup("tileInfo", [
+        "currentTilePreview", "selectedTileName",
+        "selectedTileProperties", "selectedTileProperties2",
+        "tileinfo_tilemaker_shortcut"
+    ]);
 }
 
 // tileInfoWindow : the tile info mode

@@ -114,6 +114,7 @@ var wggj = {
     },
 
     canvas: {
+        previousScene: "none",
         currentScene: "none",
 
         textScaling: 1,
@@ -391,6 +392,7 @@ function loadScene(sceneName) {
     if (wggj.debug.scene) console.log("loading scene: " + sceneName)
     if (scenes[sceneName] == undefined || scenes[sceneName].init == undefined) return false;
 
+    wggj.canvas.previousScene = wggj.canvas.currentScene;
     wggj.canvas.currentScene = sceneName;
 
     objects = {};

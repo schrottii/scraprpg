@@ -23,7 +23,7 @@ function defFilter() {
 function clearFilter() {
     bod.filter = "none";
     for (i in filters) filters[i] = 0;
-    filters[4] = 100;
+    filters["brightness"] = 100;
 }
 
 // sets single filter blur
@@ -104,7 +104,7 @@ function fadeIn(dur, keep = true, onFinish = false) {
 // Sets one filter then renders, allows for multiple
 // use clearFilter to get rid of it
 function setFilter(name, amount) {
-    filters[name] = amount;
+    if (filters[name] != undefined) filters[name] = amount;
 
     let s = "";
     if (filters["blur"] != 0) s = s + " blur(" + filters["blur"] + "px)";

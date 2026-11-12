@@ -257,6 +257,9 @@ indev name: v1.0.8
 - Changed display of the row stats
 - Macro Configuration now shows one rectangle for every option (selected in red)
 
+-> WGGJ: Settings:
+- uhhhhhhh
+
 
 
 -> Enemy behavior: 
@@ -314,3 +317,5 @@ indev name: v1.0.8
 -> PC version:
 - Added scripts/node/nodemain.js, seperating it from the global main.js logic (PC version stuff)
 - Blocked prompts in the PC version (to avoid crashes)
+
+MISSING MANY/MOST LINES REFERRING TO MAP MAKER PART VII AND VIII

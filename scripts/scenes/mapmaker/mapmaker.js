@@ -135,10 +135,36 @@ function calcMapSize(type) {
     }
 }
 
-function changeTileToPlace(newTTP, updateRecent = true) {
-    // TTP = tile to place
+function getTileImage(tile) {
     let newSource = "";
     let newSnip = [0, 0, 32, 32];
+
+    if (mm_map.tiles[tile] != undefined) {
+        if (mm_map.tiles[tile].sprite != undefined) {
+            newSource = "tiles/" + mm_map.tiles[tile].sprite;
+            newSnip = false;
+        }
+        else {
+            newSource = "tilesets/" + mm_map.tiles[tile].set;
+            newSnip = [mm_map.tiles[tile].snip[0] * 32, mm_map.tiles[tile].snip[1] * 32, 32, 32];
+        }
+    }
+    else if (commontiles[tile] != undefined) {
+        if (commontiles[tile].sprite != undefined) {
+            newSource = "tiles/" + commontiles[tile].sprite;
+            newSnip = false;
+        }
+        else {
+            newSource = "tilesets/" + commontiles[tile].set;
+            newSnip = [commontiles[tile].snip[0] * 32, commontiles[tile].snip[1] * 32, 32, 32];
+        }
+    }
+
+    return [newSource, newSnip];
+}
+
+function changeTileToPlace(newTTP, updateRecent = true) {
+    // TTP = tile to place
 
     // Change the tile to place, and the current tile selected display
     mapmaker.tileToPlace = newTTP;
@@ -155,28 +181,13 @@ function changeTileToPlace(newTTP, updateRecent = true) {
     }
 
     // Display (map or common, tile or tileset)
-    if (mm_map.tiles[mapmaker.tileToPlace] != undefined) {
-        if (mm_map.tiles[mapmaker.tileToPlace].sprite != undefined) {
-            newSource = "tiles/" + mm_map.tiles[mapmaker.tileToPlace].sprite;
-            newSnip = false;
-        }
-        else {
-            newSource = "tilesets/" + mm_map.tiles[mapmaker.tileToPlace].set;
-            newSnip = [mm_map.tiles[mapmaker.tileToPlace].snip[0] * 32, mm_map.tiles[mapmaker.tileToPlace].snip[1] * 32, 32, 32];
-        }
-    }
-    else if (commontiles[mapmaker.tileToPlace] != undefined) {
-        if (commontiles[mapmaker.tileToPlace].sprite != undefined) {
-            newSource = "tiles/" + commontiles[mapmaker.tileToPlace].sprite;
-            newSnip = false;
-        }
-        else {
-            newSource = "tilesets/" + commontiles[mapmaker.tileToPlace].set;
-            newSnip = [commontiles[mapmaker.tileToPlace].snip[0] * 32, commontiles[mapmaker.tileToPlace].snip[1] * 32, 32, 32];
-        }
-    }
+    let results = getTileImage(mapmaker.tileToPlace);
+    newSource = results[0];
+    newSnip = results[1];
 
     if (newSource == "") return false;
+    mapmaker.sourceToPlace = newSource;
+    mapmaker.snipToPlace = newSnip;
 
     if (objects["currentTilePreview"] != undefined) {
         objects["currentTilePreview"].image = newSource;
@@ -243,13 +254,24 @@ var mapmaker = {
     fillToolActive: false,
     filledTiles: 0,
 
+    // settings
+    settings: {
+        enableAnimations: false,
+        showEntities: true,
+        npcPaths: true,
+        cinematicFilter: "none"
+    },
+
     // animated preview
-    enableAnimations: false,
+    //enableAnimations: false,
     animateTime: 0,
 
     // tile picker
     tileSource: "common",
     tilePickerZoom: 1,
+    sourceToPlace: "",
+    snipToPlace: "",
+    multiPickerActive: false,
 
     // maker info
     makerInfoScroll: {},
@@ -275,7 +297,8 @@ function saveMapMakerCache() {
         maker: mapmaker,
         tilemaker: tilemaker,
         npcmaker: npcmaker,
-        dialoguemaker: dialoguemaker
+        dialoguemaker: dialoguemaker,
+        multiPicked: multiPicked
     }));
 }
 
@@ -344,6 +367,7 @@ scenes["mapmaker"] = new Scene(
                 tilemaker = Object.assign({}, tilemaker, loadFromAutoSave.tilemaker);
                 npcmaker = Object.assign({}, npcmaker, loadFromAutoSave.npcmaker);
                 dialoguemaker = Object.assign({}, dialoguemaker, loadFromAutoSave.dialoguemaker);
+                multiPicked = Object.assign([[], [], [], [], []], multiPicked, loadFromAutoSave.multiPicked);
             }
 
             game.position = [4, 4];
@@ -1076,13 +1100,15 @@ scenes["mapmaker"] = new Scene(
             let mp = mm_map[layer][y];
             let def = "---";
 
+            let fillActive = mapmaker.fillToolActive && !mapmaker.multiPickerActive;
+
             if (mapmaker.mode == "place" || mapmaker.mode == "moveandplace" || umode == "undo" || umode == "copy") {
                 if (tileToPlace == "none") {
-                    tileToPlace = mapmaker.tileToPlace;
+                    tileToPlace = mapmaker.tileToPlace;;
                 }
 
                 let rePlaced;
-                if (mapmaker.fillToolActive) rePlaced = mp.substr(x * 4, 3);
+                if (fillActive) rePlaced = mp.substr(x * 4, 3);
 
                 if (mp == undefined) {
                     while (mp == undefined) {
@@ -1094,18 +1120,13 @@ scenes["mapmaker"] = new Scene(
                 mm_map[layer][y] = mm_map[layer][y].replace(/\s{2,}/g, ' '); // remove double spaces
                 mp = mm_map[layer][y];
 
-                if (x * 4 > mp.length) {
-                    while (x * 4 > mp.length) {
-                        mm_map[layer][y] = mp + " " + def;
-                        mp = mm_map[layer][y];
-                    }
-                }
+                mp = fillUpMap(mp, x, y, layer, def);
 
                 mm_map[layer][y] = mm_map[layer][y].replace(/  /gi, " ");
                 mp = mm_map[layer][y];
 
                 // Fill thing - only for move and m+p, not for redo (it spams)
-                if (mapmaker.fillToolActive && mapmaker.filledTiles == 0 && umode == "default" && (mapmaker.mode == "place" || mapmaker.mode == "moveandplace")) {
+                if (fillActive && mapmaker.filledTiles == 0 && umode == "default" && (mapmaker.mode == "place" || mapmaker.mode == "moveandplace")) {
                     // Fill ON - multiple tiles
                     let temp = [x, y];
 
@@ -1119,25 +1140,63 @@ scenes["mapmaker"] = new Scene(
 
                     mapmaker.filledTiles = 0; // done, reset back
                 }
+                else if (mapmaker.multiPickerActive) {
+                    // multi picker 5x5 grid
+                    let xi = 0; // to avoid forever loop
+                    while (mm_map[layer][y + 2] == undefined && xi < 9999) {
+                        mm_map[layer].push(def);
+                        xi++;
+                    }
+
+                    for (let i = 0; i < 5; i++) {
+                        for (let j = 0; j < 5; j++) {
+                            if (x - 2 + i < 0 || y - 2 + j < 0) continue;
+                            if (multiPicked[i][j] == undefined || multiPicked[i][j] == "") continue;
+                            mp = mm_map[layer][y - 2 + j];
+                            placeTileSingleTile(multiPicked[i][j], x - 2 + i, y - 2 + j, layer, umode, mp); // -2 because we are the middle
+                        }
+                    }
+                }
                 else {
                     // FILL OFF - single tile
-                    if (x * 4 > mp.length && umode != "undo") {
-                        // Expand map!
-                        mm_map[layer][y] = mp + " " + tileToPlace;
-                    }
-                    else {
-                        // Somewhere in the middle of the map
-                        mm_map[layer][y] = mp.substr(0, x * 4) + tileToPlace + " " + mp.substr((1 + x) * 4);
-                    }
-
-                    // add to undo or redo log, and if undo, give the ID
-                    if (umode == "undo") postLog(umode, x, y, layer, mp.substr(x * 4, 3), undoLog[0][4]);
-                    else postLog(umode, x, y, layer, mp.substr(x * 4, 3));
+                    placeTileSingleTile(tileToPlace, x, y, layer, umode, mp);
                 }
 
-                mm_map[layer][y] = mm_map[layer][y].replace(/  /gi, " ");
+                mm_map[layer][y] = mm_map[layer][y].replace(/  /gi, " "); // kill extra blanks
                 mapmaker.updateTiles = true;
             }
+        }
+
+        function fillUpMap(mp, x, y, layer, defaultTile = "---") {
+            if (x * 4 > mp.length) {
+                mp = mp.trim();
+                while (x * 4 > mp.length) {
+                    mp += " " + defaultTile;
+                }
+                mm_map[layer][y] = mp;
+            }
+            return mp;
+        }
+
+        function placeTileSingleTile(tile, x, y, layer, umode, mp) {
+            // weird edge case behavior??
+            if (mp == undefined) {
+                mm_map[layer][y] = mp = "---";
+            }
+
+            if (x * 4 > mp.length && umode != "undo") {
+                // Expand map!
+                mp = fillUpMap(mp, x, y, layer);
+            }
+            else {
+                // Somewhere in the middle of the map
+                mp = mp.substr(0, x * 4) + tile + " " + mp.substr((1 + x) * 4);
+                mm_map[layer][y] = mp;
+            }
+
+            // add to undo or redo log, and if undo, give the ID
+            if (umode == "undo") postLog(umode, x, y, layer, mp.substr(x * 4, 3), undoLog[0][4]);
+            else postLog(umode, x, y, layer, mp.substr(x * 4, 3));
         }
 
         function replaceY(pom, mp, x, y, layer, rePlaced, tileToPlace, temp) {
@@ -1483,6 +1542,7 @@ scenes["mapmaker"] = new Scene(
         createGroup("walkPad", ["walkPadUp", "walkPadRight", "walkPadDown", "walkPadLeft", "walkPadMiddle"]);
 
         // bottom left side buttons
+        /*
         createButton("btn_toggleanimations", 0, 0.795, 0.05, 0.0475, "button", (c) => {
             if (objects[c + ":text"].text == "ani:off") {
                 mapmaker.enableAnimations = true;
@@ -1494,6 +1554,11 @@ scenes["mapmaker"] = new Scene(
             }
             mapmaker.updateTiles = true;
         }, { aText: { text: "ani:off", size: 20, textBaseline: "bottom" } });
+        */
+
+        createButton("btn_openSettings", 0, 0.795, 0.05, 0.0475, "button", (c) => {
+            loadScene("settings");
+        }, { aText: { text: "Settings", size: 20, textBaseline: "bottom" } });
 
         createButton("btn_togglemapinfo", 0, 0.8475, 0.05, 0.0475, "button", (c) => {
             loadScene("mapinfo");
@@ -1776,6 +1841,12 @@ scenes["mapmaker"] = new Scene(
         updateMapMakerUI();
         mapmaker.updateTiles = true;
 
+        if (mapmaker.settings.cinematicFilter == undefined && mapmaker.settings.cinematicFilter != "none") {
+            clearFilter();
+            if (mapmaker.settings.cinematicFilter == "blur") setFilter(mapmaker.settings.cinematicFilter, 4);
+            else setFilter(mapmaker.settings.cinematicFilter, 50);
+        }
+
         fadeIn(250, true);
         canMove = true;
         console.timeEnd("initstartup");
@@ -1872,7 +1943,7 @@ scenes["mapmaker"] = new Scene(
         let wm = mm_map.worldmode == true ? 2 : 1;
         zswm = (zoom * scale) / wm;
 
-        if (mapmaker.enableAnimations) {
+        if (mapmaker.settings.enableAnimations) {
             let prevTime = mapmaker.animateTime;
             mapmaker.animateTime = (mapmaker.animateTime + delta / 1000) % 2;
 
@@ -1921,7 +1992,7 @@ scenes["mapmaker"] = new Scene(
             let pathLines = 0;
             let b = 0;
 
-            if (mm_map.items != undefined) {
+            if (mapmaker.settings.showEntities && mm_map.items != undefined) {
                 for (let item of mm_map.items) {
                     if (item[4] == true) {
                         objects["tiles_items_" + it].offset = [(((zoom * scale) * (item[0] - ofsX)) - ((zoom - 1) * scale * (width / 2))), 
@@ -1933,7 +2004,7 @@ scenes["mapmaker"] = new Scene(
                     }
                 }
             }
-            if (mm_map.chests != undefined) {
+            if (mapmaker.settings.showEntities && mm_map.chests != undefined) {
                 for (let item of mm_map.chests) {
                     objects["tiles_items_" + it].offset = [(((zoom * scale) * (item[0] - ofsX)) - ((zoom - 1) * scale * (width / 2))), 
                         zoom * scale * (item[1] - ofsY) - ((zoom - 1) * scale * 7)];
@@ -1944,7 +2015,7 @@ scenes["mapmaker"] = new Scene(
                 }
             }
             for (let i in mapmaker.mapNPCs) {
-                if (mapmaker.mapNPCs[i].alpha > 0) {
+                if (mapmaker.settings.showEntities && mapmaker.mapNPCs[i].alpha > 0) {
                     let npc = mapmaker.mapNPCs[i];
 
                     objects["tiles_npcs_" + np].offset = [(((zoom * scale) * (npc.position[0] - ofsX)) - ((zoom - 1) * scale * (width / 2))), 
@@ -1954,7 +2025,7 @@ scenes["mapmaker"] = new Scene(
                     objects["tiles_npcs_" + np].alpha = npc.alpha;
 
                     // render path (if using fixed path movement type)
-                    if (npc.movement == 2 && npc.path != undefined && npc.path.length > 0) {
+                    if (mapmaker.settings.npcPaths && npc.movement == 2 && npc.path != undefined && npc.path.length > 0) {
                         let pathOffset = [npc.position[0], npc.position[1]];
 
                         // go through all the lines 1 by 1
@@ -2039,7 +2110,7 @@ scenes["mapmaker"] = new Scene(
                                 objects[layerInfo.objs[l] + b].rotate = gotTile.rotate;
 
                                 // Animate stuff
-                                if (gotTile.ani != undefined && mapmaker.enableAnimations) {
+                                if (gotTile.ani != undefined && mapmaker.settings.enableAnimations) {
                                     objects[layerInfo.objs[l] + b].isnip = [gotTile.snip[0] * 32, gotTile.snip[1] * 32, 32, 32];
                                     objects[layerInfo.objs[l] + b].ani = gotTile.ani;
                                 }
@@ -2099,8 +2170,16 @@ scenes["mapmaker"] = new Scene(
         objects["shrinkMap_Y"].sizeOffset = [zoom * scale, zoom * scale];
         objects["shrinkMap_Y"].offset = [(zoom * scale * (-1 - ofsX) - ((zoom - 1) * scale * (width / 2))), (zoom * scale * (-4 - ofsY) - ((zoom - 1) * scale * 7))];
 
-        objects["middlei"].sizeOffset = [zoom * scale, zoom * scale];
-        objects["middlei"].offset = [-zoom * scale / 2, (zoom * scale * 7.5 - ((zoom - 1) * scale * 7)) - (wggjCTX.canvas.height / 2)];
+        if (!mapmaker.multiPickerActive) {
+            // 1x1
+            objects["middlei"].sizeOffset = [zoom * scale, zoom * scale];
+            objects["middlei"].offset = [-zoom * scale / 2, (zoom * scale * 7.5 - ((zoom - 1) * scale * 7)) - (wggjCTX.canvas.height / 2)];
+        }
+        else {
+            // 5x5
+            objects["middlei"].sizeOffset = [zoom * scale * 5, zoom * scale * 5];
+            objects["middlei"].offset = [-zoom * scale / 2, (zoom * scale * 7.5 - ((zoom - 1) * scale * 7)) - (wggjCTX.canvas.height / 2)];
+        }
 
         // tick auto save
         autoSaveTime += 1 / delta; // i think it might go 2x speed if you have game's normal auto save enabled
