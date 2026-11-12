@@ -3,7 +3,7 @@
 Important:
 - ~~title~~, ~~pretitle~~
 - ~~overworld~~ (https://discord.com/channels/906961455352528906/906962468809621515/1518685835086790760)
-- mapmaker
+- ~~mapmaker~~ hell yeah and how done it is :D
 - fight (bear wit me)
 - shop
 
@@ -11,9 +11,9 @@ Map Maker:
 - ~~tile picker 2.0~~
 - ~~map info / settings 2.0~~
 - ~~load / save~~
-- tile maker 2.0
-- dialogue maker 2.0
-- npc maker 2.0
+- ~~tile maker 2.0~~
+- ~~dialogue maker 2.0~~
+- ~~npc maker 2.0~~
 
 Inventory:
 - ~~inventory~~
@@ -28,7 +28,7 @@ Inventory:
 
 Misc:
 - credits
-- settings
+- ~~settings~~
 
 Notes:
 - do not migrate tiles (do renderlayer) and music yet
@@ -37,8 +37,8 @@ Notes:
 ## Other:
 For v1.1:
 - WGGJ migration
-- overworld: new UI / selection
-- overworld: weather effects re-added
+- overworld: new GUIs / selection
+- ~~overworld: weather effects re-added~~
 - bars: loss animation on change
 
 Sometime:

@@ -234,6 +234,7 @@
 ## v1.1 (?)
 indev name: v1.0.8
 
+### PUBLIC WGGJ
 -> WGGJ:
 - Converted the entire game from its "new system" graphics to my WGGJ framework!
 - They function similarly, but working with WGGJ is more comfortable and allows for adding more new stuff
@@ -250,7 +251,7 @@ indev name: v1.0.8
 - Dialogues now support multiple lines
 
 -> WGGJ: Inventory:
-- uhh
+- No changes so far
 
 -> WGGJ: Formation:
 - Grid is now shown differently if that setting is turned off
@@ -258,17 +259,17 @@ indev name: v1.0.8
 - Macro Configuration now shows one rectangle for every option (selected in red)
 
 -> WGGJ: Settings:
-- uhhhhhhh
+- Changed layout (less space for category buttons, cleaner design)
+- Descriptions are now to the right of their Setting, instead of having to click it first
+- Added smooth animations for category buttons
 
 
 
+### PUBLIC
 -> Enemy behavior: 
 - Added ability for certain enemies to swim
 - NPCs and enemies can now walk half a step in worldmode
 - Improved enemy spawning
-
--> Hotkeys:
-- Added Hotkeys.md, a documentational list of all available hotkeys
 
 -> Other:
 - New button design
@@ -283,24 +284,104 @@ indev name: v1.0.8
 
 
 
+### PRIVATE WGGJ
 -> Map Maker (pre-WGGJ):
 - Repositioned buttons in the bottom left, moved info from bottom right to the bottom left
 - The button for map info now shows "MAP" instead of "(i)" (to avoid confusion with "info")
 - Updated images for toggle UI and show collisions buttons
 - Improved code of toggle UI button and added elements that were not toggled before
-
 - Recently used tiles no longer appear as gears at the start
 - Fixed accidental tile placing after closing certain menus (tile maker, load map)
 - Tile Info: added GO button to directly move to the selected tile
 - Tile Info: selected tile is now highlighted
 
 -> WGGJ: Map Maker:
-- State/settings are now SAVED (entire mapmaker var), so things like mode stay the same
+- State/settings are now SAVED (entire mapmaker, dialoguemaker, etc. vars), so things like mode stay the same
 - Moved info text (with coords, tile to place, etc.) onto the left side
 - Zoom shows zoom level
 - Undo/redo show how many actions can be undone/redone
 - Optimized rendering of animation previews
 - Improved undo/redo, duplicates are no longer saved
+- Added visible NPC paths (if path movement type)
+- Replaced ani:off button with shortcut to Settings (Map Maker category)
+
+-> WGGJ: Maker Info 3.0:
+- Globalism: can be inserted into any scene
+- Improved design
+- Image previews where applicable (with snip)
+- Changed order of categories, all are visible now
+- Added scrolling (gets saved)
+- Added close button
+- Added P0 button to get back to the top
+- Dynamic generation of items
+
+-> WGGJ: Tile Info:
+- Globalism
+- Improved design, moved to the right side (so you can still see things)
+- Changed button order and texts
+- Added buttons to switch between layers on the same position
+- The info part (sprite, ani, etc.) is re-used in Tile Picker
+
+-> WGGJ: Tile Picker:
+- Turned into separate scene
+- Added shortcut to open a tile in Tile Maker
+
+-> WGGJ: Map Info:
+- Turned into separate scene, acted as foundation for other MM scenes and design
+- Usage of buttons is described with icons (pencil = write text, redo = cycle, paste = uses Maker Info)
+- Displays current spawns and packs, along with spawn chance and amount of tiles in pack
+- Duplicate packs are removed when opening Map Info
+
+-> WGGJ: Tile Maker:
+- Turned into separate scene
+- Moved all new/load/save buttons to the top
+- Added new Copy and Paste buttons (useful for common tiles)
+- Replaced buttons for tile sprite and tileset with one to toggle type and one to set the source
+- Improved snip buttons, no more out of bounds
+- Added tileset preview on the right, highlighting the position of the snip, considering animation (makes it bigger)
+- Added new image for Auto Layer (triangle instead of random wood-ish tile)
+- Occupied is now called Walkable here and can be toggled with one click (instead of writing yes/no)
+- Blocked directions are now handled via 4 toggleable triangle buttons
+- Rotation and Swim can now be changed with a single click (no more typing)
+
+-> Multi Picker:
+- Added Multi picker to the Tile Maker
+- Put tiles (from picker on left side) into a 5x5 grid and then place all those at once
+- Added button to "put" delete tiles (clearing single tiles on the grid)
+- Added button to clear the entire grid
+- Added button to enable or disable
+- Use the normal X button to go back to normal tile picking
+- Middlei is larger while Multi Picker is active
+
+-> WGGJ: NPC Maker:
+- Turned into separate scene
+- Same new/load/save buttons at the top as Tile Maker
+
+-> WGGJ: Dialogue Maker:
+- Turned into separate scene
+- Same new/load/save buttons at the top as Tile Maker
+- Added rectangles showing amount of lines and current line
+- Current line is red, lines with text are green, otherwise black
+- Added Preview feature, letting you directly test the dialogue
+- NEW no longer adds a new line at the end, but instead after the one you are on
+- DEL no longer deletes the last line, but instead the one you are on
+
+-> WGGJ: Settings:
+- Added Map Maker category
+- Automatically selected when coming from Map Maker
+- New Setting: Animations (same as ani:off button which is now ogone)
+- New Setting: NPC Paths (to toggle the new NPC paths)
+- New Setting: Show Entities (toggles NPCs, Items & Items in Chests)
+- New Setting: Cinematic Filter (to try out blur, gray, sepia, or invert)
+
+
+
+### PRIVATE
+-> Hotkeys:
+- Added Hotkeys.md, a documentational list of all available hotkeys
+- Map Maker: added 16 hotkeys on top of WASD
+- Tile Picker: added added 5 hotkeys (ESC, C, Z, M, T)
+- Map Info, Tile Maker, Dialogue Maker, NPC Maker: added 2 hotkeys (ESC, T)
 
 -> Files:
 - Reworked file tree: assets folder (like old data folder), new data folder, data files split, and much more (800+ changes)
@@ -317,5 +398,3 @@ indev name: v1.0.8
 -> PC version:
 - Added scripts/node/nodemain.js, seperating it from the global main.js logic (PC version stuff)
 - Blocked prompts in the PC version (to avoid crashes)
-
-MISSING MANY/MOST LINES REFERRING TO MAP MAKER PART VII AND VIII

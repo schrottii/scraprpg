@@ -23,7 +23,7 @@ An overview of keys you can press
 ## Pretitle
 | Key(s)            | Description
 |:-----------------:|:-------------------------:
-| U + W + U         | Get indev access
+| (Secret)          | Get indev access
 
 ## Map Maker
 | Key(s)            | Description
