@@ -7,11 +7,11 @@ var selectedInfoType = "";
 
 var makerInfoCategories = [
     ["Maps", "m"],
-    ["Tile IDs", "id"],
     ["Map Packs", "mapPacks"],
-    ["> Spawns", "spawns"],
-    ["> Dialogues", "dialogues"],
-    ["> NPCs", "npcs"],
+    ["  > Spawns", "spawns"],
+    ["  > Dialogues", "dialogues"],
+    ["  > NPCs", "npcs"],
+    ["Tile IDs", "id"],
     ["Tile pics", "t"],
     ["Tileset pics", "ts"],
     ["Character pics", "characterImages"],
@@ -27,20 +27,42 @@ var makerInfoCategories = [
 function makerInfoGenerate() {
     // background and general objects
     if (objects["makerInfo_bg1"] == undefined) makerInfoSelbtnItems = 0;
-    createButton("makerInfo_bg1", 0, 0, 0.3, 1, colors.buttonbottom, () => { }, { sizeOffset: [64, 0], power: false, clickthrough: false });
-    createSquare("makerInfo_bg2", 0.1, 0, 0.2, 1, colors.buttontop, { offset: [8, 8], sizeOffset: [48, -16], power: false });
+    createButton("makerInfo_bg1", 0, 0, 0.3, 1, colors.buttonbottom, (c) => {
+        //console.log("it clicked through");
+        objects[c].dragging = true;
+        objects["makerInfo_bg1"].modeBefore = mapmaker.mode;
+        objects["makerInfo_bg1"].xBef = wggj.mouse.x;
+    }, { sizeOffset: [64, 0], power: false, clickthrough: false });
+    objects["makerInfo_bg1"].onUp = (c) => { objects[c].dragging = false; }
+    objects["makerInfo_bg1"].onHover = (c) => {
+        if (objects[c].dragging == true) {
+            let diff = (wggj.mouse.x - objects[c].xBef) / wggj.canvas.w;
+            objects["makerInfo_bg1"].xBef = wggj.mouse.x;
 
-    createText("makerInfo_title", 0.2, 0.037, "Maker Info 3.0", { offset: [32, 0], size: 32, color: "black", align: "center", textBaseline: "bottom", power: false });
+            //groups["makerInfo"].add("x", diff, (c) => c.name != "makerInfo_sels");
+            groups["makerInfo"].add("x", diff);
+            groups["makerInfo_selbtns"].add("x", diff);
+            groups["makerInfo_selbtn_images"].add("x", diff);
+            mapmaker.mode = objects["makerInfo_bg1"].modeBefore;
+        }
+    }
+
+    createSquare("makerInfo_bg2", 0.1, 0, 0.2, 1, colors.buttontop, { offset: [8, 8], sizeOffset: [48, -16], power: false, clickthrough: false });
+    objects["makerInfo_bg2"].onHover = (c) => {
+        if (objects["makerInfo_bg1"].dragging) objects["makerInfo_bg1"].onHover("makerInfo_bg1");
+    }
+
+    createText("makerInfo_title", 0.2, 0.04, "Maker Info 3.0", { offset: [32, 0], size: 32, color: "black", align: "center", textBaseline: "bottom", power: false });
     createSquare("makerInfo_bg3", 0.1, 0.034, 0.2, 0, colors.buttonbottom, { sizeOffset: [64, 4], offset: [0, 8], power: false }); // behind categories
     createButton("makerInfo_close", 0.3, 0.034, 0, 0, "button",
         () => { makerInfoHide(); },
         {
-            offset: [32 - 16 + 8, -8 - 16], sizeOffset: [32, 32],
+            offset: [32 - 32 - 8, -8 - 16], sizeOffset: [64, 32],
             aText: { text: "X", size: 24, color: "black", power: false }
         });
 
-    createText("makerInfo_length", 0.1, 0.96, "", { size: 16, color: "black", align: "right", power: false });
-    createText("makerInfo_selected", 0.1, 0.98, "", { size: 16, color: "black", align: "right", power: false });
+    createText("makerInfo_length", 0.1, 0.95, "", { size: 20, color: "black", align: "right", power: false });
+    createText("makerInfo_selected", 0.1, 0.98, "", { size: 20, color: "black", align: "right", power: false, maxW: 0.1 });
 
     // new page buttons, using wggj scroll now
     createButton("makerInfo_pageReset", 0.3125, 0.85, 0.0275, 0.05, "button", () => {
@@ -73,12 +95,15 @@ function makerInfoGenerate() {
             objects["makerInfo_sels"].scrolledY = mapmaker.makerInfoScroll[objects[c].cat] != undefined ? mapmaker.makerInfoScroll[objects[c].cat] : 0;
         },
             {
-                clickthrough: false, power: false,
-                aText: { text: cat[0], size: 20, align: "center", maxW: 0.1, power: false }
+                /* clickthrough: false, */power: false,
+                aText: { textBaseline: "alphabetic", text: cat[0], size: 24, align: "left", offset: [-0.022 * wggj.canvas.w, 0], maxW: 0.09, power: false }
             });
         objects["makerInfo_category_" + cat[1]].cat = cat[1];
-        groups["makerInfo"].addChild("makerInfo_category_" + cat[1]);
-        groups["makerInfo"].addChild("makerInfo_category_" + cat[1] + ":text");
+
+        if (!groups["makerInfo"].children.includes("makerInfo_category_" + cat[1])) {
+            groups["makerInfo"].addChild("makerInfo_category_" + cat[1]);
+            groups["makerInfo"].addChild("makerInfo_category_" + cat[1] + ":text");
+        }
         iCat++;
     }
 
@@ -86,7 +111,7 @@ function makerInfoGenerate() {
     createContainer("makerInfo_sels", 0.1, 0.05, 0.225, 0.925, {
         YScroll: true, YLimit: [0.000001, 0]
     }, []);
-    groups["makerInfo"].addChild("makerInfo_sels");
+    if (!groups["makerInfo"].children.includes("makerInfo_sels")) groups["makerInfo"].addChild("makerInfo_sels");
 
     createGroup("makerInfo_selbtns", []);
     createGroup("makerInfo_selbtn_images", []);
@@ -110,15 +135,19 @@ function makerInfoGenerateMoreButtons(amount) {
             aText: { text: "", align: "left", offset: [-0.033 * wggj.canvas.w, 0], size: 24, color: "black", power: false }
         });
         objects["makerInfo_selbtn" + i].g = ""; // data carrier
-        groups["makerInfo_selbtns"].addChild("makerInfo_selbtn" + i);
-        objects["makerInfo_sels"].addChild("makerInfo_selbtn" + i);
 
         // preview image if applicable
         createImage("makerInfo_selbtn_image" + i, 0.1, 0.05, 0, 0, "gear", {
             sizeOffset: [32, 32], offset: [8, 32 * i], power: false
         });
-        groups["makerInfo_selbtn_images"].addChild("makerInfo_selbtn_image" + i);
-        objects["makerInfo_sels"].addChild("makerInfo_selbtn_image" + i);
+
+        if (!groups["makerInfo_selbtns"].children.includes("makerInfo_selbtn" + i)) {
+            groups["makerInfo_selbtns"].addChild("makerInfo_selbtn" + i);
+            objects["makerInfo_sels"].addChild("makerInfo_selbtn" + i);
+
+            groups["makerInfo_selbtn_images"].addChild("makerInfo_selbtn_image" + i);
+            objects["makerInfo_sels"].addChild("makerInfo_selbtn_image" + i);
+        }
 
         makerInfoSelbtnItems++;
     }

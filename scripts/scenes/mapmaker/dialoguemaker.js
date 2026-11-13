@@ -448,8 +448,11 @@ scenes["dialoguemaker"] = new Scene(
             else {
                 makerInfoShow();
                 renderMakerInfo("scripts");
+                /*
                 groups["makerInfo"].add("x", 0.65);
                 groups["makerInfo_selbtns"].add("x", 0.65);
+                groups["makerInfo_selbtn_images"].add("x", 0.65);
+                */
             }
             objects[c].uText(objects[c + ":text"]);
         }, { alpha: 0.5, aText: { text: "", color: "black", size: 20, textBaseline: "bottom" } });

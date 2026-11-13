@@ -309,6 +309,7 @@ indev name: v1.0.8
 - Globalism: can be inserted into any scene
 - Improved design
 - Image previews where applicable (with snip)
+- Can now be dragged (X axis)
 - Changed order of categories, all are visible now
 - Added scrolling (gets saved)
 - Added close button
